@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aavira.com - Premium Ethnic Wear</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- 3-DOT LOADING & OFFLINE SCREEN -->
+        <div id="appPreloader">
+            <div class="loader-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <p id="preloaderText" style="margin-top: 20px; font-size: 13px; font-weight: 500; color: var(--text-muted);">Loading Aavira...</p>
+            
+            <div id="offlineBox" style="display: none; flex-direction: column; align-items: center; text-align: center; padding: 20px; margin-top: 20px; max-width: 300px; width: 85%;">
+                <div style="width: 60px; height: 60px; border-radius: 50%; background: #ffebee; display: flex; justify-content: center; align-items: center; margin-bottom: 15px; color: #d32f2f; font-size: 24px;">
+                    <i class="fa-solid fa-wifi-slash"></i>
+                </div>
+                <h4 style="font-size: 16px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px;">No Internet Connection</h4>
+                <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">Please check your cellular data or Wi-Fi settings and try again.</p>
+                <button class="solid-buy-btn" style="width: 100%; padding: 10px; font-size: 12px; background: var(--text-dark); color: var(--white); border-radius: 8px; font-weight: 600; text-transform: uppercase;" onclick="checkInternetRetry()">Retry Connection</button>
+            </div>
+        </div>
+
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <i class="fa-solid fa-xmark close-sidebar" id="closeSidebarBtn"></i>
+                <div class="user-avatar" id="sidebarAvatar"><i class="fa-regular fa-user"></i></div>
+                <div class="user-info">
+                    <h4 id="sidebarName">Guest User</h4>
+                    <p id="sidebarEmail">Welcome to Aavira</p>
+                    <a href="login.html" class="top-login-btn" id="headerLoginBtn">Login / Sign Up</a>
+                </div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+                <a href="categories.html"><i class="fa-solid fa-table-cells-large"></i> Shop by Category</a>
+                <a href="orders.html"><i class="fa-solid fa-box-open"></i> My Orders</a>
+                <a href="wishlist.html"><i class="fa-solid fa-heart"></i> My Wishlist</a>
+                <a href="checkout.html"><i class="fa-solid fa-cart-shopping"></i> My Cart</a>
+                <div class="sidebar-divider"></div>
+                <a href="notifications.html"><i class="fa-solid fa-bell"></i> Notifications</a>
+                <a href="support.html"><i class="fa-solid fa-headset"></i> Customer Support</a>
+                <a href="#" id="nativeShareBtn"><i class="fa-solid fa-share-nodes"></i> Share App</a>
+                <a href="rate.html"><i class="fa-regular fa-star"></i> Rate App</a>
+                <div class="sidebar-divider" id="bottomDivider" style="display: none;"></div>
+                <a href="#" id="sidebarAuthBtn" style="color: #d32f2f; display: none;"><i class="fa-solid fa-right-from-bracket" style="color: #d32f2f;"></i> Logout</a>
+            </nav>
+        </aside>
+
+        <!-- SEARCH OVERLAY -->
+        <div class="search-overlay" id="searchOverlay">
+            <div class="search-header">
+                <i class="fa-solid fa-arrow-left" onclick="toggleSearch()"></i>
+                <div class="search-input-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" placeholder="Search amazing blouses..." oninput="handleSearch()">
+                </div>
+            </div>
+            <div class="search-results-container" id="searchResults">
+                <p style="text-align:center; color:var(--text-muted); font-size:13px; margin-top:30px;"><i class="fa-solid fa-magnifying-glass" style="font-size: 30px; color: #ddd; margin-bottom:10px; display:block;"></i>Type to search amazing products...</p>
+            </div>
+        </div>
+
+        <main class="main-content" id="mainScrollArea">
+            <header>
+                <div class="header-left">
+                    <div class="custom-menu-btn" id="openSidebarBtn"><span></span><span></span><span></span></div>
+                    <a href="index.html" class="logo">Aavira</a>
+                </div>
+                <div class="header-right">
+                    <a href="search.html" style="color: var(--icon-color);"><i class="fa-solid fa-magnifying-glass"></i></a>
+                    <a href="checkout.html" class="cart-container">
+                        <i class="fa-solid fa-cart-shopping"></i><span class="cart-badge" id="topCartBadge">0</span>
+                    </a>
+                </div>
+            </header>
+
+            <section class="banner-wrapper" id="bannerWrapper">
+                <div class="banner-carousel" id="bannerCarousel">
+                    <div class="banner-slide">
+                        <div class="hero-banner-fallback">
+                            <div class="hero-content">
+                                <h2>Elegant Blouses<br>For Every You</h2>
+                                <p>Premium quality designs.</p>
+                                <a href="categories.html" class="shop-btn">SHOP NOW</a>
+                            </div>
+                            <div class="hero-image"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="banner-dots" id="bannerDots"><div class="b-dot active"></div></div>
+            </section>
+
+            <section class="features-row">
+                <div class="feature-box"><i class="fa-solid fa-truck-fast"></i><h4>Free Shipping</h4><p>On orders above ₹999</p></div>
+                <div class="feature-box"><i class="fa-solid fa-money-bill-wave"></i><h4>COD Available</h4><p>Pay on delivery</p></div>
+                <div class="feature-box"><i class="fa-solid fa-shield-halved"></i><h4>Secure Payment</h4><p>100% secure</p></div>
+            </section>
+
+            <section>
+                <div class="section-title">
+                    <h3>Shop by Category</h3>
+                </div>
+                <div class="categories-scroll" id="categoriesContainer">
+                    <div class="cat-item"><div class="cat-ring skeleton"></div><span class="skeleton" style="width: 40px; height: 10px; border-radius: 4px;"></span></div>
+                    <div class="cat-item"><div class="cat-ring skeleton"></div><span class="skeleton" style="width: 40px; height: 10px; border-radius: 4px;"></span></div>
+                    <div class="cat-item"><div class="cat-ring skeleton"></div><span class="skeleton" style="width: 40px; height: 10px; border-radius: 4px;"></span></div>
+                </div>
+            </section>
+
+            <!-- ADVANCED MULTI-STYLE MAIN FEED CONTAINER -->
+            <section>
+                <div id="productsContainer">
+                    <div style="padding: 0 20px 20px;">
+                        <div class="skeleton" style="width: 100%; height: 280px; border-radius: 16px;"></div>
+                    </div>
+                    <div style="padding: 0 20px 20px; display:flex; gap:15px;">
+                        <div class="skeleton" style="width: 150px; height: 200px; border-radius: 12px; flex-shrink:0;"></div>
+                        <div class="skeleton" style="width: 150px; height: 200px; border-radius: 12px; flex-shrink:0;"></div>
+                    </div>
+                </div>
+                
+                <!-- COMPACT MORE BLOUSES BUTTON -->
+                <div style="padding: 0 20px 30px; display: flex; justify-content: flex-end;">
+                    <a href="product-list.html" class="small-more-btn">
+                        More blouses <i class="fa-solid fa-arrow-right-long" style="margin-left:5px;"></i>
+                    </a>
+                </div>
+            </section>
+
+            <!-- PURE DISTINCT COLORS MAGIC PICKER -->
+            <div class="magic-color-section">
+                <div class="section-title" style="padding: 0 20px;">
+                    <h3>Shop by Magic Color ✨</h3>
+                </div>
+                <div class="color-circles-wrapper">
+                    <div class="color-item" onclick="openMagicScreen('Red')"><div class="color-node" style="background: #E53935;"></div><span class="color-name">Crimson</span></div>
+                    <div class="color-item" onclick="openMagicScreen('Pink')"><div class="color-node" style="background: #FF4081;"></div><span class="color-name">Rose Pink</span></div>
+                    <div class="color-item" onclick="openMagicScreen('Magenta')"><div class="color-node" style="background: #9C27B0;"></div><span class="color-name">Magenta</span></div>
+                    <div class="color-item" onclick="openMagicScreen('Maroon')"><div class="color-node" style="background: #5D4037;"></div><span class="color-name">Maroon</span></div>
+                    <div class="color-item" onclick="openMagicScreen('Peach')"><div class="color-node" style="background: #FFAB91;"></div><span class="color-name">Peach</span></div>
+                    <div class="color-item" onclick="openMagicScreen('Lavender')"><div class="color-node" style="background: #B39DDB;"></div><span class="color-name">Lavender</span></div>
+                    <div class="color-item" onclick="openMagicScreen('Royal Blue')"><div class="color-node" style="background: #1E88E5;"></div><span class="color-name">Royal Blue</span></div>
+                    <div class="color-item" onclick="openMagicScreen('Teal')"><div class="color-node" style="background: #00897B;"></div><span class="color-name">Teal</span></div>
+                    <div class="color-item" onclick="openMagicScreen('Mint')"><div class="color-node" style="background: #69F0AE;"></div><span class="color-name">Mint Green</span></div>
+                    <div class="color-item" onclick="openMagicScreen('Emerald')"><div class="color-node" style="background: #004D40;"></div><span class="color-name">Emerald</span></div>
+                    <div class="color-item" onclick="openMagicScreen('Mustard')"><div class="color-node" style="background: #FFB300;"></div><span class="color-name">Mustard</span></div>
+                    <div class="color-item" onclick="openMagicScreen('White')"><div class="color-node" style="background: #FAFAFA; border: 1px solid #ddd;"></div><span class="color-name">Pearl White</span></div>
+                    <div class="color-item" onclick="openMagicScreen('Black')"><div class="color-node" style="background: #212121;"></div><span class="color-name">Midnight</span></div>
+                    <div class="color-item" onclick="openMagicScreen('Gold')"><div class="color-node" style="background: linear-gradient(135deg, #FFD700, #F57F17);"></div><span class="color-name">Gold</span></div>
+                </div>
+            </div>
+
+            <!-- COMPANY INFO (STATIC PRINTED) -->
+            <div class="company-info-section" id="companyInfoContent">
+                <div class="company-logo-text">Aavira</div>
+                <div class="company-tagline">Redefining Ethnic Elegance</div>
+                <p class="company-desc">
+                    Welcome to Aavira, your ultimate destination for premium, uniquely crafted blouses. We believe every woman deserves to feel royal and confident. Our exclusive collections blend traditional Indian embroidery with modern silhouettes, ensuring a luxurious feel and a flawless fit for every occasion.
+                </p>
+                <div class="company-stats">
+                    <div class="c-stat"><i class="fa-solid fa-award"></i><span>Premium<br>Quality</span></div>
+                    <div class="c-stat"><i class="fa-solid fa-wand-magic-sparkles"></i><span>Designer<br>Craft</span></div>
+                    <div class="c-stat"><i class="fa-regular fa-face-smile"></i><span>100%<br>Happiness</span></div>
+                </div>
+            </div>
+
+            <!-- PROFESSIONAL COPYRIGHT FOOTER -->
+            <footer class="premium-footer">
+                <a href="index.html" class="footer-brand">Aavira</a>
+                <div class="footer-socials">
+                    <a href="https://www.instagram.com/aavira_co.in?igsh=MTdieWFkNTkzY2hidQ==" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="#"><i class="fa-brands fa-pinterest-p"></i></a>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="about.html">About Us</a> &bull;
+                    <a href="policy.html">Privacy Policy</a> &bull;
+                    <a href="terms.html">T&C</a> &bull;
+                    <a href="support.html">Contact Us</a>
+                </div>
+                
+                <div class="footer-payments">
+                    <i class="fa-brands fa-cc-visa"></i>
+                    <i class="fa-brands fa-cc-mastercard"></i>
+                    <i class="fa-brands fa-google-pay"></i>
+                    <i class="fa-solid fa-building-columns"></i>
+                </div>
+
+                <div class="footer-copyright">
+                    <strong>&copy; 2026 Aavira.</strong> All Rights Reserved.<br>
+                    Designed exclusively for Royal Elegance in India.
+                </div>
+            </footer>
+            
+            <div class="bottom-spacing"></div>
+        </main>
+
+        <!-- ADVANCED LUXURY MAGIC SCREEN OVERLAY WITH WORKING FILTERS & DYNAMIC LAYOUT -->
+        <div id="magicScreen">
+            <div class="magic-aura-bg"></div>
+            <div class="magic-header">
+                <h3 id="magicTitle">Magic Colors ✨</h3>
+                <div class="magic-close-btn" onclick="closeMagicScreen()">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+            </div>
+            
+            <!-- WORKING CHIPS -->
+            <div class="magic-chip-bar">
+                <div class="magic-chip active" onclick="filterMagicProducts(this, 'All Designs')">All Designs</div>
+                <div class="magic-chip" onclick="filterMagicProducts(this, 'Premium Silk')">Premium Silk</div>
+                <div class="magic-chip" onclick="filterMagicProducts(this, 'Hand Embroidered')">Hand Embroidered</div>
+                <div class="magic-chip" onclick="filterMagicProducts(this, 'Trending Now')">Trending Now</div>
+            </div>
+
+            <!-- DYNAMIC CONTENT CONTAINER -->
+            <div class="magic-body" id="magicProductsContainer">
+                <!-- Products will be injected here dynamically -->
+            </div>
+        </div>
+
+        <nav class="bottom-nav" id="bottomNav">
+            <ul id="navUl">
+                <div class="indicator" id="navIndicator"></div>
+                <li class="nav-list-item active"><a href="index.html"><span class="icon"><i class="fa-solid fa-house"></i></span><span class="text">Home</span></a></li>
+                <li class="nav-list-item"><a href="categories.html"><span class="icon"><i class="fa-solid fa-border-all"></i></span><span class="text">Categories</span></a></li>
+                <li class="nav-list-item"><a href="checkout.html"><span class="icon"><i class="fa-solid fa-bag-shopping"></i></span><span class="text">Cart</span></a></li>
+                <li class="nav-list-item"><a href="wishlist.html"><span class="icon"><i class="fa-regular fa-heart"></i></span><span class="text">Wishlist</span></a></li>
+                <li class="nav-list-item"><a href="profile.html"><span class="icon"><i class="fa-regular fa-user"></i></span><span class="text">Profile</span></a></li>
+            </ul>
+        </nav>
+
+        <!-- SMART WELCOME LOGIN POPUP -->
+        <div class="modal-overlay" id="welcomeLoginOverlay" onclick="closeWelcomePopup()">
+            <div class="welcome-modal" onclick="event.stopPropagation()">
+                <div class="welcome-icon">
+                    <i class="fa-regular fa-face-smile-wink"></i>
+                </div>
+                <h3>Welcome to Aavira! ✨</h3>
+                <p>Sign in to unlock a personalized shopping experience, exclusive offers, and seamless checkout.</p>
+                <div class="welcome-actions">
+                    <a href="login.html" class="solid-buy-btn" style="width: 100%; padding: 12px; font-size: 13px; text-decoration: none; margin-bottom: 5px;">Login / Sign Up</a>
+                    <button class="welcome-dismiss-btn" onclick="closeWelcomePopup()">Maybe Later</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CUSTOM ALERTS POPUP -->
+        <div class="modal-overlay" id="alertOverlay" onclick="closeAlertModal()">
+            <div id="alertBox">
+                <div id="alertIcon" style="margin-bottom: 12px;"></div>
+                <h3 id="alertTitle" style="font-size: 16px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px;">Alert</h3>
+                <p id="alertMessage" style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;"></p>
+                <button class="solid-buy-btn" style="width: 100%; padding: 10px; font-size: 13px; text-transform: uppercase;" onclick="closeAlertModal()">Okay</button>
+            </div>
+        </div>
+
+        <!-- GLASSMORPHISM QUICK DETAILS SHEET -->
+        <div class="modal-overlay" id="quickDetailsOverlay" onclick="closeQuickDetails()">
+            <div class="quick-details-sheet" id="quickDetailsSheet" onclick="event.stopPropagation()">
+                <div class="sheet-drag-line"></div>
+                <div class="sheet-close" onclick="closeQuickDetails()"><i class="fa-solid fa-xmark"></i></div>
+                
+                <div class="sheet-content">
+                    <div class="sheet-img-box" id="sheetImg"></div>
+                    <div class="sheet-info">
+                        <span class="sheet-brand" id="sheetBrand">AAVIRA</span>
+                        <h3 class="sheet-title" id="sheetTitle">Premium Designer Blouse</h3>
+                        <div class="sheet-price" id="sheetPrice">₹0</div>
+                        
+                        <div class="sheet-desc-label">Product Details</div>
+                        <p class="sheet-desc" id="sheetDesc">Loading product specifications...</p>
+                        
+                        <div class="sheet-actions">
+                            <button class="solid-buy-btn" id="sheetBuyBtn" style="width: 100%; padding: 12px; font-size: 13px;"><i class="fa-solid fa-bag-shopping"></i> Buy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JS File Link (Uses module for Firebase) -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>
