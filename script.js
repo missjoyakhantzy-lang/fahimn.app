@@ -1,18 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const firebaseConfig = {
-    apiKey: "AIzaSyCMGx6C5_al22KjCmdhGVKugJoR2UmZ1Ng",
-    authDomain: "aavira-co-in.firebaseapp.com",
-    projectId: "aavira-co-in",
-    storageBucket: "aavira-co-in.firebasestorage.app",
-    messagingSenderId: "247971292356",
-    appId: "1:247971292356:web:82780c6dffe9ba530f9591"
-};
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+/* ==============================================================
+    AAVIRA PUBLIC APP SCRIPT (FIREBASE & VERCEL LINK REMOVED)
+============================================================== */
 
 window.allProductsList = [];
 window.productsCache = {};
@@ -283,7 +271,6 @@ const initAppUI = () => {
         document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : 'auto';
     };
     
-    // Check if buttons exist before adding listeners to avoid null errors
     if(document.getElementById('openSidebarBtn')) {
         document.getElementById('openSidebarBtn').addEventListener('click', toggleSidebar);
     }
@@ -321,7 +308,7 @@ const initAppUI = () => {
                     });
                 } catch (error) { console.log('Error sharing:', error); }
             } else {
-                window.showCustomAlert("Share App", "Link copied to clipboard! Share it with your friends.", "success");
+                window.showCustomAlert("Share App", "Link copied to clipboard!", "success");
                 navigator.clipboard.writeText(window.location.origin);
             }
         });
@@ -383,7 +370,7 @@ window.toggleHeart = function(event, button, productId) {
         }
         icon.classList.replace('fa-regular', 'fa-solid'); 
         icon.style.color = 'var(--primary-color)'; 
-        showCustomAlert("Added to Wishlist", "This item has been successfully added to your wishlist.", "success");
+        showCustomAlert("Added to Wishlist", "Item added to your wishlist.", "success");
     } else { 
         wishlist = wishlist.filter(item => {
             let id = typeof item === 'object' ? item.productId : item;
@@ -392,7 +379,7 @@ window.toggleHeart = function(event, button, productId) {
         localStorage.setItem('aavira_wishlist', JSON.stringify(wishlist));
         icon.classList.replace('fa-solid', 'fa-regular'); 
         icon.style.color = 'var(--icon-color)'; 
-        showCustomAlert("Removed", "This item has been removed from your wishlist.", "success");
+        showCustomAlert("Removed", "Item removed from your wishlist.", "success");
     }
 }
 
@@ -404,7 +391,7 @@ window.addToCartOnly = function(event, productId) {
     else { cart.push({ productId: productId, size: 'M', color: 'Original', qty: 1 }); }
     localStorage.setItem('aavira_cart', JSON.stringify(cart));
     window.updateCartBadge();
-    showCustomAlert("Cart Updated", "Added size 'M' to your shopping cart.", "success"); 
+    showCustomAlert("Cart Updated", "Added to your shopping cart.", "success"); 
 }
 
 window.buyNow = function(event, productId) {
@@ -412,8 +399,8 @@ window.buyNow = function(event, productId) {
     window.location.href = "product-details.html?id=" + productId;
 }
 
-// --- AUTH & SMART LOGIN LOGIC ---
-onAuthStateChanged(auth, (user) => {
+// --- GUEST USER SETUP ---
+function setupGuestUser() {
     const nameField = document.getElementById('sidebarName'); 
     const emailField = document.getElementById('sidebarEmail');
     const avatarField = document.getElementById('sidebarAvatar'); 
@@ -421,118 +408,67 @@ onAuthStateChanged(auth, (user) => {
     const headerLoginBtn = document.getElementById('headerLoginBtn');
     const bottomDivider = document.getElementById('bottomDivider');
 
-    if (user) {
-        if(nameField) nameField.innerText = user.displayName || "Display Name"; 
-        if(emailField) emailField.innerText = user.email;
-        if(avatarField) avatarField.innerText = user.email[0].toUpperCase(); 
-        if(headerLoginBtn) headerLoginBtn.style.display = 'none';
-        if(authBtn) { authBtn.style.display = 'flex'; authBtn.addEventListener('click', (e) => { e.preventDefault(); signOut(auth).then(() => window.location.reload()); }); }
-        if(bottomDivider) bottomDivider.style.display = 'block';
-    } else {
-        if(nameField) nameField.innerText = "Guest User"; 
-        if(emailField) emailField.innerText = "Welcome to Aavira";
-        if(avatarField) avatarField.innerHTML = `<i class="fa-regular fa-user"></i>`;
-        if(headerLoginBtn) headerLoginBtn.style.display = 'inline-block';
-        if(authBtn) authBtn.style.display = 'none'; 
-        if(bottomDivider) bottomDivider.style.display = 'none';
-        window.checkAndShowWelcomePopup();
-    }
-});
+    if(nameField) nameField.innerText = "Guest User"; 
+    if(emailField) emailField.innerText = "Welcome to Aavira";
+    if(avatarField) avatarField.innerHTML = `<i class="fa-regular fa-user"></i>`;
+    if(headerLoginBtn) headerLoginBtn.style.display = 'inline-block';
+    if(authBtn) authBtn.style.display = 'none'; 
+    if(bottomDivider) bottomDivider.style.display = 'none';
+    
+    window.checkAndShowWelcomePopup();
+}
 
-// --- FETCH DYNAMIC BANNERS ---
 async function fetchBanners() {
     const carousel = document.getElementById('bannerCarousel');
     const dotsContainer = document.getElementById('bannerDots');
-    try {
-        const snap = await getDocs(collection(db, "banners"));
-        
-        if(!snap.empty) {
-            let docsArr = [];
-            snap.forEach(doc => docsArr.push(doc.data()));
-            docsArr.sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
-
-            if(carousel) carousel.innerHTML = ''; 
-            if(dotsContainer) dotsContainer.innerHTML = '';
-            let count = 0;
-            
-            docsArr.forEach(d => {
-                let mediaHtml = '';
-                if(d.type === 'video' || d.videoUrl) {
-                    mediaHtml = `<video src="${d.videoUrl || d.url}" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture controlslist="nodownload noplaybackrate" style="width:100%; height:100%; object-fit:cover; pointer-events:none; transform: translateZ(0);"></video>`;
-                } else {
-                    mediaHtml = `<img src="${d.imageUrl || d.url}" alt="Banner" style="width:100%; height:100%; object-fit:cover; transform: translateZ(0);">`;
-                }
-                if(d.link) { mediaHtml = `<a href="${d.link}" style="display:block; width:100%; height:100%;">${mediaHtml}</a>`; }
-                
-                if(carousel) carousel.innerHTML += `<div class="banner-slide">${mediaHtml}</div>`;
-                if(dotsContainer) dotsContainer.innerHTML += `<div class="b-dot ${count===0?'active':''}"></div>`;
-                count++;
-            });
-            
-            if(count > 1 && carousel) {
-                let currentIndex = 0;
-                setInterval(() => {
-                    currentIndex = (currentIndex + 1) % count;
-                    const slide = carousel.children[currentIndex];
-                    if (slide) { carousel.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' }); }
-                }, 4000); 
-
-                carousel.addEventListener('scroll', () => {
-                    let idx = Math.round(carousel.scrollLeft / carousel.offsetWidth);
-                    document.querySelectorAll('.b-dot').forEach((dot, i) => { dot.classList.toggle('active', i === idx); });
-                });
-            }
-        }
-    } catch (error) { 
-        console.error("Error loading banners:", error); 
-        if(carousel) carousel.innerHTML = '<div class="banner-slide"><div class="hero-banner-fallback"><div class="hero-content"><h2>Elegant Blouses<br>For Every You</h2><p>Premium quality designs.</p><a href="categories.html" class="shop-btn">SHOP NOW</a></div></div></div>';
-    }
+    
+    if(carousel) carousel.innerHTML = '<div class="banner-slide"><div class="hero-banner-fallback"><div class="hero-content" style="padding:40px 20px; text-align:center; background:#111; color:#fff;"><h2>Elegant Blouses<br>For Every You</h2><p>Premium quality designs.</p><a href="#" class="shop-btn" style="color:var(--primary-color); font-weight:bold;">SHOP NOW</a></div></div></div>';
+    if(dotsContainer) dotsContainer.innerHTML = '';
 }
 
-// --- FETCH CATEGORIES ---
 async function fetchCategories() {
     const catContainer = document.getElementById('categoriesContainer');
-    try {
-        const q = query(collection(db, "categories"), orderBy("createdAt", "desc"));
-        const snap = await getDocs(q);
-        if (snap.empty) { if(catContainer) catContainer.innerHTML = '<p class="no-data-msg" style="padding:20px; font-size:12px; color:var(--text-muted);">No categories yet.</p>'; return; }
-        if(catContainer) catContainer.innerHTML = ''; 
-        snap.forEach((doc) => {
-            const data = doc.data();
-            if(catContainer) catContainer.innerHTML += `<a href="categories.html?cat=${data.name}" class="cat-item"><div class="cat-ring"><div class="cat-img" style="background-image: url('${data.image}');"></div></div><span>${data.name}</span></a>`;
-        });
-    } catch (error) { 
-        console.error("Error loading categories:", error); 
-        if(catContainer) catContainer.innerHTML = '<p style="text-align:center; padding:10px 20px; width:100%; color:#d32f2f; font-size:12px;">Failed to load categories.</p>';
-    }
+    if(catContainer) catContainer.innerHTML = '<p class="no-data-msg" style="padding:20px; text-align:center; font-size:12px; color:var(--text-muted);">Categories coming soon.</p>';
 }
 
-// --- FETCH PRODUCTS & RENDER IN ADVANCED MULTIPLE STYLES ---
+// --- 🔥 FETCH PRODUCTS BY CALLING user_data.js 🔥 ---
 async function fetchProducts() {
     const productsContainer = document.getElementById('productsContainer');
     try {
-        const q = query(collection(db, "products"), orderBy("createdAt", "desc"));
-        const querySnapshot = await getDocs(q);
+        // Yahan se direct Vercel ka URL hata diya gaya hai!
+        // Ab yeh user_data.js mein banaye gaye function se array lega
+        if (typeof window.getVercelData !== 'function') {
+            console.error("Link error: user_data.js file index.html mein theek se add nahi hai!");
+            if(productsContainer) productsContainer.innerHTML = '<p class="no-data-msg" style="text-align:center; color:red;">System Error: Missing Data Module</p>'; 
+            return;
+        }
+
+        // user_data.js ki API call karna
+        const dataArray = await window.getVercelData();
         
-        if (querySnapshot.empty) { if(productsContainer) productsContainer.innerHTML = '<p class="no-data-msg" style="text-align:center; padding:20px; font-size:12px; color:var(--text-muted);">No products currently available.</p>'; return; }
+        if (!dataArray || dataArray.length === 0) { 
+            if(productsContainer) productsContainer.innerHTML = '<p class="no-data-msg" style="text-align:center; padding:20px; font-size:12px; color:var(--text-muted);">No products currently available.</p>'; 
+            return; 
+        }
         
         window.allProductsList = []; 
         let wishlist = JSON.parse(localStorage.getItem('aavira_wishlist')) || [];
         let wishlistIds = wishlist.map(item => typeof item === 'object' ? item.productId : item);
 
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            const imageUrl = data.imageMain || data.image || '';
-            window.productsCache[doc.id] = {
-                id: doc.id, name: data.name, brand: data.brand || 'Aavira', price: data.price, img: imageUrl,
+        // Array ko UI ke liye ready karna
+        dataArray.forEach((data) => {
+            const imageUrl = data.imageMain || data.image || 'https://via.placeholder.com/300x250?text=Aavira';
+            window.productsCache[data.id] = {
+                id: data.id, name: data.name, brand: data.category || 'Aavira', price: data.price, img: imageUrl,
                 description: data.description || 'Exclusive ethnic blouse designed with meticulous attention to detail.'
             };
-            window.allProductsList.push({ id: doc.id, name: data.name, price: data.price, img: imageUrl, color: data.color || '' });
+            window.allProductsList.push({ id: data.id, name: data.name, price: data.price, img: imageUrl, color: data.color || '' });
         });
 
         if(!productsContainer) return;
         let html = '';
         
+        // --- UI Rendering Logic (Wahi purana mast design) ---
         if(window.allProductsList.length > 0) {
             let p0 = window.allProductsList[0];
             let w0 = wishlistIds.includes(p0.id);
@@ -625,18 +561,20 @@ async function fetchProducts() {
         productsContainer.innerHTML = html;
 
     } catch (error) { 
-        console.error("Error loading products:", error); 
-        if(productsContainer) productsContainer.innerHTML = '<p style="text-align:center; padding:20px; color:#d32f2f; font-size:12px;">Failed to load products. Please check your connection.</p>';
-        window.showCustomAlert("Connection Error", "Failed to load products from server.", "error");
+        console.error("Error rendering products:", error); 
+        if(productsContainer) productsContainer.innerHTML = '<p style="text-align:center; padding:20px; color:#d32f2f; font-size:12px;">Failed to render products.</p>';
     }
 }
 
-// --- PAGE INITIALIZATION PROCESS WITH PRELOADER ---
+// --- PAGE INITIALIZATION PROCESS ---
 async function initializeAppEngine() {
     if (!navigator.onLine) {
         updateConnectionStatus();
         return;
     }
+    
+    setupGuestUser();
+
     try {
         await Promise.all([fetchBanners(), fetchCategories(), fetchProducts()]);
     } catch(e) {
