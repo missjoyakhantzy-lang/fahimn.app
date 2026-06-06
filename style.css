@@ -16,17 +16,17 @@
     --radius-lg: 16px;
 }
 
-/* --- BASE RESET --- */
+/* --- CHROME MOBILE BASE RESET --- */
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
-body { background-color: var(--bg-color); display: flex; justify-content: center; align-items: center; height: 100vh; }
+html { height: -webkit-fill-available; }
+body { background-color: var(--bg-color); display: flex; justify-content: center; align-items: center; min-height: 100vh; min-height: -webkit-fill-available; }
 a { text-decoration: none; color: inherit; }
 button { cursor: pointer; border: none; background: none; outline: none; }
 
 /* --- LAYOUT --- */
-.app-container { width: 100%; max-width: 400px; height: 100vh; background-color: var(--white); position: relative; display: flex; flex-direction: column; box-shadow: var(--shadow-lg); overflow: hidden; }
-@media (max-width: 400px) { .app-container { height: 100dvh; box-shadow: none; } }
+.app-container { width: 100%; max-width: 400px; height: 100vh; height: 100dvh; background-color: var(--white); position: relative; display: flex; flex-direction: column; box-shadow: var(--shadow-lg); overflow: hidden; }
+@media (max-width: 400px) { .app-container { box-shadow: none; } }
 
-/* 🔥 YAHAN PADDING-BOTTOM 110px KAR DIYA HAI 🔥 */
 .main-content { flex: 1; overflow-y: auto; padding-bottom: 110px; scrollbar-width: none; scroll-behavior: smooth; }
 .main-content::-webkit-scrollbar { display: none; }
 
@@ -156,10 +156,11 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .product-details-area { padding: 12px 10px; flex: 1; display: flex; flex-direction: column; }
 .product-card h4 { font-size: 12px; font-weight: 500; color: var(--text-dark); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
+/* CHROME BUTTON FIX */
 .card-actions { display: flex; gap: 8px; width: 100%; align-items: center; margin-top: auto; }
-.outline-icon-btn { background: var(--white); border: 1px solid var(--border-color); border-radius: 8px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; color: var(--icon-color); font-size: 13px; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; }
+.outline-icon-btn { background: var(--white); border: 1px solid var(--border-color); border-radius: 8px; min-width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; color: var(--icon-color); font-size: 13px; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; }
 .outline-icon-btn:active { transform: scale(0.9); background: var(--bg-color); }
-.solid-buy-btn { background: var(--primary-color); color: var(--white); border: none; border-radius: 8px; height: 35px; flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: transform 0.2s ease, background 0.2s ease; box-shadow: 0 4px 10px rgba(216, 27, 96, 0.2); }
+.solid-buy-btn { background: var(--primary-color); color: var(--white); border: none; border-radius: 8px; height: 35px; flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: transform 0.2s ease, background 0.2s ease; box-shadow: 0 4px 10px rgba(216, 27, 96, 0.2); white-space: nowrap; }
 .solid-buy-btn:hover { background: #C2185B; transform: translateY(-2px); }
 .solid-buy-btn:active { transform: scale(0.95); box-shadow: 0 2px 5px rgba(216, 27, 96, 0.2); }
 
@@ -170,7 +171,6 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .skel-btn-main { height: 35px; flex: 1; border-radius: 8px; } 
 .skel-btn-icon { height: 30px; width: 30px; border-radius: 8px; } 
 
-/* --- SMALL "MORE BLOUSES" BUTTON --- */
 .small-more-btn { display: inline-flex; align-items: center; padding: 8px 18px; background: var(--white); color: var(--primary-color); border: 1px solid var(--primary-color); border-radius: 20px; font-size: 12px; font-weight: 600; transition: all 0.3s ease; text-decoration: none; box-shadow: 0 2px 10px rgba(216, 27, 96, 0.1); }
 .small-more-btn:active { transform: scale(0.95); background: var(--primary-color); color: var(--white); }
 
@@ -217,19 +217,7 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .magic-masonry { column-count: 2; column-gap: 12px; margin-top: 5px; padding: 0 20px; }
 .product-card-adv { break-inside: avoid; margin-bottom: 12px; border-radius: 12px; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; }
 
-/* --- COMPANY INFO SECTION --- */
-.company-info-section { background: var(--white); margin: 0 20px 20px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; padding: 25px 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-.company-logo-text { font-family: 'Dancing Script', cursive; font-size: 32px; font-weight: 700; color: var(--primary-color); margin-bottom: 10px; line-height: 1; }
-.company-tagline { font-size: 11px; font-weight: 600; color: var(--secondary-color); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
-.company-desc { font-size: 12px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
-.company-stats { display: flex; justify-content: space-around; border-top: 1px dashed var(--border-color); padding-top: 20px; }
-.c-stat { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.c-stat i { font-size: 20px; color: var(--primary-color); background: var(--primary-light); width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; border-radius: 50%; }
-.c-stat span { font-size: 10px; font-weight: 600; color: var(--text-dark); text-transform: uppercase; }
-
-/* ==============================================================
-   NEW PROFESSIONAL LUXURY FOOTER CSS
-============================================================== */
+/* --- LUXURY FOOTER --- */
 .premium-footer { background: #111111; color: #ffffff; position: relative; padding-bottom: 90px; text-align: left; margin-top: 20px;}
 .footer-top-accent { height: 4px; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--primary-color)); background-size: 200% auto; animation: gradientMove 3s linear infinite; }
 @keyframes gradientMove { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
@@ -281,9 +269,7 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .s-result-info h4 { font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
 .s-result-info p { font-size: 14px; font-weight: 700; color: var(--primary-color); }
 
-.bottom-spacing { height: 1px; width: 100%; }
-
-/* --- STABLE BOTTOM NAVIGATION --- */
+/* --- STABLE BOTTOM NAVIGATION (CHROME FIX) --- */
 .bottom-nav { position: absolute; bottom: 20px; left: 20px; right: 20px; height: 65px; background: var(--white); border-radius: 20px; display: flex; justify-content: center; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15); z-index: 100; transition: transform 0.4s ease-in-out; }
 .bottom-nav.hidden { transform: translateY(150px); }
 .bottom-nav ul { display: flex; width: 100%; position: relative; margin: 0; padding: 0; }
@@ -291,8 +277,11 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .bottom-nav ul li a { position: relative; display: flex; justify-content: center; align-items: center; flex-direction: column; width: 100%; height: 100%; text-decoration: none; }
 .bottom-nav ul li a .icon { position: relative; display: flex; justify-content: center; align-items: center; width: 38px; height: 38px; font-size: 18px; color: var(--icon-color); transition: color 0.4s ease; z-index: 2; margin-top: 4px; }
 .bottom-nav ul li.active a .icon { color: var(--white); }
-.bottom-nav ul li a .text { font-weight: 500; font-size: 10px; color: var(--text-muted); transition: color 0.4s ease; margin-top: 2px; }
-.bottom-nav ul li.active a .text { color: var(--primary-color); font-weight: 600; }
+
+/* TEXT FIT FIX FOR BOTTOM NAV */
+.bottom-nav ul li a .text { font-weight: 500; font-size: 9px; color: var(--text-muted); transition: color 0.4s ease; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 2px; }
+.bottom-nav ul li.active a .text { color: var(--primary-color); font-weight: 600; font-size: 10px; }
+
 .indicator { position: absolute; top: 7px; left: 0; width: 38px; height: 38px; background: var(--primary-color); border-radius: 50%; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); z-index: 1; }
 
 /* --- 3-DOT PRELOADER LOADING ANIMATION --- */
