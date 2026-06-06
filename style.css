@@ -26,7 +26,8 @@ button { cursor: pointer; border: none; background: none; outline: none; }
 .app-container { width: 100%; max-width: 400px; height: 100vh; background-color: var(--white); position: relative; display: flex; flex-direction: column; box-shadow: var(--shadow-lg); overflow: hidden; }
 @media (max-width: 400px) { .app-container { height: 100dvh; box-shadow: none; } }
 
-.main-content { flex: 1; overflow-y: auto; padding-bottom: 40px; scrollbar-width: none; scroll-behavior: smooth; }
+/* 🔥 YAHAN PADDING-BOTTOM 110px KAR DIYA HAI 🔥 */
+.main-content { flex: 1; overflow-y: auto; padding-bottom: 110px; scrollbar-width: none; scroll-behavior: smooth; }
 .main-content::-webkit-scrollbar { display: none; }
 
 /* --- HEADER --- */
@@ -170,13 +171,7 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .skel-btn-icon { height: 30px; width: 30px; border-radius: 8px; } 
 
 /* --- SMALL "MORE BLOUSES" BUTTON --- */
-.small-more-btn {
-    display: inline-flex; align-items: center; padding: 8px 18px; 
-    background: var(--white); color: var(--primary-color); 
-    border: 1px solid var(--primary-color);
-    border-radius: 20px; font-size: 12px; font-weight: 600; 
-    transition: all 0.3s ease; text-decoration: none; box-shadow: 0 2px 10px rgba(216, 27, 96, 0.1);
-}
+.small-more-btn { display: inline-flex; align-items: center; padding: 8px 18px; background: var(--white); color: var(--primary-color); border: 1px solid var(--primary-color); border-radius: 20px; font-size: 12px; font-weight: 600; transition: all 0.3s ease; text-decoration: none; box-shadow: 0 2px 10px rgba(216, 27, 96, 0.1); }
 .small-more-btn:active { transform: scale(0.95); background: var(--primary-color); color: var(--white); }
 
 /* --- MAGIC COLOR SECTION --- */
@@ -202,13 +197,11 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .magic-close-btn { width: 35px; height: 35px; background: rgba(0,0,0,0.05); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--text-dark); cursor: pointer; transition: 0.3s; }
 .magic-close-btn:active { transform: scale(0.9); }
 
-/* Magic Filter Chips */
 .magic-chip-bar { display: flex; gap: 10px; padding: 15px 20px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid rgba(0,0,0,0.03); scroll-behavior: smooth; }
 .magic-chip-bar::-webkit-scrollbar { display: none; }
 .magic-chip { padding: 6px 16px; background: var(--bg-color); border-radius: 20px; font-size: 11px; font-weight: 600; color: var(--text-muted); white-space: nowrap; border: 1px solid transparent; transition: 0.3s; cursor: pointer; }
 .magic-chip.active { background: var(--primary-light); color: var(--primary-color); border-color: var(--primary-color); }
 
-/* Advanced Dynamic Layout */
 .magic-body { flex: 1; overflow-y: auto; padding: 15px 0 100px; display: block; scrollbar-width: none; }
 .magic-body::-webkit-scrollbar { display: none; }
 
@@ -234,19 +227,44 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .c-stat i { font-size: 20px; color: var(--primary-color); background: var(--primary-light); width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; border-radius: 50%; }
 .c-stat span { font-size: 10px; font-weight: 600; color: var(--text-dark); text-transform: uppercase; }
 
-/* --- PROFESSIONAL COPYRIGHT & FOOTER --- */
-.premium-footer { background: #1a1a1a; padding: 35px 20px 100px; text-align: center; color: #fff; position: relative; overflow: hidden; }
-.premium-footer::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); }
-.footer-brand { font-family: 'Dancing Script', cursive; font-size: 28px; color: var(--white); margin-bottom: 15px; display: inline-block; }
-.footer-socials { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; }
-.footer-socials a { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; justify-content: center; align-items: center; color: var(--white); font-size: 16px; transition: 0.3s; text-decoration: none; }
-.footer-socials a:hover { background: var(--primary-color); transform: translateY(-3px); }
-.footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 25px; font-size: 11px; color: #aaaaaa; }
-.footer-links a { color: #aaaaaa; text-decoration: none; transition: 0.2s; }
-.footer-links a:hover { color: var(--secondary-color); }
-.footer-payments { display: flex; justify-content: center; gap: 12px; margin-bottom: 25px; font-size: 22px; color: #888; }
-.footer-copyright { font-size: 11px; color: #777; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; }
-.footer-copyright strong { color: #fff; font-weight: 600; }
+/* ==============================================================
+   NEW PROFESSIONAL LUXURY FOOTER CSS
+============================================================== */
+.premium-footer { background: #111111; color: #ffffff; position: relative; padding-bottom: 90px; text-align: left; margin-top: 20px;}
+.footer-top-accent { height: 4px; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--primary-color)); background-size: 200% auto; animation: gradientMove 3s linear infinite; }
+@keyframes gradientMove { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+.footer-main-content { padding: 40px 25px 20px; }
+
+.footer-brand { font-family: 'Dancing Script', cursive; font-size: 38px; color: var(--secondary-color); display: block; margin-bottom: 5px; text-align: center; text-decoration: none;}
+.footer-tagline { font-size: 10px; font-weight: 600; color: #888888; text-transform: uppercase; letter-spacing: 3px; text-align: center; margin-bottom: 30px; }
+
+.footer-about-text { font-size: 12px; color: #999999; line-height: 1.7; text-align: justify; margin-bottom: 35px; padding: 18px; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+
+.footer-links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 35px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 35px; }
+.f-column h4 { font-size: 13px; color: #ffffff; font-weight: 600; margin-bottom: 18px; text-transform: uppercase; letter-spacing: 1px; border-left: 3px solid var(--primary-color); padding-left: 10px; }
+.f-column a { display: block; font-size: 12px; color: #888888; margin-bottom: 12px; transition: all 0.3s ease; text-decoration: none; }
+.f-column a:hover { color: var(--secondary-color); padding-left: 6px; }
+
+.footer-contact-list { margin-bottom: 40px; }
+.footer-contact-list h4 { font-size: 13px; color: #ffffff; font-weight: 600; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; text-align: center; }
+.f-c-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 25px; padding: 10px; border-radius: 12px; transition: background 0.3s; cursor: pointer;}
+.f-c-item:active { background: rgba(255,255,255,0.05); }
+.f-c-item i { width: 40px; height: 40px; background: rgba(212, 175, 55, 0.1); color: var(--secondary-color); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 16px; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
+.f-c-item div { display: flex; flex-direction: column; justify-content: center; }
+.f-c-item div strong { font-size: 13px; color: #eeeeee; font-weight: 600; margin-bottom: 5px; letter-spacing: 0.5px;}
+.f-c-item div span { font-size: 12px; color: #888888; line-height: 1.5; }
+.f-c-item div small { font-size: 10px; color: var(--primary-color); font-weight: 600; margin-top: 3px; display: inline-block;}
+
+.footer-socials { display: flex; justify-content: center; gap: 15px; margin-bottom: 35px; }
+.footer-socials a { width: 45px; height: 45px; border-radius: 50%; background: rgba(255,255,255,0.05); display: flex; justify-content: center; align-items: center; color: #ffffff; font-size: 18px; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.05); text-decoration: none;}
+.footer-socials a:hover { background: var(--primary-color); border-color: var(--primary-color); transform: translateY(-4px); box-shadow: 0 5px 15px rgba(216, 27, 96, 0.4);}
+
+.footer-payments { text-align: center; margin-bottom: 25px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 30px; }
+.footer-payments p { font-size: 11px; color: #777; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; font-weight: 600;}
+.payment-icons { display: flex; justify-content: center; gap: 18px; font-size: 26px; color: #555; }
+
+.footer-copyright { text-align: center; font-size: 11px; color: #555555; line-height: 1.8; margin-top: 15px;}
+.footer-copyright strong { color: #888888; }
 
 /* --- SEARCH OVERLAY --- */
 .search-overlay { position: fixed; inset: 0; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 9999; display: flex; flex-direction: column; transform: translateY(-100%); transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
