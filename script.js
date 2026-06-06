@@ -1,7 +1,12 @@
+/* ==============================================================
+    AAVIRA PUBLIC APP SCRIPT (FIREBASE REMOVED, VERCEL CONNECTED)
+============================================================== */
+
 window.allProductsList = [];
 window.productsCache = {};
 window.currentMagicColor = ''; 
 
+/* PRELOADER CONTROLLER FUNCTIONS */
 window.showPreloader = function(text = "Loading Aavira...") {
     const preloader = document.getElementById('appPreloader');
     const dots = document.querySelector('.loader-dots');
@@ -21,6 +26,7 @@ window.hidePreloader = function() {
     if (preloader) { preloader.style.opacity = '0'; preloader.style.visibility = 'hidden'; }
 }
 
+/* OFFLINE STATUS CONTROLLER */
 window.updateConnectionStatus = function() {
     const dots = document.querySelector('.loader-dots');
     const pText = document.getElementById('preloaderText');
@@ -53,6 +59,9 @@ window.checkInternetRetry = function() {
 window.addEventListener('online', updateConnectionStatus);
 window.addEventListener('offline', updateConnectionStatus);
 
+/* ==============================================================
+    ADVANCED LUXURY MAGIC SCREEN ENGINE
+============================================================== */
 window.openMagicScreen = function(color) {
     window.currentMagicColor = color;
     const screen = document.getElementById('magicScreen');
@@ -78,7 +87,7 @@ window.filterMagicProducts = function(element, filterType) {
 
 window.renderAdvancedMagicLayout = function(filterType) {
     const container = document.getElementById('magicProductsContainer');
-    container.innerHTML = '<div style="width:100%; text-align:center; padding: 60px 0;"><i class="fa-solid fa-wand-magic-sparkles fa-spin" style="font-size: 30px; color: var(--primary-color);"></i></div>';
+    container.innerHTML = '<div style="width:100%; text-align:center; padding: 60px 0;"><i class="fa-solid fa-wand-magic-sparkles fa-spin" style="font-size: 30px; color: var(--primary-color);"></i><p style="margin-top:15px; font-size:12px; font-weight:600; color:var(--text-muted);">Brewing Magic...</p></div>';
     
     setTimeout(() => {
         let filtered = window.allProductsList.filter(p => {
@@ -98,7 +107,7 @@ window.renderAdvancedMagicLayout = function(filterType) {
         }
 
         if(filtered.length === 0) {
-            container.innerHTML = `<div style="width:100%; text-align:center; padding: 60px 20px;"><p style="font-size:13px; color:var(--text-muted);">No items match this filter.</p></div>`;
+            container.innerHTML = `<div style="width:100%; text-align:center; padding: 60px 20px;"><i class="fa-regular fa-face-frown" style="font-size: 45px; color: #ddd; margin-bottom:15px;"></i><p style="font-size:13px; color:var(--text-muted);">No items match this filter in ${window.currentMagicColor}.<br>Try another category!</p></div>`;
             return;
         }
 
@@ -113,7 +122,7 @@ window.renderAdvancedMagicLayout = function(filterType) {
                             <h4 style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.name}</h4>
                             <div style="display:flex; justify-content:space-between; align-items:center;">
                                 <p>₹${p.price}</p>
-                                <span style="background:var(--primary-color); color:#fff; font-size:10px; padding:6px 14px; border-radius:12px;">View</span>
+                                <span style="background:var(--primary-color); color:#fff; font-size:10px; padding:6px 14px; border-radius:12px;"><i class="fa-solid fa-bag-shopping"></i> View</span>
                             </div>
                         </div>
                     </div>
@@ -121,6 +130,7 @@ window.renderAdvancedMagicLayout = function(filterType) {
             `;
         }
         if(filtered.length >= 2) {
+            html += `<h4 style="font-size: 14px; font-weight: 700; color: var(--text-dark); margin: 5px 20px 10px; animation: fadeInUp 0.5s ease forwards;">Top Picks in ${window.currentMagicColor}</h4>`;
             html += `<div class="magic-h-scroll" style="animation: fadeInUp 0.5s ease forwards;">`;
             let scrollLimit = Math.min(4, filtered.length); 
             for(let i = 1; i < scrollLimit; i++) {
@@ -138,6 +148,7 @@ window.renderAdvancedMagicLayout = function(filterType) {
             html += `</div>`;
         }
         if(filtered.length >= 4) {
+            html += `<h4 style="font-size: 14px; font-weight: 700; color: var(--text-dark); margin: 5px 20px 10px; animation: fadeInUp 0.6s ease forwards;">Explore More Styles</h4>`;
             html += `<div class="magic-masonry" style="animation: fadeInUp 0.6s ease forwards;">`;
             for(let i = 4; i < filtered.length; i++) {
                 let p = filtered[i];
@@ -160,6 +171,7 @@ window.renderAdvancedMagicLayout = function(filterType) {
 
 window.closeMagicScreen = function() { document.getElementById('magicScreen').classList.remove('active'); }
 
+/* SMART WELCOME LOGIN POPUP LOGIC */
 window.checkAndShowWelcomePopup = function() {
     let shownCount = parseInt(localStorage.getItem('aavira_welcome_shown_count') || '0');
     if (shownCount < 2) {
@@ -178,6 +190,7 @@ window.closeWelcomePopup = function() {
     if(overlay) { overlay.classList.remove('show'); document.body.style.overflow = 'auto'; }
 }
 
+/* CUSTOM PROFESSIONAL ALERT DIALOG */
 window.showCustomAlert = function(title, message, type = 'success') {
     const overlay = document.getElementById('alertOverlay');
     const iconEl = document.getElementById('alertIcon');
@@ -191,6 +204,7 @@ window.showCustomAlert = function(title, message, type = 'success') {
 }
 window.closeAlertModal = function() { document.getElementById('alertOverlay').classList.remove('show'); }
 
+/* SAME SCREEN QUICK DETAILS MODAL ENGINE */
 window.openQuickDetails = function(event, productId) {
     event.preventDefault(); event.stopPropagation();
     const product = window.productsCache[productId];
@@ -211,6 +225,7 @@ window.closeQuickDetails = function() {
     document.body.style.overflow = 'auto';
 }
 
+/* --- INIT UI WRAPPER FOR SAFE EXECUTION --- */
 const initAppUI = () => {
     document.addEventListener('click', (e) => {
         const target = e.target.closest('a');
@@ -286,12 +301,13 @@ const initAppUI = () => {
             if (navigator.share) {
                 try {
                     await navigator.share({
-                        title: 'Aavira',
-                        text: 'Aavira Products',
+                        title: 'Aavira - Ethnic Elegance',
+                        text: 'Check out premium designer blouses on Aavira!',
                         url: window.location.origin
                     });
-                } catch (error) { console.log(error); }
+                } catch (error) { console.log('Error sharing:', error); }
             } else {
+                window.showCustomAlert("Share App", "Link copied to clipboard!", "success");
                 navigator.clipboard.writeText(window.location.origin);
             }
         });
@@ -304,6 +320,7 @@ if (document.readyState === 'loading') {
     initAppUI();
 }
 
+/* SEARCH OVERLAY LOGIC */
 window.toggleSearch = function() {
     const overlay = document.getElementById('searchOverlay');
     overlay.classList.toggle('active');
@@ -312,17 +329,22 @@ window.toggleSearch = function() {
         setTimeout(()=> document.getElementById('searchInput').focus(), 100);
     } else {
         document.getElementById('searchInput').value = '';
-        document.getElementById('searchResults').innerHTML = '';
+        document.getElementById('searchResults').innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:13px; margin-top:30px;"><i class="fa-solid fa-magnifying-glass" style="font-size: 30px; color: #ddd; margin-bottom:10px; display:block;"></i>Type to search amazing products...</p>';
     }
 }
-
 window.handleSearch = function() {
     const query = document.getElementById('searchInput').value.toLowerCase().trim();
     const container = document.getElementById('searchResults');
     container.innerHTML = '';
-    if(!query) return;
+    if(!query) {
+        container.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:13px; margin-top:30px;"><i class="fa-solid fa-magnifying-glass" style="font-size: 30px; color: #ddd; margin-bottom:10px; display:block;"></i>Type to search amazing products...</p>';
+        return;
+    }
     const filtered = window.allProductsList.filter(p => p.name.toLowerCase().includes(query));
-    if(filtered.length === 0) return;
+    if(filtered.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:13px; margin-top:30px;"><i class="fa-regular fa-face-frown" style="font-size: 30px; color: #ddd; margin-bottom:10px; display:block;"></i>No product found matching your search.</p>';
+        return;
+    }
     filtered.forEach(p => {
         container.innerHTML += `
             <a href="product-details.html?id=${p.id}" class="s-result-item">
@@ -347,6 +369,7 @@ window.toggleHeart = function(event, button, productId) {
         }
         icon.classList.replace('fa-regular', 'fa-solid'); 
         icon.style.color = 'var(--primary-color)'; 
+        showCustomAlert("Added to Wishlist", "Item added to your wishlist.", "success");
     } else { 
         wishlist = wishlist.filter(item => {
             let id = typeof item === 'object' ? item.productId : item;
@@ -355,6 +378,7 @@ window.toggleHeart = function(event, button, productId) {
         localStorage.setItem('aavira_wishlist', JSON.stringify(wishlist));
         icon.classList.replace('fa-solid', 'fa-regular'); 
         icon.style.color = 'var(--icon-color)'; 
+        showCustomAlert("Removed", "Item removed from your wishlist.", "success");
     }
 }
 
@@ -366,6 +390,7 @@ window.addToCartOnly = function(event, productId) {
     else { cart.push({ productId: productId, size: 'M', color: 'Original', qty: 1 }); }
     localStorage.setItem('aavira_cart', JSON.stringify(cart));
     window.updateCartBadge();
+    showCustomAlert("Cart Updated", "Added to your shopping cart.", "success"); 
 }
 
 window.buyNow = function(event, productId) {
@@ -373,6 +398,7 @@ window.buyNow = function(event, productId) {
     window.location.href = "product-details.html?id=" + productId;
 }
 
+// --- 🔐 CUSTOM AUTHENTICATION HANDLER ---
 async function initializeAuth() {
     const nameField = document.getElementById('sidebarName'); 
     const emailField = document.getElementById('sidebarEmail');
@@ -414,30 +440,76 @@ async function initializeAuth() {
     }
 }
 
+// --- FETCH DYNAMIC BANNERS ---
 async function fetchBanners() {
     const carousel = document.getElementById('bannerCarousel');
     const dotsContainer = document.getElementById('bannerDots');
-    if(carousel) carousel.innerHTML = '<div class="banner-slide"><div class="hero-banner-fallback"><div class="hero-content" style="padding:40px 20px; text-align:center; background:#111; color:#fff;"><h2>Elegant Blouses</h2></div></div></div>';
-    if(dotsContainer) dotsContainer.innerHTML = '';
+    
+    try {
+        if (typeof window.getBannersData !== 'function') return;
+        const bannersArr = await window.getBannersData();
+        
+        if (bannersArr && bannersArr.length > 0) {
+            bannersArr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+            if(carousel) carousel.innerHTML = ''; 
+            if(dotsContainer) dotsContainer.innerHTML = '';
+            let count = 0;
+            
+            bannersArr.forEach(d => {
+                let mediaHtml = '';
+                if(d.type === 'video' || d.videoUrl) {
+                    mediaHtml = `<video src="${d.videoUrl || d.url}" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture controlslist="nodownload noplaybackrate" style="width:100%; height:100%; object-fit:cover; pointer-events:none; transform: translateZ(0);"></video>`;
+                } else {
+                    mediaHtml = `<img src="${d.imageUrl || d.url}" alt="Banner" style="width:100%; height:100%; object-fit:cover; transform: translateZ(0);">`;
+                }
+                if(d.link) { mediaHtml = `<a href="${d.link}" style="display:block; width:100%; height:100%;">${mediaHtml}</a>`; }
+                
+                if(carousel) carousel.innerHTML += `<div class="banner-slide">${mediaHtml}</div>`;
+                if(dotsContainer) dotsContainer.innerHTML += `<div class="b-dot ${count===0?'active':''}"></div>`;
+                count++;
+            });
+            
+            if(count > 1 && carousel) {
+                let currentIndex = 0;
+                setInterval(() => {
+                    currentIndex = (currentIndex + 1) % count;
+                    const slide = carousel.children[currentIndex];
+                    if (slide) { carousel.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' }); }
+                }, 4000); 
+
+                carousel.addEventListener('scroll', () => {
+                    let idx = Math.round(carousel.scrollLeft / carousel.offsetWidth);
+                    document.querySelectorAll('.b-dot').forEach((dot, i) => { dot.classList.toggle('active', i === idx); });
+                });
+            }
+        } else {
+            if(carousel) carousel.innerHTML = '<div class="banner-slide"><div class="hero-banner-fallback"><div class="hero-content"><h2>Elegant Blouses<br>For Every You</h2><p>Premium quality designs.</p><a href="categories.html" class="shop-btn">SHOP NOW</a></div></div></div>';
+        }
+    } catch (error) { 
+        console.error("Error loading banners:", error); 
+    }
 }
 
+// --- FETCH CATEGORIES (Fallback since API is not there yet) ---
 async function fetchCategories() {
     const catContainer = document.getElementById('categoriesContainer');
-    if(catContainer) catContainer.innerHTML = '';
+    if(catContainer) catContainer.innerHTML = '<p class="no-data-msg" style="padding:20px; text-align:center; font-size:12px; color:var(--text-muted);">Categories coming soon.</p>';
 }
 
+// --- FETCH PRODUCTS ---
 async function fetchProducts() {
     const productsContainer = document.getElementById('productsContainer');
     try {
         if (typeof window.getVercelData !== 'function') {
-            if(productsContainer) productsContainer.innerHTML = '<p>Error: Missing Data Module</p>'; 
+            if(productsContainer) productsContainer.innerHTML = '<p class="no-data-msg" style="text-align:center; color:red;">System Error: Missing Data Module</p>'; 
             return;
         }
 
         const dataArray = await window.getVercelData();
         
         if (!dataArray || dataArray.length === 0) { 
-            if(productsContainer) productsContainer.innerHTML = '<p>No products available.</p>'; 
+            if(productsContainer) productsContainer.innerHTML = '<p class="no-data-msg" style="text-align:center; padding:20px; font-size:12px; color:var(--text-muted);">No products currently available.</p>'; 
             return; 
         }
         
@@ -446,10 +518,10 @@ async function fetchProducts() {
         let wishlistIds = wishlist.map(item => typeof item === 'object' ? item.productId : item);
 
         dataArray.forEach((data) => {
-            const imageUrl = data.imageMain || data.image || '';
+            const imageUrl = data.imageMain || data.image || 'https://via.placeholder.com/300x250?text=Aavira';
             window.productsCache[data.id] = {
                 id: data.id, name: data.name, brand: data.category || 'Aavira', price: data.price, img: imageUrl,
-                description: data.description || ''
+                description: data.description || 'Exclusive ethnic blouse designed with meticulous attention to detail.'
             };
             window.allProductsList.push({ id: data.id, name: data.name, price: data.price, img: imageUrl, color: data.color || '' });
         });
@@ -470,6 +542,7 @@ async function fetchProducts() {
                         <div class="magic-overlay" style="background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);">
                             <div style="display:flex; justify-content:space-between; align-items:flex-end;">
                                 <div style="width:70%;">
+                                    <span style="background:rgba(255,255,255,0.2); color:#fff; font-size:9px; padding:4px 10px; border-radius:12px; margin-bottom:6px; display:inline-block; backdrop-filter:blur(4px);"><i class="fa-solid fa-crown" style="margin-right:4px;"></i>Masterpiece</span>
                                     <h4 style="font-size:18px; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p0.name}</h4>
                                     <p style="font-size:15px; color:var(--secondary-color);">₹${p0.price}</p>
                                 </div>
@@ -484,7 +557,7 @@ async function fetchProducts() {
         if(window.allProductsList.length > 1) {
             html += `
                 <div style="padding: 0 20px; display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                    <h3 style="font-size:16px; font-weight:700; color:var(--text-dark);">Trending</h3>
+                    <h3 style="font-size:16px; font-weight:700; color:var(--text-dark);">Trending Spots</h3>
                 </div>
                 <div class="magic-h-scroll" style="padding: 0 20px 25px;">
             `;
@@ -504,7 +577,7 @@ async function fetchProducts() {
                             <h4 style="font-size: 11px; margin-bottom: 5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text-dark);">${p.name}</h4>
                             <div style="display:flex; justify-content:space-between; align-items:center;">
                                 <p style="font-size: 14px; font-weight: 700; color:var(--primary-color);">₹${p.price}</p>
-                                <div onclick="addToCartOnly(event, '${p.id}')" style="width:28px; height:28px; border-radius:50%; background:var(--primary-light); color:var(--primary-color); display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fa-solid fa-plus" style="font-size:13px;"></i></div>
+                                <div onclick="addToCartOnly(event, '${p.id}')" style="width:28px; height:28px; border-radius:50%; background:var(--primary-light); color:var(--primary-color); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:0.2s;"><i class="fa-solid fa-plus" style="font-size:13px;"></i></div>
                             </div>
                         </div>
                     </div>
@@ -516,7 +589,7 @@ async function fetchProducts() {
         if(window.allProductsList.length > 4) {
             html += `
                 <div style="padding: 0 20px; display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                    <h3 style="font-size:16px; font-weight:700; color:var(--text-dark);">More Styles</h3>
+                    <h3 style="font-size:16px; font-weight:700; color:var(--text-dark);">More Elegant Styles</h3>
                 </div>
                 <div class="products-grid" style="padding-bottom:15px;">
             `;
@@ -535,8 +608,8 @@ async function fetchProducts() {
                             <h4 style="margin-bottom: 4px;">${p.name}</h4>
                             <p style="font-size: 14px; font-weight: 700; color: var(--primary-color); margin-bottom: 12px; margin-top: auto;">₹${p.price}</p>
                             <div class="card-actions">
-                                <button class="outline-icon-btn" onclick="addToCartOnly(event, '${p.id}')"><i class="fa-solid fa-cart-plus"></i></button>
-                                <button class="solid-buy-btn" onclick="buyNow(event, '${p.id}')"><i class="fa-solid fa-bag-shopping"></i> Buy</button>
+                                <button class="outline-icon-btn" onclick="addToCartOnly(event, '${p.id}')" title="Add to Cart"><i class="fa-solid fa-cart-plus"></i></button>
+                                <button class="solid-buy-btn" onclick="buyNow(event, '${p.id}')" title="Buy"><i class="fa-solid fa-bag-shopping"></i> Buy</button>
                             </div>
                         </div>
                     </div>
@@ -544,13 +617,15 @@ async function fetchProducts() {
             }
             html += `</div>`;
         }
+
         productsContainer.innerHTML = html;
 
     } catch (error) { 
-        console.error(error); 
+        console.error("Error rendering products:", error); 
     }
 }
 
+// --- PAGE INITIALIZATION PROCESS ---
 async function initializeAppEngine() {
     if (!navigator.onLine) {
         updateConnectionStatus();
@@ -562,7 +637,7 @@ async function initializeAppEngine() {
     try {
         await Promise.all([fetchBanners(), fetchCategories(), fetchProducts()]);
     } catch(e) {
-        console.error(e);
+        console.error("Initialization Failed: ", e);
     } finally {
         setTimeout(() => { hidePreloader(); }, 600);
     }
