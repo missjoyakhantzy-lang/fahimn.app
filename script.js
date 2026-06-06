@@ -1,5 +1,5 @@
 /* ==============================================================
-    AAVIRA PUBLIC APP SCRIPT (FIREBASE REMOVED, VERCEL CONNECTED)
+    AAVIRA PUBLIC APP SCRIPT (VERCEL CONNECTED, OVERLAP FIXED)
 ============================================================== */
 
 window.allProductsList = [];
@@ -53,15 +53,13 @@ window.checkInternetRetry = function() {
         if (pText) { pText.innerText = "Reconnecting..."; pText.style.display = 'block'; }
         setTimeout(() => { window.location.reload(); }, 1000);
     } else {
-        showCustomAlert("Offline", "Still offline. Please check your network settings.", "error");
+        window.showCustomAlert("Offline", "Still offline. Please check your network settings.", "error");
     }
 }
-window.addEventListener('online', updateConnectionStatus);
-window.addEventListener('offline', updateConnectionStatus);
+window.addEventListener('online', window.updateConnectionStatus);
+window.addEventListener('offline', window.updateConnectionStatus);
 
-/* ==============================================================
-    ADVANCED LUXURY MAGIC SCREEN ENGINE
-============================================================== */
+/* ADVANCED LUXURY MAGIC SCREEN ENGINE */
 window.openMagicScreen = function(color) {
     window.currentMagicColor = color;
     const screen = document.getElementById('magicScreen');
@@ -74,7 +72,7 @@ window.openMagicScreen = function(color) {
     chips.forEach(c => c.classList.remove('active'));
     if(chips.length > 0) chips[0].classList.add('active');
 
-    renderAdvancedMagicLayout('All Designs');
+    window.renderAdvancedMagicLayout('All Designs');
 }
 
 window.filterMagicProducts = function(element, filterType) {
@@ -82,7 +80,7 @@ window.filterMagicProducts = function(element, filterType) {
     chips.forEach(c => c.classList.remove('active'));
     element.classList.add('active');
     element.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    renderAdvancedMagicLayout(filterType);
+    window.renderAdvancedMagicLayout(filterType);
 }
 
 window.renderAdvancedMagicLayout = function(filterType) {
@@ -149,7 +147,7 @@ window.renderAdvancedMagicLayout = function(filterType) {
         }
         if(filtered.length >= 4) {
             html += `<h4 style="font-size: 14px; font-weight: 700; color: var(--text-dark); margin: 5px 20px 10px; animation: fadeInUp 0.6s ease forwards;">Explore More Styles</h4>`;
-            html += `<div class="magic-masonry" style="animation: fadeInUp 0.6s ease forwards;">`;
+            html += `<div class="magic-masonry" style="padding-bottom: 80px; animation: fadeInUp 0.6s ease forwards;">`;
             for(let i = 4; i < filtered.length; i++) {
                 let p = filtered[i];
                 let h = (i % 2 === 0) ? '200px' : '140px'; 
@@ -196,11 +194,12 @@ window.showCustomAlert = function(title, message, type = 'success') {
     const iconEl = document.getElementById('alertIcon');
     const titleEl = document.getElementById('alertTitle');
     const msgEl = document.getElementById('alertMessage');
-    titleEl.innerText = title; msgEl.innerHTML = message;
+    if(titleEl) titleEl.innerText = title; 
+    if(msgEl) msgEl.innerHTML = message;
     if (type === 'success') { iconEl.innerHTML = '<i class="fa-solid fa-circle-check" style="color: var(--success-green); font-size: 45px;"></i>'; } 
     else if (type === 'error') { iconEl.innerHTML = '<i class="fa-solid fa-circle-xmark" style="color: #d32f2f; font-size: 45px;"></i>'; } 
     else { iconEl.innerHTML = '<i class="fa-solid fa-circle-exclamation" style="color: var(--secondary-color); font-size: 45px;"></i>'; }
-    overlay.classList.add('show');
+    if(overlay) overlay.classList.add('show');
 }
 window.closeAlertModal = function() { document.getElementById('alertOverlay').classList.remove('show'); }
 
@@ -210,7 +209,7 @@ window.openQuickDetails = function(event, productId) {
     const product = window.productsCache[productId];
     if (!product) return;
     document.getElementById('sheetImg').style.backgroundImage = `url('${product.img}')`;
-    document.getElementById('sheetBrand').innerText = product.brand;
+    document.getElementById('sheetBrand').innerText = product.brand || 'Aavira';
     document.getElementById('sheetTitle').innerText = product.name;
     document.getElementById('sheetPrice').innerText = `₹${product.price}`;
     document.getElementById('sheetDesc').innerText = product.description;
@@ -225,14 +224,14 @@ window.closeQuickDetails = function() {
     document.body.style.overflow = 'auto';
 }
 
-/* --- INIT UI WRAPPER FOR SAFE EXECUTION --- */
+/* --- INIT UI WRAPPER --- */
 const initAppUI = () => {
     document.addEventListener('click', (e) => {
         const target = e.target.closest('a');
         if (target && target.getAttribute('href') && !target.getAttribute('href').startsWith('#') && !target.getAttribute('href').startsWith('javascript:') && target.id !== 'nativeShareBtn' && target.getAttribute('target') !== '_blank') {
             e.preventDefault();
             const url = target.getAttribute('href');
-            showPreloader("Loading Page...");
+            window.showPreloader("Loading Page...");
             setTimeout(() => { window.location.href = url; }, 400); 
         }
     });
@@ -243,7 +242,7 @@ const initAppUI = () => {
         const badge = document.getElementById('topCartBadge');
         if(badge) badge.innerText = totalItems;
     }
-    updateCartBadge();
+    window.updateCartBadge();
 
     const indicator = document.getElementById('navIndicator');
     const navItems = document.querySelectorAll('.nav-list-item');
@@ -264,21 +263,15 @@ const initAppUI = () => {
 
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
-    const toggleSidebar = () => { 
+    window.toggleSidebar = () => { 
         sidebar.classList.toggle('active'); 
         overlay.classList.toggle('active'); 
         document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : 'auto';
     };
     
-    if(document.getElementById('openSidebarBtn')) {
-        document.getElementById('openSidebarBtn').addEventListener('click', toggleSidebar);
-    }
-    if(document.getElementById('closeSidebarBtn')) {
-        document.getElementById('closeSidebarBtn').addEventListener('click', toggleSidebar);
-    }
-    if(overlay) {
-        overlay.addEventListener('click', toggleSidebar);
-    }
+    if(document.getElementById('openSidebarBtn')) { document.getElementById('openSidebarBtn').addEventListener('click', window.toggleSidebar); }
+    if(document.getElementById('closeSidebarBtn')) { document.getElementById('closeSidebarBtn').addEventListener('click', window.toggleSidebar); }
+    if(overlay) { overlay.addEventListener('click', window.toggleSidebar); }
 
     const mainScrollArea = document.getElementById('mainScrollArea');
     const bottomNav = document.getElementById('bottomNav');
@@ -292,22 +285,17 @@ const initAppUI = () => {
         });
     }
 
-    updateConnectionStatus();
+    window.updateConnectionStatus();
 
     const shareBtn = document.getElementById('nativeShareBtn');
     if(shareBtn) {
         shareBtn.addEventListener('click', async (e) => {
             e.preventDefault();
             if (navigator.share) {
-                try {
-                    await navigator.share({
-                        title: 'Aavira - Ethnic Elegance',
-                        text: 'Check out premium designer blouses on Aavira!',
-                        url: window.location.origin
-                    });
-                } catch (error) { console.log('Error sharing:', error); }
+                try { await navigator.share({ title: 'Aavira - Ethnic Elegance', text: 'Check out premium designer blouses on Aavira!', url: window.location.origin }); } 
+                catch (error) { console.log('Error sharing:', error); }
             } else {
-                window.showCustomAlert("Share App", "Link copied to clipboard!", "success");
+                window.showCustomAlert("Share App", "Link copied to clipboard! Share it with your friends.", "success");
                 navigator.clipboard.writeText(window.location.origin);
             }
         });
@@ -369,7 +357,7 @@ window.toggleHeart = function(event, button, productId) {
         }
         icon.classList.replace('fa-regular', 'fa-solid'); 
         icon.style.color = 'var(--primary-color)'; 
-        showCustomAlert("Added to Wishlist", "Item added to your wishlist.", "success");
+        window.showCustomAlert("Added to Wishlist", "This item has been successfully added to your wishlist.", "success");
     } else { 
         wishlist = wishlist.filter(item => {
             let id = typeof item === 'object' ? item.productId : item;
@@ -378,7 +366,7 @@ window.toggleHeart = function(event, button, productId) {
         localStorage.setItem('aavira_wishlist', JSON.stringify(wishlist));
         icon.classList.replace('fa-solid', 'fa-regular'); 
         icon.style.color = 'var(--icon-color)'; 
-        showCustomAlert("Removed", "Item removed from your wishlist.", "success");
+        window.showCustomAlert("Removed", "This item has been removed from your wishlist.", "success");
     }
 }
 
@@ -390,7 +378,7 @@ window.addToCartOnly = function(event, productId) {
     else { cart.push({ productId: productId, size: 'M', color: 'Original', qty: 1 }); }
     localStorage.setItem('aavira_cart', JSON.stringify(cart));
     window.updateCartBadge();
-    showCustomAlert("Cart Updated", "Added to your shopping cart.", "success"); 
+    window.showCustomAlert("Cart Updated", "Added size 'M' to your shopping cart.", "success"); 
 }
 
 window.buyNow = function(event, productId) {
@@ -398,8 +386,8 @@ window.buyNow = function(event, productId) {
     window.location.href = "product-details.html?id=" + productId;
 }
 
-// --- 🔐 CUSTOM AUTHENTICATION HANDLER ---
-async function initializeAuth() {
+// --- NEW VERCEL AUTH LOGIC ---
+window.initializeAuth = async function() {
     const nameField = document.getElementById('sidebarName'); 
     const emailField = document.getElementById('sidebarEmail');
     const avatarField = document.getElementById('sidebarAvatar'); 
@@ -416,11 +404,9 @@ async function initializeAuth() {
         if(nameField) nameField.innerText = loggedInUser.name || "Aavira User"; 
         if(emailField) emailField.innerText = loggedInUser.email || loggedInUser.phone || "user@aavira.com";
         if(avatarField) avatarField.innerText = loggedInUser.name ? loggedInUser.name[0].toUpperCase() : "U"; 
-        
         if(headerLoginBtn) headerLoginBtn.style.display = 'none';
         if(authBtn) { 
             authBtn.style.display = 'flex'; 
-            authBtn.innerHTML = '<i class="fa-solid fa-arrow-right-from-bracket" style="margin-right:8px;"></i> Logout';
             authBtn.onclick = (e) => { 
                 e.preventDefault(); 
                 if(typeof window.logoutUser === 'function') window.logoutUser(); 
@@ -435,33 +421,33 @@ async function initializeAuth() {
         if(headerLoginBtn) headerLoginBtn.style.display = 'inline-block';
         if(authBtn) authBtn.style.display = 'none'; 
         if(bottomDivider) bottomDivider.style.display = 'none';
-        
         window.checkAndShowWelcomePopup();
     }
-}
+};
 
-// --- FETCH DYNAMIC BANNERS ---
-async function fetchBanners() {
+// --- FETCH DYNAMIC BANNERS (VIA VERCEL) ---
+window.fetchBanners = async function() {
     const carousel = document.getElementById('bannerCarousel');
     const dotsContainer = document.getElementById('bannerDots');
-    
     try {
         if (typeof window.getBannersData !== 'function') return;
-        const bannersArr = await window.getBannersData();
+        const docsArr = await window.getBannersData();
         
-        if (bannersArr && bannersArr.length > 0) {
-            bannersArr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        if(docsArr && docsArr.length > 0) {
+            docsArr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
 
             if(carousel) carousel.innerHTML = ''; 
             if(dotsContainer) dotsContainer.innerHTML = '';
             let count = 0;
             
-            bannersArr.forEach(d => {
+            docsArr.forEach(d => {
                 let mediaHtml = '';
-                if(d.type === 'video' || d.videoUrl) {
-                    mediaHtml = `<video src="${d.videoUrl || d.url}" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture controlslist="nodownload noplaybackrate" style="width:100%; height:100%; object-fit:cover; pointer-events:none; transform: translateZ(0);"></video>`;
+                let url = d.imageUrl || d.image || d.url || ''; 
+
+                if(d.type === 'video' || (url && url.includes('.mp4'))) {
+                    mediaHtml = `<video src="${url}" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture controlslist="nodownload noplaybackrate" style="width:100%; height:100%; object-fit:cover; pointer-events:none; transform: translateZ(0);"></video>`;
                 } else {
-                    mediaHtml = `<img src="${d.imageUrl || d.url}" alt="Banner" style="width:100%; height:100%; object-fit:cover; transform: translateZ(0);">`;
+                    mediaHtml = `<img src="${url}" alt="Banner" style="width:100%; height:100%; object-fit:cover; transform: translateZ(0);">`;
                 }
                 if(d.link) { mediaHtml = `<a href="${d.link}" style="display:block; width:100%; height:100%;">${mediaHtml}</a>`; }
                 
@@ -491,21 +477,33 @@ async function fetchBanners() {
     }
 }
 
-// --- FETCH CATEGORIES (Fallback since API is not there yet) ---
-async function fetchCategories() {
+// --- FETCH CATEGORIES (VIA VERCEL) ---
+window.fetchCategories = async function() {
     const catContainer = document.getElementById('categoriesContainer');
-    if(catContainer) catContainer.innerHTML = '<p class="no-data-msg" style="padding:20px; text-align:center; font-size:12px; color:var(--text-muted);">Categories coming soon.</p>';
+    try {
+        if (typeof window.getCategoriesData !== 'function') return;
+        const categoriesArr = await window.getCategoriesData();
+        
+        if (!categoriesArr || categoriesArr.length === 0) { 
+            if(catContainer) catContainer.innerHTML = '<p class="no-data-msg" style="padding:20px; font-size:12px; color:var(--text-muted);">No categories yet.</p>'; 
+            return; 
+        }
+        
+        if(catContainer) catContainer.innerHTML = ''; 
+        categoriesArr.forEach((data) => {
+            let img = data.image || data.imageUrl || data.url || '';
+            if(catContainer) catContainer.innerHTML += `<a href="categories.html?cat=${data.name}" class="cat-item"><div class="cat-ring"><div class="cat-img" style="background-image: url('${img}');"></div></div><span>${data.name}</span></a>`;
+        });
+    } catch (error) { 
+        console.error("Error loading categories:", error); 
+    }
 }
 
-// --- FETCH PRODUCTS ---
-async function fetchProducts() {
+// --- FETCH PRODUCTS (VIA VERCEL WITH OVERLAP FIX) ---
+window.fetchProducts = async function() {
     const productsContainer = document.getElementById('productsContainer');
     try {
-        if (typeof window.getVercelData !== 'function') {
-            if(productsContainer) productsContainer.innerHTML = '<p class="no-data-msg" style="text-align:center; color:red;">System Error: Missing Data Module</p>'; 
-            return;
-        }
-
+        if (typeof window.getVercelData !== 'function') return;
         const dataArray = await window.getVercelData();
         
         if (!dataArray || dataArray.length === 0) { 
@@ -518,9 +516,9 @@ async function fetchProducts() {
         let wishlistIds = wishlist.map(item => typeof item === 'object' ? item.productId : item);
 
         dataArray.forEach((data) => {
-            const imageUrl = data.imageMain || data.image || 'https://via.placeholder.com/300x250?text=Aavira';
+            const imageUrl = data.imageMain || data.image || data.imageUrl || '';
             window.productsCache[data.id] = {
-                id: data.id, name: data.name, brand: data.category || 'Aavira', price: data.price, img: imageUrl,
+                id: data.id, name: data.name, brand: data.brand || 'Aavira', price: data.price, img: imageUrl,
                 description: data.description || 'Exclusive ethnic blouse designed with meticulous attention to detail.'
             };
             window.allProductsList.push({ id: data.id, name: data.name, price: data.price, img: imageUrl, color: data.color || '' });
@@ -591,7 +589,8 @@ async function fetchProducts() {
                 <div style="padding: 0 20px; display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                     <h3 style="font-size:16px; font-weight:700; color:var(--text-dark);">More Elegant Styles</h3>
                 </div>
-                <div class="products-grid" style="padding-bottom:15px;">
+                <!-- 🔥 YAHAN PADDING-BOTTOM: 100px LAGA DIYA HAI TAki BOTTOM NAV NA DHAKE 🔥 -->
+                <div class="products-grid" style="padding-bottom: 100px;">
             `;
             for(let i=4; i<window.allProductsList.length; i++) {
                 let p = window.allProductsList[i];
@@ -621,26 +620,26 @@ async function fetchProducts() {
         productsContainer.innerHTML = html;
 
     } catch (error) { 
-        console.error("Error rendering products:", error); 
+        console.error("Error loading products:", error); 
     }
 }
 
-// --- PAGE INITIALIZATION PROCESS ---
-async function initializeAppEngine() {
+// --- PAGE INITIALIZATION PROCESS WITH PRELOADER ---
+window.initializeAppEngine = async function() {
     if (!navigator.onLine) {
-        updateConnectionStatus();
+        window.updateConnectionStatus();
         return;
     }
     
-    await initializeAuth();
+    await window.initializeAuth();
 
     try {
-        await Promise.all([fetchBanners(), fetchCategories(), fetchProducts()]);
+        await Promise.all([window.fetchBanners(), window.fetchCategories(), window.fetchProducts()]);
     } catch(e) {
         console.error("Initialization Failed: ", e);
     } finally {
-        setTimeout(() => { hidePreloader(); }, 600);
+        setTimeout(() => { window.hidePreloader(); }, 600);
     }
 }
 
-initializeAppEngine();
+window.initializeAppEngine();
