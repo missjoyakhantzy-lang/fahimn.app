@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- 🔥 AUTO CACHE BUSTER 🔥 -->
     <script>
         document.write('<link rel="stylesheet" href="style.css?v=' + new Date().getTime() + '">');
     </script>
@@ -96,13 +95,11 @@
                 </div>
             </section>
 
-            <!-- 🔥 SHOP BY CATEGORY SECTION 🔥 -->
             <section>
                 <div class="section-title">
                     <h3>Shop by Category</h3>
                 </div>
                 <div class="categories-scroll" id="categoriesContainer">
-                    <!-- Skeletons (Jab tak data load hoga tab tak ye dikhega) -->
                     <div class="cat-item"><div class="cat-ring skeleton"></div><span class="skeleton" style="width: 40px; height: 10px; border-radius: 4px;"></span></div>
                     <div class="cat-item"><div class="cat-ring skeleton"></div><span class="skeleton" style="width: 40px; height: 10px; border-radius: 4px;"></span></div>
                     <div class="cat-item"><div class="cat-ring skeleton"></div><span class="skeleton" style="width: 40px; height: 10px; border-radius: 4px;"></span></div>
@@ -137,11 +134,21 @@
                 </div>
             </div>
 
-            <footer class="premium-footer">
+            <!-- 🔥 NEW PREMIUM WHITE FOOTER 🔥 -->
+            <footer class="premium-footer-white">
                 <div class="footer-top-accent"></div>
                 <div class="footer-main-content">
-                    <a href="index.html" class="footer-brand">Aavira</a>
-                    <p class="footer-tagline">Redefining Ethnic Elegance</p>
+                    
+                    <div class="footer-brand-section">
+                        <a href="index.html" class="footer-brand">Aavira</a>
+                        <p class="footer-tagline">Redefining Ethnic Elegance</p>
+                        
+                        <div class="trust-marks">
+                            <div class="t-mark"><i class="fa-solid fa-shield-check"></i> 100% Secure</div>
+                            <div class="t-mark"><i class="fa-solid fa-certificate"></i> Verified Brand</div>
+                            <div class="t-mark"><i class="fa-solid fa-gem"></i> Premium Quality</div>
+                        </div>
+                    </div>
                     
                     <div class="footer-about-text">
                         Welcome to Aavira, India's ultimate destination for premium ethnic wear. We specialize in exclusively crafted designer blouses, blending traditional hand-embroidery with contemporary silhouettes.
@@ -165,21 +172,21 @@
                     <div class="footer-contact-list">
                         <h4>Get In Touch</h4>
                         <div class="f-c-item">
-                            <i class="fa-solid fa-location-dot"></i>
+                            <div class="fc-icon"><i class="fa-solid fa-location-dot"></i></div>
                             <div>
                                 <strong>Aavira Studio & Headquarters</strong>
                                 <span>Royal Fashion Street, Ring Road<br>Surat, Gujarat, India - 395002</span>
                             </div>
                         </div>
                         <div class="f-c-item" onclick="window.location.href='tel:+919608720622'">
-                            <i class="fa-solid fa-phone"></i>
+                            <div class="fc-icon"><i class="fa-solid fa-phone"></i></div>
                             <div>
                                 <strong>Call or WhatsApp Us</strong>
                                 <span>+91 9608720622 <br><small>(Mon - Sat, 10:00 AM to 7:00 PM)</small></span>
                             </div>
                         </div>
                         <div class="f-c-item" onclick="window.location.href='mailto:support@aavira.store'">
-                            <i class="fa-solid fa-envelope"></i>
+                            <div class="fc-icon"><i class="fa-solid fa-envelope"></i></div>
                             <div>
                                 <strong>Email Support</strong>
                                 <span>support@aavira.store</span>
@@ -272,9 +279,67 @@
     </div>
 
     <script src="user_data.js"></script>
-    <!-- 🔥 AUTO CACHE BUSTER FOR JS 🔥 -->
     <script>
         document.write('<script src="script.js?v=' + new Date().getTime() + '"><\/script>');
+    </script>
+
+    <!-- 🔥 FIREBASE MESSAGING SCRIPT ADDED HERE FOR HOME PAGE 🔥 -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getMessaging, getToken, onMessage, isSupported } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-messaging.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAzuolDDiCoMWiJeSRmpo9my2DcxyBj_jA",
+            authDomain: "messaging-d0a0c.firebaseapp.com",
+            projectId: "messaging-d0a0c",
+            storageBucket: "messaging-d0a0c.firebasestorage.app",
+            messagingSenderId: "271709445992",
+            appId: "1:271709445992:web:7a0c706288d88fee6a80dd"
+        };
+
+        const app = initializeApp(firebaseConfig);
+
+        isSupported().then((supported) => {
+            if (supported) {
+                const messaging = getMessaging(app);
+                
+                window.requestNotificationPermission = async function(e) {
+                    if(e) e.preventDefault();
+                    try {
+                        const permission = await Notification.requestPermission();
+                        if (permission === 'granted') {
+                            const token = await getToken(messaging, { vapidKey: 'BIvjJEeeRfowF8ZpdgRKn-vH_rNOzW48Rd9Y37kNdeISUsmKkiihJtFPc4c0rWbFBOhb4kJ3Yj-5jTl2kO9-yAU' });
+                            if (token) {
+                                window.showCustomAlert("Awesome!", "Notifications enabled successfully. You're ready for premium offers.", "success");
+                                window.closeNotificationPopup();
+                                const sidebarText = document.getElementById('sidebarNotifText');
+                                const sidebarIcon = document.getElementById('sidebarNotifIcon');
+                                if (sidebarText) sidebarText.innerText = "Notifications Enabled";
+                                if (sidebarIcon) sidebarIcon.style.color = "var(--success-green)";
+                            }
+                        } else {
+                            window.closeNotificationPopup();
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+
+                onMessage(messaging, (payload) => {
+                    window.showCustomAlert(
+                        payload.notification.title || "New Offer!", 
+                        payload.notification.body, 
+                        "success"
+                    );
+                });
+            } else {
+                window.requestNotificationPermission = function(e) {
+                    if(e) e.preventDefault();
+                    window.showCustomAlert("Notice", "Push notifications are perfectly supported in Live Browser, but not inside this test app preview.", "error");
+                    window.closeNotificationPopup();
+                };
+            }
+        });
     </script>
 </body>
 </html>
