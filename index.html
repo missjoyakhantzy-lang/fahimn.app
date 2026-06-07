@@ -7,8 +7,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=30">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    <script>
+        document.write('<link rel="stylesheet" href="style.css?v=' + new Date().getTime() + '">');
+    </script>
 </head>
 <body>
     <div class="app-container">
@@ -131,6 +133,7 @@
                 </div>
             </div>
 
+            <!-- 🔥 FOOTER WAPAS AAGAYA 🔥 -->
             <footer class="premium-footer">
                 <div class="footer-top-accent"></div>
                 <div class="footer-main-content">
@@ -252,63 +255,9 @@
     </div>
 
     <script src="user_data.js"></script>
-    <script src="script.js"></script>
-    
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getMessaging, getToken, onMessage, isSupported } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-messaging.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAzuolDDiCoMWiJeSRmpo9my2DcxyBj_jA",
-            authDomain: "messaging-d0a0c.firebaseapp.com",
-            projectId: "messaging-d0a0c",
-            storageBucket: "messaging-d0a0c.firebasestorage.app",
-            messagingSenderId: "271709445992",
-            appId: "1:271709445992:web:7a0c706288d88fee6a80dd"
-        };
-
-        const app = initializeApp(firebaseConfig);
-
-        isSupported().then((supported) => {
-            if (supported) {
-                const messaging = getMessaging(app);
-                window.requestNotificationPermission = async function(e) {
-                    if(e) { e.preventDefault(); }
-                    try {
-                        const permission = await Notification.requestPermission();
-                        if (permission === 'granted') {
-                            const token = await getToken(messaging, { vapidKey: 'BIvjJEeeRfowF8ZpdgRKn-vH_rNOzW48Rd9Y37kNdeISUsmKkiihJtFPc4c0rWbFBOhb4kJ3Yj-5jTl2kO9-yAU' });
-                            if (token) {
-                                window.showCustomAlert("Awesome!", "Notifications enabled successfully. You're ready for premium offers.", "success");
-                                window.closeNotificationPopup();
-                                const sidebarText = document.getElementById('sidebarNotifText');
-                                const sidebarIcon = document.getElementById('sidebarNotifIcon');
-                                if (sidebarText) sidebarText.innerText = "Notifications Enabled";
-                                if (sidebarIcon) sidebarIcon.style.color = "var(--success-green)";
-                            }
-                        } else {
-                            window.closeNotificationPopup();
-                        }
-                    } catch (err) {
-                        console.log(err);
-                    }
-                };
-
-                onMessage(messaging, (payload) => {
-                    window.showCustomAlert(
-                        payload.notification.title || "New Offer!", 
-                        payload.notification.body, 
-                        "success"
-                    );
-                });
-            } else {
-                window.requestNotificationPermission = function(e) {
-                    if(e) { e.preventDefault(); }
-                    window.showCustomAlert("Notice", "Push notifications are perfectly supported in Live Browser, but not inside this test app preview.", "error");
-                    window.closeNotificationPopup();
-                };
-            }
-        });
+    <!-- 🔥 AUTO CACHE BUSTER FOR JS 🔥 -->
+    <script>
+        document.write('<script src="script.js?v=' + new Date().getTime() + '"><\/script>');
     </script>
 </body>
 </html>
