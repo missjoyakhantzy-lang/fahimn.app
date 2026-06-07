@@ -73,12 +73,11 @@ window.renderAdvancedMagicLayout = function(filterType) {
                             <i class="${w ? 'fa-solid' : 'fa-regular'} fa-heart" style="color: ${w ? 'var(--primary-color)' : 'var(--icon-color)'};"></i>
                         </button>
                         <a href="product_details.html?id=${p.id}" style="text-decoration:none;">
-                            <div class="magic-img-bg" style="height: 300px; background-image: url('${p.img}');"></div>
+                            <div class="magic-img-bg" style="background-image: url('${p.img}');"></div>
                             <div class="magic-overlay">
-                                <h4 style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.name}</h4>
-                                <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <p>₹${p.price}</p>
-                                </div>
+                                <span class="hero-badge"><i class="fa-solid fa-crown"></i> Masterpiece</span>
+                                <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 4px; line-height: 1.2;">${p.name}</h4>
+                                <p style="font-size: 16px; font-weight: 600; color: var(--secondary-color);">₹${p.price}</p>
                             </div>
                         </a>
                     </div>
@@ -99,9 +98,9 @@ window.renderAdvancedMagicLayout = function(filterType) {
                         </button>
                         <a href="product_details.html?id=${p.id}" style="display:block; text-decoration:none; color:inherit;">
                             <div class="magic-img-bg" style="background-image: url('${p.img}');"></div>
-                            <div style="padding: 10px; text-align:left;">
-                                <h4 style="font-size: 13px; font-family:'Poppins', sans-serif; font-weight:600; margin-bottom: 2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text-dark);">${p.name}</h4>
-                                <p style="font-size: 14px; font-weight: 700; color:var(--primary-color);">₹${p.price}</p>
+                            <div class="magic-text">
+                                <h4>${p.name}</h4>
+                                <p>₹${p.price}</p>
                             </div>
                         </a>
                     </div>
@@ -122,9 +121,9 @@ window.renderAdvancedMagicLayout = function(filterType) {
                         </button>
                         <a href="product_details.html?id=${p.id}" style="display:block; text-decoration:none; color:inherit;">
                             <div class="magic-img-bg" style="background-image: url('${p.img}');"></div>
-                            <div style="padding: 10px; text-align:left;">
-                                <h4 style="font-size: 13px; font-weight:600; margin-bottom:4px; color:var(--text-dark); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.name}</h4>
-                                <p style="font-size: 14px; font-weight:700; color:var(--primary-color);">₹${p.price}</p>
+                            <div class="magic-text">
+                                <h4>${p.name}</h4>
+                                <p>₹${p.price}</p>
                             </div>
                         </a>
                     </div>
@@ -356,7 +355,6 @@ window.handleSearch = function() {
     });
 }
 
-// 🔥 SILENT HEART TOGGLE (NO POPUP) 🔥
 window.toggleHeart = function(event, button, productId) {
     event.preventDefault(); 
     event.stopPropagation();
@@ -536,13 +534,11 @@ window.fetchProducts = async function() {
                             <i class="${w0 ? 'fa-solid' : 'fa-regular'} fa-heart" style="color: ${w0 ? 'var(--primary-color)' : 'var(--icon-color)'};"></i>
                         </button>
                         <a href="product_details.html?id=${p0.id}" style="display:block; text-decoration:none; color:inherit;">
-                            <div class="magic-img-bg" style="height: 280px; background-image: url('${p0.img}');"></div>
+                            <div class="magic-img-bg" style="background-image: url('${p0.img}');"></div>
                             <div class="magic-overlay">
-                                <div>
-                                    <span class="hero-badge"><i class="fa-solid fa-crown"></i>Masterpiece</span>
-                                    <h4>${p0.name}</h4>
-                                    <p>₹${p0.price}</p>
-                                </div>
+                                <span class="hero-badge"><i class="fa-solid fa-crown"></i> Masterpiece</span>
+                                <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 4px; line-height: 1.2;">${p0.name}</h4>
+                                <p style="font-size: 16px; font-weight: 600; color: var(--secondary-color);">₹${p0.price}</p>
                             </div>
                         </a>
                     </div>
