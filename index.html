@@ -8,22 +8,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=29">
+    <link rel="stylesheet" href="style.css?v=30">
 </head>
 <body>
     <div class="app-container">
-        <div id="appPreloader">
-            <div class="loader-dots">
-                <span></span><span></span><span></span>
-            </div>
-            <p id="preloaderText">Loading Aavira...</p>
-            <div id="offlineBox" style="display: none;">
-                <div class="offline-icon"><i class="fa-solid fa-wifi-slash"></i></div>
-                <h4 style="margin-top: 15px; font-size: 18px;">No Internet Connection</h4>
-                <p style="font-size: 13px; color: #666; margin: 10px 0 20px;">Please check your cellular data or Wi-Fi settings and try again.</p>
-                <button class="solid-buy-btn" onclick="checkInternetRetry()">Retry Connection</button>
-            </div>
-        </div>
 
         <div class="sidebar-overlay" id="sidebarOverlay"></div>
         <aside class="sidebar" id="sidebar">
@@ -212,7 +200,7 @@
                 <div class="indicator" id="navIndicator"></div>
                 <li class="nav-list-item active"><a href="index.html"><span class="icon"><i class="fa-solid fa-house"></i></span><span class="text">Home</span></a></li>
                 <li class="nav-list-item"><a href="categories.html"><span class="icon"><i class="fa-solid fa-border-all"></i></span><span class="text">Categories</span></a></li>
-                <li class="nav-list-item"><a href="make_order.html"><span class="icon"><i class="fa-solid fa-bag-shopping"></i></span><span class="text">Cart</span></a></li>
+                <li class="nav-list-item"><a href="make_order.html"><span class="icon"><i class="fa-solid fa-cart-shopping"></i></span><span class="text">Cart</span></a></li>
                 <li class="nav-list-item"><a href="wishlist.html"><span class="icon"><i class="fa-regular fa-heart"></i></span><span class="text">Wishlist</span></a></li>
                 <li class="nav-list-item"><a href="profile.html"><span class="icon"><i class="fa-regular fa-user"></i></span><span class="text">Profile</span></a></li>
             </ul>
@@ -264,7 +252,7 @@
     </div>
 
     <script src="user_data.js"></script>
-    <script src="script.js?v=28"></script>
+    <script src="script.js"></script>
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
@@ -285,9 +273,7 @@
             if (supported) {
                 const messaging = getMessaging(app);
                 window.requestNotificationPermission = async function(e) {
-                    if(e) {
-                        e.preventDefault();
-                    }
+                    if(e) { e.preventDefault(); }
                     try {
                         const permission = await Notification.requestPermission();
                         if (permission === 'granted') {
