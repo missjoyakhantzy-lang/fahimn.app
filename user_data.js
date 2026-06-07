@@ -1,5 +1,5 @@
 // ==========================================
-// user_data.js (DATA PROVIDER)
+// user_data.js (DATA POROVIDER)
 // ==========================================
 
 const VERCEL_URL = "https://server-js-bay.vercel.app";
