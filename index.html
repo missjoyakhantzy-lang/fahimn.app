@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- 🔥 AUTO CACHE BUSTER 🔥 -->
     <script>
         document.write('<link rel="stylesheet" href="style.css?v=' + new Date().getTime() + '">');
     </script>
@@ -95,11 +96,13 @@
                 </div>
             </section>
 
+            <!-- 🔥 SHOP BY CATEGORY SECTION 🔥 -->
             <section>
                 <div class="section-title">
                     <h3>Shop by Category</h3>
                 </div>
                 <div class="categories-scroll" id="categoriesContainer">
+                    <!-- Skeletons (Jab tak data load hoga tab tak ye dikhega) -->
                     <div class="cat-item"><div class="cat-ring skeleton"></div><span class="skeleton" style="width: 40px; height: 10px; border-radius: 4px;"></span></div>
                     <div class="cat-item"><div class="cat-ring skeleton"></div><span class="skeleton" style="width: 40px; height: 10px; border-radius: 4px;"></span></div>
                     <div class="cat-item"><div class="cat-ring skeleton"></div><span class="skeleton" style="width: 40px; height: 10px; border-radius: 4px;"></span></div>
@@ -166,6 +169,13 @@
                             <div>
                                 <strong>Aavira Studio & Headquarters</strong>
                                 <span>Royal Fashion Street, Ring Road<br>Surat, Gujarat, India - 395002</span>
+                            </div>
+                        </div>
+                        <div class="f-c-item" onclick="window.location.href='tel:+919608720622'">
+                            <i class="fa-solid fa-phone"></i>
+                            <div>
+                                <strong>Call or WhatsApp Us</strong>
+                                <span>+91 9608720622 <br><small>(Mon - Sat, 10:00 AM to 7:00 PM)</small></span>
                             </div>
                         </div>
                         <div class="f-c-item" onclick="window.location.href='mailto:support@aavira.store'">
@@ -262,6 +272,7 @@
     </div>
 
     <script src="user_data.js"></script>
+    <!-- 🔥 AUTO CACHE BUSTER FOR JS 🔥 -->
     <script>
         document.write('<script src="script.js?v=' + new Date().getTime() + '"><\/script>');
     </script>
