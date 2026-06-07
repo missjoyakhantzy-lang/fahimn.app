@@ -15,10 +15,28 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
-body { background-color: #f4f4f4; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
 
-.app-container { width: 100%; max-width: 420px; height: 100vh; max-height: 100vh; background-color: var(--white); position: relative; display: flex; flex-direction: column; box-shadow: 0 0 30px rgba(0,0,0,0.08); overflow: hidden; }
-@media (max-width: 420px) { .app-container { height: 100dvh; box-shadow: none; } }
+/* 🔥 CHROME BOTTOM BAR FIX 🔥 */
+html, body { 
+    height: 100%; 
+    width: 100%; 
+    margin: 0; 
+    padding: 0; 
+    overflow: hidden; 
+}
+
+body { 
+    background-color: #f4f4f4; 
+    display: flex; justify-content: center; align-items: center; 
+}
+
+/* 🔥 HEIGHT 100% FIX 🔥 */
+.app-container { 
+    width: 100%; max-width: 420px; 
+    height: 100%; 
+    background-color: var(--white); 
+    position: relative; display: flex; flex-direction: column; box-shadow: 0 0 30px rgba(0,0,0,0.08); overflow: hidden; 
+}
 
 .main-content { flex: 1; overflow-y: auto; padding-bottom: 90px; scrollbar-width: none; background-color: #ffffff;}
 .main-content::-webkit-scrollbar { display: none; }
@@ -81,18 +99,18 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 }
 
 .size-chart-link { color: var(--primary-color); font-size: 11px; font-weight: 600; text-decoration: underline; cursor: pointer;}
-.size-options-container { transition: all 0.3s ease; border-radius: 8px;}
+.size-options-container { transition: all 0.3s ease;}
 
 .size-options { 
     display: flex; 
-    gap: 12px; 
+    gap: 8px; 
     margin-bottom: 5px; 
     flex-wrap: wrap; 
 }
 
 .size-box { 
-    width: 42px; 
-    height: 42px; 
+    width: 40px; 
+    height: 40px; 
     border-radius: 50%; 
     border: 1px solid var(--border-color); 
     display: flex; 
@@ -165,24 +183,11 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .btn-outline { background-color: var(--white); color: var(--text-dark); border: 1px solid var(--text-dark); }
 .btn-solid { background: linear-gradient(135deg, var(--primary-color), #C2185B); color: var(--white); border: none; box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3); }
 
-.custom-popup-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999;
-    display: none; justify-content: center; align-items: center;
-    backdrop-filter: blur(3px); opacity: 0; transition: opacity 0.3s ease;
-}
+.custom-popup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; display: none; justify-content: center; align-items: center; backdrop-filter: blur(3px); opacity: 0; transition: opacity 0.3s ease; }
 .custom-popup-overlay.show { opacity: 1; display: flex; }
-
-.custom-popup-box {
-    background: var(--white); width: 85%; max-width: 320px; border-radius: 20px;
-    padding: 30px 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    transform: scale(0.9); transition: transform 0.3s ease;
-}
+.custom-popup-box { background: var(--white); width: 85%; max-width: 320px; border-radius: 20px; padding: 30px 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); transform: scale(0.9); transition: transform 0.3s ease; }
 .custom-popup-overlay.show .custom-popup-box { transform: scale(1); }
-
 .custom-popup-box i { font-size: 45px; color: var(--text-dark); margin-bottom: 15px; }
 .custom-popup-box h3 { font-size: 18px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
 .custom-popup-box p { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
-.custom-popup-btn {
-    background: var(--text-dark); color: var(--white); border: none; width: 100%;
-    padding: 14px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer;
-}
+.custom-popup-btn { background: var(--text-dark); color: var(--white); border: none; width: 100%; padding: 14px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; }
