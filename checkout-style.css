@@ -14,6 +14,15 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
 
+/* 🔥 CHROME BOTTOM BAR FIX 🔥 */
+html, body { 
+    height: 100%; 
+    width: 100%; 
+    margin: 0; 
+    padding: 0; 
+    overflow: hidden; 
+}
+
 @keyframes movingGradient {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
@@ -24,12 +33,16 @@ body {
     background: linear-gradient(-45deg, #fdfbfb, #fce4ec, #fff8e1, #f3e5f5);
     background-size: 400% 400%;
     animation: movingGradient 15s ease infinite;
-    display: flex; justify-content: center; align-items: center; height: 100vh; 
+    display: flex; justify-content: center; align-items: center; 
 }
 a { text-decoration: none; color: inherit; }
 
-.app-container { width: 100%; max-width: 400px; height: 100vh; background-color: transparent; position: relative; display: flex; flex-direction: column; box-shadow: var(--shadow-md); overflow: hidden; }
-@media (max-width: 400px) { .app-container { height: 100dvh; box-shadow: none; } }
+/* 🔥 HEIGHT 100% FIX 🔥 */
+.app-container { 
+    width: 100%; max-width: 400px; 
+    height: 100%; 
+    background-color: transparent; position: relative; display: flex; flex-direction: column; box-shadow: var(--shadow-md); overflow: hidden; 
+}
 
 .main-content { flex: 1; overflow-y: auto; padding-bottom: 120px; scrollbar-width: none; scroll-behavior: smooth; }
 .main-content::-webkit-scrollbar { display: none; }
@@ -45,20 +58,11 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--text-dark); flex: 1;
 .btn-location { width: 100%; background: #F0F8FF; color: #1976D2; border: 1px dashed #64B5F6; padding: 12px; border-radius: 12px; font-size: 13px; font-weight: 600; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 8px; transition: 0.2s; cursor: pointer; backdrop-filter: blur(5px);}
 .btn-location:active { transform: scale(0.98); background: #E3F2FD; }
 
-/* 🔥 FORM DESIGN WITH ICON FIX 🔥 */
 .form-group { margin-bottom: 15px; }
 .form-row { display: flex; gap: 12px; }
 
 .input-icon-wrapper { position: relative; display: flex; align-items: center; width: 100%; }
-.input-icon-wrapper i { 
-    position: absolute; 
-    left: 16px; 
-    color: #999; 
-    font-size: 16px; 
-    transition: 0.3s ease; 
-    z-index: 5; /* Icon hamesha upar rahega */
-    pointer-events: none; /* Click input par hi hoga */
-}
+.input-icon-wrapper i { position: absolute; left: 16px; color: #999; font-size: 16px; transition: 0.3s ease; z-index: 5; pointer-events: none; }
 
 .form-input { 
     width: 100%; 
@@ -218,5 +222,11 @@ header h1 { font-size: 18px; font-weight: 700; color: var(--text-dark); flex: 1;
 
 #alertBox { background: rgba(255,255,255,0.95); backdrop-filter: blur(15px); border-radius: 24px; max-width: 320px; width: 85%; padding: 25px 20px; text-align: center; transform: scale(0.8); opacity: 0; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 15px 35px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.8);}
 .modal-overlay.show #alertBox { transform: scale(1); opacity: 1; }
+
+.notification-modal { background: rgba(255,255,255,0.98); backdrop-filter: blur(20px); border-radius: 28px; max-width: 320px; width: 85%; padding: 40px 25px 25px; text-align: center; border: 1px solid rgba(255,255,255,1); transform: translateY(30px) scale(0.95); opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 25px 50px rgba(0,0,0,0.2); position: relative; overflow: hidden; }
+.modal-overlay.show .notification-modal { transform: translateY(0) scale(1); opacity: 1; }
+.notif-icon { width: 70px; height: 70px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 15px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05); }
+.notif-btn { background: var(--text-dark); color: var(--white); border: none; width: 100%; padding: 14px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 10px;}
+.skip-btn { border: none; background: transparent; color: #888; font-size: 13px; font-weight: 600; padding: 8px; width: 100%; cursor: pointer; }
 
 .modal-close-btn { position: absolute; top: 15px; right: 15px; width: 30px; height: 30px; background: rgba(0,0,0,0.05); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--text-dark); cursor: pointer; z-index: 10; }
