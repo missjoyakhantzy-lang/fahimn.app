@@ -2,50 +2,9 @@ window.allProductsList = [];
 window.productsCache = {};
 window.currentMagicColor = ''; 
 
-window.showPreloader = function(text = "Loading Aavira...") {
-    const preloader = document.getElementById('appPreloader');
-    if (preloader) {
-        document.querySelector('.loader-dots').style.display = 'flex';
-        document.getElementById('preloaderText').innerText = text;
-        document.getElementById('preloaderText').style.display = 'block';
-        document.getElementById('offlineBox').style.display = 'none';
-        preloader.style.opacity = '1';
-        preloader.style.visibility = 'visible';
-    }
-}
-
-window.hidePreloader = function() {
-    const preloader = document.getElementById('appPreloader');
-    if (preloader) { 
-        preloader.style.opacity = '0'; 
-        preloader.style.visibility = 'hidden'; 
-    }
-}
-
 window.updateConnectionStatus = function() {
-    const preloader = document.getElementById('appPreloader');
     if (!navigator.onLine) {
-        document.querySelector('.loader-dots').style.display = 'none';
-        document.getElementById('preloaderText').style.display = 'none';
-        document.getElementById('offlineBox').style.display = 'flex';
-        if (preloader) { 
-            preloader.style.opacity = '1'; 
-            preloader.style.visibility = 'visible'; 
-        }
-    } else {
-        document.getElementById('offlineBox').style.display = 'none';
-    }
-}
-
-window.checkInternetRetry = function() {
-    if (navigator.onLine) {
-        document.getElementById('offlineBox').style.display = 'none';
-        document.querySelector('.loader-dots').style.display = 'flex';
-        document.getElementById('preloaderText').innerText = "Reconnecting...";
-        document.getElementById('preloaderText').style.display = 'block';
-        setTimeout(() => { window.location.reload(); }, 1000);
-    } else {
-        window.showCustomAlert("Offline", "Still offline. Please check your network settings.", "error");
+        window.showCustomAlert("Offline", "No Internet Connection. Please check your network.", "error");
     }
 }
 
@@ -258,18 +217,6 @@ window.closeAlertModal = function() {
 }
 
 const initAppUI = () => {
-    document.addEventListener('click', (e) => {
-        const target = e.target.closest('a');
-        if (target && target.getAttribute('href') && !target.getAttribute('href').startsWith('#') && !target.getAttribute('href').startsWith('javascript:') && target.id !== 'nativeShareBtn' && target.getAttribute('target') !== '_blank') {
-            e.preventDefault();
-            const url = target.getAttribute('href');
-            window.showPreloader("Loading...");
-            setTimeout(() => { 
-                window.location.href = url; 
-            }, 50); 
-        }
-    });
-
     window.updateCartBadge = function() {
         let cart = JSON.parse(localStorage.getItem('aavira_cart')) || [];
         let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
@@ -409,6 +356,7 @@ window.handleSearch = function() {
     });
 }
 
+// 🔥 SILENT HEART TOGGLE (NO POPUP) 🔥
 window.toggleHeart = function(event, button, productId) {
     event.preventDefault(); 
     event.stopPropagation();
@@ -423,7 +371,6 @@ window.toggleHeart = function(event, button, productId) {
         }
         icon.classList.replace('fa-regular', 'fa-solid'); 
         icon.style.color = 'var(--primary-color)'; 
-        window.showCustomAlert("Added to Wishlist", "This item has been successfully added to your wishlist.", "success");
     } else { 
         wishlist = wishlist.filter(item => {
             let id = typeof item === 'object' ? item.productId : item;
@@ -432,7 +379,6 @@ window.toggleHeart = function(event, button, productId) {
         localStorage.setItem('aavira_wishlist', JSON.stringify(wishlist));
         icon.classList.replace('fa-solid', 'fa-regular'); 
         icon.style.color = 'var(--icon-color)'; 
-        window.showCustomAlert("Removed", "This item has been removed from your wishlist.", "success");
     }
 }
 
@@ -558,7 +504,6 @@ window.fetchCategories = async function() {
     } catch (error) {}
 }
 
-// 🔥 YAHAN SE BUTTONS HATA DIYE GAYE HAIN 🔥
 window.fetchProducts = async function() {
     const productsContainer = document.getElementById('productsContainer');
     if(!productsContainer) return;
@@ -675,9 +620,6 @@ window.initializeAppEngine = async function() {
         ]); 
     } 
     catch(e) {} 
-    finally { 
-        setTimeout(() => { window.hidePreloader(); }, 600); 
-    }
 }
 
 window.initializeAppEngine();
