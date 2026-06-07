@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aavira.com - Product Details</title>
+    
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="product-style.css?v=26.0">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <header>
+            <a href="index.html" class="header-icon-btn"><i class="fa-solid fa-chevron-left"></i></a>
+            <div class="header-right">
+                <a href="#" class="header-icon-btn"><i class="fa-solid fa-share-nodes"></i></a>
+                <a href="#" class="header-icon-btn" onclick="toggleHeart(event, this)"><i class="fa-regular fa-heart"></i></a>
+                <a href="make_order.html" class="header-icon-btn" style="position: relative;">
+                    <i class="fa-solid fa-cart-shopping"></i><span class="cart-badge" id="topCartBadge">0</span>
+                </a>
+            </div>
+        </header>
+
+        <div class="main-content">
+            
+            <div class="media-wrapper skeleton" id="mediaWrapper">
+                <div class="media-carousel" id="mediaCarousel"></div>
+                <div class="carousel-dots" id="carouselDots"></div>
+            </div>
+
+            <div class="product-details">
+                
+                <div id="colorSectionWrapper" style="display: none;">
+                    <div class="selection-title" style="margin-top: 5px;">Color Options: <span id="colorName"></span></div>
+                    <div class="color-options" id="dynamicColorOptions"></div>
+                </div>
+
+                <h1 class="product-title skeleton" id="productTitle">Loading Product...</h1>
+                
+                <div class="rating-box">
+                    <div class="stars" id="dynamicStars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                    </div>
+                    <span class="rating-text" id="dynamicRatingText">0.0 (0 reviews)</span>
+                </div>
+
+                <div class="price-row">
+                    <span class="current-price skeleton" id="currentPrice">₹----</span>
+                    <span class="original-price skeleton" id="oldPrice">₹----</span>
+                    <span class="discount-tag" id="discountTag" style="display:none;"></span>
+                </div>
+
+                <div class="selection-title"><span>Select Size</span> <span class="size-chart-link">Size Chart</span></div>
+                <div class="size-options-container" id="sizeOptionsContainer">
+                    <div class="size-options">
+                        <div class="size-box" onclick="selectSize(this)">32</div>
+                        <div class="size-box" onclick="selectSize(this)">34</div>
+                        <div class="size-box" onclick="selectSize(this)">36</div>
+                        <div class="size-box" onclick="selectSize(this)">38</div>
+                        <div class="size-box" onclick="selectSize(this)">40</div>
+                        <div class="size-box" onclick="selectSize(this)">42</div>
+                    </div>
+                </div>
+                
+                <div class="stock-alert"><i class="fa-solid fa-fire"></i> Hurry! Only few items left in stock.</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="feature-block">
+                <div class="whatsapp-chat-box">
+                    <div class="wa-text">Confused about size or fabric fitting?<br><b>Chat with our Stylist</b></div>
+                    <a href="https://wa.me/919608720622" target="_blank" class="wa-btn"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="feature-block">
+                <div class="block-title"><i class="fa-solid fa-list-ul"></i> Product Specifications</div>
+                <table class="specs-table">
+                    <tr><td>Fabric</td><td id="specFabric">Premium Quality</td></tr>
+                    <tr><td>Pattern/Work</td><td id="specPattern">Designer Work</td></tr>
+                    <tr><td>Occasion</td><td>Festive, Wedding</td></tr>
+                    <tr><td>Wash Care</td><td>Dry Clean Only</td></tr>
+                </table>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="feature-block">
+                <div class="block-title"><i class="fa-solid fa-file-lines"></i> Description</div>
+                <div class="desc-text skeleton" id="productDescription">Experience the perfect blend of tradition and modern elegance. This premium designer blouse features intricate detailing and comfortable fabric.</div>
+                
+                <div class="sku-text">Product Code: <span id="productSku" class="skeleton">AV-2026-BL01</span></div>
+                
+                <div class="trust-badges">
+                    <div class="badge"><i class="fa-solid fa-shield-halved"></i><span>100%<br>Original</span></div>
+                    <div class="badge"><i class="fa-solid fa-truck"></i><span>Free Shipping<br>On ₹999+</span></div>
+                    <div class="badge"><i class="fa-solid fa-money-bill-transfer"></i><span>Cash On<br>Delivery</span></div>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="bottom-action-bar">
+            <a href="#" class="btn btn-outline" onclick="addToCart(event, false)"><i class="fa-solid fa-cart-plus"></i> ADD TO CART</a>
+            <a href="#" class="btn btn-solid" onclick="addToCart(event, true)">CONTINUE ➔</a>
+        </div>
+
+    </div>
+
+    <div class="custom-popup-overlay" id="errorPopup">
+        <div class="custom-popup-box">
+            <i class="fa-solid fa-box-open"></i>
+            <h3>Product Unavailable</h3>
+            <p>Oops! The product you are looking for is currently out of stock or has been removed.</p>
+            <button class="custom-popup-btn" onclick="window.location.href='index.html'">Go Back to Home</button>
+        </div>
+    </div>
+
+    <script src="user_data.js"></script>
+    <script src="product-script.js"></script>
+
+</body>
+</html>
