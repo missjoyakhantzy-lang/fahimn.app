@@ -73,7 +73,7 @@ window.renderAdvancedMagicLayout = function(filterType) {
                             <i class="${w ? 'fa-solid' : 'fa-regular'} fa-heart" style="color: ${w ? 'var(--primary-color)' : 'var(--icon-color)'};"></i>
                         </button>
                         <a href="product-details.html?id=${p.id}" style="text-decoration:none;">
-                            <div class="magic-img-bg" style="background-image: url('${p.img}');"></div>
+                            <div class="magic-img-bg" style="height: 300px; background-image: url('${p.img}');"></div>
                             <div class="magic-overlay">
                                 <h4 style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.name}</h4>
                                 <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -286,6 +286,8 @@ const initAppUI = () => {
         if(notifText) notifText.innerText = "Notifications Enabled";
         if(notifIcon) notifIcon.style.color = "var(--success-green)";
     }
+
+    window.updateConnectionStatus();
 
     const shareBtn = document.getElementById('nativeShareBtn');
     if(shareBtn) {
