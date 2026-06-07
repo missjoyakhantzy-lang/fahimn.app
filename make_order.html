@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aavira.com - Secure Checkout</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="checkout-style.css?v=9.0">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <header id="mainHeader">
+            <a href="javascript:history.back()"><i class="fa-solid fa-arrow-left"></i></a>
+            <h1>Secure Checkout</h1>
+        </header>
+
+        <div id="emptyCartView" style="display: none; flex: 1;">
+            <div class="empty-cart-state">
+                <i class="fa-solid fa-cart-arrow-down"></i>
+                <h2>Your Cart is Empty!</h2>
+                <p>Looks like you haven't added any premium products yet. Explore our top collections.</p>
+                <a href="index.html">Start Shopping</a>
+            </div>
+        </div>
+
+        <main class="main-content" id="mainScroll">
+            
+            <div id="checkoutContent">
+                
+                <div class="checkout-section">
+                    <div class="section-title"><i class="fa-solid fa-location-dot"></i> Delivery Address</div>
+                    
+                    <button class="btn-location" onclick="window.autoFetchLocation()" id="fetchLocBtn">
+                        <i class="fa-solid fa-location-crosshairs"></i> Use Current Location
+                    </button>
+                    
+                    <form id="addressForm">
+                        <div class="form-group input-icon-wrapper">
+                            <i class="fa-regular fa-user"></i>
+                            <input type="text" class="form-input" id="ad_name" placeholder="Full Name" required>
+                        </div>
+                        
+                        <div class="form-group input-icon-wrapper">
+                            <i class="fa-solid fa-mobile-screen"></i>
+                            <input type="tel" class="form-input" id="ad_phone" placeholder="Mobile Number" maxlength="10" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group input-icon-wrapper" style="flex: 1;">
+                                <i class="fa-solid fa-map-pin"></i>
+                                <input type="number" class="form-input" id="ad_pin" placeholder="Pincode" required>
+                            </div>
+                            <div class="form-group input-icon-wrapper" style="flex: 1;">
+                                <i class="fa-solid fa-city"></i>
+                                <input type="text" class="form-input" id="ad_city" placeholder="City" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group input-icon-wrapper">
+                            <i class="fa-solid fa-house-chimney"></i>
+                            <input type="text" class="form-input" id="ad_address" placeholder="House No, Building, Area" required>
+                        </div>
+
+                        <div class="form-group input-icon-wrapper">
+                            <i class="fa-solid fa-map-signs"></i>
+                            <input type="text" class="form-input" id="ad_landmark" placeholder="Nearby Places / Landmark (Optional)">
+                        </div>
+                        
+                        <div class="map-link-box">
+                            <div class="input-icon-wrapper" style="flex: 1;">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                                <input type="text" class="form-input" id="ad_maplink" placeholder="Google Map Link (Optional)">
+                            </div>
+                            <div class="help-btn" onclick="window.openMapHelp()"><i class="fa-solid fa-circle-question"></i></div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="checkout-section">
+                    <div class="section-title"><i class="fa-solid fa-box-open"></i> Order Items</div>
+                    <div class="order-items" id="orderItemsContainer">
+                        <div class="order-item skeleton" style="height: 90px;"></div>
+                    </div>
+                </div>
+
+                <div class="checkout-section">
+                    <div class="section-title"><i class="fa-solid fa-wallet"></i> Payment Method</div>
+                    <div class="payment-options">
+                        <div class="pay-option selected" onclick="window.selectPayment('cod', this)">
+                            <div class="pay-radio"></div>
+                            <div class="pay-icon" style="color: var(--success-green);"><i class="fa-solid fa-money-bill-wave"></i></div>
+                            <div class="pay-text"><h4>Cash on Delivery (COD)</h4><p>Pay at your doorstep</p></div>
+                        </div>
+                        <div class="pay-option" onclick="window.selectPayment('online', this)">
+                            <div class="pay-radio"></div>
+                            <div class="pay-icon" style="color: #1976D2;"><i class="fa-solid fa-building-columns"></i></div>
+                            <div class="pay-text"><h4>Pay Online (UPI/Cards)</h4><p>GPay, PhonePe, Paytm, Cards</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checkout-section promo-section">
+                    <div class="promo-header"><i class="fa-solid fa-ticket"></i> Apply Promo Code</div>
+                    
+                    <div class="promo-input-group" id="promoInputGroup">
+                        <input type="text" class="promo-input" id="promoInput" placeholder="Enter Code (e.g., AAVIRA50)">
+                        <button class="promo-btn" id="promoBtn" onclick="window.applyPromo()">Apply</button>
+                    </div>
+                    
+                    <div id="promoMsg" class="promo-msg"></div>
+
+                    <div class="applied-promo-box" id="appliedPromoBox">
+                        <div class="ap-text"><i class="fa-solid fa-circle-check"></i> Code <span id="apCodeName"></span> Applied!</div>
+                        <div class="ap-remove" onclick="window.removePromo()"><i class="fa-solid fa-xmark" style="font-size:14px;"></i></div>
+                    </div>
+                </div>
+
+                <div class="checkout-section" id="billSection">
+                    <div class="section-title" style="justify-content: space-between;">
+                        <span><i class="fa-solid fa-receipt"></i> Bill Details</span>
+                        <span id="calcLoader" style="display: none; font-size: 11px; color: var(--primary-color);"><i class="fa-solid fa-spinner fa-spin"></i> Calculating...</span>
+                    </div>
+                    <div class="bill-row"><span>Total MRP</span><span id="billMrp">₹0</span></div>
+                    <div class="bill-row"><span>Product Discount</span><span class="text-green" id="billDiscount">-₹0</span></div>
+                    
+                    <div class="bill-row promo-row text-green" id="billPromoRow">
+                        <span>Promo Code Discount</span><span id="billPromoDiscount">-₹0</span>
+                    </div>
+
+                    <div class="bill-row"><span>Shipping Charges</span><span class="text-green">FREE</span></div>
+                    <div class="bill-row total"><span>Amount to Pay</span><span id="billTotal">₹0</span></div>
+                </div>
+
+                <div class="checkout-section suggest-section" id="cartSuggestionsSection" style="display: none;">
+                    <div class="suggest-title"><i class="fa-solid fa-cart-arrow-down"></i> Also in your Cart</div>
+                    <div class="suggest-scroll" id="suggestedItemsContainer"></div>
+                </div>
+
+                <div class="bottom-spacing"></div>
+            </div>
+        </main>
+
+        <div class="checkout-bar" id="bottomCheckoutBar">
+            <div class="total-price-box">
+                <p>Total Amount</p>
+                <h3 id="bottomTotal">₹0</h3>
+            </div>
+            <button class="place-order-btn" id="placeOrderBtn" onclick="window.placeOrder()">
+                <span id="btnText">PLACE ORDER</span>
+            </button>
+        </div>
+
+        <div class="modal-overlay" id="helpOverlay" onclick="window.closeMapHelp()"></div>
+        <div class="help-sheet" id="helpSheet">
+            <div class="help-header">
+                <h3>How to get Map Link?</h3>
+                <i class="fa-solid fa-xmark" onclick="window.closeMapHelp()"></i>
+            </div>
+            <div class="help-steps">
+                <div class="step"><div class="step-num">1</div><div class="step-text">Open <b>Google Maps</b> app.</div></div>
+                <div class="step"><div class="step-num">2</div><div class="step-text">Tap on the <b>Blue Dot</b> (current location).</div></div>
+                <div class="step"><div class="step-num">3</div><div class="step-text">Swipe left on bottom menu and tap <b>Share</b>.</div></div>
+                <div class="step"><div class="step-num">4</div><div class="step-text">Tap <b>Copy Link</b> and paste it here!</div></div>
+            </div>
+            <button class="place-order-btn" style="width: 100%; margin-top: 20px; background:var(--primary-color);" onclick="window.closeMapHelp()">Got it!</button>
+        </div>
+
+        <div class="modal-overlay" id="processModal">
+            <div class="gateway-box" id="gatewayBox" style="display: none;">
+                <div class="pay-loader"></div>
+                <h3 id="processText">Processing Order...</h3>
+                <p>Please do not press back or close the app.</p>
+            </div>
+            
+            <div class="success-box" id="successBox" style="display: none;">
+                <div class="modal-close-btn" onclick="window.location.href='index.html'"><i class="fa-solid fa-xmark"></i></div>
+                <div class="check-circle"><i class="fa-solid fa-check"></i></div>
+                <h2>Order Success!</h2>
+                <p>Thank you for shopping with Aavira.</p>
+                <div class="order-id-badge" id="displayOrderId">ORD-XXXXXX</div>
+                
+                <div id="successNotifPrompt" class="inline-notif-box" style="display: none;">
+                    <h4><i class="fa-solid fa-bell fa-shake"></i> Track Your Order</h4>
+                    <p>Enable notifications for live delivery updates and exclusive offers.</p>
+                    <button class="notif-btn-small" id="inlineNotifBtn" onclick="window.requestNotificationPermission(event)">Allow Notifications</button>
+                </div>
+
+                <button class="place-order-btn" style="width: 100%;" id="successActionBtn">TRACK ORDER</button>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="alertOverlay" onclick="window.closeAlertModal()">
+            <div id="alertBox">
+                <div id="alertIcon" style="margin-bottom: 12px;"></div>
+                <h3 id="alertTitle" style="font-size: 16px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px;">Alert</h3>
+                <p id="alertMessage" style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;"></p>
+                <button class="place-order-btn" style="width: 100%; padding: 10px; font-size: 13px;" onclick="window.closeAlertModal()">Okay</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="user_data.js"></script>
+    <script type="module" src="checkout-script.js"></script>
+</body>
+</html>
