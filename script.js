@@ -588,7 +588,7 @@ window.fetchProducts = async function() {
                         <button class="heart-btn" onclick="toggleHeart(event, this, '${p.id}')">
                             <i class="${w ? 'fa-solid' : 'fa-regular'} fa-heart" style="color: ${w ? 'var(--primary-color)' : 'var(--icon-color)'};"></i>
                         </button>
-                        <a href="product_details.html?id=${p.id}" style="display:block; text-decoration:none; color:inherit;">
+                        <a href="product-details.html?id=${p.id}" style="display:block; text-decoration:none; color:inherit;">
                             <div class="product-image-box" style="background-image: url('${p.img}');"></div>
                             <div class="product-details-area">
                                 <h4>${p.name}</h4>
