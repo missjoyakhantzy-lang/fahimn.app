@@ -43,9 +43,7 @@ window.checkInternetRetry = function() {
         document.querySelector('.loader-dots').style.display = 'flex';
         document.getElementById('preloaderText').innerText = "Reconnecting...";
         document.getElementById('preloaderText').style.display = 'block';
-        setTimeout(() => { 
-            window.location.reload(); 
-        }, 1000);
+        setTimeout(() => { window.location.reload(); }, 1000);
     } else {
         window.showCustomAlert("Offline", "Still offline. Please check your network settings.", "error");
     }
@@ -59,20 +57,14 @@ window.openMagicScreen = function(color) {
     document.getElementById('magicTitle').innerText = `${color} Magic ✨`;
     document.getElementById('magicScreen').classList.add('active');
     const chips = document.querySelectorAll('.magic-chip');
-    chips.forEach(c => {
-        c.classList.remove('active');
-    });
-    if(chips.length > 0) {
-        chips[0].classList.add('active');
-    }
+    chips.forEach(c => c.classList.remove('active'));
+    if(chips.length > 0) chips[0].classList.add('active');
     window.renderAdvancedMagicLayout('All Designs');
 }
 
 window.filterMagicProducts = function(element, filterType) {
     const chips = document.querySelectorAll('.magic-chip');
-    chips.forEach(c => {
-        c.classList.remove('active');
-    });
+    chips.forEach(c => c.classList.remove('active'));
     element.classList.add('active');
     element.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     window.renderAdvancedMagicLayout(filterType);
@@ -97,6 +89,7 @@ window.renderAdvancedMagicLayout = function(filterType) {
         } else if (filterType === 'Trending Now') {
             filtered = [...filtered].reverse(); 
         }
+        
         if(filtered.length === 0) {
             container.innerHTML = `
                 <div style="width:100%; text-align:center; padding: 60px 20px;">
@@ -120,7 +113,7 @@ window.renderAdvancedMagicLayout = function(filterType) {
                         <button class="heart-btn" onclick="toggleHeart(event, this, '${p.id}')">
                             <i class="${w ? 'fa-solid' : 'fa-regular'} fa-heart" style="color: ${w ? 'var(--primary-color)' : 'var(--icon-color)'};"></i>
                         </button>
-                        <a href="product-details.html?id=${p.id}" style="text-decoration:none;">
+                        <a href="product_details.html?id=${p.id}" style="text-decoration:none;">
                             <div class="magic-img-bg" style="height: 300px; background-image: url('${p.img}');"></div>
                             <div class="magic-overlay">
                                 <h4 style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.name}</h4>
@@ -145,7 +138,7 @@ window.renderAdvancedMagicLayout = function(filterType) {
                         <button class="heart-btn" onclick="toggleHeart(event, this, '${p.id}')">
                             <i class="${w ? 'fa-solid' : 'fa-regular'} fa-heart" style="color: ${w ? 'var(--primary-color)' : 'var(--icon-color)'};"></i>
                         </button>
-                        <a href="product-details.html?id=${p.id}" style="display:block; text-decoration:none; color:inherit;">
+                        <a href="product_details.html?id=${p.id}" style="display:block; text-decoration:none; color:inherit;">
                             <div class="magic-img-bg" style="background-image: url('${p.img}');"></div>
                             <div style="padding: 10px; text-align:left;">
                                 <h4 style="font-size: 13px; font-family:'Poppins', sans-serif; font-weight:600; margin-bottom: 2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text-dark);">${p.name}</h4>
@@ -168,7 +161,7 @@ window.renderAdvancedMagicLayout = function(filterType) {
                         <button class="heart-btn" onclick="toggleHeart(event, this, '${p.id}')">
                             <i class="${w ? 'fa-solid' : 'fa-regular'} fa-heart" style="color: ${w ? 'var(--primary-color)' : 'var(--icon-color)'};"></i>
                         </button>
-                        <a href="product-details.html?id=${p.id}" style="display:block; text-decoration:none; color:inherit;">
+                        <a href="product_details.html?id=${p.id}" style="display:block; text-decoration:none; color:inherit;">
                             <div class="magic-img-bg" style="background-image: url('${p.img}');"></div>
                             <div style="padding: 10px; text-align:left;">
                                 <h4 style="font-size: 13px; font-weight:600; margin-bottom:4px; color:var(--text-dark); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.name}</h4>
@@ -220,9 +213,7 @@ window.checkAndShowWelcomePopup = function() {
 
 window.closeWelcomePopup = function() {
     const overlay = document.getElementById('welcomeLoginOverlay');
-    if (overlay) {
-        overlay.classList.remove('show'); 
-    }
+    if (overlay) overlay.classList.remove('show'); 
     document.body.style.overflow = 'auto'; 
 
     setTimeout(() => {
@@ -238,9 +229,7 @@ window.closeWelcomePopup = function() {
 
 window.closeNotificationPopup = function() {
     const overlay = document.getElementById('notificationOverlay');
-    if (overlay) {
-        overlay.classList.remove('show'); 
-    }
+    if (overlay) overlay.classList.remove('show'); 
     document.body.style.overflow = 'auto'; 
 }
 
@@ -250,12 +239,9 @@ window.showCustomAlert = function(title, message, type = 'success') {
     const iconEl = document.getElementById('alertIcon');
     const overlay = document.getElementById('alertOverlay');
     
-    if(titleEl) {
-        titleEl.innerText = title; 
-    }
-    if(msgEl) {
-        msgEl.innerHTML = message;
-    }
+    if(titleEl) titleEl.innerText = title; 
+    if(msgEl) msgEl.innerHTML = message;
+    
     if (iconEl) {
         if (type === 'success') { 
             iconEl.innerHTML = '<i class="fa-solid fa-circle-check" style="color: var(--success-green); font-size: 55px;"></i>'; 
@@ -263,16 +249,12 @@ window.showCustomAlert = function(title, message, type = 'success') {
             iconEl.innerHTML = '<i class="fa-solid fa-bell animated-bell" style="color: var(--secondary-color); font-size: 55px;"></i>'; 
         }
     }
-    if (overlay) {
-        overlay.classList.add('show');
-    }
+    if (overlay) overlay.classList.add('show');
 }
 
 window.closeAlertModal = function() { 
     const overlay = document.getElementById('alertOverlay');
-    if(overlay) {
-        overlay.classList.remove('show'); 
-    }
+    if(overlay) overlay.classList.remove('show'); 
 }
 
 const initAppUI = () => {
@@ -292,9 +274,7 @@ const initAppUI = () => {
         let cart = JSON.parse(localStorage.getItem('aavira_cart')) || [];
         let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
         const badge = document.getElementById('topCartBadge');
-        if(badge) {
-            badge.innerText = totalItems;
-        }
+        if(badge) badge.innerText = totalItems;
     }
     window.updateCartBadge();
 
@@ -307,8 +287,7 @@ const initAppUI = () => {
             indicator.style.transform = `translateX(${targetLeft}px)`;
         }
     }
-    moveIndicator(); 
-    window.addEventListener('resize', moveIndicator);
+    moveIndicator(); window.addEventListener('resize', moveIndicator);
     navItems.forEach(item => {
         item.addEventListener('click', function() {
             navItems.forEach(nav => nav.classList.remove('active'));
@@ -328,18 +307,12 @@ const initAppUI = () => {
     };
     
     const openSidebarBtn = document.getElementById('openSidebarBtn');
-    if (openSidebarBtn) {
-        openSidebarBtn.addEventListener('click', window.toggleSidebar);
-    }
+    if (openSidebarBtn) openSidebarBtn.addEventListener('click', window.toggleSidebar);
     
     const closeSidebarBtn = document.getElementById('closeSidebarBtn');
-    if (closeSidebarBtn) {
-        closeSidebarBtn.addEventListener('click', window.toggleSidebar);
-    }
+    if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', window.toggleSidebar);
     
-    if (overlay) {
-        overlay.addEventListener('click', window.toggleSidebar);
-    }
+    if (overlay) overlay.addEventListener('click', window.toggleSidebar);
 
     const mainScrollArea = document.getElementById('mainScrollArea');
     const bottomNav = document.getElementById('bottomNav');
@@ -363,12 +336,8 @@ const initAppUI = () => {
     if(typeof Notification !== 'undefined' && Notification.permission === 'granted') {
         const notifText = document.getElementById('sidebarNotifText');
         const notifIcon = document.getElementById('sidebarNotifIcon');
-        if(notifText) {
-            notifText.innerText = "Notifications Enabled";
-        }
-        if(notifIcon) {
-            notifIcon.style.color = "var(--success-green)";
-        }
+        if(notifText) notifText.innerText = "Notifications Enabled";
+        if(notifIcon) notifIcon.style.color = "var(--success-green)";
     }
 
     window.updateConnectionStatus();
@@ -385,9 +354,7 @@ const initAppUI = () => {
                         url: window.location.origin 
                     }); 
                 } 
-                catch (error) { 
-                    console.log('Error sharing:', error); 
-                }
+                catch (error) { console.log('Error sharing:', error); }
             } else {
                 window.showCustomAlert("Share App", "Link copied to clipboard! Share it with your friends.", "success");
                 navigator.clipboard.writeText(window.location.origin);
@@ -396,11 +363,7 @@ const initAppUI = () => {
     }
 };
 
-if (document.readyState === 'loading') { 
-    document.addEventListener('DOMContentLoaded', initAppUI); 
-} else { 
-    initAppUI(); 
-}
+if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initAppUI); } else { initAppUI(); }
 
 window.toggleSearch = function() {
     const overlay = document.getElementById('searchOverlay');
@@ -408,9 +371,7 @@ window.toggleSearch = function() {
     overlay.classList.toggle('active');
     document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : 'auto';
     if(overlay.classList.contains('active')) {
-        setTimeout(() => {
-            document.getElementById('searchInput').focus();
-        }, 100);
+        setTimeout(() => { document.getElementById('searchInput').focus(); }, 100);
     } else {
         document.getElementById('searchInput').value = '';
         document.getElementById('searchResults').innerHTML = `
@@ -427,25 +388,17 @@ window.handleSearch = function() {
     if(!container) return;
     container.innerHTML = '';
     if(!query) {
-        container.innerHTML = `
-            <p class="search-empty-text">
-                <i class="fa-solid fa-magnifying-glass"></i>Type to search amazing products...
-            </p>
-        `;
+        container.innerHTML = `<p class="search-empty-text"><i class="fa-solid fa-magnifying-glass"></i>Type to search amazing products...</p>`;
         return;
     }
     const filtered = window.allProductsList.filter(p => p.name.toLowerCase().includes(query));
     if(filtered.length === 0) {
-        container.innerHTML = `
-            <p class="search-empty-text">
-                <i class="fa-regular fa-face-frown"></i>No product found matching your search.
-            </p>
-        `;
+        container.innerHTML = `<p class="search-empty-text"><i class="fa-regular fa-face-frown"></i>No product found matching your search.</p>`;
         return;
     }
     filtered.forEach(p => {
         container.innerHTML += `
-            <a href="product-details.html?id=${p.id}" class="s-result-item">
+            <a href="product_details.html?id=${p.id}" class="s-result-item">
                 <div class="s-result-img" style="background-image: url('${p.img}');"></div>
                 <div class="s-result-info">
                     <h4>${p.name}</h4>
@@ -497,59 +450,33 @@ window.initializeAuth = async function() {
     const bottomDivider = document.getElementById('bottomDivider');
 
     if (loggedInUser) {
-        if(nameField) {
-            nameField.innerText = loggedInUser.name || "Aavira User"; 
-        }
-        if(emailField) {
-            emailField.innerText = loggedInUser.email || loggedInUser.phone || "user@aavira.com";
-        }
-        if(avatarField) {
-            avatarField.innerText = loggedInUser.name ? loggedInUser.name[0].toUpperCase() : "U"; 
-        }
-        if(loginBtn) {
-            loginBtn.style.display = 'none';
-        }
+        if(nameField) nameField.innerText = loggedInUser.name || "Aavira User"; 
+        if(emailField) emailField.innerText = loggedInUser.email || loggedInUser.phone || "user@aavira.com";
+        if(avatarField) avatarField.innerText = loggedInUser.name ? loggedInUser.name[0].toUpperCase() : "U"; 
+        if(loginBtn) loginBtn.style.display = 'none';
         if(authBtn) {
             authBtn.style.display = 'flex'; 
             authBtn.onclick = (e) => { 
                 e.preventDefault(); 
-                if(typeof window.logoutUser === 'function') {
-                    window.logoutUser(); 
-                }
+                if(typeof window.logoutUser === 'function') window.logoutUser(); 
                 window.location.reload(); 
             }; 
         }
-        if(bottomDivider) {
-            bottomDivider.style.display = 'block';
-        }
+        if(bottomDivider) bottomDivider.style.display = 'block';
         
         if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
             setTimeout(() => { 
                 const notifOverlay = document.getElementById('notificationOverlay');
-                if(notifOverlay) {
-                    notifOverlay.classList.add('show'); 
-                }
+                if(notifOverlay) notifOverlay.classList.add('show'); 
             }, 3000);
         }
     } else {
-        if(nameField) {
-            nameField.innerText = "Guest User"; 
-        }
-        if(emailField) {
-            emailField.innerText = "Welcome to Aavira";
-        }
-        if(avatarField) {
-            avatarField.innerHTML = `<i class="fa-regular fa-user"></i>`;
-        }
-        if(loginBtn) {
-            loginBtn.style.display = 'inline-block';
-        }
-        if(authBtn) {
-            authBtn.style.display = 'none'; 
-        }
-        if(bottomDivider) {
-            bottomDivider.style.display = 'none';
-        }
+        if(nameField) nameField.innerText = "Guest User"; 
+        if(emailField) emailField.innerText = "Welcome to Aavira";
+        if(avatarField) avatarField.innerHTML = `<i class="fa-regular fa-user"></i>`;
+        if(loginBtn) loginBtn.style.display = 'inline-block';
+        if(authBtn) authBtn.style.display = 'none'; 
+        if(bottomDivider) bottomDivider.style.display = 'none';
         window.checkAndShowWelcomePopup();
     }
 };
@@ -565,29 +492,19 @@ window.fetchBanners = async function() {
         if(docsArr && docsArr.length > 0) {
             docsArr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
             carousel.innerHTML = ''; 
-            if(dotsContainer) {
-                dotsContainer.innerHTML = '';
-            }
+            if(dotsContainer) dotsContainer.innerHTML = '';
             let count = 0;
             docsArr.forEach(d => {
                 let mediaHtml = '';
                 let url = d.imageUrl || d.image || d.url || ''; 
                 if(d.type === 'video' || (url && url.includes('.mp4'))) {
-                    mediaHtml = `
-                        <video src="${url}" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture controlslist="nodownload noplaybackrate" style="width:100%; height:100%; object-fit:cover; pointer-events:none; transform: translateZ(0);"></video>
-                    `;
+                    mediaHtml = `<video src="${url}" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture controlslist="nodownload noplaybackrate" style="width:100%; height:100%; object-fit:cover; pointer-events:none; transform: translateZ(0);"></video>`;
                 } else {
-                    mediaHtml = `
-                        <img src="${url}" style="width:100%; height:100%; object-fit:cover; transform: translateZ(0);">
-                    `;
+                    mediaHtml = `<img src="${url}" style="width:100%; height:100%; object-fit:cover; transform: translateZ(0);">`;
                 }
-                if(d.link) {
-                    mediaHtml = `<a href="${d.link}" style="display:block; width:100%; height:100%;">${mediaHtml}</a>`;
-                }
+                if(d.link) mediaHtml = `<a href="${d.link}" style="display:block; width:100%; height:100%;">${mediaHtml}</a>`;
                 carousel.innerHTML += `<div class="banner-slide">${mediaHtml}</div>`;
-                if(dotsContainer) {
-                    dotsContainer.innerHTML += `<div class="b-dot ${count===0?'active':''}"></div>`;
-                }
+                if(dotsContainer) dotsContainer.innerHTML += `<div class="b-dot ${count===0?'active':''}"></div>`;
                 count++;
             });
             if(count > 1) {
@@ -595,15 +512,11 @@ window.fetchBanners = async function() {
                 setInterval(() => {
                     currentIndex = (currentIndex + 1) % count;
                     const slide = carousel.children[currentIndex];
-                    if (slide) {
-                        carousel.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' });
-                    }
+                    if (slide) carousel.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' });
                 }, 4000); 
                 carousel.addEventListener('scroll', () => {
                     let idx = Math.round(carousel.scrollLeft / carousel.offsetWidth);
-                    document.querySelectorAll('.b-dot').forEach((dot, i) => { 
-                        dot.classList.toggle('active', i === idx); 
-                    });
+                    document.querySelectorAll('.b-dot').forEach((dot, i) => { dot.classList.toggle('active', i === idx); });
                 });
             }
         } else {
@@ -629,9 +542,7 @@ window.fetchCategories = async function() {
         if (typeof window.getCategoriesData !== 'function') return;
         const categoriesArr = await window.getCategoriesData();
         if (!categoriesArr || categoriesArr.length === 0) { 
-            catContainer.innerHTML = `
-                <p style="padding:20px; font-size:12px; color:var(--text-muted);">No categories yet.</p>
-            `; 
+            catContainer.innerHTML = `<p style="padding:20px; font-size:12px; color:var(--text-muted);">No categories yet.</p>`; 
             return; 
         }
         catContainer.innerHTML = ''; 
@@ -639,9 +550,7 @@ window.fetchCategories = async function() {
             let img = data.image || data.imageUrl || data.url || '';
             catContainer.innerHTML += `
                 <a href="categories.html?cat=${data.name}" class="cat-item">
-                    <div class="cat-ring">
-                        <div class="cat-img" style="background-image: url('${img}');"></div>
-                    </div>
+                    <div class="cat-ring"><div class="cat-img" style="background-image: url('${img}');"></div></div>
                     <span>${data.name}</span>
                 </a>
             `;
@@ -649,6 +558,7 @@ window.fetchCategories = async function() {
     } catch (error) {}
 }
 
+// 🔥 YAHAN SE BUTTONS HATA DIYE GAYE HAIN 🔥
 window.fetchProducts = async function() {
     const productsContainer = document.getElementById('productsContainer');
     if(!productsContainer) return;
@@ -656,11 +566,7 @@ window.fetchProducts = async function() {
         if (typeof window.getVercelData !== 'function') return;
         const dataArray = await window.getVercelData();
         if (!dataArray || dataArray.length === 0) { 
-            productsContainer.innerHTML = `
-                <p style="text-align:center; padding:20px; font-size:12px; color:var(--text-muted);">
-                    No products currently available.
-                </p>
-            `; 
+            productsContainer.innerHTML = `<p style="text-align:center; padding:20px; font-size:12px; color:var(--text-muted);">No products currently available.</p>`; 
             return; 
         }
         
@@ -670,21 +576,8 @@ window.fetchProducts = async function() {
 
         dataArray.forEach((data) => {
             const imageUrl = data.imageMain || data.image || data.imageUrl || '';
-            window.productsCache[data.id] = { 
-                id: data.id, 
-                name: data.name, 
-                brand: data.brand || 'Aavira', 
-                price: data.price, 
-                img: imageUrl, 
-                description: data.description 
-            };
-            window.allProductsList.push({ 
-                id: data.id, 
-                name: data.name, 
-                price: data.price, 
-                img: imageUrl, 
-                color: data.color || '' 
-            });
+            window.productsCache[data.id] = { id: data.id, name: data.name, brand: data.brand || 'Aavira', price: data.price, img: imageUrl, description: data.description };
+            window.allProductsList.push({ id: data.id, name: data.name, price: data.price, img: imageUrl, color: data.color || '' });
         });
 
         let html = '';
@@ -697,7 +590,7 @@ window.fetchProducts = async function() {
                         <button class="heart-btn" onclick="toggleHeart(event, this, '${p0.id}')" style="top:15px; right:15px; width:32px; height:32px; font-size:16px;">
                             <i class="${w0 ? 'fa-solid' : 'fa-regular'} fa-heart" style="color: ${w0 ? 'var(--primary-color)' : 'var(--icon-color)'};"></i>
                         </button>
-                        <a href="product-details.html?id=${p0.id}" style="display:block; text-decoration:none; color:inherit;">
+                        <a href="product_details.html?id=${p0.id}" style="display:block; text-decoration:none; color:inherit;">
                             <div class="magic-img-bg" style="height: 280px; background-image: url('${p0.img}');"></div>
                             <div class="magic-overlay">
                                 <div>
@@ -714,9 +607,7 @@ window.fetchProducts = async function() {
 
         if(window.allProductsList.length > 1) {
             html += `
-                <div class="section-title">
-                    <h3>Trending Spots</h3>
-                </div>
+                <div class="section-title"><h3>Trending Spots</h3></div>
                 <div class="magic-h-scroll">
             `;
             let limit = Math.min(4, window.allProductsList.length);
@@ -728,7 +619,7 @@ window.fetchProducts = async function() {
                         <button class="heart-btn" onclick="toggleHeart(event, this, '${p.id}')">
                             <i class="${w ? 'fa-solid' : 'fa-regular'} fa-heart" style="color: ${w ? 'var(--primary-color)' : 'var(--icon-color)'};"></i>
                         </button>
-                        <a href="product-details.html?id=${p.id}" style="display:block; text-decoration:none; color:inherit;">
+                        <a href="product_details.html?id=${p.id}" style="display:block; text-decoration:none; color:inherit;">
                             <div class="magic-img-bg" style="background-image: url('${p.img}');"></div>
                             <div class="magic-text">
                                 <h4>${p.name}</h4>
@@ -743,9 +634,7 @@ window.fetchProducts = async function() {
 
         if(window.allProductsList.length > 4) {
             html += `
-                <div class="section-title" style="margin-top: 10px;">
-                    <h3>More Elegant Styles</h3>
-                </div>
+                <div class="section-title" style="margin-top: 10px;"><h3>More Elegant Styles</h3></div>
                 <div class="products-grid" style="padding-bottom: 20px;">
             `;
             for(let i=4; i<window.allProductsList.length; i++) {
@@ -756,7 +645,7 @@ window.fetchProducts = async function() {
                         <button class="heart-btn" onclick="toggleHeart(event, this, '${p.id}')">
                             <i class="${w ? 'fa-solid' : 'fa-regular'} fa-heart" style="color: ${w ? 'var(--primary-color)' : 'var(--icon-color)'};"></i>
                         </button>
-                        <a href="product-details.html?id=${p.id}" style="display:block; text-decoration:none; color:inherit;">
+                        <a href="product_details.html?id=${p.id}" style="display:block; text-decoration:none; color:inherit;">
                             <div class="product-image-box" style="background-image: url('${p.img}');"></div>
                             <div class="product-details-area">
                                 <h4>${p.name}</h4>
@@ -787,9 +676,7 @@ window.initializeAppEngine = async function() {
     } 
     catch(e) {} 
     finally { 
-        setTimeout(() => { 
-            window.hidePreloader(); 
-        }, 600); 
+        setTimeout(() => { window.hidePreloader(); }, 600); 
     }
 }
 
