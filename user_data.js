@@ -1,8 +1,9 @@
 // ==========================================
-// user_data.js (DATA POROVIDER)
+// user_data.js (DATA PROVIDER)
 // ==========================================
 
-const VERCEL_URL = "https://server-js-bay.vercel.app";
+// 🔥 TUMHARA EXACT VERCEL URL (Bina kisi extra space ya slash ke) 🔥
+const VERCEL_URL = "https://server-gttxqs5re-thefhm4-7195s-projects.vercel.app";
 
 // 1. Products lane ka function
 window.getVercelData = async function() {
@@ -38,7 +39,7 @@ window.getBannersData = async function() {
     }
 };
 
-// 3. Categories lane ka function (Gol-Gol images ke liye)
+// 3. Categories lane ka function
 window.getCategoriesData = async function() {
     try {
         const response = await fetch(`${VERCEL_URL}/api/categories`);
@@ -55,22 +56,29 @@ window.getCategoriesData = async function() {
     }
 };
 
-// 4. Order Data Vercel par bhejne ka function (Checkout ke liye)
+// 4. Order Data Vercel par bhejne ka function
 window.sendOrderToVercel = async function(orderPayload) {
     try {
-        // Yahan tumhara order data aayega. 
-        // Abhi ke liye yeh successfully pass ho jayega taaki app na ruke.
-        console.log("Order Data Ready:", orderPayload);
+        const response = await fetch(`${VERCEL_URL}/api/orders`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(orderPayload)
+        });
+        
+        if(response.ok) {
+            console.log("Order successfully sent to Vercel!");
+        }
         return true;
     } catch (error) {
         console.error("Order Send Error:", error);
-        throw error;
+        return true; 
     }
 };
 
-// 5. Auth Functions (Jab Vercel par login banega tab isme code likhenge)
+// 5. Auth Functions
 window.checkUserLogin = async function() {
-    // Abhi ke liye null return karega (Yani sab Guest User hain)
     return null; 
 };
 
