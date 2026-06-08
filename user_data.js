@@ -3,7 +3,7 @@
 // ==========================================
 
 // 🔥 TUMHARA EXACT VERCEL URL (Bina kisi extra space ya slash ke) 🔥
-const VERCEL_URL = "https://server-gttxqs5re-thefhm4-7195s-projects.vercel.app";
+const VERCEL_URL = "aavira-fashion-backend.vercel.app";
 
 // 1. Products lane ka function
 window.getVercelData = async function() {
