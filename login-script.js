@@ -1,16 +1,4 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-
-// 🔥 TUMHARA FIREBASE CONFIG YAHAN AAYEGA 🔥
-const firebaseConfig = {
-    // Paste your config here
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const googleProvider = new GoogleAuthProvider();
-
-// 🔥 NAYA VERCEL BACKEND URL 🔥
+// 🔥 TUMHARA NAYA VERCEL BACKEND URL 🔥
 const SERVER_URL = "https://ecommerce-backend-eight-lac.vercel.app";
 
 let isSignup = true;
@@ -94,6 +82,7 @@ window.backToLoginFromOtp = function() {
     }, 200);
 }
 
+// 🔥 LOGIN & SIGNUP LOGIC (VIA VERCEL) 🔥
 window.processAuth = function() {
     const email = document.getElementById('authEmail').value.trim();
     const pwd = document.getElementById('authPwd').value.trim();
@@ -107,24 +96,26 @@ window.processAuth = function() {
     btn.disabled = true;
 
     if(!isSignup) {
-        signInWithEmailAndPassword(auth, email, pwd)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            const userData = {
-                uid: user.uid,
-                email: user.email,
-                name: user.displayName || "Aavira User"
-            };
-            localStorage.setItem('aavira_user', JSON.stringify(userData));
-            window.showToast("Login Successful! Redirecting...", true);
-            setTimeout(() => window.location.href = "index.html", 1500);
+        // LOGIN API CALL TO VERCEL
+        fetch(`${SERVER_URL}/api/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email, password: pwd })
         })
-        .catch((error) => { 
-            window.showToast(error.message.replace('Firebase: ', '')); 
-            btn.innerHTML = originalText; 
-            btn.disabled = false; 
-        });
+        .then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                localStorage.setItem('aavira_user', JSON.stringify(data.user));
+                window.showToast("Login Successful! Redirecting...", true);
+                setTimeout(() => window.location.href = "index.html", 1500);
+            } else {
+                window.showToast(data.message || "Invalid Credentials");
+                btn.innerHTML = originalText; btn.disabled = false;
+            }
+        })
+        .catch(err => { window.showToast("Server Error!"); btn.innerHTML = originalText; btn.disabled = false; });
     } else {
+        // SIGNUP - SEND OTP API CALL TO VERCEL
         if(!name) { window.showToast("Please enter Full Name."); btn.innerHTML = originalText; btn.disabled = false; return; }
         tempSignupData = { name, email, pwd };
 
@@ -152,6 +143,7 @@ window.processAuth = function() {
     }
 }
 
+// 🔥 VERIFY OTP & REGISTER USER VIA VERCEL 🔥
 window.verifyOTP = function() {
     const otpVal = document.getElementById('otpInput').value.trim();
     if(otpVal.length !== 6) { window.showToast("Enter complete 6-digit OTP!"); return; }
@@ -166,33 +158,24 @@ window.verifyOTP = function() {
     .then(res => res.json())
     .then(data => {
         if(data.success) {
-            createUserWithEmailAndPassword(auth, tempSignupData.email, tempSignupData.pwd)
-            .then((cred) => {
-                updateProfile(cred.user, { displayName: tempSignupData.name }).then(() => {
-                    const userData = {
-                        uid: cred.user.uid,
-                        email: cred.user.email,
-                        name: tempSignupData.name
-                    };
-                    localStorage.setItem('aavira_user', JSON.stringify(userData));
-                    
-                    fetch(`${SERVER_URL}/api/welcome`, {
-                        method: 'POST', headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ userEmail: tempSignupData.email, userName: tempSignupData.name })
-                    });
+            // OTP Verified, Now Register User in Database via Vercel
+            fetch(`${SERVER_URL}/api/register`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: tempSignupData.email, password: tempSignupData.pwd, name: tempSignupData.name })
+            })
+            .then(res => res.json())
+            .then(regData => {
+                if(regData.success) {
+                    localStorage.setItem('aavira_user', JSON.stringify(regData.user));
                     window.showToast("Account Created! Welcome to Aavira.", true);
                     setTimeout(() => window.location.href = "index.html", 2000);
-                });
-            })
-            .catch((error) => { 
-                window.showToast(error.message.replace('Firebase: ', '')); 
-                vBtn.innerHTML = 'Verify & Complete Setup'; 
-                vBtn.disabled = false; 
+                } else {
+                    window.showToast(regData.message); vBtn.innerHTML = 'Verify & Complete Setup'; vBtn.disabled = false;
+                }
             });
         } else { 
             window.showToast(data.message || "Invalid OTP!"); 
-            vBtn.innerHTML = 'Verify & Complete Setup'; 
-            vBtn.disabled = false; 
+            vBtn.innerHTML = 'Verify & Complete Setup'; vBtn.disabled = false; 
         }
     })
     .catch(err => { window.showToast("Server error!"); vBtn.innerHTML = 'Verify & Complete Setup'; vBtn.disabled = false; });
@@ -220,8 +203,7 @@ window.sendResetOTP = function() {
             setTimeout(() => document.getElementById('screenReset').classList.add('active'), 200);
         } else { 
             window.showToast(data.message || "Failed to send OTP."); 
-            btn.innerHTML = 'Send Reset OTP <i class="fa-solid fa-paper-plane"></i>'; 
-            btn.disabled = false; 
+            btn.innerHTML = 'Send Reset OTP <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false; 
         }
     }).catch(err => { window.showToast("Server error!"); btn.innerHTML = 'Send Reset OTP <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false; });
 }
@@ -248,30 +230,7 @@ window.updatePassword = function() {
             setTimeout(() => window.backToMain(), 2000);
         } else { 
             window.showToast(data.message || "Invalid OTP!"); 
-            btn.innerHTML = 'Secure Update <i class="fa-solid fa-check"></i>'; 
-            btn.disabled = false; 
+            btn.innerHTML = 'Secure Update <i class="fa-solid fa-check"></i>'; btn.disabled = false; 
         }
     }).catch(err => { window.showToast("Server error!"); btn.innerHTML = 'Secure Update <i class="fa-solid fa-check"></i>'; btn.disabled = false; });
-}
-
-window.continueWithGoogle = function() {
-    signInWithPopup(auth, googleProvider).then((result) => {
-        const user = result.user;
-        const userData = {
-            uid: user.uid,
-            email: user.email,
-            name: user.displayName || "Aavira User"
-        };
-        localStorage.setItem('aavira_user', JSON.stringify(userData));
-        
-        fetch(`${SERVER_URL}/api/welcome`, { 
-            method: 'POST', 
-            headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify({ userEmail: user.email, userName: user.displayName }) 
-        });
-        window.showToast("Verified with Google!", true);
-        setTimeout(() => window.location.href = "index.html", 1500);
-    }).catch((error) => { 
-        window.showToast("Google Login cancelled."); 
-    });
 }
