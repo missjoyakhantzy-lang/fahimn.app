@@ -82,8 +82,8 @@ window.backToLoginFromOtp = function() {
     }, 200);
 }
 
-// 🔥 LOGIN & SIGNUP LOGIC (VIA VERCEL) 🔥
-window.processAuth = function() {
+// 🔥 LOGIN & SIGNUP LOGIC 🔥
+window.processAuth = async function() {
     const email = document.getElementById('authEmail').value.trim();
     const pwd = document.getElementById('authPwd').value.trim();
     const name = document.getElementById('regName').value.trim();
@@ -95,15 +95,16 @@ window.processAuth = function() {
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
     btn.disabled = true;
 
-    if(!isSignup) {
-        // LOGIN API CALL TO VERCEL
-        fetch(`${SERVER_URL}/api/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email, password: pwd })
-        })
-        .then(res => res.json())
-        .then(data => {
+    try {
+        if(!isSignup) {
+            // LOGIN API CALL
+            const res = await fetch(`${SERVER_URL}/api/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email, password: pwd })
+            });
+            const data = await res.json();
+
             if(data.success) {
                 localStorage.setItem('aavira_user', JSON.stringify(data.user));
                 window.showToast("Login Successful! Redirecting...", true);
@@ -112,20 +113,18 @@ window.processAuth = function() {
                 window.showToast(data.message || "Invalid Credentials");
                 btn.innerHTML = originalText; btn.disabled = false;
             }
-        })
-        .catch(err => { window.showToast("Server Error!"); btn.innerHTML = originalText; btn.disabled = false; });
-    } else {
-        // SIGNUP - SEND OTP API CALL TO VERCEL
-        if(!name) { window.showToast("Please enter Full Name."); btn.innerHTML = originalText; btn.disabled = false; return; }
-        tempSignupData = { name, email, pwd };
+        } else {
+            // SIGNUP - SEND OTP API CALL
+            if(!name) { window.showToast("Please enter Full Name."); btn.innerHTML = originalText; btn.disabled = false; return; }
+            tempSignupData = { name, email, pwd };
 
-        fetch(`${SERVER_URL}/api/send-otp`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userEmail: email, userName: name })
-        })
-        .then(res => res.json())
-        .then(data => {
+            const res = await fetch(`${SERVER_URL}/api/send-otp`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userEmail: email, userName: name })
+            });
+            const data = await res.json();
+
             if(data.success) {
                 window.showToast("Verification OTP sent!", true);
                 document.getElementById('headerTitle').innerText = 'Verify Identity';
@@ -138,62 +137,73 @@ window.processAuth = function() {
                 window.showToast(data.message || "Failed to send OTP."); 
                 btn.innerHTML = originalText; btn.disabled = false; 
             }
-        })
-        .catch(err => { window.showToast("Backend Server not connected!"); btn.innerHTML = originalText; btn.disabled = false; });
+        }
+    } catch (err) {
+        console.error(err);
+        window.showToast("Server Error! Please check your connection."); 
+        btn.innerHTML = originalText; btn.disabled = false;
     }
 }
 
-// 🔥 VERIFY OTP & REGISTER USER VIA VERCEL 🔥
-window.verifyOTP = function() {
+// 🔥 VERIFY OTP & REGISTER USER (CRASH-PROOF) 🔥
+window.verifyOTP = async function() {
     const otpVal = document.getElementById('otpInput').value.trim();
     if(otpVal.length !== 6) { window.showToast("Enter complete 6-digit OTP!"); return; }
+    
     const vBtn = document.getElementById('verifyOtpBtn');
     vBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Finalizing...'; 
     vBtn.disabled = true;
 
-    fetch(`${SERVER_URL}/api/verify-otp`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userEmail: tempSignupData.email, userOTP: otpVal })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if(data.success) {
-            // OTP Verified, Now Register User in Database via Vercel
-            fetch(`${SERVER_URL}/api/register`, {
+    try {
+        // 1. Verify OTP
+        const otpRes = await fetch(`${SERVER_URL}/api/verify-otp`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userEmail: tempSignupData.email, userOTP: otpVal })
+        });
+        const otpData = await otpRes.json();
+
+        if(otpData.success) {
+            // 2. Register User in Database
+            const regRes = await fetch(`${SERVER_URL}/api/register`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: tempSignupData.email, password: tempSignupData.pwd, name: tempSignupData.name })
-            })
-            .then(res => res.json())
-            .then(regData => {
-                if(regData.success) {
-                    localStorage.setItem('aavira_user', JSON.stringify(regData.user));
-                    window.showToast("Account Created! Welcome to Aavira.", true);
-                    setTimeout(() => window.location.href = "index.html", 2000);
-                } else {
-                    window.showToast(regData.message); vBtn.innerHTML = 'Verify & Complete Setup'; vBtn.disabled = false;
-                }
             });
+            const regData = await regRes.json();
+
+            if(regData.success) {
+                localStorage.setItem('aavira_user', JSON.stringify(regData.user));
+                window.showToast("Account Created! Welcome to Aavira.", true);
+                setTimeout(() => window.location.href = "index.html", 2000);
+            } else {
+                window.showToast(regData.message || "Registration failed."); 
+                vBtn.innerHTML = 'Verify & Complete Setup'; vBtn.disabled = false;
+            }
         } else { 
-            window.showToast(data.message || "Invalid OTP!"); 
+            window.showToast(otpData.message || "Invalid OTP!"); 
             vBtn.innerHTML = 'Verify & Complete Setup'; vBtn.disabled = false; 
         }
-    })
-    .catch(err => { window.showToast("Server error!"); vBtn.innerHTML = 'Verify & Complete Setup'; vBtn.disabled = false; });
+    } catch (err) {
+        console.error(err);
+        window.showToast("Server error! Please try again."); 
+        vBtn.innerHTML = 'Verify & Complete Setup'; vBtn.disabled = false; 
+    }
 }
 
-window.sendResetOTP = function() {
+window.sendResetOTP = async function() {
     const email = document.getElementById('resetEmail').value.trim();
     if(!email) { window.showToast("Please enter your email."); return; }
+    
     const btn = document.getElementById('sendResetOtpBtn');
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending OTP...'; 
     btn.disabled = true;
 
-    fetch(`${SERVER_URL}/api/send-reset-otp`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userEmail: email })
-    })
-    .then(res => res.json())
-    .then(data => {
+    try {
+        const res = await fetch(`${SERVER_URL}/api/send-reset-otp`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userEmail: email })
+        });
+        const data = await res.json();
+
         if(data.success) {
             tempResetEmail = email;
             window.showToast("OTP sent to your email!", true);
@@ -205,24 +215,30 @@ window.sendResetOTP = function() {
             window.showToast(data.message || "Failed to send OTP."); 
             btn.innerHTML = 'Send Reset OTP <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false; 
         }
-    }).catch(err => { window.showToast("Server error!"); btn.innerHTML = 'Send Reset OTP <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false; });
+    } catch (err) {
+        window.showToast("Server error!"); 
+        btn.innerHTML = 'Send Reset OTP <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false;
+    }
 }
 
-window.updatePassword = function() {
+window.updatePassword = async function() {
     const otpVal = document.getElementById('resetOtpInput').value.trim();
     const newPwd = document.getElementById('newPwdInput').value.trim();
+    
     if(otpVal.length !== 6) { window.showToast("Please enter 6-digit OTP!"); return; }
     if(newPwd.length < 6) { window.showToast("Password must be at least 6 characters!"); return; }
+    
     const btn = document.getElementById('updatePwdBtn');
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Updating...'; 
     btn.disabled = true;
 
-    fetch(`${SERVER_URL}/api/update-password`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userEmail: tempResetEmail, userOTP: otpVal, newPassword: newPwd })
-    })
-    .then(res => res.json())
-    .then(data => {
+    try {
+        const res = await fetch(`${SERVER_URL}/api/update-password`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userEmail: tempResetEmail, userOTP: otpVal, newPassword: newPwd })
+        });
+        const data = await res.json();
+
         if(data.success) {
             window.showToast("Password Updated Successfully!", true);
             document.getElementById('resetOtpInput').value = ""; 
@@ -232,5 +248,8 @@ window.updatePassword = function() {
             window.showToast(data.message || "Invalid OTP!"); 
             btn.innerHTML = 'Secure Update <i class="fa-solid fa-check"></i>'; btn.disabled = false; 
         }
-    }).catch(err => { window.showToast("Server error!"); btn.innerHTML = 'Secure Update <i class="fa-solid fa-check"></i>'; btn.disabled = false; });
+    } catch (err) {
+        window.showToast("Server error!"); 
+        btn.innerHTML = 'Secure Update <i class="fa-solid fa-check"></i>'; btn.disabled = false;
+    }
 }
