@@ -2,10 +2,7 @@ window.allProductsArray = [];
 window.currentProductIndex = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
-    let cart = [];
-    try {
-        cart = JSON.parse(localStorage.getItem('aavira_cart')) || [];
-    } catch(e) {}
+    let cart = JSON.parse(localStorage.getItem('aavira_cart')) || [];
     let total = cart.reduce((sum, item) => sum + item.qty, 0);
     const cartBadge = document.getElementById('topCartBadge');
     if(cartBadge) {
@@ -43,8 +40,7 @@ window.selectColorImage = function(element, colorName, imageUrl) {
 window.selectSize = function(element) {
     document.querySelectorAll('.size-box').forEach(box => box.classList.remove('active'));
     element.classList.add('active');
-    const container = document.getElementById('sizeOptionsContainer');
-    if(container) container.classList.remove('shake-error');
+    document.getElementById('sizeOptionsContainer').classList.remove('shake-error');
 }
 
 function getSelectedSize() {
@@ -53,8 +49,7 @@ function getSelectedSize() {
 }
 
 function getSelectedColor() {
-    const colorEl = document.getElementById('colorName');
-    return colorEl ? colorEl.innerText : 'As Shown';
+    return document.getElementById('colorName').innerText || 'As Shown';
 }
 
 window.showErrorPopup = function() {
@@ -71,12 +66,14 @@ window.addToCart = function(event, isBuyNow) {
     event.preventDefault();
 
     const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get('id');
+    let productId = urlParams.get('id');
 
     if (!productId) { 
         window.showErrorPopup(); 
         return; 
     }
+    
+    productId = decodeURIComponent(productId).trim();
 
     const size = getSelectedSize();
     
@@ -88,7 +85,6 @@ window.addToCart = function(event, isBuyNow) {
             sizeContainer.classList.add('shake-error');
         }
         if (navigator.vibrate) { navigator.vibrate(200); }
-        alert("Please select a size first!");
         return; 
     }
 
@@ -203,12 +199,14 @@ if (mediaCarousel) {
 
 async function loadProductData() {
     const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get('id');
+    let productId = urlParams.get('id');
 
     if (!productId) { 
         window.showErrorPopup(); 
         return; 
     }
+    
+    productId = decodeURIComponent(productId).trim();
 
     try {
         if(typeof window.getVercelData !== 'function') {
@@ -219,7 +217,9 @@ async function loadProductData() {
 
         const allProducts = await window.getVercelData();
         window.allProductsArray = allProducts;
-        window.currentProductIndex = allProducts.findIndex(p => String(p.id) === String(productId));
+        
+        // Exact ID match logic
+        window.currentProductIndex = allProducts.findIndex(p => String(p.id).trim() === String(productId));
 
         const productData = allProducts[window.currentProductIndex];
 
