@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aavira Fashion - Premium Access</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.gstatic.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="login-style.css?v=1.0">
+</head>
+<body data-theme="light">
+
+    <div class="main-container">
+        
+        <div class="brand-section">
+            <div>
+                <div class="brand-logo">Aavira</div>
+                <div class="brand-tagline">Elevate Your Wardrobe. Define Your Style.</div>
+                
+                <div class="brand-features">
+                    <div class="feature-item">
+                        <i class="fa-solid fa-crown"></i>
+                        <div>
+                            <h4>Premium Collection</h4>
+                            <p>Exclusive designs crafted for modern elegance.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-bolt"></i>
+                        <div>
+                            <h4>Express Delivery</h4>
+                            <p>Get your favorite outfits delivered lightning fast.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <div>
+                            <h4>Secure Portal</h4>
+                            <p>Advanced OTP verification for your data safety.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="font-size: 13px; opacity: 0.85;">
+                Join thousands of happy customers redefining fashion with Aavira.
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="form-header">
+                <button class="theme-btn" onclick="window.toggleTheme()"><i class="fa-solid fa-moon" id="themeIcon"></i></button>
+                <h2 style="font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 36px; display: none;" id="mobileLogo">Aavira</h2>
+                
+                <h2 id="headerTitle">Create Account</h2>
+                <p id="headerSub">Join Aavira to unlock premium access.</p>
+            </div>
+
+            <div class="tabs" id="authTabs">
+                <div class="tab" id="tabLogin" onclick="window.switchMode('login')">Login</div>
+                <div class="tab active" id="tabSignup" onclick="window.switchMode('signup')">Sign Up</div>
+            </div>
+
+            <div class="screen active" id="screenMain">
+                <div class="input-group" id="nameBox">
+                    <input type="text" id="regName" placeholder="Full Name">
+                    <i class="fa-regular fa-user icon"></i>
+                </div>
+                <div class="input-group">
+                    <input type="email" id="authEmail" placeholder="Email Address">
+                    <i class="fa-regular fa-envelope icon"></i>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="authPwd" placeholder="Password (Min 6 chars)">
+                    <i class="fa-solid fa-lock icon"></i>
+                    <i class="fa-regular fa-eye-slash eye-btn" id="eyeBtn" onclick="window.togglePwd('authPwd', 'eyeBtn')"></i>
+                </div>
+
+                <a class="forgot-link" id="showForgotBtn" onclick="window.openForgotScreen()">Forgot Password?</a>
+                <button class="auth-btn" id="mainActionBtn" onclick="window.processAuth()">Create My Account</button>
+
+                <div class="social-area" id="socialArea">
+                    <div class="divider"><span>Or continue with</span></div>
+                    <div class="social-row">
+                        <button class="btn-social" onclick="window.continueWithGoogle()" title="Google">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="22px" height="22px">
+                                <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
+                                <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
+                                <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
+                                <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+                            </svg>
+                        </button>
+                        <button class="btn-social" style="color: #1877F2;" title="Facebook"><i class="fa-brands fa-facebook"></i></button>
+                        <button class="btn-social" title="Apple"><i class="fa-brands fa-apple"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="screen" id="screenOTP">
+                <p style="text-align: center; color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Check your inbox for the verification code.</p>
+                <div class="input-group">
+                    <input type="text" id="otpInput" placeholder="Enter 6-Digit OTP" maxlength="6" style="text-align: center; font-size: 20px; letter-spacing: 8px; font-weight: 700;">
+                    <i class="fa-solid fa-shield-check icon"></i>
+                </div>
+                <button class="auth-btn" id="verifyOtpBtn" onclick="window.verifyOTP()">Verify & Complete Setup</button>
+                <button class="btn-outline" onclick="window.backToLoginFromOtp()">Edit Details</button>
+            </div>
+
+            <div class="screen" id="screenForgot">
+                <div class="input-group">
+                    <input type="email" id="resetEmail" placeholder="Enter registered email address">
+                    <i class="fa-regular fa-envelope icon"></i>
+                </div>
+                <button class="auth-btn" id="sendResetOtpBtn" onclick="window.sendResetOTP()">Send Reset OTP <i class="fa-solid fa-paper-plane" style="margin-left: 5px;"></i></button>
+                <button class="btn-outline" onclick="window.backToMain()">Back to Login</button>
+            </div>
+
+            <div class="screen" id="screenReset">
+                <p style="text-align: center; color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Enter the 6-digit OTP sent to your email.</p>
+                <div class="input-group">
+                    <input type="text" id="resetOtpInput" placeholder="6-Digit OTP" maxlength="6" style="text-align: center; font-size: 18px; letter-spacing: 5px; font-weight: 700;">
+                    <i class="fa-solid fa-key icon"></i>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="newPwdInput" placeholder="Create New Password">
+                    <i class="fa-solid fa-lock icon"></i>
+                    <i class="fa-regular fa-eye-slash eye-btn" id="eyeBtnReset" onclick="window.togglePwd('newPwdInput', 'eyeBtnReset')"></i>
+                </div>
+                <button class="auth-btn" id="updatePwdBtn" onclick="window.updatePassword()">Secure Update <i class="fa-solid fa-check" style="margin-left: 5px;"></i></button>
+                <button class="btn-outline" onclick="window.backToMain()">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+
+    <footer class="page-footer">
+        <div class="footer-contact">
+            <span><i class="fa-solid fa-envelope"></i> support@aavira.store</span>
+        </div>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <span>&bull;</span>
+            <a href="#">Terms & Conditions</a>
+            <span>&bull;</span>
+            <a href="#">Help Center</a>
+        </div>
+        <div class="copyright">
+            &copy; 2026 Aavira Fashion. All rights reserved. Designed for Elegance.
+        </div>
+    </footer>
+
+    <div id="toast"><i class="fa-solid fa-circle-info" id="toastIconType"></i><span id="toastMsg" style="margin-left: 8px;">Notification</span></div>
+
+    <script type="module" src="login-script.js"></script>
+</body>
+</html>
