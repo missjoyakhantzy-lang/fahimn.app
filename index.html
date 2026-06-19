@@ -3,343 +3,873 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aavira - Premium Ethnic Wear</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Aavira - Premium App</title>
     
     <script>
-        document.write('<link rel="stylesheet" href="style.css?v=' + new Date().getTime() + '">');
+        const originalWarn = console.warn;
+        console.warn = function(...args) {
+            if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) return; 
+            originalWarn.apply(console, args);
+        };
     </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ethnic-burgundy': '#6A1B29',
+                        'ethnic-gold': '#E5C158',
+                        'modal-dark': '#151517',
+                        'modal-card': '#1c1c1f',
+                        'modal-stroke': '#2d2d30'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom, 20px); }
+        
+        /* Upgraded Animations */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .glow-btn { box-shadow: 0 0 15px rgba(229, 193, 88, 0.4); transition: all 0.3s ease; }
+        .glow-btn:hover { box-shadow: 0 0 25px rgba(229, 193, 88, 0.7); transform: scale(1.05) translateY(-2px); }
+
+        /* ✨ Shimmer Sweep Animation for Arrow Button ✨ */
+        @keyframes shimmer-sweep {
+            0% { transform: translateX(-150%) skewX(-20deg); }
+            100% { transform: translateX(150%) skewX(-20deg); }
+        }
+        .animate-shimmer-sweep {
+            animation: shimmer-sweep 2.5s infinite ease-in-out;
+        }
+
+        /* Premium Skeleton Shimmer Effect */
+        @keyframes premium-shimmer {
+            0% { transform: translateX(-150%); }
+            100% { transform: translateX(150%); }
+        }
+        .premium-skeleton {
+            position: relative;
+            overflow: hidden;
+            background-color: #e5e7eb;
+        }
+        .premium-skeleton::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
+            animation: premium-shimmer 1.5s infinite cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        /* Cart Bounce Animation */
+        @keyframes cart-bounce {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5) translateY(-2px); }
+            100% { transform: scale(1); }
+        }
+        .animate-cart-bounce {
+            animation: cart-bounce 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Editable Profile Name CSS */
+        [contenteditable="true"]:focus { outline: none; border-bottom: 1px dashed rgba(255,255,255,0.5); }
+
+        /* PERFECT WHEEL CSS */
+        .color-wheel-bg {
+            background: conic-gradient(from 180deg, #00ffff, #0000ff, #ff00ff, #ff0000, #ffff00, #00ff00, #00ffff);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5) inset;
+        }
+        .wheel-thumb {
+            width: 26px; height: 26px;
+            border: 3px solid white;
+            border-radius: 50%;
+            position: absolute;
+            transform: translate(-50%, -50%); 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.6);
+            pointer-events: none;
+            transition: transform 0.1s ease-out;
+        }
+        input[type=range].custom-slider { -webkit-appearance: none; width: 100%; background: transparent; height: 6px; border-radius: 3px; outline: none; }
+        input[type=range].custom-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: white; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: transform 0.2s;}
+        input[type=range].custom-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+    </style>
 </head>
-<body>
-    <div class="app-container">
+<body class="bg-gray-100 font-sans selection:bg-[#6A1B29] selection:text-white overflow-x-hidden">
 
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <i class="fa-solid fa-xmark close-sidebar" id="closeSidebarBtn"></i>
-                <div class="user-avatar" id="sidebarAvatar"><i class="fa-regular fa-user"></i></div>
-                <div class="user-info">
-                    <h4 id="sidebarName">Guest User</h4>
-                    <p id="sidebarEmail">Welcome to Aavira</p>
-                    <a href="login.html" class="top-login-btn" id="headerLoginBtn">Login / Sign Up</a>
-                </div>
-            </div>
-            <nav class="sidebar-menu">
-                <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
-                <a href="orders.html"><i class="fa-solid fa-box-open"></i> My Orders</a>
-                <a href="wishlist.html"><i class="fa-solid fa-heart"></i> My Wishlist</a>
-                <a href="make_order.html"><i class="fa-solid fa-cart-shopping"></i> My Cart</a>
-                <div class="sidebar-divider"></div>
-                <a href="#" onclick="window.requestNotificationPermission(event)">
-                    <i class="fa-solid fa-bell" id="sidebarNotifIcon"></i> 
-                    <span id="sidebarNotifText">Enable Notifications</span>
-                </a>
-                <a href="support.html"><i class="fa-solid fa-headset"></i> Customer Support</a>
-                <a href="#" id="nativeShareBtn"><i class="fa-solid fa-share-nodes"></i> Share App</a>
-                <a href="rate.html"><i class="fa-regular fa-star"></i> Rate App</a>
-                <div class="sidebar-divider" id="bottomDivider" style="display: none;"></div>
-                <a href="#" id="sidebarAuthBtn" style="display: none; color: #d32f2f;"><i class="fa-solid fa-right-from-bracket" style="color: #d32f2f;"></i> Logout</a>
-            </nav>
-        </aside>
+<div id="toast" class="fixed bottom-[90px] left-1/2 -translate-x-1/2 bg-gray-900/90 backdrop-blur-md text-white text-xs font-medium px-5 py-2.5 rounded-full shadow-2xl transition-all duration-300 transform translate-y-10 opacity-0 z-[100] whitespace-nowrap flex items-center gap-2 pointer-events-none border border-white/10">
+    <i id="toast-icon" data-lucide="check-circle" class="w-4 h-4 text-ethnic-gold"></i>
+    <span id="toast-msg">Success</span>
+</div>
 
-        <div class="search-overlay" id="searchOverlay">
-            <div class="search-header">
-                <i class="fa-solid fa-arrow-left" onclick="toggleSearch()"></i>
-                <div class="search-input-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="searchInput" placeholder="Search amazing blouses..." oninput="handleSearch()">
-                </div>
+<!-- ======================================================= -->
+<!-- SEARCH OVERLAY                                          -->
+<!-- ======================================================= -->
+<div id="searchOverlay" class="fixed inset-0 bg-[#FAF8F5]/95 backdrop-blur-lg z-[100] transform translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="h-16 border-b border-gray-200/50 flex items-center px-4 gap-3 bg-white/50 shadow-sm">
+        <button onclick="closeSearch()" class="text-gray-500 hover:text-ethnic-burgundy transition-colors"><i data-lucide="arrow-left" class="w-6 h-6"></i></button>
+        <div class="flex-1 bg-white/80 rounded-lg flex items-center px-3 py-2 gap-2 shadow-inner border border-gray-100">
+            <i data-lucide="search" class="w-4 h-4 text-gray-400"></i>
+            <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="Search for Sarees, Lehengas..." class="flex-1 bg-transparent border-none outline-none text-sm font-medium text-gray-800 placeholder-gray-400">
+            <button onclick="document.getElementById('searchInput').value=''; handleSearch()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </div>
+    </div>
+    <div id="searchResults" class="flex-1 overflow-y-auto p-4 space-y-3 bg-transparent">
+        <div class="text-center text-gray-400 text-xs mt-10 font-serif italic flex flex-col items-center gap-2">
+            <i data-lucide="search" class="w-8 h-8 opacity-20"></i>
+            Type something to search our collection...
+        </div>
+    </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- COLOR PICKER MODAL                                      -->
+<!-- ======================================================= -->
+<div id="colorPickerModal" class="fixed inset-0 z-[90] hidden flex-col items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-md opacity-0 transition-opacity duration-300" id="colorModalOverlay" onclick="closeColorModal()"></div>
+    
+    <div class="bg-modal-card w-full max-w-[360px] rounded-[24px] shadow-2xl z-10 transform scale-95 opacity-0 transition-all duration-300 border border-modal-stroke text-white p-5 flex flex-col relative" id="colorModalContent">
+        <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-[#30161d] flex items-center justify-center text-[#e9a1b0]"><i data-lucide="palette" class="w-5 h-5"></i></div>
+                <div><h3 class="font-sans font-semibold text-[13px] tracking-widest uppercase">Choose Colour</h3><p class="text-gray-400 text-[10px] mt-0.5">Pick your perfect shade ✨</p></div>
             </div>
-            <div class="search-results-container" id="searchResults">
-                <p class="search-empty-text"><i class="fa-solid fa-magnifying-glass"></i>Type to search amazing products...</p>
+            <button onclick="closeColorModal()" class="w-8 h-8 rounded-full bg-modal-stroke flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </div>
+
+        <div class="relative w-[260px] h-[260px] mx-auto my-6 select-none touch-none">
+            <div class="absolute -top-7 left-1/2 -translate-x-1/2 text-center text-[#ff4b4b] text-[9px] font-bold">0°<br/>RED</div>
+            <div class="absolute -right-10 top-1/2 -translate-y-1/2 text-center text-[#ffff4b] text-[9px] font-bold">90°<br/>YELLOW</div>
+            <div class="absolute -bottom-7 left-1/2 -translate-x-1/2 text-center text-[#4bffff] text-[9px] font-bold">180°<br/>CYAN</div>
+            <div class="absolute -left-10 top-1/2 -translate-y-1/2 text-center text-[#b04bff] text-[9px] font-bold">270°<br/>PURPLE</div>
+            <div class="absolute -top-3 -right-6 text-center text-[#ffb04b] text-[9px] font-bold">45°<br/>ORANGE</div>
+            <div class="absolute -bottom-3 -right-6 text-center text-[#4bff4b] text-[9px] font-bold">135°<br/>GREEN</div>
+            <div class="absolute -bottom-3 -left-6 text-center text-[#4b4bff] text-[9px] font-bold">225°<br/>BLUE</div>
+            <div class="absolute -top-3 -left-6 text-center text-[#ff4bff] text-[9px] font-bold">315°<br/>PINK</div>
+
+            <div id="pickerWheel" class="color-wheel-bg w-full h-full rounded-full relative cursor-crosshair">
+                <div class="w-[110px] h-[110px] bg-modal-card rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-[0_0_20px_rgba(0,0,0,0.9)_inset] pointer-events-auto flex flex-col items-center justify-center z-10">
+                    <div id="previewColor" class="w-[42px] h-[42px] rounded-full bg-red-500 border-[3px] border-modal-card shadow-[0_0_0_1px_rgba(255,255,255,0.15)] mb-1 transition-colors duration-75"></div>
+                    <span class="text-[8px] tracking-widest text-gray-400 font-medium mt-0.5">PREVIEW</span>
+                    <div class="flex items-center gap-1.5 mt-0.5 cursor-pointer group" onclick="copyHex()"><span id="previewHex" class="text-[11px] font-bold tracking-widest group-hover:text-ethnic-gold transition-colors">#FF0000</span><i data-lucide="copy" class="w-3 h-3 text-gray-500 group-hover:text-ethnic-gold transition-colors"></i></div>
+                </div>
+                <div id="pickerThumb" class="wheel-thumb z-20"></div>
             </div>
         </div>
 
-        <main class="main-content" id="mainScrollArea">
-            <header id="mainHeader">
-                <div class="header-left">
-                    <div class="custom-menu-btn" id="openSidebarBtn"><span></span><span></span><span></span></div>
-                    <a href="index.html" class="logo">Aavira</a>
-                </div>
-                <div class="header-right">
-                    <a href="search.html" style="color: var(--icon-color);"><i class="fa-solid fa-magnifying-glass"></i></a>
-                    <a href="make_order.html" class="cart-container">
-                        <i class="fa-solid fa-cart-shopping"></i><span class="cart-badge" id="topCartBadge">0</span>
-                    </a>
-                </div>
-            </header>
-
-            <section class="banner-wrapper" id="bannerWrapper">
-                <div class="banner-carousel" id="bannerCarousel"></div>
-                <div class="banner-dots" id="bannerDots"></div>
-            </section>
-
-            <section class="features-row">
-                <div class="feature-box">
-                    <i class="fa-solid fa-truck-fast"></i>
-                    <h4>Free Shipping</h4>
-                    <p>On orders above ₹999</p>
-                </div>
-                <div class="feature-box">
-                    <i class="fa-solid fa-money-bill-wave"></i>
-                    <h4>COD Available</h4>
-                    <p>Pay on delivery</p>
-                </div>
-                <div class="feature-box">
-                    <i class="fa-solid fa-shield-halved"></i>
-                    <h4>Secure Payment</h4>
-                    <p>100% secure</p>
-                </div>
-            </section>
-
-            <section>
-                <div class="section-title">
-                    <h3>Shop by Category</h3>
-                </div>
-                <div class="categories-scroll" id="categoriesContainer">
-                    <div class="cat-item"><div class="cat-ring skeleton"></div><span class="skeleton" style="width: 40px; height: 10px; border-radius: 4px;"></span></div>
-                    <div class="cat-item"><div class="cat-ring skeleton"></div><span class="skeleton" style="width: 40px; height: 10px; border-radius: 4px;"></span></div>
-                    <div class="cat-item"><div class="cat-ring skeleton"></div><span class="skeleton" style="width: 40px; height: 10px; border-radius: 4px;"></span></div>
-                    <div class="cat-item"><div class="cat-ring skeleton"></div><span class="skeleton" style="width: 40px; height: 10px; border-radius: 4px;"></span></div>
-                </div>
-            </section>
-
-            <section>
-                <div id="productsContainer"></div>
-                <div style="padding: 10px 20px 30px; width: 100%;">
-                    <a href="product-list.html" class="large-more-btn">
-                        Explore All Blouses <i class="fa-solid fa-arrow-right-long" style="margin-left: 8px;"></i>
-                    </a>
-                </div>
-            </section>
-
-            <div class="magic-color-section">
-                <div class="section-title" style="padding: 0 20px;">
-                    <h3>Shop by Magic Color ✨</h3>
-                </div>
-                <div class="color-circles-wrapper">
-                    <div class="color-item" onclick="openMagicScreen('Red')"><div class="color-node" style="background: #E53935;"></div><span class="color-name">Crimson</span></div>
-                    <div class="color-item" onclick="openMagicScreen('Pink')"><div class="color-node" style="background: #FF4081;"></div><span class="color-name">Rose Pink</span></div>
-                    <div class="color-item" onclick="openMagicScreen('Magenta')"><div class="color-node" style="background: #9C27B0;"></div><span class="color-name">Magenta</span></div>
-                    <div class="color-item" onclick="openMagicScreen('Maroon')"><div class="color-node" style="background: #5D4037;"></div><span class="color-name">Maroon</span></div>
-                    <div class="color-item" onclick="openMagicScreen('Peach')"><div class="color-node" style="background: #FFAB91;"></div><span class="color-name">Peach</span></div>
-                    <div class="color-item" onclick="openMagicScreen('Lavender')"><div class="color-node" style="background: #B39DDB;"></div><span class="color-name">Lavender</span></div>
-                    <div class="color-item" onclick="openMagicScreen('Royal Blue')"><div class="color-node" style="background: #1E88E5;"></div><span class="color-name">Royal Blue</span></div>
-                    <div class="color-item" onclick="openMagicScreen('White')"><div class="color-node" style="background: #FAFAFA; border: 1px solid #ddd;"></div><span class="color-name">Pearl White</span></div>
-                    <div class="color-item" onclick="openMagicScreen('Black')"><div class="color-node" style="background: #212121;"></div><span class="color-name">Midnight</span></div>
-                    <div class="color-item" onclick="openMagicScreen('Gold')"><div class="color-node" style="background: linear-gradient(135deg, #FFD700, #F57F17);"></div><span class="color-name">Gold</span></div>
-                </div>
-            </div>
-
-            <!-- 🔥 NEW PREMIUM WHITE FOOTER 🔥 -->
-            <footer class="premium-footer-white">
-                <div class="footer-top-accent"></div>
-                <div class="footer-main-content">
-                    
-                    <div class="footer-brand-section">
-                        <a href="index.html" class="footer-brand">Aavira</a>
-                        <p class="footer-tagline">Redefining Ethnic Elegance</p>
-                        
-                        <div class="trust-marks">
-                            <div class="t-mark"><i class="fa-solid fa-shield-check"></i> 100% Secure</div>
-                            <div class="t-mark"><i class="fa-solid fa-certificate"></i> Verified Brand</div>
-                            <div class="t-mark"><i class="fa-solid fa-gem"></i> Premium Quality</div>
-                        </div>
-                    </div>
-                    
-                    <div class="footer-about-text">
-                        Welcome to Aavira, India's ultimate destination for premium ethnic wear. We specialize in exclusively crafted designer blouses, blending traditional hand-embroidery with contemporary silhouettes.
-                    </div>
-
-                    <div class="footer-links-grid">
-                        <div class="f-column">
-                            <h4>Quick Links</h4>
-                            <a href="product-list.html">Trending Styles</a>
-                            <a href="profile.html">My Account</a>
-                            <a href="orders.html">Track Order</a>
-                        </div>
-                        <div class="f-column">
-                            <h4>Customer Care</h4>
-                            <a href="support.html">Contact Support</a>
-                            <a href="policy.html">Shipping & Returns</a>
-                            <a href="faq.html">FAQs</a>
-                        </div>
-                    </div>
-
-                    <div class="footer-contact-list">
-                        <h4>Get In Touch</h4>
-                        <div class="f-c-item">
-                            <div class="fc-icon"><i class="fa-solid fa-location-dot"></i></div>
-                            <div>
-                                <strong>Aavira Studio & Headquarters</strong>
-                                <span>Royal Fashion Street, Ring Road<br>Surat, Gujarat, India - 395002</span>
-                            </div>
-                        </div>
-                        <div class="f-c-item" onclick="window.location.href='tel:+919608720622'">
-                            <div class="fc-icon"><i class="fa-solid fa-phone"></i></div>
-                            <div>
-                                <strong>Call or WhatsApp Us</strong>
-                                <span>+91 9608720622 <br><small>(Mon - Sat, 10:00 AM to 7:00 PM)</small></span>
-                            </div>
-                        </div>
-                        <div class="f-c-item" onclick="window.location.href='mailto:support@aavira.store'">
-                            <div class="fc-icon"><i class="fa-solid fa-envelope"></i></div>
-                            <div>
-                                <strong>Email Support</strong>
-                                <span>support@aavira.store</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="footer-socials">
-                        <a href="https://www.instagram.com/aavira_co.in" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#"><i class="fa-brands fa-youtube"></i></a>
-                    </div>
-
-                    <div class="footer-copyright">
-                        <strong>&copy; 2026 Aavira.</strong> All Rights Reserved.<br>
-                        Crafted with <i class="fa-solid fa-heart" style="color:var(--primary-color); font-size:10px; margin:0 3px;"></i> in India
-                    </div>
-                </div>
-            </footer>
-        </main>
-
-        <div id="magicScreen">
-            <div class="magic-header">
-                <h3 id="magicTitle">Magic Colors ✨</h3>
-                <div class="magic-close-btn" onclick="closeMagicScreen()"><i class="fa-solid fa-xmark"></i></div>
-            </div>
-            <div class="magic-chip-bar">
-                <div class="magic-chip active" onclick="filterMagicProducts(this, 'All Designs')">All Designs</div>
-                <div class="magic-chip" onclick="filterMagicProducts(this, 'Premium Silk')">Premium Silk</div>
-                <div class="magic-chip" onclick="filterMagicProducts(this, 'Hand Embroidered')">Hand Embroidered</div>
-                <div class="magic-chip" onclick="filterMagicProducts(this, 'Trending Now')">Trending Now</div>
-            </div>
-            <div class="magic-body" id="magicProductsContainer"></div>
+        <div class="space-y-4 mt-2 px-1">
+            <div class="flex items-center gap-3"><i data-lucide="droplets" class="w-4 h-4 text-gray-400"></i><span class="text-[10px] text-gray-300 w-16">Saturation</span><input type="range" id="satSlider" min="0" max="100" value="100" class="custom-slider flex-1"><span class="text-[10px] text-gray-400 w-8 text-right" id="satVal">100%</span></div>
+            <div class="flex items-center gap-3"><i data-lucide="sun" class="w-4 h-4 text-gray-400"></i><span class="text-[10px] text-gray-300 w-16">Brightness</span><input type="range" id="lightSlider" min="0" max="100" value="50" class="custom-slider flex-1"><span class="text-[10px] text-gray-400 w-8 text-right" id="lightVal">50%</span></div>
         </div>
 
-        <nav class="bottom-nav" id="bottomNav">
-            <ul id="navUl">
-                <div class="indicator" id="navIndicator"></div>
-                <li class="nav-list-item active"><a href="index.html"><span class="icon"><i class="fa-solid fa-house"></i></span><span class="text">Home</span></a></li>
-                <li class="nav-list-item"><a href="categories.html"><span class="icon"><i class="fa-solid fa-border-all"></i></span><span class="text">Categories</span></a></li>
-                <li class="nav-list-item"><a href="make_order.html"><span class="icon"><i class="fa-solid fa-cart-shopping"></i></span><span class="text">Cart</span></a></li>
-                <li class="nav-list-item"><a href="wishlist.html"><span class="icon"><i class="fa-regular fa-heart"></i></span><span class="text">Wishlist</span></a></li>
-                <li class="nav-list-item"><a href="profile.html"><span class="icon"><i class="fa-regular fa-user"></i></span><span class="text">Profile</span></a></li>
-            </ul>
-        </nav>
-
-        <div id="welcomeLoginOverlay" onclick="closeWelcomePopup()">
-            <div class="welcome-modal" onclick="event.stopPropagation()">
-                <div class="modal-glow" style="background: var(--primary-color);"></div>
-                <div class="offer-badge">15% OFF</div>
-                <div class="welcome-icon" style="color: var(--primary-color); border: 1px solid rgba(216, 27, 96, 0.2);">
-                    <i class="fa-solid fa-gift animated-gift"></i>
-                </div>
-                <h3>Welcome Gift! ✨</h3>
-                <p>Sign in now to unlock a flat <strong>15% discount</strong> on your first order of premium ethnic wear.</p>
-                <div class="welcome-actions">
-                    <a href="login.html" class="solid-buy-btn">Login / Sign Up Now</a>
-                    <button class="welcome-dismiss-btn" onclick="closeWelcomePopup()">Skip Offer</button>
-                </div>
+        <div class="mt-6 px-1">
+            <h4 class="text-[9px] font-bold tracking-widest text-gray-400 mb-3 uppercase">Recent Colours</h4>
+            <div class="flex justify-center flex-wrap gap-3" id="recentColorsList">
+                <div class="w-[30px] h-[30px] shrink-0 rounded-full bg-[#E52D2D] border border-white/20 cursor-pointer hover:scale-110 transition-transform"></div>
+                <div class="w-[30px] h-[30px] shrink-0 rounded-full bg-[#E52D8A] border border-white/20 cursor-pointer hover:scale-110 transition-transform"></div>
+                <div class="w-[30px] h-[30px] shrink-0 rounded-full bg-[#2D56E5] border border-white/20 cursor-pointer hover:scale-110 transition-transform"></div>
+                <div class="w-[30px] h-[30px] shrink-0 rounded-full bg-[#1EB842] border border-white/20 cursor-pointer hover:scale-110 transition-transform"></div>
+                <div class="w-[30px] h-[30px] shrink-0 rounded-full bg-[#F5B50A] border-[2px] border-white cursor-pointer hover:scale-110 transition-transform shadow-[0_0_12px_rgba(245,181,10,0.6)]"></div>
+                <div class="w-[30px] h-[30px] shrink-0 rounded-full bg-[#F5780A] border border-white/20 cursor-pointer hover:scale-110 transition-transform"></div>
+                <div class="w-[30px] h-[30px] shrink-0 rounded-full bg-[#7D2DE5] border border-white/20 cursor-pointer hover:scale-110 transition-transform"></div>
             </div>
         </div>
 
-        <div id="notificationOverlay" onclick="closeNotificationPopup()">
-            <div class="welcome-modal" onclick="event.stopPropagation()">
-                <div class="modal-glow" style="background: var(--secondary-color);"></div>
-                <div class="welcome-icon" style="color: var(--secondary-color); border: 1px solid rgba(212, 175, 55, 0.3);">
-                    <i class="fa-solid fa-bell animated-bell"></i>
-                </div>
-                <h3>Stay Updated!</h3>
-                <p>Enable notifications to get real-time order tracking, flash sale alerts, and exclusive premium offers.</p>
-                <div class="trust-badge">
-                    <i class="fa-solid fa-shield-halved"></i> We promise not to spam you.
-                </div>
-                <div class="welcome-actions">
-                    <button class="solid-buy-btn" onclick="window.requestNotificationPermission(event)">Enable Notifications</button>
-                    <button class="welcome-dismiss-btn" onclick="closeNotificationPopup()">Not Now</button>
-                </div>
+        <div class="flex gap-3 mt-8">
+            <button onclick="closeColorModal()" class="flex-1 py-3.5 rounded-xl border border-modal-stroke text-[11px] font-bold tracking-wider text-gray-300 hover:bg-white/5 transition-colors">CANCEL</button>
+            <button onclick="applyColor()" class="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-[#8a263e] to-[#6A1B29] text-[11px] font-bold tracking-wider text-white shadow-lg flex items-center justify-center gap-2 hover:brightness-110 transition-all"><i data-lucide="check" class="w-4 h-4"></i> APPLY COLOUR</button>
+        </div>
+        <p class="text-center text-[9px] text-gray-500 mt-4 flex items-center justify-center gap-1.5 font-medium"><i data-lucide="mouse-pointer-click" class="w-3 h-3"></i> Drag around the wheel or tap to select</p>
+    </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- SIDEBAR MENU (PREMIUM LOOK)                             -->
+<!-- ======================================================= -->
+<div id="sidebarOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] hidden opacity-0 transition-opacity duration-300 touch-none" onclick="closeSidebar()"></div>
+<div id="sidebar" class="fixed top-0 left-0 w-[85%] max-w-[340px] h-full bg-white z-[70] transform -translate-x-full transition-transform duration-300 shadow-2xl flex flex-col font-sans">
+    
+    <!-- HEADER -->
+    <div class="relative pt-12 pb-6 px-6 bg-white border-b border-gray-100">
+        <button onclick="closeSidebar()" class="absolute top-5 right-5 w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">
+            <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+        
+        <div class="flex items-start gap-4">
+            <div class="w-[60px] h-[60px] shrink-0 bg-[#E91E63] rounded-full flex items-center justify-center text-white shadow-[0_4px_15px_rgba(233,30,99,0.3)]">
+                <i data-lucide="user" class="w-7 h-7"></i>
+            </div>
+            
+            <div class="flex flex-col items-start pt-1">
+                <h3 id="profileName" class="text-gray-900 font-bold text-[18px] leading-tight">Guest User</h3>
+                <p class="text-gray-500 text-[12px] mt-0.5 mb-3 font-medium">Welcome to Aavira</p>
+                <a href="login.html" class="bg-[#E91E63] text-white text-[11px] font-bold tracking-wide px-4 py-1.5 rounded-full shadow-md hover:bg-[#d81b60] transition-colors">Login / Sign Up</a>
             </div>
         </div>
-
-        <div id="alertOverlay" onclick="closeAlertModal()">
-            <div class="welcome-modal" style="padding-top: 25px;">
-                <div id="alertIcon" style="margin-bottom: 15px;"></div>
-                <h3 id="alertTitle" style="font-size: 20px; font-weight: 700; color: #111;">Alert</h3>
-                <p id="alertMessage" style="font-size: 13px; color: #555; margin-bottom: 25px; line-height: 1.5;"></p>
-                <button class="solid-buy-btn" onclick="closeAlertModal()">Okay</button>
-            </div>
-        </div>
-
     </div>
 
-    <script src="user_data.js?v=1.0"></script>
-    <script>
-        document.write('<script src="script.js?v=' + new Date().getTime() + '"><\/script>');
-    </script>
+    <!-- LINKS WITH BACKGROUND ICONS & ARROWS -->
+    <div class="flex-1 overflow-y-auto py-4 px-3 space-y-1 bg-white">
+        
+        <a href="index.html" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group">
+            <div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white group-hover:shadow-sm transition-all mr-4">
+                <i data-lucide="home" class="w-[18px] h-[18px] text-gray-600 group-hover:text-ethnic-burgundy transition-colors stroke-[2]"></i>
+            </div>
+            <span class="text-[14px] font-semibold text-gray-800">Home</span>
+            <i data-lucide="chevron-right" class="w-[16px] h-[16px] text-gray-300 ml-auto group-hover:text-gray-500 transition-colors"></i>
+        </a>
+        
+        <a href="categories.html" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group">
+            <div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white group-hover:shadow-sm transition-all mr-4">
+                <i data-lucide="layout-grid" class="w-[18px] h-[18px] text-gray-600 group-hover:text-ethnic-burgundy transition-colors stroke-[2]"></i>
+            </div>
+            <span class="text-[14px] font-semibold text-gray-800">Shop by Category</span>
+            <i data-lucide="chevron-right" class="w-[16px] h-[16px] text-gray-300 ml-auto group-hover:text-gray-500 transition-colors"></i>
+        </a>
 
-    <!-- 🔥 FIREBASE MESSAGING SCRIPT ADDED HERE FOR HOME PAGE 🔥 -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getMessaging, getToken, onMessage, isSupported } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-messaging.js";
+        <a href="orders.html" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group">
+            <div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white group-hover:shadow-sm transition-all mr-4">
+                <i data-lucide="package" class="w-[18px] h-[18px] text-gray-600 group-hover:text-ethnic-burgundy transition-colors stroke-[2]"></i>
+            </div>
+            <span class="text-[14px] font-semibold text-gray-800">My Orders</span>
+            <i data-lucide="chevron-right" class="w-[16px] h-[16px] text-gray-300 ml-auto group-hover:text-gray-500 transition-colors"></i>
+        </a>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAzuolDDiCoMWiJeSRmpo9my2DcxyBj_jA",
-            authDomain: "messaging-d0a0c.firebaseapp.com",
-            projectId: "messaging-d0a0c",
-            storageBucket: "messaging-d0a0c.firebasestorage.app",
-            messagingSenderId: "271709445992",
-            appId: "1:271709445992:web:7a0c706288d88fee6a80dd"
-        };
+        <a href="wishlist.html" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group">
+            <div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white group-hover:shadow-sm transition-all mr-4">
+                <i data-lucide="heart" class="w-[18px] h-[18px] text-gray-600 group-hover:text-[#E91E63] transition-colors stroke-[2]"></i>
+            </div>
+            <span class="text-[14px] font-semibold text-gray-800">My Wishlist</span>
+            <i data-lucide="chevron-right" class="w-[16px] h-[16px] text-gray-300 ml-auto group-hover:text-gray-500 transition-colors"></i>
+        </a>
 
-        const app = initializeApp(firebaseConfig);
+        <a href="make_order.html" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group">
+            <div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white group-hover:shadow-sm transition-all mr-4">
+                <i data-lucide="shopping-cart" class="w-[18px] h-[18px] text-gray-600 group-hover:text-ethnic-burgundy transition-colors stroke-[2]"></i>
+            </div>
+            <span class="text-[14px] font-semibold text-gray-800">My Cart</span>
+            <i data-lucide="chevron-right" class="w-[16px] h-[16px] text-gray-300 ml-auto group-hover:text-gray-500 transition-colors"></i>
+        </a>
 
-        isSupported().then((supported) => {
-            if (supported) {
-                const messaging = getMessaging(app);
-                
-                window.requestNotificationPermission = async function(e) {
-                    if(e) e.preventDefault();
-                    try {
-                        const permission = await Notification.requestPermission();
-                        if (permission === 'granted') {
-                            const token = await getToken(messaging, { vapidKey: 'BIvjJEeeRfowF8ZpdgRKn-vH_rNOzW48Rd9Y37kNdeISUsmKkiihJtFPc4c0rWbFBOhb4kJ3Yj-5jTl2kO9-yAU' });
-                            if (token) {
-                                window.showCustomAlert("Awesome!", "Notifications enabled successfully. You're ready for premium offers.", "success");
-                                window.closeNotificationPopup();
-                                const sidebarText = document.getElementById('sidebarNotifText');
-                                const sidebarIcon = document.getElementById('sidebarNotifIcon');
-                                if (sidebarText) sidebarText.innerText = "Notifications Enabled";
-                                if (sidebarIcon) sidebarIcon.style.color = "var(--success-green)";
-                            }
-                        } else {
-                            window.closeNotificationPopup();
-                        }
-                    } catch (err) {
-                        console.log(err);
-                    }
-                };
+        <!-- Divider -->
+        <div class="h-[1px] bg-gray-100 my-4 mx-4"></div>
 
-                onMessage(messaging, (payload) => {
-                    window.showCustomAlert(
-                        payload.notification.title || "New Offer!", 
-                        payload.notification.body, 
-                        "success"
-                    );
-                });
-            } else {
-                window.requestNotificationPermission = function(e) {
-                    if(e) e.preventDefault();
-                    window.showCustomAlert("Notice", "Push notifications are perfectly supported in Live Browser, but not inside this test app preview.", "error");
-                    window.closeNotificationPopup();
-                };
-            }
+        <a href="#" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group">
+            <div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white group-hover:shadow-sm transition-all mr-4">
+                <i data-lucide="bell" class="w-[18px] h-[18px] text-gray-600 group-hover:text-blue-500 transition-colors stroke-[2]"></i>
+            </div>
+            <span class="text-[14px] font-semibold text-gray-800">Notifications</span>
+            <i data-lucide="chevron-right" class="w-[16px] h-[16px] text-gray-300 ml-auto group-hover:text-gray-500 transition-colors"></i>
+        </a>
+
+        <a href="support.html" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group">
+            <div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white group-hover:shadow-sm transition-all mr-4">
+                <i data-lucide="headphones" class="w-[18px] h-[18px] text-gray-600 group-hover:text-green-500 transition-colors stroke-[2]"></i>
+            </div>
+            <span class="text-[14px] font-semibold text-gray-800">Customer Support</span>
+            <i data-lucide="chevron-right" class="w-[16px] h-[16px] text-gray-300 ml-auto group-hover:text-gray-500 transition-colors"></i>
+        </a>
+
+        <a href="#" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group">
+            <div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white group-hover:shadow-sm transition-all mr-4">
+                <i data-lucide="share-2" class="w-[18px] h-[18px] text-gray-600 group-hover:text-purple-500 transition-colors stroke-[2]"></i>
+            </div>
+            <span class="text-[14px] font-semibold text-gray-800">Share App</span>
+            <i data-lucide="chevron-right" class="w-[16px] h-[16px] text-gray-300 ml-auto group-hover:text-gray-500 transition-colors"></i>
+        </a>
+
+        <a href="rate.html" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group">
+            <div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white group-hover:shadow-sm transition-all mr-4">
+                <i data-lucide="star" class="w-[18px] h-[18px] text-gray-600 group-hover:text-ethnic-gold transition-colors stroke-[2]"></i>
+            </div>
+            <span class="text-[14px] font-semibold text-gray-800">Rate App</span>
+            <i data-lucide="chevron-right" class="w-[16px] h-[16px] text-gray-300 ml-auto group-hover:text-gray-500 transition-colors"></i>
+        </a>
+    </div>
+</div>
+
+<div class="max-w-[420px] mx-auto min-h-screen bg-[#FAF8F5] shadow-2xl relative text-slate-800 pb-[80px]">
+    
+    <!-- ✨ AUTO HIDE HEADER ON SCROLL ✨ -->
+    <header id="main-header" class="sticky top-0 z-40 bg-[#FAF8F5]/60 backdrop-blur-md transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.8,0.25,1)]">
+        <div class="mx-auto px-4 h-16 flex items-center justify-between">
+            
+            <button onclick="openSidebar()" class="w-10 h-10 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-gray-100 flex flex-col items-center justify-center gap-[4px] hover:bg-gray-50 transition-colors group">
+                <span class="w-[18px] h-[2px] bg-gray-800 rounded-full -ml-[4px] group-hover:w-[14px] transition-all"></span>
+                <span class="w-[22px] h-[2px] bg-gray-800 rounded-full"></span>
+                <span class="w-[14px] h-[2px] bg-gray-800 rounded-full -ml-[8px] group-hover:w-[18px] transition-all"></span>
+            </button>
+
+            <div class="flex flex-col items-center justify-center absolute left-1/2 -translate-x-1/2">
+                <h1 class="font-serif text-3xl text-ethnic-burgundy leading-none mb-0.5">Aavira</h1>
+                <p class="text-[6.5px] font-bold tracking-[0.25em] text-gray-800 uppercase">Premium Ethnic</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="openSearch()" class="p-1 hover:opacity-70 transition-opacity"><i data-lucide="search" class="w-5 h-5"></i></button>
+                <button class="p-1 relative hover:opacity-70 transition-opacity" onclick="window.location.href='make_order.html'">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                    <span id="cart-badge" class="absolute -top-1 -right-1 w-4 h-4 bg-ethnic-burgundy text-white text-[9px] font-bold rounded-full flex items-center justify-center border border-[#FAF8F5] hidden transition-transform duration-200">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="w-full py-2">
+        
+        <div class="relative w-full h-[55vh] group reveal">
+            <div id="bannerCarousel" class="w-full h-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar bg-gray-200 premium-skeleton"></div>
+            <div id="banner-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-20"></div>
+        </div>
+
+        <section class="px-4 space-y-3 pt-6 reveal">
+            <h3 class="font-serif text-[20px] font-semibold text-[#2D2D2D]">Explore Categories</h3>
+            <div id="category-container" class="flex justify-between items-start w-full overflow-x-auto no-scrollbar gap-4 pb-2"></div>
+        </section>
+
+        <!-- TRENDING NOW -->
+        <section class="px-4 space-y-4 reveal pt-8">
+            <div class="flex justify-between items-end">
+                <div class="flex items-center gap-2"><span class="h-[24px] w-[4px] bg-ethnic-gold block rounded-full"></span><div><h3 class="font-serif text-[20px] font-semibold text-[#2D2D2D] leading-none mb-1">Trending Now</h3></div></div>
+                <button class="text-[11px] font-semibold text-ethnic-burgundy hover:underline">View all</button>
+            </div>
+            <div id="trending-container" class="flex flex-row gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4 pr-4 -mr-4 pt-1"></div>
+        </section>
+        
+        <!-- NEW ARRIVALS -->
+        <section class="px-4 space-y-4 pt-8 reveal">
+            <div class="flex justify-between items-center text-center w-full">
+                <div class="h-px bg-gray-300 flex-1"></div><h3 class="font-serif text-[20px] font-semibold text-[#2D2D2D] px-4">New Arrivals</h3><div class="h-px bg-gray-300 flex-1"></div>
+            </div>
+            <div id="new-arrivals-container" class="grid grid-cols-2 gap-3 pt-2"></div>
+        </section>
+
+        <!-- TESTIMONIALS -->
+        <section class="bg-ethnic-burgundy/5 py-8 mt-10 reveal">
+            <h3 class="font-serif text-[20px] font-semibold text-[#2D2D2D] text-center mb-6">Aavira Muses</h3>
+            <div class="flex overflow-x-auto no-scrollbar snap-x snap-mandatory px-4 gap-4 pb-4">
+                <div class="snap-center shrink-0 w-[260px] bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div class="flex text-ethnic-gold mb-3">
+                        <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i><i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i><i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i><i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i><i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                    </div>
+                    <p class="text-xs text-gray-600 font-serif italic mb-4 leading-relaxed">"The quality of the silk is unmatched. Wore the burgundy lehenga for my sister's wedding and received endless compliments!"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 overflow-hidden"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100" class="w-full h-full object-cover"/></div>
+                        <div><h6 class="text-[10px] font-bold text-gray-800">Rhea Sharma</h6><span class="text-[8px] text-gray-400">Verified Buyer</span></div>
+                    </div>
+                </div>
+                <div class="snap-center shrink-0 w-[260px] bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div class="flex text-ethnic-gold mb-3">
+                        <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i><i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i><i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i><i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i><i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                    </div>
+                    <p class="text-xs text-gray-600 font-serif italic mb-4 leading-relaxed">"Beautiful craftsmanship and very fast delivery. The packaging itself felt so premium. Will definitely shop again."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 overflow-hidden"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=100" class="w-full h-full object-cover"/></div>
+                        <div><h6 class="text-[10px] font-bold text-gray-800">Karan Patel</h6><span class="text-[8px] text-gray-400">Verified Buyer</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="recent-section" class="px-4 space-y-4 pt-6 pb-6 hidden reveal">
+            <h3 class="font-serif text-[20px] font-semibold text-[#2D2D2D]">Recently Viewed</h3>
+            <div id="recent-container" class="flex flex-row gap-4 overflow-x-auto no-scrollbar snap-x pb-4 pr-4 -mr-4 pt-1"></div>
+        </section>
+
+        <!-- PREMIUM COMPANY FOOTER -->
+        <footer class="bg-white border-t border-gray-100 mt-6 pt-10 pb-28 px-6 reveal">
+            <div class="flex flex-col items-center text-center mb-8">
+                <h2 class="font-serif text-4xl text-ethnic-burgundy mb-2">Aavira</h2>
+                <p class="text-[9px] font-bold tracking-[0.25em] text-ethnic-gold uppercase mb-4">Premium Ethnic Wear</p>
+                <p class="text-xs text-gray-500 leading-relaxed font-sans max-w-[280px]">
+                    Aavira is India's most trusted destination for authentic, handcrafted ethnic elegance. We blend traditional artistry with modern luxury to bring you timeless masterpieces.
+                </p>
+            </div>
+
+            <div class="flex justify-center gap-4 mb-8 border-y border-gray-50 py-4">
+                <div class="flex flex-col items-center gap-1.5">
+                    <div class="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center text-green-600"><i data-lucide="shield-check" class="w-4 h-4"></i></div>
+                    <span class="text-[9px] font-semibold text-gray-600 uppercase">100% Verified</span>
+                </div>
+                <div class="flex flex-col items-center gap-1.5">
+                    <div class="w-8 h-8 rounded-full bg-ethnic-burgundy/5 flex items-center justify-center text-ethnic-burgundy"><i data-lucide="gem" class="w-4 h-4"></i></div>
+                    <span class="text-[9px] font-semibold text-gray-600 uppercase">Premium</span>
+                </div>
+                <div class="flex flex-col items-center gap-1.5">
+                    <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600"><i data-lucide="truck" class="w-4 h-4"></i></div>
+                    <span class="text-[9px] font-semibold text-gray-600 uppercase">Fast Delivery</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6 mb-8">
+                <div>
+                    <h4 class="font-serif text-[15px] font-semibold text-gray-800 mb-3 border-b border-gray-100 pb-1 inline-block">Quick Links</h4>
+                    <ul class="space-y-2.5">
+                        <li><a href="categories.html" class="text-xs text-gray-500 hover:text-ethnic-burgundy transition-colors">Shop Collection</a></li>
+                        <li><a href="#" class="text-xs text-gray-500 hover:text-ethnic-burgundy transition-colors">About Us</a></li>
+                        <li><a href="orders.html" class="text-xs text-gray-500 hover:text-ethnic-burgundy transition-colors">Track Order</a></li>
+                        <li><a href="wishlist.html" class="text-xs text-gray-500 hover:text-ethnic-burgundy transition-colors">My Wishlist</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-serif text-[15px] font-semibold text-gray-800 mb-3 border-b border-gray-100 pb-1 inline-block">Support</h4>
+                    <ul class="space-y-2.5">
+                        <li><a href="support.html" class="text-xs text-gray-500 hover:text-ethnic-burgundy transition-colors">Help Center</a></li>
+                        <li><a href="#" class="text-xs text-gray-500 hover:text-ethnic-burgundy transition-colors">Shipping Policy</a></li>
+                        <li><a href="#" class="text-xs text-gray-500 hover:text-ethnic-burgundy transition-colors">Returns & Refunds</a></li>
+                        <li><a href="#" class="text-xs text-gray-500 hover:text-ethnic-burgundy transition-colors">Size Guide</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-5 rounded-2xl mb-8">
+                <h4 class="font-serif text-[15px] font-semibold text-gray-800 mb-4">Contact Us</h4>
+                <div class="space-y-3">
+                    <a href="mailto:support@aavira.store" class="flex items-center gap-3 text-xs text-gray-600 hover:text-ethnic-burgundy transition-colors group">
+                        <div class="w-7 h-7 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:bg-ethnic-burgundy group-hover:text-white transition-colors"><i data-lucide="mail" class="w-3.5 h-3.5"></i></div>
+                        <span class="font-medium">support@aavira.store</span>
+                    </a>
+                    <div class="flex items-start gap-3 text-xs text-gray-600">
+                        <div class="w-7 h-7 rounded-full bg-white flex items-center justify-center shadow-sm shrink-0"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-gray-500"></i></div>
+                        <span class="pt-1.5 leading-relaxed">Aavira Headquarters, Royal Fashion Street, Surat, Gujarat - 395002</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ✨ FIXED ORIGINAL SVG SOCIAL ICONS ✨ -->
+            <div class="flex flex-col items-center mb-6">
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Join Our Community</span>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 text-white flex items-center justify-center shadow-md hover:scale-110 transition-transform">
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm3.98-10.98a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.88z"/></svg>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-[#1877F2] text-white flex items-center justify-center shadow-md hover:scale-110 transition-transform">
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.323-.593 1.323-1.325V1.325C24 .593 23.407 0 22.675 0z"/></svg>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-[#FF0000] text-white flex items-center justify-center shadow-md hover:scale-110 transition-transform">
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-[#000000] text-white flex items-center justify-center shadow-md hover:scale-110 transition-transform">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M13.6823 10.6218L20.2391 3H18.6854L12.9921 9.61788L8.44486 3H3.2002L10.0765 13.0074L3.2002 21H4.75404L10.7663 14.0113L15.5685 21H20.8131L13.6819 10.6218H13.6823ZM11.5541 13.0956L10.8574 12.0991L5.31391 4.16971H7.70053L12.1742 10.5689L12.8709 11.5655L18.6861 19.8835H16.2995L11.5541 13.096V13.0956Z"/></svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="text-center space-y-2">
+                <p class="text-[10px] text-gray-400">© 2026 Aavira. All Rights Reserved.</p>
+                <div class="flex justify-center gap-3 text-[9px] text-gray-400">
+                    <a href="#" class="hover:text-gray-600">Privacy Policy</a>
+                    <span>|</span>
+                    <a href="#" class="hover:text-gray-600">Terms of Service</a>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- FLOATING ACTIONS -->
+    <div class="fixed bottom-[90px] right-4 flex flex-col gap-3 z-50">
+        <button onclick="openColorModal()" class="glow-btn bg-modal-dark/90 backdrop-blur-md text-[#e9a1b0] w-[52px] h-[52px] rounded-full shadow-2xl flex items-center justify-center border-2 border-modal-stroke">
+            <i data-lucide="palette" class="w-6 h-6"></i>
+        </button>
+
+        <a href="https://wa.me/910000000000" target="_blank" class="bg-[#25D366] text-white w-[52px] h-[52px] rounded-full shadow-xl hover:scale-105 transition-transform flex items-center justify-center border border-white/20">
+            <i data-lucide="message-circle" class="w-6 h-6"></i>
+        </a>
+    </div>
+
+    <!-- ✨ UPGRADED ROUND BOTTOM NAVIGATION ✨ -->
+    <nav class="fixed bottom-0 w-full max-w-[420px] bg-white/80 backdrop-blur-xl border-t border-gray-100 z-50 flex justify-around items-center px-2 py-1 pb-safe shadow-[0_-10px_30px_-10px_rgba(0,0,0,0.05)]">
+        <a href="index.html" class="flex flex-col items-center justify-center w-[54px] h-[54px] gap-0.5 text-ethnic-burgundy bg-ethnic-burgundy/10 active:bg-ethnic-burgundy/20 rounded-full transition-all active:scale-95">
+            <i data-lucide="home" class="w-[20px] h-[20px] stroke-[2.5]"></i>
+            <span class="text-[9px] font-bold leading-none mt-1">Home</span>
+        </a>
+        <a href="categories.html" class="flex flex-col items-center justify-center w-[54px] h-[54px] gap-0.5 text-gray-400 hover:text-ethnic-burgundy hover:bg-gray-50 active:bg-gray-100 rounded-full transition-all active:scale-95">
+            <i data-lucide="layout-grid" class="w-[20px] h-[20px] stroke-[2]"></i>
+            <span class="text-[9px] font-medium leading-none mt-1">Category</span>
+        </a>
+        <a href="wishlist.html" class="flex flex-col items-center justify-center w-[54px] h-[54px] gap-0.5 text-gray-400 hover:text-ethnic-burgundy hover:bg-gray-50 active:bg-gray-100 rounded-full transition-all active:scale-95">
+            <i data-lucide="heart" class="w-[20px] h-[20px] stroke-[2]"></i>
+            <span class="text-[9px] font-medium leading-none mt-1">Wishlist</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center justify-center w-[54px] h-[54px] gap-0.5 text-gray-400 hover:text-ethnic-burgundy hover:bg-gray-50 active:bg-gray-100 rounded-full transition-all active:scale-95">
+            <i data-lucide="user" class="w-[20px] h-[20px] stroke-[2]"></i>
+            <span class="text-[9px] font-medium leading-none mt-1">Profile</span>
+        </a>
+    </nav>
+</div>
+
+<!-- ========================================================================= -->
+<!-- ORIGINAL DATA FILE                                                        -->
+<!-- ========================================================================= -->
+<script src="user_data.js"></script>
+
+<script>
+    window.allProductsList = [];
+
+    // ✨ SCROLL: HIDE/SHOW HEADER & GLASS EFFECT ✨
+    let lastScrollTop = 0;
+    const mainHeader = document.getElementById('main-header');
+    
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // 1. Glass Effect
+        if(scrollTop > 10) {
+            mainHeader.classList.add('shadow-md', 'bg-white/90', 'border-b', 'border-gray-200/50');
+            mainHeader.classList.remove('bg-[#FAF8F5]/60');
+        } else {
+            mainHeader.classList.remove('shadow-md', 'bg-white/90', 'border-b', 'border-gray-200/50');
+            mainHeader.classList.add('bg-[#FAF8F5]/60');
+        }
+
+        // 2. Hide/Show Animation on Scroll
+        if (scrollTop > lastScrollTop && scrollTop > 80) {
+            // Scrolling down -> Hide
+            mainHeader.style.transform = 'translateY(-100%)';
+        } else {
+            // Scrolling up -> Show
+            mainHeader.style.transform = 'translateY(0)';
+        }
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    });
+
+    // Editable Display Name Logic
+    function saveProfileName() {
+        const nameNode = document.getElementById('profileName');
+        const name = nameNode.innerText.trim();
+        if (name === "") {
+            nameNode.innerText = "Guest User";
+            localStorage.setItem('aavira_display_name', "Guest User");
+        } else {
+            localStorage.setItem('aavira_display_name', name);
+            showToast("Profile name updated!", "check-circle");
+        }
+    }
+
+    // ==========================================
+    // CART LOGIC 
+    // ==========================================
+    window.updateCartCount = function() {
+        let cart = JSON.parse(localStorage.getItem('aavira_cart')) || [];
+        const badge = document.getElementById('cart-badge');
+        badge.innerText = cart.length;
+        if(cart.length > 0) badge.classList.remove('hidden');
+        else badge.classList.add('hidden');
+    }
+
+    // ==========================================
+    // SEARCH OVERLAY LOGIC
+    // ==========================================
+    function openSearch() {
+        document.getElementById('searchOverlay').classList.remove('translate-x-full');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => document.getElementById('searchInput').focus(), 300);
+    }
+    
+    function closeSearch() {
+        document.getElementById('searchOverlay').classList.add('translate-x-full');
+        document.body.style.overflow = '';
+    }
+
+    function handleSearch() {
+        const query = document.getElementById('searchInput').value.toLowerCase().trim();
+        const container = document.getElementById('searchResults');
+        
+        if(!query) {
+            container.innerHTML = '<div class="text-center text-gray-400 text-xs mt-10 font-serif italic flex flex-col items-center gap-2"><i data-lucide="search" class="w-8 h-8 opacity-20"></i>Type something to search our collection...</div>';
+            lucide.createIcons(); return;
+        }
+
+        const filtered = window.allProductsList.filter(p => p.name.toLowerCase().includes(query));
+        if(filtered.length === 0) {
+            container.innerHTML = '<div class="text-center text-gray-400 text-xs mt-10 font-serif italic">No products found matching your search.</div>';
+            return;
+        }
+
+        let html = '';
+        filtered.forEach(p => {
+            let price = Number(p.price) || 0; let mrp = Number(p.mrp) || price;
+            html += `
+            <div class="flex gap-3 bg-white/80 p-2.5 rounded-xl shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-white/50 cursor-pointer hover:shadow-md transition-shadow" onclick="goToProduct('${p.id}')">
+                <img src="${p.img}" class="w-[72px] h-[72px] object-cover rounded-lg bg-[#F9F9F9]" />
+                <div class="flex-1 flex flex-col justify-center">
+                    <p class="text-[8px] tracking-widest text-gray-400 uppercase font-bold mb-0.5">Aavira Luxe</p>
+                    <h4 class="text-xs font-medium text-gray-800 line-clamp-2">${p.name}</h4>
+                    <div class="mt-1.5 flex items-baseline gap-2">
+                        <span class="text-sm font-bold text-ethnic-burgundy">₹${price}</span>
+                        ${mrp > price ? `<span class="text-[10px] text-gray-400 line-through">₹${mrp}</span>` : ''}
+                    </div>
+                </div>
+            </div>`;
         });
-    </script>
+        container.innerHTML = html;
+    }
+
+    // ==========================================
+    // COLOR WHEEL MATH 
+    // ==========================================
+    let colorData = { h: 45, s: 100, l: 50, hex: '#FFB04B' }; 
+    let isDragging = false;
+    const wheel = document.getElementById('pickerWheel'), thumb = document.getElementById('pickerThumb');
+    const preview = document.getElementById('previewColor'), hexText = document.getElementById('previewHex');
+    const satInput = document.getElementById('satSlider'), lightInput = document.getElementById('lightSlider');
+    
+    function hslToHex(h, s, l) {
+        l /= 100; const a = s * Math.min(l, 1 - l) / 100;
+        const f = n => { const k = (n + h / 30) % 12; const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1); return Math.round(255 * color).toString(16).padStart(2, '0'); };
+        return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
+    }
+
+    function updateColorUI() {
+        colorData.hex = hslToHex(colorData.h, colorData.s, colorData.l);
+        preview.style.backgroundColor = colorData.hex; hexText.innerText = colorData.hex;
+        satInput.style.background = `linear-gradient(to right, #808080, ${hslToHex(colorData.h, 100, colorData.l)})`;
+        lightInput.style.background = `linear-gradient(to right, #000000, ${hslToHex(colorData.h, colorData.s, 50)}, #FFFFFF)`;
+        document.getElementById('satVal').innerText = `${colorData.s}%`; document.getElementById('lightVal').innerText = `${colorData.l}%`;
+    }
+
+    function setWheelAngle(angleDeg) {
+        colorData.h = Math.round(angleDeg); const rad = (angleDeg - 90) * (Math.PI / 180);
+        const centerX = wheel.offsetWidth / 2, centerY = wheel.offsetHeight / 2, radius = centerX - 13; 
+        const x = Math.cos(rad) * radius + centerX, y = Math.sin(rad) * radius + centerY;
+        thumb.style.left = `${x}px`; thumb.style.top = `${y}px`; updateColorUI();
+    }
+
+    function handleWheelMove(e) {
+        if (!isDragging) return;
+        const rect = wheel.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX, clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const x = clientX - rect.left - (rect.width / 2), y = clientY - rect.top - (rect.height / 2);
+        let angleDeg = Math.atan2(y, x) * (180 / Math.PI) + 90; if (angleDeg < 0) angleDeg += 360;
+        setWheelAngle(angleDeg);
+    }
+
+    wheel.addEventListener('mousedown', (e) => { isDragging = true; handleWheelMove(e); });
+    wheel.addEventListener('touchstart', (e) => { isDragging = true; handleWheelMove(e); });
+    document.addEventListener('mousemove', handleWheelMove);
+    document.addEventListener('touchmove', handleWheelMove, {passive: false});
+    document.addEventListener('mouseup', () => isDragging = false);
+    document.addEventListener('touchend', () => isDragging = false);
+    satInput.addEventListener('input', (e) => { colorData.s = e.target.value; updateColorUI(); });
+    lightInput.addEventListener('input', (e) => { colorData.l = e.target.value; updateColorUI(); });
+
+    function copyHex() { navigator.clipboard.writeText(colorData.hex); showToast("Color Code Copied!", "check-circle"); }
+
+    function openColorModal() {
+        document.getElementById('colorPickerModal').classList.remove('hidden'); 
+        document.getElementById('colorPickerModal').classList.add('flex');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => { setWheelAngle(45); document.getElementById('colorModalOverlay').classList.remove('opacity-0'); document.getElementById('colorModalContent').classList.remove('scale-95', 'opacity-0'); }, 10);
+    }
+
+    function closeColorModal() {
+        document.getElementById('colorModalOverlay').classList.add('opacity-0'); document.getElementById('colorModalContent').classList.add('scale-95', 'opacity-0');
+        document.body.style.overflow = '';
+        setTimeout(() => { document.getElementById('colorPickerModal').classList.add('hidden'); document.getElementById('colorPickerModal').classList.remove('flex'); }, 300);
+    }
+
+    function applyColor() { closeColorModal(); setTimeout(() => showToast(`Searching styles in ${colorData.hex} ✨`, 'check-circle'), 300); }
+
+    // --- SCROLL ANIMATIONS ---
+    function initScrollAnimations() {
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); }); }, { threshold: 0.1 }); 
+        reveals.forEach(reveal => observer.observe(reveal));
+        setTimeout(() => reveals.forEach(r => { if(r.getBoundingClientRect().top < window.innerHeight) r.classList.add('active'); }), 100);
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast'), icon = document.getElementById('toast-icon'), msg = document.getElementById('toast-msg');
+        msg.innerText = message; 
+        icon.setAttribute('data-lucide', type === 'success' ? 'check-circle' : type); 
+        lucide.createIcons();
+        toast.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
+        setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none'); }, 2500);
+    }
+
+    function goToProduct(id) {
+        let recent = JSON.parse(localStorage.getItem('aavira_recent')) || [];
+        recent = recent.filter(item => item !== id); recent.unshift(id);
+        if(recent.length > 8) recent.pop(); localStorage.setItem('aavira_recent', JSON.stringify(recent));
+        window.location.href = `product-details.html?id=${id}`;
+    }
+
+    window.toggleHeart = function(event, btn, id) {
+        event.preventDefault(); event.stopPropagation();
+        const icon = btn.querySelector('i'); let wishlist = JSON.parse(localStorage.getItem('aavira_wishlist')) || [];
+        
+        btn.classList.toggle('text-red-500'); 
+        btn.classList.toggle('text-gray-400');
+        
+        if (btn.classList.contains('text-red-500')) { 
+            if (!wishlist.includes(id)) wishlist.push(id); 
+            icon.setAttribute('fill', 'currentColor'); 
+            showToast("Added to Wishlist ❤️", "heart");
+        } else { 
+            wishlist = wishlist.filter(item => item !== id); 
+            icon.setAttribute('fill', 'none'); 
+        }
+        localStorage.setItem('aavira_wishlist', JSON.stringify(wishlist));
+    }
+
+    const sb = document.getElementById('sidebar'), sbOv = document.getElementById('sidebarOverlay');
+    
+    function openSidebar() { 
+        sbOv.classList.remove('hidden'); 
+        document.body.style.overflow = 'hidden'; 
+        setTimeout(()=>{
+            sbOv.classList.remove('opacity-0'); 
+            sb.classList.remove('-translate-x-full');
+        }, 10); 
+    }
+    function closeSidebar() { 
+        sb.classList.add('-translate-x-full'); 
+        sbOv.classList.add('opacity-0'); 
+        document.body.style.overflow = ''; 
+        setTimeout(()=>{sbOv.classList.add('hidden');}, 300); 
+    }
+
+    function loadSkeletons() {
+        document.getElementById('category-container').innerHTML = Array(4).fill(`<div class="flex flex-col items-center gap-2"><div class="w-[76px] h-[76px] rounded-full premium-skeleton border-2 border-white shadow-sm"></div></div>`).join('');
+        const prodSkel = `<div class="w-[150px] shrink-0 bg-white rounded-xl border border-gray-100 p-2"><div class="w-full aspect-square premium-skeleton rounded-lg"></div><div class="mt-3 h-2.5 premium-skeleton rounded w-3/4"></div><div class="mt-2 h-3 premium-skeleton rounded w-1/2 mb-2"></div></div>`;
+        document.getElementById('trending-container').innerHTML = Array(3).fill(prodSkel).join('');
+        const gridSkel = `<div class="w-full bg-white rounded-xl border border-gray-100 p-2"><div class="w-full aspect-square premium-skeleton rounded-lg"></div><div class="mt-3 h-2.5 premium-skeleton rounded w-3/4"></div><div class="mt-2 h-3 premium-skeleton rounded w-1/2 mb-2"></div></div>`;
+        document.getElementById('new-arrivals-container').innerHTML = Array(4).fill(gridSkel).join('');
+    }
+
+    // ==========================================
+    // PRODUCT CARD
+    // ==========================================
+    const generateProductCard = (p, isGrid) => {
+        let price = Number(p.price) || 0; let mrp = Number(p.mrp) || price;
+        let discount = mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0;
+        let mrpHtml = mrp > price ? `<span class="text-[10px] text-gray-400 line-through font-sans ml-1">₹${mrp}</span>` : ``; 
+        let badgeHtml = discount > 0 ? `<span class="text-[9px] font-bold text-green-700 bg-green-100/80 px-1.5 py-0.5 rounded ml-1.5 tracking-wider">${discount}% OFF</span>` : '';
+        let w = (JSON.parse(localStorage.getItem('aavira_wishlist')) || []).includes(p.id);
+        
+        return `
+        <div class="${isGrid ? 'w-full' : 'snap-start shrink-0 w-[150px]'} bg-white block overflow-hidden flex flex-col relative rounded-xl shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-gray-100 hover:shadow-[0_8px_20px_-6px_rgba(0,0,0,0.1)] transition-all duration-300 group">
+            
+            <div class="relative overflow-hidden bg-[#F9F9F9] cursor-pointer" style="aspect-ratio: 1;" onclick="goToProduct('${p.id}')">
+                <img src="${p.img}" class="w-full h-full object-contain p-1.5 group-hover:scale-105 transition-transform duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                
+                <button class="absolute top-2 right-2 p-1.5 z-10 transition-colors ${w ? 'text-red-500' : 'text-gray-400'} drop-shadow-md hover:text-red-500" onclick="toggleHeart(event, this, '${p.id}')">
+                    <i data-lucide="heart" class="w-4 h-4 stroke-[2]" fill="${w ? 'currentColor' : 'none'}"></i>
+                </button>
+            </div>
+            
+            <div class="p-2.5 flex-1 flex flex-col bg-white">
+                <h4 class="font-sans text-[12px] font-medium text-[#2D2D2D] truncate cursor-pointer group-hover:text-ethnic-burgundy transition-colors" onclick="goToProduct('${p.id}')">${p.name}</h4>
+                
+                <div class="flex items-end justify-between mt-2 pt-1 border-t border-gray-50">
+                    <div class="flex flex-col">
+                        <div class="flex items-center">
+                            <span class="text-[14px] font-bold text-ethnic-burgundy font-sans leading-none">₹${price}</span>
+                            ${badgeHtml}
+                        </div>
+                        <div class="mt-1 leading-none h-[12px]">
+                            ${mrpHtml}
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-1.5">
+                        <button class="relative overflow-hidden w-[28px] h-[28px] flex items-center justify-center bg-ethnic-burgundy text-white hover:bg-[#4a121c] transition-all duration-300 rounded-full cursor-pointer shrink-0 shadow-md group/btn" onclick="goToProduct('${p.id}')">
+                            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                            <div class="absolute top-0 bottom-0 left-0 w-full bg-gradient-to-r from-transparent via-white/40 to-transparent w-[150%] animate-shimmer-sweep"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    };
+
+    // ==========================================
+    // DATA FETCHING 
+    // ==========================================
+    window.fetchBanners = async function() {
+        try {
+            const docsArr = typeof window.getBannersData === 'function' ? await window.getBannersData() : [];
+            if(docsArr && docsArr.length > 0) {
+                const carousel = document.getElementById('bannerCarousel');
+                carousel.classList.remove('bg-gray-200', 'premium-skeleton'); carousel.innerHTML = ''; 
+                
+                docsArr.forEach(d => {
+                    let url = d.imageUrl || d.image || d.url || 'https://images.unsplash.com/photo-1610030469668-93535c17b6b3?w=800'; 
+                    carousel.innerHTML += `<div class="snap-start shrink-0 w-full h-full relative flex items-end justify-center overflow-hidden" onclick="window.location.href='${d.link || '#'}'"><img src="${url}" class="absolute inset-0 w-full h-full object-cover object-[center_20%] scale-105 hover:scale-100 transition-transform duration-[10s]" /><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div><div class="relative z-10 text-center px-6 pb-14 w-full flex flex-col items-center"><span class="text-ethnic-gold font-sans tracking-[0.4em] text-[9px] uppercase mb-3 drop-shadow">Aavira Exclusive</span><h2 class="font-serif text-[32px] text-white mb-5 leading-tight shadow-black drop-shadow-lg">Timeless <br/><span class="text-[40px] font-light italic font-['Dancing_Script']">Elegance</span></h2><button class="bg-white text-ethnic-burgundy px-8 py-3 text-[10px] font-bold uppercase rounded shadow-lg hover:bg-ethnic-burgundy hover:text-white transition-colors">Shop Now</button></div></div>`;
+                });
+
+                const dotsContainer = document.getElementById('banner-dots');
+                dotsContainer.innerHTML = docsArr.map((_, i) => `<div class="banner-dot h-1.5 rounded-full transition-all duration-300 ${i === 0 ? 'w-4 bg-white' : 'w-1.5 bg-white/50'}"></div>`).join('');
+                
+                carousel.addEventListener('scroll', () => {
+                    const index = Math.round(carousel.scrollLeft / carousel.offsetWidth);
+                    const dots = document.querySelectorAll('.banner-dot');
+                    dots.forEach((dot, i) => {
+                        if(i === index) { dot.classList.add('w-4', 'bg-white'); dot.classList.remove('w-1.5', 'bg-white/50'); }
+                        else { dot.classList.remove('w-4', 'bg-white'); dot.classList.add('w-1.5', 'bg-white/50'); }
+                    });
+                });
+            }
+        } catch (error) {}
+    }
+
+    window.fetchCategories = async function() {
+        try {
+            const arr = typeof window.getCategoriesData === 'function' ? await window.getCategoriesData() : [];
+            if(arr && arr.length > 0) {
+                const catCont = document.getElementById('category-container'); catCont.innerHTML = ''; 
+                arr.forEach((data) => {
+                    let img = data.image || data.imageUrl || data.url || 'https://via.placeholder.com/150';
+                    catCont.innerHTML += `<button class="flex flex-col items-center gap-2.5 group w-[76px] shrink-0" onclick="window.location.href='categories.html'"><div class="h-[76px] w-[76px] rounded-full overflow-hidden border-2 border-white shadow-md group-hover:shadow-lg transition-all p-0.5 bg-gradient-to-tr from-ethnic-gold/40 to-ethnic-burgundy/40"><img src="${img}" class="w-full h-full object-cover rounded-full group-hover:scale-105 transition-transform" /></div><span class="text-[10px] font-bold text-gray-700 uppercase tracking-wider">${data.name}</span></button>`;
+                });
+            }
+        } catch (error) {}
+    }
+
+    window.fetchProducts = async function() {
+        try {
+            const dataArray = typeof window.getVercelData === 'function' ? await window.getVercelData() : [];
+            if (!dataArray || dataArray.length === 0) return;
+            window.allProductsList = dataArray.map(data => ({ id: data.id, name: data.name, price: data.price, mrp: data.mrp, img: data.imageMain || data.image || data.imageUrl || 'https://via.placeholder.com/200' }));
+            
+            document.getElementById('trending-container').innerHTML = ''; document.getElementById('new-arrivals-container').innerHTML = '';
+            
+            window.allProductsList.forEach((p, index) => {
+                if (index < 4) {
+                    document.getElementById('trending-container').innerHTML += generateProductCard(p, false);
+                } else {
+                    document.getElementById('new-arrivals-container').innerHTML += generateProductCard(p, true);
+                }
+            });
+
+            let recentIds = JSON.parse(localStorage.getItem('aavira_recent')) || [];
+            if(recentIds.length > 0) {
+                let recentHtml = ''; recentIds.forEach(id => { const p = window.allProductsList.find(x => x.id === id); if(p) recentHtml += generateProductCard(p, false); });
+                if(recentHtml) { document.getElementById('recent-section').classList.remove('hidden'); document.getElementById('recent-container').innerHTML = recentHtml; }
+            }
+        } catch (error) {}
+    }
+
+    window.initializeAppEngine = async function() {
+        const savedName = localStorage.getItem('aavira_display_name');
+        if (savedName) document.getElementById('profileName').innerText = savedName;
+
+        loadSkeletons();
+        updateCartCount();
+        try { await Promise.all([window.fetchBanners(), window.fetchCategories(), window.fetchProducts()]); } 
+        finally { if(typeof lucide !== 'undefined') lucide.createIcons(); initScrollAnimations(); }
+    }
+    document.addEventListener("DOMContentLoaded", window.initializeAppEngine);
+</script>
 </body>
 </html>
