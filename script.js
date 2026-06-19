@@ -1,631 +1,377 @@
-window.allProductsList = [];
-window.productsCache = {};
-window.currentMagicColor = ''; 
+const originalWarn = console.warn;
+        console.warn = function(...args) {
+            if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) return;
+            originalWarn.apply(console, args);
+        };
 
-window.updateConnectionStatus = function() {
-    if (!navigator.onLine) {
-        window.showCustomAlert("Offline", "No Internet Connection. Please check your network.", "error");
-    }
-}
-
-window.addEventListener('online', window.updateConnectionStatus);
-window.addEventListener('offline', window.updateConnectionStatus);
-
-window.openMagicScreen = function(color) {
-    window.currentMagicColor = color;
-    document.getElementById('magicTitle').innerText = `${color} Magic ✨`;
-    document.getElementById('magicScreen').classList.add('active');
-    const chips = document.querySelectorAll('.magic-chip');
-    chips.forEach(c => c.classList.remove('active'));
-    if(chips.length > 0) chips[0].classList.add('active');
-    window.renderAdvancedMagicLayout('All Designs');
-}
-
-window.filterMagicProducts = function(element, filterType) {
-    const chips = document.querySelectorAll('.magic-chip');
-    chips.forEach(c => c.classList.remove('active'));
-    element.classList.add('active');
-    element.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    window.renderAdvancedMagicLayout(filterType);
-}
-
-window.renderAdvancedMagicLayout = function(filterType) {
-    const container = document.getElementById('magicProductsContainer');
-    container.innerHTML = `
-        <div style="width:100%; text-align:center; padding: 60px 0;">
-            <i class="fa-solid fa-wand-magic-sparkles fa-spin" style="font-size: 30px; color: var(--primary-color);"></i>
-            <p style="margin-top:15px; font-size:12px; font-weight:600; color:var(--text-muted);">Brewing Magic...</p>
-        </div>
-    `;
-    setTimeout(() => {
-        let filtered = window.allProductsList.filter(p => {
-            return (p.color && p.color.toLowerCase() === window.currentMagicColor.toLowerCase()) || p.name.toLowerCase().includes(window.currentMagicColor.toLowerCase());
-        });
-        if(filterType === 'Premium Silk') {
-            filtered = filtered.filter(p => p.name.toLowerCase().includes('silk'));
-        } else if (filterType === 'Hand Embroidered') {
-            filtered = filtered.filter(p => p.name.toLowerCase().includes('embroider') || p.name.toLowerCase().includes('work'));
-        } else if (filterType === 'Trending Now') {
-            filtered = [...filtered].reverse(); 
+tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ethnic-burgundy': '#6A1B29',
+                        'ethnic-gold': '#E5C158',
+                        'modal-dark': '#151517',
+                        'modal-card': '#1c1c1f',
+                        'modal-stroke': '#2d2d30'
+                    }
+                }
+            }
         }
-        
+
+window.allProductsList = [];
+
+    // ✨ SCROLL: HIDE/SHOW HEADER & GLASS EFFECT ✨
+    let lastScrollTop = 0;
+    const mainHeader = document.getElementById('main-header');
+
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        // 1. Glass Effect
+        if(scrollTop > 10) {
+            mainHeader.classList.add('shadow-md', 'bg-white/90', 'border-b', 'border-gray-200/50');
+            mainHeader.classList.remove('bg-[#FAF8F5]/60');
+        } else {
+            mainHeader.classList.remove('shadow-md', 'bg-white/90', 'border-b', 'border-gray-200/50');
+            mainHeader.classList.add('bg-[#FAF8F5]/60');
+        }
+
+        // 2. Hide/Show Animation on Scroll
+        if (scrollTop > lastScrollTop && scrollTop > 80) {
+            // Scrolling down -> Hide
+            mainHeader.style.transform = 'translateY(-100%)';
+        } else {
+            // Scrolling up -> Show
+            mainHeader.style.transform = 'translateY(0)';
+        }
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    });
+
+    // Editable Display Name Logic
+    function saveProfileName() {
+        const nameNode = document.getElementById('profileName');
+        const name = nameNode.innerText.trim();
+        if (name === "") {
+            nameNode.innerText = "Guest User";
+            localStorage.setItem('aavira_display_name', "Guest User");
+        } else {
+            localStorage.setItem('aavira_display_name', name);
+            showToast("Profile name updated!", "check-circle");
+        }
+    }
+
+    // ==========================================
+    // CART LOGIC
+    // ==========================================
+    window.updateCartCount = function() {
+        let cart = JSON.parse(localStorage.getItem('aavira_cart')) || [];
+        const badge = document.getElementById('cart-badge');
+        badge.innerText = cart.length;
+        if(cart.length > 0) badge.classList.remove('hidden');
+        else badge.classList.add('hidden');
+    }
+
+    // ==========================================
+    // SEARCH OVERLAY LOGIC
+    // ==========================================
+    function openSearch() {
+        document.getElementById('searchOverlay').classList.remove('translate-x-full');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => document.getElementById('searchInput').focus(), 300);
+    }
+
+    function closeSearch() {
+        document.getElementById('searchOverlay').classList.add('translate-x-full');
+        document.body.style.overflow = '';
+    }
+
+    function handleSearch() {
+        const query = document.getElementById('searchInput').value.toLowerCase().trim();
+        const container = document.getElementById('searchResults');
+
+        if(!query) {
+            container.innerHTML = '<div class="text-center text-gray-400 text-xs mt-10 font-serif italic flex flex-col items-center gap-2"><i data-lucide="search" class="w-8 h-8 opacity-20"></i>Type something to search our collection...</div>';
+            lucide.createIcons(); return;
+        }
+
+        const filtered = window.allProductsList.filter(p => p.name.toLowerCase().includes(query));
         if(filtered.length === 0) {
-            container.innerHTML = `
-                <div style="width:100%; text-align:center; padding: 60px 20px;">
-                    <i class="fa-regular fa-face-frown" style="font-size: 45px; color: rgba(0,0,0,0.1); margin-bottom:15px;"></i>
-                    <p style="font-size:13px; color:var(--text-muted);">No items match this filter in ${window.currentMagicColor}.<br>Try another category!</p>
-                </div>
-            `;
+            container.innerHTML = '<div class="text-center text-gray-400 text-xs mt-10 font-serif italic">No products found matching your search.</div>';
             return;
         }
 
-        let wishlist = JSON.parse(localStorage.getItem('aavira_wishlist')) || [];
-        let wishlistIds = wishlist.map(item => typeof item === 'object' ? item.productId : item);
-
         let html = '';
-        if(filtered.length >= 1) {
-            let p = filtered[0];
-            let w = wishlistIds.includes(p.id);
+        filtered.forEach(p => {
+            let price = Number(p.price) || 0; let mrp = Number(p.mrp) || price;
             html += `
-                <div style="padding:0 20px;">
-                    <div class="magic-hero-card" style="animation: fadeInUp 0.4s ease forwards;">
-                        <button class="heart-btn" onclick="toggleHeart(event, this, '${p.id}')">
-                            <i class="${w ? 'fa-solid' : 'fa-regular'} fa-heart" style="color: ${w ? 'var(--primary-color)' : 'var(--icon-color)'};"></i>
-                        </button>
-                        <a href="product-details.html?id=${p.id}" style="text-decoration:none;">
-                            <div class="magic-img-bg" style="height: 300px; background-image: url('${p.img}');"></div>
-                            <div class="magic-overlay">
-                                <h4 style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.name}</h4>
-                                <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <p>₹${p.price}</p>
-                                </div>
-                            </div>
-                        </a>
+            <div class="flex gap-3 bg-white/80 p-2.5 rounded-xl shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-white/50 cursor-pointer hover:shadow-md transition-shadow" onclick="goToProduct('${p.id}')">
+                <img src="${p.img}" class="w-[72px] h-[72px] object-cover rounded-lg bg-[#F9F9F9]" />
+                <div class="flex-1 flex flex-col justify-center">
+                    <p class="text-[8px] tracking-widest text-gray-400 uppercase font-bold mb-0.5">Aavira Luxe</p>
+                    <h4 class="text-xs font-medium text-gray-800 line-clamp-2">${p.name}</h4>
+                    <div class="mt-1.5 flex items-baseline gap-2">
+                        <span class="text-sm font-bold text-ethnic-burgundy">₹${price}</span>
+                        ${mrp > price ? `<span class="text-[10px] text-gray-400 line-through">₹${mrp}</span>` : ''}
                     </div>
                 </div>
-            `;
-        }
-        if(filtered.length >= 2) {
-            html += `<h4 style="font-size: 14px; font-weight: 700; color: var(--text-dark); margin: 5px 20px 10px; animation: fadeInUp 0.5s ease forwards;">Top Picks in ${window.currentMagicColor}</h4>`;
-            html += `<div class="magic-h-scroll" style="animation: fadeInUp 0.5s ease forwards;">`;
-            let scrollLimit = Math.min(4, filtered.length); 
-            for(let i = 1; i < scrollLimit; i++) {
-                let p = filtered[i];
-                let w = wishlistIds.includes(p.id);
-                html += `
-                    <div class="magic-h-card">
-                        <button class="heart-btn" onclick="toggleHeart(event, this, '${p.id}')">
-                            <i class="${w ? 'fa-solid' : 'fa-regular'} fa-heart" style="color: ${w ? 'var(--primary-color)' : 'var(--icon-color)'};"></i>
-                        </button>
-                        <a href="product-details.html?id=${p.id}" style="display:block; text-decoration:none; color:inherit;">
-                            <div class="magic-img-bg" style="background-image: url('${p.img}');"></div>
-                            <div style="padding: 10px; text-align:left;">
-                                <h4 style="font-size: 13px; font-family:'Poppins', sans-serif; font-weight:600; margin-bottom: 2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text-dark);">${p.name}</h4>
-                                <p style="font-size: 14px; font-weight: 700; color:var(--primary-color);">₹${p.price}</p>
-                            </div>
-                        </a>
-                    </div>
-                `;
-            }
-            html += `</div>`;
-        }
-        if(filtered.length >= 4) {
-            html += `<h4 style="font-size: 14px; font-weight: 700; color: var(--text-dark); margin: 5px 20px 10px; animation: fadeInUp 0.6s ease forwards;">Explore More Styles</h4>`;
-            html += `<div class="magic-masonry" style="padding-bottom: 80px; animation: fadeInUp 0.6s ease forwards;">`;
-            for(let i = 4; i < filtered.length; i++) {
-                let p = filtered[i];
-                let w = wishlistIds.includes(p.id);
-                html += `
-                    <div class="product-card-adv">
-                        <button class="heart-btn" onclick="toggleHeart(event, this, '${p.id}')">
-                            <i class="${w ? 'fa-solid' : 'fa-regular'} fa-heart" style="color: ${w ? 'var(--primary-color)' : 'var(--icon-color)'};"></i>
-                        </button>
-                        <a href="product-details.html?id=${p.id}" style="display:block; text-decoration:none; color:inherit;">
-                            <div class="magic-img-bg" style="background-image: url('${p.img}');"></div>
-                            <div style="padding: 10px; text-align:left;">
-                                <h4 style="font-size: 13px; font-weight:600; margin-bottom:4px; color:var(--text-dark); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.name}</h4>
-                                <p style="font-size: 14px; font-weight:700; color:var(--primary-color);">₹${p.price}</p>
-                            </div>
-                        </a>
-                    </div>
-                `;
-            }
-            html += `</div>`;
-        }
+            </div>`;
+        });
         container.innerHTML = html;
-    }, 600);
-}
-
-window.closeMagicScreen = function() { 
-    const magicScreen = document.getElementById('magicScreen');
-    if (magicScreen) {
-        magicScreen.classList.remove('active'); 
-    }
-}
-
-window.checkAndShowWelcomePopup = function() {
-    let shownLogin = localStorage.getItem('aavira_login_shown');
-    let notifStatus = 'default';
-    if (typeof Notification !== 'undefined') {
-        notifStatus = Notification.permission;
     }
 
-    if (!shownLogin) {
-        setTimeout(() => {
-            const overlay = document.getElementById('welcomeLoginOverlay');
-            if (overlay) {
-                overlay.classList.add('show');
-                document.body.style.overflow = 'hidden'; 
-                localStorage.setItem('aavira_login_shown', 'true');
-            }
-        }, 2500);
-    } else if (notifStatus === 'default') {
-        const notifOverlay = document.getElementById('notificationOverlay');
-        if (notifOverlay) {
-            setTimeout(() => { 
-                notifOverlay.classList.add('show'); 
-                document.body.style.overflow = 'hidden'; 
-            }, 3000);
-        }
-    }
-}
+    // ==========================================
+    // COLOR WHEEL MATH
+    // ==========================================
+    let colorData = { h: 45, s: 100, l: 50, hex: '#FFB04B' };
+    let isDragging = false;
+    const wheel = document.getElementById('pickerWheel'), thumb = document.getElementById('pickerThumb');
+    const preview = document.getElementById('previewColor'), hexText = document.getElementById('previewHex');
+    const satInput = document.getElementById('satSlider'), lightInput = document.getElementById('lightSlider');
 
-window.closeWelcomePopup = function() {
-    const overlay = document.getElementById('welcomeLoginOverlay');
-    if (overlay) overlay.classList.remove('show'); 
-    document.body.style.overflow = 'auto'; 
-
-    setTimeout(() => {
-        if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
-            const notifOverlay = document.getElementById('notificationOverlay');
-            if (notifOverlay) {
-                notifOverlay.classList.add('show');
-                document.body.style.overflow = 'hidden'; 
-            }
-        }
-    }, 1200);
-}
-
-window.closeNotificationPopup = function() {
-    const overlay = document.getElementById('notificationOverlay');
-    if (overlay) overlay.classList.remove('show'); 
-    document.body.style.overflow = 'auto'; 
-}
-
-window.showCustomAlert = function(title, message, type = 'success') {
-    const titleEl = document.getElementById('alertTitle');
-    const msgEl = document.getElementById('alertMessage');
-    const iconEl = document.getElementById('alertIcon');
-    const overlay = document.getElementById('alertOverlay');
-    
-    if(titleEl) titleEl.innerText = title; 
-    if(msgEl) msgEl.innerHTML = message;
-    
-    if (iconEl) {
-        if (type === 'success') { 
-            iconEl.innerHTML = '<i class="fa-solid fa-circle-check" style="color: var(--success-green); font-size: 55px;"></i>'; 
-        } else { 
-            iconEl.innerHTML = '<i class="fa-solid fa-bell animated-bell" style="color: var(--secondary-color); font-size: 55px;"></i>'; 
-        }
-    }
-    if (overlay) overlay.classList.add('show');
-}
-
-window.closeAlertModal = function() { 
-    const overlay = document.getElementById('alertOverlay');
-    if(overlay) overlay.classList.remove('show'); 
-}
-
-const initAppUI = () => {
-    window.updateCartBadge = function() {
-        let cart = JSON.parse(localStorage.getItem('aavira_cart')) || [];
-        let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-        const badge = document.getElementById('topCartBadge');
-        if(badge) badge.innerText = totalItems;
-    }
-    window.updateCartBadge();
-
-    const indicator = document.getElementById('navIndicator');
-    const navItems = document.querySelectorAll('.nav-list-item');
-    function moveIndicator() {
-        const activeItem = document.querySelector('.nav-list-item.active');
-        if (activeItem && indicator) {
-            const targetLeft = activeItem.offsetLeft + (activeItem.offsetWidth / 2) - (indicator.offsetWidth / 2);
-            indicator.style.transform = `translateX(${targetLeft}px)`;
-        }
-    }
-    moveIndicator(); window.addEventListener('resize', moveIndicator);
-    navItems.forEach(item => {
-        item.addEventListener('click', function() {
-            navItems.forEach(nav => nav.classList.remove('active'));
-            this.classList.add('active'); 
-            moveIndicator();
-        });
-    });
-
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    window.toggleSidebar = () => { 
-        if (sidebar && overlay) {
-            sidebar.classList.toggle('active'); 
-            overlay.classList.toggle('active'); 
-            document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : 'auto';
-        }
-    };
-    
-    const openSidebarBtn = document.getElementById('openSidebarBtn');
-    if (openSidebarBtn) openSidebarBtn.addEventListener('click', window.toggleSidebar);
-    
-    const closeSidebarBtn = document.getElementById('closeSidebarBtn');
-    if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', window.toggleSidebar);
-    
-    if (overlay) overlay.addEventListener('click', window.toggleSidebar);
-
-    const mainScrollArea = document.getElementById('mainScrollArea');
-    const bottomNav = document.getElementById('bottomNav');
-    const topHeader = document.getElementById('mainHeader');
-    
-    if(mainScrollArea && bottomNav && topHeader) {
-        let lastScrollY = mainScrollArea.scrollTop;
-        mainScrollArea.addEventListener('scroll', () => {
-            const currentScrollY = mainScrollArea.scrollTop;
-            if (currentScrollY > lastScrollY && currentScrollY > 50) { 
-                bottomNav.classList.add('hidden'); 
-                topHeader.classList.add('hidden'); 
-            } else { 
-                bottomNav.classList.remove('hidden'); 
-                topHeader.classList.remove('hidden'); 
-            }
-            lastScrollY = currentScrollY;
-        });
+    function hslToHex(h, s, l) {
+        l /= 100; const a = s * Math.min(l, 1 - l) / 100;
+        const f = n => { const k = (n + h / 30) % 12; const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1); return Math.round(255 * color).toString(16).padStart(2, '0'); };
+        return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
     }
 
-    if(typeof Notification !== 'undefined' && Notification.permission === 'granted') {
-        const notifText = document.getElementById('sidebarNotifText');
-        const notifIcon = document.getElementById('sidebarNotifIcon');
-        if(notifText) notifText.innerText = "Notifications Enabled";
-        if(notifIcon) notifIcon.style.color = "var(--success-green)";
+    function updateColorUI() {
+        colorData.hex = hslToHex(colorData.h, colorData.s, colorData.l);
+        preview.style.backgroundColor = colorData.hex; hexText.innerText = colorData.hex;
+        satInput.style.background = `linear-gradient(to right, #808080, ${hslToHex(colorData.h, 100, colorData.l)})`;
+        lightInput.style.background = `linear-gradient(to right, #000000, ${hslToHex(colorData.h, colorData.s, 50)}, #FFFFFF)`;
+        document.getElementById('satVal').innerText = `${colorData.s}%`; document.getElementById('lightVal').innerText = `${colorData.l}%`;
     }
 
-    window.updateConnectionStatus();
-
-    const shareBtn = document.getElementById('nativeShareBtn');
-    if(shareBtn) {
-        shareBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            if (navigator.share) {
-                try { 
-                    await navigator.share({ 
-                        title: 'Aavira - Ethnic Elegance', 
-                        text: 'Check out premium designer blouses on Aavira!', 
-                        url: window.location.origin 
-                    }); 
-                } 
-                catch (error) { console.log('Error sharing:', error); }
-            } else {
-                window.showCustomAlert("Share App", "Link copied to clipboard! Share it with your friends.", "success");
-                navigator.clipboard.writeText(window.location.origin);
-            }
-        });
+    function setWheelAngle(angleDeg) {
+        colorData.h = Math.round(angleDeg); const rad = (angleDeg - 90) * (Math.PI / 180);
+        const centerX = wheel.offsetWidth / 2, centerY = wheel.offsetHeight / 2, radius = centerX - 13;
+        const x = Math.cos(rad) * radius + centerX, y = Math.sin(rad) * radius + centerY;
+        thumb.style.left = `${x}px`; thumb.style.top = `${y}px`; updateColorUI();
     }
-};
 
-if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initAppUI); } else { initAppUI(); }
-
-window.toggleSearch = function() {
-    const overlay = document.getElementById('searchOverlay');
-    if(!overlay) return;
-    overlay.classList.toggle('active');
-    document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : 'auto';
-    if(overlay.classList.contains('active')) {
-        setTimeout(() => { document.getElementById('searchInput').focus(); }, 100);
-    } else {
-        document.getElementById('searchInput').value = '';
-        document.getElementById('searchResults').innerHTML = `
-            <p class="search-empty-text">
-                <i class="fa-solid fa-magnifying-glass"></i>Type to search amazing products...
-            </p>
-        `;
+    function handleWheelMove(e) {
+        if (!isDragging) return;
+        const rect = wheel.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX, clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const x = clientX - rect.left - (rect.width / 2), y = clientY - rect.top - (rect.height / 2);
+        let angleDeg = Math.atan2(y, x) * (180 / Math.PI) + 90; if (angleDeg < 0) angleDeg += 360;
+        setWheelAngle(angleDeg);
     }
-}
 
-window.handleSearch = function() {
-    const query = document.getElementById('searchInput').value.toLowerCase().trim();
-    const container = document.getElementById('searchResults');
-    if(!container) return;
-    container.innerHTML = '';
-    if(!query) {
-        container.innerHTML = `<p class="search-empty-text"><i class="fa-solid fa-magnifying-glass"></i>Type to search amazing products...</p>`;
-        return;
+    wheel.addEventListener('mousedown', (e) => { isDragging = true; handleWheelMove(e); });
+    wheel.addEventListener('touchstart', (e) => { isDragging = true; handleWheelMove(e); });
+    document.addEventListener('mousemove', handleWheelMove);
+    document.addEventListener('touchmove', handleWheelMove, {passive: false});
+    document.addEventListener('mouseup', () => isDragging = false);
+    document.addEventListener('touchend', () => isDragging = false);
+    satInput.addEventListener('input', (e) => { colorData.s = e.target.value; updateColorUI(); });
+    lightInput.addEventListener('input', (e) => { colorData.l = e.target.value; updateColorUI(); });
+
+    function copyHex() { navigator.clipboard.writeText(colorData.hex); showToast("Color Code Copied!", "check-circle"); }
+
+    function openColorModal() {
+        document.getElementById('colorPickerModal').classList.remove('hidden');
+        document.getElementById('colorPickerModal').classList.add('flex');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => { setWheelAngle(45); document.getElementById('colorModalOverlay').classList.remove('opacity-0'); document.getElementById('colorModalContent').classList.remove('scale-95', 'opacity-0'); }, 10);
     }
-    const filtered = window.allProductsList.filter(p => p.name.toLowerCase().includes(query));
-    if(filtered.length === 0) {
-        container.innerHTML = `<p class="search-empty-text"><i class="fa-regular fa-face-frown"></i>No product found matching your search.</p>`;
-        return;
+
+    function closeColorModal() {
+        document.getElementById('colorModalOverlay').classList.add('opacity-0'); document.getElementById('colorModalContent').classList.add('scale-95', 'opacity-0');
+        document.body.style.overflow = '';
+        setTimeout(() => { document.getElementById('colorPickerModal').classList.add('hidden'); document.getElementById('colorPickerModal').classList.remove('flex'); }, 300);
     }
-    filtered.forEach(p => {
-        container.innerHTML += `
-            <a href="product-details.html?id=${p.id}" class="s-result-item">
-                <div class="s-result-img" style="background-image: url('${p.img}');"></div>
-                <div class="s-result-info">
-                    <h4>${p.name}</h4>
-                    <p>₹${p.price}</p>
-                </div>
-            </a>
-        `;
-    });
-}
 
-window.toggleHeart = function(event, button, productId) {
-    event.preventDefault(); 
-    event.stopPropagation();
-    const icon = button.querySelector('i');
-    let wishlist = JSON.parse(localStorage.getItem('aavira_wishlist')) || [];
-    let wishlistIds = wishlist.map(item => typeof item === 'object' ? item.productId : item);
+    function applyColor() { closeColorModal(); setTimeout(() => showToast(`Searching styles in ${colorData.hex} ✨`, 'check-circle'), 300); }
 
-    if (icon.classList.contains('fa-regular')) { 
-        if (!wishlistIds.includes(productId)) {
-            wishlist.push(productId);
-            localStorage.setItem('aavira_wishlist', JSON.stringify(wishlist));
-        }
-        icon.classList.replace('fa-regular', 'fa-solid'); 
-        icon.style.color = 'var(--primary-color)'; 
-    } else { 
-        wishlist = wishlist.filter(item => {
-            let id = typeof item === 'object' ? item.productId : item;
-            return id !== productId;
-        });
-        localStorage.setItem('aavira_wishlist', JSON.stringify(wishlist));
-        icon.classList.replace('fa-solid', 'fa-regular'); 
-        icon.style.color = 'var(--icon-color)'; 
+    // --- SCROLL ANIMATIONS ---
+    function initScrollAnimations() {
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); }); }, { threshold: 0.1 });
+        reveals.forEach(reveal => observer.observe(reveal));
+        setTimeout(() => reveals.forEach(r => { if(r.getBoundingClientRect().top < window.innerHeight) r.classList.add('active'); }), 100);
     }
-}
 
-window.initializeAuth = async function() {
-    let loggedInUser = null;
-    if (typeof window.checkUserLogin === 'function') {
-        loggedInUser = await window.checkUserLogin();
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast'), icon = document.getElementById('toast-icon'), msg = document.getElementById('toast-msg');
+        msg.innerText = message;
+        icon.setAttribute('data-lucide', type === 'success' ? 'check-circle' : type);
+        lucide.createIcons();
+        toast.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
+        setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none'); }, 2500);
     }
-    
-    const nameField = document.getElementById('sidebarName');
-    const emailField = document.getElementById('sidebarEmail');
-    const avatarField = document.getElementById('sidebarAvatar');
-    const loginBtn = document.getElementById('headerLoginBtn');
-    const authBtn = document.getElementById('sidebarAuthBtn');
-    const bottomDivider = document.getElementById('bottomDivider');
 
-    if (loggedInUser) {
-        if(nameField) nameField.innerText = loggedInUser.name || "Aavira User"; 
-        if(emailField) emailField.innerText = loggedInUser.email || loggedInUser.phone || "user@aavira.com";
-        if(avatarField) avatarField.innerText = loggedInUser.name ? loggedInUser.name[0].toUpperCase() : "U"; 
-        if(loginBtn) loginBtn.style.display = 'none';
-        if(authBtn) {
-            authBtn.style.display = 'flex'; 
-            authBtn.onclick = (e) => { 
-                e.preventDefault(); 
-                if(typeof window.logoutUser === 'function') window.logoutUser(); 
-                window.location.reload(); 
-            }; 
-        }
-        if(bottomDivider) bottomDivider.style.display = 'block';
-        
-        if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
-            setTimeout(() => { 
-                const notifOverlay = document.getElementById('notificationOverlay');
-                if(notifOverlay) notifOverlay.classList.add('show'); 
-            }, 3000);
-        }
-    } else {
-        if(nameField) nameField.innerText = "Guest User"; 
-        if(emailField) emailField.innerText = "Welcome to Aavira";
-        if(avatarField) avatarField.innerHTML = `<i class="fa-regular fa-user"></i>`;
-        if(loginBtn) loginBtn.style.display = 'inline-block';
-        if(authBtn) authBtn.style.display = 'none'; 
-        if(bottomDivider) bottomDivider.style.display = 'none';
-        window.checkAndShowWelcomePopup();
+    function goToProduct(id) {
+        let recent = JSON.parse(localStorage.getItem('aavira_recent')) || [];
+        recent = recent.filter(item => item !== id); recent.unshift(id);
+        if(recent.length > 8) recent.pop(); localStorage.setItem('aavira_recent', JSON.stringify(recent));
+        window.location.href = `product-details.html?id=${id}`;
     }
-};
 
-window.fetchBanners = async function() {
-    const carousel = document.getElementById('bannerCarousel');
-    const dotsContainer = document.getElementById('bannerDots');
-    if(!carousel) return;
+    window.toggleHeart = function(event, btn, id) {
+        event.preventDefault(); event.stopPropagation();
+        const icon = btn.querySelector('i'); let wishlist = JSON.parse(localStorage.getItem('aavira_wishlist')) || [];
 
-    try {
-        if (typeof window.getBannersData !== 'function') return;
-        const docsArr = await window.getBannersData();
-        if(docsArr && docsArr.length > 0) {
-            docsArr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-            carousel.innerHTML = ''; 
-            if(dotsContainer) dotsContainer.innerHTML = '';
-            let count = 0;
-            docsArr.forEach(d => {
-                let mediaHtml = '';
-                let url = d.imageUrl || d.image || d.url || ''; 
-                if(d.type === 'video' || (url && url.includes('.mp4'))) {
-                    mediaHtml = `<video src="${url}" autoplay loop muted playsinline webkit-playsinline disablepictureinpicture controlslist="nodownload noplaybackrate" style="width:100%; height:100%; object-fit:cover; pointer-events:none; transform: translateZ(0);"></video>`;
-                } else {
-                    mediaHtml = `<img src="${url}" style="width:100%; height:100%; object-fit:cover; transform: translateZ(0);">`;
-                }
-                if(d.link) mediaHtml = `<a href="${d.link}" style="display:block; width:100%; height:100%;">${mediaHtml}</a>`;
-                carousel.innerHTML += `<div class="banner-slide">${mediaHtml}</div>`;
-                if(dotsContainer) dotsContainer.innerHTML += `<div class="b-dot ${count===0?'active':''}"></div>`;
-                count++;
-            });
-            if(count > 1) {
-                let currentIndex = 0;
-                setInterval(() => {
-                    currentIndex = (currentIndex + 1) % count;
-                    const slide = carousel.children[currentIndex];
-                    if (slide) carousel.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' });
-                }, 4000); 
-                carousel.addEventListener('scroll', () => {
-                    let idx = Math.round(carousel.scrollLeft / carousel.offsetWidth);
-                    document.querySelectorAll('.b-dot').forEach((dot, i) => { dot.classList.toggle('active', i === idx); });
-                });
-            }
+        btn.classList.toggle('text-red-500');
+        btn.classList.toggle('text-gray-400');
+
+        if (btn.classList.contains('text-red-500')) {
+            if (!wishlist.includes(id)) wishlist.push(id);
+            icon.setAttribute('fill', 'currentColor');
+            showToast("Added to Wishlist ❤️", "heart");
         } else {
-            carousel.innerHTML = `
-                <div class="banner-slide">
-                    <div class="hero-banner-fallback">
-                        <div class="hero-content">
-                            <h2>Elegant Blouses<br>For Every You</h2>
-                            <p>Premium quality designs.</p>
-                            <a href="categories.html" class="shop-btn">SHOP NOW</a>
+            wishlist = wishlist.filter(item => item !== id);
+            icon.setAttribute('fill', 'none');
+        }
+        localStorage.setItem('aavira_wishlist', JSON.stringify(wishlist));
+    }
+
+    const sb = document.getElementById('sidebar'), sbOv = document.getElementById('sidebarOverlay');
+
+    function openSidebar() {
+        sbOv.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        setTimeout(()=>{
+            sbOv.classList.remove('opacity-0');
+            sb.classList.remove('-translate-x-full');
+        }, 10);
+    }
+    function closeSidebar() {
+        sb.classList.add('-translate-x-full');
+        sbOv.classList.add('opacity-0');
+        document.body.style.overflow = '';
+        setTimeout(()=>{sbOv.classList.add('hidden');}, 300);
+    }
+
+    function loadSkeletons() {
+        document.getElementById('category-container').innerHTML = Array(4).fill(`<div class="flex flex-col items-center gap-2"><div class="w-[76px] h-[76px] rounded-full premium-skeleton border-2 border-white shadow-sm"></div></div>`).join('');
+        const prodSkel = `<div class="w-[150px] shrink-0 bg-white rounded-xl border border-gray-100 p-2"><div class="w-full aspect-square premium-skeleton rounded-lg"></div><div class="mt-3 h-2.5 premium-skeleton rounded w-3/4"></div><div class="mt-2 h-3 premium-skeleton rounded w-1/2 mb-2"></div></div>`;
+        document.getElementById('trending-container').innerHTML = Array(3).fill(prodSkel).join('');
+        const gridSkel = `<div class="w-full bg-white rounded-xl border border-gray-100 p-2"><div class="w-full aspect-square premium-skeleton rounded-lg"></div><div class="mt-3 h-2.5 premium-skeleton rounded w-3/4"></div><div class="mt-2 h-3 premium-skeleton rounded w-1/2 mb-2"></div></div>`;
+        document.getElementById('new-arrivals-container').innerHTML = Array(4).fill(gridSkel).join('');
+    }
+
+    // ==========================================
+    // PRODUCT CARD
+    // ==========================================
+    const generateProductCard = (p, isGrid) => {
+        let price = Number(p.price) || 0; let mrp = Number(p.mrp) || price;
+        let discount = mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0;
+        let mrpHtml = mrp > price ? `<span class="text-[10px] text-gray-400 line-through font-sans ml-1">₹${mrp}</span>` : ``;
+        let badgeHtml = discount > 0 ? `<span class="text-[9px] font-bold text-green-700 bg-green-100/80 px-1.5 py-0.5 rounded ml-1.5 tracking-wider">${discount}% OFF</span>` : '';
+        let w = (JSON.parse(localStorage.getItem('aavira_wishlist')) || []).includes(p.id);
+
+        return `
+        <div class="${isGrid ? 'w-full' : 'snap-start shrink-0 w-[150px]'} bg-white block overflow-hidden flex flex-col relative rounded-xl shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-gray-100 hover:shadow-[0_8px_20px_-6px_rgba(0,0,0,0.1)] transition-all duration-300 group">
+
+            <div class="relative overflow-hidden bg-[#F9F9F9] cursor-pointer" style="aspect-ratio: 1;" onclick="goToProduct('${p.id}')">
+                <img src="${p.img}" class="w-full h-full object-contain p-1.5 group-hover:scale-105 transition-transform duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                <button class="absolute top-2 right-2 p-1.5 z-10 transition-colors ${w ? 'text-red-500' : 'text-gray-400'} drop-shadow-md hover:text-red-500" onclick="toggleHeart(event, this, '${p.id}')">
+                    <i data-lucide="heart" class="w-4 h-4 stroke-[2]" fill="${w ? 'currentColor' : 'none'}"></i>
+                </button>
+            </div>
+
+            <div class="p-2.5 flex-1 flex flex-col bg-white">
+                <h4 class="font-sans text-[12px] font-medium text-[#2D2D2D] truncate cursor-pointer group-hover:text-ethnic-burgundy transition-colors" onclick="goToProduct('${p.id}')">${p.name}</h4>
+
+                <div class="flex items-end justify-between mt-2 pt-1 border-t border-gray-50">
+                    <div class="flex flex-col">
+                        <div class="flex items-center">
+                            <span class="text-[14px] font-bold text-ethnic-burgundy font-sans leading-none">₹${price}</span>
+                            ${badgeHtml}
+                        </div>
+                        <div class="mt-1 leading-none h-[12px]">
+                            ${mrpHtml}
                         </div>
                     </div>
-                </div>
-            `;
-        }
-    } catch (error) {}
-}
 
-window.fetchCategories = async function() {
-    const catContainer = document.getElementById('categoriesContainer');
-    if(!catContainer) return;
-    try {
-        if (typeof window.getCategoriesData !== 'function') return;
-        const categoriesArr = await window.getCategoriesData();
-        if (!categoriesArr || categoriesArr.length === 0) { 
-            catContainer.innerHTML = `<p style="padding:20px; font-size:12px; color:var(--text-muted);">No categories yet.</p>`; 
-            return; 
-        }
-        catContainer.innerHTML = ''; 
-        categoriesArr.forEach((data) => {
-            let img = data.image || data.imageUrl || data.url || '';
-            catContainer.innerHTML += `
-                <a href="categories.html?cat=${data.name}" class="cat-item">
-                    <div class="cat-ring"><div class="cat-img" style="background-image: url('${img}');"></div></div>
-                    <span>${data.name}</span>
-                </a>
-            `;
-        });
-    } catch (error) {}
-}
-
-window.fetchProducts = async function() {
-    const productsContainer = document.getElementById('productsContainer');
-    if(!productsContainer) return;
-    try {
-        if (typeof window.getVercelData !== 'function') return;
-        const dataArray = await window.getVercelData();
-        if (!dataArray || dataArray.length === 0) { 
-            productsContainer.innerHTML = `<p style="text-align:center; padding:20px; font-size:12px; color:var(--text-muted);">No products currently available.</p>`; 
-            return; 
-        }
-        
-        window.allProductsList = []; 
-        let wishlist = JSON.parse(localStorage.getItem('aavira_wishlist')) || [];
-        let wishlistIds = wishlist.map(item => typeof item === 'object' ? item.productId : item);
-
-        dataArray.forEach((data) => {
-            const imageUrl = data.imageMain || data.image || data.imageUrl || '';
-            window.productsCache[data.id] = { id: data.id, name: data.name, brand: data.brand || 'Aavira', price: data.price, img: imageUrl, description: data.description };
-            window.allProductsList.push({ id: data.id, name: data.name, price: data.price, img: imageUrl, color: data.color || '' });
-        });
-
-        let html = '';
-        if(window.allProductsList.length > 0) {
-            let p0 = window.allProductsList[0];
-            let w0 = wishlistIds.includes(p0.id);
-            html += `
-                <div style="padding: 0 20px 25px;">
-                    <div class="magic-hero-card">
-                        <button class="heart-btn" onclick="toggleHeart(event, this, '${p0.id}')" style="top:15px; right:15px; width:32px; height:32px; font-size:16px;">
-                            <i class="${w0 ? 'fa-solid' : 'fa-regular'} fa-heart" style="color: ${w0 ? 'var(--primary-color)' : 'var(--icon-color)'};"></i>
+                    <div class="flex items-center gap-1.5">
+                        <button class="relative overflow-hidden w-[28px] h-[28px] flex items-center justify-center bg-ethnic-burgundy text-white hover:bg-[#4a121c] transition-all duration-300 rounded-full cursor-pointer shrink-0 shadow-md group/btn" onclick="goToProduct('${p.id}')">
+                            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                            <div class="absolute top-0 bottom-0 left-0 w-full bg-gradient-to-r from-transparent via-white/40 to-transparent w-[150%] animate-shimmer-sweep"></div>
                         </button>
-                        <a href="product-details.html?id=${p0.id}" style="display:block; text-decoration:none; color:inherit;">
-                            <div class="magic-img-bg" style="height: 280px; background-image: url('${p0.img}');"></div>
-                            <div class="magic-overlay">
-                                <div>
-                                    <span class="hero-badge"><i class="fa-solid fa-crown"></i> Masterpiece</span>
-                                    <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 4px; line-height: 1.2;">${p0.name}</h4>
-                                    <p style="font-size: 16px; font-weight: 600; color: var(--secondary-color);">₹${p0.price}</p>
-                                </div>
-                            </div>
-                        </a>
                     </div>
                 </div>
-            `;
-        }
+            </div>
+        </div>`;
+    };
 
-        if(window.allProductsList.length > 1) {
-            html += `
-                <div class="section-title"><h3>Trending Spots</h3></div>
-                <div class="magic-h-scroll">
-            `;
-            let limit = Math.min(4, window.allProductsList.length);
-            for(let i=1; i<limit; i++) {
-                let p = window.allProductsList[i];
-                let w = wishlistIds.includes(p.id);
-                html += `
-                    <div class="magic-h-card">
-                        <button class="heart-btn" onclick="toggleHeart(event, this, '${p.id}')">
-                            <i class="${w ? 'fa-solid' : 'fa-regular'} fa-heart" style="color: ${w ? 'var(--primary-color)' : 'var(--icon-color)'};"></i>
-                        </button>
-                        <a href="product-details.html?id=${p.id}" style="display:block; text-decoration:none; color:inherit;">
-                            <div class="magic-img-bg" style="background-image: url('${p.img}');"></div>
-                            <div class="magic-text">
-                                <h4>${p.name}</h4>
-                                <p>₹${p.price}</p>
-                            </div>
-                        </a>
-                    </div>
-                `;
+    // ==========================================
+    // DATA FETCHING
+    // ==========================================
+    window.fetchBanners = async function() {
+        try {
+            const docsArr = typeof window.getBannersData === 'function' ? await window.getBannersData() : [];
+            if(docsArr && docsArr.length > 0) {
+                const carousel = document.getElementById('bannerCarousel');
+                carousel.classList.remove('bg-gray-200', 'premium-skeleton'); carousel.innerHTML = '';
+
+                docsArr.forEach(d => {
+                    let url = d.imageUrl || d.image || d.url || 'https://images.unsplash.com/photo-1610030469668-93535c17b6b3?w=800';
+                    carousel.innerHTML += `<div class="snap-start shrink-0 w-full h-full relative flex items-end justify-center overflow-hidden" onclick="window.location.href='${d.link || '#'}'"><img src="${url}" class="absolute inset-0 w-full h-full object-cover object-[center_20%] scale-105 hover:scale-100 transition-transform duration-[10s]" /><div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div><div class="relative z-10 text-center px-6 pb-14 w-full flex flex-col items-center"><span class="text-ethnic-gold font-sans tracking-[0.4em] text-[9px] uppercase mb-3 drop-shadow">Aavira Exclusive</span><h2 class="font-serif text-[32px] text-white mb-5 leading-tight shadow-black drop-shadow-lg">Timeless <br/><span class="text-[40px] font-light italic font-['Dancing_Script']">Elegance</span></h2><button class="bg-white text-ethnic-burgundy px-8 py-3 text-[10px] font-bold uppercase rounded shadow-lg hover:bg-ethnic-burgundy hover:text-white transition-colors">Shop Now</button></div></div>`;
+                });
+
+                const dotsContainer = document.getElementById('banner-dots');
+                dotsContainer.innerHTML = docsArr.map((_, i) => `<div class="banner-dot h-1.5 rounded-full transition-all duration-300 ${i === 0 ? 'w-4 bg-white' : 'w-1.5 bg-white/50'}"></div>`).join('');
+
+                carousel.addEventListener('scroll', () => {
+                    const index = Math.round(carousel.scrollLeft / carousel.offsetWidth);
+                    const dots = document.querySelectorAll('.banner-dot');
+                    dots.forEach((dot, i) => {
+                        if(i === index) { dot.classList.add('w-4', 'bg-white'); dot.classList.remove('w-1.5', 'bg-white/50'); }
+                        else { dot.classList.remove('w-4', 'bg-white'); dot.classList.add('w-1.5', 'bg-white/50'); }
+                    });
+                });
             }
-            html += `</div>`;
-        }
+        } catch (error) {}
+    }
 
-        if(window.allProductsList.length > 4) {
-            html += `
-                <div class="section-title" style="margin-top: 10px;"><h3>More Elegant Styles</h3></div>
-                <div class="products-grid" style="padding-bottom: 20px;">
-            `;
-            for(let i=4; i<window.allProductsList.length; i++) {
-                let p = window.allProductsList[i];
-                let w = wishlistIds.includes(p.id);
-                html += `
-                    <div class="product-card">
-                        <button class="heart-btn" onclick="toggleHeart(event, this, '${p.id}')">
-                            <i class="${w ? 'fa-solid' : 'fa-regular'} fa-heart" style="color: ${w ? 'var(--primary-color)' : 'var(--icon-color)'};"></i>
-                        </button>
-                        <a href="product-details.html?id=${p.id}" style="display:block; text-decoration:none; color:inherit;">
-                            <div class="product-image-box" style="background-image: url('${p.img}');"></div>
-                            <div class="product-details-area">
-                                <h4>${p.name}</h4>
-                                <p>₹${p.price}</p>
-                            </div>
-                        </a>
-                    </div>
-                `;
+    window.fetchCategories = async function() {
+        try {
+            const arr = typeof window.getCategoriesData === 'function' ? await window.getCategoriesData() : [];
+            if(arr && arr.length > 0) {
+                const catCont = document.getElementById('category-container'); catCont.innerHTML = '';
+                arr.forEach((data) => {
+                    let img = data.image || data.imageUrl || data.url || 'https://via.placeholder.com/150';
+                    catCont.innerHTML += `<button class="flex flex-col items-center gap-2.5 group w-[76px] shrink-0" onclick="window.location.href='categories.html'"><div class="h-[76px] w-[76px] rounded-full overflow-hidden border-2 border-white shadow-md group-hover:shadow-lg transition-all p-0.5 bg-gradient-to-tr from-ethnic-gold/40 to-ethnic-burgundy/40"><img src="${img}" class="w-full h-full object-cover rounded-full group-hover:scale-105 transition-transform" /></div><span class="text-[10px] font-bold text-gray-700 uppercase tracking-wider">${data.name}</span></button>`;
+                });
             }
-            html += `</div>`;
-        }
-        productsContainer.innerHTML = html;
-    } catch (error) {}
-}
-
-window.initializeAppEngine = async function() {
-    if (!navigator.onLine) { 
-        window.updateConnectionStatus(); 
-        return; 
+        } catch (error) {}
     }
-    await window.initializeAuth();
-    try { 
-        await Promise.all([
-            window.fetchBanners(), 
-            window.fetchCategories(),
-            window.fetchProducts()
-        ]); 
-    } 
-    catch(e) {} 
-    finally {
-        const preloader = document.getElementById('appPreloader');
-        if(preloader) {
-            preloader.style.opacity = '0'; 
-            setTimeout(() => { preloader.style.visibility = 'hidden'; }, 400);
-        }
-    }
-}
 
-window.initializeAppEngine();
+    window.fetchProducts = async function() {
+        try {
+            const dataArray = typeof window.getVercelData === 'function' ? await window.getVercelData() : [];
+            if (!dataArray || dataArray.length === 0) return;
+            window.allProductsList = dataArray.map(data => ({ id: data.id, name: data.name, price: data.price, mrp: data.mrp, img: data.imageMain || data.image || data.imageUrl || 'https://via.placeholder.com/200' }));
+
+            document.getElementById('trending-container').innerHTML = ''; document.getElementById('new-arrivals-container').innerHTML = '';
+
+            window.allProductsList.forEach((p, index) => {
+                if (index < 4) {
+                    document.getElementById('trending-container').innerHTML += generateProductCard(p, false);
+                } else {
+                    document.getElementById('new-arrivals-container').innerHTML += generateProductCard(p, true);
+                }
+            });
+
+            let recentIds = JSON.parse(localStorage.getItem('aavira_recent')) || [];
+            if(recentIds.length > 0) {
+                let recentHtml = ''; recentIds.forEach(id => { const p = window.allProductsList.find(x => x.id === id); if(p) recentHtml += generateProductCard(p, false); });
+                if(recentHtml) { document.getElementById('recent-section').classList.remove('hidden'); document.getElementById('recent-container').innerHTML = recentHtml; }
+            }
+        } catch (error) {}
+    }
+
+    window.initializeAppEngine = async function() {
+        const savedName = localStorage.getItem('aavira_display_name');
+        if (savedName) document.getElementById('profileName').innerText = savedName;
+
+        loadSkeletons();
+        updateCartCount();
+        try { await Promise.all([window.fetchBanners(), window.fetchCategories(), window.fetchProducts()]); }
+        finally { if(typeof lucide !== 'undefined') lucide.createIcons(); initScrollAnimations(); }
+    }
+    document.addEventListener("DOMContentLoaded", window.initializeAppEngine);
