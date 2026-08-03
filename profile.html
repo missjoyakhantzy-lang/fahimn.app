@@ -1,1 +1,452 @@
-hello word
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | Aavira - Premium Ethnic Wear</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #7A1C30; /* Premium Burgundy/Maroon */
+            --accent-gold: #D4AF37;
+            --bg-light: #FBF9F6;
+            --card-bg: #FFFFFF;
+            --text-dark: #1A1A1A;
+            --text-muted: #6C757D;
+            --border-color: #EAEAEA;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            --radius-md: 14px;
+            --radius-lg: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            padding-bottom: 85px; /* Bottom Nav space */
+        }
+
+        /* Top Header */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 20px;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .profile-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            color: var(--primary-color);
+        }
+
+        .profile-header .icon-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        /* User Info Card */
+        .user-card {
+            background: var(--card-bg);
+            margin: 15px 16px;
+            padding: 20px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .user-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: #F4EBE8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: var(--primary-color);
+            position: relative;
+            border: 2px solid var(--accent-gold);
+        }
+
+        .user-avatar .edit-badge {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--primary-color);
+            color: #fff;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #fff;
+        }
+
+        .user-info h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .user-info p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .user-info .membership-tag {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.15);
+            color: #9C7B1C;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 0 16px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 14px 10px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            box-shadow: var(--shadow);
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s;
+        }
+
+        .stat-card:active {
+            transform: scale(0.96);
+        }
+
+        .stat-card i {
+            font-size: 20px;
+            color: var(--primary-color);
+            margin-bottom: 6px;
+        }
+
+        .stat-card h4 {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .stat-card span {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Menu Sections */
+        .menu-section {
+            background: var(--card-bg);
+            margin: 0 16px 18px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            padding: 16px 18px 8px;
+        }
+
+        .menu-list {
+            list-style: none;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 18px;
+            text-decoration: none;
+            color: var(--text-dark);
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.2s;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .menu-item:hover {
+            background: #FCFAFA;
+        }
+
+        .menu-item-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .menu-item-left i {
+            font-size: 18px;
+            color: var(--primary-color);
+            width: 22px;
+            text-align: center;
+        }
+
+        .menu-item-left span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .menu-item-right i {
+            font-size: 14px;
+            color: #CCCCCC;
+        }
+
+        /* Logout Button */
+        .logout-btn-wrap {
+            padding: 0 16px 20px;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 14px;
+            background: #FFEBEB;
+            color: #D32F2F;
+            border: 1px solid #FFCDCD;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #FFDADE;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #FFFFFF;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 70px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.06);
+            border-top: 1px solid var(--border-color);
+            z-index: 1000;
+        }
+
+        .bottom-nav a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #999999;
+            font-size: 11px;
+            font-weight: 500;
+            width: 25%;
+            transition: color 0.2s;
+        }
+
+        .bottom-nav a i {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .bottom-nav a.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .bottom-nav a.active i {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <header class="profile-header">
+        <h1>My Profile</h1>
+        <button class="icon-btn" aria-label="Settings">
+            <i class="fa-solid fa-gear"></i>
+        </button>
+    </header>
+
+    <!-- User Information Card -->
+    <section class="user-card">
+        <div class="user-avatar">
+            <i class="fa-solid fa-user"></i>
+            <span class="edit-badge"><i class="fa-solid fa-pen"></i></span>
+        </div>
+        <div class="user-info">
+            <h2>Guest User</h2>
+            <p>+91 98765 43210 • guest@aavira.store</p>
+            <span class="membership-tag">✨ Aavira Elite Member</span>
+        </div>
+    </section>
+
+    <!-- Quick Stats Grid -->
+    <div class="stats-grid">
+        <a href="orders.html" class="stat-card">
+            <i class="fa-solid fa-box-open"></i>
+            <h4>12</h4>
+            <span>Orders</span>
+        </a>
+        <a href="wishlist.html" class="stat-card">
+            <i class="fa-solid fa-heart"></i>
+            <h4>8</h4>
+            <span>Wishlist</span>
+        </a>
+        <a href="#" class="stat-card">
+            <i class="fa-solid fa-ticket"></i>
+            <h4>4</h4>
+            <span>Coupons</span>
+        </a>
+    </div>
+
+    <!-- Account Settings Section -->
+    <div class="menu-section">
+        <div class="section-title">My Account</div>
+        <div class="menu-list">
+            <a href="orders.html" class="menu-item">
+                <div class="menu-item-left">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span>My Orders</span>
+                </div>
+                <div class="menu-item-right"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+            <a href="wishlist.html" class="menu-item">
+                <div class="menu-item-left">
+                    <i class="fa-regular fa-heart"></i>
+                    <span>My Wishlist</span>
+                </div>
+                <div class="menu-item-right"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+            <a href="#" class="menu-item">
+                <div class="menu-item-left">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>Saved Addresses</span>
+                </div>
+                <div class="menu-item-right"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+            <a href="#" class="menu-item">
+                <div class="menu-item-left">
+                    <i class="fa-regular fa-credit-card"></i>
+                    <span>Payment Methods</span>
+                </div>
+                <div class="menu-item-right"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Preferences & Support Section -->
+    <div class="menu-section">
+        <div class="section-title">App & Support</div>
+        <div class="menu-list">
+            <a href="#" class="menu-item">
+                <div class="menu-item-left">
+                    <i class="fa-regular fa-bell"></i>
+                    <span>Notifications</span>
+                </div>
+                <div class="menu-item-right"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+            <a href="support.html" class="menu-item">
+                <div class="menu-item-left">
+                    <i class="fa-solid fa-headset"></i>
+                    <span>Customer Support</span>
+                </div>
+                <div class="menu-item-right"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+            <a href="rate.html" class="menu-item">
+                <div class="menu-item-left">
+                    <i class="fa-regular fa-star"></i>
+                    <span>Rate Aavira App</span>
+                </div>
+                <div class="menu-item-right"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+            <a href="#" class="menu-item">
+                <div class="menu-item-left">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Privacy Policy & Terms</span>
+                </div>
+                <div class="menu-item-right"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Logout Action -->
+    <div class="logout-btn-wrap">
+        <button class="logout-btn" onclick="alert('Logged out successfully!')">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>Log Out</span>
+        </button>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <a href="index.html">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </a>
+        <a href="categories.html">
+            <i class="fa-solid fa-grid-2"></i>
+            <!-- Fallback standard grid icon -->
+            <i class="fa-solid fa-layer-group" style="display:none;"></i>
+            <span>Category</span>
+        </a>
+        <a href="wishlist.html">
+            <i class="fa-regular fa-heart"></i>
+            <span>Wishlist</span>
+        </a>
+        <a href="profile.html" class="active">
+            <i class="fa-solid fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+</body>
+</html>
