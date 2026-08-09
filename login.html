@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aavira Fashion - Premium Access</title>
+    <title>Login - Aavira Premium</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,9 +11,169 @@
     <link href="https://fonts.gstatic.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="login-style.css?v=2.0">
+    <style>
+        :root { 
+            --bg-color: #fff5f8; 
+            --surface: #ffffff; 
+            --text-main: #1f2937; 
+            --text-muted: #6b7280; 
+            --primary: #d91b5c; 
+            --primary-hover: #b8124a; 
+            --accent-gold: #e5c158; 
+            --border: #f3e8eb; 
+            --input-bg: #fffbfd; 
+            --shadow: 0 25px 50px -12px rgba(217, 27, 92, 0.12); 
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        [data-theme="dark"] { 
+            --bg-color: #0b0205; 
+            --surface: #140409; 
+            --text-main: #f9fafb; 
+            --text-muted: #9ca3af; 
+            --border: #2d0d17; 
+            --input-bg: #1f0710; 
+            --shadow: 0 25px 50px -12px rgba(0,0,0,0.8); 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        
+        body { 
+            background-color: var(--bg-color); 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            transition: background-color 0.4s ease;
+            padding: 20px;
+        }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulseBg { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+
+        .main-container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            background: var(--surface);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out;
+            min-height: 600px;
+            transition: var(--transition);
+            border: 1px solid var(--border);
+        }
+
+        .brand-section {
+            flex: 1;
+            background: linear-gradient(-45deg, #d91b5c, #700729, #e5c158, #9c0f3f);
+            background-size: 400% 400%;
+            animation: pulseBg 12s ease infinite;
+            color: white;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-section::after {
+            content: ''; position: absolute; width: 300px; height: 300px; background: rgba(255,255,255,0.05); border-radius: 50%; bottom: -100px; right: -100px;
+        }
+
+        .brand-logo { font-family: 'Dancing Script', cursive; font-size: 64px; font-weight: 700; line-height: 1; color: var(--surface); text-shadow: 0 4px 10px rgba(0,0,0,0.15); animation: float 6s ease-in-out infinite; }
+        .brand-tagline { font-size: 18px; opacity: 0.95; margin-top: 10px; font-weight: 300; color: #fff0f3; }
+        
+        .brand-features { margin-top: 40px; }
+        .feature-item { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .feature-item i { font-size: 24px; color: var(--accent-gold); }
+        .feature-item div h4 { font-size: 16px; font-weight: 600; margin-bottom: 3px; color: #ffffff;}
+        .feature-item div p { font-size: 13px; opacity: 0.85; color: #fff0f3;}
+
+        .form-section {
+            flex: 1.2;
+            padding: 50px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (max-width: 850px) {
+            .main-container { flex-direction: column; max-width: 500px; }
+            .brand-section { display: none; } 
+            .form-section { padding: 30px 20px; }
+        }
+
+        .form-header { text-align: center; margin-bottom: 30px; position: relative; }
+        .form-header h2 { font-size: 24px; font-weight: 700; color: var(--text-main); margin-bottom: 5px; transition: var(--transition); }
+        .form-header p { font-size: 14px; color: var(--text-muted); transition: var(--transition); }
+        
+        .theme-btn { position: absolute; top: -10px; right: 0; width: 40px; height: 40px; border-radius: 50%; background: var(--input-bg); border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; display: flex; justify-content: center; align-items: center; transition: var(--transition); }
+        .theme-btn:hover { color: var(--primary); border-color: var(--primary);}
+
+        .tabs { display: flex; margin-bottom: 30px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; padding: 6px; transition: var(--transition); }
+        .tab { flex: 1; text-align: center; padding: 12px 0; font-size: 15px; font-weight: 600; color: var(--text-muted); cursor: pointer; border-radius: 10px; transition: var(--transition);}
+        .tab.active { background: var(--surface); color: var(--primary); border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(217,27,92,0.04); }
+
+        .screen { display: none; opacity: 0; transition: opacity 0.4s ease; flex-grow: 1; }
+        .screen.active { display: block; opacity: 1; animation: fadeInUp 0.5s ease; }
+
+        .input-group { position: relative; margin-bottom: 20px; }
+        .input-group input { width: 100%; padding: 16px 20px 16px 50px; border: 2px solid var(--border); border-radius: 12px; background: var(--input-bg); color: var(--text-main); font-size: 15px; outline: none; font-weight: 500; transition: var(--transition); }
+        .input-group i.icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 18px; transition: var(--transition); }
+        .input-group input:focus { border-color: var(--primary); background: var(--surface); }
+        .input-group input:focus + i.icon { color: var(--primary); }
+        .eye-btn { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); cursor: pointer; font-size: 18px;}
+        .eye-btn:hover { color: var(--primary); }
+
+        .forgot-link { display: block; text-align: right; color: var(--primary); font-size: 13px; font-weight: 600; cursor: pointer; margin-top: -10px; margin-bottom: 25px; text-decoration: none;}
+        .forgot-link:hover { color: var(--primary-hover); text-decoration: underline; }
+        
+        .auth-btn { width: 100%; padding: 16px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: var(--transition); border: 1px solid transparent; }
+        .auth-btn:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(217,27,92,0.2);}
+        .btn-outline { width: 100%; padding: 16px; border: 2px solid var(--border); background: transparent; color: var(--text-main); border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 15px; transition: var(--transition);}
+        .btn-outline:hover { background: var(--input-bg); border-color: var(--primary); color: var(--primary); }
+
+        .social-area { margin-top: 30px; text-align: center; }
+        .divider { display: flex; align-items: center; margin-bottom: 20px; }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--border); transition: var(--transition); }
+        .divider span { margin: 0 15px; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase;}
+        
+        .social-row { display: flex; gap: 15px; }
+        .btn-social { flex: 1; padding: 12px; border: 2px solid var(--border); border-radius: 12px; background: transparent; color: var(--text-main); font-size: 20px; cursor: pointer; transition: var(--transition); display: flex; justify-content: center; align-items: center;}
+        .btn-social:hover { border-color: var(--primary); background: var(--input-bg); color: var(--primary); }
+
+        .page-footer {
+            margin-top: 30px;
+            text-align: center;
+            color: var(--text-muted);
+            animation: fadeInUp 1s ease-out;
+            width: 100%;
+            max-width: 1000px;
+        }
+        .footer-links { display: flex; justify-content: center; gap: 20px; margin-bottom: 15px; font-size: 13px; font-weight: 500;}
+        .footer-links a { color: var(--text-muted); text-decoration: none; transition: var(--transition); }
+        .footer-links a:hover { color: var(--primary); }
+        
+        .footer-contact { font-size: 14px; margin-bottom: 15px; display: flex; justify-content: center; font-weight: 500;}
+        .footer-contact span i { margin-right: 6px; color: var(--primary); }
+        
+        .copyright { font-size: 12px; opacity: 0.7; border-top: 1px solid var(--border); padding-top: 15px; transition: var(--transition); color: var(--text-muted);}
+
+        #toast { position: fixed; bottom: 30px; left: 50%; transform: translate(-50%, 100px); padding: 14px 24px; border-radius: 12px; font-weight: 600; font-size: 14px; color: white; z-index: 1000; transition: var(--transition); display: flex; align-items: center; gap: 10px; opacity: 0; box-shadow: 0 10px 30px rgba(0,0,0,0.3); pointer-events: none;}
+        #toast.show { transform: translate(-50%, 0); opacity: 1; }
+    </style>
 </head>
 <body data-theme="light">
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast">
+        <i class="fa-solid fa-circle-info" id="toastIconType"></i>
+        <span id="toastMsg" style="margin-left: 8px;">Notification</span>
+    </div>
 
     <div class="main-container">
         
@@ -53,7 +213,7 @@
 
         <div class="form-section">
             <div class="form-header">
-                <button class="theme-btn" onclick="window.toggleTheme()"><i class="fa-solid fa-moon" id="themeIcon"></i></button>
+                <button class="theme-btn" onclick="toggleTheme()"><i class="fa-solid fa-moon" id="themeIcon"></i></button>
                 <h2 style="font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 36px; display: none;" id="mobileLogo">Aavira</h2>
                 
                 <h2 id="headerTitle">Create Account</h2>
@@ -61,10 +221,11 @@
             </div>
 
             <div class="tabs" id="authTabs">
-                <div class="tab" id="tabLogin" onclick="window.switchMode('login')">Login</div>
-                <div class="tab active" id="tabSignup" onclick="window.switchMode('signup')">Sign Up</div>
+                <div class="tab" id="tabLogin" onclick="switchMode('login')">Login</div>
+                <div class="tab active" id="tabSignup" onclick="switchMode('signup')">Sign Up</div>
             </div>
 
+            <!-- LOGIN & SIGNUP SCREEN -->
             <div class="screen active" id="screenMain">
                 <div class="input-group" id="nameBox">
                     <input type="text" id="regName" placeholder="Full Name">
@@ -77,32 +238,53 @@
                 <div class="input-group">
                     <input type="password" id="authPwd" placeholder="Password (Min 6 chars)">
                     <i class="fa-solid fa-lock icon"></i>
-                    <i class="fa-regular fa-eye-slash eye-btn" id="eyeBtn" onclick="window.togglePwd('authPwd', 'eyeBtn')"></i>
+                    <i class="fa-regular fa-eye-slash eye-btn" id="eyeBtn" onclick="togglePwd('authPwd', 'eyeBtn')"></i>
                 </div>
 
-                <a class="forgot-link" id="showForgotBtn" onclick="window.openForgotScreen()">Forgot Password?</a>
-                <button class="auth-btn" id="mainActionBtn" onclick="window.processAuth()">Create My Account</button>
+                <a class="forgot-link" id="showForgotBtn" onclick="openForgotScreen()" style="display: none;">Forgot Password?</a>
+                
+                <!-- Main Action Button -->
+                <button class="auth-btn" id="mainActionBtn" onclick="processAuth()">Create My Account</button>
+
+                <div class="social-area" id="socialArea">
+                    <div class="divider"><span>Or continue with</span></div>
+                    <div class="social-row">
+                        <button class="btn-social" onclick="showToast('Google login under maintenance.')" title="Google">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="22px" height="22px">
+                                <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
+                                <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
+                                <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
+                                <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+                            </svg>
+                        </button>
+                        <button class="btn-social" style="color: #1877F2;" title="Facebook"><i class="fa-brands fa-facebook"></i></button>
+                        <button class="btn-social" title="Apple"><i class="fa-brands fa-apple"></i></button>
+                    </div>
+                </div>
             </div>
 
+            <!-- OTP VERIFICATION SCREEN (For Sign Up) -->
             <div class="screen" id="screenOTP">
                 <p style="text-align: center; color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Check your inbox for the verification code.</p>
                 <div class="input-group">
                     <input type="text" id="otpInput" placeholder="Enter 6-Digit OTP" maxlength="6" style="text-align: center; font-size: 20px; letter-spacing: 8px; font-weight: 700;">
                     <i class="fa-solid fa-shield-check icon"></i>
                 </div>
-                <button class="auth-btn" id="verifyOtpBtn" onclick="window.verifyOTP()">Verify & Complete Setup</button>
-                <button class="btn-outline" onclick="window.backToLoginFromOtp()">Edit Details</button>
+                <button class="auth-btn" id="verifyOtpBtn" onclick="verifyOTP()">Verify & Complete Setup</button>
+                <button class="btn-outline" onclick="backToLoginFromOtp()">Edit Details</button>
             </div>
 
+            <!-- FORGOT PASSWORD SCREEN -->
             <div class="screen" id="screenForgot">
                 <div class="input-group">
                     <input type="email" id="resetEmail" placeholder="Enter registered email address">
                     <i class="fa-regular fa-envelope icon"></i>
                 </div>
-                <button class="auth-btn" id="sendResetOtpBtn" onclick="window.sendResetOTP()">Send Reset OTP <i class="fa-solid fa-paper-plane" style="margin-left: 5px;"></i></button>
-                <button class="btn-outline" onclick="window.backToMain()">Back to Login</button>
+                <button class="auth-btn" id="sendResetOtpBtn" onclick="sendResetOTP()">Send Reset OTP <i class="fa-solid fa-paper-plane" style="margin-left: 5px;"></i></button>
+                <button class="btn-outline" onclick="backToMain()">Back to Login</button>
             </div>
 
+            <!-- RESET PASSWORD OTP SCREEN -->
             <div class="screen" id="screenReset">
                 <p style="text-align: center; color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Enter the 6-digit OTP sent to your email.</p>
                 <div class="input-group">
@@ -112,10 +294,10 @@
                 <div class="input-group">
                     <input type="password" id="newPwdInput" placeholder="Create New Password">
                     <i class="fa-solid fa-lock icon"></i>
-                    <i class="fa-regular fa-eye-slash eye-btn" id="eyeBtnReset" onclick="window.togglePwd('newPwdInput', 'eyeBtnReset')"></i>
+                    <i class="fa-regular fa-eye-slash eye-btn" id="eyeBtnReset" onclick="togglePwd('newPwdInput', 'eyeBtnReset')"></i>
                 </div>
-                <button class="auth-btn" id="updatePwdBtn" onclick="window.updatePassword()">Secure Update <i class="fa-solid fa-check" style="margin-left: 5px;"></i></button>
-                <button class="btn-outline" onclick="window.backToMain()">Cancel</button>
+                <button class="auth-btn" id="updatePwdBtn" onclick="updatePassword()">Secure Update <i class="fa-solid fa-check" style="margin-left: 5px;"></i></button>
+                <button class="btn-outline" onclick="backToMain()">Cancel</button>
             </div>
 
         </div>
@@ -137,8 +319,275 @@
         </div>
     </footer>
 
-    <div id="toast"><i class="fa-solid fa-circle-info" id="toastIconType"></i><span id="toastMsg" style="margin-left: 8px;">Notification</span></div>
+    <!-- MAIN JAVASCRIPT -->
+    <script>
+        // 🔥 YOUR ACTUAL VERCEL URL 🔥
+        const SERVER_URL = "https://ecommerce-backend-eight-lac.vercel.app";
 
-    <script src="login-script.js"></script>
+        let isSignup = true;
+        let tempSignupData = { name: "", email: "", pwd: "" };
+        let tempResetEmail = "";
+
+        // UI Interactions
+        if(window.innerWidth <= 850) { document.getElementById('mobileLogo').style.display = 'block'; }
+        window.addEventListener('resize', () => {
+            if(window.innerWidth <= 850) document.getElementById('mobileLogo').style.display = 'block';
+            else document.getElementById('mobileLogo').style.display = 'none';
+        });
+
+        // Toast logic
+        window.showToast = function(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.style.backgroundColor = isError ? '#ef4444' : '#10b981';
+            document.getElementById('toastIconType').className = isError ? 'fa-solid fa-circle-exclamation' : 'fa-solid fa-circle-check';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+
+        window.toggleTheme = function() {
+            const body = document.body;
+            const icon = document.getElementById('themeIcon');
+            if(body.getAttribute('data-theme') === 'dark') { body.setAttribute('data-theme', 'light'); icon.className = 'fa-solid fa-moon'; } 
+            else { body.setAttribute('data-theme', 'dark'); icon.className = 'fa-solid fa-sun'; }
+        }
+
+        // ✨ SWITCH MODE (LOGIN/SIGNUP UI) ✨
+        window.switchMode = function(mode) {
+            isSignup = (mode === 'signup');
+            document.getElementById('tabSignup').classList.toggle('active', isSignup);
+            document.getElementById('tabLogin').classList.toggle('active', !isSignup);
+            
+            document.getElementById('nameBox').style.display = isSignup ? 'block' : 'none';
+            document.getElementById('showForgotBtn').style.display = isSignup ? 'none' : 'block';
+            
+            document.getElementById('headerTitle').innerText = isSignup ? 'Create Account' : 'Welcome Back';
+            document.getElementById('headerSub').innerText = isSignup ? 'Join Aavira to unlock premium access.' : 'Sign in to jump back into your account.';
+            
+            // BUTTON TEXT CHANGES DYNAMICALLY
+            document.getElementById('mainActionBtn').innerHTML = isSignup ? 'Get Secure OTP <i class="fa-solid fa-arrow-right" style="margin-left: 5px;"></i>' : 'Secure Login <i class="fa-solid fa-arrow-right-to-bracket" style="margin-left: 5px;"></i>';
+        }
+
+        window.togglePwd = function(inputId, iconId) {
+            const inp = document.getElementById(inputId); const ico = document.getElementById(iconId);
+            if(inp.type === 'password') { inp.type = 'text'; ico.className = 'fa-regular fa-eye eye-btn'; }
+            else { inp.type = 'password'; ico.className = 'fa-regular fa-eye-slash eye-btn'; }
+        }
+
+        window.openForgotScreen = function() {
+            document.getElementById('headerTitle').innerText = 'Reset Password';
+            document.getElementById('headerSub').innerText = 'Securely recover your account.';
+            document.getElementById('authTabs').style.display = 'none';
+            document.getElementById('screenMain').classList.remove('active');
+            setTimeout(() => document.getElementById('screenForgot').classList.add('active'), 200);
+        }
+
+        window.backToMain = function() {
+            document.getElementById('authTabs').style.display = 'flex';
+            document.getElementById('headerTitle').innerText = isSignup ? 'Create Account' : 'Welcome Back';
+            document.getElementById('headerSub').innerText = isSignup ? 'Join Aavira to unlock premium access.' : 'Sign in to jump back into your account.';
+            document.getElementById('screenForgot').classList.remove('active');
+            document.getElementById('screenReset').classList.remove('active');
+            setTimeout(() => { document.getElementById('screenMain').classList.add('active'); }, 200);
+        }
+
+        window.backToLoginFromOtp = function() {
+            document.getElementById('authTabs').style.display = 'flex';
+            document.getElementById('headerTitle').innerText = isSignup ? 'Create Account' : 'Welcome Back';
+            document.getElementById('headerSub').innerText = isSignup ? 'Join Aavira to unlock premium access.' : 'Sign in to jump back into your account.';
+            document.getElementById('screenOTP').classList.remove('active');
+            setTimeout(() => { document.getElementById('screenMain').classList.add('active'); }, 200);
+            document.getElementById('otpInput').value = '';
+        }
+
+        // ===============================================
+        // DELIVERY BOY LOGIC (Connects to Vercel)
+        // ===============================================
+        window.DeliveryBoy = {
+            sendOTP: async function(email, name) {
+                try {
+                    const response = await fetch(`${SERVER_URL}/api/send-otp`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ userEmail: email, userName: name })
+                    });
+                    const data = await response.json();
+                    return { ok: response.ok, data: data };
+                } catch (error) {
+                    return { ok: false, data: { success: false, message: 'Backend Server Error!' } };
+                }
+            },
+
+            verifyOTP: async function(email, userOtp) {
+                try {
+                    const response = await fetch(`${SERVER_URL}/api/verify-otp`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ userEmail: email, userOTP: userOtp })
+                    });
+                    const data = await response.json();
+                    return { ok: response.ok, data: data };
+                } catch (error) {
+                    return { ok: false, data: { success: false, message: 'Backend Server Error!' } };
+                }
+            },
+
+            login: async function(email, pwd) {
+                try {
+                    const response = await fetch(`${SERVER_URL}/api/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ userEmail: email, userPassword: pwd })
+                    });
+                    const data = await response.json();
+                    return { ok: response.ok, data: data };
+                } catch (error) {
+                    return { ok: false, data: { success: false, message: 'Backend Server Error!' } };
+                }
+            }
+        };
+
+        // ===============================================
+        // PROCESS AUTHENTICATION (STRICT CHECK)
+        // ===============================================
+        window.processAuth = async function() {
+            const nameBox = document.getElementById('regName');
+            const emailBox = document.getElementById('authEmail');
+            const pwdBox = document.getElementById('authPwd');
+            
+            const name = nameBox ? nameBox.value.trim() : "";
+            const email = emailBox ? emailBox.value.trim() : "";
+            const pwd = pwdBox ? pwdBox.value.trim() : "";
+
+            if(!email || !pwd) { showToast("Email and password required!", true); return; }
+
+            const btn = document.getElementById('mainActionBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+            btn.disabled = true;
+
+            if(!isSignup) {
+                // ===============================================
+                // STRICT LOGIN FLOW (Checks Vercel ONLY)
+                // ===============================================
+                try {
+                    const result = await window.DeliveryBoy.login(email, pwd);
+                    
+                    if(result.ok && result.data && result.data.success) {
+                        localStorage.setItem('aavira_display_name', result.data.userName || email.split('@')[0]);
+                        showToast("Login Successful! Redirecting...", false);
+                        setTimeout(() => window.location.href = "index.html", 1500);
+                    } else {
+                        showToast(result.data.message || "Invalid Email or Password.", true);
+                    }
+                } catch(e) {
+                    showToast("Login Failed. Server Error.", true);
+                }
+
+            } else {
+                // ===============================================
+                // SIGNUP FLOW (SENDS OTP)
+                // ===============================================
+                if(!name) { showToast("Please enter Full Name.", true); btn.innerHTML = originalText; btn.disabled = false; return; }
+                tempSignupData = { name, email, pwd };
+
+                const result = await window.DeliveryBoy.sendOTP(email, name);
+
+                if(result.ok && result.data && result.data.success) {
+                    showToast("Verification OTP sent!", false);
+                    
+                    // Proceed to OTP Screen WITHOUT touching missing IDs
+                    document.getElementById('headerTitle').innerText = 'Verify Identity';
+                    document.getElementById('headerSub').innerText = `OTP sent to ${email}`;
+                    
+                    document.getElementById('authTabs').style.display = 'none';
+                    document.getElementById('screenMain').classList.remove('active');
+                    setTimeout(() => document.getElementById('screenOTP').classList.add('active'), 200);
+
+                } else {
+                    showToast(result.data.message || "Failed to send OTP.", true);
+                }
+            }
+            btn.innerHTML = originalText; btn.disabled = false;
+        }
+
+        // SIGNUP VERIFY OTP
+        window.verifyOTP = async function() {
+            const otpBox = document.getElementById('otpInput');
+            const otpVal = otpBox ? otpBox.value.trim() : "";
+            
+            if(otpVal.length !== 6) { showToast("Enter complete 6-digit OTP!", true); return; }
+            
+            const vBtn = document.getElementById('verifyOtpBtn');
+            const originalText = vBtn.innerHTML;
+            vBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Finalizing...'; vBtn.disabled = true;
+
+            const result = await window.DeliveryBoy.verifyOTP(tempSignupData.email, otpVal);
+
+            if(result.ok && result.data && result.data.success) {
+                const finalName = tempSignupData.name || tempSignupData.email.split('@')[0];
+                localStorage.setItem('aavira_display_name', finalName);
+                
+                showToast("Verified Successfully! Welcome to Aavira.", false);
+                setTimeout(() => window.location.href = "index.html", 1500);
+
+            } else {
+                showToast(result.data.message || "Invalid OTP!", true); 
+                vBtn.innerHTML = originalText; vBtn.disabled = false; 
+            }
+        }
+
+        // FORGOT PASSWORD
+        window.sendResetOTP = async function() {
+            const resetBox = document.getElementById('resetEmail');
+            const email = resetBox ? resetBox.value.trim() : "";
+            
+            if(!email) { showToast("Please enter your email.", true); return; }
+            
+            const btn = document.getElementById('sendResetOtpBtn');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending OTP...'; btn.disabled = true;
+
+            const result = await window.DeliveryBoy.sendOTP(email, "User");
+
+            if(result.ok && result.data && result.data.success) {
+                tempResetEmail = email;
+                showToast("OTP sent to your email!", false);
+                document.getElementById('headerTitle').innerText = 'Set New Password';
+                document.getElementById('headerSub').innerText = 'Create a strong new password.';
+                
+                document.getElementById('screenForgot').classList.remove('active');
+                setTimeout(() => document.getElementById('screenReset').classList.add('active'), 200);
+            } else { 
+                showToast(result.data.message || "Failed to send OTP.", true); 
+            }
+            btn.innerHTML = 'Send Reset OTP <i class="fa-solid fa-paper-plane" style="margin-left: 5px;"></i>'; btn.disabled = false;
+        }
+
+        window.updatePassword = async function() {
+            const otpBox = document.getElementById('resetOtpInput');
+            const pwdBox = document.getElementById('newPwdInput');
+            
+            const otpVal = otpBox ? otpBox.value.trim() : "";
+            const newPwd = pwdBox ? pwdBox.value.trim() : "";
+            
+            if(otpVal.length !== 6) { showToast("Please enter 6-digit OTP!", true); return; }
+            if(newPwd.length < 6) { showToast("Password must be at least 6 characters!", true); return; }
+            
+            const btn = document.getElementById('updatePwdBtn');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Updating...'; btn.disabled = true;
+
+            const result = await window.DeliveryBoy.verifyOTP(tempResetEmail, otpVal);
+
+            if(result.ok && result.data && result.data.success) {
+                showToast("Password Updated Successfully!", false);
+                if(otpBox) otpBox.value = ""; 
+                if(pwdBox) pwdBox.value = "";
+                setTimeout(() => backToMain(), 2000);
+            } else { 
+                showToast(result.data.message || "Invalid OTP!", true); 
+                btn.innerHTML = 'Secure Update <i class="fa-solid fa-check" style="margin-left: 5px;"></i>'; btn.disabled = false; 
+            }
+        }
+    </script>
 </body>
 </html>
