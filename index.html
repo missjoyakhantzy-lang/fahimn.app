@@ -161,7 +161,7 @@
     </div>
 </div>
 
-<!-- SIDEBAR MENU WITH VIP CARD -->
+<!-- SIDEBAR MENU WITH CLEAN URLs -->
 <div id="sidebarOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] hidden opacity-0 transition-opacity duration-300 touch-none" onclick="closeSidebar()"></div>
 <div id="sidebar" class="fixed top-0 left-0 w-[85%] max-w-[340px] h-full bg-white z-[70] transform -translate-x-full transition-transform duration-300 shadow-2xl flex flex-col font-sans">
     <div class="relative pt-12 pb-6 px-6 bg-[#FAF8F5] border-b border-gray-100 min-h-[140px] flex items-center">
@@ -183,8 +183,6 @@
             <button type="button" onclick="handleLogout()" class="w-full bg-white border border-gray-200 py-2.5 rounded-full text-[12px] font-bold text-gray-600 hover:text-red-600 hover:bg-red-50 hover:border-red-100 flex items-center justify-center gap-2 transition-all shadow-sm"><i data-lucide="log-out" class="w-4 h-4"></i> Secure Logout</button>
         </div>
     </div>
-    
-    <!-- 🔥 ACTIVE PROMO DISPLAY BADGE 🔥 -->
     <div id="activePromoBadge" class="hidden mx-4 mb-2 mt-2 bg-green-50 border border-green-200 rounded-xl p-3 flex items-center justify-between shadow-sm">
         <div class="flex items-center gap-3">
             <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600"><i data-lucide="check-circle" class="w-4 h-4"></i></div>
@@ -195,19 +193,18 @@
         </div>
         <button type="button" onclick="removePromoCode()" class="text-gray-400 hover:text-red-500 transition-colors p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
     </div>
-
     <div class="flex-1 overflow-y-auto py-4 px-3 space-y-1 bg-white">
-        <a href="index.html" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group"><div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white transition-all mr-4"><i data-lucide="home" class="w-[18px] h-[18px] text-gray-600 group-hover:text-ethnic-burgundy transition-colors stroke-[2]"></i></div><span class="text-[14px] font-semibold text-gray-800">Home</span></a>
-        <a href="categories.html" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group"><div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white transition-all mr-4"><i data-lucide="layout-grid" class="w-[18px] h-[18px] text-gray-600 group-hover:text-ethnic-burgundy transition-colors stroke-[2]"></i></div><span class="text-[14px] font-semibold text-gray-800">Shop by Category</span></a>
-        <a href="orders.html" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group"><div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white transition-all mr-4"><i data-lucide="package" class="w-[18px] h-[18px] text-gray-600 group-hover:text-ethnic-burgundy transition-colors stroke-[2]"></i></div><span class="text-[14px] font-semibold text-gray-800">My Orders</span></a>
-        <a href="wishlist.html" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group"><div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white transition-all mr-4"><i data-lucide="heart" class="w-[18px] h-[18px] text-gray-600 group-hover:text-[#E91E63] transition-colors stroke-[2]"></i></div><span class="text-[14px] font-semibold text-gray-800">My Wishlist</span></a>
-        <a href="cart.html" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group"><div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white transition-all mr-4"><i data-lucide="shopping-cart" class="w-[18px] h-[18px] text-gray-600 group-hover:text-ethnic-burgundy transition-colors stroke-[2]"></i></div><span class="text-[14px] font-semibold text-gray-800">My Cart</span></a>
+        <a href="./" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group"><div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white transition-all mr-4"><i data-lucide="home" class="w-[18px] h-[18px] text-gray-600 group-hover:text-ethnic-burgundy transition-colors stroke-[2]"></i></div><span class="text-[14px] font-semibold text-gray-800">Home</span></a>
+        <a href="categories" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group"><div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white transition-all mr-4"><i data-lucide="layout-grid" class="w-[18px] h-[18px] text-gray-600 group-hover:text-ethnic-burgundy transition-colors stroke-[2]"></i></div><span class="text-[14px] font-semibold text-gray-800">Shop by Category</span></a>
+        <a href="orders" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group"><div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white transition-all mr-4"><i data-lucide="package" class="w-[18px] h-[18px] text-gray-600 group-hover:text-ethnic-burgundy transition-colors stroke-[2]"></i></div><span class="text-[14px] font-semibold text-gray-800">My Orders</span></a>
+        <a href="wishlist" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group"><div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white transition-all mr-4"><i data-lucide="heart" class="w-[18px] h-[18px] text-gray-600 group-hover:text-[#E91E63] transition-colors stroke-[2]"></i></div><span class="text-[14px] font-semibold text-gray-800">My Wishlist</span></a>
+        <a href="cart" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group"><div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white transition-all mr-4"><i data-lucide="shopping-cart" class="w-[18px] h-[18px] text-gray-600 group-hover:text-ethnic-burgundy transition-colors stroke-[2]"></i></div><span class="text-[14px] font-semibold text-gray-800">My Cart</span></a>
         <div class="h-[1px] bg-gray-100 my-4 mx-4"></div>
         <a href="#" onclick="openPromoModal()" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group"><div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white transition-all mr-4"><i data-lucide="ticket" class="w-[18px] h-[18px] text-gray-600 group-hover:text-[#E5C158] transition-colors stroke-[2]"></i></div><span class="text-[14px] font-semibold text-gray-800">Apply Promo Code</span></a>
         <a href="#" onclick="openReferralCenter()" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group"><div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white transition-all mr-4"><i data-lucide="gift" class="w-[18px] h-[18px] text-gray-600 group-hover:text-[#E5C158] transition-colors stroke-[2]"></i></div><span class="text-[14px] font-semibold text-gray-800">Refer & Earn</span></a>
         <div class="h-[1px] bg-gray-100 my-4 mx-4"></div>
         <a href="#" onclick="requestNotificationPermission()" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group"><div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white transition-all mr-4"><i data-lucide="bell" class="w-[18px] h-[18px] text-gray-600 group-hover:text-blue-500 transition-colors stroke-[2]"></i></div><span class="text-[14px] font-semibold text-gray-800">Allow Notifications</span></a>
-        <a href="support.html" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group"><div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white transition-all mr-4"><i data-lucide="headphones" class="w-[18px] h-[18px] text-gray-600 group-hover:text-green-500 transition-colors stroke-[2]"></i></div><span class="text-[14px] font-semibold text-gray-800">Customer Support</span></a>
+        <a href="support" class="flex items-center px-3 py-2.5 text-gray-700 hover:bg-gray-50 rounded-2xl transition-colors group"><div class="w-[38px] h-[38px] rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:bg-white transition-all mr-4"><i data-lucide="headphones" class="w-[18px] h-[18px] text-gray-600 group-hover:text-green-500 transition-colors stroke-[2]"></i></div><span class="text-[14px] font-semibold text-gray-800">Customer Support</span></a>
     </div>
 </div>
 
@@ -240,7 +237,6 @@
         <span class="animate-slide-left text-[10px] font-bold tracking-widest uppercase">✨ Exclusive Offer: Log in now to unlock flat 20% OFF on your first purchase! ✨</span>
     </div>
 
-    <!-- HEADER WITH NOTIFICATION BELL -->
     <header id="main-header" class="sticky top-0 z-40 bg-[#FAF8F5]/60 backdrop-blur-md transition-all duration-[400ms] ease-[cubic-bezier(0.25,0.8,0.25,1)]">
         <div class="mx-auto px-4 h-16 flex items-center justify-between">
             <button type="button" onclick="openSidebar()" class="w-10 h-10 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-gray-100 flex flex-col items-center justify-center gap-[4px] hover:bg-gray-50 transition-colors group">
@@ -258,7 +254,7 @@
                     <i data-lucide="bell" class="w-5 h-5"></i>
                     <span id="notif-badge" class="absolute top-0.5 right-0.5 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center hidden border-2 border-[#FAF8F5]">0</span>
                 </button>
-                <button type="button" class="p-1.5 relative hover:opacity-70 transition-opacity" onclick="window.location.href='cart.html'">
+                <button type="button" class="p-1.5 relative hover:opacity-70 transition-opacity" onclick="window.location.href='cart'">
                     <i data-lucide="shopping-bag" class="w-5 h-5"></i>
                     <span id="cart-badge" class="absolute top-0.5 right-0.5 w-4 h-4 bg-ethnic-burgundy text-white text-[9px] font-bold rounded-full flex items-center justify-center hidden border-2 border-[#FAF8F5] transition-transform duration-200">0</span>
                 </button>
@@ -310,16 +306,16 @@
                 <div>
                     <h4 class="font-serif text-[15px] font-semibold text-gray-800 mb-3 border-b border-gray-100 pb-1 inline-block">Quick Links</h4>
                     <ul class="space-y-2.5">
-                        <li><a href="categories.html" class="text-xs text-gray-500 hover:text-ethnic-burgundy transition-colors">Shop Collection</a></li>
-                        <li><a href="orders.html" class="text-xs text-gray-500 hover:text-ethnic-burgundy transition-colors">Track Order</a></li>
+                        <li><a href="categories" class="text-xs text-gray-500 hover:text-ethnic-burgundy transition-colors">Shop Collection</a></li>
+                        <li><a href="orders" class="text-xs text-gray-500 hover:text-ethnic-burgundy transition-colors">Track Order</a></li>
                         <li><a href="#aboutSection" class="text-xs text-gray-500 hover:text-ethnic-burgundy transition-colors">About Us</a></li>
-                        <li><a href="support.html" class="text-xs text-gray-500 hover:text-ethnic-burgundy transition-colors">Contact Us</a></li>
+                        <li><a href="support" class="text-xs text-gray-500 hover:text-ethnic-burgundy transition-colors">Contact Us</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="font-serif text-[15px] font-semibold text-gray-800 mb-3 border-b border-gray-100 pb-1 inline-block">Support</h4>
                     <ul class="space-y-2.5">
-                        <li><a href="support.html" class="text-xs text-gray-500 hover:text-ethnic-burgundy transition-colors">Help Center</a></li>
+                        <li><a href="support" class="text-xs text-gray-500 hover:text-ethnic-burgundy transition-colors">Help Center</a></li>
                         <li><a href="#shippingSection" class="text-xs text-gray-500 hover:text-ethnic-burgundy transition-colors">Shipping Policy</a></li>
                         <li><a href="#returnSection" class="text-xs text-gray-500 hover:text-ethnic-burgundy transition-colors">Returns & Refunds</a></li>
                         <li><a href="#termsSection" class="text-xs text-gray-500 hover:text-ethnic-burgundy transition-colors">Terms & Privacy</a></li>
@@ -460,10 +456,10 @@
 
     <!-- BOTTOM NAVIGATION -->
     <nav class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-[400px] bg-white/85 backdrop-blur-2xl border border-white/60 z-50 flex justify-around items-center px-2 py-2 rounded-full shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)]">
-        <a href="index.html" class="flex flex-col items-center justify-center w-[54px] h-[54px] gap-0.5 text-ethnic-burgundy bg-ethnic-burgundy/10 active:bg-ethnic-burgundy/20 rounded-full transition-all active:scale-95"><i data-lucide="home" class="w-[20px] h-[20px] stroke-[2.5]"></i><span class="text-[9px] font-bold leading-none mt-1">Home</span></a>
-        <a href="categories.html" class="flex flex-col items-center justify-center w-[54px] h-[54px] gap-0.5 text-gray-400 hover:text-ethnic-burgundy hover:bg-gray-50 active:bg-gray-100 rounded-full transition-all active:scale-95"><i data-lucide="layout-grid" class="w-[20px] h-[20px] stroke-[2]"></i><span class="text-[9px] font-medium leading-none mt-1">Category</span></a>
-        <a href="wishlist.html" class="flex flex-col items-center justify-center w-[54px] h-[54px] gap-0.5 text-gray-400 hover:text-ethnic-burgundy hover:bg-gray-50 active:bg-gray-100 rounded-full transition-all active:scale-95"><i data-lucide="heart" class="w-[20px] h-[20px] stroke-[2]"></i><span class="text-[9px] font-medium leading-none mt-1">Wishlist</span></a>
-        <a href="profile.html" class="flex flex-col items-center justify-center w-[54px] h-[54px] gap-0.5 text-gray-400 hover:text-ethnic-burgundy hover:bg-gray-50 active:bg-gray-100 rounded-full transition-all active:scale-95"><i data-lucide="user" class="w-[20px] h-[20px] stroke-[2]"></i><span class="text-[9px] font-medium leading-none mt-1">Profile</span></a>
+        <a href="./" class="flex flex-col items-center justify-center w-[54px] h-[54px] gap-0.5 text-ethnic-burgundy bg-ethnic-burgundy/10 active:bg-ethnic-burgundy/20 rounded-full transition-all active:scale-95"><i data-lucide="home" class="w-[20px] h-[20px] stroke-[2.5]"></i><span class="text-[9px] font-bold leading-none mt-1">Home</span></a>
+        <a href="categories" class="flex flex-col items-center justify-center w-[54px] h-[54px] gap-0.5 text-gray-400 hover:text-ethnic-burgundy hover:bg-gray-50 active:bg-gray-100 rounded-full transition-all active:scale-95"><i data-lucide="layout-grid" class="w-[20px] h-[20px] stroke-[2]"></i><span class="text-[9px] font-medium leading-none mt-1">Category</span></a>
+        <a href="wishlist" class="flex flex-col items-center justify-center w-[54px] h-[54px] gap-0.5 text-gray-400 hover:text-ethnic-burgundy hover:bg-gray-50 active:bg-gray-100 rounded-full transition-all active:scale-95"><i data-lucide="heart" class="w-[20px] h-[20px] stroke-[2]"></i><span class="text-[9px] font-medium leading-none mt-1">Wishlist</span></a>
+        <a href="profile" class="flex flex-col items-center justify-center w-[54px] h-[54px] gap-0.5 text-gray-400 hover:text-ethnic-burgundy hover:bg-gray-50 active:bg-gray-100 rounded-full transition-all active:scale-95"><i data-lucide="user" class="w-[20px] h-[20px] stroke-[2]"></i><span class="text-[9px] font-medium leading-none mt-1">Profile</span></a>
     </nav>
 </div>
 
@@ -851,7 +847,7 @@
         let recent = JSON.parse(localStorage.getItem('aavira_recent')) || [];
         recent = recent.filter(item => item !== id); recent.unshift(id);
         if(recent.length > 8) recent.pop(); localStorage.setItem('aavira_recent', JSON.stringify(recent));
-        window.location.href = `product-details.html?id=${id}`;
+        window.location.href = `product?id=${id}`;
     }
 
     function initScrollAnimations() {
@@ -955,7 +951,7 @@
                 const catCont = document.getElementById('category-container'); catCont.innerHTML = ''; 
                 arr.forEach((data) => {
                     let img = data.image || data.imageUrl || data.url || 'https://via.placeholder.com/150';
-                    catCont.innerHTML += `<button type="button" class="flex flex-col items-center gap-2.5 group w-[76px] shrink-0" onclick="window.location.href='categories.html'"><div class="h-[76px] w-[76px] rounded-full overflow-hidden border-2 border-white shadow-md group-hover:shadow-lg transition-all p-0.5 bg-gradient-to-tr from-ethnic-gold/40 to-ethnic-burgundy/40"><img src="${img}" class="w-full h-full object-cover rounded-full group-hover:scale-105 transition-transform" /></div><span class="text-[10px] font-bold text-gray-700 uppercase tracking-wider">${data.name}</span></button>`;
+                    catCont.innerHTML += `<button type="button" class="flex flex-col items-center gap-2.5 group w-[76px] shrink-0" onclick="window.location.href='categories'"><div class="h-[76px] w-[76px] rounded-full overflow-hidden border-2 border-white shadow-md group-hover:shadow-lg transition-all p-0.5 bg-gradient-to-tr from-ethnic-gold/40 to-ethnic-burgundy/40"><img src="${img}" class="w-full h-full object-cover rounded-full group-hover:scale-105 transition-transform" /></div><span class="text-[10px] font-bold text-gray-700 uppercase tracking-wider">${data.name}</span></button>`;
                 });
             }
         } catch (error) {}
@@ -1241,7 +1237,7 @@
     document.addEventListener("DOMContentLoaded", window.initializeAppEngine);
 </script>
 
-<!-- 🔥 FIREBASE SDK (ASLI MOBILE PUSH NOTIFICATIONS & SYNC) 🔥 -->
+<!-- 🔥 FIREBASE SDK (AUTH, FIRESTORE, MESSAGING & DB SYNC) 🔥 -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getMessaging, getToken, onMessage, isSupported } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-messaging.js";
@@ -1263,25 +1259,40 @@
     const provider = new GoogleAuthProvider();
     let messaging = null;
 
-    // SYNC NOTIFICATIONS UI
+    // ==========================================
+    // ✨ FIX: SYNC NOTIFICATIONS DIRECTLY FROM DATABASE ✨
+    // ==========================================
     window.syncNotificationsFromDB = async function() {
         try {
             const q = query(collection(db, "admin_broadcasts"), orderBy("createdAt", "desc"));
             const snap = await getDocs(q);
+            
             let dbNotifs = [];
             let readState = JSON.parse(localStorage.getItem('aavira_read_notifs')) || {};
+
             snap.forEach(docSnap => {
                 let data = docSnap.data();
                 let timeStr = data.createdAt ? data.createdAt.toDate().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : new Date().toLocaleTimeString();
-                dbNotifs.push({ id: docSnap.id, title: data.title, body: data.body, time: timeStr, read: readState[docSnap.id] ? true : false });
+                
+                dbNotifs.push({
+                    id: docSnap.id,
+                    title: data.title,
+                    body: data.body,
+                    time: timeStr,
+                    read: readState[docSnap.id] ? true : false
+                });
             });
+
             localStorage.setItem('aavira_notifications', JSON.stringify(dbNotifs));
+            
             if(typeof window.renderNotifications === 'function') window.renderNotifications();
             if(typeof window.updateNotifBadge === 'function') window.updateNotifBadge();
         } catch(e) {}
     };
 
-    // REFERRAL LOGIC
+    // ==========================================
+    // REFERRAL SYSTEM BACKEND LOGIC
+    // ==========================================
     window.processReferral = async function(newUserEmail) {
         const refCode = localStorage.getItem('aavira_ref_code');
         if (refCode) {
@@ -1312,15 +1323,22 @@
         } catch(e) {}
     }
 
-    // REAL GOOGLE LOGIN
+    // ==========================================
+    // REAL GOOGLE LOGIN 
+    // ==========================================
     window.performGoogleLogin = async function() {
         try {
             window.showToast("Opening Google Secure Login...", "success");
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
+            
             localStorage.setItem('aavira_display_name', user.displayName);
             localStorage.setItem('aavira_user_email', user.email);
-            await setDoc(doc(db, "users", user.uid), { name: user.displayName, email: user.email, role: "user", loginMethod: "google", createdAt: new Date() }, { merge: true });
+            
+            await setDoc(doc(db, "users", user.uid), {
+                name: user.displayName, email: user.email, role: "user", loginMethod: "google", createdAt: new Date()
+            }, { merge: true });
+
             window.processReferral(user.email);
             window.showToast(`Welcome back, ${user.displayName}!`, "success");
             if(typeof window.updateProfileUI === 'function') window.updateProfileUI();
@@ -1328,27 +1346,15 @@
         } catch (error) { window.showToast("Login Cancelled.", "error"); }
     };
 
-    // 🔥 ASLI MOBILE PUSH NOTIFICATIONS LOGIC 🔥
+    // ==========================================
+    // FIREBASE LIVE NOTIFICATIONS
+    // ==========================================
     isSupported().then((supported) => {
         if (supported) {
             messaging = getMessaging(msgApp);
             onMessage(messaging, (payload) => {
                 const title = payload.notification?.title || "Aavira Update";
-                const body = payload.notification?.body || "You have a new message.";
-                
-                // 1. ZABARDASTI ASLI NOTIFICATION PHONE PAR BHEJNA
-                if (Notification.permission === 'granted') {
-                    navigator.serviceWorker.ready.then((registration) => {
-                        registration.showNotification(title, {
-                            body: body,
-                            icon: 'https://cdn-icons-png.flaticon.com/512/3114/3114983.png',
-                            badge: 'https://cdn-icons-png.flaticon.com/512/3114/3114983.png',
-                            vibrate: [200, 100, 200]
-                        });
-                    });
-                }
-                
-                // 2. Notification Center mein Live update karna
+                if(typeof window.showToast === 'function') window.showToast(`🔔 ${title}`, "success");
                 window.syncNotificationsFromDB(); 
             });
         }
@@ -1359,17 +1365,18 @@
         if(typeof window.closeSidebar === 'function') window.closeSidebar();
         
         try {
-            if(!messaging) { window.showToast("Notifications not supported.", "error"); return; }
+            if(!messaging) { window.showToast("Notifications not supported on this browser.", "error"); return; }
+            
             const perm = await Notification.requestPermission();
             
             if (perm === 'granted') {
-                window.showToast("Setting up real push notifications...", "success");
-                
+                window.showToast("Connecting to secure server...", "success");
                 let swRegistration;
                 try {
                     swRegistration = await navigator.serviceWorker.register('./firebase-messaging-sw.js');
                 } catch (swError) {
-                    window.showToast("SW Error: " + swError.message, "error"); return;
+                    window.showToast("SW Error: " + swError.message, "error");
+                    return;
                 }
 
                 const token = await getToken(messaging, { 
@@ -1384,9 +1391,9 @@
                         await setDoc(doc(db, "fcm_tokens", token), {
                             token: token, email: userEmail, name: userName, platform: navigator.userAgent, createdAt: new Date()
                         });
-                        window.showToast("Successfully Secured! 🔔", "success");
+                        window.showToast("Notifications Enabled! 🔔", "success");
 
-                        // 🔥 WELCOME NOTIFICATION BHEJNA 🔥
+                        // Send Welcome Notification
                         const AUTH_VERCEL_URL = "https://ssxpq15in.vercel.app";
                         fetch(`${AUTH_VERCEL_URL}/api/broadcast`, {
                             method: 'POST',
@@ -1394,15 +1401,15 @@
                             body: JSON.stringify({
                                 tokens: [token],
                                 title: "🎉 Welcome to Aavira Fashion! 🎉",
-                                body: `Hi ${userName}, thanks for allowing notifications! Secret ethnic offers are waiting for you. 👗✨`
+                                body: `Hi ${userName}, thanks for enabling notifications! Get ready for exclusive ethnic trends & secret offers. 👗✨`
                             })
-                        });
-                    } catch (dbErr) {}
-                }
-            } else {
-                window.showToast("Notification permission denied.", "error");
-            }
-        } catch(err) {}
+                        }).catch(e => console.log("Welcome push failed", e));
+
+                        setTimeout(() => { if(typeof window.openNotificationCenter === 'function') window.openNotificationCenter(); }, 1500);
+                    } catch (dbErr) { window.showToast("DB Error: " + dbErr.message, "error"); }
+                } else { window.showToast("Failed to generate secure token.", "error"); }
+            } else { window.showToast("Notification permission denied.", "error"); }
+        } catch(err) { window.showToast("Error: " + err.message, "error"); }
     };
 </script>
 
