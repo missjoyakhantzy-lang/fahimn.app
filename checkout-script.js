@@ -1,25 +1,3 @@
-// ==============================================================================
-// AAVIRA LUXE - CHECKOUT ENGINE (WITH FIREBASE NOTIFICATIONS)
-// ==============================================================================
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-messaging.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-
-const msgConfig = {
-    apiKey: "AIzaSyAzuolDDiCoMWiJeSRmpo9my2DcxyBj_jA",
-    authDomain: "messaging-d0a0c.firebaseapp.com",
-    projectId: "messaging-d0a0c",
-    storageBucket: "messaging-d0a0c.firebasestorage.app",
-    messagingSenderId: "271709445992",
-    appId: "1:271709445992:web:7a0c706288d88fee6a80dd"
-};
-
-const msgApp = initializeApp(msgConfig, "checkoutMsgApp");
-const db = getFirestore(msgApp);
-let messaging = null;
-try { messaging = getMessaging(msgApp); } catch(e){}
-
 window.triggerHaptic = function(type = 'light') {
     try {
         if (!navigator.vibrate) return;
@@ -40,7 +18,10 @@ window.showToast = function(title, message, type = 'error') {
     setTimeout(() => toast.classList.remove('show'), 3500);
 }
 
-function parsePrice(val) { return parseInt(String(val).replace(/[^0-9]/g, '')) || 0; }
+function parsePrice(val) { 
+    if(!val) return 0;
+    return parseInt(String(val).replace(/[^0-9]/g, '')) || 0; 
+}
 
 const validators = {
     ad_email: { regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
@@ -175,7 +156,6 @@ async function initCheckout() {
                 document.getElementById('promoInputGroup').style.display = 'none'; 
                 document.getElementById('apCodeName').innerText = appliedCode; 
                 document.getElementById('appliedPromoBox').style.display = 'flex';
-                setTimeout(() => { window.showToast("Promo Auto-Applied", `Saved ₹${discountVal} on this order!`, "success"); }, 500);
             }
         }
     } catch(e) {}
@@ -328,7 +308,7 @@ function updateUI() {
         document.getElementById('bottomTotal').innerText = `₹${grandTotal.toLocaleString('en-IN')}`;
 
         updateSuggestions();
-    } catch(e) {}
+    } catch(e) { console.error("UI Update Error", e); }
 }
 
 window.applyPromo = async function() {
@@ -370,6 +350,24 @@ window.removePromo = function() {
     document.getElementById('promoInputGroup').style.display = 'flex'; 
     document.getElementById('appliedPromoBox').style.display = 'none'; 
     updateUI(); 
+}
+
+window.autoFetchLocation = function() {
+    window.triggerHaptic(); window.showToast("Fetching", "Locating securely...", "success");
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+            try {
+                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
+                const data = await res.json();
+                if (data && data.address) {
+                    document.getElementById('ad_pin').value = data.address.postcode || ""; validateField(document.getElementById('ad_pin'));
+                    document.getElementById('ad_city').value = data.address.city || data.address.town || ""; validateField(document.getElementById('ad_city'));
+                    document.getElementById('ad_address').value = `${data.address.road||''} ${data.address.suburb||''}`.trim(); validateField(document.getElementById('ad_address'));
+                    saveDraft();
+                }
+            } catch (e) { window.showToast("API Error", "Location mapping failed.", "error"); }
+        }, () => window.showToast("Denied", "Please enable GPS.", "error"));
+    }
 }
 
 window.placeOrder = async function() {
@@ -462,52 +460,11 @@ window.placeOrder = async function() {
         gateway.style.display = 'none'; 
         document.getElementById('successBox').style.display = 'block'; 
 
-        // SMART NOTIFICATION BUTTON CHECK
-        if (typeof Notification !== 'undefined') {
-            if (Notification.permission === 'granted') {
-                document.getElementById('successNotifBtn').style.display = 'none';
-            } else if (Notification.permission === 'denied') {
-                document.getElementById('successNotifBtn').style.opacity = '0.5';
-                document.getElementById('successNotifBtn').innerText = 'Notifications Blocked';
-            }
-        }
-
     } catch(e) { 
+        console.error("Order error", e);
         modal.classList.remove('show'); 
         window.showCustomAlert("Failed", "Server Error. Try again.", "error"); 
         btn.disabled = false;
         btnText.innerHTML = 'Place Order <i class="fa-solid fa-lock"></i>';
     }
 }
-
-// 🔥 NEW: ENABLE NOTIFICATION LOGIC FOR SUCCESS BUTTON 🔥
-window.enableOrderNotifications = async function() {
-    const btn = document.getElementById('successNotifBtn');
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Securing...';
-    
-    try {
-        const perm = await Notification.requestPermission();
-        if (perm === 'granted') {
-            let swReg;
-            try { swReg = await navigator.serviceWorker.register('./firebase-messaging-sw.js'); } 
-            catch (swError) { return; }
-            
-            const token = await getToken(messaging, { vapidKey: 'BIvjJEeeRfowF8ZpdgRKn-vH_rNOzW48Rd9Y37kNdeISUsmKkiihJtFPc4c0rWbFBOhb4kJ3Yj-5jTl2kO9-yAU', serviceWorkerRegistration: swReg });
-            
-            if (token) {
-                const userEmail = localStorage.getItem('aavira_user_email') || 'guest_user';
-                const userName = localStorage.getItem('aavira_display_name') || 'Guest';
-                await setDoc(doc(db, "fcm_tokens", token), { token: token, email: userEmail, name: userName, platform: navigator.userAgent, createdAt: new Date() });
-                
-                btn.style.background = '#10B981';
-                btn.style.color = '#fff';
-                btn.style.borderColor = '#10B981';
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> Enabled';
-            }
-        } else {
-            btn.innerHTML = '<i class="fa-solid fa-bell-slash"></i> Denied';
-            btn.style.opacity = '0.5';
-        }
-    } catch(err) { btn.innerHTML = '<i class="fa-solid fa-bell"></i> Enable Notifications'; }
-}
-    </script>
