@@ -1,31 +1,70 @@
 // firebase-messaging-sw.js
-
-// Firebase libraries import kar rahe hain (Compat versions for Service Worker)
 importScripts('https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.8.1/firebase-messaging-compat.js');
 
-// Aapka Firebase Messaging Config
 firebase.initializeApp({
-    apiKey: "AIzaSyAzuolDDiCoMWiJeSRmpo9my2DcxyBj_jA",
-    authDomain: "messaging-d0a0c.firebaseapp.com",
-    projectId: "messaging-d0a0c",
-    storageBucket: "messaging-d0a0c.firebasestorage.app",
-    messagingSenderId: "271709445992",
-    appId: "1:271709445992:web:7a0c706288d88fee6a80dd",
-    measurementId: "G-8M97W87HRW"
+  apiKey: "AIzaSyAzuolDDiCoMWiJeSRmpo9my2DcxyBj_jA",
+  projectId: "messaging-d0a0c",
+  messagingSenderId: "271709445992",
+  appId: "1:271709445992:web:7a0c706288d88fee6a80dd"
 });
 
-// Messaging initialize karna
 const messaging = firebase.messaging();
 
-// Background mein notification handle karne ke liye (Jab app band ho)
 messaging.onBackgroundMessage(function(payload) {
-    console.log('Received background message ', payload);
-    const notificationTitle = payload.notification.title;
-    const notificationOptions = {
-        body: payload.notification.body,
-        icon: '/logo.png' // Agar aapke paas logo.png hai toh, warna ise hata sakte hain
-    };
+  console.log('Background message received: ', payload);
+  
+  const notificationTitle = payload.notification?.title || 'Aavira Fashion';
+  
+  const notificationOptions = {
+    body: payload.notification?.body || 'Aapke liye naya ethnic collection aaya hai!',
+    
+    // ==========================================
+    // 1️⃣ NOTIFICATION ICON (Chhota Logo)
+    // ChatGPT ke 1st Prompt wali photo ka link yahan daalein
+    // Example: 'https://missjoyakhantzy-lang.github.io/fahimn.app/icon.png'
+    // ==========================================
+    icon: 'file_00000000082881fda1a366c789ed0fa3.png', 
+    
+    // ==========================================
+    // 2️⃣ BIG BANNER IMAGE (Badi Photo)
+    // ChatGPT ke 2nd Prompt wali badi photo ka link yahan daalein
+    // Example: 'https://missjoyakhantzy-lang.github.io/fahimn.app/banner.jpg'
+    // ==========================================
+    image: 'file_00000000792081fa91bf7fd99dc468df.png', 
+    
+    // ==========================================
+    // 3️⃣ STATUS BAR BADGE (Upar aane wala chhota safed icon)
+    // ChatGPT ke 3rd Prompt wali photo (jiska background remove kiya ho) uska link yahan daalein
+    // Example: 'https://missjoyakhantzy-lang.github.io/fahimn.app/badge.png'
+    // ==========================================
+    badge: 'file_00000000f6588230a680e62beef2d61a.png',
+    
+    vibrate: [200, 100, 200, 100, 200], 
+    requireInteraction: true, 
+    
+    // Niche aane wale 2 buttons
+    actions: [
+      { action: 'explore', title: '🛍️ Shop Now' },
+      { action: 'close', title: '✖️ Dismiss' }
+    ],
+    
+    // Notification par click karne par khulne wala link
+    data: {
+      url: 'https://missjoyakhantzy-lang.github.io/fahimn.app/'
+    }
+  };
 
-    self.registration.showNotification(notificationTitle, notificationOptions);
+  return self.registration.showNotification(notificationTitle, notificationOptions);
+});
+
+// Jab user notification ya "Shop Now" par click kare toh kya ho
+self.addEventListener('notificationclick', function(event) {
+  event.notification.close();
+
+  if (event.action === 'explore' || !event.action) {
+    event.waitUntil(
+      clients.openWindow(event.notification.data.url)
+    );
+  }
 });
