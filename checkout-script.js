@@ -1,3 +1,4 @@
+<script>
 window.triggerHaptic = function(type = 'light') {
     try {
         if (!navigator.vibrate) return;
@@ -117,7 +118,7 @@ async function initCheckout() {
                 if(p && p.id) productDataCache[String(p.id).trim()] = p;
             });
         }
-    } catch(e) { console.error("API Error:", e); }
+    } catch(e) {}
 
     if (buyNowId) {
         isBuyNowMode = true;
@@ -455,12 +456,17 @@ window.placeOrder = async function() {
         localStorage.removeItem('aavira_pro_draft');
         localStorage.setItem('aavira_latest_order', orderId);
 
-        // 🔥🔥🔥 YAHAN BIMAARI KA ILAJ HUA HAI 🔥🔥🔥
-        // Naya order array me save kar rahe hain taaki orders.html pe show ho!
+        // 🔥🔥🔥 SAFELY SAVING ORDER ID TO LOCAL STORAGE FOR TRACKING 🔥🔥🔥
         let guestOrders = [];
-        try { guestOrders = JSON.parse(localStorage.getItem('aavira_placed_orders')) || []; } catch(e){}
-        if (!guestOrders.includes(orderId)) {
-            guestOrders.push(orderId);
+        try { 
+            let stored = JSON.parse(localStorage.getItem('aavira_placed_orders'));
+            if(Array.isArray(stored)) {
+                guestOrders = stored;
+            }
+        } catch(e){}
+        
+        if (!guestOrders.includes(String(orderId))) {
+            guestOrders.push(String(orderId));
         }
         localStorage.setItem('aavira_placed_orders', JSON.stringify(guestOrders));
         // 🔥🔥🔥 FIX KHATAM 🔥🔥🔥
@@ -478,3 +484,4 @@ window.placeOrder = async function() {
         btnText.innerHTML = 'Place Order <i class="fa-solid fa-lock"></i>';
     }
 }
+</script>
