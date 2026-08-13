@@ -455,6 +455,16 @@ window.placeOrder = async function() {
         localStorage.removeItem('aavira_pro_draft');
         localStorage.setItem('aavira_latest_order', orderId);
 
+        // 🔥🔥🔥 YAHAN BIMAARI KA ILAJ HUA HAI 🔥🔥🔥
+        // Naya order array me save kar rahe hain taaki orders.html pe show ho!
+        let guestOrders = [];
+        try { guestOrders = JSON.parse(localStorage.getItem('aavira_placed_orders')) || []; } catch(e){}
+        if (!guestOrders.includes(orderId)) {
+            guestOrders.push(orderId);
+        }
+        localStorage.setItem('aavira_placed_orders', JSON.stringify(guestOrders));
+        // 🔥🔥🔥 FIX KHATAM 🔥🔥🔥
+
         window.triggerHaptic('success');
         document.getElementById('displayOrderId').innerText = orderId;
         gateway.style.display = 'none'; 
