@@ -1410,7 +1410,7 @@
                 // 🔥 NAYA FIX: EXPLICIT SERVICE WORKER REGISTRATION 🔥
                 let swRegistration;
                 try {
-                    swRegistration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+                    swRegistration = await navigator.serviceWorker.register('./firebase-messaging-sw.js');
                 } catch (swError) {
                     console.error('Service Worker Error:', swError);
                     window.showToast("Service worker missing or blocked!", "error");
