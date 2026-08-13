@@ -11,9 +11,14 @@ window.triggerHaptic = function(type = 'light') {
 window.showToast = function(title, message, type = 'error') {
     const toast = document.getElementById('alertToast');
     if(!toast) return;
-    document.getElementById('toastTitle').innerText = title;
-    document.getElementById('toastMessage').innerText = message;
-    document.getElementById('toastIcon').innerHTML = type === 'error' ? '<i class="fa-solid fa-circle-xmark" style="color:#F87171;"></i>' : '<i class="fa-solid fa-circle-check" style="color:#34D399;"></i>';
+    const titleEl = document.getElementById('toastTitle');
+    const msgEl = document.getElementById('toastMessage');
+    const iconEl = document.getElementById('toastIcon');
+    
+    if(titleEl) titleEl.innerText = title;
+    if(msgEl) msgEl.innerText = message;
+    if(iconEl) iconEl.innerHTML = type === 'error' ? '<i class="fa-solid fa-circle-xmark" style="color:#F87171;"></i>' : '<i class="fa-solid fa-circle-check" style="color:#34D399;"></i>';
+    
     window.triggerHaptic(type);
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 3500);
@@ -100,7 +105,6 @@ window.allAvailableProducts = [];
 let appliedCode = ""; let discountVal = 0; let deliveryFee = 0; let giftWrapFee = 0;
 let selectedPaymentMethod = 'cod';
 let isBuyNowMode = false;
-const CHECKOUT_API_URL = "https://aavira-fashion-backend.vercel.app";
 
 async function initCheckout() {
     let storedCart = [];
@@ -118,7 +122,7 @@ async function initCheckout() {
                 if(p && p.id) productDataCache[String(p.id).trim()] = p;
             });
         }
-    } catch(e) {}
+    } catch(e) { console.error("API Fetch Error:", e); }
 
     if (buyNowId) {
         isBuyNowMode = true;
@@ -140,10 +144,14 @@ async function initCheckout() {
         return false;
     });
 
+    const mainScroll = document.getElementById('mainScroll');
+    const bottomCheckoutBar = document.getElementById('bottomCheckoutBar');
+    const emptyCartView = document.getElementById('emptyCartView');
+
     if (checkoutItems.length === 0) {
-        document.getElementById('mainScroll').style.display = 'none';
-        document.getElementById('bottomCheckoutBar').style.display = 'none';
-        document.getElementById('emptyCartView').style.display = 'flex';
+        if(mainScroll) mainScroll.style.display = 'none';
+        if(bottomCheckoutBar) bottomCheckoutBar.style.display = 'none';
+        if(emptyCartView) emptyCartView.style.display = 'flex';
         return;
     }
 
@@ -154,30 +162,47 @@ async function initCheckout() {
             if (activePromo && activePromo.code && activePromo.discount) {
                 appliedCode = activePromo.code;
                 discountVal = Number(activePromo.discount);
-                document.getElementById('promoInputGroup').style.display = 'none'; 
-                document.getElementById('apCodeName').innerText = appliedCode; 
-                document.getElementById('appliedPromoBox').style.display = 'flex';
+                const pInputGrp = document.getElementById('promoInputGroup');
+                const apCode = document.getElementById('apCodeName');
+                const appliedBox = document.getElementById('appliedPromoBox');
+                
+                if(pInputGrp) pInputGrp.style.display = 'none'; 
+                if(apCode) apCode.innerText = appliedCode; 
+                if(appliedBox) appliedBox.style.display = 'flex';
             }
         }
     } catch(e) {}
 
-    document.getElementById('emptyCartView').style.display = 'none';
-    document.getElementById('mainScroll').style.display = 'block';
-    document.getElementById('bottomCheckoutBar').style.display = 'flex';
+    if(emptyCartView) emptyCartView.style.display = 'none';
+    if(mainScroll) mainScroll.style.display = 'block';
+    if(bottomCheckoutBar) bottomCheckoutBar.style.display = 'flex';
 
     updateUI();
 }
 
-window.setDeliverySpeed = function(speed) { window.triggerHaptic(); deliveryFee = speed === 'express' ? 99 : 0; document.querySelectorAll('.speed-option').forEach(el => el.classList.remove('selected')); document.getElementById(speed === 'express' ? 'opt_exp' : 'opt_std').classList.add('selected'); updateUI(); }
+window.setDeliverySpeed = function(speed) { 
+    window.triggerHaptic(); 
+    deliveryFee = speed === 'express' ? 99 : 0; 
+    document.querySelectorAll('.speed-option').forEach(el => el.classList.remove('selected')); 
+    const expEl = document.getElementById('opt_exp');
+    const stdEl = document.getElementById('opt_std');
+    if(speed === 'express' && expEl) expEl.classList.add('selected');
+    else if(stdEl) stdEl.classList.add('selected');
+    updateUI(); 
+}
+
 window.toggleGiftWrap = function(el) { window.triggerHaptic(); giftWrapFee = el.checked ? 49 : 0; updateUI(); }
 window.selectPayment = function(method, el) { window.triggerHaptic(); selectedPaymentMethod = method; document.querySelectorAll('.pay-option').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); }
 window.removeCheckoutItem = function(index) { 
     window.triggerHaptic(); 
     checkoutItems.splice(index, 1); 
     if(checkoutItems.length === 0) {
-        document.getElementById('mainScroll').style.display = 'none';
-        document.getElementById('bottomCheckoutBar').style.display = 'none';
-        document.getElementById('emptyCartView').style.display = 'flex';
+        const mainScroll = document.getElementById('mainScroll');
+        const bottomBar = document.getElementById('bottomCheckoutBar');
+        const emptyView = document.getElementById('emptyCartView');
+        if(mainScroll) mainScroll.style.display = 'none';
+        if(bottomBar) bottomBar.style.display = 'none';
+        if(emptyView) emptyView.style.display = 'flex';
     } else { updateUI(); }
 }
 
@@ -290,23 +315,38 @@ function updateUI() {
         let grandTotal = Math.max(0, subTotal + deliveryFee + giftWrapFee - discountVal);
         let totalSavings = prodDiscount + discountVal;
 
-        document.getElementById('billMrp').innerText = `₹${totalMRP.toLocaleString('en-IN')}`;
-        document.getElementById('billDiscount').innerText = `-₹${prodDiscount.toLocaleString('en-IN')}`;
+        const elMrp = document.getElementById('billMrp'); if(elMrp) elMrp.innerText = `₹${totalMRP.toLocaleString('en-IN')}`;
+        const elDisc = document.getElementById('billDiscount'); if(elDisc) elDisc.innerText = `-₹${prodDiscount.toLocaleString('en-IN')}`;
         
         const delRow = document.getElementById('row_delivery');
-        if(deliveryFee > 0) { delRow.querySelector('span:last-child').innerText = `₹${deliveryFee}`; delRow.querySelector('span:last-child').classList.remove('highlight-green'); }
-        else { delRow.querySelector('span:last-child').innerText = `FREE`; delRow.querySelector('span:last-child').classList.add('highlight-green'); }
+        if(delRow) {
+            const span = delRow.querySelector('span:last-child');
+            if(span) {
+                if(deliveryFee > 0) { span.innerText = `₹${deliveryFee}`; span.classList.remove('highlight-green'); }
+                else { span.innerText = `FREE`; span.classList.add('highlight-green'); }
+            }
+        }
         
-        document.getElementById('row_gift').style.display = giftWrapFee > 0 ? 'flex' : 'none';
+        const rowGift = document.getElementById('row_gift'); if(rowGift) rowGift.style.display = giftWrapFee > 0 ? 'flex' : 'none';
 
-        if(discountVal > 0) { document.getElementById('billPromoRow').style.display = 'flex'; document.getElementById('billPromoDiscount').innerText = `-₹${discountVal}`; } 
-        else { document.getElementById('billPromoRow').style.display = 'none'; }
+        const billPromoRow = document.getElementById('billPromoRow');
+        const billPromoDisc = document.getElementById('billPromoDiscount');
+        if(discountVal > 0) { 
+            if(billPromoRow) billPromoRow.style.display = 'flex'; 
+            if(billPromoDisc) billPromoDisc.innerText = `-₹${discountVal}`; 
+        } else { 
+            if(billPromoRow) billPromoRow.style.display = 'none'; 
+        }
 
-        if(totalSavings > 0) { document.getElementById('totalSavingsBadge').style.display = 'block'; document.getElementById('totalSavingsBadge').innerText = `You are saving ₹${totalSavings.toLocaleString('en-IN')} on this order!`; }
-        else { document.getElementById('totalSavingsBadge').style.display = 'none'; }
+        const totalSavBadge = document.getElementById('totalSavingsBadge');
+        if(totalSavings > 0) { 
+            if(totalSavBadge) { totalSavBadge.style.display = 'block'; totalSavBadge.innerText = `You are saving ₹${totalSavings.toLocaleString('en-IN')} on this order!`; }
+        } else { 
+            if(totalSavBadge) totalSavBadge.style.display = 'none'; 
+        }
 
-        document.getElementById('billTotal').innerText = `₹${grandTotal.toLocaleString('en-IN')}`;
-        document.getElementById('bottomTotal').innerText = `₹${grandTotal.toLocaleString('en-IN')}`;
+        const billTotal = document.getElementById('billTotal'); if(billTotal) billTotal.innerText = `₹${grandTotal.toLocaleString('en-IN')}`;
+        const bottomTotal = document.getElementById('bottomTotal'); if(bottomTotal) bottomTotal.innerText = `₹${grandTotal.toLocaleString('en-IN')}`;
 
         updateSuggestions();
     } catch(e) { console.error("UI Update Error", e); }
@@ -320,9 +360,10 @@ window.applyPromo = async function() {
     if(!code) return window.showToast("Empty Code", "Please enter a valid coupon.", "error");
     
     const btn = document.getElementById('promoBtn');
-    btn.innerHTML = `<span class="btn-spinner"></span>`; btn.disabled = true;
+    if(btn) { btn.innerHTML = `<span class="btn-spinner"></span>`; btn.disabled = true; }
 
     try {
+        const CHECKOUT_API_URL = "https://aavira-fashion-backend.vercel.app";
         const res = await fetch(`${CHECKOUT_API_URL}/api/promocodes/${code}`); 
         const result = await res.json();
         if(res.ok && result.status === "success") {
@@ -331,9 +372,9 @@ window.applyPromo = async function() {
             
             localStorage.setItem('aavira_active_promo', JSON.stringify({ code: appliedCode, discount: discountVal }));
 
-            document.getElementById('promoInputGroup').style.display = 'none'; 
-            document.getElementById('apCodeName').innerText = appliedCode; 
-            document.getElementById('appliedPromoBox').style.display = 'flex';
+            const pInputGrp = document.getElementById('promoInputGroup'); if(pInputGrp) pInputGrp.style.display = 'none'; 
+            const apCodeName = document.getElementById('apCodeName'); if(apCodeName) apCodeName.innerText = appliedCode; 
+            const appPromoBox = document.getElementById('appliedPromoBox'); if(appPromoBox) appPromoBox.style.display = 'flex';
             window.showToast("Offer Applied", `Saved ₹${discountVal}`, "success"); 
             updateUI(); 
         } else {
@@ -341,15 +382,15 @@ window.applyPromo = async function() {
         }
     } catch(e) { window.showToast("Network Error", "Could not verify coupon.", "error"); }
     
-    btn.innerHTML = 'Apply'; btn.disabled = false;
+    if(btn) { btn.innerHTML = 'Apply'; btn.disabled = false; }
 }
 
 window.removePromo = function() { 
     window.triggerHaptic(); appliedCode = ""; discountVal = 0; 
     localStorage.removeItem('aavira_active_promo');
-    document.getElementById('promoInput').value = ''; 
-    document.getElementById('promoInputGroup').style.display = 'flex'; 
-    document.getElementById('appliedPromoBox').style.display = 'none'; 
+    const pInput = document.getElementById('promoInput'); if(pInput) pInput.value = ''; 
+    const pInputGrp = document.getElementById('promoInputGroup'); if(pInputGrp) pInputGrp.style.display = 'flex'; 
+    const appPromoBox = document.getElementById('appliedPromoBox'); if(appPromoBox) appPromoBox.style.display = 'none'; 
     updateUI(); 
 }
 
@@ -361,9 +402,9 @@ window.autoFetchLocation = function() {
                 const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
                 const data = await res.json();
                 if (data && data.address) {
-                    document.getElementById('ad_pin').value = data.address.postcode || ""; validateField(document.getElementById('ad_pin'));
-                    document.getElementById('ad_city').value = data.address.city || data.address.town || ""; validateField(document.getElementById('ad_city'));
-                    document.getElementById('ad_address').value = `${data.address.road||''} ${data.address.suburb||''}`.trim(); validateField(document.getElementById('ad_address'));
+                    const pinEl = document.getElementById('ad_pin'); if(pinEl) { pinEl.value = data.address.postcode || ""; validateField(pinEl); }
+                    const cityEl = document.getElementById('ad_city'); if(cityEl) { cityEl.value = data.address.city || data.address.town || ""; validateField(cityEl); }
+                    const addrEl = document.getElementById('ad_address'); if(addrEl) { addrEl.value = `${data.address.road||''} ${data.address.suburb||''}`.trim(); validateField(addrEl); }
                     saveDraft();
                 }
             } catch (e) { window.showToast("API Error", "Location mapping failed.", "error"); }
@@ -371,35 +412,57 @@ window.autoFetchLocation = function() {
     }
 }
 
+// 🔥 THIS IS THE MASTER FIX: 100% CRASH PROOF PLACE ORDER FUNCTION 🔥
 window.placeOrder = async function() {
     window.triggerHaptic('light');
     const reqIds = ['ad_name', 'ad_email', 'ad_phone', 'ad_pin', 'ad_city', 'ad_address'];
     let valid = true;
-    reqIds.forEach(id => { const el = document.getElementById(id); if(!validateField(el, true)) { el.closest('.pro-input-group').classList.add('is-invalid'); valid = false; } });
+    let firstInvalid = null;
+
+    reqIds.forEach(id => { 
+        const el = document.getElementById(id); 
+        if(!validateField(el, true)) { 
+            const wrapper = el ? el.closest('.pro-input-group') : null;
+            if(wrapper) wrapper.classList.add('is-invalid'); 
+            valid = false; 
+            if(!firstInvalid) firstInvalid = wrapper || el;
+        } 
+    });
 
     if(!valid) {
         window.showToast("Incomplete Details", "Please fill required fields (marked red).", "error");
-        document.querySelector('.is-invalid').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if(firstInvalid && typeof firstInvalid.scrollIntoView === 'function') {
+            firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         return;
     }
 
-    const modal = document.getElementById('processModal'); const gateway = document.getElementById('gatewayBox');
+    const modal = document.getElementById('processModal'); 
+    const gateway = document.getElementById('gatewayBox');
     const processText = document.getElementById('processText');
-    modal.classList.add('show'); gateway.style.display = 'block'; document.getElementById('successBox').style.display = 'none';
-
+    const successBox = document.getElementById('successBox');
     const btn = document.getElementById('placeOrderBtn');
     const btnText = document.getElementById('btnText');
-    btn.disabled = true;
+
+    if(modal) modal.classList.add('show'); 
+    if(gateway) gateway.style.display = 'block'; 
+    if(successBox) successBox.style.display = 'none';
+    if(btn) btn.disabled = true;
 
     const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
-    if(selectedPaymentMethod === 'online') {
-        processText.innerText = "Connecting to Secure Gateway..."; await wait(1200);
-        processText.innerText = "Authenticating Payment Details..."; await wait(1500);
-        processText.innerText = "Confirming Transaction..."; await wait(1000);
+    
+    if(processText) {
+        if(selectedPaymentMethod === 'online') {
+            processText.innerText = "Connecting to Secure Gateway..."; await wait(1200);
+            processText.innerText = "Authenticating Payment Details..."; await wait(1500);
+            processText.innerText = "Confirming Transaction..."; await wait(1000);
+        } else {
+            processText.innerText = "Verifying Address Details..."; await wait(1200);
+            processText.innerText = "Generating COD Invoice..."; await wait(1500);
+            processText.innerText = "Confirming Order Placement..."; await wait(1000);
+        }
     } else {
-        processText.innerText = "Verifying Address Details..."; await wait(1200);
-        processText.innerText = "Generating COD Invoice..."; await wait(1500);
-        processText.innerText = "Confirming Order Placement..."; await wait(1000);
+        await wait(2000);
     }
 
     let subTotal = 0; let finalItemsToSave = [];
@@ -407,24 +470,42 @@ window.placeOrder = async function() {
         const p = productDataCache[item.productId];
         if(!p) return;
         let cPrice = parsePrice(p.price); subTotal += (cPrice * item.qty);
-        finalItemsToSave.push({ productId: item.productId, name: p.name, price: cPrice, qty: item.qty, size: item.size, color: item.color, image: p.imageMain || p.image || p.imageUrl });
+        finalItemsToSave.push({ 
+            productId: item.productId, 
+            name: p.name, 
+            price: cPrice, 
+            qty: item.qty, 
+            size: item.size, 
+            color: item.color, 
+            image: p.imageMain || p.image || p.imageUrl 
+        });
     });
     
     let finalTotalAmount = Math.max(0, subTotal + deliveryFee + giftWrapFee - discountVal);
     const orderId = "ORD-" + Math.floor(100000 + Math.random() * 900000);
     
-    const landmark = document.getElementById('ad_landmark').value.trim();
-    const city = document.getElementById('ad_city').value.trim();
-    const fullAddress = `${document.getElementById('ad_address').value.trim()}, ${landmark ? landmark + ', ' : ''}${city}, PIN: ${document.getElementById('ad_pin').value.trim()}`;
+    // SAFE FETCHING OF INPUTS (Crash se bachane ke liye)
+    const getVal = (id) => document.getElementById(id) ? document.getElementById(id).value.trim() : "";
+    
+    const landmark = getVal('ad_landmark');
+    const city = getVal('ad_city');
+    const pin = getVal('ad_pin');
+    const baseAddr = getVal('ad_address');
+    const fullAddress = `${baseAddr}, ${landmark ? landmark + ', ' : ''}${city}, PIN: ${pin}`;
 
     const orderPayload = {
-        orderId: orderId, userId: localStorage.getItem('aavira_display_name') || 'guest', 
-        customerName: document.getElementById('ad_name').value.trim(), 
-        phone: document.getElementById('ad_phone').value.trim(), 
-        email: document.getElementById('ad_email').value.trim(),
-        address: fullAddress, items: finalItemsToSave, totalAmount: finalTotalAmount, 
-        promoCodeUsed: appliedCode || "None", promoDiscount: discountVal,
-        paymentMethod: selectedPaymentMethod, paymentStatus: selectedPaymentMethod === 'cod' ? 'Pending' : 'Paid', 
+        orderId: orderId, 
+        userId: localStorage.getItem('aavira_display_name') || 'guest', 
+        customerName: getVal('ad_name'), 
+        phone: getVal('ad_phone'), 
+        email: getVal('ad_email'),
+        address: fullAddress, 
+        items: finalItemsToSave, 
+        totalAmount: finalTotalAmount, 
+        promoCodeUsed: appliedCode || "None", 
+        promoDiscount: discountVal,
+        paymentMethod: selectedPaymentMethod, 
+        paymentStatus: selectedPaymentMethod === 'cod' ? 'Pending' : 'Paid', 
         orderStatus: 'Placed'
     };
 
@@ -432,7 +513,9 @@ window.placeOrder = async function() {
         if (typeof window.sendOrderToVercel === 'function') {
             const isSuccess = await window.sendOrderToVercel(orderPayload);
             if (!isSuccess) throw new Error("Backend Rejected");
-        } else { await wait(1000); }
+        } else { 
+            await wait(1000); 
+        }
 
         if (!isBuyNowMode) {
             localStorage.removeItem('aavira_cart');
@@ -472,16 +555,18 @@ window.placeOrder = async function() {
         // 🔥🔥🔥 FIX KHATAM 🔥🔥🔥
 
         window.triggerHaptic('success');
-        document.getElementById('displayOrderId').innerText = orderId;
-        gateway.style.display = 'none'; 
-        document.getElementById('successBox').style.display = 'block'; 
+        const displayIdEl = document.getElementById('displayOrderId');
+        if(displayIdEl) displayIdEl.innerText = orderId;
+        
+        if(gateway) gateway.style.display = 'none'; 
+        if(successBox) successBox.style.display = 'block'; 
 
     } catch(e) { 
         console.error("Order error", e);
-        modal.classList.remove('show'); 
-        window.showCustomAlert("Failed", "Server Error. Try again.", "error"); 
-        btn.disabled = false;
-        btnText.innerHTML = 'Place Order <i class="fa-solid fa-lock"></i>';
+        if(modal) modal.classList.remove('show'); 
+        window.showToast("Failed", "Server Error. Try again.", "error"); 
+        if(btn) btn.disabled = false;
+        if(btnText) btnText.innerHTML = 'Place Order <i class="fa-solid fa-lock"></i>';
     }
 }
 </script>
