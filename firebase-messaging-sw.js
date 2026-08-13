@@ -38,7 +38,7 @@ messaging.onBackgroundMessage(function(payload) {
     // ChatGPT ke 3rd Prompt wali photo (jiska background remove kiya ho) uska link yahan daalein
     // Example: 'https://missjoyakhantzy-lang.github.io/fahimn.app/badge.png'
     // ==========================================
-    badge: 'file_00000000f6588230a680e62beef2d61a.png',
+    badge: 'https://github.com/missjoyakhantzy-lang/fahimn.app/blob/main/file_00000000f6588230a680e62beef2d61a.png',
     
     vibrate: [200, 100, 200, 100, 200], 
     requireInteraction: true, 
