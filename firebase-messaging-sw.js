@@ -24,7 +24,7 @@ messaging.onBackgroundMessage(function(payload) {
     // ChatGPT ke 1st Prompt wali photo ka link yahan daalein
     // Example: 'https://missjoyakhantzy-lang.github.io/fahimn.app/icon.png'
     // ==========================================
-    icon: 'file_00000000082881fda1a366c789ed0fa3.png', 
+    icon: 'https://github.com/missjoyakhantzy-lang/fahimn.app/blob/main/file_00000000082881fda1a366c789ed0fa3.png', 
     
     // ==========================================
     // 2️⃣ BIG BANNER IMAGE (Badi Photo)
