@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>Aavira Luxe - My Orders</title>
+    <meta name="theme-color" content="#ffffff">
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #6A1B29;
+            --primary-light: rgba(106, 27, 41, 0.05);
+            --text-main: #1A1A1A;
+            --text-muted: #737373;
+            --border: #E5E5E5;
+            --bg-main: #FFFFFF;
+            --bg-page: #F7F7F9;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --info: #3B82F6;
+            --error: #EF4444;
+            --font: 'Plus Jakarta Sans', sans-serif;
+            --shadow-card: 0 4px 15px rgba(0,0,0,0.04);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font); -webkit-tap-highlight-color: transparent; }
+        html, body { width: 100%; background: var(--bg-page); min-height: 100vh; display: flex; justify-content: center; overflow: hidden; }
+        .app-container { width: 100%; max-width: 460px; background: var(--bg-page); height: 100vh; position: relative; box-shadow: 0 0 40px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+
+        /* HEADER */
+        .pro-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); z-index: 100; flex-shrink: 0;}
+        .icon-btn { background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; padding: 4px; transition: 0.2s;}
+        .icon-btn:active { transform: scale(0.9); }
+        .header-titles { text-align: center; }
+        .header-titles h1 { font-size: 15px; font-weight: 700; letter-spacing: 1px; color: var(--text-main); font-family: 'Playfair Display', serif; }
+        .header-titles p { font-size: 10px; color: var(--primary); font-weight: 600; text-transform: uppercase; margin-top: 2px; }
+
+        /* MAIN SCROLL */
+        .main-content { flex: 1; padding: 16px; overflow-y: auto; scrollbar-width: none; padding-bottom: 40px;}
+        .main-content::-webkit-scrollbar { display: none; }
+
+        /* EMPTY STATES */
+        .state-view { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 80vh; animation: fadeIn 0.3s ease; }
+        .empty-state { text-align: center; padding: 20px; }
+        .icon-circle { width: 80px; height: 80px; background: var(--primary-light); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px; }
+        .icon-circle i { font-size: 35px; color: var(--primary); }
+        .empty-state h2 { font-size: 20px; color: var(--text-main); margin-bottom: 8px; font-weight: 700; font-family: 'Playfair Display', serif; }
+        .empty-state p { font-size: 13px; color: var(--text-muted); margin-bottom: 25px; line-height: 1.5; max-width: 260px; margin-left: auto; margin-right: auto;}
+        .pro-btn { background: var(--primary); color: white; padding: 14px 40px; border-radius: 12px; font-weight: 600; font-size: 14px; box-shadow: 0 8px 20px rgba(106, 27, 41, 0.25); border: none; cursor: pointer; transition: 0.2s;}
+        .pro-btn:active { transform: scale(0.96); }
+
+        /* GUEST BANNER */
+        .guest-banner { background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+        .guest-banner i { color: var(--warning); font-size: 20px; }
+        .guest-banner div h4 { font-size: 12px; color: #92400E; margin-bottom: 2px; }
+        .guest-banner div p { font-size: 10px; color: #B45309; }
+        .guest-banner button { background: none; border: none; font-size: 11px; font-weight: 700; color: var(--primary); margin-left: auto; cursor: pointer; }
+
+        /* SKELETONS */
+        .skeleton-card { background: var(--bg-main); border-radius: 16px; padding: 20px; margin-bottom: 16px; border: 1px solid rgba(0,0,0,0.02); width: 100%;}
+        .skel-line, .skel-box { background: #eee; background-image: linear-gradient(90deg, #eee 25%, #e0e0e0 50%, #eee 75%); background-size: 200px 100%; animation: shimmer 1.5s infinite linear; border-radius: 8px; }
+        @keyframes shimmer { 0% { background-position: -200px 0; } 100% { background-position: 200px 0; } }
+
+        /* ORDER CARDS */
+        .orders-list { display: flex; flex-direction: column; gap: 16px; padding-bottom: 40px; animation: fadeIn 0.4s ease; width: 100%;}
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .order-card { background: var(--bg-main); border-radius: 16px; padding: 20px; box-shadow: var(--shadow-card); border: 1px solid rgba(0,0,0,0.02); position: relative; overflow: hidden;}
+        .order-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--border); transition: 0.3s;}
+
+        .order-card[data-status="Placed"]::before { background: var(--info); }
+        .order-card[data-status="Processing"]::before { background: var(--warning); }
+        .order-card[data-status="Shipped"]::before { background: #8B5CF6; }
+        .order-card[data-status="Delivered"]::before { background: var(--success); }
+        .order-card[data-status="Cancelled"]::before { background: var(--error); }
+
+        .o-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px dashed var(--border); padding-bottom: 12px; margin-bottom: 12px; }
+        .o-id { font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 2px;}
+        .o-date { font-size: 10px; color: var(--text-muted); font-weight: 500;}
+
+        .o-status { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px;}
+        .status-Placed { background: #EFF6FF; color: var(--info); }
+        .status-Processing { background: #FFFBEB; color: var(--warning); }
+        .status-Shipped { background: #F5F3FF; color: #8B5CF6; }
+        .status-Delivered { background: #ECFDF5; color: var(--success); }
+        .status-Cancelled { background: #FEF2F2; color: var(--error); }
+
+        .o-body { display: flex; gap: 15px; margin-bottom: 16px; align-items: center;}
+        .o-img { width: 60px; height: 60px; border-radius: 8px; background-size: cover; background-position: top; border: 1px solid var(--border); background-color:#f5f5f5; flex-shrink:0;}
+        .o-details { flex: 1; }
+        .o-title { font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4;}
+        .o-meta { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+
+        .o-footer { display: flex; justify-content: space-between; align-items: center; background: var(--bg-page); padding: 12px; border-radius: 12px; }
+        .o-total { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase;}
+        .o-total span { font-size: 16px; font-weight: 800; color: var(--text-main); display: block; margin-top: 2px; font-family: 'Plus Jakarta Sans', sans-serif;}
+        .track-btn { background: var(--white); color: var(--primary); border: 1px solid var(--primary); padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s;}
+        .track-btn:active { background: var(--primary); color: white; }
+
+        /* MODALS */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999; display: none; justify-content: center; align-items: flex-end; backdrop-filter: blur(3px); opacity: 0; transition: opacity 0.3s ease; }
+        .modal-overlay.show { opacity: 1; display: flex; }
+        .bottom-sheet-modal { width: 100%; max-width: 460px; border-radius: 24px 24px 0 0; padding: 25px 20px 40px; background: #fff; transform: translateY(100%); transition: transform 0.3s ease; position: relative; }
+        .modal-overlay.show .bottom-sheet-modal { transform: translateY(0); }
+
+        .popup-close-icon { background: #f0f0f0; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #555; font-size:16px;}
+        .modal-input { width: 100%; border: 1px solid #ddd; border-radius: 12px; padding: 14px; font-size: 13px; margin-bottom: 12px; outline: none; background: #f9f9f9; transition: 0.2s; }
+        .modal-input:focus { border-color: var(--primary); background: #fff; }
+        .modal-btn { background: var(--primary); color: white; width: 100%; padding: 15px; border-radius: 12px; border: none; font-weight: 600; font-size: 14px; cursor: pointer; margin-top: 5px; box-shadow: 0 4px 15px rgba(106, 27, 41, 0.2); }
+        .modal-link { font-size: 11px; text-align: center; margin-top: 15px; color: #666; }
+        .modal-link span { color: var(--primary); font-weight: 700; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <header class="pro-header">
+            <button class="icon-btn ripple" type="button" onclick="window.location.href='./'"><i class="fa-solid fa-arrow-left"></i></button>
+            <div class="header-titles">
+                <h1>MY ORDERS</h1>
+                <p>Real-Time Tracking</p>
+            </div>
+            <button class="icon-btn" type="button" onclick="window.location.href='support.html'"><i class="fa-solid fa-headset"></i></button>
+        </header>
+
+        <main class="main-content">
+            
+            <!-- STATE 1: LOADING SKELETON -->
+            <div id="loadingView" class="state-view">
+                <div class="skeleton-card">
+                    <div class="skel-line" style="width: 40%; height: 15px; margin-bottom: 10px;"></div>
+                    <div class="skel-line" style="width: 60%; height: 12px; margin-bottom: 20px;"></div>
+                    <div class="skel-box" style="height: 60px; margin-bottom: 15px;"></div>
+                    <div class="skel-line" style="width: 30%; height: 20px;"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skel-line" style="width: 40%; height: 15px; margin-bottom: 10px;"></div>
+                    <div class="skel-line" style="width: 60%; height: 12px; margin-bottom: 20px;"></div>
+                    <div class="skel-box" style="height: 60px; margin-bottom: 15px;"></div>
+                    <div class="skel-line" style="width: 30%; height: 20px;"></div>
+                </div>
+            </div>
+
+            <!-- STATE 2: EMPTY ORDERS (Dono Guest aur Logged in ke liye) -->
+            <div id="emptyOrdersView" class="state-view" style="display: none;">
+                <div class="empty-state">
+                    <div class="icon-circle"><i class="fa-solid fa-box-open"></i></div>
+                    <h2>No Orders Yet</h2>
+                    <p id="emptyStateText">You haven't placed any orders yet. Discover our premium ethnic collection today!</p>
+                    <button type="button" class="pro-btn" onclick="window.location.href='./'">Explore Collection</button>
+                </div>
+            </div>
+
+            <!-- GUEST BANNER (Sirt tab dikhega jab user guest hoga aur uske orders honge) -->
+            <div id="guestSyncBanner" class="guest-banner" style="display: none;">
+                <i class="fa-solid fa-cloud-arrow-down"></i>
+                <div>
+                    <h4>Guest Orders</h4>
+                    <p>Login to secure and sync your history.</p>
+                </div>
+                <button type="button" onclick="openLoginModal()">LOGIN</button>
+            </div>
+
+            <!-- STATE 3: LIVE ORDERS LIST -->
+            <div id="ordersContainer" class="orders-list" style="display: none;">
+                <!-- JS WILL INJECT LIVE ORDERS HERE -->
+            </div>
+
+        </main>
+
+        <!-- FULL LOGIN/SIGNUP MODAL (Same Auth Box) -->
+        <div id="loginModal" class="modal-overlay">
+            <div class="bottom-sheet-modal" style="max-height: 85vh; overflow-y: auto;">
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="margin:0; font-size: 20px; font-weight:700; color:#222; font-family:'Playfair Display', serif;" id="authTitle">Create Account</h3>
+                    <i class="fa-solid fa-xmark popup-close-icon" onclick="closeLoginModal()"></i>
+                </div>
+
+                <!-- 🟢 SIGN UP VIEW -->
+                <div id="signupView">
+                    <p style="font-size: 12px; color: #666; margin-bottom: 15px;">Join us for a premium ethnic experience.</p>
+                    <input type="text" id="signupName" class="modal-input" placeholder="Full Name" autocomplete="off">
+                    <input type="email" id="signupEmail" class="modal-input" placeholder="Email Address" autocomplete="off">
+                    <input type="password" id="signupPassword" class="modal-input" placeholder="Create Password" autocomplete="new-password">
+                    <button type="button" id="btnSignupAction" onclick="processSignup()" class="modal-btn">Get Secure OTP</button>
+                    <p class="modal-link">Already have an account? <span onclick="toggleAuthView('login')">Login here</span></p>
+                </div>
+
+                <!-- 🔵 LOGIN VIEW -->
+                <div id="loginView" style="display: none;">
+                    <p style="font-size: 12px; color: #666; margin-bottom: 15px;">Login to access your orders.</p>
+                    <input type="email" id="loginEmail" class="modal-input" placeholder="Email Address" autocomplete="off">
+                    <input type="password" id="loginPassword" class="modal-input" placeholder="Password" autocomplete="current-password">
+                    <button type="button" id="btnLoginAction" onclick="processLogin()" class="modal-btn">Secure Login</button>
+                    <p class="modal-link">New to Aavira? <span onclick="toggleAuthView('signup')">Create Account</span></p>
+                </div>
+
+                <!-- 🟠 OTP VIEW -->
+                <div id="otpView" style="display: none;">
+                    <p style="font-size: 12px; color: #666; margin-bottom: 15px;" id="otpSubText">Code sent to your email.</p>
+                    <input type="text" id="otpInput" class="modal-input" placeholder="Enter your OTP here.." maxlength="6" autocomplete="off" style="text-align:center; font-size:18px; font-weight:700; letter-spacing:4px;">
+                    <button type="button" id="btnOtpAction" onclick="verifySignupOTP()" class="modal-btn">Verify & Login</button>
+                    <p class="modal-link">Wrong email? <span onclick="toggleAuthView('signup')">Edit Details</span></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- EXTERNAL DATA FILE -->
+    <script src="user_data.js"></script>
+
+    <!-- ✨ ALL JAVASCRIPT LOGIC ✨ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            window.checkAuthAndLoadOrders();
+        });
+
+        window.checkAuthAndLoadOrders = function() {
+            const userEmail = localStorage.getItem('aavira_user_email');
+            // GUEST USERS ke order IDs LocalStorage me array me save honge
+            let localOrdersStr = localStorage.getItem('aavira_placed_orders');
+            let localOrders = localOrdersStr ? JSON.parse(localOrdersStr) : [];
+            
+            document.getElementById('loadingView').style.display = 'block';
+            document.getElementById('emptyOrdersView').style.display = 'none';
+            document.getElementById('ordersContainer').style.display = 'none';
+            document.getElementById('guestSyncBanner').style.display = 'none';
+
+            // Agar na email hai aur na local storage me koi order, toh direct Empty dikhao
+            if (!userEmail && localOrders.length === 0) {
+                document.getElementById('loadingView').style.display = 'none';
+                document.getElementById('emptyOrdersView').style.display = 'flex';
+                document.getElementById('emptyStateText').innerText = "You haven't placed any orders yet. Login to see your past history.";
+            } else {
+                // Backend se Orders Mangwao (Email ke through ya Local Order IDs ke through)
+                fetchOrdersFromVercel(userEmail, localOrders);
+            }
+        }
+
+        async function fetchOrdersFromVercel(email, localOrdersArray) {
+            try {
+                // Yahan hamesha VERCEL_URL use hoga kyunki orders wahin se aayenge
+                const VERCEL_URL = "https://aavira-fashion-backend.vercel.app";
+                const response = await fetch(`${VERCEL_URL}/api/orders`);
+                const result = await response.json();
+                
+                document.getElementById('loadingView').style.display = 'none';
+
+                if (response.ok && result.status === "success" && result.data.length > 0) {
+                    
+                    // 🔥 SMART FILTERING (Login + Local Storage dono milakar) 🔥
+                    let myOrders = result.data.filter(order => {
+                        const matchEmail = email && (order.email === email || order.userEmail === email);
+                        const matchLocalId = localOrdersArray.includes(order.orderId);
+                        return matchEmail || matchLocalId;
+                    });
+                    
+                    if (myOrders.length === 0) {
+                        document.getElementById('emptyOrdersView').style.display = 'flex';
+                        if(!email) document.getElementById('emptyStateText').innerText = "No tracking found for your recent orders. Login to see full history.";
+                        return;
+                    }
+
+                    // Agar user logged out hai lekin uske phone me data mila toh Guest Banner dikhao
+                    if (!email && myOrders.length > 0) {
+                        document.getElementById('guestSyncBanner').style.display = 'flex';
+                    }
+
+                    renderOrdersUI(myOrders);
+
+                } else {
+                    document.getElementById('emptyOrdersView').style.display = 'flex';
+                }
+            } catch (error) {
+                document.getElementById('loadingView').style.display = 'none';
+                document.getElementById('emptyOrdersView').style.display = 'flex';
+                console.error("Order fetch error:", error);
+            }
+        }
+
+        function renderOrdersUI(orders) {
+            const container = document.getElementById('ordersContainer');
+            container.innerHTML = '';
+            document.getElementById('emptyOrdersView').style.display = 'none';
+            container.style.display = 'flex';
+
+            orders.forEach(order => {
+                let dateStr = "Processing...";
+                if (order.createdAt) {
+                    let orderDate = new Date();
+                    if (order.createdAt._seconds) {
+                        orderDate = new Date(order.createdAt._seconds * 1000);
+                    } else if (order.createdAt.seconds) {
+                        orderDate = new Date(order.createdAt.seconds * 1000);
+                    } else {
+                        orderDate = new Date(order.createdAt);
+                    }
+                    
+                    dateStr = orderDate.toLocaleDateString('en-IN', {
+                        day: 'numeric', month: 'short', year: 'numeric'
+                    });
+                }
+
+                let mainImg = "https://via.placeholder.com/150";
+                let titleStr = "Premium Items";
+                let metaStr = "0 Item(s)";
+
+                if(order.items && order.items.length > 0) {
+                    mainImg = order.items[0].image || mainImg;
+                    titleStr = order.items[0].name;
+                    metaStr = `${order.items.length} Item(s)`;
+                    if(order.items.length > 1) {
+                        titleStr += ` <span style="color:var(--primary); font-weight:700;">+${order.items.length - 1} more</span>`;
+                    }
+                }
+
+                const total = order.totalAmount || order.total || 0;
+                const status = order.orderStatus || "Processing";
+                const method = order.paymentMethod ? order.paymentMethod.toUpperCase() : "PREPAID";
+
+                const cardHtml = `
+                    <div class="order-card" data-status="${status}">
+                        <div class="o-header">
+                            <div>
+                                <div class="o-id">${order.orderId || '#AAV-' + Math.floor(Math.random()*10000)}</div>
+                                <div class="o-date">Placed on ${dateStr}</div>
+                            </div>
+                            <div class="o-status status-${status}">${status}</div>
+                        </div>
+                        
+                        <div class="o-body">
+                            <div class="o-img" style="background-image: url('${mainImg}');"></div>
+                            <div class="o-details">
+                                <h4 class="o-title">${titleStr}</h4>
+                                <p class="o-meta">${metaStr} | ${method}</p>
+                            </div>
+                        </div>
+
+                        <div class="o-footer">
+                            <div class="o-total">Total Amount <span>₹${Number(total).toLocaleString('en-IN')}</span></div>
+                            <button type="button" class="track-btn" onclick="alert('Order is currently ${status}. Live tracking will be available soon!')">Track <i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHtml;
+            });
+        }
+
+        // ==========================================
+        // LOGIN MODAL LOGIC (Connected to user_data.js)
+        // ==========================================
+        let tempSignupData = { name: "", email: "", pwd: "" };
+
+        window.clearAuthInputs = function() {
+            ['signupName', 'signupEmail', 'signupPassword', 'loginEmail', 'loginPassword', 'otpInput'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+        }
+        window.toggleAuthView = function(viewMode) {
+            document.getElementById('loginView').style.display = 'none';
+            document.getElementById('signupView').style.display = 'none'; 
+            document.getElementById('otpView').style.display = 'none';
+            document.getElementById(viewMode + 'View').style.display = 'block';
+            
+            const titleEl = document.getElementById('authTitle');
+            if(viewMode === 'signup') titleEl.innerText = 'Create Account';
+            if(viewMode === 'login') titleEl.innerText = 'Welcome Back';
+            if(viewMode === 'otp') titleEl.innerText = 'Verify OTP';
+        }
+        window.openLoginModal = function() {
+            window.clearAuthInputs(); 
+            document.getElementById('loginModal').style.display = 'flex'; 
+            document.body.style.overflow = 'hidden'; 
+            window.toggleAuthView('signup');
+            setTimeout(() => { document.getElementById('loginModal').classList.add('show'); }, 10);
+        }
+        window.closeLoginModal = function() {
+            document.getElementById('loginModal').classList.remove('show');
+            document.body.style.overflow = '';
+            setTimeout(() => { document.getElementById('loginModal').style.display = 'none'; window.clearAuthInputs(); }, 300);
+        }
+
+        window.processSignup = async function() {
+            const name = document.getElementById('signupName').value.trim(); 
+            const email = document.getElementById('signupEmail').value.trim(); 
+            const pwd = document.getElementById('signupPassword').value.trim();
+            
+            if(!name || !email || !pwd) { alert("Please fill all fields!"); return; }
+            if(!window.DeliveryBoy) { alert("user_data.js missing!"); return; }
+
+            const btn = document.getElementById('btnSignupAction'); 
+            btn.innerHTML = 'Processing...'; btn.disabled = true;
+            
+            try {
+                const checkRes = await window.DeliveryBoy.checkEmailExists(email);
+                if (checkRes && checkRes.exists) { 
+                    alert("Email already registered. Please Login."); 
+                    window.toggleAuthView('login'); 
+                    btn.innerHTML = 'Get Secure OTP'; btn.disabled = false; 
+                    return; 
+                }
+            } catch(e) {}
+            
+            tempSignupData = { name, email, pwd };
+            
+            try {
+                const result = await window.DeliveryBoy.sendOTP(email, name);
+                if(result && result.ok && result.data && result.data.success) { 
+                    document.getElementById('otpSubText').innerText = `Code sent to ${email}`; 
+                    window.toggleAuthView('otp'); 
+                } else {
+                    alert("Failed to send OTP.");
+                }
+            } catch (error) { alert("Network Error!"); }
+            btn.innerHTML = 'Get Secure OTP'; btn.disabled = false;
+        }
+
+        window.verifySignupOTP = async function() {
+            const otpVal = document.getElementById('otpInput').value.trim();
+            if(otpVal.length !== 6) { alert("Enter 6-digit OTP!"); return; }
+            
+            const vBtn = document.getElementById('btnOtpAction'); 
+            vBtn.innerHTML = 'Finalizing...'; vBtn.disabled = true;
+            
+            try {
+                const result = await window.DeliveryBoy.verifyOTP(tempSignupData.email, otpVal, tempSignupData.name, tempSignupData.pwd);
+                if(result && result.ok && result.data && result.data.success) {
+                    localStorage.setItem('aavira_display_name', tempSignupData.name); 
+                    localStorage.setItem('aavira_user_email', tempSignupData.email);
+                    alert("Verified Successfully!"); 
+                    window.closeLoginModal(); 
+                    window.checkAuthAndLoadOrders(); // Refresh screen
+                } else alert("Invalid OTP!");
+            } catch (error) { alert("Network Error!"); }
+            
+            vBtn.innerHTML = 'Verify & Login'; vBtn.disabled = false; 
+        }
+
+        window.processLogin = async function() {
+            const email = document.getElementById('loginEmail').value.trim(); 
+            const pwd = document.getElementById('loginPassword').value.trim();
+            
+            if(!email || !pwd) { alert("Fields required!"); return; }
+            
+            const btn = document.getElementById('btnLoginAction'); 
+            btn.innerHTML = 'Checking...'; btn.disabled = true;
+            
+            try {
+                const result = await window.DeliveryBoy.login(email, pwd);
+                if(result && result.ok && result.data && result.data.success) {
+                    localStorage.setItem('aavira_display_name', result.data.userName); 
+                    localStorage.setItem('aavira_user_email', email);
+                    alert("Login Successful!"); 
+                    window.closeLoginModal(); 
+                    window.checkAuthAndLoadOrders(); // Refresh screen
+                } else alert("Invalid Email or Password.");
+            } catch(e) { alert("Network Error!"); }
+            
+            btn.innerHTML = 'Secure Login'; btn.disabled = false;
+        }
+    </script>
+</body>
+</html>
