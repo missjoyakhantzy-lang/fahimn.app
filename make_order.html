@@ -8,15 +8,12 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- ✨ EXTERNAL CSS LINK ✨ -->
     <link rel="stylesheet" href="checkout-style.css">
 </head>
 <body>
 
     <div class="app-container">
         
-        <!-- HEADER -->
         <header class="pro-header">
             <button class="icon-btn ripple" onclick="history.back()"><i class="fa-solid fa-arrow-left"></i></button>
             <div class="header-titles">
@@ -38,7 +35,6 @@
 
         <main class="main-content" id="mainScroll" style="display:none;">
             
-            <!-- 1. DELIVERY INFORMATION -->
             <section class="pro-card">
                 <div class="card-header">
                     <h2>Delivery Information</h2>
@@ -91,26 +87,19 @@
                 </form>
             </section>
 
-            <!-- 2. ORDER SUMMARY -->
             <section class="pro-card">
                 <div class="card-header">
                     <h2>Your Order</h2>
                     <span class="item-count" id="itemCountBadge">0 Items</span>
                 </div>
-                <div class="order-list" id="orderItemsContainer">
-                    <div class="skeleton-box"></div>
-                </div>
+                <div class="order-list" id="orderItemsContainer"></div>
             </section>
 
-            <!-- 🔥 CART & WISHLIST SUGGESTIONS 🔥 -->
             <section class="pro-card suggest-section" id="cartSuggestionsSection">
                 <div class="suggest-title"><i class="fa-solid fa-heart" style="color: #D81B60;"></i> Complete Your Look</div>
-                <div class="suggest-scroll" id="suggestedItemsContainer">
-                    <!-- JS will inject suggestions here -->
-                </div>
+                <div class="suggest-scroll" id="suggestedItemsContainer"></div>
             </section>
 
-            <!-- 3. DELIVERY OPTIONS -->
             <section class="pro-card">
                 <div class="card-header"><h2>Delivery Options</h2></div>
                 <div class="speed-selector">
@@ -141,7 +130,6 @@
                 </label>
             </section>
 
-            <!-- 4. PAYMENT METHOD -->
             <section class="pro-card">
                 <div class="card-header"><h2>Payment Method</h2></div>
                 <div class="payment-selector">
@@ -162,7 +150,6 @@
                 </div>
             </section>
 
-            <!-- 5. PROMO & BILLING -->
             <section class="pro-card bill-card">
                 <div class="card-header"><h2>Order Summary</h2></div>
                 <div class="promo-container" id="promoInputGroup">
@@ -192,46 +179,29 @@
             </div>
         </main>
 
-        <!-- FLOATING BOTTOM BAR -->
         <div class="pro-bottom-bar" id="bottomCheckoutBar" style="display:none;">
-            <div class="bar-price">
-                <p>Total</p>
-                <h3 id="bottomTotal">₹0</h3>
-            </div>
+            <div class="bar-price"><p>Total</p><h3 id="bottomTotal">₹0</h3></div>
             <button class="pro-pay-btn ripple" id="placeOrderBtn" onclick="window.placeOrder()">
                 <span id="btnText">Place Order <i class="fa-solid fa-lock"></i></span>
             </button>
         </div>
 
-        <!-- 🔥 MODALS & TOASTS (UPDATED ANIMATIONS & 3 BUTTONS) 🔥 -->
         <div class="modal-overlay" id="processModal">
-            <!-- Loading Box -->
             <div class="pro-modal" id="gatewayBox">
                 <div class="pro-spinner"></div>
                 <h3 id="processText">Processing Securely</h3>
                 <p>Please do not press back</p>
             </div>
             
-            <!-- Success Box -->
             <div class="pro-modal success-modal" id="successBox" style="display:none;">
                 <div class="success-icon"><i class="fa-solid fa-check"></i></div>
                 <h2>Order Success!</h2>
                 <div class="order-badge">ID: <span id="displayOrderId">ORD-XXXX</span></div>
                 <p>Your premium fashion is being prepared for dispatch.</p>
-                
                 <div class="success-actions">
-                    <!-- Button 1: Track Order -->
-                    <button class="btn-track" onclick="window.location.href='orders'">
-                        <i class="fa-solid fa-box-open"></i> Track Order
-                    </button>
-                    <!-- Button 2: Enable Notifications -->
-                    <button class="btn-notif" id="successNotifBtn" onclick="window.enableOrderNotifications()">
-                        <i class="fa-solid fa-bell"></i> Enable Notifications
-                    </button>
-                    <!-- Button 3: Back to Home -->
-                    <button class="btn-home" onclick="window.location.href='./'">
-                        <i class="fa-solid fa-house"></i> Back to Home
-                    </button>
+                    <button class="btn-track" onclick="window.location.href='orders'"><i class="fa-solid fa-box-open"></i> Track Order</button>
+                    <button class="btn-notif" id="successNotifBtn" onclick="window.enableOrderNotifications()"><i class="fa-solid fa-bell"></i> Enable Notifications</button>
+                    <button class="btn-home" onclick="window.location.href='./'"><i class="fa-solid fa-house"></i> Back to Home</button>
                 </div>
             </div>
         </div>
@@ -243,9 +213,9 @@
 
     </div>
 
-    <!-- EXTERNAL SCRIPTS -->
+    <!-- 🔥 100% FIX: Normal Scripts First, Module later 🔥 -->
     <script src="user_data.js"></script>
-    <script type="module" src="checkout-script.js"></script>
-
+    <script src="checkout-script.js"></script>
+    <script type="module" src="checkout-firebase.js"></script>
 </body>
 </html>
