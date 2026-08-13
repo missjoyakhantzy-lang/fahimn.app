@@ -131,7 +131,6 @@
 
         <main class="main-content">
             
-            <!-- STATE 1: LOADING SKELETON -->
             <div id="loadingView" class="state-view">
                 <div class="skeleton-card">
                     <div class="skel-line" style="width: 40%; height: 15px; margin-bottom: 10px;"></div>
@@ -147,7 +146,6 @@
                 </div>
             </div>
 
-            <!-- STATE 2: EMPTY ORDERS (Dono Guest aur Logged in ke liye) -->
             <div id="emptyOrdersView" class="state-view" style="display: none;">
                 <div class="empty-state">
                     <div class="icon-circle"><i class="fa-solid fa-box-open"></i></div>
@@ -157,7 +155,6 @@
                 </div>
             </div>
 
-            <!-- GUEST BANNER (Sirt tab dikhega jab user guest hoga aur uske orders honge) -->
             <div id="guestSyncBanner" class="guest-banner" style="display: none;">
                 <i class="fa-solid fa-cloud-arrow-down"></i>
                 <div>
@@ -167,14 +164,10 @@
                 <button type="button" onclick="openLoginModal()">LOGIN</button>
             </div>
 
-            <!-- STATE 3: LIVE ORDERS LIST -->
-            <div id="ordersContainer" class="orders-list" style="display: none;">
-                <!-- JS WILL INJECT LIVE ORDERS HERE -->
-            </div>
+            <div id="ordersContainer" class="orders-list" style="display: none;"></div>
 
         </main>
 
-        <!-- FULL LOGIN/SIGNUP MODAL (Same Auth Box) -->
         <div id="loginModal" class="modal-overlay">
             <div class="bottom-sheet-modal" style="max-height: 85vh; overflow-y: auto;">
                 
@@ -183,7 +176,6 @@
                     <i class="fa-solid fa-xmark popup-close-icon" onclick="closeLoginModal()"></i>
                 </div>
 
-                <!-- 🟢 SIGN UP VIEW -->
                 <div id="signupView">
                     <p style="font-size: 12px; color: #666; margin-bottom: 15px;">Join us for a premium ethnic experience.</p>
                     <input type="text" id="signupName" class="modal-input" placeholder="Full Name" autocomplete="off">
@@ -193,7 +185,6 @@
                     <p class="modal-link">Already have an account? <span onclick="toggleAuthView('login')">Login here</span></p>
                 </div>
 
-                <!-- 🔵 LOGIN VIEW -->
                 <div id="loginView" style="display: none;">
                     <p style="font-size: 12px; color: #666; margin-bottom: 15px;">Login to access your orders.</p>
                     <input type="email" id="loginEmail" class="modal-input" placeholder="Email Address" autocomplete="off">
@@ -202,10 +193,9 @@
                     <p class="modal-link">New to Aavira? <span onclick="toggleAuthView('signup')">Create Account</span></p>
                 </div>
 
-                <!-- 🟠 OTP VIEW -->
                 <div id="otpView" style="display: none;">
                     <p style="font-size: 12px; color: #666; margin-bottom: 15px;" id="otpSubText">Code sent to your email.</p>
-                    <input type="text" id="otpInput" class="modal-input" placeholder="Enter your OTP here.." maxlength="6" autocomplete="off" style="text-align:center; font-size:18px; font-weight:700; letter-spacing:4px;">
+                    <input type="text" id="otpInput" class="modal-input" placeholder="Enter 6-digit OTP" maxlength="6" autocomplete="off" style="text-align:center; font-size:18px; font-weight:700; letter-spacing:4px;">
                     <button type="button" id="btnOtpAction" onclick="verifySignupOTP()" class="modal-btn">Verify & Login</button>
                     <p class="modal-link">Wrong email? <span onclick="toggleAuthView('signup')">Edit Details</span></p>
                 </div>
@@ -214,10 +204,8 @@
 
     </div>
 
-    <!-- EXTERNAL DATA FILE -->
     <script src="user_data.js"></script>
 
-    <!-- ✨ ALL JAVASCRIPT LOGIC ✨ -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             window.checkAuthAndLoadOrders();
@@ -225,41 +213,46 @@
 
         window.checkAuthAndLoadOrders = function() {
             const userEmail = localStorage.getItem('aavira_user_email');
-            // GUEST USERS ke order IDs LocalStorage me array me save honge
-            let localOrdersStr = localStorage.getItem('aavira_placed_orders');
-            let localOrders = localOrdersStr ? JSON.parse(localOrdersStr) : [];
+            
+            // 🔥 SAFELY GET GUEST ORDERS 🔥
+            let localOrdersArray = [];
+            try {
+                let stored = JSON.parse(localStorage.getItem('aavira_placed_orders'));
+                if (Array.isArray(stored)) { localOrdersArray = stored; }
+            } catch(e) { localOrdersArray = []; }
             
             document.getElementById('loadingView').style.display = 'block';
             document.getElementById('emptyOrdersView').style.display = 'none';
             document.getElementById('ordersContainer').style.display = 'none';
             document.getElementById('guestSyncBanner').style.display = 'none';
 
-            // Agar na email hai aur na local storage me koi order, toh direct Empty dikhao
-            if (!userEmail && localOrders.length === 0) {
+            if (!userEmail && localOrdersArray.length === 0) {
                 document.getElementById('loadingView').style.display = 'none';
                 document.getElementById('emptyOrdersView').style.display = 'flex';
                 document.getElementById('emptyStateText').innerText = "You haven't placed any orders yet. Login to see your past history.";
             } else {
-                // Backend se Orders Mangwao (Email ke through ya Local Order IDs ke through)
-                fetchOrdersFromVercel(userEmail, localOrders);
+                fetchOrdersFromVercel(userEmail, localOrdersArray);
             }
         }
 
         async function fetchOrdersFromVercel(email, localOrdersArray) {
             try {
-                // Yahan hamesha VERCEL_URL use hoga kyunki orders wahin se aayenge
                 const VERCEL_URL = "https://aavira-fashion-backend.vercel.app";
-                const response = await fetch(`${VERCEL_URL}/api/orders`);
-                const result = await response.json();
                 
+                // 🔥 CACHE-BUSTING FIX: Browser ko purana data dikhane se rokne ke liye 🔥
+                const response = await fetch(`${VERCEL_URL}/api/orders?time=${new Date().getTime()}`, {
+                    cache: 'no-store',
+                    headers: { 'Cache-Control': 'no-cache' }
+                });
+                
+                const result = await response.json();
                 document.getElementById('loadingView').style.display = 'none';
 
                 if (response.ok && result.status === "success" && result.data.length > 0) {
                     
-                    // 🔥 SMART FILTERING (Login + Local Storage dono milakar) 🔥
                     let myOrders = result.data.filter(order => {
                         const matchEmail = email && (order.email === email || order.userEmail === email);
-                        const matchLocalId = localOrdersArray.includes(order.orderId);
+                        const matchLocalId = localOrdersArray.includes(String(order.orderId));
                         return matchEmail || matchLocalId;
                     });
                     
@@ -269,20 +262,17 @@
                         return;
                     }
 
-                    // Agar user logged out hai lekin uske phone me data mila toh Guest Banner dikhao
                     if (!email && myOrders.length > 0) {
                         document.getElementById('guestSyncBanner').style.display = 'flex';
                     }
 
                     renderOrdersUI(myOrders);
-
                 } else {
                     document.getElementById('emptyOrdersView').style.display = 'flex';
                 }
             } catch (error) {
                 document.getElementById('loadingView').style.display = 'none';
                 document.getElementById('emptyOrdersView').style.display = 'flex';
-                console.error("Order fetch error:", error);
             }
         }
 
@@ -303,10 +293,7 @@
                     } else {
                         orderDate = new Date(order.createdAt);
                     }
-                    
-                    dateStr = orderDate.toLocaleDateString('en-IN', {
-                        day: 'numeric', month: 'short', year: 'numeric'
-                    });
+                    dateStr = orderDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
                 }
 
                 let mainImg = "https://via.placeholder.com/150";
@@ -355,7 +342,7 @@
         }
 
         // ==========================================
-        // LOGIN MODAL LOGIC (Connected to user_data.js)
+        // LOGIN MODAL LOGIC 
         // ==========================================
         let tempSignupData = { name: "", email: "", pwd: "" };
 
