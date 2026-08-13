@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Aavira Luxe - Professional Checkout</title>
+    <title>Aavira Luxe - Secure Checkout</title>
     <meta name="theme-color" content="#ffffff">
+    
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- ✨ EXTERNAL CSS LINK ✨ -->
     <link rel="stylesheet" href="checkout-style.css">
 </head>
 <body>
@@ -23,9 +26,19 @@
             <i class="fa-solid fa-lock header-lock"></i>
         </header>
 
-        <main class="main-content">
+        <!-- EMPTY STATE -->
+        <div id="emptyCartView" style="display: none; flex: 1;">
+            <div class="empty-cart-state">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <h2>Your Bag is Empty!</h2>
+                <p>Looks like you haven't added any premium products yet.</p>
+                <a href="./">Explore Collection</a> 
+            </div>
+        </div>
+
+        <main class="main-content" id="mainScroll" style="display:none;">
             
-            <!-- 1. MERGED DELIVERY INFORMATION -->
+            <!-- 1. DELIVERY INFORMATION -->
             <section class="pro-card">
                 <div class="card-header">
                     <h2>Delivery Information</h2>
@@ -44,14 +57,13 @@
                         <div class="pro-input-group">
                             <input type="tel" class="pro-input" id="ad_phone" placeholder=" " maxlength="10" required>
                             <label class="pro-label">Mobile Number</label>
-                            <span class="error-msg">Valid 10 digits required</span>
+                            <span class="error-msg">Valid 10 digits</span>
                         </div>
                     </div>
                     
                     <div class="pro-input-group">
-                        <input type="email" class="pro-input" id="ad_email" placeholder=" " required>
-                        <label class="pro-label">Email Address (For Invoice)</label>
-                        <span class="error-msg">Valid email required</span>
+                        <input type="email" class="pro-input" id="ad_email" placeholder=" ">
+                        <label class="pro-label">Email Address (Optional)</label>
                     </div>
 
                     <div class="divider-line"></div>
@@ -85,24 +97,28 @@
                     <h2>Your Order</h2>
                     <span class="item-count" id="itemCountBadge">0 Items</span>
                 </div>
-                <div class="order-list" id="orderItemsContainer"></div>
+                <div class="order-list" id="orderItemsContainer">
+                    <div class="skeleton-box"></div>
+                </div>
             </section>
 
-            <!-- 3. DELIVERY OPTIONS & ADD-ONS -->
-            <section class="pro-card">
-                <div class="card-header">
-                    <h2>Delivery Options</h2>
+            <!-- 🔥 CART & WISHLIST SUGGESTIONS 🔥 -->
+            <section class="pro-card suggest-section" id="cartSuggestionsSection">
+                <div class="suggest-title"><i class="fa-solid fa-heart" style="color: #D81B60;"></i> Complete Your Look</div>
+                <div class="suggest-scroll" id="suggestedItemsContainer">
+                    <!-- JS will inject suggestions here -->
                 </div>
-                
+            </section>
+
+            <!-- 3. DELIVERY OPTIONS -->
+            <section class="pro-card">
+                <div class="card-header"><h2>Delivery Options</h2></div>
                 <div class="speed-selector">
                     <label class="speed-option selected" id="opt_std">
                         <input type="radio" name="speed" value="standard" checked onchange="window.setDeliverySpeed('standard')">
                         <div class="speed-info">
                             <i class="fa-solid fa-truck"></i>
-                            <div>
-                                <h4>Standard Delivery</h4>
-                                <p>3-5 Business Days</p>
-                            </div>
+                            <div><h4>Standard Delivery</h4><p>3-5 Business Days</p></div>
                         </div>
                         <span class="speed-price">Free</span>
                     </label>
@@ -110,76 +126,51 @@
                         <input type="radio" name="speed" value="express" onchange="window.setDeliverySpeed('express')">
                         <div class="speed-info">
                             <i class="fa-solid fa-bolt" style="color: #F59E0B;"></i>
-                            <div>
-                                <h4>Express Delivery</h4>
-                                <p>Guaranteed in 24 Hours</p>
-                            </div>
+                            <div><h4>Express Delivery</h4><p>Guaranteed in 24 Hours</p></div>
                         </div>
                         <span class="speed-price">₹99</span>
                     </label>
                 </div>
-
                 <div class="divider-line"></div>
-
                 <label class="gift-toggle">
                     <div class="gt-text">
                         <h4><i class="fa-solid fa-gift" style="color: var(--primary);"></i> Add Premium Gift Wrap</h4>
                         <p>Luxury packaging (+₹49)</p>
                     </div>
-                    <div class="switch">
-                        <input type="checkbox" onchange="window.toggleGiftWrap(this)">
-                        <span class="slider"></span>
-                    </div>
+                    <div class="switch"><input type="checkbox" onchange="window.toggleGiftWrap(this)"><span class="slider"></span></div>
                 </label>
             </section>
 
             <!-- 4. PAYMENT METHOD -->
             <section class="pro-card">
-                <div class="card-header">
-                    <h2>Payment Method</h2>
-                </div>
+                <div class="card-header"><h2>Payment Method</h2></div>
                 <div class="payment-selector">
                     <label class="pay-option selected" onclick="window.selectPayment('cod', this)">
                         <div class="pay-radio"><div class="pay-dot"></div></div>
                         <div class="pay-content">
                             <div class="pay-icon"><i class="fa-solid fa-money-bill-1-wave" style="color: #10B981;"></i></div>
-                            <div>
-                                <h4>Cash on Delivery</h4>
-                                <p>Pay when order arrives</p>
-                            </div>
+                            <div><h4>Cash on Delivery</h4><p>Pay when order arrives</p></div>
                         </div>
                     </label>
-                    
                     <label class="pay-option" onclick="window.selectPayment('online', this)">
                         <div class="pay-radio"><div class="pay-dot"></div></div>
                         <div class="pay-content">
                             <div class="pay-icon"><i class="fa-brands fa-google-pay" style="color: #3B82F6;"></i></div>
-                            <div>
-                                <h4>UPI / Credit Card</h4>
-                                <p>Secure online payment</p>
-                            </div>
+                            <div><h4>UPI / Credit Card</h4><p>Secure online payment</p></div>
                         </div>
                     </label>
                 </div>
             </section>
 
-            <!-- 5. PROMO & BILLING (GST Removed) -->
+            <!-- 5. PROMO & BILLING -->
             <section class="pro-card bill-card">
-                <div class="card-header">
-                    <h2>Order Summary</h2>
-                </div>
-                
+                <div class="card-header"><h2>Order Summary</h2></div>
                 <div class="promo-container" id="promoInputGroup">
                     <input type="text" id="promoInput" class="promo-input" placeholder="Have a promo code?">
-                    <!-- Promo Apply Button -->
                     <button class="promo-btn" id="promoBtn" onclick="window.applyPromo()">Apply</button>
                 </div>
-                
                 <div class="applied-promo-box" id="appliedPromoBox" style="display:none;">
-                    <div class="ap-details">
-                        <i class="fa-solid fa-tag"></i>
-                        <span>Code <strong id="apCodeName"></strong> Applied</span>
-                    </div>
+                    <div class="ap-details"><i class="fa-solid fa-tag"></i><span>Code <strong id="apCodeName"></strong> Applied</span></div>
                     <button class="ap-remove" onclick="window.removePromo()"><i class="fa-solid fa-xmark"></i></button>
                 </div>
 
@@ -187,65 +178,74 @@
                     <div class="b-row"><span>Total MRP</span><span id="billMrp">₹0</span></div>
                     <div class="b-row highlight-green"><span>Product Discount</span><span id="billDiscount">-₹0</span></div>
                     <div class="b-row highlight-green" id="billPromoRow" style="display:none;"><span>Coupon Discount</span><span id="billPromoDiscount">-₹0</span></div>
-                    <!-- GST ROW HAS BEEN REMOVED FROM HERE -->
-                    <div class="b-row" id="row_delivery"><span>Shipping</span><span id="billDelivery">FREE</span></div>
+                    <div class="b-row" id="row_delivery"><span>Shipping</span><span id="billDelivery" class="highlight-green">FREE</span></div>
                     <div class="b-row" id="row_gift" style="display:none;"><span>Gift Wrap</span><span>₹49</span></div>
-                    
                     <div class="b-divider"></div>
                     <div class="b-row b-total"><span>Amount Payable</span><span id="billTotal">₹0</span></div>
                 </div>
-                
-                <div class="savings-alert" id="totalSavingsBadge" style="display:none;">
-                    You are saving ₹0 on this order!
-                </div>
+                <div class="savings-alert" id="totalSavingsBadge" style="display:none;">You are saving ₹0 on this order!</div>
             </section>
 
-            <div class="trust-footer">
-                <span><i class="fa-solid fa-rotate-left"></i>contect; +91-9608720622</span>
+            <div class="trust-footer" style="padding-bottom: 30px;">
+                <span><i class="fa-brands fa-whatsapp"></i> +91 9608720622</span>
                 <span><i class="fa-solid fa-shield-halved"></i> 100% Genuine</span>
             </div>
-
-            <div style="height: 100px;"></div>
         </main>
 
         <!-- FLOATING BOTTOM BAR -->
-        <div class="pro-bottom-bar">
+        <div class="pro-bottom-bar" id="bottomCheckoutBar" style="display:none;">
             <div class="bar-price">
                 <p>Total</p>
                 <h3 id="bottomTotal">₹0</h3>
             </div>
-            <button class="pro-pay-btn ripple" onclick="window.placeOrder()">
-                Place Order <i class="fa-solid fa-lock"></i>
+            <button class="pro-pay-btn ripple" id="placeOrderBtn" onclick="window.placeOrder()">
+                <span id="btnText">Place Order <i class="fa-solid fa-lock"></i></span>
             </button>
         </div>
 
-        <!-- MODALS & TOASTS -->
+        <!-- 🔥 MODALS & TOASTS (UPDATED ANIMATIONS & 3 BUTTONS) 🔥 -->
         <div class="modal-overlay" id="processModal">
+            <!-- Loading Box -->
             <div class="pro-modal" id="gatewayBox">
-                <div class="spinner"></div>
-                <h3>Processing Securely</h3>
+                <div class="pro-spinner"></div>
+                <h3 id="processText">Processing Securely</h3>
                 <p>Please do not press back</p>
             </div>
+            
+            <!-- Success Box -->
             <div class="pro-modal success-modal" id="successBox" style="display:none;">
                 <div class="success-icon"><i class="fa-solid fa-check"></i></div>
                 <h2>Order Success!</h2>
                 <div class="order-badge">ID: <span id="displayOrderId">ORD-XXXX</span></div>
                 <p>Your premium fashion is being prepared for dispatch.</p>
-                <button class="pro-pay-btn" style="width:100%; margin-top:24px;" onclick="window.location.href='orders.html'">Track Order</button>
+                
+                <div class="success-actions">
+                    <!-- Button 1: Track Order -->
+                    <button class="btn-track" onclick="window.location.href='orders'">
+                        <i class="fa-solid fa-box-open"></i> Track Order
+                    </button>
+                    <!-- Button 2: Enable Notifications -->
+                    <button class="btn-notif" id="successNotifBtn" onclick="window.enableOrderNotifications()">
+                        <i class="fa-solid fa-bell"></i> Enable Notifications
+                    </button>
+                    <!-- Button 3: Back to Home -->
+                    <button class="btn-home" onclick="window.location.href='./'">
+                        <i class="fa-solid fa-house"></i> Back to Home
+                    </button>
+                </div>
             </div>
         </div>
 
         <div class="pro-toast" id="alertToast">
             <span id="toastIcon"></span>
-            <div class="toast-content">
-                <h4 id="toastTitle">Alert</h4>
-                <p id="toastMessage">Message</p>
-            </div>
+            <div class="toast-content"><h4 id="toastTitle">Alert</h4><p id="toastMessage">Message</p></div>
         </div>
 
     </div>
 
+    <!-- EXTERNAL SCRIPTS -->
     <script src="user_data.js"></script>
     <script type="module" src="checkout-script.js"></script>
+
 </body>
 </html>
