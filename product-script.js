@@ -8,24 +8,11 @@ window.currentProductIdForReviews = null;
 window.customMeasurementsText = null; 
 let tempSignupData = { name: "", email: "", pwd: "" };
 
-function getPremiumColorHex(name) {
-    const colors = {
-        'maroon': '#800000', 'wine': '#722F37', 'mustard': '#FFDB58', 'navy': '#000080', 'navy blue': '#000080',
-        'olive': '#808000', 'olive green': '#808000', 'peach': '#FFE5B4', 'teal': '#008080', 'magenta': '#FF00FF',
-        'gold': '#D4AF37', 'rose gold': '#B76E79', 'cream': '#FFFDD0', 'beige': '#F5F5DC',
-        'rust': '#b7410e', 'coral': '#FF7F50', 'mint': '#3EB489', 'lavender': '#E6E6FA',
-        'red': '#FF0000', 'blue': '#0000FF', 'green': '#008000', 'yellow': '#FFFF00', 'pink': '#FFC0CB',
-        'black': '#000000', 'white': '#FFFFFF', 'grey': '#808080', 'gray': '#808080', 'purple': '#800080'
-    };
-    let key = name.toLowerCase().trim();
-    return colors[key] || key; 
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     let cart = JSON.parse(localStorage.getItem('aavira_cart')) || [];
     let total = cart.reduce((sum, item) => sum + item.qty, 0);
     const cartBadge = document.getElementById('topCartBadge');
-    if(cartBadge) cartBadge.innerText = total; 
+    if(cartBadge) { cartBadge.innerText = total; }
     loadProductData();
 });
 
@@ -78,7 +65,11 @@ function getSelectedSize() {
     if(activeSize.classList.contains('custom-size-btn')) return window.customMeasurementsText || "Custom";
     return activeSize.innerText;
 }
-function getSelectedColor() { return document.getElementById('colorName').innerText || 'As Shown'; }
+
+// 🔥 COLOR VALUE GETTER FIXED 🔥
+function getSelectedColor() { 
+    return document.getElementById('colorName').innerText || 'As Shown'; 
+}
 
 window.selectColorSwatch = function(element, colorName, imageUrl = null) {
     document.querySelectorAll('.color-swatch').forEach(el => el.classList.remove('active'));
@@ -133,8 +124,7 @@ window.buyNow = function(event) {
     const size = getSelectedSize(); if (!size) { triggerSizeError(); return; }
     const color = getSelectedColor();
     
-    // 🔥 CLEAN URL FOR CHECKOUT 🔥
-    window.location.href = "make_order?buy_now=" + encodeURIComponent(productId) + "&size=" + encodeURIComponent(size) + "&color=" + encodeURIComponent(color);
+    window.location.href = "make_order.html?buy_now=" + encodeURIComponent(productId) + "&size=" + encodeURIComponent(size) + "&color=" + encodeURIComponent(color);
 }
 
 window.scrollToSlide = function(index) {
@@ -193,32 +183,31 @@ async function loadProductData() {
             document.getElementById('productSku').innerText = "AV-" + String(productId).substring(0, 5).toUpperCase() + "-SURAT"; 
             document.getElementById('productSku').classList.remove('skeleton');
 
+            // 🔥 SMART COLOR LOGIC 🔥 (Sirf tab dikhega jab upload kiya ho)
             const colorSection = document.getElementById('colorSectionWrapper');
             const colorOpts = document.getElementById('dynamicColorOptions');
             const mainImage = productData.imageMain || productData.image || productData.imageUrl;
-            
-            let availableColors = [];
-            if (productData.colors && Array.isArray(productData.colors) && productData.colors.length > 0) availableColors = productData.colors;
-            else if (productData.color && typeof productData.color === 'string') availableColors = productData.color.split(',').map(c => c.trim()).filter(c => c);
 
-            if (availableColors.length > 0) {
+            if (productData.colors && Array.isArray(productData.colors) && productData.colors.length > 0) {
                 colorSection.style.display = 'block';
-                document.getElementById('colorName').innerText = typeof availableColors[0] === 'object' ? availableColors[0].name : availableColors[0];
+                let firstColorName = typeof productData.colors[0] === 'object' ? productData.colors[0].name : productData.colors[0];
+                document.getElementById('colorName').innerText = firstColorName;
+
                 colorOpts.innerHTML = '';
-                availableColors.forEach((colObj, idx) => {
-                    let cName = typeof colObj === 'object' ? colObj.name : colObj.trim();
-                    let cImg = typeof colObj === 'object' && colObj.image ? colObj.image : null;
+                productData.colors.forEach((colObj, idx) => {
+                    let cName = typeof colObj === 'object' ? colObj.name : colObj;
+                    let cImg = typeof colObj === 'object' && colObj.image ? colObj.image : mainImage;
                     let activeCls = idx === 0 ? 'active' : '';
-                    if (cImg) {
-                        colorOpts.innerHTML += `<div class="color-swatch ${activeCls}" style="background-image: url('${cImg}'); background-size: cover;" onclick="selectColorSwatch(this, '${cName}', '${cImg}')" title="${cName}"><i class="fa-solid fa-check"></i></div>`;
-                    } else {
-                        let hexCode = getPremiumColorHex(cName);
-                        colorOpts.innerHTML += `<div class="color-swatch ${activeCls}" style="background-color: ${hexCode};" onclick="selectColorSwatch(this, '${cName}')" title="${cName}"><i class="fa-solid fa-check" style="${['white', 'cream', 'beige', '#ffffff'].includes(hexCode.toLowerCase()) ? 'color: #111;' : ''}"></i></div>`;
-                    }
+
+                    colorOpts.innerHTML += `
+                        <div class="color-swatch ${activeCls}" style="background-image: url('${cImg}'); background-size: cover; width: 40px; height: 40px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; padding: 2px; background-clip: content-box; display: flex; justify-content: center; align-items: center;" onclick="selectColorSwatch(this, '${cName}', '${cImg}')" title="${cName}">
+                            <i class="fa-solid fa-check" style="display: ${idx === 0 ? 'block' : 'none'}; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.5);"></i>
+                        </div>`;
                 });
             } else {
-                colorSection.style.display = 'block'; document.getElementById('colorName').innerText = 'As Shown';
-                colorOpts.innerHTML = `<div class="color-swatch active" style="background-image: url('${mainImage}'); background-size: cover;" onclick="selectColorSwatch(this, 'As Shown', '${mainImage}')" title="As Shown"><i class="fa-solid fa-check"></i></div>`;
+                // Agar colors array nahi hai toh pura box HIDE kar do
+                colorSection.style.display = 'none';
+                document.getElementById('colorName').innerText = 'As Shown';
             }
 
             const carousel = document.getElementById('mediaCarousel');
@@ -244,7 +233,7 @@ let selectedRating = 0;
 window.handleWriteReviewClick = function() {
     const savedName = localStorage.getItem('aavira_display_name');
     if (!savedName || savedName.toLowerCase() === "guest user" || savedName === "") {
-        document.getElementById('loginPromptModal').style.display = 'flex';
+        window.openLoginModal(); // Seedha Login Modal Khulega!
     } else {
         document.getElementById('reviewUserName').innerText = savedName;
         document.getElementById('reviewUserInitial').innerText = savedName.charAt(0).toUpperCase();
@@ -304,41 +293,54 @@ window.loadRealReviewsFromDB = async function() {
 }
 
 // ==========================================
-// MODAL LOGIN FOR REVIEWS (No Page Redirect)
+// 🔥 MODAL LOGIN LOGIC (Fixed using Pure CSS) 🔥
 // ==========================================
 window.clearAuthInputs = function() {
     ['signupName', 'signupEmail', 'signupPassword', 'loginEmail', 'loginPassword', 'otpInput'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
 }
+
 window.toggleAuthView = function(viewMode) {
-    document.getElementById('loginView').classList.add('hidden'); document.getElementById('signupView').classList.add('hidden'); document.getElementById('otpView').classList.add('hidden');
-    document.getElementById(viewMode + 'View').classList.remove('hidden');
+    document.getElementById('loginView').style.display = 'none';
+    document.getElementById('signupView').style.display = 'none'; 
+    document.getElementById('otpView').style.display = 'none';
+    
+    document.getElementById(viewMode + 'View').style.display = 'block';
+    
+    const titleEl = document.getElementById('authTitle');
+    if(viewMode === 'signup') titleEl.innerText = 'Create Account';
+    if(viewMode === 'login') titleEl.innerText = 'Welcome Back';
+    if(viewMode === 'otp') titleEl.innerText = 'Verify OTP';
 }
+
 window.openLoginModal = function() {
-    clearAuthInputs(); document.getElementById('loginModal').classList.remove('hidden'); document.getElementById('loginModal').classList.add('flex');
-    document.body.style.overflow = 'hidden'; toggleAuthView('signup');
-    setTimeout(() => { document.getElementById('loginModalOverlay').classList.remove('opacity-0'); document.getElementById('loginModalContent').classList.remove('translate-y-full', 'opacity-0'); }, 10);
+    window.clearAuthInputs(); 
+    document.getElementById('loginModal').style.display = 'flex'; 
+    document.body.style.overflow = 'hidden'; 
+    window.toggleAuthView('signup');
 }
+
 window.closeLoginModal = function() {
-    document.getElementById('loginModalOverlay').classList.add('opacity-0'); document.getElementById('loginModalContent').classList.add('translate-y-full', 'opacity-0');
+    document.getElementById('loginModal').style.display = 'none'; 
     document.body.style.overflow = '';
-    setTimeout(() => { document.getElementById('loginModal').classList.add('hidden'); document.getElementById('loginModal').classList.remove('flex'); clearAuthInputs(); }, 300);
 }
+
 window.processSignup = async function() {
     const name = document.getElementById('signupName').value.trim(); const email = document.getElementById('signupEmail').value.trim(); const pwd = document.getElementById('signupPassword').value.trim();
     if(!name || !email || !pwd) { alert("Please fill all fields!"); return; }
     const btn = document.getElementById('btnSignupAction'); btn.innerHTML = 'Processing...'; btn.disabled = true;
     try {
         const checkRes = await window.DeliveryBoy.checkEmailExists(email);
-        if (checkRes && checkRes.exists) { alert("Email already registered. Please Login."); toggleAuthView('login'); btn.innerHTML = 'Get Secure OTP'; btn.disabled = false; return; }
+        if (checkRes && checkRes.exists) { alert("Email already registered. Please Login."); window.toggleAuthView('login'); btn.innerHTML = 'Get Secure OTP'; btn.disabled = false; return; }
     } catch(e) {}
     tempSignupData = { name, email, pwd };
     try {
         const result = await window.DeliveryBoy.sendOTP(email, name);
-        if(result && result.ok && result.data && result.data.success) { document.getElementById('otpSubText').innerText = `Code sent to ${email}`; toggleAuthView('otp'); } 
+        if(result && result.ok && result.data && result.data.success) { document.getElementById('otpSubText').innerText = `Code sent to ${email}`; window.toggleAuthView('otp'); } 
         else alert("Failed to send OTP.");
     } catch (error) { alert("Network Error!"); }
     btn.innerHTML = 'Get Secure OTP'; btn.disabled = false;
 }
+
 window.verifySignupOTP = async function() {
     const otpVal = document.getElementById('otpInput').value.trim();
     if(otpVal.length !== 6) { alert("Enter 6-digit OTP!"); return; }
@@ -347,11 +349,12 @@ window.verifySignupOTP = async function() {
         const result = await window.DeliveryBoy.verifyOTP(tempSignupData.email, otpVal, tempSignupData.name, tempSignupData.pwd);
         if(result && result.ok && result.data && result.data.success) {
             localStorage.setItem('aavira_display_name', tempSignupData.name); localStorage.setItem('aavira_user_email', tempSignupData.email);
-            alert("Verified Successfully!"); closeLoginModal(); setTimeout(() => { window.handleWriteReviewClick(); }, 500);
+            alert("Verified Successfully!"); window.closeLoginModal(); setTimeout(() => { window.handleWriteReviewClick(); }, 500);
         } else alert("Invalid OTP!");
     } catch (error) { alert("Network Error!"); }
     vBtn.innerHTML = 'Verify & Complete Setup'; vBtn.disabled = false; 
 }
+
 window.processLogin = async function() {
     const email = document.getElementById('loginEmail').value.trim(); const pwd = document.getElementById('loginPassword').value.trim();
     if(!email || !pwd) { alert("Fields required!"); return; }
@@ -360,7 +363,7 @@ window.processLogin = async function() {
         const result = await window.DeliveryBoy.login(email, pwd);
         if(result && result.ok && result.data && result.data.success) {
             localStorage.setItem('aavira_display_name', result.data.userName); localStorage.setItem('aavira_user_email', email);
-            alert("Login Successful!"); closeLoginModal(); setTimeout(() => { window.handleWriteReviewClick(); }, 500);
+            alert("Login Successful!"); window.closeLoginModal(); setTimeout(() => { window.handleWriteReviewClick(); }, 500);
         } else alert("Invalid Email or Password.");
     } catch(e) { alert("Network Error!"); }
     btn.innerHTML = 'Secure Login'; btn.disabled = false;
