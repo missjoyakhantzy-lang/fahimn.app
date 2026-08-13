@@ -31,7 +31,7 @@ messaging.onBackgroundMessage(function(payload) {
     // ChatGPT ke 2nd Prompt wali badi photo ka link yahan daalein
     // Example: 'https://missjoyakhantzy-lang.github.io/fahimn.app/banner.jpg'
     // ==========================================
-    image: 'file_00000000792081fa91bf7fd99dc468df.png', 
+    image: 'https://github.com/missjoyakhantzy-lang/fahimn.app/blob/main/file_00000000792081fa91bf7fd99dc468df.png', 
     
     // ==========================================
     // 3️⃣ STATUS BAR BADGE (Upar aane wala chhota safed icon)
