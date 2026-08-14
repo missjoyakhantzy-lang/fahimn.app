@@ -124,7 +124,7 @@ window.buyNow = function(event) {
     const size = getSelectedSize(); if (!size) { triggerSizeError(); return; }
     const color = getSelectedColor();
     
-    window.location.href = "make_order.html?buy_now=" + encodeURIComponent(productId) + "&size=" + encodeURIComponent(size) + "&color=" + encodeURIComponent(color);
+    window.location.href = "make_order?buy_now=" + encodeURIComponent(productId) + "&size=" + encodeURIComponent(size) + "&color=" + encodeURIComponent(color);
 }
 
 window.scrollToSlide = function(index) {
