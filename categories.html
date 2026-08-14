@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>Aavira Luxe - Collections</title>
+    <meta name="theme-color" content="#ffffff">
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS (For Ultra Premium Grid) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { 'primary': '#6A1B29', 'secondary': '#E5C158' } } } }
+    </script>
+
+    <style>
+        :root {
+            --primary: #6A1B29;
+            --primary-light: rgba(106, 27, 41, 0.05);
+            --secondary: #E5C158;
+            --text-main: #1A1A1A;
+            --text-muted: #6B7280;
+            --border: #F3F4F6;
+            --bg-page: #FFFFFF;
+            --font: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font); -webkit-tap-highlight-color: transparent; }
+        html, body { width: 100%; background: var(--bg-page); height: 100vh; display: flex; justify-content: center; overflow: hidden; }
+        
+        .app-container { width: 100%; max-width: 460px; background: var(--bg-page); height: 100vh; position: relative; box-shadow: 0 0 40px rgba(0,0,0,0.03); display: flex; flex-direction: column; overflow: hidden;}
+
+        /* 🔥 PREMIUM HEADER 🔥 */
+        .pro-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #fff; z-index: 100; flex-shrink: 0; border-bottom: 1px solid var(--border);}
+        .search-bar { flex: 1; background: #F9FAFB; border: 1px solid transparent; border-radius: 12px; padding: 10px 15px; display: flex; align-items: center; gap: 10px; margin: 0 12px; transition: 0.3s;}
+        .search-bar i { color: #9CA3AF; font-size: 14px; }
+        .search-bar input { border: none; background: transparent; outline: none; width: 100%; font-size: 13px; font-weight: 500; color: var(--text-main); }
+        .search-bar:focus-within { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px var(--primary-light); }
+        
+        .icon-btn { background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; padding: 4px; transition: 0.2s;}
+        .icon-btn:active { transform: scale(0.9); opacity: 0.7;}
+        
+        .cart-icon-wrapper { position: relative; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px;}
+        .cart-badge { position: absolute; top: 0; right: 0; background: var(--primary); color: white; font-size: 9px; font-weight: 700; width: 16px; height: 16px; display: flex; justify-content: center; align-items: center; border-radius: 50%; border: 2px solid white;}
+
+        /* 🔥 LUXURY CATEGORY PILLS 🔥 */
+        .cat-scroll-bar { display: flex; overflow-x: auto; gap: 10px; padding: 10px 16px 15px; background: #fff; border-bottom: 1px solid #F3F4F6; scrollbar-width: none; flex-shrink: 0;}
+        .cat-scroll-bar::-webkit-scrollbar { display: none; }
+        .cat-pill { padding: 8px 20px; background: #fff; border: 1px solid #E5E7EB; border-radius: 30px; font-size: 12px; font-weight: 600; color: #4B5563; white-space: nowrap; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); letter-spacing: 0.5px; text-transform: uppercase;}
+        .cat-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 4px 12px rgba(106, 27, 41, 0.25); }
+
+        /* MAIN PRODUCTS SCROLL (Fixed padding since bottom nav is removed) */
+        .main-content { flex: 1; overflow-y: auto; scrollbar-width: none; padding: 16px; padding-bottom: 30px; scroll-behavior: smooth; background: #FAFAFA;}
+        .main-content::-webkit-scrollbar { display: none; }
+
+        /* HEADER TEXT */
+        .right-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
+        .right-header h2 { font-size: 22px; font-weight: 800; color: var(--text-main); font-family: 'Playfair Display', serif; letter-spacing: 0.5px;}
+        .right-header p { font-size: 10px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; background: #eee; padding: 4px 10px; border-radius: 12px;}
+
+        /* PRODUCT GRID */
+        .products-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        /* SKELETON LOADERS */
+        .skel-pulse { background: #eee; background-image: linear-gradient(90deg, #eee 25%, #e0e0e0 50%, #eee 75%); background-size: 200px 100%; animation: shimmer 1.5s infinite linear; }
+        @keyframes shimmer { 0% { background-position: -200px 0; } 100% { background-position: 200px 0; } }
+        
+        .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 60vh; text-align: center; padding: 20px;}
+        .empty-state i { font-size: 45px; color: #E5E7EB; margin-bottom: 15px; }
+        .empty-state h3 { font-size: 18px; color: var(--text-main); font-weight: 700; margin-bottom: 5px; font-family: 'Playfair Display', serif;}
+        .empty-state p { font-size: 13px; color: var(--text-muted); }
+
+        /* TOAST */
+        .pro-toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: #18181B; color: #fff; padding: 14px 20px; display: flex; align-items: center; gap: 14px; width: 90%; max-width: 340px; border-radius: 12px; z-index: 1000; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .pro-toast.show { top: 20px; }
+        .pro-toast h4 { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+        .pro-toast p { font-size: 12px; color: #A1A1AA; }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- HEADER WITH SEARCH -->
+        <header class="pro-header">
+            <button class="icon-btn ripple" onclick="window.location.href='./'"><i class="fa-solid fa-arrow-left"></i></button>
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search premium collection..." oninput="handleSearch()">
+            </div>
+            <a href="cart" class="icon-btn cart-icon-wrapper">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span class="cart-badge" id="topCartBadge" style="display:none;">0</span>
+            </a>
+        </header>
+
+        <!-- 🔥 TOP CATEGORY BAR (Horizontal Pills) 🔥 -->
+        <div class="cat-scroll-bar" id="categoryTabsContainer">
+            <div class="cat-pill active skel-pulse" style="width: 60px; height: 35px; color: transparent; border:none;">All</div>
+            <div class="cat-pill skel-pulse" style="width: 80px; height: 35px; color: transparent; border:none;">Sarees</div>
+            <div class="cat-pill skel-pulse" style="width: 90px; height: 35px; color: transparent; border:none;">Lehengas</div>
+            <div class="cat-pill skel-pulse" style="width: 70px; height: 35px; color: transparent; border:none;">Suits</div>
+        </div>
+
+        <!-- MAIN PRODUCTS AREA (Full Width 1:1) -->
+        <div class="main-content" id="productsPanel">
+            
+            <div class="right-header">
+                <h2 id="currentCategoryTitle">All Collection</h2>
+                <p id="productCountBadge">Loading...</p>
+            </div>
+
+            <!-- GRID (Ultra Legend CSS) -->
+            <div class="products-grid" id="productsGrid">
+                <!-- Skeletons -->
+                <div class="w-full bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm"><div class="w-full pt-[100%] skel-pulse"></div><div class="p-4"><div class="h-3 skel-pulse rounded w-3/4 mb-3"></div><div class="h-4 skel-pulse rounded w-1/2"></div></div></div>
+                <div class="w-full bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm"><div class="w-full pt-[100%] skel-pulse"></div><div class="p-4"><div class="h-3 skel-pulse rounded w-3/4 mb-3"></div><div class="h-4 skel-pulse rounded w-1/2"></div></div></div>
+                <div class="w-full bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm"><div class="w-full pt-[100%] skel-pulse"></div><div class="p-4"><div class="h-3 skel-pulse rounded w-3/4 mb-3"></div><div class="h-4 skel-pulse rounded w-1/2"></div></div></div>
+                <div class="w-full bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm"><div class="w-full pt-[100%] skel-pulse"></div><div class="p-4"><div class="h-3 skel-pulse rounded w-3/4 mb-3"></div><div class="h-4 skel-pulse rounded w-1/2"></div></div></div>
+            </div>
+
+            <div id="emptyProductState" class="empty-state" style="display: none;">
+                <i class="fa-solid fa-box-open"></i>
+                <h3 id="emptyStateTitle">No Products Found</h3>
+                <p>We are adding new collections soon.</p>
+            </div>
+        </div>
+
+        <!-- TOAST ALERTS -->
+        <div class="pro-toast" id="alertToast">
+            <span id="toastIcon"></span>
+            <div class="toast-content"><h4 id="toastTitle">Alert</h4><p id="toastMessage">Message</p></div>
+        </div>
+
+    </div>
+
+    <!-- 🔥 FIREBASE LOGIC 🔥 -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCMGx6C5_al22KjCmdhGVKugJoR2UmZ1Ng",
+            authDomain: "aavira-co-in.firebaseapp.com",
+            projectId: "aavira-co-in",
+            storageBucket: "aavira-co-in.firebasestorage.app",
+            messagingSenderId: "247971292356",
+            appId: "1:247971292356:web:82780c6dffe9ba530f9591"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.mainProductsOnly = [];
+        window.allCategories = [];
+        let currentActiveCategory = "All";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartBadge();
+            syncDataFromFirebase();
+        });
+
+        async function syncDataFromFirebase() {
+            try {
+                // Fetch Categories
+                const catSnap = await getDocs(collection(db, "categories"));
+                let categories = [];
+                catSnap.forEach(doc => categories.push({ id: doc.id, ...doc.data() }));
+                window.allCategories = categories;
+
+                // Fetch Products ONLY from "main_products"
+                let allProds = [];
+                const prodQuery = query(collection(db, "main_products"), orderBy("createdAt", "desc"));
+                const snapMain = await getDocs(prodQuery);
+                snapMain.forEach(doc => allProds.push({ id: doc.id, ...doc.data() }));
+                
+                window.mainProductsOnly = allProds;
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const catParam = urlParams.get('cat');
+                if (catParam) { currentActiveCategory = decodeURIComponent(catParam); }
+
+                renderCategoriesUI(currentActiveCategory);
+                filterAndRenderProducts(currentActiveCategory);
+
+            } catch(e) {
+                console.error("Data Sync Error: ", e);
+                window.showToast("Network Error", "Could not sync catalog.", "error");
+            }
+        }
+
+        function renderCategoriesUI(activeCat) {
+            const topBar = document.getElementById('categoryTabsContainer');
+            
+            let html = `<div class="cat-pill ${activeCat === 'All' ? 'active' : ''}" onclick="selectCategory('All', this)">All</div>`;
+            
+            window.allCategories.forEach(cat => {
+                let isActive = activeCat === cat.name ? 'active' : '';
+                html += `<div class="cat-pill ${isActive}" onclick="selectCategory('${cat.name}', this)">${cat.name}</div>`;
+            });
+            
+            topBar.innerHTML = html;
+        }
+
+        window.selectCategory = function(catName, element) {
+            window.triggerHaptic('light');
+            document.querySelectorAll('.cat-pill').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            
+            currentActiveCategory = catName;
+            document.getElementById('searchInput').value = ''; 
+            
+            element.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            
+            filterAndRenderProducts(catName);
+            document.getElementById('productsPanel').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function filterAndRenderProducts(catName) {
+            let filtered = [];
+            if (catName === "All") filtered = window.mainProductsOnly;
+            else filtered = window.mainProductsOnly.filter(p => p.category === catName);
+            renderProductsUI(filtered, catName === "All" ? "All Collection" : catName);
+        }
+
+        // 🔥 ADVANCE LEGEND PRODUCT RENDERER 🔥
+        function renderProductsUI(productsArray, titleText) {
+            const grid = document.getElementById('productsGrid');
+            const emptyState = document.getElementById('emptyProductState');
+            
+            document.getElementById('currentCategoryTitle').innerText = titleText;
+            document.getElementById('productCountBadge').innerText = `${productsArray.length} ITEMS`;
+
+            grid.innerHTML = '';
+            
+            if(productsArray.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'flex';
+                document.getElementById('emptyStateTitle').innerText = `No ${titleText} Found`;
+                return;
+            }
+
+            grid.style.display = 'grid';
+            emptyState.style.display = 'none';
+
+            let wishlist = [];
+            try { wishlist = JSON.parse(localStorage.getItem('aavira_wishlist')) || []; } catch(e){}
+
+            productsArray.forEach(p => {
+                let cPrice = parseInt(String(p.price).replace(/[^0-9]/g, '')) || 0; 
+                let oPrice = p.mrp ? parseInt(String(p.mrp).replace(/[^0-9]/g, '')) : (cPrice + 450);
+                let discount = oPrice > cPrice ? Math.round(((oPrice - cPrice) / oPrice) * 100) : 0;
+                
+                let mrpHtml = discount > 0 ? `<span class="text-[10px] text-gray-400 line-through font-medium">₹${oPrice.toLocaleString('en-IN')}</span>` : ``; 
+                let offHtml = discount > 0 ? `<span class="text-[9px] font-bold text-green-700 bg-green-50/80 border border-green-100 px-1.5 py-0.5 rounded ml-auto tracking-wide">${discount}% OFF</span>` : ``;
+                
+                let img = p.imageMain || p.image || p.imageUrl;
+                let fallbackImg = `this.onerror=null;this.src='https://via.placeholder.com/400x400/f5f5f5/cccccc?text=Aavira';`;
+                let isWished = wishlist.includes(String(p.id));
+
+                // 👑 THE LEGENDARY CARD 👑
+                grid.innerHTML += `
+                    <div class="relative bg-white rounded-2xl overflow-hidden border border-gray-100/80 shadow-[0_4px_15px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(106,27,41,0.08)] transition-all duration-500 group active:scale-95">
+                        
+                        <!-- Glassmorphic Wishlist Button -->
+                        <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/70 backdrop-blur-md border border-white/50 shadow-sm flex items-center justify-center z-10 transition-transform active:scale-75 ${isWished ? 'text-red-500' : 'text-gray-400'} hover:bg-white" onclick="toggleHeart(event, this, '${p.id}')">
+                            <i class="${isWished ? 'fa-solid' : 'fa-regular'} fa-heart text-[13px] drop-shadow-sm"></i>
+                        </button>
+
+                        <!-- 1:1 Aspect Ratio Image Box -->
+                        <div class="relative w-full pt-[100%] bg-[#F8F9FA] cursor-pointer overflow-hidden" onclick="window.location.href='product?id=${p.id}'">
+                            <img src="${img}" onerror="${fallbackImg}" class="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                            <!-- Subtle Gradient Overlay for Luxe Feel -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        </div>
+
+                        <!-- Minimalist Premium Details -->
+                        <div class="p-3.5 flex flex-col bg-white relative z-20 cursor-pointer" onclick="window.location.href='product?id=${p.id}'">
+                            <div class="flex justify-between items-center mb-1">
+                                <h4 class="text-[8px] font-extrabold text-[#E5C158] tracking-[0.2em] uppercase">Aavira Luxe</h4>
+                                <i class="fa-solid fa-arrow-right text-gray-300 text-[10px] group-hover:text-[#6A1B29] transition-all duration-300 transform group-hover:translate-x-1"></i>
+                            </div>
+                            <h3 class="text-[13px] font-semibold text-gray-900 leading-snug mb-2 line-clamp-1 font-serif tracking-wide">${p.name}</h3>
+                            
+                            <div class="flex items-center flex-wrap gap-2 mt-auto">
+                                <span class="text-[15px] font-extrabold text-[#6A1B29] tracking-tight">₹${cPrice.toLocaleString('en-IN')}</span>
+                                ${mrpHtml}
+                                ${offHtml}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // ==========================================
+        // 4. SEARCH LOGIC
+        // ==========================================
+        window.handleSearch = function() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            let baseArray = currentActiveCategory === "All" ? window.mainProductsOnly : window.mainProductsOnly.filter(p => p.category === currentActiveCategory);
+            
+            if (!query) {
+                renderProductsUI(baseArray, currentActiveCategory === "All" ? "All Collection" : currentActiveCategory);
+                return;
+            }
+
+            const filtered = baseArray.filter(p => p.name.toLowerCase().includes(query));
+            renderProductsUI(filtered, `Search: "${query}"`);
+        }
+
+        // ==========================================
+        // 5. UTILS (Heart & Cart Badge)
+        // ==========================================
+        window.toggleHeart = function(event, btn, id) {
+            event.preventDefault(); event.stopPropagation();
+            window.triggerHaptic('light');
+            
+            const icon = btn.querySelector('i'); 
+            let wishlist = JSON.parse(localStorage.getItem('aavira_wishlist')) || [];
+            const strId = String(id);
+            
+            if (btn.classList.contains('text-gray-400')) { 
+                btn.classList.remove('text-gray-400'); btn.classList.add('text-red-500');
+                icon.classList.replace('fa-regular', 'fa-solid');
+                if (!wishlist.includes(strId)) wishlist.push(strId); 
+                window.showToast("Saved to Wishlist ❤️", "success");
+            } else { 
+                btn.classList.remove('text-red-500'); btn.classList.add('text-gray-400');
+                icon.classList.replace('fa-solid', 'fa-regular');
+                wishlist = wishlist.filter(item => String(item) !== strId); 
+                window.showToast("Removed", "error");
+            }
+            localStorage.setItem('aavira_wishlist', JSON.stringify(wishlist));
+        }
+
+        function updateCartBadge() {
+            let cart = [];
+            try { cart = JSON.parse(localStorage.getItem('aavira_cart')) || []; } catch(e){}
+            const badge = document.getElementById('topCartBadge');
+            if(badge) {
+                let total = cart.reduce((sum, item) => sum + item.qty, 0);
+                badge.innerText = total;
+                badge.style.display = total > 0 ? 'flex' : 'none';
+            }
+        }
+
+        window.triggerHaptic = function(type = 'light') {
+            try {
+                if (!navigator.vibrate) return;
+                if (type === 'light') navigator.vibrate(30);
+                else if (type === 'error') navigator.vibrate([60, 40, 60]);
+            } catch(e) {}
+        };
+
+        window.showToast = function(title, message, type = 'success') {
+            const toast = document.getElementById('alertToast');
+            if(!toast) return;
+            document.getElementById('toastTitle').innerText = title;
+            document.getElementById('toastMessage').innerText = message;
+            document.getElementById('toastIcon').innerHTML = type === 'error' ? '<i class="fa-solid fa-circle-xmark" style="color:#F87171;"></i>' : '<i class="fa-solid fa-circle-check" style="color:#34D399;"></i>';
+            window.triggerHaptic(type);
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+    </script>
+</body>
+</html>
