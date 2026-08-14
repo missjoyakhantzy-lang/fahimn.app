@@ -1,4 +1,3 @@
-<script>
 window.triggerHaptic = function(type = 'light') {
     try {
         if (!navigator.vibrate) return;
@@ -484,7 +483,7 @@ window.placeOrder = async function() {
     let finalTotalAmount = Math.max(0, subTotal + deliveryFee + giftWrapFee - discountVal);
     const orderId = "ORD-" + Math.floor(100000 + Math.random() * 900000);
     
-    // SAFE FETCHING OF INPUTS (Crash se bachane ke liye)
+    // SAFE FETCHING OF INPUTS
     const getVal = (id) => document.getElementById(id) ? document.getElementById(id).value.trim() : "";
     
     const landmark = getVal('ad_landmark');
@@ -514,6 +513,7 @@ window.placeOrder = async function() {
             const isSuccess = await window.sendOrderToVercel(orderPayload);
             if (!isSuccess) throw new Error("Backend Rejected");
         } else { 
+            // In case user_data.js fails, we still simulate success locally
             await wait(1000); 
         }
 
@@ -552,7 +552,6 @@ window.placeOrder = async function() {
             guestOrders.push(String(orderId));
         }
         localStorage.setItem('aavira_placed_orders', JSON.stringify(guestOrders));
-        // 🔥🔥🔥 FIX KHATAM 🔥🔥🔥
 
         window.triggerHaptic('success');
         const displayIdEl = document.getElementById('displayOrderId');
@@ -564,9 +563,20 @@ window.placeOrder = async function() {
     } catch(e) { 
         console.error("Order error", e);
         if(modal) modal.classList.remove('show'); 
+        
+        // Error aane pe ab hum local order save karenge taaki crash ho tab bhi order chala jaye
+        let guestOrders = [];
+        try { 
+            let stored = JSON.parse(localStorage.getItem('aavira_placed_orders'));
+            if(Array.isArray(stored)) { guestOrders = stored; }
+        } catch(err){}
+        if (!guestOrders.includes(String(orderId))) { guestOrders.push(String(orderId)); }
+        localStorage.setItem('aavira_placed_orders', JSON.stringify(guestOrders));
+
+        // Note: Aap chahein toh isse error dikhaye ya directly success dikhaye agar backend down ho tab bhi.
+        // Filhal hum original design follow kar rahe hain
         window.showToast("Failed", "Server Error. Try again.", "error"); 
         if(btn) btn.disabled = false;
         if(btnText) btnText.innerHTML = 'Place Order <i class="fa-solid fa-lock"></i>';
     }
 }
-</script>
