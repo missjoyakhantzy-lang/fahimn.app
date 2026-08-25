@@ -1,17 +1,16 @@
-/* ==========================================
-   AAVIRA PREMIUM APP - GLOBAL CSS
-   ========================================== */
+/* =========================================
+   Aavira - Premium Luxury Styles
+========================================= */
 
-/* 1. HIDE SCROLLBARS BUT KEEP SCROLLING */
-.no-scrollbar::-webkit-scrollbar {
-    display: none;
-}
-.no-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
+/* Base Luxury Styles */
+body { background-color: #FDFBF7; }
+html { scroll-behavior: smooth; }
 
-/* 2. PROMO BANNER ANIMATION (Right to Left) */
+/* Hide scrollbar for clean look */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Marquee Animation */
 @keyframes slideLeft { 
     0% { transform: translateX(100vw); } 
     100% { transform: translateX(-100%); } 
@@ -22,99 +21,68 @@
     animation: slideLeft 12s linear infinite; 
 }
 
-/* 3. PREMIUM LOADING SKELETON (Shimmer Effect) */
-@keyframes shimmer {
-    0% { background-position: -1000px 0; }
-    100% { background-position: 1000px 0; }
+/* 🔥 LIVE PROFESSIONAL ANIMATIONS 🔥 */
+
+/* Shimmering Text Logo */
+@keyframes text-shine { 
+    0% { background-position: 0% 50%; } 
+    100% { background-position: 200% 50%; } 
 }
-.premium-skeleton {
-    background: #f6f7f8;
-    background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
-    background-repeat: no-repeat;
-    background-size: 1000px 100%;
-    animation: shimmer 2s infinite linear forwards;
+.animate-text-shine {
+    background-size: 200% auto;
+    animation: text-shine 4s linear infinite;
 }
 
-/* 4. SCROLL REVEAL ANIMATION (Smooth Entry) */
-.reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+/* Floating Element */
+@keyframes float { 
+    0% { transform: translateY(0px); } 
+    50% { transform: translateY(-6px); } 
+    100% { transform: translateY(0px); } 
 }
-.reveal.active {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* 5. COLOR PICKER WHEEL BACKGROUND */
-.color-wheel-bg {
-    background: conic-gradient(
-        #ff4b4b 0deg,
-        #ffb04b 45deg,
-        #ffff4b 90deg,
-        #4bff4b 135deg,
-        #4bffff 180deg,
-        #4b4bff 225deg,
-        #b04bff 270deg,
-        #ff4bff 315deg,
-        #ff4b4b 360deg
-    );
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+.animate-float { 
+    animation: float 3s ease-in-out infinite; 
 }
 
-/* 6. COLOR PICKER THUMB (Selector) */
-.wheel-thumb {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    border: 3px solid white;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    position: absolute;
-    transform: translate(-50%, -50%);
-    background: transparent;
+/* Radar Pulse for WhatsApp */
+@keyframes pulse-ring {
+    0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
+    100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+.animate-pulse-ring { 
+    animation: pulse-ring 2s infinite; 
+}
+
+/* Scroll Fade Up Intersection */
+.fade-up { 
+    opacity: 0; 
+    transform: translateY(30px); 
+    transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); 
+}
+.fade-up.visible { 
+    opacity: 1; 
+    transform: translateY(0); 
+}
+
+/* Product Card Interactions */
+.product-card::after {
+    content: ''; 
+    position: absolute; 
+    inset: 0; 
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 100%);
+    opacity: 0; 
+    transition: opacity 0.3s ease; 
     pointer-events: none;
 }
-
-/* 7. CUSTOM RANGE SLIDER (Brightness & Saturation) */
-.custom-slider {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 4px;
-    border-radius: 4px;
-    outline: none;
-    background: #333;
-}
-.custom-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #fff;
-    box-shadow: 0 0 10px rgba(0,0,0,0.8);
-    cursor: pointer;
+.product-card:hover::after { 
+    opacity: 1; 
 }
 
-/* 8. BUTTON SHIMMER SWEEP (For Add to Cart / Shop Buttons) */
-@keyframes shimmerSweep {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+/* Color Picker Swatches */
+.color-swatch { 
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); 
 }
-.animate-shimmer-sweep {
-    animation: shimmerSweep 3s infinite;
-}
-
-/* 9. GLOW EFFECT FOR FLOATING BUTTONS */
-.glow-btn {
-    box-shadow: 0 0 15px rgba(233, 161, 176, 0.4);
-    transition: all 0.3s ease;
-}
-.glow-btn:hover {
-    box-shadow: 0 0 25px rgba(233, 161, 176, 0.7);
-    transform: scale(1.05);
-}
-
-/* 10. SMOOTH HTML SCROLLING */
-html {
-    scroll-behavior: smooth;
+.color-swatch:hover, .color-swatch:active { 
+    transform: scale(1.1); 
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
 }
