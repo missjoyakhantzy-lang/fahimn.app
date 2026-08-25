@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>Aavira - Help & Legal Center</title>
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind & Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        const originalWarn = console.warn;
+        console.warn = function(...args) { if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) return; originalWarn.apply(console, args); };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: { 
+                    colors: { 
+                        'luxury-bg': '#FDFBF7',
+                        'rani-pink': '#D81B60',
+                        'ethnic-gold': '#D4AF37'
+                    },
+                    fontFamily: {
+                        'serif': ['"Playfair Display"', 'serif'],
+                        'sans': ['"Inter"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #FDFBF7; -webkit-tap-highlight-color: transparent; }
+        
+        /* 🔥 Smooth Accordion Animation using CSS Grid 🔥 */
+        .accordion-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .accordion-content.open {
+            grid-template-rows: 1fr;
+        }
+        .accordion-inner {
+            overflow: hidden;
+        }
+
+        /* Scroll Fade Up Intersection */
+        .fade-up { 
+            opacity: 0; 
+            transform: translateY(20px); 
+            animation: fadeUpAnim 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards; 
+        }
+        @keyframes fadeUpAnim {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Privacy Policy Custom Formatting */
+        .legal-text p { margin-bottom: 12px; }
+        .legal-text ul { margin-bottom: 16px; padding-left: 16px; list-style-type: disc; }
+        .legal-text li { margin-bottom: 6px; }
+    </style>
+</head>
+<body class="font-sans text-gray-800 selection:bg-rani-pink selection:text-white overflow-x-hidden antialiased flex flex-col min-h-screen">
+
+<div class="max-w-[420px] mx-auto min-h-screen bg-luxury-bg shadow-2xl relative flex flex-col">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-40 bg-white transition-all duration-300 border-b border-gray-100 shadow-sm">
+        <div class="h-16 flex items-center px-4 gap-3">
+            <button type="button" onclick="history.back()" class="w-10 h-10 border border-gray-200 rounded-full bg-white flex items-center justify-center text-gray-600 hover:text-rani-pink hover:border-rani-pink/30 transition-all shadow-sm">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            </button>
+            <div class="flex-1">
+                <h1 class="font-serif text-[18px] font-bold text-gray-900 leading-none">Privacy & Support</h1>
+                <p class="text-[9px] text-gray-500 uppercase tracking-widest mt-1">Aavira Legal Center</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="w-full flex-1 px-4 py-6 pb-12">
+        
+        <!-- ========================================== -->
+        <!-- 1. FULL PRIVACY POLICY SECTION (AT THE TOP) -->
+        <!-- ========================================== -->
+        <div class="bg-white p-6 rounded-[24px] border border-gray-100 shadow-sm mb-8 fade-up relative overflow-hidden">
+            <h1 class="font-serif text-3xl font-bold text-gray-900 mb-1">Privacy Policy</h1>
+            <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mb-6">Last updated: August 25, 2026</p>
+
+            <div class="legal-text text-[12px] text-gray-500 leading-relaxed text-justify">
+                <p><strong>Aavira</strong> operates this store and website, including all related information, content, features, tools, products, and services, in order to provide you, the customer, with a curated luxury shopping experience (the "Services"). Aavira is powered by advanced and secure e-commerce technologies, which enable us to provide the Services to you. This Privacy Policy describes how we collect, use, and disclose your personal information when you visit, use, or make a purchase or other transaction using the Services or otherwise communicate with us. If there is a conflict between our Terms of Service and this Privacy Policy, this Privacy Policy controls with respect to the collection, processing, and disclosure of your personal information.</p>
+                <p>Please read this Privacy Policy carefully. By using and accessing any of the Services, you acknowledge that you have read this Privacy Policy and understand the collection, use, and disclosure of your information as described in this Privacy Policy.</p>
+
+                <h2 class="font-serif text-[16px] text-gray-900 font-bold border-b border-gray-50 pb-1 mt-6 mb-3">Personal Information We Collect</h2>
+                <p>When we use the term "personal information," we are referring to information that identifies or can reasonably be linked to you. We may collect or process the following categories:</p>
+                <ul>
+                    <li><strong>Contact details:</strong> including your name, address, billing address, shipping address, phone number, and email address.</li>
+                    <li><strong>Financial information:</strong> including credit card, debit card, and financial account numbers, payment card information, transaction details, and payment confirmation.</li>
+                    <li><strong>Account information:</strong> including your username, password, security questions, preferences and settings.</li>
+                    <li><strong>Transaction information:</strong> including the items you view, put in your cart, add to your wishlist, or purchase, return, exchange or cancel.</li>
+                    <li><strong>Communications with us:</strong> including the information you include in communications with us, for example, when sending a customer support inquiry.</li>
+                    <li><strong>Device & Usage information:</strong> including information about your device, browser, IP address, and how you interact with the Services.</li>
+                </ul>
+
+                <h2 class="font-serif text-[16px] text-gray-900 font-bold border-b border-gray-50 pb-1 mt-6 mb-3">Information Sources</h2>
+                <p>We may collect personal information from the following sources:</p>
+                <ul>
+                    <li><strong>Directly from you:</strong> when you create an account, visit or use the Services, or communicate with us.</li>
+                    <li><strong>Automatically through the Services:</strong> from your device when you use our products, via cookies and similar technologies.</li>
+                    <li><strong>From our service providers:</strong> when we engage them to enable certain technology on our behalf.</li>
+                </ul>
+
+                <h2 class="font-serif text-[16px] text-gray-900 font-bold border-b border-gray-50 pb-1 mt-6 mb-3">How We Use Your Information</h2>
+                <ul>
+                    <li><strong>Provide, Tailor, and Improve the Services:</strong> To perform our contract with you, process payments, fulfill orders, remember preferences, and create a customized shopping experience.</li>
+                    <li><strong>Marketing and Advertising:</strong> For promotional purposes, such as sending marketing emails or showing online advertisements based on your activity.</li>
+                    <li><strong>Security and Fraud Prevention:</strong> To authenticate your account, detect or investigate fraudulent activity, and provide a secure shopping experience.</li>
+                    <li><strong>Communicating with You:</strong> To provide customer support and respond to inquiries.</li>
+                    <li><strong>Legal Reasons:</strong> To comply with applicable laws or respond to valid legal processes.</li>
+                </ul>
+
+                <h2 class="font-serif text-[16px] text-gray-900 font-bold border-b border-gray-50 pb-1 mt-6 mb-3">How We Disclose Information</h2>
+                <p>In certain circumstances, we may disclose your personal information to third parties for legitimate purposes:</p>
+                <ul>
+                    <li>With vendors and third parties who perform services on our behalf (e.g. payment processing, shipping).</li>
+                    <li>With business and marketing partners to provide targeted marketing.</li>
+                    <li>When you direct, request us, or consent to our disclosure to third parties.</li>
+                    <li>In connection with a business transaction (merger/bankruptcy) or to comply with legal obligations.</li>
+                </ul>
+
+                <h2 class="font-serif text-[16px] text-gray-900 font-bold border-b border-gray-50 pb-1 mt-6 mb-3">Children's Data</h2>
+                <p>The Services are not intended to be used by children, and we do not knowingly collect personal information about children under the age of majority. If you are a parent or guardian of a child who provided us info, please contact us for deletion.</p>
+
+                <h2 class="font-serif text-[16px] text-gray-900 font-bold border-b border-gray-50 pb-1 mt-6 mb-3">Security and Retention</h2>
+                <p>Please be aware that no security measures are perfect or impenetrable. We recommend that you do not use unsecure channels to communicate sensitive information. We retain information as long as necessary to maintain your account, provide Services, and comply with legal obligations.</p>
+
+                <h2 class="font-serif text-[16px] text-gray-900 font-bold border-b border-gray-50 pb-1 mt-6 mb-3">Your Rights and Choices</h2>
+                <p>Depending on where you live, you may have the right to request access to, deletion of, or correction of your personal information. You can opt out of promotional emails at any time. To exercise these rights, please contact our support team.</p>
+
+                <h2 class="font-serif text-[16px] text-gray-900 font-bold border-b border-gray-50 pb-1 mt-6 mb-3">Changes to This Policy</h2>
+                <p>We may update this Privacy Policy from time to time to reflect changes to our practices or for legal reasons. We will post the revised Privacy Policy on this website and update the "Last updated" date.</p>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 2. HERO SUPPORT SECTION ("How can we help?") -->
+        <!-- ========================================== -->
+        <div class="bg-white p-6 rounded-[24px] border border-gray-100 shadow-sm mb-8 fade-up relative overflow-hidden" style="animation-delay: 0.1s;">
+            <div class="absolute -right-4 -top-4 w-24 h-24 bg-rani-pink/5 rounded-full blur-2xl"></div>
+            <h2 class="font-serif text-2xl font-bold text-gray-900 mb-2">How can we help?</h2>
+            <p class="text-xs text-gray-500 leading-relaxed mb-6">Our luxury concierge team is available to assist you with your orders, policies, and queries.</p>
+            
+            <div class="grid grid-cols-2 gap-3">
+                <a href="tel:+919608720622" class="flex flex-col items-center justify-center gap-2 p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-rani-pink/30 transition-colors group">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-rani-pink shadow-sm group-hover:scale-110 transition-transform">
+                        <i data-lucide="phone-call" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-gray-700">Call Us</span>
+                </a>
+                
+                <a href="https://wa.me/919608720622" target="_blank" class="flex flex-col items-center justify-center gap-2 p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-[#25D366]/30 transition-colors group">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#25D366] shadow-sm group-hover:scale-110 transition-transform">
+                        <i data-lucide="message-circle" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-gray-700">WhatsApp</span>
+                </a>
+            </div>
+            
+            <a href="mailto:support@aavira.shop" class="w-full mt-3 flex items-center justify-center gap-2 p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-rani-pink/30 transition-colors group">
+                <i data-lucide="mail" class="w-4 h-4 text-gray-500 group-hover:text-rani-pink transition-colors"></i>
+                <span class="text-[11px] font-bold text-gray-700">support@aavira.shop</span>
+            </a>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 3. OTHER POLICIES (ACCORDION SYSTEM) -->
+        <!-- ========================================== -->
+        <h3 class="font-serif text-[18px] text-gray-900 mb-4 px-1 fade-up" style="animation-delay: 0.2s;">Other Policies</h3>
+
+        <div class="space-y-3 fade-up" style="animation-delay: 0.3s;">
+
+            <!-- Shipping Policy -->
+            <div class="bg-white border border-gray-100 shadow-sm overflow-hidden rounded-xl">
+                <button class="w-full px-5 py-4 flex items-center justify-between bg-white text-left focus:outline-none" onclick="toggleAccordion(this)">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-600"><i data-lucide="truck" class="w-4 h-4"></i></div>
+                        <span class="font-bold text-[13px] text-gray-800">Shipping & Delivery</span>
+                    </div>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform duration-300 transform accordion-icon"></i>
+                </button>
+                <div class="accordion-content">
+                    <div class="accordion-inner px-5 pb-5 pt-1 text-[11.5px] text-gray-500 leading-relaxed text-justify space-y-3">
+                        <p>At Aavira, we ensure that your luxury ethnic wear reaches you safely and promptly.</p>
+                        <ul class="list-disc pl-4 space-y-1">
+                            <li><strong>Dispatch Time:</strong> All orders are strictly processed and dispatched within 24-48 business hours.</li>
+                            <li><strong>Delivery Timeline:</strong> Standard delivery takes 3 to 7 working days anywhere in India.</li>
+                            <li><strong>Shipping Charges:</strong> We offer <b>FREE Premium Shipping</b> on all prepaid orders. For Cash on Delivery (COD), a nominal convenience fee is applicable.</li>
+                            <li><strong>Tracking:</strong> Once dispatched, a tracking link will be sent to your registered email and WhatsApp number.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Returns & Refunds (UPDATED: 4 HOUR RULE) -->
+            <div class="bg-white border border-gray-100 shadow-sm overflow-hidden rounded-xl">
+                <button class="w-full px-5 py-4 flex items-center justify-between bg-white text-left focus:outline-none" onclick="toggleAccordion(this)">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-600"><i data-lucide="refresh-cw" class="w-4 h-4"></i></div>
+                        <span class="font-bold text-[13px] text-gray-800">Returns & Exchanges</span>
+                    </div>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform duration-300 transform accordion-icon"></i>
+                </button>
+                <div class="accordion-content">
+                    <div class="accordion-inner px-5 pb-5 pt-1 text-[11.5px] text-gray-500 leading-relaxed text-justify space-y-3">
+                        <p>To maintain the exclusivity and pristine quality of our luxury handcrafted pieces, we operate on a highly time-sensitive return framework.</p>
+                        <ul class="list-disc pl-4 space-y-2">
+                            <li><strong class="text-rani-pink">4-Hour Express Return Window:</strong> Due to the premium nature of our products, any return or exchange request must be reported and initiated strictly within <strong>4 hours</strong> of the delivery timestamp.</li>
+                            <li><strong>Strict Adherence:</strong> Requests raised after the 4-hour window has passed will be automatically declined, and the product will not be eligible for a return under any circumstances.</li>
+                            <li><strong>Condition:</strong> The product must remain completely unused, unwashed, and secured in its original luxury packaging with all tamper-proof tags completely intact.</li>
+                            <li><strong>Non-Returnable Items:</strong> Custom-tailored products, accessories, and items bought during 'Clearance Sales' are strictly non-returnable.</li>
+                            <li><strong>Refund Process:</strong> Once approved and quality-checked at our warehouse, refunds are processed within 5-7 working days directly to your original payment source.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Terms & Conditions -->
+            <div class="bg-white border border-gray-100 shadow-sm overflow-hidden rounded-xl">
+                <button class="w-full px-5 py-4 flex items-center justify-between bg-white text-left focus:outline-none" onclick="toggleAccordion(this)">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-600"><i data-lucide="file-text" class="w-4 h-4"></i></div>
+                        <span class="font-bold text-[13px] text-gray-800">Terms & Conditions</span>
+                    </div>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform duration-300 transform accordion-icon"></i>
+                </button>
+                <div class="accordion-content">
+                    <div class="accordion-inner px-5 pb-5 pt-1 text-[11.5px] text-gray-500 leading-relaxed text-justify space-y-3">
+                        <p>Welcome to Aavira. By browsing, accessing, or using this platform, you agree to adhere strictly to our terms:</p>
+                        <ul class="list-disc pl-4 space-y-1">
+                            <li><strong>Product Accuracy:</strong> Due to screen settings and photographic lighting, actual colors of the products may vary slightly.</li>
+                            <li><strong>Pricing:</strong> All prices mentioned are in Indian Rupees (INR) and are inclusive of GST. Pricing is subject to change.</li>
+                            <li><strong>Copyright:</strong> All content, images, designs, and logos present on this app are the exclusive property of Aavira Fashion. Unauthorized use is prohibited.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        <!-- Brand Signature -->
+        <div class="mt-14 mb-4 flex flex-col items-center justify-center text-center fade-up" style="animation-delay: 0.5s;">
+            <div class="w-12 h-1 bg-gray-200 rounded-full mb-6"></div>
+            <h1 class="font-serif text-2xl text-gray-300 mb-1">Aavira</h1>
+            <p class="text-[8px] tracking-[0.3em] text-gray-400 uppercase font-bold">Luxury Ethnic Wear</p>
+            <p class="text-[10px] text-gray-400 mt-4">Registered in India. © 2026</p>
+        </div>
+
+    </main>
+</div>
+
+<script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Smooth Accordion Logic
+    function toggleAccordion(btn) {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.accordion-icon');
+        const isOpen = content.classList.contains('open');
+
+        // Close all other accordions for a clean UX
+        document.querySelectorAll('.accordion-content').forEach(el => {
+            el.classList.remove('open');
+            el.previousElementSibling.querySelector('.accordion-icon').style.transform = 'rotate(0deg)';
+            el.previousElementSibling.querySelector('.accordion-icon').classList.remove('text-rani-pink');
+            el.previousElementSibling.querySelector('span').classList.remove('text-rani-pink');
+        });
+
+        // Open the clicked accordion if it was not already open
+        if (!isOpen) {
+            content.classList.add('open');
+            icon.style.transform = 'rotate(180deg)';
+            icon.classList.add('text-rani-pink');
+            btn.querySelector('span').classList.add('text-rani-pink');
+            
+            // Scroll slightly to make sure the open content is visible
+            setTimeout(() => {
+                btn.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+        }
+    }
+</script>
+
+</body>
+</html>
