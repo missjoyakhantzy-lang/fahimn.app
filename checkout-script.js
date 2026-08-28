@@ -29,15 +29,6 @@ const ToastAlert = {
 
 const parseCurrencyNumber = (val) => parseInt(String(val).replace(/[^0-9]/g, '')) || 0;
 
-// 🔥 SMART COLOR FILTER (Hides ugly Cloudinary links) 🔥
-function formatColorName(val) {
-    let clr = String(val || 'Standard').trim();
-    if(clr.match(/^https?:\/\//) || clr.includes('cloudinary') || clr.includes('/')) {
-        return 'As Shown';
-    }
-    return clr;
-}
-
 document.addEventListener('DOMContentLoaded', async () => {
     restoreFormDraft();
     bindInputValidationEvents();
@@ -152,7 +143,7 @@ async function fetchProductsAndInitializeCart() {
         return;
     }
 
-    // Restore Promo Code if any
+    // 🔥 RESTORE PROMO CODE IF SAVED IN LOCAL STORAGE 🔥
     try {
         let savedPromo = JSON.parse(localStorage.getItem('savedPromoCache'));
         if(savedPromo && savedPromo.label && savedPromo.discount) {
@@ -171,14 +162,21 @@ async function fetchProductsAndInitializeCart() {
     renderCartUI();
 }
 
-// Wishlist Logic
+// ==========================================
+// 🔥 WISH LIST / SUGGESTIONS LOGIC 🔥
+// ==========================================
 function renderWishlistSuggestions() {
     try {
         let suggestedProducts = [];
         let currentCartIds = cartItems.map(item => String(item.productId).trim());
         
+        // Fetch Wishlist Items
         let wishlistIds = JSON.parse(localStorage.getItem('aavira_wishlist')) || [];
+        
+        // Fallback: If wishlist is empty, suggest some items from Database
         let allProductIds = Object.keys(productDatabase);
+        
+        // Combine and remove duplicates, prioritizing wishlist
         let combinedIds = [...new Set([...wishlistIds, ...allProductIds])]; 
         
         for(let id of combinedIds) {
@@ -186,7 +184,7 @@ function renderWishlistSuggestions() {
             if(!currentCartIds.includes(cleanId) && productDatabase[cleanId]) {
                 suggestedProducts.push(productDatabase[cleanId]);
             }
-            if(suggestedProducts.length >= 6) break; 
+            if(suggestedProducts.length >= 6) break; // Maximum 6 suggestions
         }
 
         if(suggestedProducts.length > 0) {
@@ -199,7 +197,7 @@ function renderWishlistSuggestions() {
                     <div class="s-img-wrapper"><img src="${imageUrl}" onerror="this.src='https://placehold.co/150?text=IMG'"></div>
                     <div class="s-title">${prod.name || 'Premium Collection'}</div>
                     <div class="s-bottom">
-                        <span class="s-price">₹${parseCurrencyNumber(prod.price).toLocaleString('en-IN')}</span>
+                        <span class="s-price">₹${parseCurrencyNumber(prod.price).toLocaleString()}</span>
                         <button onclick="addSuggestedProduct('${prod.id}')" class="btn-add-suggest">+ ADD</button>
                     </div>
                 </div>`; 
@@ -276,38 +274,38 @@ function renderCartUI(){
         totalMRP += (originalMrp * item.qty);
         totalCartValue += (currentPrice * item.qty);
         let imageUrl = (item.image || product.imageMain || product.imageUrl || product.image || "https://placehold.co/100").toString().replace(/['"]/g,'');
-        
-        // Hide URL if it's a Cloudinary link
-        let displayColor = formatColorName(item.color);
 
         orderContainer.innerHTML += `
             <div class="o-item">
                 <div class="o-img-box"><img src="${imageUrl}" onerror="this.src='https://placehold.co/100?text=Item'"></div>
                 <div class="o-info">
                     <h4>${product.name}</h4>
-                    <p class="o-item-specs">Size: <strong>${item.size || 'Free Size'}</strong> | Color: <strong>${displayColor}</strong> <br>Qty: <strong>${item.qty} Piece(s)</strong></p>
-                    <h3>₹ ${currentPrice.toLocaleString('en-IN')}</h3>
+                    <p class="o-item-specs">Size: <strong>${item.size || 'Free Size'}</strong> <br>Qty: <strong>${item.qty} Piece(s)</strong></p>
+                    <h3>₹ ${currentPrice.toLocaleString()}</h3>
                 </div>
-                <button class="remove-btn" onclick="removeCartItem(${index})"><i class="fa-solid fa-xmark"></i></button>
+                <button class="remove-btn" onclick="removeCartItem(${index})"><i class="fa-solid fa-trash-can"></i></button>
             </div>`;
     });
 
-    document.getElementById('billMrp').innerText = `₹ ${totalMRP.toLocaleString('en-IN')}`;
-    document.getElementById('billDiscount').innerText = `- ₹ ${(totalMRP - totalCartValue).toLocaleString('en-IN')}`;
+    document.getElementById('billMrp').innerText = `₹ ${totalMRP.toLocaleString()}`;
+    document.getElementById('billDiscount').innerText = `- ₹ ${(totalMRP - totalCartValue).toLocaleString()}`;
     
-    if (promoDiscountAmount) { document.getElementById('billPromoRow').style.display='flex'; document.getElementById('billPromoDiscount').innerText=`- ₹ ${promoDiscountAmount.toLocaleString('en-IN')}`;} else document.getElementById('billPromoRow').style.display='none';
+    if (promoDiscountAmount) { document.getElementById('billPromoRow').style.display='flex'; document.getElementById('billPromoDiscount').innerText=`- ₹ ${promoDiscountAmount.toLocaleString()}`;} else document.getElementById('billPromoRow').style.display='none';
     if (deliveryFee) { document.getElementById('billDelivery').innerText = `₹ 99`; document.getElementById('billDelivery').className=''; } else { document.getElementById('billDelivery').innerText = `Free`; document.getElementById('billDelivery').className='green-txt'; }
     
     document.getElementById('row_gift').style.display = giftWrapFee ? 'flex' : 'none';
     let finalPayableAmount = Math.max(0, totalCartValue + deliveryFee + giftWrapFee - promoDiscountAmount);
     
-    document.getElementById('billTotal').innerText = `₹ ${finalPayableAmount.toLocaleString('en-IN')}`;
-    document.getElementById('bottomTotal').innerText = `₹ ${finalPayableAmount.toLocaleString('en-IN')}`;
+    document.getElementById('billTotal').innerText = `₹ ${finalPayableAmount.toLocaleString()}`;
+    document.getElementById('bottomTotal').innerText = `₹ ${finalPayableAmount.toLocaleString()}`;
 
     // Trigger suggestions rendering
     renderWishlistSuggestions();
 }
 
+// ==========================================
+// 🔥 ROBUST PROMO CODE LOGIC 🔥
+// ==========================================
 window.verifyAndApplyCouponAPI = async () => {
     let inputField = document.getElementById('promoInput'); 
     if(!inputField) return;
@@ -324,6 +322,7 @@ window.verifyAndApplyCouponAPI = async () => {
     let isValid = false;
 
     try {
+        // Testing endpoints resiliently based on user_data structure
         let response = await fetch(`https://ssxpq15in.vercel.app/api/promo_codes/${code}`);
         if (!response.ok) response = await fetch(`https://ssxpq15in.vercel.app/api/promocodes/${code}`);
         if (!response.ok) response = await fetch(`https://server-js-psi-five.vercel.app/api/promocodes/${code}`);
@@ -341,6 +340,7 @@ window.verifyAndApplyCouponAPI = async () => {
         console.warn("Promo API fallback triggered");
     }
 
+    // Hardcoded Fallback for testing/safety if API fails
     if (!isValid) {
         if(code === 'LUXURY500') { discountAmt = 500; isValid = true; }
         else if(code === 'AAVIRA200') { discountAmt = 200; isValid = true; }
@@ -385,6 +385,9 @@ window.forceWhatsAppRedirect = () => {
     }
 };
 
+// ==========================================
+//  SUBMIT ORDER - FULL DATABASE SCHEMA 
+// ==========================================
 window.submitFinalOrder = async () => {
     let isFormValid = true; let firstErrorField = null;
     ['ad_name', 'ad_phone', 'ad_pin', 'ad_city', 'ad_address', 'ad_email'].forEach(id=>{ 
@@ -406,16 +409,14 @@ window.submitFinalOrder = async () => {
         let price = parseCurrencyNumber(dbProduct.price || 0); 
         productsCost += (price * item.qty);
         
-        // Hide URL when pushing to backend too
-        let printColor = formatColorName(item.color);
-        cleanStringOfItems.push(`${item.qty}x ${dbProduct.name ? dbProduct.name.substring(0,35) : "Exclusive Item"}... (Size: ${item.size || 'Standard'}, Color: ${printColor}) - ₹${price.toLocaleString('en-IN')}`);
+        cleanStringOfItems.push(`${item.qty}x ${dbProduct.name ? dbProduct.name.substring(0,35) : "Exclusive Item"}... (Size: ${item.size || 'Standard'}) - ₹${price.toLocaleString()}`);
         
         return {
             productId: item.productId,
             name: dbProduct.name || "Exclusive Product",
             qty: item.qty,
             price: price,
-            color: printColor,
+            color: item.color || "Standard",
             size: item.size || "Free Size",
             image: item.image || dbProduct.imageMain || dbProduct.imageUrl || dbProduct.image || ""
         };
@@ -454,6 +455,7 @@ window.submitFinalOrder = async () => {
         }
     } catch(e) { console.error("Database Save Failed", e); } 
 
+    // Clear Cart and Promo memory
     if(!isBuyNowMode) { localStorage.removeItem('aavira_cart'); }
     localStorage.removeItem('savedPromoCache');
 
@@ -481,7 +483,7 @@ window.submitFinalOrder = async () => {
         document.getElementById('successBoxTitle').innerText = 'Awaiting Payment ⏳';
         document.getElementById('successBoxDesc').innerText = 'Please complete the payment on WhatsApp to confirm your order.';
         
-        let cleanWhatsAppMessage = `*AAVIRA - ONLINE PAYMENT REQUEST*\n\nHello Team Aavira! I would like to complete the online payment for my order securely.\n\n*ORDER ID:* ${finalOrderId}\n*NAME:* ${customerName}\n*MOBILE:* ${customerPhone}\n\n*ADDRESS:* \n${customerAddress}\n${customerMapLink ? "*MAP LINK:* " + customerMapLink + "\n" : ""}\n*TOTAL TO PAY: ₹ ${totalAmountToPay.toLocaleString('en-IN')}* \n\n_Please share the UPI ID / Scanner so I can complete this transaction. Thank you!_`;
+        let cleanWhatsAppMessage = `*AAVIRA - ONLINE PAYMENT REQUEST*\n\nHello Team Aavira! I would like to complete the online payment for my order securely.\n\n*ORDER ID:* ${finalOrderId}\n*NAME:* ${customerName}\n*MOBILE:* ${customerPhone}\n\n*ADDRESS:* \n${customerAddress}\n${customerMapLink ? "*MAP LINK:* " + customerMapLink + "\n" : ""}\n*TOTAL TO PAY: ₹ ${totalAmountToPay.toLocaleString()}* \n\n_Please share the UPI ID / Scanner so I can complete this transaction. Thank you!_`;
         
         window.pendingWhatsAppUrl = `https://wa.me/919608720622?text=${encodeURIComponent(cleanWhatsAppMessage)}`;
 
@@ -490,8 +492,8 @@ window.submitFinalOrder = async () => {
                 <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> 
                 Open WhatsApp <span id="waTimerTxt" style="font-size:11px; margin-left:4px; background:rgba(0,0,0,0.15); padding:3px 8px; border-radius:12px;">(5s)</span>
             </button>
-            <button class="btn-pro-action outline" onclick="window.location.href='orders'">
-                <i class="fa-solid fa-bag-shopping"></i> View Orders
+            <button class="btn-pro-action outline" onclick="window.location.href='./'">
+                <i class="fa-solid fa-bag-shopping"></i> Continue Shopping
             </button>
         `;
 
@@ -516,7 +518,7 @@ window.submitFinalOrder = async () => {
         document.getElementById('successBoxDesc').innerText = 'Your order details have been securely recorded. We will process it shortly.';
 
         popupActions.innerHTML = `
-            <button class="btn-pro-action primary" onclick="window.location.href='orders'">
+            <button class="btn-pro-action primary" onclick="handleTrackOrder()">
                 <i class="fa-solid fa-location-arrow"></i> Track Order
             </button>
             <button class="btn-pro-action outline" onclick="window.location.href='./'">
@@ -525,3 +527,5 @@ window.submitFinalOrder = async () => {
         `;
     }
 }
+
+window.handleTrackOrder = () => { window.location.href = 'orders'; }
