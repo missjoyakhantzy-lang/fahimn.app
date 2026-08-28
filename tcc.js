@@ -1,425 +1,467 @@
-// 🔥 FIREBASE MODULE FOR SUPPORT QUERIES 🔥
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+let allOrdersData = [];
+let currentOrderData = null;
 
-// Primary Firebase logic
-const primaryConfig = {
-    apiKey: "AIzaSyCMGx6C5_al22KjCmdhGVKugJoR2UmZ1Ng",
-    authDomain: "aavira-co-in.firebaseapp.com",
-    projectId: "aavira-co-in",
-    storageBucket: "aavira-co-in.firebasestorage.app",
-    messagingSenderId: "247971292356",
-    appId: "1:247971292356:web:82780c6dffe9ba530f9591"
-};
-const app = initializeApp(primaryConfig, "supportApp");
-const db = getFirestore(app);
-
-window.submitHelpQueryToFirebase = async function(text) {
-    try {
-        const { orderId, cleanName } = window.currentHelpContext;
-        const userEmail = localStorage.getItem('aavira_user_email') || 'Guest';
-        const userName = localStorage.getItem('aavira_display_name') || 'Guest';
-        
-        await addDoc(collection(db, "support_queries"), {
-            orderId: orderId,
-            productName: cleanName,
-            userEmail: userEmail,
-            userName: userName,
-            message: text,
-            status: "Pending",
-            createdAt: serverTimestamp()
-        });
-    } catch(e) {
-        console.error("Firebase Support Query Error:", e);
-        throw e;
+// 🔥 ROBUST DATE PARSER 🔥
+function parseOrderDate(dateVal) {
+    if (!dateVal) return new Date();
+    if (typeof dateVal === 'object') {
+        if (dateVal._seconds) return new Date(dateVal._seconds * 1000);
+        if (dateVal.seconds) return new Date(dateVal.seconds * 1000);
     }
+    let d = new Date(dateVal);
+    return isNaN(d.getTime()) ? new Date() : d;
 }
 
+function formatDateTime(dateObj) {
+    const options = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
+    return dateObj.toLocaleDateString('en-IN', options).replace(' am', ' AM').replace(' pm', ' PM');
+}
 
-// ✨ CORE JAVASCRIPT LOGIC ✨
+function formatDateOnly(dateObj) {
+    return dateObj.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function formatColor(colorVal) {
+    let clr = colorVal || 'Standard';
+    if(clr.match(/^https?:\/\//) || clr.includes('cloudinary.com') || clr.includes('data:image') || clr.includes('/')) {
+        return 'As Shown';
+    }
+    return clr;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    window.checkAuthAndLoadOrders();
+    setTimeout(() => filterOrders('All', document.querySelector('.tab.active')), 100);
+    fetchOrders();
 });
 
-window.checkAuthAndLoadOrders = function() {
+async function fetchOrders() {
     const userEmail = localStorage.getItem('aavira_user_email');
-    
     let localOrdersArray = [];
     try {
         let stored = JSON.parse(localStorage.getItem('aavira_placed_orders'));
-        if (Array.isArray(stored)) { localOrdersArray = stored; }
-    } catch(e) { localOrdersArray = []; }
-    
-    document.getElementById('loadingView').style.display = 'block';
-    document.getElementById('emptyOrdersView').style.display = 'none';
-    document.getElementById('ordersContainer').style.display = 'none';
-    document.getElementById('guestSyncBanner').style.display = 'none';
+        if (Array.isArray(stored)) localOrdersArray = stored;
+    } catch(e) {}
 
-    if (!userEmail && localOrdersArray.length === 0) {
-        document.getElementById('loadingView').style.display = 'none';
-        document.getElementById('emptyOrdersView').style.display = 'flex';
-        document.getElementById('emptyStateText').innerText = "You haven't placed any orders yet. Discover our premium ethnic collection today!";
-    } else {
-        fetchOrdersFromVercel(userEmail, localOrdersArray);
-    }
-}
-
-async function fetchOrdersFromVercel(email, localOrdersArray) {
     try {
-        const VERCEL_URL = "https://ssxpq15in.vercel.app";
-        const response = await fetch(`${VERCEL_URL}/api/orders?nocache=${new Date().getTime()}`);
-        const textResponse = await response.text();
+        const response = await fetch(`https://ssxpq15in.vercel.app/api/orders?nocache=${new Date().getTime()}`);
+        const result = await response.json();
         
-        let result;
-        try { result = JSON.parse(textResponse); } 
-        catch (err) {
-            document.getElementById('loadingView').style.display = 'none';
-            document.getElementById('emptyOrdersView').style.display = 'flex';
-            return;
-        }
-        
-        document.getElementById('loadingView').style.display = 'none';
+        document.getElementById('loader').style.display = 'none';
 
-        if (response.ok && result.status === "success" && result.data && result.data.length > 0) {
-            const safeEmail = email ? String(email).trim().toLowerCase() : "";
+        if (response.ok && result.status === "success" && result.data) {
+            const safeEmail = userEmail ? String(userEmail).trim().toLowerCase() : "";
             const safeLocalOrders = localOrdersArray.map(id => String(id).trim().toUpperCase());
 
-            let myOrders = result.data.filter(order => {
-                const orderEmail = order.email ? String(order.email).trim().toLowerCase() : "";
-                const orderUserEmail = order.userEmail ? String(order.userEmail).trim().toLowerCase() : "";
-                const matchEmail = safeEmail !== "" && (orderEmail === safeEmail || orderUserEmail === safeEmail);
-                
-                const safeOrderId = order.orderId ? String(order.orderId).trim().toUpperCase() : String(order.id).trim().toUpperCase();
-                const matchLocalId = safeLocalOrders.includes(safeOrderId);
-                
-                return matchEmail || matchLocalId;
-            });
+            if (safeEmail === "" && safeLocalOrders.length === 0) {
+                allOrdersData = result.data;
+            } else {
+                allOrdersData = result.data.filter(order => {
+                    const orderEmail = order.email ? String(order.email).trim().toLowerCase() : "";
+                    const orderUserEmail = order.userEmail ? String(order.userEmail).trim().toLowerCase() : "";
+                    const matchEmail = safeEmail !== "" && (orderEmail === safeEmail || orderUserEmail === safeEmail);
+                    const safeOrderId = order.orderId ? String(order.orderId).trim().toUpperCase() : String(order.id).trim().toUpperCase();
+                    const matchLocalId = safeLocalOrders.includes(safeOrderId);
+                    return matchEmail || matchLocalId;
+                });
+            }
             
-            if (myOrders.length === 0) {
-                document.getElementById('emptyOrdersView').style.display = 'flex';
-                return;
+            // Override Local Cancellations
+            let locallyCancelled = JSON.parse(localStorage.getItem('aavira_cancelled_orders')) || [];
+            allOrdersData.forEach(o => {
+                if(locallyCancelled.includes(o.orderId)) {
+                    o.orderStatus = 'Cancelled';
+                }
+            });
+
+            allOrdersData.sort((a,b) => parseOrderDate(b.createdAt) - parseOrderDate(a.createdAt));
+
+            if (allOrdersData.length === 0) {
+                document.getElementById('emptyState').style.display = 'flex';
+            } else {
+                renderOrdersUI(allOrdersData);
             }
-
-            if (!email && myOrders.length > 0) {
-                document.getElementById('guestSyncBanner').style.display = 'flex';
-            }
-
-            renderOrdersUI(myOrders);
-
         } else {
-            document.getElementById('emptyOrdersView').style.display = 'flex';
+            document.getElementById('emptyState').style.display = 'flex';
         }
     } catch (error) {
-        document.getElementById('loadingView').style.display = 'none';
-        document.getElementById('emptyOrdersView').style.display = 'flex';
+        console.error("Fetch Orders Error:", error);
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('emptyState').style.display = 'flex';
     }
 }
 
-function renderOrdersUI(orders) {
-    const container = document.getElementById('ordersContainer');
-    container.innerHTML = '';
-    document.getElementById('emptyOrdersView').style.display = 'none';
-    container.style.display = 'flex';
+window.filterOrders = function(status, btnElement) {
+    if (!btnElement) return;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btnElement.classList.add('active');
+    
+    const indicator = document.getElementById('tabIndicator');
+    if (indicator && btnElement) {
+        indicator.style.width = `${btnElement.offsetWidth - 32}px`;
+        indicator.style.left = `${btnElement.offsetLeft + 16}px`;
+    }
 
-    orders.forEach(order => {
-        let dateStr = "Processing...";
-        if (order.createdAt) {
-            let orderDate = new Date();
-            if (order.createdAt._seconds) {
-                orderDate = new Date(order.createdAt._seconds * 1000);
-            } else if (order.createdAt.seconds) {
-                orderDate = new Date(order.createdAt.seconds * 1000);
-            } else {
-                orderDate = new Date(order.createdAt);
-            }
-            dateStr = orderDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-        }
+    if(allOrdersData.length === 0) return;
 
-        let mainImg = "https://via.placeholder.com/150";
-        let titleStr = "Premium Items";
-        let metaStr = "0 Item(s)";
+    if(status === 'All') {
+        renderOrdersUI(allOrdersData);
+    } else {
+        const filtered = allOrdersData.filter(o => {
+            let s = o.orderStatus || 'Processing';
+            if(s === 'Placed' || s === 'Pending') s = 'Processing';
+            
+            if(status === 'Processing' && (s === 'Processing' || s === 'Confirmed')) return true;
+            return s === status;
+        });
+        renderOrdersUI(filtered);
+    }
+}
+
+function getSmartExpectedDate(rawDateObj, currentStatus) {
+    let expected = new Date(rawDateObj.getTime());
+    expected.setDate(expected.getDate() + 5); 
+    
+    let now = new Date();
+    if (currentStatus !== 'Delivered' && currentStatus !== 'Cancelled' && expected < now) {
+        expected = new Date(now.getTime());
+        expected.setDate(expected.getDate() + 1); 
+    }
+    return expected;
+}
+
+function renderOrdersUI(ordersArray) {
+    const wrapper = document.getElementById('cardsWrapper');
+    wrapper.innerHTML = '';
+    
+    if(ordersArray.length === 0) {
+        document.getElementById('emptyState').style.display = 'flex';
+        return;
+    }
+    document.getElementById('emptyState').style.display = 'none';
+
+    ordersArray.forEach((order, index) => {
+        let rawDate = parseOrderDate(order.createdAt);
+        let displayDate = formatDateTime(rawDate).split(',')[0]; 
+        
+        let status = order.orderStatus || "Processing"; 
+        if(status === 'Placed' || status === 'Pending') status = 'Processing'; 
+
+        let expectedDate = getSmartExpectedDate(rawDate, status);
+        
+        let titleStr = "Exclusive Ethnic Wear";
+        let mainImg = "";
+        let itemsCount = order.items ? order.items.length : 1;
 
         if(order.items && order.items.length > 0) {
-            mainImg = order.items[0].image || mainImg;
-            titleStr = order.items[0].name;
-            metaStr = `${order.items.length} Item(s)`;
-            if(order.items.length > 1) {
-                titleStr += ` <span style="color:var(--primary); font-weight:700;">+${order.items.length - 1} more</span>`;
-            }
+            mainImg = order.items[0].image || "";
+            titleStr = order.items[0].name || titleStr;
         }
 
         const total = order.totalAmount || order.total || 0;
-        const status = order.orderStatus || "Placed"; 
-        const method = order.paymentMethod ? order.paymentMethod.toUpperCase() : "PREPAID";
-        const orderId = order.orderId || '#AAV-' + Math.floor(Math.random()*10000);
+        const orderId = order.orderId || '#AVF' + Math.floor(Math.random()*10000);
         
-        // Safe title for HTML injection
-        const safeTitle = encodeURIComponent(titleStr);
+        let statusClass = "st-Processing";
+        let bottomLine = `<i class="fa-solid fa-truck"></i> Expected by ${formatDateOnly(expectedDate)}, 9:00 PM`;
+        
+        if(status === 'Confirmed') statusClass = 'st-Confirmed';
+        if(status === 'Shipped') statusClass = 'st-Shipped';
+        if(status === 'Out for Delivery') statusClass = 'st-OutforDelivery';
+        if(status === 'Delivered') { 
+            statusClass = 'st-Delivered'; 
+            bottomLine = `<i class="fa-solid fa-circle-check" style="color:var(--status-green);"></i> Delivered on ${displayDate}`; 
+        }
+        if(status === 'Cancelled') { 
+            statusClass = 'st-Cancelled'; 
+            bottomLine = `<i class="fa-solid fa-circle-xmark" style="color:var(--status-gray);"></i> Cancelled on ${displayDate}`; 
+        }
 
-        // 🔥 ADVANCED HELP & TRACKING BUTTONS 🔥
-        const cardHtml = `
-            <div class="order-card" data-status="${status}">
-                <div class="o-header">
-                    <div>
-                        <div class="o-id">${orderId}</div>
-                        <div class="o-date">Placed on ${dateStr}</div>
-                    </div>
-                    <div class="o-status status-${status}">${status}</div>
-                </div>
-                
-                <div class="o-body">
-                    <div class="o-img" style="background-image: url('${mainImg}');"></div>
-                    <div class="o-details">
-                        <h4 class="o-title">${titleStr}</h4>
-                        <p class="o-meta">${metaStr} | ${method}</p>
-                    </div>
-                </div>
+        let delay = index * 0.1;
+        const imgTag = mainImg ? `<img src="${mainImg}" class="oc-img" alt="Product" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : `<img style="display:none;">`;
 
-                <div class="o-footer">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <div class="o-total">Total Amount <span>₹${Number(total).toLocaleString('en-IN')}</span></div>
+        const html = `
+            <div class="order-card" style="animation-delay: ${delay}s" onclick="openOrderDetails('${order.id}')">
+                <div class="oc-top">
+                    <div class="img-wrapper">
+                        ${imgTag}
+                        <div class="oc-img-fallback" style="display:${mainImg?'none':'flex'};"><i class="fa-solid fa-shirt"></i></div>
                     </div>
-                    <div class="action-row">
-                        <button type="button" class="help-btn" onclick="openHelpModal('${orderId}', '${safeTitle}', '${mainImg}')">
-                            <i class="fa-solid fa-headset"></i> Need Help
-                        </button>
-                        <button type="button" class="track-btn" onclick="openTrackingModal('${orderId}', '${status}', '${dateStr}')">
-                            Track <i class="fa-solid fa-satellite-dish"></i>
-                        </button>
+                    <div class="oc-info">
+                        <div class="oc-header">
+                            <div style="flex:1;">
+                                <div class="oc-label">Order ID</div>
+                                <div class="oc-id">${orderId}</div>
+                            </div>
+                            <div class="status-badge ${statusClass}">${status}</div>
+                        </div>
+                        <div class="oc-meta">${displayDate} • ${itemsCount} Item${itemsCount>1?'s':''}</div>
+                        <div class="oc-price">₹${Number(total).toLocaleString('en-IN')}.00</div>
                     </div>
+                </div>
+                <div class="oc-divider"></div>
+                <div class="oc-bottom">
+                    <div>${bottomLine}</div>
+                    <i class="fa-solid fa-chevron-right" style="color:#ccc;"></i>
                 </div>
             </div>
         `;
-        container.innerHTML += cardHtml;
+        wrapper.innerHTML += html;
     });
+    
+    wrapper.innerHTML += `<div style="text-align:center; font-size:12px; font-weight:600; color:var(--text-light); margin: 24px 0;">That's all your orders</div>`;
 }
 
 // ==========================================
-// ✨ NEED HELP MODAL & WHATSAPP LOGIC ✨
+// ORDER DETAILS SLIDE IN LOGIC
 // ==========================================
-window.currentHelpContext = {};
+window.openOrderDetails = function(internalId) {
+    const order = allOrdersData.find(o => o.id === internalId);
+    if(!order) return;
+    currentOrderData = order;
 
-window.openHelpModal = function(orderId, encodedName, imageUrl) {
-    window.currentHelpContext = { orderId, encodedName, imageUrl };
-    document.getElementById('helpOrderId').innerText = orderId;
+    let rawDate = parseOrderDate(order.createdAt);
+    let status = order.orderStatus || "Processing"; 
+    if(status === 'Placed' || status === 'Pending') status = 'Processing';
     
-    // Clean up the name (remove HTML tags like +2 more span)
-    let decodedName = decodeURIComponent(encodedName);
-    let tempDiv = document.createElement('div');
-    tempDiv.innerHTML = decodedName;
-    let cleanName = tempDiv.textContent || tempDiv.innerText || "";
-    window.currentHelpContext.cleanName = cleanName;
-    
-    document.getElementById('helpProductName').innerText = cleanName;
-    document.getElementById('helpProductImg').src = imageUrl;
-    document.getElementById('helpQueryText').value = '';
-    
-    document.getElementById('helpModal').style.display = 'flex';
-    setTimeout(() => document.getElementById('helpModal').classList.add('show'), 10);
-}
+    let expectedDate = getSmartExpectedDate(rawDate, status);
 
-window.closeHelpModal = function() {
-    document.getElementById('helpModal').classList.remove('show');
-    setTimeout(() => document.getElementById('helpModal').style.display = 'none', 300);
-}
-
-window.openWhatsAppHelp = function() {
-    const { orderId, cleanName } = window.currentHelpContext;
-    const text = document.getElementById('helpQueryText').value.trim();
-    let msg = `Hi Aavira Support,\n\nI need help regarding my Order: *${orderId}*.\nProduct: ${cleanName}`;
-    if(text) msg += `\n\nMy Query:\n${text}`;
+    document.getElementById('dtOrderId').innerText = order.orderId;
+    document.getElementById('dtDate').innerText = `Placed on ${formatDateTime(rawDate)}`;
     
-    const waUrl = `https://wa.me/919608720622?text=${encodeURIComponent(msg)}`;
-    window.open(waUrl, '_blank');
-}
-
-window.submitHelpQuery = async function() {
-    const text = document.getElementById('helpQueryText').value.trim();
-    if(!text) { alert("Please describe your issue."); return; }
+    let statusClass = "st-Processing";
+    if(status === 'Confirmed') statusClass = 'st-Confirmed';
+    if(status === 'Shipped') statusClass = 'st-Shipped';
+    if(status === 'Out for Delivery') statusClass = 'st-OutforDelivery';
+    if(status === 'Delivered') statusClass = 'st-Delivered';
+    if(status === 'Cancelled') statusClass = 'st-Cancelled';
     
-    const btn = document.getElementById('btnSubmitHelp');
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
-    btn.disabled = true;
+    let badge = document.getElementById('dtStatusBadge');
+    badge.className = `status-badge ${statusClass}`;
+    badge.innerText = status;
 
-    // Trigger the Firebase module function
-    if(typeof window.submitHelpQueryToFirebase === 'function') {
-        await window.submitHelpQueryToFirebase(text);
-        alert("Your request has been submitted to Support. We will contact you soon.");
-        closeHelpModal();
-    } else {
-        alert("System error. Please use WhatsApp instead.");
+    let itmName = "Exclusive Ethnic Wear";
+    if(order.items && order.items.length > 0) {
+        let itm = order.items[0];
+        itmName = itm.name || itmName;
+        
+        let imgEl = document.getElementById('dtImg');
+        let fbEl = document.getElementById('dtImgFallback');
+        if(itm.image) {
+            imgEl.src = itm.image;
+            imgEl.style.display = 'block';
+            fbEl.style.display = 'none';
+        } else {
+            imgEl.style.display = 'none';
+            fbEl.style.display = 'flex';
+        }
+        
+        document.getElementById('dtName').innerText = itmName;
+        
+        let smartColor = formatColor(itm.color);
+        document.getElementById('dtMeta').innerText = `Size: ${itm.size||'Free Size'} | Color: ${smartColor}`;
+        
+        document.getElementById('dtQty').innerText = `Qty: ${itm.qty||1}`;
     }
-    btn.innerHTML = 'Submit Request';
-    btn.disabled = false;
+
+    let total = order.totalAmount || 0;
+    let ship = total > 1500 ? 0 : 40; 
+    let sub = total - ship;
+    document.getElementById('dtPrice').innerText = `₹${Number(total).toLocaleString('en-IN')}.00`;
+    document.getElementById('dtSubtotal').innerText = `₹${Number(sub).toLocaleString('en-IN')}.00`;
+    document.getElementById('dtTotal').innerText = `₹${Number(total).toLocaleString('en-IN')}.00`;
+    
+    let disc = order.promoDiscount || 0;
+    if(disc > 0) document.getElementById('dtDiscount').innerText = `- ₹${Number(disc).toLocaleString('en-IN')}.00`;
+    else document.getElementById('dtDiscount').innerText = `- ₹0.00`;
+
+    document.getElementById('dtAddressName').innerText = order.customerName || "Customer";
+    document.getElementById('dtAddressFull').innerText = order.address || "Address not provided";
+    document.getElementById('dtAddressPhone').innerText = `Phone: ${order.phone || "N/A"}`;
+
+    // 🔥 CANCEL BUTTON LOGIC 🔥
+    const dtCancelBtn = document.getElementById('dtCancelBtn');
+    if(['Placed', 'Pending', 'Processing', 'Confirmed'].includes(status)) {
+        dtCancelBtn.style.display = 'flex';
+    } else {
+        dtCancelBtn.style.display = 'none';
+    }
+
+    // 🔥 PAYMENT ACTION BOX LOGIC (DYNAMIC BUTTON OR SUCCESS TEXT) 🔥
+    const payBox = document.getElementById('dtPaymentActionBox');
+    let pStatus = order.paymentStatus || 'Pending';
+    
+    if (pStatus.toLowerCase() === 'success' || pStatus.toLowerCase() === 'paid') {
+        // Payment is already done -> Show Success Banner
+        payBox.innerHTML = `
+            <div class="pay-success-banner">
+                <i class="fa-solid fa-circle-check"></i> Payment Successful
+            </div>
+        `;
+    } else {
+        // Payment is pending/COD -> Show Pay on WhatsApp Button
+        payBox.innerHTML = `
+            <button class="btn-pay-wa" onclick="payViaWhatsApp('${order.orderId}', ${total})">
+                Pay ₹${Number(total).toLocaleString('en-IN')} <i class="fa-brands fa-whatsapp"></i>
+            </button>
+        `;
+    }
+
+    generateAdvancedTimeline(status, rawDate, expectedDate);
+
+    document.getElementById('detailsView').classList.add('show');
 }
 
-// ==========================================
-// PREMIUM TRACKING TIMELINE MODAL 
-// ==========================================
-window.openTrackingModal = function(orderId, status, dateStr) {
-    document.getElementById('trackOrderIdTxt').innerText = orderId;
-    const container = document.getElementById('trackingTimelineContainer');
-    
-    let placedDate = new Date(dateStr);
-    if(isNaN(placedDate)) placedDate = new Date();
-    let estDate = new Date(placedDate);
-    estDate.setDate(estDate.getDate() + 5);
-    let estDateStr = estDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+// WhatsApp Payment Redirect Function
+window.payViaWhatsApp = function(orderId, amount) {
+    let msg = `Hi Aavira Support,\n\nI want to complete the payment for my Order: *${orderId}*.\n*Total Amount to Pay: ₹${amount.toLocaleString('en-IN')}*\n\nPlease share the UPI ID / Payment Link.`;
+    window.open(`https://wa.me/919608720622?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+window.closeOrderDetails = function() {
+    document.getElementById('detailsView').classList.remove('show');
+}
+
+function generateAdvancedTimeline(status, rawDate, expDate) {
+    const tlContainer = document.getElementById('dtStepsContainer');
+    const expBox = document.getElementById('dtExpectedBox');
+    const progressLine = document.getElementById('tlProgress');
+    progressLine.style.height = '0%'; 
     
     if(status === 'Delivered') {
-        document.getElementById('estTitleText').innerText = "Status";
-        document.getElementById('estDateText').innerText = "Delivered Successfully";
-        document.getElementById('estDateText').style.color = "var(--success)";
-    } else if (status === 'Cancelled') {
-        document.getElementById('estTitleText').innerText = "Status";
-        document.getElementById('estDateText').innerText = "Order Cancelled";
-        document.getElementById('estDateText').style.color = "var(--error)";
+        expBox.style.background = 'var(--status-green-light)';
+        expBox.innerHTML = `<i class="fa-solid fa-gift" style="color:var(--status-green);"></i><div><p style="color:var(--status-green);">Status</p><h4 style="color:var(--status-green);">Delivered Successfully</h4></div>`;
+    } else if(status === 'Cancelled') {
+        expBox.style.background = 'var(--status-gray-light)';
+        expBox.innerHTML = `<i class="fa-solid fa-ban" style="color:var(--status-gray);"></i><div><p style="color:var(--status-gray);">Status</p><h4 style="color:var(--status-gray);">Order Cancelled</h4></div>`;
     } else {
-        document.getElementById('estTitleText').innerText = "Estimated Delivery";
-        document.getElementById('estDateText').innerText = estDateStr;
-        document.getElementById('estDateText').style.color = "var(--primary)";
+        expBox.style.background = 'var(--primary-light)';
+        expBox.innerHTML = `<i class="fa-solid fa-truck-fast" style="color:var(--primary);"></i><div><p>Expected Delivery</p><h4 style="color:var(--text-dark);">${formatDateOnly(expDate)} <br><span style="font-size:11px; font-weight:500; color:var(--text-muted);">By 9:00 PM</span></h4></div>`;
     }
 
-    const steps = [
-        { name: "Order Placed", icon: "fa-solid fa-clipboard-check", desc: "We have received your order" },
-        { name: "Processing", icon: "fa-solid fa-box-open", desc: "Your order is being packed" },
-        { name: "Shipped", icon: "fa-solid fa-truck-fast", desc: "Order is on the way" },
-        { name: "Delivered", icon: "fa-solid fa-house-circle-check", desc: "Package delivered to you" }
+    const stepsData = [
+        { id: 'Processing', title: 'Order Processing', desc: 'We are processing your order.' },
+        { id: 'Confirmed', title: 'Order Confirmed', desc: 'Your order has been confirmed.' }, 
+        { id: 'Shipped', title: 'Shipped', desc: 'Your order has been shipped.' },
+        { id: 'Out for Delivery', title: 'Out for Delivery', desc: 'Your order is out for delivery.' },
+        { id: 'Delivered', title: 'Delivered', desc: 'Your order will be delivered soon.' }
     ];
 
-    let timelineHtml = '';
-
-    if (status === 'Cancelled') {
-        timelineHtml += `
-            <div class="step completed">
-                <div class="step-icon"><i class="fa-solid fa-check"></i></div>
-                <div class="step-text"><h4>Order Placed</h4><p>${dateStr}</p></div>
-            </div>
-            <div class="step cancelled current">
-                <div class="step-icon"><i class="fa-solid fa-xmark"></i></div>
-                <div class="step-text"><h4>Order Cancelled</h4><p>Your order has been cancelled</p></div>
-            </div>
-        `;
+    let html = '';
+    
+    if(status === 'Cancelled') {
+        html += getStepHtml(true, false, 'Order Processing', 'We verified your order.', formatDateTime(rawDate));
+        html += getStepHtml(false, true, 'Cancelled', 'Your order has been cancelled.', 'N/A', true);
+        setTimeout(() => progressLine.style.height = '25%', 400);
     } else {
-        let mappedStatus = status;
-        if(status === 'Placed') mappedStatus = 'Order Placed';
-        
-        let currentIndex = steps.findIndex(s => s.name === mappedStatus);
-        if (currentIndex === -1) currentIndex = 0; 
+        let currentIdx = 0; 
+        if(status === 'Confirmed') currentIdx = 1;
+        if(status === 'Shipped') currentIdx = 2;
+        if(status === 'Out for Delivery') currentIdx = 3;
+        if(status === 'Delivered') currentIdx = 4;
 
-        steps.forEach((step, idx) => {
-            let stepClass = '';
-            let iconHtml = `<i class="${step.icon}"></i>`;
-            let descText = step.desc;
+        let heightPercentage = (currentIdx / (stepsData.length - 1)) * 100;
+        setTimeout(() => progressLine.style.height = `${heightPercentage}%`, 400);
 
-            if (idx < currentIndex) {
-                stepClass = 'completed';
-                iconHtml = `<i class="fa-solid fa-check"></i>`;
-                descText = "Successfully Completed";
-            } else if (idx === currentIndex) {
-                stepClass = 'current';
-                descText = "Currently Active";
-            }
-
-            if(idx === 0) descText = dateStr; 
-
-            timelineHtml += `
-            <div class="step ${stepClass}">
-                <div class="step-icon">${iconHtml}</div>
-                <div class="step-text">
-                    <h4>${step.name}</h4>
-                    <p>${descText}</p>
-                </div>
-            </div>`;
+        stepsData.forEach((step, index) => {
+            let isDone = index < currentIdx;
+            let isCurrent = index === currentIdx;
+            
+            let stepDate = new Date(rawDate.getTime());
+            stepDate.setDate(stepDate.getDate() + Math.floor(index * 1.5)); 
+            if(index === 1) stepDate.setHours(stepDate.getHours() + 5); 
+            
+            let dateTxt = (isDone || isCurrent) ? formatDateTime(stepDate) : ''; 
+            html += getStepHtml(isDone, isCurrent, step.title, step.desc, dateTxt);
         });
     }
     
-    container.innerHTML = timelineHtml;
+    tlContainer.innerHTML = html;
+}
+
+function getStepHtml(isDone, isCurrent, title, desc, dateTxt, isCancel = false) {
+    let iconClass = 'pending';
+    let iconMarkup = '<i class="fa-solid fa-cube"></i>';
+    let titleClass = 'pending';
     
-    document.getElementById('trackingModal').style.display = 'flex';
-    setTimeout(() => { document.getElementById('trackingModal').classList.add('show'); }, 10);
+    if(isDone) {
+        iconClass = 'done'; iconMarkup = '<i class="fa-solid fa-check"></i>'; titleClass = ''; 
+    } else if (isCurrent) {
+        iconClass = 'current';
+        if(isCancel) { iconClass = 'pending'; iconMarkup = '<i class="fa-solid fa-xmark" style="color:var(--error);"></i>'; } 
+        else { iconMarkup = '<i class="fa-solid fa-check"></i>'; }
+        titleClass = '';
+    }
+
+    return `
+        <div class="tl-step">
+            <div class="tl-icon ${iconClass}">${iconMarkup}</div>
+            <div class="tl-content">
+                <div class="tl-title ${titleClass}">${title}</div>
+                <div class="tl-desc">${desc}</div>
+                ${dateTxt ? `<div class="tl-date">${dateTxt}</div>` : ''}
+            </div>
+        </div>
+    `;
 }
 
-window.closeTrackingModal = function() {
-    document.getElementById('trackingModal').classList.remove('show');
-    setTimeout(() => { document.getElementById('trackingModal').style.display = 'none'; }, 300);
-}
-
-// ==========================================
-// LOGIN MODAL LOGIC 
-// ==========================================
-let tempSignupData = { name: "", email: "", pwd: "" };
-
-window.clearAuthInputs = function() {
-    ['signupName', 'signupEmail', 'signupPassword', 'loginEmail', 'loginPassword', 'otpInput'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
-}
-window.toggleAuthView = function(viewMode) {
-    document.getElementById('loginView').style.display = 'none';
-    document.getElementById('signupView').style.display = 'none'; 
-    document.getElementById('otpView').style.display = 'none';
-    document.getElementById(viewMode + 'View').style.display = 'block';
-    
-    const titleEl = document.getElementById('authTitle');
-    if(viewMode === 'signup') titleEl.innerText = 'Create Account';
-    if(viewMode === 'login') titleEl.innerText = 'Welcome Back';
-    if(viewMode === 'otp') titleEl.innerText = 'Verify OTP';
-}
-window.openLoginModal = function() {
-    window.clearAuthInputs(); 
-    document.getElementById('loginModal').style.display = 'flex'; 
-    document.body.style.overflow = 'hidden'; 
-    window.toggleAuthView('signup');
-    setTimeout(() => { document.getElementById('loginModal').classList.add('show'); }, 10);
-}
-window.closeLoginModal = function() {
-    document.getElementById('loginModal').classList.remove('show');
-    document.body.style.overflow = '';
-    setTimeout(() => { document.getElementById('loginModal').style.display = 'none'; window.clearAuthInputs(); }, 300);
-}
-
-window.processSignup = async function() {
-    const name = document.getElementById('signupName').value.trim(); const email = document.getElementById('signupEmail').value.trim(); const pwd = document.getElementById('signupPassword').value.trim();
-    if(!name || !email || !pwd) { alert("Please fill all fields!"); return; }
-    const btn = document.getElementById('btnSignupAction'); btn.innerHTML = 'Processing...'; btn.disabled = true;
+window.copyOrderId = function() {
+    if(!currentOrderData) return;
     try {
-        const checkRes = await window.DeliveryBoy.checkEmailExists(email);
-        if (checkRes && checkRes.exists) { alert("Email already registered. Please Login."); window.toggleAuthView('login'); btn.innerHTML = 'Get Secure OTP'; btn.disabled = false; return; }
+        navigator.clipboard.writeText(currentOrderData.orderId);
+        const toast = document.getElementById('toastMsg');
+        toast.innerText = "Order ID Copied!";
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
     } catch(e) {}
-    tempSignupData = { name, email, pwd };
-    try {
-        const result = await window.DeliveryBoy.sendOTP(email, name);
-        if(result && result.ok && result.data && result.data.success) { document.getElementById('otpSubText').innerText = `Code sent to ${email}`; window.toggleAuthView('otp'); } 
-        else alert("Failed to send OTP.");
-    } catch (error) { alert("Network Error!"); }
-    btn.innerHTML = 'Get Secure OTP'; btn.disabled = false;
 }
 
-window.verifySignupOTP = async function() {
-    const otpVal = document.getElementById('otpInput').value.trim();
-    if(otpVal.length !== 6) { alert("Enter 6-digit OTP!"); return; }
-    const vBtn = document.getElementById('btnOtpAction'); vBtn.innerHTML = 'Finalizing...'; vBtn.disabled = true;
-    try {
-        const result = await window.DeliveryBoy.verifyOTP(tempSignupData.email, otpVal, tempSignupData.name, tempSignupData.pwd);
-        if(result && result.ok && result.data && result.data.success) {
-            localStorage.setItem('aavira_display_name', tempSignupData.name); localStorage.setItem('aavira_user_email', tempSignupData.email);
-            alert("Verified Successfully!"); window.closeLoginModal(); 
-            checkAuthAndLoadOrders(); 
-        } else alert("Invalid OTP!");
-    } catch (error) { alert("Network Error!"); }
-    vBtn.innerHTML = 'Verify & Login'; vBtn.disabled = false; 
+window.closeModal = function(id) {
+    document.getElementById(id).classList.remove('show');
+    setTimeout(() => { document.getElementById(id).style.display = 'none'; }, 400);
 }
 
-window.processLogin = async function() {
-    const email = document.getElementById('loginEmail').value.trim(); const pwd = document.getElementById('loginPassword').value.trim();
-    if(!email || !pwd) { alert("Fields required!"); return; }
-    const btn = document.getElementById('btnLoginAction'); btn.innerHTML = 'Checking...'; btn.disabled = true;
-    try {
-        const result = await window.DeliveryBoy.login(email, pwd);
-        if(result && result.ok && result.data && result.data.success) {
-            localStorage.setItem('aavira_display_name', result.data.userName); localStorage.setItem('aavira_user_email', email);
-            alert("Login Successful!"); window.closeLoginModal(); 
-            checkAuthAndLoadOrders(); 
-        } else alert("Invalid Email or Password.");
-    } catch(e) { alert("Network Error!"); }
-    btn.innerHTML = 'Secure Login'; btn.disabled = false;
+window.openWhatsApp = function() {
+    if(!currentOrderData) return;
+    let title = currentOrderData.items && currentOrderData.items.length > 0 ? currentOrderData.items[0].name : "Product";
+    let msg = `Hi Aavira Support,\n\nI need help regarding my Order: *${currentOrderData.orderId}*.\nProduct: ${title}\n\nPlease assist me.`;
+    window.open(`https://wa.me/919608720622?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+// ==========================================
+// DIRECT CANCEL ORDER FLOW
+// ==========================================
+window.triggerCancelOrder = function() {
+    if(!currentOrderData) return;
+    document.getElementById('cancelModalOrderId').innerText = currentOrderData.orderId;
+    document.getElementById('cancelModal').style.display = 'flex';
+    setTimeout(() => { document.getElementById('cancelModal').classList.add('show'); }, 50);
+}
+
+window.executeCancelOrder = function() {
+    const btn = document.getElementById('btnConfirmCancel');
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Cancelling...';
+    
+    setTimeout(() => {
+        currentOrderData.orderStatus = 'Cancelled';
+        
+        let locallyCancelled = JSON.parse(localStorage.getItem('aavira_cancelled_orders')) || [];
+        if (!locallyCancelled.includes(currentOrderData.orderId)) {
+            locallyCancelled.push(currentOrderData.orderId);
+            localStorage.setItem('aavira_cancelled_orders', JSON.stringify(locallyCancelled));
+        }
+        
+        if(document.getElementById('detailsView').classList.contains('show')) {
+            openOrderDetails(currentOrderData.id);
+        }
+        const activeTab = document.querySelector('.tab.active');
+        if(activeTab) filterOrders(activeTab.innerText.trim(), activeTab);
+
+        closeModal('cancelModal');
+        btn.innerHTML = 'Yes, Cancel Order';
+        
+        const toast = document.getElementById('toastMsg');
+        toast.innerText = "Order Cancelled Successfully!";
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+        
+    }, 800);
 }
