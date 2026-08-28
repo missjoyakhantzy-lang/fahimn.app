@@ -1,17 +1,13 @@
 let cartItems = [];
 let productDatabase = {};
-
-// Promo variables
 let appliedPromoCode = "";
 let promoDiscountAmount = 0;
-
 let selectedPaymentMode = 'cod';
 let giftWrapFee = 0;
 let deliveryFee = 0;
 let isBuyNowMode = false;
-
-window.pendingWhatsAppUrl = "";
 let whatsappTimerInterval;
+window.pendingWhatsAppUrl = "";
 
 const ToastAlert = {
     toastElement: document.getElementById('alertToast'),
@@ -28,6 +24,15 @@ const ToastAlert = {
 };
 
 const parseCurrencyNumber = (val) => parseInt(String(val).replace(/[^0-9]/g, '')) || 0;
+
+// 🔥 NEW: Function to hide ugly Cloudinary/HTTP Links 🔥
+function formatColorName(val) {
+    let clr = String(val || 'Standard').trim();
+    if(clr.match(/^https?:\/\//) || clr.includes('cloudinary') || clr.includes('/') || clr.length > 25) {
+        return 'As Shown';
+    }
+    return clr;
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
     restoreFormDraft();
@@ -111,11 +116,16 @@ async function fetchProductsAndInitializeCart() {
 
     if(buyNowProductId) {
         isBuyNowMode = true;
+        // Fix for parsing parameters safely
+        let rawColor = urlParams.get('color') || 'Standard';
+        let safeColor = formatColorName(rawColor); 
+        // Note: buy_now URL ideally passes image separately, but if not, fallback handles it
+        
         cartItems.push({
             productId: decodeURIComponent(buyNowProductId).trim(),
             size: urlParams.get('size') || 'Free Size',
-            color: urlParams.get('color') || 'Standard',
-            image: urlParams.get('image') || '',
+            color: safeColor,
+            image: rawColor.includes('http') ? rawColor : '', // if color was accidentally image URL
             qty: 1,
             fallbackName: urlParams.get('name') || "Exclusive Item",
             fallbackPrice: urlParams.get('price') || 0
@@ -124,7 +134,6 @@ async function fetchProductsAndInitializeCart() {
         cartItems = JSON.parse(localStorage.getItem('aavira_cart')) || [];
     }
 
-    // Sync with DB
     cartItems = cartItems.filter(item => {
         let pId = String(item.productId).trim();
         if (productDatabase[pId]) {
@@ -143,7 +152,6 @@ async function fetchProductsAndInitializeCart() {
         return;
     }
 
-    // 🔥 RESTORE PROMO CODE IF SAVED IN LOCAL STORAGE 🔥
     try {
         let savedPromo = JSON.parse(localStorage.getItem('savedPromoCache'));
         if(savedPromo && savedPromo.label && savedPromo.discount) {
@@ -162,76 +170,6 @@ async function fetchProductsAndInitializeCart() {
     renderCartUI();
 }
 
-// ==========================================
-// 🔥 WISH LIST / SUGGESTIONS LOGIC 🔥
-// ==========================================
-function renderWishlistSuggestions() {
-    try {
-        let suggestedProducts = [];
-        let currentCartIds = cartItems.map(item => String(item.productId).trim());
-        
-        // Fetch Wishlist Items
-        let wishlistIds = JSON.parse(localStorage.getItem('aavira_wishlist')) || [];
-        
-        // Fallback: If wishlist is empty, suggest some items from Database
-        let allProductIds = Object.keys(productDatabase);
-        
-        // Combine and remove duplicates, prioritizing wishlist
-        let combinedIds = [...new Set([...wishlistIds, ...allProductIds])]; 
-        
-        for(let id of combinedIds) {
-            let cleanId = String(id).trim();
-            if(!currentCartIds.includes(cleanId) && productDatabase[cleanId]) {
-                suggestedProducts.push(productDatabase[cleanId]);
-            }
-            if(suggestedProducts.length >= 6) break; // Maximum 6 suggestions
-        }
-
-        if(suggestedProducts.length > 0) {
-            document.getElementById('cartSuggestionsSection').style.display = 'block'; 
-            let htmlString = "";
-            suggestedProducts.forEach(prod => {
-                let imageUrl = prod.imageMain || prod.imageUrl || prod.image || 'https://placehold.co/150?text=Item';
-                htmlString += `
-                <div class="s-card">
-                    <div class="s-img-wrapper"><img src="${imageUrl}" onerror="this.src='https://placehold.co/150?text=IMG'"></div>
-                    <div class="s-title">${prod.name || 'Premium Collection'}</div>
-                    <div class="s-bottom">
-                        <span class="s-price">₹${parseCurrencyNumber(prod.price).toLocaleString()}</span>
-                        <button onclick="addSuggestedProduct('${prod.id}')" class="btn-add-suggest">+ ADD</button>
-                    </div>
-                </div>`; 
-            }); 
-            document.getElementById('suggestedItemsContainer').innerHTML = htmlString;
-        } else {
-            document.getElementById('cartSuggestionsSection').style.display = 'none'; 
-        }
-    } catch(e){ 
-        console.error("Suggestions Error:", e); 
-    }
-}
-
-window.addSuggestedProduct = function(productId){
-    if(navigator.vibrate) navigator.vibrate(30);
-    let product = productDatabase[String(productId).trim()]; 
-    if(product) { 
-        cartItems.push({
-            productId: product.id, 
-            size: 'Free Size', 
-            color: 'Standard', 
-            qty: 1, 
-            image: product.imageMain || product.image || product.imageUrl || 'https://placehold.co/150'
-        }); 
-        
-        if(!isBuyNowMode) {
-            localStorage.setItem('aavira_cart', JSON.stringify(cartItems));
-        }
-        
-        ToastAlert.show('Item added to your bag successfully.', true);
-        renderCartUI(); 
-    }
-};
-
 window.setUserDeliveryPreferencesCost = (deliveryType) => {
     deliveryFee = (deliveryType === 'express') ? 99 : 0;
     document.querySelectorAll('.speed-option').forEach(el=>el.classList.remove('selected'));
@@ -249,11 +187,7 @@ window.pickPaymentMode = (paymentType, domElement) => {
 
 window.removeCartItem = (index) => { 
     cartItems.splice(index, 1); 
-    
-    if(!isBuyNowMode) {
-        localStorage.setItem('aavira_cart', JSON.stringify(cartItems));
-    }
-
+    if(!isBuyNowMode) { localStorage.setItem('aavira_cart', JSON.stringify(cartItems)); }
     if(cartItems.length === 0){
         document.getElementById('mainScroll').style.display = 'none'; document.getElementById('bottomCheckoutBar').style.display = 'none'; document.getElementById('emptyCartView').style.display = 'flex';
     } else { renderCartUI(); }
@@ -266,6 +200,7 @@ function renderCartUI(){
     document.getElementById('itemCountBadge').innerText = `${cartItems.length} ITEMS`;
 
     let totalMRP = 0; let totalCartValue = 0;
+    
     cartItems.forEach((item, index) => {
         let product = productDatabase[item.productId]; if(!product) return;
         let currentPrice = parseCurrencyNumber(product.price);
@@ -273,39 +208,40 @@ function renderCartUI(){
         
         totalMRP += (originalMrp * item.qty);
         totalCartValue += (currentPrice * item.qty);
+        
         let imageUrl = (item.image || product.imageMain || product.imageUrl || product.image || "https://placehold.co/100").toString().replace(/['"]/g,'');
+        let displayColor = formatColorName(item.color); // Ensures no URLs print
 
         orderContainer.innerHTML += `
             <div class="o-item">
                 <div class="o-img-box"><img src="${imageUrl}" onerror="this.src='https://placehold.co/100?text=Item'"></div>
                 <div class="o-info">
                     <h4>${product.name}</h4>
-                    <p class="o-item-specs">Size: <strong>${item.size || 'Free Size'}</strong> <br>Qty: <strong>${item.qty} Piece(s)</strong></p>
-                    <h3>₹ ${currentPrice.toLocaleString()}</h3>
+                    <p class="o-item-specs">Size: <strong>${item.size || 'Free Size'}</strong> | Color: <strong>${displayColor}</strong> <br>Qty: <strong>${item.qty} Piece(s)</strong></p>
+                    <h3>₹ ${currentPrice.toLocaleString('en-IN')}</h3>
                 </div>
-                <button class="remove-btn" onclick="removeCartItem(${index})"><i class="fa-solid fa-trash-can"></i></button>
+                <button class="remove-btn" onclick="removeCartItem(${index})"><i class="fa-solid fa-xmark"></i></button>
             </div>`;
     });
 
-    document.getElementById('billMrp').innerText = `₹ ${totalMRP.toLocaleString()}`;
-    document.getElementById('billDiscount').innerText = `- ₹ ${(totalMRP - totalCartValue).toLocaleString()}`;
+    document.getElementById('billMrp').innerText = `₹ ${totalMRP.toLocaleString('en-IN')}`;
+    document.getElementById('billDiscount').innerText = `- ₹ ${(totalMRP - totalCartValue).toLocaleString('en-IN')}`;
     
-    if (promoDiscountAmount) { document.getElementById('billPromoRow').style.display='flex'; document.getElementById('billPromoDiscount').innerText=`- ₹ ${promoDiscountAmount.toLocaleString()}`;} else document.getElementById('billPromoRow').style.display='none';
-    if (deliveryFee) { document.getElementById('billDelivery').innerText = `₹ 99`; document.getElementById('billDelivery').className=''; } else { document.getElementById('billDelivery').innerText = `Free`; document.getElementById('billDelivery').className='green-txt'; }
+    if (promoDiscountAmount) { 
+        document.getElementById('billPromoRow').style.display='flex'; 
+        document.getElementById('billPromoDiscount').innerText=`- ₹ ${promoDiscountAmount.toLocaleString('en-IN')}`;
+    } else { document.getElementById('billPromoRow').style.display='none'; }
+    
+    if (deliveryFee) { document.getElementById('billDelivery').innerText = `₹ 99`; document.getElementById('billDelivery').className=''; } 
+    else { document.getElementById('billDelivery').innerText = `Free`; document.getElementById('billDelivery').className='green-txt'; }
     
     document.getElementById('row_gift').style.display = giftWrapFee ? 'flex' : 'none';
     let finalPayableAmount = Math.max(0, totalCartValue + deliveryFee + giftWrapFee - promoDiscountAmount);
     
-    document.getElementById('billTotal').innerText = `₹ ${finalPayableAmount.toLocaleString()}`;
-    document.getElementById('bottomTotal').innerText = `₹ ${finalPayableAmount.toLocaleString()}`;
-
-    // Trigger suggestions rendering
-    renderWishlistSuggestions();
+    document.getElementById('billTotal').innerText = `₹ ${finalPayableAmount.toLocaleString('en-IN')}`;
+    document.getElementById('bottomTotal').innerText = `₹ ${finalPayableAmount.toLocaleString('en-IN')}`;
 }
 
-// ==========================================
-// 🔥 ROBUST PROMO CODE LOGIC 🔥
-// ==========================================
 window.verifyAndApplyCouponAPI = async () => {
     let inputField = document.getElementById('promoInput'); 
     if(!inputField) return;
@@ -318,8 +254,7 @@ window.verifyAndApplyCouponAPI = async () => {
     btn.innerHTML = '<div class="btn-spinner"></div>'; 
     btn.disabled = true;
 
-    let discountAmt = 0;
-    let isValid = false;
+    let discountAmt = 0; let isValid = false;
 
     try {
         let response = await fetch(`https://ssxpq15in.vercel.app/api/promo_codes/${code}`);
@@ -329,34 +264,26 @@ window.verifyAndApplyCouponAPI = async () => {
         if (response.ok) {
             let result = await response.json();
             let promoData = result.data || result;
-            
             if (promoData && promoData.isActive !== false) {
                 discountAmt = Number(promoData.amount || promoData.discountAmount || promoData.discount || 0);
                 if(discountAmt > 0) isValid = true;
             }
         }
-    } catch(error) {
-        console.warn("Promo API fallback triggered");
-    }
+    } catch(error) { console.warn("Promo API fallback triggered"); }
 
     if (!isValid) {
         if(code === 'LUXURY500') { discountAmt = 500; isValid = true; }
         else if(code === 'AAVIRA200') { discountAmt = 200; isValid = true; }
     }
 
-    if(isValid) {
-        applyPromoUI(code, discountAmt);
-    } else {
-        ToastAlert.show('Invalid or Expired Coupon Code.', false);
-    }
+    if(isValid) { applyPromoUI(code, discountAmt); } 
+    else { ToastAlert.show('Invalid or Expired Coupon Code.', false); }
     
-    btn.innerHTML = originalText; 
-    btn.disabled = false;
+    btn.innerHTML = originalText; btn.disabled = false;
 }
 
 function applyPromoUI(code, discount) {
-    appliedPromoCode = code;
-    promoDiscountAmount = discount;
+    appliedPromoCode = code; promoDiscountAmount = discount;
     localStorage.setItem('savedPromoCache', JSON.stringify({label: code, discount: discount}));
     document.getElementById('promoInputGroup').style.display='none'; 
     document.getElementById('apCodeName').innerText = code; 
@@ -366,8 +293,7 @@ function applyPromoUI(code, discount) {
 }
 
 window.removeActiveCoupon = () => { 
-    appliedPromoCode = ""; 
-    promoDiscountAmount = 0; 
+    appliedPromoCode = ""; promoDiscountAmount = 0; 
     localStorage.removeItem('savedPromoCache'); 
     document.getElementById('promoInputGroup').style.display='flex'; 
     document.getElementById('promoInput').value=''; 
@@ -378,13 +304,11 @@ window.removeActiveCoupon = () => {
 
 window.forceWhatsAppRedirect = () => {
     if (whatsappTimerInterval) clearInterval(whatsappTimerInterval);
-    if (window.pendingWhatsAppUrl) {
-        window.location.href = window.pendingWhatsAppUrl;
-    }
+    if (window.pendingWhatsAppUrl) window.location.href = window.pendingWhatsAppUrl;
 };
 
 // ==========================================
-//  SUBMIT ORDER - FULL DATABASE SCHEMA 
+//  SUBMIT ORDER
 // ==========================================
 window.submitFinalOrder = async () => {
     let isFormValid = true; let firstErrorField = null;
@@ -393,7 +317,7 @@ window.submitFinalOrder = async () => {
         if(!validateInputField(inputEl, true)){ isFormValid=false; inputEl.closest('.pro-input-group').classList.add('is-invalid'); firstErrorField = inputEl;} 
     });
     
-    if(!isFormValid){ ToastAlert.show('Please fill all required address fields.', false); if(firstErrorField) firstErrorField.scrollIntoView({behavior:'smooth'}); return; }
+    if(!isFormValid){ ToastAlert.show('Please fill all required fields.', false); if(firstErrorField) firstErrorField.scrollIntoView({behavior:'smooth'}); return; }
 
     let successSound = new Audio('success_music.mp3');
 
@@ -407,14 +331,15 @@ window.submitFinalOrder = async () => {
         let price = parseCurrencyNumber(dbProduct.price || 0); 
         productsCost += (price * item.qty);
         
-        cleanStringOfItems.push(`${item.qty}x ${dbProduct.name ? dbProduct.name.substring(0,35) : "Exclusive Item"}... (Size: ${item.size || 'Standard'}) - ₹${price.toLocaleString()}`);
+        let printColor = formatColorName(item.color);
+        cleanStringOfItems.push(`${item.qty}x ${dbProduct.name ? dbProduct.name.substring(0,35) : "Exclusive Item"}... (Size: ${item.size || 'Standard'}, Color: ${printColor}) - ₹${price.toLocaleString('en-IN')}`);
         
         return {
             productId: item.productId,
             name: dbProduct.name || "Exclusive Product",
             qty: item.qty,
             price: price,
-            color: item.color || "Standard",
+            color: printColor,
             size: item.size || "Free Size",
             image: item.image || dbProduct.imageMain || dbProduct.imageUrl || dbProduct.image || ""
         };
@@ -433,21 +358,13 @@ window.submitFinalOrder = async () => {
     try { 
         if (typeof window.sendOrderToVercel === 'function'){
             let payloadData = {
-                orderId: finalOrderId,
-                userId: localStorage.getItem('aavira_user_email') || 'Guest User',
-                customerName: customerName,
-                email: customerEmail,
-                phone: customerPhone,
-                address: customerAddress,
-                mapLink: customerMapLink, 
-                items: formattedItemsPayload,
-                totalAmount: totalAmountToPay,
-                paymentMethod: selectedPaymentMode,
-                paymentStatus: (selectedPaymentMode === 'online' ? 'Pending' : 'COD'),
-                orderStatus: orderCurrentState,
-                promoCodeUsed: appliedPromoCode || "",
-                promoDiscount: promoDiscountAmount || 0,
-                createdAt: new Date().toISOString()
+                orderId: finalOrderId, userId: localStorage.getItem('aavira_user_email') || 'Guest User',
+                customerName: customerName, email: customerEmail, phone: customerPhone,
+                address: customerAddress, mapLink: customerMapLink, 
+                items: formattedItemsPayload, totalAmount: totalAmountToPay,
+                paymentMethod: selectedPaymentMode, paymentStatus: (selectedPaymentMode === 'online' ? 'Pending' : 'COD'),
+                orderStatus: orderCurrentState, promoCodeUsed: appliedPromoCode || "",
+                promoDiscount: promoDiscountAmount || 0, createdAt: new Date().toISOString()
             };
             await window.sendOrderToVercel(payloadData);
         }
@@ -462,7 +379,7 @@ window.submitFinalOrder = async () => {
     
     document.getElementById('displayOrderId').innerText = finalOrderId;
     
-    try { successSound.play().catch(err => console.warn("Audio blocked or missing:", err)); } catch(e) { }
+    try { successSound.play().catch(e => console.log(e)); } catch(e) { }
 
     document.getElementById('gatewayBox').style.display='none'; 
     document.getElementById('successBox').style.display='block';
@@ -471,56 +388,35 @@ window.submitFinalOrder = async () => {
     let popupActions = document.getElementById('popupActionBtns');
 
     if (selectedPaymentMode === 'online') {
-        
-        dynamicIcon.style.background = '#f59e0b'; 
-        dynamicIcon.style.border = '4px solid #fef3c7';
+        dynamicIcon.style.background = '#f59e0b'; dynamicIcon.style.border = '4px solid #fef3c7';
         dynamicIcon.style.boxShadow = '0 10px 20px rgba(245,158,11, 0.2)';
         dynamicIcon.innerHTML = '<i class="fa-solid fa-hourglass-half"></i>';
         
         document.getElementById('successBoxTitle').innerText = 'Awaiting Payment ⏳';
         document.getElementById('successBoxDesc').innerText = 'Please complete the payment on WhatsApp to confirm your order.';
         
-        let cleanWhatsAppMessage = `*AAVIRA - ONLINE PAYMENT REQUEST*\n\nHello Team Aavira! I would like to complete the online payment for my order securely.\n\n*ORDER ID:* ${finalOrderId}\n*NAME:* ${customerName}\n*MOBILE:* ${customerPhone}\n\n*ADDRESS:* \n${customerAddress}\n${customerMapLink ? "*MAP LINK:* " + customerMapLink + "\n" : ""}\n*TOTAL TO PAY: ₹ ${totalAmountToPay.toLocaleString()}* \n\n_Please share the UPI ID / Scanner so I can complete this transaction. Thank you!_`;
+        let cleanWhatsAppMessage = `*AAVIRA - ONLINE PAYMENT REQUEST*\n\nHello Team Aavira! I would like to complete the online payment for my order securely.\n\n*ORDER ID:* ${finalOrderId}\n*NAME:* ${customerName}\n*MOBILE:* ${customerPhone}\n\n*ADDRESS:* \n${customerAddress}\n${customerMapLink ? "*MAP LINK:* " + customerMapLink + "\n" : ""}\n*TOTAL TO PAY: ₹ ${totalAmountToPay.toLocaleString('en-IN')}* \n\n_Please share the UPI ID / Scanner so I can complete this transaction. Thank you!_`;
         
         window.pendingWhatsAppUrl = `https://wa.me/919608720622?text=${encodeURIComponent(cleanWhatsAppMessage)}`;
 
-        popupActions.innerHTML = `
-            <button class="btn-pro-action whatsapp" onclick="forceWhatsAppRedirect()">
-                <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> 
-                Open WhatsApp <span id="waTimerTxt" style="font-size:11px; margin-left:4px; background:rgba(0,0,0,0.15); padding:3px 8px; border-radius:12px;">(5s)</span>
-            </button>
-            <button class="btn-pro-action outline" onclick="window.location.href='orders'">
-                <i class="fa-solid fa-bag-shopping"></i> View Orders
-            </button>
-        `;
+        popupActions.innerHTML = `<button class="btn-pro-action whatsapp" onclick="forceWhatsAppRedirect()"><i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> Open WhatsApp <span id="waTimerTxt" style="font-size:11px; margin-left:4px; background:rgba(0,0,0,0.15); padding:3px 8px; border-radius:12px;">(5s)</span></button><button class="btn-pro-action outline" onclick="window.location.href='orders'"><i class="fa-solid fa-bag-shopping"></i> View Orders</button>`;
 
         let countdown = 5;
         whatsappTimerInterval = setInterval(() => {
             countdown--;
             let timerEl = document.getElementById('waTimerTxt');
             if (timerEl) { timerEl.innerText = `(${countdown}s)`; }
-            if (countdown <= 0) {
-                clearInterval(whatsappTimerInterval);
-                forceWhatsAppRedirect();
-            }
+            if (countdown <= 0) { clearInterval(whatsappTimerInterval); forceWhatsAppRedirect(); }
         }, 1000);
 
     } else {
-        dynamicIcon.style.background = 'var(--success)';
-        dynamicIcon.style.border = '4px solid #D1FAE5';
+        dynamicIcon.style.background = 'var(--success)'; dynamicIcon.style.border = '4px solid #D1FAE5';
         dynamicIcon.style.boxShadow = '0 10px 20px rgba(5,150,105, 0.2)';
         dynamicIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
 
         document.getElementById('successBoxTitle').innerText = 'Order Placed Successfully! 🎉';
         document.getElementById('successBoxDesc').innerText = 'Your order details have been securely recorded. We will process it shortly.';
 
-        popupActions.innerHTML = `
-            <button class="btn-pro-action primary" onclick="window.location.href='orders'">
-                <i class="fa-solid fa-location-arrow"></i> Track Order
-            </button>
-            <button class="btn-pro-action outline" onclick="window.location.href='./'">
-                <i class="fa-solid fa-bag-shopping"></i> Continue Shopping
-            </button>
-        `;
+        popupActions.innerHTML = `<button class="btn-pro-action primary" onclick="window.location.href='orders'"><i class="fa-solid fa-location-arrow"></i> Track Order</button><button class="btn-pro-action outline" onclick="window.location.href='./'"><i class="fa-solid fa-bag-shopping"></i> Continue Shopping</button>`;
     }
 }
