@@ -28,9 +28,9 @@ body {
     background: #E5E7EB; 
     display: flex; 
     justify-content: center; 
-    align-items: center; /* Centers vertically on desktop */
+    align-items: center; 
     height: 100vh; 
-    height: 100dvh; /* Automatically adjusts for mobile browser URL bars */
+    height: 100dvh; 
     margin: 0;
     overflow: hidden; 
 }
@@ -41,7 +41,7 @@ body {
     background: var(--bg-body); 
     height: 100%; 
     max-height: 100dvh;
-    margin: 0 auto; /* Ensures horizontal centering */
+    margin: 0 auto; 
     position: relative; 
     display: flex; 
     flex-direction: column; 
@@ -70,9 +70,16 @@ body {
 /* =========================================
     MAIN LIST CONTENT
     ========================================= */
-/* Added bottom padding here too so the last order isn't hidden */
-.main-scroll { flex: 1; overflow-y: auto; padding: 16px 20px 120px; scrollbar-width: none; background: var(--bg-page);}
+.main-scroll { flex: 1; overflow-y: auto; padding: 16px 20px; scrollbar-width: none; background: var(--bg-page);}
 .main-scroll::-webkit-scrollbar { display: none; }
+
+/* Main scroll bottom fix for lists */
+.main-scroll::after {
+    content: '';
+    display: block;
+    height: 120px;
+    width: 100%;
+}
 
 @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
 
@@ -119,9 +126,24 @@ body {
 .details-view { position: absolute; inset: 0; background: var(--bg-page); z-index: 50; transform: translateX(100%); transition: transform 0.4s var(--spring); display: flex; flex-direction: column;}
 .details-view.show { transform: translateX(0); }
 
-/* Solved the bottom bar hiding issue by increasing padding-bottom to 130px */
-.dv-scroll { flex: 1; overflow-y: auto; padding: 16px; scrollbar-width: none; padding-bottom: 130px;}
-.dv-scroll::-webkit-scrollbar { display: none; }
+/* Fixed for Brave & Mobile Bottom Navbars */
+.dv-scroll { 
+    flex: 1; 
+    overflow-y: auto; 
+    padding: 16px; 
+    scrollbar-width: none; 
+}
+.dv-scroll::-webkit-scrollbar { 
+    display: none; 
+}
+
+/* Yeh block end mein 150px ki khali jagah force karega, jo browser hide nahi kar payega */
+.dv-scroll::after {
+    content: '';
+    display: block;
+    height: 150px;
+    width: 100%;
+}
 
 .dv-top-card { background: #fff; border: 1px solid var(--primary-light); border-radius: 16px; overflow: hidden; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(232, 27, 97, 0.05); animation: slideUpFade 0.4s var(--smooth) backwards;}
 .dv-tc-head { background: var(--primary-light); padding: 16px; display: flex; justify-content: space-between; align-items: flex-start;}
