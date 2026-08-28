@@ -1,6 +1,6 @@
 /* =========================================================
-   AAVIRA - LUXURY MINIMALIST COMPACT CHECKOUT 
-   ========================================================= */
+    AAVIRA - LUXURY MINIMALIST COMPACT CHECKOUT 
+    ========================================================= */
 :root {
     --primary: #D81B60; 
     --primary-light: #fdf2f8; 
@@ -50,16 +50,15 @@ html, body { width: 100%; height: 100%; background: var(--bg-body); overflow: hi
 
 .help-link-text { position: absolute; right: 0; bottom: -18px; font-size: 10px; font-weight: 700; color: var(--primary); cursor: pointer; text-decoration: underline; text-underline-offset: 2px;}
 
-/* 🔥 UI BREAK FIX: Ensures layout never breaks even on very long URLs 🔥 */
 .order-list { display: flex; flex-direction: column; gap: 14px; }
 .o-item { display: flex; gap: 14px; align-items: stretch; border-bottom: 1px dashed var(--border); padding-bottom: 14px; position: relative;}
 .o-item:last-child { border-bottom: none; padding-bottom: 0; }
 .o-img-box { width: 75px; min-width: 75px; aspect-ratio: 1/1; border-radius: 8px; overflow: hidden; background: var(--bg-body); flex-shrink: 0; border: 1px solid var(--border); }
 .o-img-box img { width: 100%; height: 100%; object-fit: cover; }
 
-.o-info { flex: 1; padding-right: 28px; display: flex; flex-direction: column; justify-content: space-between; min-width: 0; /* Important constraint */ } 
-.o-info h4 { font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; word-break: break-word;}
-.o-item-specs { font-size: 11px; font-weight: 500; color: var(--text-muted); line-height: 1.5; word-wrap: break-word; word-break: break-all; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;}
+.o-info { flex: 1; padding-right: 28px; display: flex; flex-direction: column; justify-content: space-between;} 
+.o-info h4 { font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;}
+.o-item-specs { font-size: 11px; font-weight: 500; color: var(--text-muted); line-height: 1.5; }
 .o-item-specs strong { font-weight: 700; color: var(--text-dark); }
 .o-info h3 { font-size: 15px; font-weight: 700; color: var(--primary); margin-top: auto;}
 
@@ -105,8 +104,7 @@ html, body { width: 100%; height: 100%; background: var(--bg-body); overflow: hi
 .promo-container { display: flex; gap: 8px; margin-bottom: 24px;}
 .promo-input { flex: 1; border: 1px dashed var(--text-muted); background: var(--bg-body); padding: 0 14px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; outline: none; height: 46px; text-transform: uppercase; color: var(--text-dark); transition:0.3s;}
 .promo-input:focus { border-color: var(--text-dark); border-style: solid; background: var(--white);}
-.promo-btn { background: var(--text-dark); color: #fff; border: none; padding: 0 20px; border-radius: var(--radius-md); font-size: 11px; font-weight: 700; cursor: pointer; letter-spacing: 0.5px; transition: 0.2s;}
-.promo-btn:active { transform: scale(0.95); }
+.promo-btn { background: var(--text-dark); color: #fff; border: none; padding: 0 20px; border-radius: var(--radius-md); font-size: 11px; font-weight: 700; cursor: pointer; letter-spacing: 0.5px;}
 
 .applied-promo-box { display: none; justify-content: space-between; align-items: center; background: #ecfdf5; padding: 14px 16px; border-radius: 8px; margin-bottom: 20px; border: 1px dashed #34d399; }
 .ap-details { font-size: 12px; font-weight: 700; color: #059669; }
