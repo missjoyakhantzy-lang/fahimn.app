@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Aavira Luxe - Secure Checkout</title>
+    <title>Aavira - Secure Checkout</title>
     <meta name="theme-color" content="#ffffff">
     
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- 🔥 External CSS Linked Here 🔥 -->
     <link rel="stylesheet" href="checkout-style.css">
 </head>
 <body>
@@ -15,207 +19,234 @@
     <div class="app-container">
         
         <header class="pro-header">
-            <button class="icon-btn ripple" onclick="history.back()"><i class="fa-solid fa-arrow-left"></i></button>
-            <div class="header-titles">
-                <h1>CHECKOUT</h1>
-                <p>100% Secure Transaction</p>
+            <button class="header-icon-btn" onclick="history.back()"><i class="fa-solid fa-arrow-left-long"></i></button>
+            <div class="header-center">
+                <div class="title">Secure Checkout</div>
             </div>
-            <i class="fa-solid fa-lock header-lock"></i>
+            <div style="width:34px;"></div>
         </header>
 
-        <!-- EMPTY STATE -->
-        <div id="emptyCartView" style="display: none; flex: 1;">
-            <div class="empty-cart-state">
-                <i class="fa-solid fa-bag-shopping"></i>
-                <h2>Your Bag is Empty!</h2>
-                <p>Looks like you haven't added any premium products yet.</p>
-                <a href="./">Explore Collection</a> 
-            </div>
+        <!-- CART IS EMPTY MESSAGE -->
+        <div id="emptyCartView" style="display: none; flex: 1; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+            <i class="fa-solid fa-basket-shopping" style="font-size:55px; color:#cbd5e1; margin-bottom: 20px;"></i>
+            <h2 style="font-size:18px; color:var(--text-dark); margin-bottom:8px; font-weight:700;">Cart is empty</h2>
+            <p style="font-size: 13px; color:var(--text-muted); font-weight:500;">Begin exploring elegance from our latest collections.</p>
+            <a href="./" style="margin-top:24px; padding:12px 28px; font-weight:700; text-decoration:none; color:var(--primary); background:var(--primary-light); border: 1px solid var(--primary); border-radius: 24px; font-size: 12px; text-transform: uppercase;">Shop New Arrivals</a> 
         </div>
 
         <main class="main-content" id="mainScroll" style="display:none;">
             
             <section class="pro-card">
                 <div class="card-header">
-                    <h2>Delivery Information</h2>
-                    <button class="auto-fill-btn ripple" onclick="window.autoFetchLocation()" type="button">
-                        <i class="fa-solid fa-location-crosshairs"></i> Auto-fill
-                    </button>
+                    <h2>Shipping Address</h2>
                 </div>
                 
                 <form id="checkoutForm" class="pro-form" autocomplete="off">
+                    <div class="pro-input-group">
+                        <input type="text" class="pro-input" id="ad_name" placeholder=" " required>
+                        <label class="pro-label">Full Name</label>
+                    </div>
+
                     <div class="form-row">
-                        <div class="pro-input-group">
-                            <input type="text" class="pro-input" id="ad_name" placeholder=" " required>
-                            <label class="pro-label">Full Name</label>
-                            <span class="error-msg">Required</span>
-                        </div>
                         <div class="pro-input-group">
                             <input type="tel" class="pro-input" id="ad_phone" placeholder=" " maxlength="10" required>
                             <label class="pro-label">Mobile Number</label>
-                            <span class="error-msg">Valid 10 digits</span>
+                            <span class="error-msg">Valid 10 Digits required</span>
                         </div>
-                    </div>
-                    
-                    <div class="pro-input-group">
-                        <input type="email" class="pro-input" id="ad_email" placeholder=" ">
-                        <label class="pro-label">Email Address (Optional)</label>
-                    </div>
-
-                    <div class="divider-line"></div>
-
-                    <div class="form-row">
                         <div class="pro-input-group">
                             <input type="number" class="pro-input" id="ad_pin" placeholder=" " required>
                             <label class="pro-label">Pincode</label>
                         </div>
+                    </div>
+                    
+                    <div class="pro-input-group">
+                        <input type="email" class="pro-input" id="ad_email" placeholder=" " required>
+                        <label class="pro-label">Email ID</label>
+                    </div>
+
+                    <div class="form-row">
                         <div class="pro-input-group">
                             <input type="text" class="pro-input" id="ad_city" placeholder=" " required>
-                            <label class="pro-label">City</label>
+                            <label class="pro-label">City, State</label>
                         </div>
                     </div>
                     
                     <div class="pro-input-group">
                         <input type="text" class="pro-input" id="ad_address" placeholder=" " required>
-                        <label class="pro-label">Flat, House no., Building, Street</label>
+                        <label class="pro-label">Complete Address (House no, Street)</label>
                     </div>
 
-                    <div class="pro-input-group">
-                        <input type="text" class="pro-input" id="ad_landmark" placeholder=" ">
-                        <label class="pro-label">Landmark (Optional)</label>
+                    <!-- Map Link Input Box -->
+                    <div class="pro-input-group" style="margin-top: 10px; margin-bottom: 8px;">
+                        <input type="url" class="pro-input" id="ad_map_link" placeholder=" ">
+                        <label class="pro-label"><i class="fa-solid fa-map-location-dot"></i> Google Maps Link (Optional)</label>
+                        <span class="help-link-text" onclick="document.getElementById('mapHelpModal').style.display='flex'">How to get link?</span>
                     </div>
                 </form>
             </section>
 
             <section class="pro-card">
-                <div class="card-header">
-                    <h2>Your Order</h2>
-                    <span class="item-count" id="itemCountBadge">0 Items</span>
+                <div class="card-header" style="margin-bottom:20px;">
+                    <h2>Items In Bag</h2>
+                    <span class="item-count" id="itemCountBadge">0 ITEMS</span>
                 </div>
                 <div class="order-list" id="orderItemsContainer"></div>
             </section>
 
-            <section class="pro-card suggest-section" id="cartSuggestionsSection">
-                <div class="suggest-title"><i class="fa-solid fa-heart" style="color: #D81B60;"></i> Complete Your Look</div>
+            <!-- EXTRA SUGGESTIONS (WISHLIST RECOMMENDATIONS)-->
+            <section class="suggest-section" id="cartSuggestionsSection">
+                <div class="suggest-title"><i class="fa-solid fa-gem" style="color:var(--secondary);"></i> Recommended For You</div>
                 <div class="suggest-scroll" id="suggestedItemsContainer"></div>
             </section>
 
             <section class="pro-card">
-                <div class="card-header"><h2>Delivery Options</h2></div>
+                <div class="card-header"><h2>Delivery Method</h2></div>
                 <div class="speed-selector">
                     <label class="speed-option selected" id="opt_std">
-                        <input type="radio" name="speed" value="standard" checked onchange="window.setDeliverySpeed('standard')">
+                        <input type="radio" name="speed" value="standard" checked onchange="setUserDeliveryPreferencesCost('standard')">
                         <div class="speed-info">
-                            <i class="fa-solid fa-truck"></i>
-                            <div><h4>Standard Delivery</h4><p>3-5 Business Days</p></div>
+                            <div class="speed-icon"><i class="fa-solid fa-truck"></i></div>
+                            <div><h4>Standard Shipping</h4><p>Delivery in 4 - 6 Business Days</p></div>
                         </div>
-                        <span class="speed-price">Free</span>
+                        <span class="speed-price" style="background:#ECFDF5; color:#059669; border: 1px dashed #A7F3D0;">Free</span>
                     </label>
                     <label class="speed-option" id="opt_exp">
-                        <input type="radio" name="speed" value="express" onchange="window.setDeliverySpeed('express')">
+                        <input type="radio" name="speed" value="express" onchange="setUserDeliveryPreferencesCost('express')">
                         <div class="speed-info">
-                            <i class="fa-solid fa-bolt" style="color: #F59E0B;"></i>
-                            <div><h4>Express Delivery</h4><p>Guaranteed in 24 Hours</p></div>
+                            <div class="speed-icon" style="background:var(--primary-light);"><i class="fa-solid fa-plane-departure" style="color:var(--primary);"></i></div>
+                            <div><h4>Express Priority</h4><p>Dispatched via flight carrier</p></div>
                         </div>
-                        <span class="speed-price">₹99</span>
+                        <span class="speed-price" style="color: var(--text-dark);">₹ 99</span>
                     </label>
                 </div>
-                <div class="divider-line"></div>
+                
+                <div style="border-top:1px dashed #cbd5e1; margin-top:20px;"></div>
+                
                 <label class="gift-toggle">
-                    <div class="gt-text">
-                        <h4><i class="fa-solid fa-gift" style="color: var(--primary);"></i> Add Premium Gift Wrap</h4>
-                        <p>Luxury packaging (+₹49)</p>
+                    <div>
+                        <h4 style="font-size:13px; font-weight:700; color:var(--text-dark);">Premium Gift Wrap</h4>
+                        <p style="font-size: 11px; font-weight:500; color: var(--text-muted);">Include ribbons & premium seal (+ ₹49)</p>
                     </div>
-                    <div class="switch"><input type="checkbox" onchange="window.toggleGiftWrap(this)"><span class="slider"></span></div>
+                    <div class="switch"><input type="checkbox" onchange="updateCustomWrapPreferencesCosts(this)"><span class="slider"></span></div>
                 </label>
             </section>
 
             <section class="pro-card">
                 <div class="card-header"><h2>Payment Method</h2></div>
                 <div class="payment-selector">
-                    <label class="pay-option selected" onclick="window.selectPayment('cod', this)">
-                        <div class="pay-radio"><div class="pay-dot"></div></div>
+                    <label class="pay-option selected" onclick="pickPaymentMode('cod', this)">
+                        <div class="custom-radio-mark"><div class="custom-radio-dot"></div></div>
                         <div class="pay-content">
-                            <div class="pay-icon"><i class="fa-solid fa-money-bill-1-wave" style="color: #10B981;"></i></div>
-                            <div><h4>Cash on Delivery</h4><p>Pay when order arrives</p></div>
+                            <i class="fa-solid fa-boxes-packing" style="font-size: 24px; color:#64748b; margin:0 4px;"></i>
+                            <div><h4>Cash On Delivery (COD)</h4><p>Pay cash when package arrives</p></div>
                         </div>
                     </label>
-                    <label class="pay-option" onclick="window.selectPayment('online', this)">
-                        <div class="pay-radio"><div class="pay-dot"></div></div>
+                    <label class="pay-option" onclick="pickPaymentMode('online', this)">
+                        <div class="custom-radio-mark"><div class="custom-radio-dot"></div></div>
                         <div class="pay-content">
-                            <div class="pay-icon"><i class="fa-brands fa-google-pay" style="color: #3B82F6;"></i></div>
-                            <div><h4>UPI / Credit Card</h4><p>Secure online payment</p></div>
+                            <i class="fa-solid fa-money-check-dollar" style="font-size: 20px; color:var(--text-dark); background:var(--bg-body); padding:4px; border-radius:6px;"></i>
+                            <div>
+                                <h4>Online Payment (UPI/Card) <span style="background:var(--bg-body); border:1px solid var(--border); padding:2px 5px; border-radius:4px; font-size:9px; font-weight:600; color:var(--success); margin-left:4px;">FAST</span></h4>
+                                <p>Pay safely using GPay, PhonePe UPI</p>
+                            </div>
                         </div>
                     </label>
                 </div>
             </section>
 
-            <section class="pro-card bill-card">
+            <section class="pro-card" style="margin-bottom:0;">
                 <div class="card-header"><h2>Order Summary</h2></div>
+                
+                <!-- 🔥 PROMO CODE SECTION 🔥 -->
                 <div class="promo-container" id="promoInputGroup">
-                    <input type="text" id="promoInput" class="promo-input" placeholder="Have a promo code?">
-                    <button class="promo-btn" id="promoBtn" onclick="window.applyPromo()">Apply</button>
+                    <input type="text" id="promoInput" class="promo-input" placeholder="Enter coupon code">
+                    <button class="promo-btn" id="promoBtn" onclick="verifyAndApplyCouponAPI()">APPLY</button>
                 </div>
-                <div class="applied-promo-box" id="appliedPromoBox" style="display:none;">
-                    <div class="ap-details"><i class="fa-solid fa-tag"></i><span>Code <strong id="apCodeName"></strong> Applied</span></div>
-                    <button class="ap-remove" onclick="window.removePromo()"><i class="fa-solid fa-xmark"></i></button>
+                
+                <div class="applied-promo-box" id="appliedPromoBox">
+                    <div class="ap-details"><i class="fa-solid fa-circle-check"></i> Applied: <strong id="apCodeName"></strong></div>
+                    <button class="ap-remove" onclick="removeActiveCoupon()">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
                 </div>
 
                 <div class="bill-breakdown">
-                    <div class="b-row"><span>Total MRP</span><span id="billMrp">₹0</span></div>
-                    <div class="b-row highlight-green"><span>Product Discount</span><span id="billDiscount">-₹0</span></div>
-                    <div class="b-row highlight-green" id="billPromoRow" style="display:none;"><span>Coupon Discount</span><span id="billPromoDiscount">-₹0</span></div>
-                    <div class="b-row" id="row_delivery"><span>Shipping</span><span id="billDelivery" class="highlight-green">FREE</span></div>
-                    <div class="b-row" id="row_gift" style="display:none;"><span>Gift Wrap</span><span>₹49</span></div>
+                    <div class="b-row"><span>Cart Amount</span><span id="billMrp">₹ 0</span></div>
+                    <div class="b-row green-txt"><span>Product Discount</span><span id="billDiscount">- ₹ 0</span></div>
+                    <div class="b-row green-txt" id="billPromoRow" style="display:none;"><span>Coupon Discount</span><span id="billPromoDiscount">- ₹ 0</span></div>
+                    <div class="b-row"><span>Shipping Fees</span><span id="billDelivery" class="green-txt">Free</span></div>
+                    <div class="b-row" id="row_gift" style="display:none;"><span>Gift Wrapping</span><span>₹ 49</span></div>
                     <div class="b-divider"></div>
-                    <div class="b-row b-total"><span>Amount Payable</span><span id="billTotal">₹0</span></div>
+                    <div class="b-row b-total"><span>Total Payable</span><span id="billTotal">₹ 0</span></div>
                 </div>
-                <div class="savings-alert" id="totalSavingsBadge" style="display:none;">You are saving ₹0 on this order!</div>
             </section>
 
-            <div class="trust-footer" style="padding-bottom: 30px;">
-                <span><i class="fa-brands fa-whatsapp"></i> +91 9608720622</span>
-                <span><i class="fa-solid fa-shield-halved"></i> 100% Genuine</span>
+            <div class="trust-banner" style="display: flex; justify-content: center; width: 100%; margin: 15px 0 10px; font-size: 11px; font-weight:600; color: var(--text-muted);">
+                <i class="fa-solid fa-lock" style="color:var(--text-muted); margin-right:4px;"></i> Secured By Official Aavira Systems
             </div>
         </main>
 
         <div class="pro-bottom-bar" id="bottomCheckoutBar" style="display:none;">
-            <div class="bar-price"><p>Total</p><h3 id="bottomTotal">₹0</h3></div>
-            <button class="pro-pay-btn ripple" id="placeOrderBtn" onclick="window.placeOrder()">
-                <span id="btnText">Place Order <i class="fa-solid fa-lock"></i></span>
-            </button>
+            <div class="bar-price">
+                <p>Final Amount</p>
+                <h3 id="bottomTotal">₹ 0</h3>
+            </div>
+            <button class="btn-confirm" id="placeOrderBtn" onclick="submitFinalOrder()"><i class="fa-solid fa-lock"></i> Place Order</button>
         </div>
 
-        <div class="modal-overlay" id="processModal">
-            <div class="pro-modal" id="gatewayBox">
-                <div class="pro-spinner"></div>
-                <h3 id="processText">Processing Securely</h3>
-                <p>Please do not press back</p>
+        <!-- HOW TO GET MAP LINK MODAL -->
+        <div class="process-bg" id="mapHelpModal" style="display:none; z-index:10000;">
+            <div class="process-card" style="position:relative; text-align:left; max-width:300px; padding:24px;">
+                <button style="position:absolute; top:12px; right:12px; background:none; border:none; font-size:18px; color:var(--text-muted); cursor:pointer;" onclick="document.getElementById('mapHelpModal').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
+                <h3 style="font-size: 16px; font-weight:700; margin-bottom:14px; color:var(--text-dark); border-bottom: 1px dashed var(--border); padding-bottom:10px;"><i class="fa-solid fa-map-location-dot" style="color:var(--primary);"></i> Map Link Demo</h3>
+                <ol style="font-size:13px; color:var(--text-muted); font-weight:500; padding-left:18px; line-height:1.8; margin-bottom: 20px;">
+                    <li>Open <strong>Google Maps</strong> on your phone.</li>
+                    <li>Tap on the <span style="color:#2563eb; font-weight:700;">Blue Dot</span> (Your location).</li>
+                    <li>Tap on <strong>Share</strong> option.</li>
+                    <li>Select <strong>Copy Link</strong>.</li>
+                    <li>Come back and paste it in the box.</li>
+                </ol>
+                <button class="btn-pro-action primary" style="padding:12px; font-size:12px;" onclick="document.getElementById('mapHelpModal').style.display='none'">I Understand</button>
+            </div>
+        </div>
+
+        <!-- PROCESS MODALS -->
+        <div class="process-bg" id="processModal">
+            <!-- Loading Status -->
+            <div class="process-card" id="gatewayBox">
+                <div class="loader"></div>
+                <h2 style="font-size:18px; margin-bottom:10px; font-weight:700; color:var(--text-dark); font-family: 'Playfair Display', serif;">Processing Order...</h2>
+                <p style="font-size:12px; color:var(--text-muted); font-weight:500;" id="processText">Please wait while we verify your details securely.</p>
             </div>
             
-            <div class="pro-modal success-modal" id="successBox" style="display:none;">
-                <div class="success-icon"><i class="fa-solid fa-check"></i></div>
-                <h2>Order Success!</h2>
-                <div class="order-badge">ID: <span id="displayOrderId">ORD-XXXX</span></div>
-                <p>Your premium fashion is being prepared for dispatch.</p>
-                <div class="success-actions">
-                    <button class="btn-track" onclick="window.location.href='orders'"><i class="fa-solid fa-box-open"></i> Track Order</button>
-                    <button class="btn-notif" id="successNotifBtn" onclick="window.enableOrderNotifications()"><i class="fa-solid fa-bell"></i> Enable Notifications</button>
-                    <button class="btn-home" onclick="window.location.href='./'"><i class="fa-solid fa-house"></i> Back to Home</button>
+            <!-- Result Confirm Message Panel -->
+            <div class="process-card" id="successBox" style="display:none; padding-bottom: 24px;">
+                <div id="dynamicModalIcon" style="width:65px; height:65px; border-radius:50%; color:white; font-size:30px; display:flex; justify-content:center; align-items:center; margin: 0 auto 16px;"></div>
+                
+                <h2 id="successBoxTitle" style="font-family:'Playfair Display', serif; font-size:22px; font-weight:700; color:var(--text-dark);">Order Placed Successfully!</h2>
+                
+                <div style="margin: 16px 0; font-size: 13px; font-weight:700; color: var(--success); background:#ECFDF5; padding:8px; border-radius:8px; border:1px dashed #6ee7b7; letter-spacing:0.5px;">
+                    ORDER ID: <span id="displayOrderId" style="color:var(--text-dark);">-----</span>
                 </div>
+                
+                <p id="successBoxDesc" style="font-size:13px; color:var(--text-muted); line-height: 1.5; font-weight:500;">Your order details have been securely recorded. We will process it shortly.</p>
+                
+                <div class="popup-action-btns" id="popupActionBtns"></div>
             </div>
         </div>
 
-        <div class="pro-toast" id="alertToast">
+        <div class="toast" id="alertToast">
             <span id="toastIcon"></span>
-            <div class="toast-content"><h4 id="toastTitle">Alert</h4><p id="toastMessage">Message</p></div>
+            <div id="toastMessage" style="flex:1;">Notification</div>
         </div>
-
     </div>
 
-    <!-- 🔥 100% FIX: Normal Scripts First, Module later 🔥 -->
+    <!-- 🔥 External JS Dependencies 🔥 -->
     <script src="user_data.js"></script>
-    <script src="checkout-script.js"></script>
     <script type="module" src="checkout-firebase.js"></script>
+    
+    <!-- 🔥 Main Logic JS Linked Here 🔥 -->
+    <script src="checkout-script.js"></script>
+
 </body>
 </html>
