@@ -21,6 +21,7 @@ function formatDateOnly(dateObj) {
     return dateObj.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
+// 🔥 SMART COLOR FORMATTER 🔥
 function formatColor(colorVal) {
     let clr = colorVal || 'Standard';
     if(clr.match(/^https?:\/\//) || clr.includes('cloudinary.com') || clr.includes('data:image') || clr.includes('/')) {
@@ -52,15 +53,18 @@ async function fetchOrders() {
             const safeEmail = userEmail ? String(userEmail).trim().toLowerCase() : "";
             const safeLocalOrders = localOrdersArray.map(id => String(id).trim().toUpperCase());
 
+            // 🔥 100% STRICT SECURITY - No Demo Bypass 🔥
             if (safeEmail === "" && safeLocalOrders.length === 0) {
-                allOrdersData = result.data;
+                allOrdersData = [];
             } else {
                 allOrdersData = result.data.filter(order => {
                     const orderEmail = order.email ? String(order.email).trim().toLowerCase() : "";
                     const orderUserEmail = order.userEmail ? String(order.userEmail).trim().toLowerCase() : "";
                     const matchEmail = safeEmail !== "" && (orderEmail === safeEmail || orderUserEmail === safeEmail);
+                    
                     const safeOrderId = order.orderId ? String(order.orderId).trim().toUpperCase() : String(order.id).trim().toUpperCase();
                     const matchLocalId = safeLocalOrders.includes(safeOrderId);
+                    
                     return matchEmail || matchLocalId;
                 });
             }
@@ -277,7 +281,7 @@ window.openOrderDetails = function(internalId) {
     document.getElementById('dtAddressFull').innerText = order.address || "Address not provided";
     document.getElementById('dtAddressPhone').innerText = `Phone: ${order.phone || "N/A"}`;
 
-    // 🔥 CANCEL BUTTON LOGIC 🔥
+    // 🔥 CANCEL BUTTON ONLY ON DETAILS PAGE 🔥
     const dtCancelBtn = document.getElementById('dtCancelBtn');
     if(['Placed', 'Pending', 'Processing', 'Confirmed'].includes(status)) {
         dtCancelBtn.style.display = 'flex';
@@ -285,35 +289,9 @@ window.openOrderDetails = function(internalId) {
         dtCancelBtn.style.display = 'none';
     }
 
-    // 🔥 PAYMENT ACTION BOX LOGIC (DYNAMIC BUTTON OR SUCCESS TEXT) 🔥
-    const payBox = document.getElementById('dtPaymentActionBox');
-    let pStatus = order.paymentStatus || 'Pending';
-    
-    if (pStatus.toLowerCase() === 'success' || pStatus.toLowerCase() === 'paid') {
-        // Payment is already done -> Show Success Banner
-        payBox.innerHTML = `
-            <div class="pay-success-banner">
-                <i class="fa-solid fa-circle-check"></i> Payment Successful
-            </div>
-        `;
-    } else {
-        // Payment is pending/COD -> Show Pay on WhatsApp Button
-        payBox.innerHTML = `
-            <button class="btn-pay-wa" onclick="payViaWhatsApp('${order.orderId}', ${total})">
-                Pay ₹${Number(total).toLocaleString('en-IN')} <i class="fa-brands fa-whatsapp"></i>
-            </button>
-        `;
-    }
-
     generateAdvancedTimeline(status, rawDate, expectedDate);
 
     document.getElementById('detailsView').classList.add('show');
-}
-
-// WhatsApp Payment Redirect Function
-window.payViaWhatsApp = function(orderId, amount) {
-    let msg = `Hi Aavira Support,\n\nI want to complete the payment for my Order: *${orderId}*.\n*Total Amount to Pay: ₹${amount.toLocaleString('en-IN')}*\n\nPlease share the UPI ID / Payment Link.`;
-    window.open(`https://wa.me/919608720622?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
 window.closeOrderDetails = function() {
