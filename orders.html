@@ -10,8 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- External CSS -->
-    <link rel="stylesheet" href="jcc.css?v=2.0">
+    <!-- Linked CSS File -->
+    <link rel="stylesheet" href="jcc.css">
 </head>
 <body>
 
@@ -46,10 +46,11 @@
                     <div class="skel-card"><div class="skel-line" style="width: 50%;"></div><div class="skel-line" style="width: 100%; height:80px;"></div></div>
                 </div>
 
-                <div class="empty-state" id="emptyState" style="display:none;">
+                <div class="empty-state" id="emptyState">
                     <i class="fa-solid fa-box-open" style="font-size: 60px; color: #ddd; margin-bottom: 20px;"></i>
                     <h3 style="font-size: 18px; color: var(--text-dark); margin-bottom: 8px;">No Orders Found</h3>
-                    <p style="font-size: 13px; color: var(--text-muted);">Looks like you haven't placed any orders yet.</p>
+                    <p style="font-size: 13px; color: var(--text-muted);">Please log in or place an order to see your history here.</p>
+                    <button class="h-btn btn-outline" style="margin-top: 20px;" onclick="window.location.href='./'">Start Shopping</button>
                 </div>
 
                 <div id="cardsWrapper"></div>
@@ -129,16 +130,13 @@
                     </div>
                 </div>
 
-                <!-- 🔥 ORDER SUMMARY WITH DYNAMIC PAYMENT BUTTON 🔥 -->
+                <!-- Order Summary -->
                 <div class="info-card" style="animation-delay: 0.4s;">
                     <h3 class="tracking-title">Order Summary</h3>
                     <div class="summary-row"><span>Subtotal</span><span id="dtSubtotal">₹0.00</span></div>
                     <div class="summary-row"><span>Shipping Charge</span><span>₹0.00</span></div>
                     <div class="summary-row"><span style="color:var(--status-green);">Discount</span><span style="color:var(--status-green);" id="dtDiscount">- ₹0.00</span></div>
-                    <div class="summary-row total"><span>Total</span><span id="dtTotal">₹0.00</span></div>
-                    
-                    <!-- Dynamic Payment Action Box Injected Here -->
-                    <div id="dtPaymentActionBox"></div>
+                    <div class="summary-row total"><span>Total Paid</span><span id="dtTotal">₹0.00</span></div>
                 </div>
 
                 <!-- Need Help & Cancel Option -->
@@ -148,6 +146,7 @@
                     
                     <div class="help-btns">
                         <button class="h-btn btn-outline" onclick="openWhatsApp()"><i class="fa-brands fa-whatsapp" style="font-size:16px;"></i> Contact Support</button>
+                        <!-- 🔥 CANCEL BUTTON 🔥 -->
                         <button class="h-btn btn-cancel-outline" id="dtCancelBtn" style="display:none;" onclick="triggerCancelOrder()"><i class="fa-solid fa-ban"></i> Cancel Order</button>
                     </div>
                 </div>
@@ -170,8 +169,9 @@
                 </div>
                 
                 <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <button id="btnConfirmCancel" onclick="executeCancelOrder()" class="cancel-solid-red">Yes, Cancel Order</button>
-                    <button onclick="closeModal('cancelModal')" class="cancel-solid-gray">No, Keep It</button>
+                    <button id="btnConfirmCancel" onclick="executeCancelOrder()" style="background-color: var(--error) !important; color: #ffffff !important; border: none !important; padding: 16px; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); -webkit-appearance: none; transition: 0.2s;">Yes, Cancel Order</button>
+                    
+                    <button onclick="closeModal('cancelModal')" style="background-color: transparent !important; color: var(--text-dark) !important; border: 1px solid #E5E7EB !important; padding: 16px; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; -webkit-appearance: none; transition: 0.2s;">No, Keep It</button>
                 </div>
             </div>
         </div>
@@ -181,7 +181,7 @@
 
     </div>
 
-    <!-- External JS -->
+    <!-- Linked JS File -->
     <script src="tcc.js"></script>
 </body>
 </html>
