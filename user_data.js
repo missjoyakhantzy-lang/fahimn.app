@@ -3,7 +3,7 @@
 // ==========================================
 
 // 🔥 PRODUCTS & ORDERS BACKEND (Aavira) 🔥
-const VERCEL_URL = "https://aavira-fashion-backend.vercel.app";
+const VERCEL_URL = "https://server-js-psi-five.vercel.app";
 
 // 🔥 NAYA AUTHENTICATION BACKEND (Login/OTP) 🔥
 const AUTH_URL = "https://ssxpq15in.vercel.app";
