@@ -1,22 +1,36 @@
-// ==========================================
-// user_data.js (DATA PROVIDER & DELIVERY BOY)
-// ==========================================
+// =========================================================
+// AAVIRA LUXE - DATA PROVIDER & DELIVERY BOY (user_data.js)
+// =========================================================
 
-// 🔥 1. PRODUCTS, MAIN PRODUCTS & BANNERS KE LIYE URL 🔥
+// 🔥 1. MAIN BACKEND URL (Products, Orders, Banners, Reviews) 🔥
 const VERCEL_URL = "https://server-js-psi-five.vercel.app";
 
-// 🔥 2. OTP, LOGIN AUR ORDERS KE LIYE NAYA URL 🔥
+// 🔥 2. AUTH BACKEND URL (Login, Send OTP, Verify OTP) 🔥
 const AUTH_URL = "https://ssxpq15in.vercel.app";
 
+// 🔑 3. SECURE SECRET KEY (Unauthorized Access Block Karne Ke Liye) 🔑
+const AAVIRA_SECRET_KEY = "AAVIRA_LUXE_SECURE_AUTH_2026_PROD";
 
-// ==========================================
-// 1. DATA FETCHING (Products, Main Products, Banners, Categories)
-// ==========================================
+// Common Secure Headers Helper
+const getSecureHeaders = (customHeaders = {}) => {
+    return {
+        'Content-Type': 'application/json',
+        'x-aavira-secret': AAVIRA_SECRET_KEY,
+        ...customHeaders
+    };
+};
+
+
+// =========================================================
+// 1. PRODUCTS & STORE UI DATA (VERCEL_URL)
+// =========================================================
 
 // 👉 Normal Products Fetcher
 window.getVercelData = async function() {
     try { 
-        const res = await fetch(`${VERCEL_URL}/api/products`); 
+        const res = await fetch(`${VERCEL_URL}/api/products`, {
+            headers: getSecureHeaders()
+        }); 
         const data = await res.json(); 
         return (res.ok && data.status === "success") ? data.data : []; 
     } catch (e) { 
@@ -25,10 +39,12 @@ window.getVercelData = async function() {
     }
 };
 
-// 👉 🔥 NAYA: Main Products Fetcher (Jo miss ho raha tha) 🔥
+// 👉 Main Products Fetcher (Single Product Pages)
 window.getMainProductsData = async function() {
     try { 
-        const res = await fetch(`${VERCEL_URL}/api/main_products`); 
+        const res = await fetch(`${VERCEL_URL}/api/main_products`, {
+            headers: getSecureHeaders()
+        }); 
         const data = await res.json(); 
         return (res.ok && data.status === "success") ? data.data : []; 
     } catch (e) { 
@@ -40,7 +56,9 @@ window.getMainProductsData = async function() {
 // 👉 Banners Fetcher
 window.getBannersData = async function() {
     try { 
-        const res = await fetch(`${VERCEL_URL}/api/banners`); 
+        const res = await fetch(`${VERCEL_URL}/api/banners`, {
+            headers: getSecureHeaders()
+        }); 
         const data = await res.json(); 
         return (res.ok && data.status === "success") ? data.data : []; 
     } catch (e) { 
@@ -51,7 +69,9 @@ window.getBannersData = async function() {
 // 👉 Categories Fetcher
 window.getCategoriesData = async function() {
     try { 
-        const res = await fetch(`${VERCEL_URL}/api/categories`); 
+        const res = await fetch(`${VERCEL_URL}/api/categories`, {
+            headers: getSecureHeaders()
+        }); 
         const data = await res.json(); 
         return (res.ok && data.status === "success") ? data.data : []; 
     } catch (e) { 
@@ -60,32 +80,53 @@ window.getCategoriesData = async function() {
 };
 
 
-// ==========================================
-// 2. ORDERS LOGIC (Ab ye naye link AUTH_URL par order bhejeaga)
-// ==========================================
+// =========================================================
+// 2. ORDERS ENGINE (VERCEL_URL - MAIN SERVER)
+// =========================================================
+
+// 👉 Naya Order Database me Save karna
 window.sendOrderToVercel = async function(orderPayload) {
-    try {
-        const response = await fetch(`${AUTH_URL}/api/orders`, { 
+    try { 
+        const response = await fetch(`${VERCEL_URL}/api/orders`, { 
             method: 'POST', 
-            headers: { 'Content-Type': 'application/json' }, 
+            headers: getSecureHeaders(), 
             body: JSON.stringify(orderPayload) 
         });
         const result = await response.json(); 
         return (response.ok && result.status === "success");
     } catch (error) { 
+        console.error("Order Submit Error:", error);
         return false; 
     }
 };
 
-
-// ==========================================
-// 3. REVIEWS LOGIC
-// ==========================================
-window.saveReviewToDatabase = async function(productId, reviewData) {
+// 👉 User Orders Fetch karna (tcc.js ke liye)
+window.getOrdersFromVercel = async function(phone = '', email = '') {
     try {
+        let url = `${VERCEL_URL}/api/orders?nocache=${new Date().getTime()}`;
+        if (phone) url += `&phone=${encodeURIComponent(phone)}`;
+        else if (email) url += `&email=${encodeURIComponent(email)}`;
+
+        const response = await fetch(url, {
+            headers: getSecureHeaders()
+        });
+        const result = await response.json(); 
+        return (response.ok && result.status === "success" && Array.isArray(result.data)) ? result.data : [];
+    } catch (error) { 
+        console.error("Orders Fetch Error:", error);
+        return []; 
+    }
+};
+
+
+// =========================================================
+// 3. REVIEWS ENGINE (VERCEL_URL)
+// =========================================================
+window.saveReviewToDatabase = async function(productId, reviewData) {
+    try { 
         const response = await fetch(`${VERCEL_URL}/api/add-review`, { 
             method: 'POST', 
-            headers: { 'Content-Type': 'application/json' }, 
+            headers: getSecureHeaders(), 
             body: JSON.stringify({ productId: productId, review: reviewData }) 
         });
         const result = await response.json(); 
@@ -96,8 +137,10 @@ window.saveReviewToDatabase = async function(productId, reviewData) {
 };
 
 window.getReviewsFromDatabase = async function(productId) {
-    try {
-        const response = await fetch(`${VERCEL_URL}/api/get-reviews?productId=${productId}`);
+    try { 
+        const response = await fetch(`${VERCEL_URL}/api/get-reviews?productId=${productId}`, {
+            headers: getSecureHeaders()
+        });
         const result = await response.json(); 
         return (response.ok && result.success) ? result.data : [];
     } catch (error) { 
@@ -106,14 +149,15 @@ window.getReviewsFromDatabase = async function(productId) {
 };
 
 
-// ==========================================
-// 4. LOGIN & OTP DELIVERY BOY (Sahi URL ke sath)
-// ==========================================
+// =========================================================
+// 4. LOGIN & OTP DELIVERY BOY (AUTH_URL)
+// =========================================================
 window.DeliveryBoy = {
     sendOTP: async function(email, name) {
-        try {
+        try { 
             const response = await fetch(`${AUTH_URL}/api/send-otp`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                method: 'POST', 
+                headers: getSecureHeaders(),
                 body: JSON.stringify({ userEmail: email, userName: name })
             });
             const data = await response.json(); 
@@ -124,9 +168,10 @@ window.DeliveryBoy = {
     },
 
     verifyOTP: async function(email, userOtp, name, pwd) {
-        try {
+        try { 
             const response = await fetch(`${AUTH_URL}/api/verify-otp`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                method: 'POST', 
+                headers: getSecureHeaders(),
                 body: JSON.stringify({ userEmail: email, userOTP: userOtp, userName: name, userPassword: pwd })
             });
             const data = await response.json(); 
@@ -137,9 +182,10 @@ window.DeliveryBoy = {
     },
 
     login: async function(email, pwd) {
-        try {
+        try { 
             const response = await fetch(`${AUTH_URL}/api/login`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                method: 'POST', 
+                headers: getSecureHeaders(),
                 body: JSON.stringify({ userEmail: email, userPassword: pwd })
             });
             const data = await response.json(); 
@@ -150,9 +196,10 @@ window.DeliveryBoy = {
     },
 
     checkEmailExists: async function(email) {
-        try {
+        try { 
             const response = await fetch(`${AUTH_URL}/api/login`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                method: 'POST', 
+                headers: getSecureHeaders(),
                 body: JSON.stringify({ userEmail: email, userPassword: "DUMMY_PASSWORD_CHECK_123" })
             });
             const data = await response.json();
@@ -169,7 +216,7 @@ window.DeliveryBoy = {
         return new Promise((resolve) => { 
             setTimeout(() => { 
                 resolve({ success: true, userName: "Google User", email: "user@gmail.com" }); 
-            }, 1500); 
+            }, 1000); 
         });
     }
 };
