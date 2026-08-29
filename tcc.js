@@ -1,5 +1,5 @@
 /* =========================================================
-   AAVIRA LUXE - ORDERS ENGINE (Connected via user_data.js)
+   AAVIRA LUXE - ORDERS ENGINE (tcc.js) - FIXED & BULLETPROOF
    ========================================================= */
 
 let allOrdersData = [];
@@ -44,7 +44,7 @@ window.handleSearch = function() {
     }
 };
 
-// Status Normalizer
+// Status Normalizer (Fixed 'Out for Delivery')
 function getStrictProductStatus(rawStatus) {
     if (!rawStatus) return "Processing";
     let s = String(rawStatus).trim().toLowerCase();
@@ -95,22 +95,31 @@ function formatColor(colorVal) {
     return clr;
 }
 
+// Clean alphanumeric string helper for ID comparison (Removes #, -, spaces)
+function cleanIdString(str) {
+    return String(str || '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     updateTabIndicator(document.querySelector('.tab.active'));
     fetchOrders();
 });
 
-// 🔥 FETCH ORDERS - CONNECTED DIRECTLY TO user_data.js (NO HARDCODED URL) 🔥
+// 🔥 BULLETPROOF FETCH ORDERS (MULTI-KEY & DIRECT FALLBACK SUPPORT) 🔥
 async function fetchOrders() {
-    const userEmail = (localStorage.getItem('aavira_user_email') || '').trim().toLowerCase();
-    const rawUserPhone = (localStorage.getItem('aavira_user_phone') || '').replace(/[^0-9]/g, '');
+    // 1. Gather all possible phone formats from LocalStorage
+    const rawUserPhone = (localStorage.getItem('aavira_user_phone') || localStorage.getItem('user_phone') || localStorage.getItem('phone') || '').replace(/[^0-9]/g, '');
     const userPhone = rawUserPhone.length >= 10 ? rawUserPhone.slice(-10) : '';
 
+    // 2. Gather all possible email formats from LocalStorage
+    const userEmail = (localStorage.getItem('aavira_user_email') || localStorage.getItem('user_email') || localStorage.getItem('email') || '').trim().toLowerCase();
+
+    // 3. Gather Placed Orders (with safe parsing and clean IDs)
     let localPlacedOrderIds = [];
     try {
         const stored = JSON.parse(localStorage.getItem('aavira_placed_orders') || '[]');
         if (Array.isArray(stored)) {
-            localPlacedOrderIds = stored.map(id => String(id).trim().toUpperCase()).filter(id => id && id !== 'UNDEFINED' && id !== 'NULL');
+            localPlacedOrderIds = stored.map(id => cleanIdString(id)).filter(id => id && id !== 'UNDEFINED' && id !== 'NULL');
         }
     } catch(e) {
         localPlacedOrderIds = [];
@@ -118,7 +127,7 @@ async function fetchOrders() {
 
     const isUserIdentified = (userEmail !== '') || (userPhone !== '') || (localPlacedOrderIds.length > 0);
 
-    // Agar user identify nahi hua toh empty state
+    // Agar device par koi identity ya order record nahi hai toh empty state
     if (!isUserIdentified) {
         allOrdersData = [];
         const loader = document.getElementById('loader');
@@ -129,29 +138,49 @@ async function fetchOrders() {
     }
 
     try {
-        // 👉 DIRECT CALL TO user_data.js FUNCTION
         let rawOrders = [];
+
+        // 👉 Step A: Call user_data.js
         if (typeof window.getOrdersFromVercel === 'function') {
             rawOrders = await window.getOrdersFromVercel(userPhone, userEmail);
+        }
+
+        // 👉 Step B: Fail-safe Direct Fetch if user_data.js wasn't ready
+        if (!rawOrders || rawOrders.length === 0) {
+            try {
+                const VERCEL_BACKEND = "https://server-js-psi-five.vercel.app";
+                let fetchUrl = `${VERCEL_BACKEND}/api/orders?nocache=${new Date().getTime()}`;
+                if (userPhone) fetchUrl += `&phone=${encodeURIComponent(userPhone)}`;
+                else if (userEmail) fetchUrl += `&email=${encodeURIComponent(userEmail)}`;
+
+                const res = await fetch(fetchUrl);
+                const json = await res.json();
+                if (res.ok && json.status === "success" && Array.isArray(json.data)) {
+                    rawOrders = json.data;
+                }
+            } catch(e) {}
         }
 
         const loader = document.getElementById('loader');
         if (loader) loader.style.display = 'none';
 
-        if (Array.isArray(rawOrders)) {
+        if (Array.isArray(rawOrders) && rawOrders.length > 0) {
             
-            // Client-Side Security Filter
+            // 🔥 BULLETPROOF CLIENT FILTER 🔥
             allOrdersData = rawOrders.filter(order => {
                 if (!order) return false;
 
-                const oId = String(order.orderId || order.id || order._id || '').trim().toUpperCase();
-                if (oId && localPlacedOrderIds.includes(oId)) return true;
+                // 1. Match by Order ID (Clean comparison ignoring '#', spaces, dashes)
+                const oCleanId = cleanIdString(order.orderId || order.id || order._id);
+                if (oCleanId && localPlacedOrderIds.includes(oCleanId)) return true;
 
-                const rawOPhone = String(order.phone || '').replace(/[^0-9]/g, '');
+                // 2. Match by Phone Number (Checks order.phone, customerPhone, userPhone, userId)
+                const rawOPhone = String(order.phone || order.customerPhone || order.userPhone || order.userId || '').replace(/[^0-9]/g, '');
                 const oPhone = rawOPhone.length >= 10 ? rawOPhone.slice(-10) : '';
                 if (userPhone && oPhone && userPhone === oPhone) return true;
 
-                const oEmail = String(order.email || '').trim().toLowerCase();
+                // 3. Match by Email Address (Checks order.email, customerEmail, userEmail, userId)
+                const oEmail = String(order.email || order.customerEmail || order.userEmail || order.userId || '').trim().toLowerCase();
                 if (userEmail && oEmail && userEmail === oEmail) return true;
 
                 return false;
@@ -164,12 +193,13 @@ async function fetchOrders() {
             } catch(e) {}
 
             allOrdersData.forEach(o => {
-                const checkId = o.orderId || o.id || o._id;
-                if(locallyCancelled.includes(checkId)) {
+                const checkId = cleanIdString(o.orderId || o.id || o._id);
+                if(locallyCancelled.some(cId => cleanIdString(cId) === checkId)) {
                     o.orderStatus = 'Cancelled';
                 }
             });
 
+            // Sort newest first
             allOrdersData.sort((a,b) => parseOrderDate(b.createdAt) - parseOrderDate(a.createdAt));
 
             if (allOrdersData.length === 0) {
@@ -278,7 +308,7 @@ function renderOrdersUI(ordersArray, skipAnim = false) {
 
         const total = Number(order.totalAmount || order.total || 0);
         const safeKeyId = order.id || order._id || order.orderId;
-        const displayOrderId = order.orderId || ('#AVF' + String(safeKeyId).slice(-5));
+        const displayOrderId = order.orderId ? (order.orderId.startsWith('#') ? order.orderId : '#' + order.orderId) : ('#AVF' + String(safeKeyId).slice(-5));
         
         let statusClass = "st-Processing";
         let bottomLine = `<i class="fa-solid fa-truck"></i> <span>Expected by ${formatDateOnly(expectedDate)}, 9:00 PM</span>`;
@@ -336,7 +366,13 @@ function renderOrdersUI(ordersArray, skipAnim = false) {
 // ORDER DETAILS VIEW
 // ==========================================
 window.openOrderDetails = function(internalId) {
-    const order = allOrdersData.find(o => (o.id === internalId || o._id === internalId || o.orderId === internalId));
+    const cleanTargetId = cleanIdString(internalId);
+    const order = allOrdersData.find(o => {
+        return cleanIdString(o.id) === cleanTargetId || 
+               cleanIdString(o._id) === cleanTargetId || 
+               cleanIdString(o.orderId) === cleanTargetId;
+    });
+    
     if(!order) return;
     currentOrderData = order;
 
@@ -344,7 +380,8 @@ window.openOrderDetails = function(internalId) {
     let status = getStrictProductStatus(order.orderStatus);
     let expectedDate = getSmartExpectedDate(rawDate, status);
 
-    document.getElementById('dtOrderId').innerText = order.orderId || order.id || '#AVF';
+    const displayOrderId = order.orderId ? (order.orderId.startsWith('#') ? order.orderId : '#' + order.orderId) : '#AVF';
+    document.getElementById('dtOrderId').innerText = displayOrderId;
     document.getElementById('dtDate').innerText = `Placed on ${formatDateTime(rawDate)}`;
     
     const itemsContainer = document.getElementById('dtItemsContainer');
@@ -402,7 +439,7 @@ window.openOrderDetails = function(internalId) {
 
     document.getElementById('dtAddressName').innerText = order.customerName || order.name || "Customer";
     document.getElementById('dtAddressFull').innerText = order.address || "Address not provided";
-    document.getElementById('dtAddressPhone').innerText = `Phone: ${order.phone || order.customerPhone || "N/A"}`;
+    document.getElementById('dtAddressPhone').innerText = `Phone: ${order.phone || order.customerPhone || order.userPhone || "N/A"}`;
 
     const dtCancelBtn = document.getElementById('dtCancelBtn');
     if(['Processing', 'Confirmed'].includes(status)) {
@@ -669,15 +706,15 @@ window.executeCancelOrder = function() {
     setTimeout(() => {
         if(currentOrderData) {
             currentOrderData.orderStatus = 'Cancelled';
-            const oId = currentOrderData.orderId || currentOrderData.id;
+            const oId = cleanIdString(currentOrderData.orderId || currentOrderData.id);
             
             let locallyCancelled = [];
             try {
                 locallyCancelled = JSON.parse(localStorage.getItem('aavira_cancelled_orders') || '[]');
             } catch(e) {}
             
-            if (!locallyCancelled.includes(oId)) {
-                locallyCancelled.push(oId);
+            if (!locallyCancelled.some(cId => cleanIdString(cId) === oId)) {
+                locallyCancelled.push(currentOrderData.orderId || currentOrderData.id);
                 localStorage.setItem('aavira_cancelled_orders', JSON.stringify(locallyCancelled));
             }
             
