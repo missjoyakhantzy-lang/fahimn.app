@@ -3,1271 +3,977 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>My Profile - Aavira Luxe</title>
-    <meta name="theme-color" content="#ffffff">
-    
-    <!-- Google Fonts & Font Awesome -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>Aavira Luxe - My Profile</title>
+    <meta name="theme-color" content="#ec136d">
+
+    <!-- Phosphor Icons & Fonts -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
     <style>
-        :root {
-            --primary: #E11D48;
-            --primary-light: #FFF1F2;
-            --primary-border: #FECDD3;
-            --text-dark: #111827;
-            --text-muted: #64748B;
-            --text-light: #94A3B8;
-            --border: #F1F5F9;
-            --bg-page: #F8FAFC;
-            --card-bg: #FFFFFF;
-            --nav-gray: #8E9BAE;
-            --font: 'Plus Jakarta Sans', sans-serif;
-            --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.02);
-            --smooth: cubic-bezier(0.25, 0.8, 0.25, 1);
-            --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            font-family: var(--font); 
-            -webkit-tap-highlight-color: transparent; 
-        }
-
+        /* ==========================================
+           1. RANI PINK LUXE DESIGN SYSTEM
+           ========================================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Poppins', sans-serif; }
+        
         html, body { 
             width: 100%; 
             height: 100%; 
             height: 100vh;
             height: 100dvh;
-            background: #CBD5E1; 
+            background-color: #CBD5E1; 
             display: flex; 
             justify-content: center; 
+            align-items: center; 
             overflow: hidden; 
         }
-        
+
         .app-container { 
             width: 100%; 
-            max-width: 480px; 
-            background: var(--bg-page); 
+            max-width: 420px; 
             height: 100%; 
             height: 100vh;
-            height: 100dvh;
+            height: 100dvh; 
+            background-color: #fafafa; 
             position: relative; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
             display: flex; 
             flex-direction: column; 
-            overflow: hidden;
-            box-shadow: 0 0 40px rgba(0,0,0,0.1);
+            overflow: hidden; 
         }
 
-        /* HEADER */
-        .top-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 20px;
-            background: #FFFFFF;
-            z-index: 20;
-            flex-shrink: 0;
-            border-bottom: 1px solid var(--border);
+        .scrollable-content { 
+            flex: 1; 
+            overflow-y: auto; 
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; 
+            padding-bottom: calc(75px + env(safe-area-inset-bottom, 20px)); 
+            scroll-behavior: smooth; 
+        }
+        .scrollable-content::-webkit-scrollbar { display: none; }
+
+        /* --- 💖 TOP RANI PINK HEADER --- */
+        .header-section { 
+            background: linear-gradient(135deg, #ec136d, #c70d55); 
+            border-radius: 0 0 35px 35px; 
+            padding: 20px 20px 65px 20px; 
+            color: white; 
+            position: relative; 
+            overflow: hidden; 
+        }
+        .header-section::after { 
+            content: ''; 
+            position: absolute; 
+            right: -20px; 
+            top: 20px; 
+            width: 150px; 
+            height: 150px; 
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%); 
+            border-radius: 50%; 
+            pointer-events: none;
         }
 
-        .header-title {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--text-dark);
-            letter-spacing: -0.4px;
+        .top-bar { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 22px; 
+            position: relative; 
+            z-index: 2; 
+        }
+        .top-bar h2 { font-size: 18px; font-weight: 600; letter-spacing: 0.5px; }
+        .top-bar i { font-size: 24px; cursor: pointer; transition: 0.2s; }
+        .top-bar i:active { transform: scale(0.9); }
+
+        .profile-info { 
+            display: flex; 
+            align-items: center; 
+            gap: 18px; 
+            position: relative; 
+            z-index: 2; 
+            padding: 0 5px; 
+        }
+        
+        .avatar-container { position: relative; }
+        .avatar { 
+            width: 76px; 
+            height: 76px; 
+            background-color: #FFFFFF; 
+            border-radius: 50%; 
+            border: 3px solid rgba(255,255,255,0.9); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            overflow: hidden; 
+            font-size: 32px; 
+            font-weight: 700; 
+            color: #ec136d; 
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        .header-icons {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
+        .user-details h3 { font-size: 19px; font-weight: 600; margin-bottom: 2px; }
+        .user-details p { font-size: 12px; opacity: 0.9; line-height: 1.4; margin-bottom: 6px; }
 
-        .h-icon-btn {
-            background: none;
-            border: none;
-            font-size: 20px;
-            color: var(--text-dark);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .badge { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 5px; 
+            background-color: white; 
+            color: #ec136d; 
+            padding: 4px 12px; 
+            border-radius: 20px; 
+            font-size: 11px; 
+            font-weight: 600; 
+        }
+        .badge.guest { background-color: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); }
+
+        .login-prompt-btn { 
+            background: white; 
+            color: #ec136d; 
+            font-weight: 600; 
+            font-size: 11.5px; 
+            padding: 6px 16px; 
+            border-radius: 20px; 
+            border: none; 
+            margin-top: 8px; 
+            cursor: pointer; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
             transition: 0.2s;
         }
+        .login-prompt-btn:active { transform: scale(0.95); }
 
-        /* SCROLLABLE MAIN CONTENT */
-        .main-content {
-            flex: 1;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            padding: 14px 16px calc(80px + env(safe-area-inset-bottom, 20px));
+        /* --- 📊 STATS CARD --- */
+        .stats-card { 
+            background-color: white; 
+            margin: -35px 20px 20px 20px; 
+            border-radius: 16px; 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 16px 10px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06); 
+            position: relative; 
+            z-index: 10; 
+            border: 1px solid #f0f0f0;
         }
-        .main-content::-webkit-scrollbar { display: none; }
+        .stat-item { text-align: center; flex: 1; cursor: pointer; }
+        .stat-item i { color: #ec136d; font-size: 26px; margin-bottom: 4px; display: inline-block; }
+        .stat-item h4 { color: #1a1a1a; font-size: 17px; font-weight: 700; }
+        .stat-item p { color: #777; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;}
+        .divider { width: 1px; background-color: #eaeaea; margin: 4px 0; }
 
-        /* PROFILE HERO CARD */
-        .profile-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 18px 16px 14px;
-            box-shadow: var(--shadow-card);
-            border: 1px solid var(--border);
-            margin-bottom: 18px;
-        }
+        /* --- 📋 MENU LIST --- */
+        .section-title { font-size: 13px; font-weight: 600; color: #888; margin: 12px 24px 8px; text-transform: uppercase; letter-spacing: 0.5px;}
+        .menu-container { background-color: white; margin: 0 20px 20px 20px; border-radius: 16px; padding: 4px 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #f0f0f0; }
+        .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f5f5f5; cursor: pointer; transition: 0.2s;}
+        .menu-item:active { opacity: 0.7; }
+        .menu-item:last-child { border-bottom: none; }
+        .menu-left { display: flex; align-items: center; gap: 14px; color: #1a1a1a; font-size: 14px; font-weight: 500; }
+        .menu-left i { color: #ec136d; font-size: 22px; }
+        .menu-text { display: flex; flex-direction: column; }
+        .menu-text span.title { font-size: 13.5px; font-weight: 600; color: #1a1a1a; }
+        .menu-text span.sub { font-size: 11px; color: #888; margin-top: 1px; }
+        .ph-caret-right { color: #c4c4c4; font-size: 18px; }
 
-        .profile-upper {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            position: relative;
-            padding-bottom: 16px;
-        }
-
-        .avatar-container {
-            position: relative;
-            width: 76px;
-            height: 76px;
-            flex-shrink: 0;
-        }
-
-        .avatar-img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: #FCE7F3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #F472B6;
-            font-size: 32px;
-            overflow: hidden;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
-
-        .camera-badge {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 24px;
-            height: 24px;
-            background: #FFFFFF;
-            border: 1.5px solid var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-size: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-        }
-
-        .user-info-col {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .name-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 4px;
-        }
-
-        .name-row h2 {
-            font-size: 16.5px;
-            font-weight: 800;
-            color: var(--text-dark);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .btn-edit-pill {
-            background: var(--primary-light);
-            border: 1px solid var(--primary-border);
-            color: var(--primary);
-            font-size: 10px;
-            font-weight: 700;
-            padding: 3px 8px;
-            border-radius: 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-
-        .btn-direct-login {
-            background: var(--primary);
-            color: white;
-            border: none;
-            font-size: 12px;
-            font-weight: 700;
-            padding: 7px 14px;
-            border-radius: 10px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 4px;
-            box-shadow: 0 3px 10px rgba(225, 29, 72, 0.25);
-        }
-
-        .info-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 3px;
-            font-weight: 500;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .info-row i {
-            font-size: 12px;
-            color: var(--text-dark);
-            width: 14px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        .info-row span {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        /* 4 QUICK STATS */
-        .stats-divider {
-            height: 1px;
-            background: #F1F5F9;
-            margin: 0 -16px 14px;
-        }
-
-        .quick-stats-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            text-align: center;
-        }
-
-        .stat-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            cursor: pointer;
-            padding: 4px 2px;
-        }
-
-        .stat-item:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 15%;
-            height: 70%;
-            width: 1px;
-            background: #E2E8F0;
-        }
-
-        .stat-item i {
-            font-size: 19px;
-            color: var(--primary);
-            margin-bottom: 6px;
-        }
-
-        .stat-item h4 {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 2px;
-        }
-
-        .stat-item p {
-            font-size: 9.5px;
-            color: var(--text-muted);
-            font-weight: 500;
-            line-height: 1.1;
-        }
-
-        /* SECTION LABELS */
-        .section-label {
-            font-size: 14.5px;
-            font-weight: 800;
-            color: var(--text-dark);
-            margin-bottom: 10px;
-            margin-top: 6px;
-            padding-left: 2px;
-        }
-
-        /* MENU GROUP CARDS */
-        .menu-card {
-            background: var(--card-bg);
-            border-radius: 18px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-card);
-            overflow: hidden;
-            margin-bottom: 18px;
-        }
-
-        .menu-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 13px 16px;
-            cursor: pointer;
-            transition: 0.2s var(--smooth);
-        }
-
-        .menu-row:not(:last-child) {
-            border-bottom: 1px solid #F1F5F9;
-        }
-
-        .menu-row:active {
-            background: #F8FAFC;
-        }
-
-        .menu-row-left {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .menu-icon-box {
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
-            background: var(--primary-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-size: 17px;
-            flex-shrink: 0;
-        }
-
-        .menu-titles h3 {
-            font-size: 13.5px;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 2px;
-        }
-
-        .menu-titles p {
-            font-size: 11px;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .menu-row-right {
-            color: #CBD5E1;
-            font-size: 13px;
-        }
-
-        /* =========================================================
-           ✨ EXACT THIN-LINE NAVBAR (MATCHING SCREENSHOT) ✨
-           ========================================================= */
-        .bottom-nav {
+        /* --- 📱 PHOSPHOR BOTTOM NAVIGATION --- */
+        .bottom-nav { 
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            width: 100%;
-            background: #FFFFFF;
-            border-top: 1px solid #E2E8F0;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 8px 0 calc(8px + env(safe-area-inset-bottom, 12px));
-            z-index: 50;
+            width: 100%; 
+            background-color: #ffffff; 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 10px 0 calc(8px + env(safe-area-inset-bottom, 10px)); 
+            border-top: 1px solid #f0f0f0; 
+            font-family: 'Inter', sans-serif; 
+            z-index: 50; 
             box-shadow: 0 -4px 15px rgba(0,0,0,0.03);
         }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: #8E9BAE; cursor: pointer; width: 20%; text-decoration: none;}
+        .nav-item i { font-size: 22px; }
+        .nav-item span { font-size: 10.5px; font-weight: 500; }
+        .nav-item.active { color: #ec136d; }
+        .nav-item.active i { font-weight: 600; color: #ec136d; }
 
-        .nav-link {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-            text-decoration: none;
-            color: var(--nav-gray);
-            font-size: 11px;
-            font-weight: 500;
-            cursor: pointer;
-            flex: 1;
-            transition: 0.2s;
+        /* --- 🛠 MODALS & TOGGLES --- */
+        .modal-overlay { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0,0,0,0.6); 
+            z-index: 999; 
+            display: none; 
+            justify-content: center; 
+            align-items: flex-end; 
+            backdrop-filter: blur(4px); 
+            opacity: 0; 
+            transition: opacity 0.3s ease; 
         }
+        .modal-overlay.show { display: flex; opacity: 1; }
 
-        .nav-svg-icon {
-            width: 24px;
-            height: 24px;
-            stroke: var(--nav-gray);
-            fill: none;
-            stroke-width: 1.8;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        .nav-link.active {
-            color: var(--nav-gray);
-            font-weight: 600;
-        }
-
-        /* MODALS & BOTTOM SHEETS */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
-            z-index: 999;
-            display: none;
-            align-items: flex-end;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-overlay.show { 
-            opacity: 1; 
-            display: flex; 
-        }
-
-        .bottom-sheet {
-            background: #FFFFFF;
-            width: 100%;
-            max-width: 480px;
-            border-radius: 26px 26px 0 0;
-            padding: 20px 20px calc(35px + env(safe-area-inset-bottom, 25px));
-            transform: translateY(100%);
-            transition: transform 0.35s var(--spring);
-            max-height: 88vh;
+        .bottom-sheet-modal { 
+            width: 100%; 
+            max-width: 420px; 
+            border-radius: 26px 26px 0 0; 
+            background: #fff; 
+            max-height: 88vh; 
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
+            transform: translateY(100%);
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 -10px 40px rgba(0,0,0,0.15);
         }
-
-        .modal-overlay.show .bottom-sheet { 
-            transform: translateY(0); 
-        }
-
-        .sheet-handle {
-            width: 36px;
-            height: 4px;
-            background: #CBD5E1;
-            border-radius: 10px;
-            margin: 0 auto 16px;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .modal-header h3 {
-            font-size: 17px;
-            font-weight: 800;
-            color: var(--text-dark);
-        }
-
-        .modal-close-btn {
-            background: #F1F5F9;
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            font-size: 14px;
-            color: var(--text-dark);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-input {
-            width: 100%;
-            border: 1.5px solid var(--border);
-            border-radius: 12px;
-            padding: 13px 14px;
-            font-size: 13.5px;
+        .modal-overlay.show .bottom-sheet-modal { transform: translateY(0); }
+        
+        .pro-input { 
+            width: 100%; 
+            border: 1.5px solid #e5e5e5; 
+            background: #fafafa; 
+            padding: 14px; 
+            font-size: 13px; 
+            font-family: 'Poppins'; 
+            border-radius: 12px; 
+            outline: none; 
+            transition: 0.3s; 
             margin-bottom: 12px;
-            outline: none;
-            background: #F8FAFC;
-            font-weight: 600;
+            font-weight: 500;
         }
+        .pro-input:focus { border-color: #ec136d; background: #fff; }
 
-        .modal-input:focus {
-            border-color: var(--primary);
-            background: #FFFFFF;
-        }
-
-        .modal-btn {
-            width: 100%;
-            background: var(--primary);
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
-            border: none;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            margin-top: 8px;
+        .modal-btn { 
+            background: #ec136d; 
+            color: white; 
+            width: 100%; 
+            padding: 14px; 
+            border-radius: 12px; 
+            border: none; 
+            font-weight: 600; 
+            font-size: 14px; 
+            cursor: pointer; 
+            margin-top: 6px; 
+            font-family: 'Poppins'; 
+            box-shadow: 0 4px 15px rgba(236, 19, 109, 0.25); 
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.25);
+        }
+        .modal-btn:active { transform: scale(0.98); }
+
+        /* SETTINGS TOGGLES */
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .setting-info h4 { font-size: 13.5px; font-weight: 600; color: #1E293B; margin-bottom: 2px; }
+        .setting-info p { font-size: 11px; color: #64748B; }
+
+        .switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; inset: 0; background-color: #E2E8F0; border-radius: 24px; transition: .3s; cursor: pointer; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; border-radius: 50%; transition: .3s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .switch input:checked + .slider { background-color: #ec136d; }
+        .switch input:checked + .slider:before { transform: translateX(20px); }
+
+        /* TOKEN CONTAINER BOX */
+        .token-box {
+            background: #F8FAFC;
+            border: 1px dashed #CBD5E1;
+            padding: 12px;
+            border-radius: 12px;
+            margin-top: 10px;
+            font-size: 11px;
+            color: #475569;
+            word-break: break-all;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
-        .modal-link {
-            font-size: 12px;
-            text-align: center;
-            margin-top: 14px;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
+        /* AUTH UI */
+        .auth-header { background: linear-gradient(135deg, #ec136d, #c70d55); padding: 25px 22px 18px; color: white; position: relative; }
+        .auth-header h2 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 2px; font-weight: 700; }
+        .auth-header p { font-size: 12px; opacity: 0.9; }
+        .auth-close { position: absolute; top: 18px; right: 18px; background: rgba(255,255,255,0.2); color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 16px; }
 
-        .modal-link span {
-            color: var(--primary);
-            font-weight: 700;
-            cursor: pointer;
-        }
+        .auth-body { padding: 22px 20px calc(30px + env(safe-area-inset-bottom, 20px)); }
+        .auth-input-group { position: relative; margin-bottom: 14px; }
+        .auth-input-group i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #9CA3AF; font-size: 20px; }
+        .auth-input-group input { width: 100%; padding: 14px 14px 14px 48px; background: #F9FAFB; border: 1.5px solid #E5E7EB; border-radius: 12px; font-size: 13px; font-weight: 500; font-family: 'Poppins'; outline: none; transition: 0.3s; color: #1F2937; }
+        .auth-input-group input:focus { background: #FFFFFF; border-color: #ec136d; box-shadow: 0 0 0 4px rgba(236, 19, 109, 0.1); }
+        
+        .modal-link { font-size: 12px; text-align: center; margin-top: 16px; color: #6B7280; font-weight: 500;}
+        .modal-link span { color: #ec136d; font-weight: 700; cursor: pointer; }
 
-        .toast {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-50px);
-            background: #0F172A;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 50px;
-            font-size: 12px;
-            font-weight: 600;
+        /* TOAST */
+        .pro-toast { 
+            position: fixed; 
+            top: 20px; 
+            left: 50%; 
+            transform: translateX(-50%) translateY(-50px); 
+            background: #1F2937; 
+            color: #fff; 
+            padding: 12px 20px; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            border-radius: 50px; 
+            z-index: 1000; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             opacity: 0;
             pointer-events: none;
-            transition: 0.3s var(--smooth);
-            z-index: 1000;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            white-space: nowrap;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 12px;
+            font-weight: 600;
         }
-
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .pro-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
     <div class="app-container">
         
-        <!-- TOP HEADER -->
-        <header class="top-header">
-            <h1 class="header-title">My Profile</h1>
-            <div class="header-icons">
-                <button class="h-icon-btn" onclick="showToast('No new notifications')"><i class="fa-regular fa-bell"></i></button>
-                <button class="h-icon-btn" onclick="openProfileSettings()"><i class="fa-solid fa-gear"></i></button>
-            </div>
-        </header>
-
-        <!-- MAIN SCROLLABLE BODY -->
-        <main class="main-content">
-
-            <!-- 1. TOP PROFILE HERO CARD -->
-            <div class="profile-card">
-                <div class="profile-upper">
-                    <div class="avatar-container" onclick="openProfileSettings()">
-                        <div class="avatar-img" id="userAvatar">
-                            <i class="fa-regular fa-user"></i>
-                        </div>
-                        <div class="camera-badge"><i class="fa-solid fa-camera"></i></div>
+        <div class="scrollable-content">
+            
+            <!-- 1. Header Section -->
+            <div class="header-section" id="main-header">
+                <div class="top-bar">
+                    <i class="ph-light ph-arrow-left" onclick="window.location.href='./'"></i>
+                    <h2>My Profile</h2>
+                    <i class="ph-light ph-gear" onclick="window.openModal('notificationsModal')"></i>
+                </div>
+                
+                <div class="profile-info">
+                    <div class="avatar-container">
+                        <div class="avatar" id="profileInitial"><i class="ph-light ph-user"></i></div>
                     </div>
-                    
-                    <div class="user-info-col">
-                        <div class="name-row">
-                            <h2 id="dispUserName">Guest User</h2>
-                            <button class="btn-edit-pill" id="btnEditProfile" onclick="openModal('editProfileModal')" style="display: none;">
-                                <i class="fa-solid fa-pen" style="font-size: 9px;"></i> Edit Profile
-                            </button>
-                        </div>
+                    <div class="user-details">
+                        <h3 id="vipName">Guest User</h3>
                         
-                        <!-- Logged Out State: Clean Login Button -->
-                        <div id="guestLoginPromptBox">
-                            <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 4px;">Sign in to view orders & address</p>
-                            <button class="btn-direct-login" onclick="openModal('loginModal')">
-                                <i class="fa-solid fa-right-to-bracket"></i> Login / Sign Up
-                            </button>
+                        <!-- Guest UI -->
+                        <div id="guestProfileUI">
+                            <div class="badge guest"><i class="ph-fill ph-user"></i> Guest Mode</div>
+                            <button class="login-prompt-btn" onclick="window.openLoginModal()">Login / Sign Up</button>
                         </div>
 
-                        <!-- Logged In State: Phone, Email, Address -->
-                        <div id="loggedInInfoBox" style="display: none;">
-                            <div class="info-row">
-                                <i class="fa-solid fa-phone"></i>
-                                <span id="dispUserPhone">Your Phone Number</span>
-                            </div>
-                            <div class="info-row">
-                                <i class="fa-regular fa-envelope"></i>
-                                <span id="dispUserEmail">Your Email Address</span>
-                            </div>
-                            <div class="info-row">
-                                <i class="fa-solid fa-location-dot"></i>
-                                <span id="dispUserAddress">Your Address</span>
-                            </div>
+                        <!-- VIP UI -->
+                        <div id="vipProfileUI" class="hidden" style="flex-direction: column; align-items: flex-start;">
+                            <p id="userEmailDisplay" style="margin-bottom: 5px;">Welcome to Aavira</p>
+                            <div class="badge"><i class="ph-fill ph-crown"></i> Verified Member</div>
                         </div>
-                    </div>
-
-                    <div class="profile-chevron" onclick="openProfileSettings()">
-                        <i class="fa-solid fa-chevron-right" style="color: #CBD5E1;"></i>
-                    </div>
-                </div>
-
-                <div class="stats-divider"></div>
-
-                <!-- 4 QUICK ACTIONS ROW (REAL LOCALSTORAGE DATA) -->
-                <div class="quick-stats-row">
-                    <div class="stat-item" onclick="window.location.href='orders'">
-                        <i class="fa-solid fa-bag-shopping"></i>
-                        <h4 id="statOrdersCount">0</h4>
-                        <p>View your orders</p>
-                    </div>
-                    
-                    <div class="stat-item" onclick="window.location.href='wishlist'">
-                        <i class="fa-regular fa-heart"></i>
-                        <h4 id="statWishlistCount">0</h4>
-                        <p>Items you saved</p>
-                    </div>
-                    
-                    <div class="stat-item" onclick="openModal('couponsModal')">
-                        <i class="fa-solid fa-tags"></i>
-                        <h4>Coupons</h4>
-                        <p>View coupons</p>
-                    </div>
-                    
-                    <div class="stat-item" onclick="openModal('rewardsModal')">
-                        <i class="fa-regular fa-star"></i>
-                        <h4 id="statRewardPts">150 Pts</h4>
-                        <p>Your reward points</p>
                     </div>
                 </div>
             </div>
 
-            <!-- 2. SECTION: MY ORDERS -->
-            <div class="section-label">My Orders</div>
-            <div class="menu-card">
-                <div class="menu-row" onclick="window.location.href='orders'">
-                    <div class="menu-row-left">
-                        <div class="menu-icon-box">
-                            <i class="fa-solid fa-cube"></i>
-                        </div>
-                        <div class="menu-titles">
-                            <h3>Track Orders</h3>
-                            <p>Track your orders, returns & cancellations</p>
-                        </div>
-                    </div>
-                    <div class="menu-row-right"><i class="fa-solid fa-chevron-right"></i></div>
+            <!-- 2. REAL-TIME Stats Card -->
+            <div class="stats-card">
+                <div class="stat-item" onclick="window.location.href='orders'">
+                    <i class="ph-light ph-package"></i>
+                    <h4 id="statOrdersCount">0</h4>
+                    <p>Orders</p>
+                </div>
+                <div class="divider"></div>
+                <div class="stat-item" onclick="window.location.href='wishlist'">
+                    <i class="ph-light ph-heart"></i>
+                    <h4 id="statWishCount">0</h4>
+                    <p>Wishlist</p>
+                </div>
+                <div class="divider"></div>
+                <div class="stat-item" onclick="window.location.href='cart'">
+                    <i class="ph-light ph-shopping-cart-simple"></i>
+                    <h4 id="cart-badge">0</h4>
+                    <p>Cart</p>
                 </div>
             </div>
 
-            <!-- 3. SECTION: MY ACCOUNT -->
-            <div class="section-label">My Account</div>
-            <div class="menu-card">
-                <div class="menu-row" onclick="openModal('addressModal')">
-                    <div class="menu-row-left">
-                        <div class="menu-icon-box"><i class="fa-solid fa-location-dot"></i></div>
-                        <div class="menu-titles">
-                            <h3>Address Book</h3>
-                            <p>Manage your delivery addresses</p>
+            <!-- 3. Account Settings Menu -->
+            <div class="section-title">Account Settings</div>
+            <div class="menu-container">
+                
+                <div class="menu-item" onclick="window.openModal('editProfileModal')">
+                    <div class="menu-left">
+                        <i class="ph-light ph-user-circle"></i> 
+                        <div class="menu-text">
+                            <span class="title">Personal Details</span>
+                            <span class="sub">Edit your profile & mobile</span>
                         </div>
                     </div>
-                    <div class="menu-row-right"><i class="fa-solid fa-chevron-right"></i></div>
+                    <i class="ph-bold ph-caret-right"></i>
                 </div>
 
-                <div class="menu-row" onclick="openProfileSettings()">
-                    <div class="menu-row-left">
-                        <div class="menu-icon-box"><i class="fa-regular fa-user"></i></div>
-                        <div class="menu-titles">
-                            <h3>Personal Information</h3>
-                            <p>Update your personal details</p>
+                <div class="menu-item" onclick="window.openModal('addressModal')">
+                    <div class="menu-left">
+                        <i class="ph-light ph-map-pin"></i> 
+                        <div class="menu-text">
+                            <span class="title">Saved Addresses</span>
+                            <span class="sub">Manage delivery locations</span>
                         </div>
                     </div>
-                    <div class="menu-row-right"><i class="fa-solid fa-chevron-right"></i></div>
+                    <i class="ph-bold ph-caret-right"></i>
+                </div>
+                
+                <div class="menu-item" onclick="window.openModal('couponsModal')">
+                    <div class="menu-left">
+                        <i class="ph-light ph-tag"></i> 
+                        <div class="menu-text">
+                            <span class="title">Coupons & Offers</span>
+                            <span class="sub">View active promo codes</span>
+                        </div>
+                    </div>
+                    <i class="ph-bold ph-caret-right"></i>
                 </div>
 
-                <div class="menu-row" onclick="openModal('changePasswordModal')">
-                    <div class="menu-row-left">
-                        <div class="menu-icon-box"><i class="fa-solid fa-lock"></i></div>
-                        <div class="menu-titles">
-                            <h3>Change Password</h3>
-                            <p>Update your account password</p>
+                <div class="menu-item" onclick="window.openModal('notificationsModal')">
+                    <div class="menu-left">
+                        <i class="ph-light ph-bell-ringing"></i> 
+                        <div class="menu-text">
+                            <span class="title">Push Notifications & Settings</span>
+                            <span class="sub">Real FCM alerts, device token & cache</span>
                         </div>
                     </div>
-                    <div class="menu-row-right"><i class="fa-solid fa-chevron-right"></i></div>
+                    <i class="ph-bold ph-caret-right"></i>
+                </div>
+                
+                <div class="menu-item" onclick="window.openSupportWhatsApp()">
+                    <div class="menu-left">
+                        <i class="ph-light ph-headphones"></i> 
+                        <div class="menu-text">
+                            <span class="title">Help & Support</span>
+                            <span class="sub">Chat with styling team</span>
+                        </div>
+                    </div>
+                    <i class="ph-bold ph-caret-right"></i>
                 </div>
 
-                <div class="menu-row" onclick="openModal('paymentMethodsModal')">
-                    <div class="menu-row-left">
-                        <div class="menu-icon-box"><i class="fa-regular fa-credit-card"></i></div>
-                        <div class="menu-titles">
-                            <h3>Payment Methods</h3>
-                            <p>Manage saved payment options</p>
+                <div class="menu-item" onclick="window.openModal('privacyModal')">
+                    <div class="menu-left">
+                        <i class="ph-light ph-shield-check"></i> 
+                        <div class="menu-text">
+                            <span class="title">Privacy Policy</span>
+                            <span class="sub">Read our privacy guidelines</span>
                         </div>
                     </div>
-                    <div class="menu-row-right"><i class="fa-solid fa-chevron-right"></i></div>
+                    <i class="ph-bold ph-caret-right"></i>
                 </div>
+
+                <!-- LOGOUT BUTTON (Shown ONLY when user is logged in) -->
+                <div class="menu-item" id="logoutMenuItem" onclick="window.handleLogout()" style="display: none;">
+                    <div class="menu-left" style="color: #e11d48;">
+                        <i class="ph-light ph-sign-out" style="color: #e11d48;"></i> 
+                        <div class="menu-text"><span class="title" style="color: #e11d48;">Secure Logout</span></div>
+                    </div>
+                    <i class="ph-bold ph-caret-right" style="color: #e11d48;"></i>
+                </div>
+
             </div>
 
-            <!-- 4. SECTION: MORE -->
-            <div class="section-label">More</div>
-            <div class="menu-card">
-                <div class="menu-row" onclick="openSupportWhatsApp()">
-                    <div class="menu-row-left">
-                        <div class="menu-icon-box"><i class="fa-solid fa-headset"></i></div>
-                        <div class="menu-titles">
-                            <h3>Customer Support</h3>
-                            <p>Help & support center</p>
-                        </div>
-                    </div>
-                    <div class="menu-row-right"><i class="fa-solid fa-chevron-right"></i></div>
-                </div>
+            <p style="text-align:center; font-size:11px; color:#A1A1AA; margin-bottom:20px;">Aavira Luxe v6.0.4 • Cloud Synced</p>
 
-                <div class="menu-row" onclick="openModal('privacyModal')">
-                    <div class="menu-row-left">
-                        <div class="menu-icon-box"><i class="fa-solid fa-shield-halved"></i></div>
-                        <div class="menu-titles">
-                            <h3>Privacy Policy</h3>
-                            <p>Read our privacy policy</p>
-                        </div>
-                    </div>
-                    <div class="menu-row-right"><i class="fa-solid fa-chevron-right"></i></div>
-                </div>
+        </div> 
 
-                <!-- Logout Row: ONLY Visible when user is logged in -->
-                <div class="menu-row" id="logoutRow" onclick="handleLogout()" style="display: none;">
-                    <div class="menu-row-left">
-                        <div class="menu-icon-box" style="background:#FFF1F2; color:#E11D48;"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
-                        <div class="menu-titles">
-                            <h3 style="color:#E11D48;">Logout</h3>
-                            <p>Sign out from your account</p>
-                        </div>
-                    </div>
-                    <div class="menu-row-right"><i class="fa-solid fa-chevron-right"></i></div>
-                </div>
-            </div>
-
-        </main>
-
-        <!-- =========================================================
-             ✨ EXACT CLEAN NAVBAR (HOME, CATEGORIES, SEARCH, ORDERS, PROFILE) ✨
-             ========================================================= -->
+        <!-- 5. Bottom Navigation (Clean URLs & Phosphor Icons) -->
         <nav class="bottom-nav">
-            <a href="./" class="nav-link">
-                <svg class="nav-svg-icon" viewBox="0 0 24 24">
-                    <path d="M3 10.5L12 3l9 7.5V20a1.5 1.5 0 0 1-1.5 1.5H4.5A1.5 1.5 0 0 1 3 20v-9.5z"/>
-                    <path d="M9 21.5V12h6v9.5"/>
-                </svg>
-                <span>Home</span>
-            </a>
-
-            <a href="categories" class="nav-link">
-                <svg class="nav-svg-icon" viewBox="0 0 24 24">
-                    <rect x="3.5" y="3.5" width="7" height="7" rx="2"/>
-                    <rect x="13.5" y="3.5" width="7" height="7" rx="2"/>
-                    <rect x="3.5" y="13.5" width="7" height="7" rx="2"/>
-                    <rect x="13.5" y="13.5" width="7" height="7" rx="2"/>
-                </svg>
-                <span>Categories</span>
-            </a>
-
-            <a href="search" class="nav-link">
-                <svg class="nav-svg-icon" viewBox="0 0 24 24">
-                    <circle cx="11" cy="11" r="7"/>
-                    <line x1="16.5" y1="16.5" x2="21" y2="21"/>
-                </svg>
-                <span>Search</span>
-            </a>
-
-            <a href="orders" class="nav-link">
-                <svg class="nav-svg-icon" viewBox="0 0 24 24">
-                    <path d="M12 2.5L3.5 7.5v9L12 21.5l8.5-5v-9L12 2.5z"/>
-                    <polyline points="3.5 7.5 12 12.5 20.5 7.5"/>
-                    <line x1="12" y1="12.5" x2="12" y2="21.5"/>
-                </svg>
-                <span>Orders</span>
-            </a>
-
-            <a href="profile" class="nav-link active">
-                <svg class="nav-svg-icon" viewBox="0 0 24 24">
-                    <circle cx="12" cy="7.5" r="4"/>
-                    <path d="M4.5 20.5c0-4.14 3.36-7.5 7.5-7.5s7.5 3.36 7.5 7.5"/>
-                </svg>
-                <span>Profile</span>
-            </a>
+            <a href="./" class="nav-item"><i class="ph-light ph-house"></i><span>Home</span></a>
+            <a href="categories" class="nav-item"><i class="ph-light ph-squares-four"></i><span>Categories</span></a>
+            <a href="search" class="nav-item"><i class="ph-light ph-magnifying-glass"></i><span>Search</span></a>
+            <a href="orders" class="nav-item"><i class="ph-light ph-package"></i><span>Orders</span></a>
+            <a href="profile" class="nav-item active"><i class="ph-fill ph-user"></i><span>Profile</span></a>
         </nav>
 
-        <!-- =========================================================
-             MODALS: AUTH, EDIT PROFILE, ADDRESS, COUPONS
-             ========================================================= -->
-        <!-- REAL AUTH MODAL -->
-        <div id="loginModal" class="modal-overlay" onclick="closeModal('loginModal')">
-            <div class="bottom-sheet" onclick="event.stopPropagation()">
-                <div class="sheet-handle"></div>
-                <div class="modal-header">
-                    <h3 id="authTitle">Sign In to Aavira</h3>
-                    <button class="modal-close-btn" onclick="closeModal('loginModal')"><i class="fa-solid fa-xmark"></i></button>
+        <!-- ==============================================
+             ALL MODALS (Real Functional Popups)
+             ============================================== -->
+        
+        <!-- 1. AUTH MODAL -->
+        <div id="loginModal" class="modal-overlay" onclick="window.closeModal('loginModal')">
+            <div class="bottom-sheet-modal" onclick="event.stopPropagation()">
+                <div class="auth-header">
+                    <i class="ph-bold ph-x auth-close" onclick="window.closeModal('loginModal')"></i>
+                    <h2 id="authTitle">Join Aavira Luxe</h2>
+                    <p id="authSubtitle">Discover premium ethnic fashion.</p>
                 </div>
                 
-                <!-- Sign Up Form -->
-                <div id="signupView" style="display: none;">
-                    <input type="text" id="signupName" class="modal-input" placeholder="Full Name" autocomplete="off">
-                    <input type="email" id="signupEmail" class="modal-input" placeholder="Email Address" autocomplete="off">
-                    <input type="password" id="signupPassword" class="modal-input" placeholder="Create Password" autocomplete="new-password">
-                    <button type="button" id="btnSignupAction" onclick="processSignup()" class="modal-btn">Send Verification OTP</button>
-                    <p class="modal-link">Already have an account? <span onclick="toggleAuthView('login')">Login here</span></p>
-                </div>
-                
-                <!-- Login Form -->
-                <div id="loginView">
-                    <input type="email" id="loginEmail" class="modal-input" placeholder="Email Address" autocomplete="off">
-                    <input type="password" id="loginPassword" class="modal-input" placeholder="Password" autocomplete="current-password">
-                    <button type="button" id="btnLoginAction" onclick="processLogin()" class="modal-btn">Secure Login</button>
-                    <p class="modal-link">New to Aavira Luxe? <span onclick="toggleAuthView('signup')">Create Account</span></p>
-                </div>
-                
-                <!-- OTP Form -->
-                <div id="otpView" style="display: none;">
-                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px; text-align: center;" id="otpSubText">Code sent to your email.</p>
-                    <input type="text" id="otpInput" class="modal-input" placeholder="------" maxlength="6" autocomplete="off" style="text-align:center; font-size:22px; font-weight:800; letter-spacing:6px;">
-                    <button type="button" id="btnOtpAction" onclick="verifySignupOTP()" class="modal-btn">Verify OTP & Login</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- EDIT PROFILE MODAL -->
-        <div class="modal-overlay" id="editProfileModal" onclick="closeModal('editProfileModal')">
-            <div class="bottom-sheet" onclick="event.stopPropagation()">
-                <div class="sheet-handle"></div>
-                <div class="modal-header">
-                    <h3>Personal Information</h3>
-                    <button class="modal-close-btn" onclick="closeModal('editProfileModal')"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-                <form onsubmit="saveProfileToServer(event)">
-                    <input type="text" class="modal-input" id="inpEditName" placeholder="Full Name" required>
-                    <input type="tel" class="modal-input" id="inpEditPhone" placeholder="Mobile Number (10 Digits)" maxlength="10" required>
-                    <input type="email" class="modal-input" id="inpEditEmail" placeholder="Email Address" required>
-                    <button type="submit" class="modal-btn" id="btnSaveProfile">Save to Account</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- ADDRESS MODAL -->
-        <div class="modal-overlay" id="addressModal" onclick="closeModal('addressModal')">
-            <div class="bottom-sheet" onclick="event.stopPropagation()">
-                <div class="sheet-handle"></div>
-                <div class="modal-header">
-                    <h3>Address Book</h3>
-                    <button class="modal-close-btn" onclick="closeModal('addressModal')"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-                <form onsubmit="saveAddressToServer(event)">
-                    <input type="text" class="modal-input" id="ad_name" placeholder="Full Name" required>
-                    <input type="tel" class="modal-input" id="ad_phone" placeholder="Mobile Number (10 Digits)" maxlength="10" required>
-                    <div style="display:flex; gap:10px;">
-                        <input type="number" class="modal-input" id="ad_pin" placeholder="Pincode" required style="flex:1;">
-                        <input type="text" class="modal-input" id="ad_city" placeholder="City" required style="flex:1;">
+                <div class="auth-body">
+                    <div id="signupView" style="display: none;">
+                        <div class="auth-input-group">
+                            <input type="text" id="signupName" placeholder="Full Name" autocomplete="off">
+                            <i class="ph-light ph-user"></i>
+                        </div>
+                        <div class="auth-input-group">
+                            <input type="email" id="signupEmail" placeholder="Email Address" autocomplete="off">
+                            <i class="ph-light ph-envelope"></i>
+                        </div>
+                        <div class="auth-input-group">
+                            <input type="password" id="signupPassword" placeholder="Create Password" autocomplete="new-password">
+                            <i class="ph-light ph-lock-key"></i>
+                        </div>
+                        <button type="button" id="btnSignupAction" onclick="window.processSignup()" class="modal-btn">Get Secure OTP</button>
+                        <p class="modal-link">Already have an account? <span onclick="window.toggleAuthView('login')">Login here</span></p>
                     </div>
-                    <input type="text" class="modal-input" id="ad_street" placeholder="Flat, Building, Street Address" required>
-                    <button type="submit" class="modal-btn" id="btnSaveAddress">Save Address</button>
+                    
+                    <div id="loginView">
+                        <div class="auth-input-group">
+                            <input type="email" id="loginEmail" placeholder="Email Address" autocomplete="off">
+                            <i class="ph-light ph-envelope"></i>
+                        </div>
+                        <div class="auth-input-group">
+                            <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password">
+                            <i class="ph-light ph-lock-key"></i>
+                        </div>
+                        <button type="button" id="btnLoginAction" onclick="window.processLogin()" class="modal-btn">Secure Login</button>
+                        <p class="modal-link">New to Aavira? <span onclick="window.toggleAuthView('signup')">Create Account</span></p>
+                    </div>
+                    
+                    <div id="otpView" style="display: none; text-align: center;">
+                        <p style="font-size: 13px; color: #6B7280; margin-bottom: 16px;" id="otpSubText">Code sent to your email.</p>
+                        <div class="auth-input-group">
+                            <input type="text" id="otpInput" placeholder="------" maxlength="6" autocomplete="off" style="text-align:center; font-size:22px; font-weight:700; letter-spacing:8px; padding-left: 16px;">
+                        </div>
+                        <button type="button" id="btnOtpAction" onclick="window.verifySignupOTP()" class="modal-btn">Verify & Login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. EDIT PROFILE MODAL -->
+        <div id="editProfileModal" class="modal-overlay" onclick="window.closeModal('editProfileModal')">
+            <div class="bottom-sheet-modal" style="padding: 24px calc(20px + env(safe-area-inset-bottom, 20px));" onclick="event.stopPropagation()">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="font-size: 18px; font-weight:600;">Personal Details</h3>
+                    <i class="ph-bold ph-x" style="font-size: 18px; cursor: pointer;" onclick="window.closeModal('editProfileModal')"></i>
+                </div>
+                <form onsubmit="window.saveProfileData(event)">
+                    <input type="text" id="editName" class="pro-input" placeholder="Full Name" required>
+                    <input type="tel" id="editPhone" class="pro-input" placeholder="Mobile Number (10 Digits)" maxlength="10" required>
+                    <input type="email" id="editEmail" class="pro-input" placeholder="Email Address" required>
+                    <button type="submit" class="modal-btn">Save Changes</button>
                 </form>
             </div>
         </div>
 
-        <!-- COUPONS MODAL -->
-        <div class="modal-overlay" id="couponsModal" onclick="closeModal('couponsModal')">
-            <div class="bottom-sheet" onclick="event.stopPropagation()">
-                <div class="sheet-handle"></div>
-                <div class="modal-header">
-                    <h3>Available Coupons</h3>
-                    <button class="modal-close-btn" onclick="closeModal('couponsModal')"><i class="fa-solid fa-xmark"></i></button>
+        <!-- 3. ADDRESSES MODAL -->
+        <div id="addressModal" class="modal-overlay" onclick="window.closeModal('addressModal')">
+            <div class="bottom-sheet-modal" style="padding: 24px calc(20px + env(safe-area-inset-bottom, 20px));" onclick="event.stopPropagation()">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="font-size: 18px; font-weight:600;">Saved Delivery Address</h3>
+                    <i class="ph-bold ph-x" style="font-size: 18px; cursor: pointer;" onclick="window.closeModal('addressModal')"></i>
+                </div>
+                <form onsubmit="window.saveAddressData(event)">
+                    <input type="text" id="ad_name" class="pro-input" placeholder="Full Name" required>
+                    <input type="tel" id="ad_phone" class="pro-input" placeholder="Mobile Number (10 Digits)" maxlength="10" required>
+                    <div style="display:flex; gap:10px;">
+                        <input type="number" id="ad_pin" class="pro-input" placeholder="Pincode" required style="flex:1;">
+                        <input type="text" id="ad_city" class="pro-input" placeholder="City" required style="flex:1;">
+                    </div>
+                    <input type="text" id="ad_street" class="pro-input" placeholder="Flat, Building, Street Address" required>
+                    <button type="submit" class="modal-btn">Save Address</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 4. COUPONS MODAL -->
+        <div id="couponsModal" class="modal-overlay" onclick="window.closeModal('couponsModal')">
+            <div class="bottom-sheet-modal" style="padding: 24px calc(20px + env(safe-area-inset-bottom, 20px));" onclick="event.stopPropagation()">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="font-size: 18px; font-weight:600;">Available Coupons</h3>
+                    <i class="ph-bold ph-x" style="font-size: 18px; cursor: pointer;" onclick="window.closeModal('couponsModal')"></i>
                 </div>
                 <div style="display:flex; flex-direction:column; gap:10px;">
                     <div style="padding:14px; background:#FFF1F2; border:1px dashed #FDA4AF; border-radius:14px; display:flex; justify-content:space-between; align-items:center;">
                         <div>
-                            <strong style="color:var(--primary); font-size:14px;">LUXURY500</strong>
+                            <strong style="color:#ec136d; font-size:14px;">LUXURY500</strong>
                             <p style="font-size:11px; color:#64748B; margin-top:2px;">Get ₹500 OFF on your order</p>
                         </div>
-                        <button onclick="copyCoupon('LUXURY500')" style="background:var(--primary); color:#fff; border:none; padding:6px 12px; border-radius:8px; font-size:11px; font-weight:700;">Copy</button>
+                        <button onclick="window.copyCoupon('LUXURY500')" style="background:#ec136d; color:#fff; border:none; padding:6px 12px; border-radius:8px; font-size:11px; font-weight:700;">Copy</button>
                     </div>
                     <div style="padding:14px; background:#FFF1F2; border:1px dashed #FDA4AF; border-radius:14px; display:flex; justify-content:space-between; align-items:center;">
                         <div>
-                            <strong style="color:var(--primary); font-size:14px;">AAVIRA200</strong>
+                            <strong style="color:#ec136d; font-size:14px;">AAVIRA200</strong>
                             <p style="font-size:11px; color:#64748B; margin-top:2px;">Get ₹200 OFF on prepaid</p>
                         </div>
-                        <button onclick="copyCoupon('AAVIRA200')" style="background:var(--primary); color:#fff; border:none; padding:6px 12px; border-radius:8px; font-size:11px; font-weight:700;">Copy</button>
+                        <button onclick="window.copyCoupon('AAVIRA200')" style="background:#ec136d; color:#fff; border:none; padding:6px 12px; border-radius:8px; font-size:11px; font-weight:700;">Copy</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- REWARDS MODAL -->
-        <div class="modal-overlay" id="rewardsModal" onclick="closeModal('rewardsModal')">
-            <div class="bottom-sheet" onclick="event.stopPropagation()">
-                <div class="sheet-handle"></div>
-                <div class="modal-header">
-                    <h3>Reward Points</h3>
-                    <button class="modal-close-btn" onclick="closeModal('rewardsModal')"><i class="fa-solid fa-xmark"></i></button>
+        <!-- 5. 🔥 ULTRA-ADVANCED PUSH NOTIFICATIONS & SETTINGS MODAL 🔥 -->
+        <div id="notificationsModal" class="modal-overlay" onclick="window.closeModal('notificationsModal')">
+            <div class="bottom-sheet-modal" style="padding: 24px calc(20px + env(safe-area-inset-bottom, 20px));" onclick="event.stopPropagation()">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                    <h3 style="font-size: 18px; font-weight:700; color:#1E293B;">System & Notification Engine</h3>
+                    <i class="ph-bold ph-x" style="font-size: 18px; cursor: pointer;" onclick="window.closeModal('notificationsModal')"></i>
                 </div>
-                <div style="text-align:center; padding:20px 0;">
-                    <div style="width:60px; height:60px; background:#FFF1F2; color:var(--primary); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; margin:0 auto 12px;">
-                        <i class="fa-solid fa-gift"></i>
+                
+                <!-- 1. Web Push Notification Toggle -->
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <h4>Real Device Push Alerts</h4>
+                        <p id="pushStatusText">Generate live Web Push (FCM) Token</p>
                     </div>
-                    <h2 style="font-size:24px; font-weight:800; color:var(--text-dark);">150 Pts</h2>
-                    <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Earn 10 points for every ₹100 spent on Aavira Luxe.</p>
+                    <label class="switch">
+                        <input type="checkbox" id="pushNotificationToggle" onchange="window.toggleDevicePushNotification(this.checked)">
+                        <span class="slider"></span>
+                    </label>
                 </div>
-            </div>
-        </div>
 
-        <!-- CHANGE PASSWORD MODAL -->
-        <div class="modal-overlay" id="changePasswordModal" onclick="closeModal('changePasswordModal')">
-            <div class="bottom-sheet" onclick="event.stopPropagation()">
-                <div class="sheet-handle"></div>
-                <div class="modal-header">
-                    <h3>Change Password</h3>
-                    <button class="modal-close-btn" onclick="closeModal('changePasswordModal')"><i class="fa-solid fa-xmark"></i></button>
+                <!-- 2. FCM Device Token Viewer Box -->
+                <div id="fcmTokenDisplayBox" class="token-box" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <strong style="color:#ec136d; font-size:11.5px;"><i class="ph-bold ph-shield-check"></i> Device FCM Token (Active)</strong>
+                        <button onclick="window.copyDeviceFcmToken()" style="background:#ec136d; color:#fff; border:none; padding:3px 8px; border-radius:6px; font-size:10px; font-weight:700; cursor:pointer;">Copy</button>
+                    </div>
+                    <span id="fcmTokenString" style="font-size: 10px; line-height: 1.3;">Loading Token...</span>
                 </div>
-                <form onsubmit="handlePasswordChange(event)">
-                    <input type="password" class="modal-input" placeholder="Current Password" required>
-                    <input type="password" class="modal-input" placeholder="New Password" required>
-                    <button type="submit" class="modal-btn">Update Password</button>
-                </form>
-            </div>
-        </div>
 
-        <!-- PAYMENT METHODS MODAL -->
-        <div class="modal-overlay" id="paymentMethodsModal" onclick="closeModal('paymentMethodsModal')">
-            <div class="bottom-sheet" onclick="event.stopPropagation()">
-                <div class="sheet-handle"></div>
-                <div class="modal-header">
-                    <h3>Payment Methods</h3>
-                    <button class="modal-close-btn" onclick="closeModal('paymentMethodsModal')"><i class="fa-solid fa-xmark"></i></button>
+                <!-- 3. WhatsApp & SMS Updates -->
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <h4>Order SMS & WhatsApp</h4>
+                        <p>Live courier & doorstep OTP alerts</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="smsTrackingToggle" checked onchange="window.saveLocalPref('sms_alerts', this.checked)">
+                        <span class="slider"></span>
+                    </label>
                 </div>
-                <div style="padding:14px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:14px; display:flex; align-items:center; gap:12px; margin-bottom:10px;">
-                    <i class="fa-brands fa-google-pay" style="font-size:28px; color:#1E293B;"></i>
+
+                <!-- 4. Haptic Touch Engine -->
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <h4>Haptic Touch & Vibration</h4>
+                        <p>Vibration on buttons & actions</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="hapticToggle" checked onchange="window.saveLocalPref('haptic_feedback', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <!-- 5. Cache & Storage Cleaner -->
+                <div style="margin-top: 16px; padding: 14px; background: #FFF1F2; border-radius: 14px; border: 1px solid #FECDD3; display: flex; justify-content: space-between; align-items: center;">
                     <div>
-                        <h4 style="font-size:13px; font-weight:700;">UPI / Instant Pay</h4>
-                        <p style="font-size:11px; color:#64748B;">PhonePe, Google Pay, Paytm</p>
+                        <h4 style="font-size: 12.5px; font-weight: 700; color: #BE123C;">Clear App Cache & Data</h4>
+                        <p style="font-size: 10.5px; color: #64748B;">Fixes network & stale product drafts</p>
                     </div>
+                    <button onclick="window.clearAppCacheOnly()" style="background:#BE123C; color:#fff; border:none; padding:6px 12px; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer;">Clean</button>
                 </div>
-                <div style="padding:14px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:14px; display:flex; align-items:center; gap:12px;">
-                    <i class="fa-solid fa-money-bill-wave" style="font-size:22px; color:#10B981;"></i>
-                    <div>
-                        <h4 style="font-size:13px; font-weight:700;">Cash on Delivery (COD)</h4>
-                        <p style="font-size:11px; color:#64748B;">Pay at your doorstep</p>
-                    </div>
-                </div>
+
+                <button type="button" onclick="window.closeModal('notificationsModal')" class="modal-btn" style="margin-top: 18px;">Done</button>
             </div>
         </div>
 
-        <!-- PRIVACY POLICY MODAL -->
-        <div class="modal-overlay" id="privacyModal" onclick="closeModal('privacyModal')">
-            <div class="bottom-sheet" onclick="event.stopPropagation()">
-                <div class="sheet-handle"></div>
-                <div class="modal-header">
-                    <h3>Privacy Policy</h3>
-                    <button class="modal-close-btn" onclick="closeModal('privacyModal')"><i class="fa-solid fa-xmark"></i></button>
+        <!-- 6. PRIVACY POLICY MODAL -->
+        <div id="privacyModal" class="modal-overlay" onclick="window.closeModal('privacyModal')">
+            <div class="bottom-sheet-modal" style="padding: 24px calc(20px + env(safe-area-inset-bottom, 20px));" onclick="event.stopPropagation()">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="font-size: 18px; font-weight:600;">Privacy Policy</h3>
+                    <i class="ph-bold ph-x" style="font-size: 18px; cursor: pointer;" onclick="window.closeModal('privacyModal')"></i>
                 </div>
-                <p style="font-size:12.5px; color:#64748B; line-height:1.6;">Your personal details, contact numbers, and delivery addresses are strictly encrypted and never shared with third parties.</p>
+                <p style="font-size: 12.5px; color:#64748B; line-height:1.6;">Your personal details, contact numbers, and delivery addresses are strictly encrypted and never shared with third parties.</p>
             </div>
         </div>
 
-        <!-- TOAST -->
-        <div class="toast" id="proToast">Action Successful!</div>
+        <!-- TOAST ALERT -->
+        <div id="toast" class="pro-toast">Message</div>
 
     </div>
 
-    <!-- DATA PROVIDER LINK -->
+    <!-- 🔗 DATA PROVIDER LINK -->
     <script src="user_data.js"></script>
 
-    <!-- REAL LOCALSTORAGE & SERVER SYNC ENGINE -->
+    <!-- 🔥 REAL FIREBASE SDK & NOTIFICATION PUSH ENGINE 🔥 -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getMessaging, getToken, isSupported } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js";
+
+        // Aavira Production Firebase Credentials
+        const firebaseConfig = {
+            apiKey: "AIzaSyCMGx6C5_al22KjCmdhGVKugJoR2UmZ1Ng",
+            authDomain: "aavira-co-in.firebaseapp.com",
+            projectId: "aavira-co-in",
+            storageBucket: "aavira-co-in.firebasestorage.app",
+            messagingSenderId: "247971292356",
+            appId: "1:247971292356:web:82780c6dffe9ba530f9591"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // ==========================================
+        // 🔔 1. REAL FCM WEB PUSH NOTIFICATION ENGINE
+        // ==========================================
+        window.toggleDevicePushNotification = async function(enable) {
+            const toggle = document.getElementById('pushNotificationToggle');
+            const tokenBox = document.getElementById('fcmTokenDisplayBox');
+            const tokenStr = document.getElementById('fcmTokenString');
+            const statusTxt = document.getElementById('pushStatusText');
+
+            if (!enable) {
+                localStorage.removeItem('aavira_fcm_token');
+                localStorage.setItem('aavira_push_enabled', 'false');
+                if (tokenBox) tokenBox.style.display = 'none';
+                if (statusTxt) statusTxt.innerText = "Push notifications disabled.";
+                window.showToast("Push notifications disabled.");
+                return;
+            }
+
+            // Check Browser Support
+            const supported = await isSupported();
+            if (!supported || !('Notification' in window)) {
+                window.showToast("Push notifications not supported on this browser.");
+                if (toggle) toggle.checked = false;
+                return;
+            }
+
+            try {
+                // 1. Request Real Permission
+                const permission = await Notification.requestPermission();
+                if (permission !== 'granted') {
+                    window.showToast("Permission denied! Please enable in site settings.");
+                    if (toggle) toggle.checked = false;
+                    localStorage.setItem('aavira_push_enabled', 'false');
+                    return;
+                }
+
+                // 2. Service Worker Registration
+                let swReg = null;
+                if ('serviceWorker' in navigator) {
+                    try {
+                        swReg = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+                    } catch(e) {
+                        console.warn("SW Registration fallback:", e);
+                    }
+                }
+
+                // 3. Generate Real FCM Token
+                const messaging = getMessaging(app);
+                if (statusTxt) statusTxt.innerText = "Generating FCM Token...";
+                
+                const token = await getToken(messaging, {
+                    serviceWorkerRegistration: swReg || undefined
+                });
+
+                if (token) {
+                    localStorage.setItem('aavira_fcm_token', token);
+                    localStorage.setItem('aavira_push_enabled', 'true');
+                    
+                    if (tokenBox) tokenBox.style.display = 'flex';
+                    if (tokenStr) tokenStr.innerText = token;
+                    if (statusTxt) statusTxt.innerText = "Real FCM Token Active & Synced!";
+
+                    // 4. Save Token to Firestore (fcm_tokens Collection)
+                    const userEmail = localStorage.getItem('aavira_user_email') || 'guest_device';
+                    const tokenDocId = token.slice(-25).replace(/[^a-zA-Z0-9]/g, '');
+                    
+                    await setDoc(doc(db, "fcm_tokens", tokenDocId), {
+                        token: token,
+                        email: userEmail,
+                        device: navigator.userAgent,
+                        platform: navigator.platform || 'mobile_web',
+                        createdAt: serverTimestamp(),
+                        updatedAt: serverTimestamp()
+                    }, { merge: true });
+
+                    // 5. Trigger Instant In-Browser Test Notification
+                    try {
+                        new Notification("Aavira Luxe VIP Alerts", {
+                            body: "Notifications active! You will receive live delivery & exclusive offer updates.",
+                            icon: "https://aavirafashion.shop/favicon.ico"
+                        });
+                    } catch(e) {}
+
+                    window.showToast("Push Notifications Enabled Successfully!");
+                } else {
+                    window.showToast("Could not generate FCM Token. Check internet.");
+                    if (toggle) toggle.checked = false;
+                }
+
+            } catch (error) {
+                console.error("FCM Token Error:", error);
+                window.showToast("Notification Engine Error: " + (error.message || "Retry"));
+                if (toggle) toggle.checked = false;
+            }
+        };
+
+        // Initialize Toggle State on Page Load
+        window.checkPushNotificationState = function() {
+            const savedToken = localStorage.getItem('aavira_fcm_token');
+            const pushPref = localStorage.getItem('aavira_push_enabled');
+            const toggle = document.getElementById('pushNotificationToggle');
+            const tokenBox = document.getElementById('fcmTokenDisplayBox');
+            const tokenStr = document.getElementById('fcmTokenString');
+            const statusTxt = document.getElementById('pushStatusText');
+
+            if (savedToken && pushPref === 'true') {
+                if (toggle) toggle.checked = true;
+                if (tokenBox) tokenBox.style.display = 'flex';
+                if (tokenStr) tokenStr.innerText = savedToken;
+                if (statusTxt) statusTxt.innerText = "FCM Token Active & Synced!";
+            } else {
+                if (toggle) toggle.checked = false;
+                if (tokenBox) tokenBox.style.display = 'none';
+            }
+        };
+
+        window.copyDeviceFcmToken = function() {
+            const token = localStorage.getItem('aavira_fcm_token');
+            if (token) {
+                navigator.clipboard.writeText(token).catch(()=>{});
+                window.showToast("FCM Token Copied!");
+            }
+        };
+
+        window.saveLocalPref = function(key, val) {
+            localStorage.setItem(`aavira_pref_${key}`, val);
+            window.showToast("Setting Updated!");
+        };
+
+        window.clearAppCacheOnly = function() {
+            if (confirm("Clear cached images, drafts and stale network data?")) {
+                localStorage.removeItem('checkoutAddressDraft');
+                localStorage.removeItem('aavira_pref_sms');
+                localStorage.removeItem('aavira_pref_email');
+                window.showToast("Cache Cleared Successfully!");
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.checkPushNotificationState();
+        });
+    </script>
+
+    <!-- CORE UI JAVASCRIPT -->
     <script>
         let tempSignupData = { name: "", email: "", pwd: "" };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            loadRealUserData();
-        });
+        window.showToast = function(message) {
+            const toast = document.getElementById('toast');
+            if(!toast) return;
+            toast.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 2500);
+        };
 
-        // 1. DYNAMIC AUTO-SYNC WITH LOCALSTORAGE
-        function loadRealUserData() {
-            const userEmail = localStorage.getItem('aavira_user_email') || '';
-            const userName = localStorage.getItem('aavira_display_name') || '';
-            const userPhone = localStorage.getItem('aavira_user_phone') || '';
-            
-            const isUserLoggedIn = (userEmail !== '' && userEmail !== 'undefined');
-
-            const dispName = document.getElementById('dispUserName');
-            const dispPhone = document.getElementById('dispUserPhone');
-            const dispEmail = document.getElementById('dispUserEmail');
-            const dispAddress = document.getElementById('dispUserAddress');
-            const avatarEl = document.getElementById('userAvatar');
-            
-            const editBtn = document.getElementById('btnEditProfile');
-            const guestLoginBox = document.getElementById('guestLoginPromptBox');
-            const loggedInInfoBox = document.getElementById('loggedInInfoBox');
-            const logoutRow = document.getElementById('logoutRow');
-
-            // Format Address
-            let savedAddress = "Add Delivery Address";
+        window.syncRealCounts = function() {
             try {
-                const ad = JSON.parse(localStorage.getItem('aavira_saved_address'));
-                if (ad && ad.street) {
-                    savedAddress = `${ad.street}, ${ad.city || ''} - ${ad.pin || ''}`;
-                }
+                let cart = JSON.parse(localStorage.getItem('aavira_cart')) || [];
+                let wishlist = JSON.parse(localStorage.getItem('aavira_wishlist')) || [];
+                let orders = JSON.parse(localStorage.getItem('aavira_placed_orders')) || [];
+                
+                const cartBadge = document.getElementById('cart-badge');
+                if(cartBadge) cartBadge.innerText = cart.length;
+                
+                const wishBadge = document.getElementById('statWishCount');
+                if(wishBadge) wishBadge.innerText = wishlist.length;
+
+                const orderBadge = document.getElementById('statOrdersCount');
+                if(orderBadge) orderBadge.innerText = orders.length;
             } catch(e) {}
+        };
+
+        window.updateProfileUI = function() {
+            const savedName = localStorage.getItem('aavira_display_name') || '';
+            const savedEmail = localStorage.getItem('aavira_user_email') || '';
+            const isUserLoggedIn = (savedEmail !== '' && savedName.toLowerCase() !== "guest user");
+
+            const guestUI = document.getElementById('guestProfileUI');
+            const vipUI = document.getElementById('vipProfileUI');
+            const vipName = document.getElementById('vipName');
+            const profileInitial = document.getElementById('profileInitial');
+            const emailDisplay = document.getElementById('userEmailDisplay');
+            const logoutBtn = document.getElementById('logoutMenuItem');
 
             if (isUserLoggedIn) {
-                // User Logged In
-                dispName.innerText = userName || "Aavira Member";
-                dispPhone.innerText = userPhone || "Add Mobile Number";
-                dispEmail.innerText = userEmail;
-                dispAddress.innerText = savedAddress;
-
-                editBtn.style.display = "inline-flex";
-                guestLoginBox.style.display = "none";
-                loggedInInfoBox.style.display = "block";
-                logoutRow.style.display = "flex"; // Show Logout row
-
-                if (userName) {
-                    avatarEl.innerText = userName.charAt(0).toUpperCase();
-                } else {
-                    avatarEl.innerHTML = '<i class="fa-regular fa-user"></i>';
+                if(guestUI) guestUI.classList.add('hidden');
+                if(vipUI) { vipUI.classList.remove('hidden'); vipUI.style.display = 'flex'; }
+                if(vipName) vipName.innerText = savedName;
+                if(emailDisplay) emailDisplay.innerText = savedEmail;
+                if(profileInitial) {
+                    profileInitial.innerText = savedName.charAt(0).toUpperCase();
+                    profileInitial.style.backgroundColor = "transparent";
+                    profileInitial.style.color = "white";
                 }
+                if(logoutBtn) logoutBtn.style.display = 'flex';
             } else {
-                // User Logged Out (Guest Mode)
-                dispName.innerText = "Guest User";
-                editBtn.style.display = "none";
-                guestLoginBox.style.display = "block";
-                loggedInInfoBox.style.display = "none";
-                logoutRow.style.display = "none"; // Hide Logout row
-                avatarEl.innerHTML = '<i class="fa-regular fa-user"></i>';
+                if(vipUI) { vipUI.classList.add('hidden'); vipUI.style.display = 'none'; }
+                if(guestUI) guestUI.classList.remove('hidden');
+                if(vipName) vipName.innerText = "Guest User";
+                if(profileInitial) {
+                    profileInitial.innerHTML = '<i class="ph-light ph-user"></i>';
+                    profileInitial.style.backgroundColor = "#FFFFFF";
+                    profileInitial.style.color = "#ec136d";
+                }
+                if(logoutBtn) logoutBtn.style.display = 'none';
             }
 
-            // Real Orders Count from LocalStorage
-            let localOrders = [];
-            try {
-                localOrders = JSON.parse(localStorage.getItem('aavira_placed_orders')) || [];
-            } catch(e) {}
-            document.getElementById('statOrdersCount').innerText = localOrders.length;
+            window.syncRealCounts();
 
-            // Real Wishlist Count from LocalStorage
-            let wishlist = [];
-            try {
-                wishlist = JSON.parse(localStorage.getItem('aavira_wishlist')) || [];
-            } catch(e) {}
-            document.getElementById('statWishlistCount').innerText = wishlist.length;
-
-            // Pre-fill Forms
-            document.getElementById('inpEditName').value = userName;
-            document.getElementById('inpEditPhone').value = userPhone.replace(/\D/g, '').slice(-10);
-            document.getElementById('inpEditEmail').value = userEmail;
+            const savedPhone = localStorage.getItem('aavira_user_phone') || '';
+            document.getElementById('editName').value = savedName !== "Guest User" ? savedName : '';
+            document.getElementById('editEmail').value = savedEmail;
+            document.getElementById('editPhone').value = savedPhone.replace(/\D/g, '').slice(-10);
 
             try {
                 const ad = JSON.parse(localStorage.getItem('aavira_saved_address'));
                 if (ad) {
-                    document.getElementById('ad_name').value = ad.name || '';
-                    document.getElementById('ad_phone').value = ad.phone || '';
+                    document.getElementById('ad_name').value = ad.name || savedName;
+                    document.getElementById('ad_phone').value = ad.phone || savedPhone;
                     document.getElementById('ad_pin').value = ad.pin || '';
                     document.getElementById('ad_city').value = ad.city || '';
                     document.getElementById('ad_street').value = ad.street || '';
                 }
             } catch(e) {}
-        }
-
-        window.openProfileSettings = function() {
-            const userEmail = localStorage.getItem('aavira_user_email');
-            if (!userEmail) {
-                openModal('loginModal');
-            } else {
-                openModal('editProfileModal');
-            }
         };
 
-        // 2. MODAL CONTROLS
-        window.openModal = function(id) {
-            const modal = document.getElementById(id);
-            if (modal) {
-                modal.style.display = 'flex';
-                setTimeout(() => modal.classList.add('show'), 20);
-            }
+        window.openModal = function(modalId) {
+            const modal = document.getElementById(modalId);
+            if(!modal) return;
+            modal.style.display = 'flex';
+            setTimeout(() => { modal.classList.add('show'); }, 20);
         };
 
-        window.closeModal = function(id) {
-            const modal = document.getElementById(id);
-            if (modal) {
-                modal.classList.remove('show');
-                setTimeout(() => modal.style.display = 'none', 300);
-            }
+        window.closeModal = function(modalId) {
+            const modal = document.getElementById(modalId);
+            if(!modal) return;
+            modal.classList.remove('show');
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
         };
 
-        // 3. REAL AUTH METHODS
-        window.toggleAuthView = function(viewMode) {
-            document.getElementById('loginView').style.display = 'none';
-            document.getElementById('signupView').style.display = 'none';
-            document.getElementById('otpView').style.display = 'none';
-            
-            document.getElementById(viewMode + 'View').style.display = 'block';
-            document.getElementById('authTitle').innerText = (viewMode === 'signup') 
-                ? 'Create Account' 
-                : (viewMode === 'login' ? 'Sign In to Aavira' : 'Verify Email OTP');
-        };
-
-        window.processSignup = async function() {
-            const name = document.getElementById('signupName').value.trim();
-            const email = document.getElementById('signupEmail').value.trim().toLowerCase();
-            const pwd = document.getElementById('signupPassword').value.trim();
-
-            if (!name || !email || !pwd) return showToast("Please fill all fields!");
-
-            const btn = document.getElementById('btnSignupAction');
-            const ogText = btn.innerText;
-            btn.innerText = 'Sending OTP...';
-            btn.disabled = true;
-
-            try {
-                if (typeof window.DeliveryBoy !== 'undefined') {
-                    const checkRes = await window.DeliveryBoy.checkEmailExists(email);
-                    if (checkRes && checkRes.exists) {
-                        showToast("Email already registered. Please Login.");
-                        toggleAuthView('login');
-                        btn.innerText = ogText;
-                        btn.disabled = false;
-                        return;
-                    }
-
-                    const otpRes = await window.DeliveryBoy.sendOTP(email, name);
-                    if (otpRes && otpRes.ok && otpRes.data && otpRes.data.success) {
-                        tempSignupData = { name, email, pwd };
-                        document.getElementById('otpSubText').innerText = `Code sent to ${email}`;
-                        toggleAuthView('otp');
-                        showToast("OTP Sent Successfully!");
-                    } else {
-                        showToast(otpRes.data?.message || "Failed to send OTP.");
-                    }
-                }
-            } catch(e) {
-                showToast("Network Error!");
-            }
-
-            btn.innerText = ogText;
-            btn.disabled = false;
-        };
-
-        window.verifySignupOTP = async function() {
-            const otpVal = document.getElementById('otpInput').value.trim();
-            if (otpVal.length !== 6) return showToast("Enter complete 6-digit OTP!");
-
-            const btn = document.getElementById('btnOtpAction');
-            btn.innerText = 'Verifying...';
-            btn.disabled = true;
-
-            try {
-                if (typeof window.DeliveryBoy !== 'undefined') {
-                    const res = await window.DeliveryBoy.verifyOTP(tempSignupData.email, otpVal, tempSignupData.name, tempSignupData.pwd);
-                    if (res && res.ok && res.data && res.data.success) {
-                        localStorage.setItem('aavira_display_name', tempSignupData.name);
-                        localStorage.setItem('aavira_user_email', tempSignupData.email);
-                        showToast("Account Verified & Logged In!");
-                        closeModal('loginModal');
-                        loadRealUserData();
-                    } else {
-                        showToast(res.data?.message || "Invalid OTP!");
-                    }
-                }
-            } catch(e) {
-                showToast("Verification Error!");
-            }
-
-            btn.innerText = 'Verify OTP & Login';
-            btn.disabled = false;
-        };
-
-        window.processLogin = async function() {
-            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-            const pwd = document.getElementById('loginPassword').value.trim();
-
-            if (!email || !pwd) return showToast("Enter Email and Password!");
-
-            const btn = document.getElementById('btnLoginAction');
-            btn.innerText = 'Signing in...';
-            btn.disabled = true;
-
-            try {
-                if (typeof window.DeliveryBoy !== 'undefined') {
-                    const res = await window.DeliveryBoy.login(email, pwd);
-                    if (res && res.ok && res.data && res.data.success) {
-                        localStorage.setItem('aavira_display_name', res.data.userName || email.split('@')[0]);
-                        localStorage.setItem('aavira_user_email', email);
-                        showToast("Login Successful!");
-                        closeModal('loginModal');
-                        loadRealUserData();
-                    } else {
-                        showToast(res.data?.message || "Invalid Email or Password!");
-                    }
-                }
-            } catch(e) {
-                showToast("Network Error!");
-            }
-
-            btn.innerText = 'Secure Login';
-            btn.disabled = false;
-        };
-
-        // 4. SAVE PROFILE DETAILS
-        window.saveProfileToServer = async function(e) {
+        window.saveProfileData = async function(e) {
             e.preventDefault();
-            const btn = document.getElementById('btnSaveProfile');
-            const ogText = btn.innerText;
-            btn.innerText = "Saving...";
-            btn.disabled = true;
+            const newName = document.getElementById('editName').value.trim();
+            const newPhone = document.getElementById('editPhone').value.trim();
+            const newEmail = document.getElementById('editEmail').value.trim().toLowerCase();
 
-            const name = document.getElementById('inpEditName').value.trim();
-            const phone = document.getElementById('inpEditPhone').value.trim();
-            const email = document.getElementById('inpEditEmail').value.trim().toLowerCase();
-
-            if (name) localStorage.setItem('aavira_display_name', name);
-            if (phone) localStorage.setItem('aavira_user_phone', phone);
-            if (email) localStorage.setItem('aavira_user_email', email);
-
+            if(!newName || !newEmail) return window.showToast("Fields cannot be empty");
+            
+            localStorage.setItem('aavira_display_name', newName);
+            if(newPhone) localStorage.setItem('aavira_user_phone', newPhone);
+            localStorage.setItem('aavira_user_email', newEmail);
+            
             try {
                 const MAIN_BACKEND = "https://server-js-psi-five.vercel.app";
                 await fetch(`${MAIN_BACKEND}/api/users`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, phone, email, updatedAt: new Date().toISOString() })
+                    body: JSON.stringify({ name: newName, phone: newPhone, email: newEmail, updatedAt: new Date().toISOString() })
                 });
             } catch(err) {}
 
-            loadRealUserData();
-            closeModal('editProfileModal');
-            showToast("Profile Updated Successfully!");
-            btn.innerText = ogText;
-            btn.disabled = false;
+            window.updateProfileUI();
+            window.closeModal('editProfileModal');
+            window.showToast('Profile updated successfully!');
         };
 
-        // 5. SAVE ADDRESS DETAILS (SYNCED WITH CHECKOUT aavira_saved_address)
-        window.saveAddressToServer = async function(e) {
+        window.saveAddressData = async function(e) {
             e.preventDefault();
-            const btn = document.getElementById('btnSaveAddress');
-            const ogText = btn.innerText;
-            btn.innerText = "Saving Address...";
-            btn.disabled = true;
-
             const ad = {
                 name: document.getElementById('ad_name').value.trim(),
                 phone: document.getElementById('ad_phone').value.trim(),
@@ -1275,7 +981,7 @@
                 city: document.getElementById('ad_city').value.trim(),
                 street: document.getElementById('ad_street').value.trim()
             };
-
+            
             localStorage.setItem('aavira_saved_address', JSON.stringify(ad));
 
             try {
@@ -1288,47 +994,145 @@
                 });
             } catch(err) {}
 
-            loadRealUserData();
-            closeModal('addressModal');
-            showToast("Address Saved Successfully!");
-            btn.innerText = ogText;
-            btn.disabled = false;
+            window.closeModal('addressModal');
+            window.showToast("Address Saved Successfully!");
         };
 
         window.copyCoupon = function(code) {
             navigator.clipboard.writeText(code).catch(()=>{});
-            showToast(`Coupon ${code} Copied!`);
-            closeModal('couponsModal');
-        };
-
-        window.handlePasswordChange = function(e) {
-            e.preventDefault();
-            showToast("Password updated successfully!");
-            closeModal('changePasswordModal');
+            window.showToast(`Coupon ${code} Copied!`);
+            window.closeModal('couponsModal');
         };
 
         window.openSupportWhatsApp = function() {
-            let msg = `Hi Aavira Support, I need help regarding my orders & account.`;
+            let msg = `Hi Aavira Support, I need help with my account & orders.`;
             window.open(`https://wa.me/919608720622?text=${encodeURIComponent(msg)}`, '_blank');
         };
 
         window.handleLogout = function() {
-            if (confirm("Are you sure you want to sign out from your account?")) {
+            if(confirm("Are you sure you want to log out?")) {
                 localStorage.removeItem('aavira_display_name');
                 localStorage.removeItem('aavira_user_email');
                 localStorage.removeItem('aavira_user_phone');
-                showToast("Logged out successfully!");
-                setTimeout(() => window.location.reload(), 400);
+                localStorage.removeItem('aavira_fcm_token');
+                window.updateProfileUI();
+                window.showToast("Logged out securely!");
             }
         };
 
-        function showToast(msg) {
-            const toast = document.getElementById('proToast');
-            if (!toast) return;
-            toast.innerText = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
-        }
+        window.openLoginModal = function() {
+            window.toggleAuthView('login');
+            window.openModal('loginModal');
+        };
+
+        window.toggleAuthView = function(viewMode) {
+            document.getElementById('loginView').style.display = 'none';
+            document.getElementById('signupView').style.display = 'none';
+            document.getElementById('otpView').style.display = 'none';
+            
+            if(viewMode === 'signup') { 
+                document.getElementById('signupView').style.display = 'block'; 
+                document.getElementById('authTitle').innerText = "Create Account"; 
+            }
+            else if(viewMode === 'login') { 
+                document.getElementById('loginView').style.display = 'block'; 
+                document.getElementById('authTitle').innerText = "Welcome Back"; 
+            }
+            else if(viewMode === 'otp') { 
+                document.getElementById('otpView').style.display = 'block'; 
+                document.getElementById('authTitle').innerText = "Verify Email OTP"; 
+            }
+        };
+        
+        window.processSignup = async function() {
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim().toLowerCase();
+            const pwd = document.getElementById('signupPassword').value.trim();
+            
+            if(!name || !email || !pwd) return window.showToast("All fields are required.");
+            
+            const btn = document.getElementById('btnSignupAction');
+            const ogText = btn.innerText;
+            btn.innerText = 'Processing...'; btn.disabled = true;
+            
+            try {
+                if (typeof window.DeliveryBoy !== 'undefined') {
+                    const checkRes = await window.DeliveryBoy.checkEmailExists(email);
+                    if (checkRes && checkRes.exists) {
+                        window.showToast("Email already registered. Please Login.");
+                        window.toggleAuthView('login');
+                        btn.innerText = ogText; btn.disabled = false;
+                        return;
+                    }
+
+                    const result = await window.DeliveryBoy.sendOTP(email, name);
+                    if(result && result.ok && result.data && result.data.success) {
+                        tempSignupData = { name, email, pwd };
+                        document.getElementById('otpSubText').innerText = `Sent to ${email}`;
+                        window.toggleAuthView('otp');
+                        window.showToast("Verification code sent!");
+                    } else {
+                        window.showToast(result.data?.message || "Error sending code.");
+                    }
+                }
+            } catch (error) { window.showToast("Network Error."); }
+            
+            btn.innerText = ogText; btn.disabled = false;
+        };
+        
+        window.verifySignupOTP = async function() {
+            const otpVal = document.getElementById('otpInput').value.trim();
+            if(otpVal.length !== 6) return window.showToast("Enter 6-digit OTP.");
+            
+            const vBtn = document.getElementById('btnOtpAction');
+            vBtn.innerText = 'Verifying...'; vBtn.disabled = true;
+            
+            try {
+                if (typeof window.DeliveryBoy !== 'undefined') {
+                    const result = await window.DeliveryBoy.verifyOTP(tempSignupData.email, otpVal, tempSignupData.name, tempSignupData.pwd);
+                    if(result && result.ok && result.data && result.data.success) {
+                        localStorage.setItem('aavira_display_name', tempSignupData.name);
+                        localStorage.setItem('aavira_user_email', tempSignupData.email);
+                        window.showToast("Welcome to Aavira Luxe!");
+                        window.closeModal('loginModal');
+                        window.updateProfileUI();
+                    } else { window.showToast(result.data?.message || "Invalid OTP"); }
+                }
+            } catch (error) { window.showToast("Network Error"); }
+            
+            vBtn.innerText = 'Verify & Login'; vBtn.disabled = false; 
+        };
+        
+        window.processLogin = async function() {
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const pwd = document.getElementById('loginPassword').value.trim();
+            
+            if(!email || !pwd) return window.showToast("Enter email and password.");
+            
+            const btn = document.getElementById('btnLoginAction');
+            btn.innerText = 'Checking...'; btn.disabled = true;
+            
+            try {
+                if (typeof window.DeliveryBoy !== 'undefined') {
+                    const result = await window.DeliveryBoy.login(email, pwd);
+                    if(result && result.ok && result.data && result.data.success) {
+                        localStorage.setItem('aavira_display_name', result.data.userName || email.split('@')[0]);
+                        localStorage.setItem('aavira_user_email', email);
+                        window.showToast("Signed In successfully!");
+                        window.closeModal('loginModal');
+                        window.updateProfileUI();
+                    } else { 
+                        window.showToast(result.data?.message || "Invalid Email or Password."); 
+                    }
+                }
+            } catch(e) { window.showToast("Network Error"); }
+            
+            btn.innerText = 'Secure Login'; btn.disabled = false;
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            window.updateProfileUI();
+        });
     </script>
 </body>
 </html>
