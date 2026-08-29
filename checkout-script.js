@@ -1,3 +1,7 @@
+/* =========================================================
+   AAVIRA LUXE - CHECKOUT SCRIPT (checkout.script.js)
+   ========================================================= */
+
 let cartItems = [];
 let productDatabase = {};
 
@@ -13,17 +17,23 @@ let isBuyNowMode = false;
 window.pendingWhatsAppUrl = "";
 let whatsappTimerInterval;
 
+// Safe Toast Controller
 const ToastAlert = {
-    toastElement: document.getElementById('alertToast'),
-    toastText: document.getElementById('toastMessage'),
-    toastIcon: document.getElementById('toastIcon'),
-    
     show(message, isSuccess = false) {
-        if(navigator.vibrate) navigator.vibrate(isSuccess ? 40 : 60);
-        this.toastText.innerText = message;
-        this.toastIcon.innerHTML = isSuccess ? '<i class="fa-solid fa-circle-check" style="color:#10b981; font-size:22px;"></i>' : '<i class="fa-solid fa-circle-exclamation" style="color:#ef4444; font-size:22px;"></i>';
-        this.toastElement.classList.add('show');
-        setTimeout(() => this.toastElement.classList.remove('show'), 3000);
+        const toastEl = document.getElementById('alertToast');
+        const toastTxt = document.getElementById('toastMessage');
+        const toastIcn = document.getElementById('toastIcon');
+        
+        if (!toastEl || !toastTxt || !toastIcn) return;
+
+        if (navigator.vibrate) navigator.vibrate(isSuccess ? 40 : 60);
+        toastTxt.innerText = message;
+        toastIcn.innerHTML = isSuccess 
+            ? '<i class="fa-solid fa-circle-check" style="color:#10b981; font-size:22px;"></i>' 
+            : '<i class="fa-solid fa-circle-exclamation" style="color:#ef4444; font-size:22px;"></i>';
+        
+        toastEl.classList.add('show');
+        setTimeout(() => toastEl.classList.remove('show'), 3000);
     }
 };
 
@@ -61,17 +71,19 @@ function validateInputField(inputElement, forceShowError = false) {
         if(inputElement.id === 'ad_phone') return /^[6-9]\d{9}$/.test(val);
         if(inputElement.id === 'ad_pin') return /^\d{6}$/.test(val);
         if(inputElement.id === 'ad_map_link') return true; 
-        return val.length >= 3;
-    }
+        return val.length >= 2;
+    };
 
     if(checkRules()) {
-        inputGroup.classList.remove('is-invalid'); return true;
+        inputGroup.classList.remove('is-invalid'); 
+        return true;
     } else {
         if(forceShowError || val.length > 0) inputGroup.classList.add('is-invalid');
         return false;
     }
 }
 
+// Save & Restore Draft
 function saveFormDraft() { 
     let formData = {}; 
     document.querySelectorAll('.pro-input').forEach(input => formData[input.id] = input.value);
@@ -79,16 +91,19 @@ function saveFormDraft() {
 }
 
 function restoreFormDraft() { 
-    let draftDataString = localStorage.getItem('checkoutAddressDraft');
-    if (draftDataString){
-        let formData = JSON.parse(draftDataString);
-        Object.keys(formData).forEach(key => { 
-            let inputEl = document.getElementById(key); 
-            if(inputEl && !inputEl.value){ 
-                inputEl.value = formData[key]; validateInputField(inputEl); 
-            } 
-        });
-    }
+    try {
+        let draftDataString = localStorage.getItem('checkoutAddressDraft');
+        if (draftDataString) {
+            let formData = JSON.parse(draftDataString);
+            Object.keys(formData).forEach(key => { 
+                let inputEl = document.getElementById(key); 
+                if(inputEl && !inputEl.value && formData[key]){ 
+                    inputEl.value = formData[key]; 
+                    validateInputField(inputEl); 
+                } 
+            });
+        }
+    } catch(e) {}
 }
 
 async function fetchProductsAndInitializeCart() {
@@ -130,8 +145,13 @@ async function fetchProductsAndInitializeCart() {
         if (productDatabase[pId]) {
             item.productId = pId;
             return true;
-        } else if (item.fallbackPrice && item.fallbackName) {
-            productDatabase[pId] = { id: pId, name: item.fallbackName, price: item.fallbackPrice, image: item.image || "https://placehold.co/100" };
+        } else if ((item.fallbackPrice || item.price) && (item.fallbackName || item.name)) {
+            productDatabase[pId] = { 
+                id: pId, 
+                name: item.fallbackName || item.name, 
+                price: item.fallbackPrice || item.price, 
+                image: item.image || "https://placehold.co/100" 
+            };
             item.productId = pId;
             return true;
         }
@@ -139,44 +159,49 @@ async function fetchProductsAndInitializeCart() {
     });
 
     if(cartItems.length === 0){
-        document.getElementById('mainScroll').style.display = 'none'; document.getElementById('bottomCheckoutBar').style.display = 'none'; document.getElementById('emptyCartView').style.display = 'flex';
+        const mainScroll = document.getElementById('mainScroll');
+        const bottomBar = document.getElementById('bottomCheckoutBar');
+        const emptyView = document.getElementById('emptyCartView');
+        if (mainScroll) mainScroll.style.display = 'none'; 
+        if (bottomBar) bottomBar.style.display = 'none'; 
+        if (emptyView) emptyView.style.display = 'flex';
         return;
     }
 
-    // 🔥 RESTORE PROMO CODE IF SAVED IN LOCAL STORAGE 🔥
+    // Restore promo code if saved
     try {
         let savedPromo = JSON.parse(localStorage.getItem('savedPromoCache'));
         if(savedPromo && savedPromo.label && savedPromo.discount) {
             appliedPromoCode = savedPromo.label;
             promoDiscountAmount = Number(savedPromo.discount);
-            document.getElementById('promoInputGroup').style.display = 'none';
-            document.getElementById('apCodeName').innerText = appliedPromoCode;
-            document.getElementById('appliedPromoBox').style.display = 'flex';
+            const pGroup = document.getElementById('promoInputGroup');
+            const apCode = document.getElementById('apCodeName');
+            const apBox = document.getElementById('appliedPromoBox');
+            if (pGroup) pGroup.style.display = 'none';
+            if (apCode) apCode.innerText = appliedPromoCode;
+            if (apBox) apBox.style.display = 'flex';
         }
     } catch(e) {}
 
-    document.getElementById('emptyCartView').style.display = 'none';
-    document.getElementById('mainScroll').style.display = 'block';
-    document.getElementById('bottomCheckoutBar').style.display = 'flex';
+    const emptyView = document.getElementById('emptyCartView');
+    const mainScroll = document.getElementById('mainScroll');
+    const bottomBar = document.getElementById('bottomCheckoutBar');
+    if (emptyView) emptyView.style.display = 'none';
+    if (mainScroll) mainScroll.style.display = 'block';
+    if (bottomBar) bottomBar.style.display = 'flex';
     
     renderCartUI();
 }
 
 // ==========================================
-// 🔥 WISH LIST / SUGGESTIONS LOGIC 🔥
+// WISHLIST / SUGGESTIONS LOGIC
 // ==========================================
 function renderWishlistSuggestions() {
     try {
         let suggestedProducts = [];
         let currentCartIds = cartItems.map(item => String(item.productId).trim());
-        
-        // Fetch Wishlist Items
         let wishlistIds = JSON.parse(localStorage.getItem('aavira_wishlist')) || [];
-        
-        // Fallback: If wishlist is empty, suggest some items from Database
         let allProductIds = Object.keys(productDatabase);
-        
-        // Combine and remove duplicates, prioritizing wishlist
         let combinedIds = [...new Set([...wishlistIds, ...allProductIds])]; 
         
         for(let id of combinedIds) {
@@ -184,11 +209,14 @@ function renderWishlistSuggestions() {
             if(!currentCartIds.includes(cleanId) && productDatabase[cleanId]) {
                 suggestedProducts.push(productDatabase[cleanId]);
             }
-            if(suggestedProducts.length >= 6) break; // Maximum 6 suggestions
+            if(suggestedProducts.length >= 6) break;
         }
 
-        if(suggestedProducts.length > 0) {
-            document.getElementById('cartSuggestionsSection').style.display = 'block'; 
+        const suggSection = document.getElementById('cartSuggestionsSection');
+        const suggContainer = document.getElementById('suggestedItemsContainer');
+
+        if(suggestedProducts.length > 0 && suggSection && suggContainer) {
+            suggSection.style.display = 'block'; 
             let htmlString = "";
             suggestedProducts.forEach(prod => {
                 let imageUrl = prod.imageMain || prod.imageUrl || prod.image || 'https://placehold.co/150?text=Item';
@@ -202,9 +230,9 @@ function renderWishlistSuggestions() {
                     </div>
                 </div>`; 
             }); 
-            document.getElementById('suggestedItemsContainer').innerHTML = htmlString;
-        } else {
-            document.getElementById('cartSuggestionsSection').style.display = 'none'; 
+            suggContainer.innerHTML = htmlString;
+        } else if (suggSection) {
+            suggSection.style.display = 'none'; 
         }
     } catch(e){ 
         console.error("Suggestions Error:", e); 
@@ -235,17 +263,21 @@ window.addSuggestedProduct = function(productId){
 window.setUserDeliveryPreferencesCost = (deliveryType) => {
     deliveryFee = (deliveryType === 'express') ? 99 : 0;
     document.querySelectorAll('.speed-option').forEach(el=>el.classList.remove('selected'));
-    document.getElementById((deliveryType==='express')?'opt_exp':'opt_std').classList.add('selected');
+    const targetOpt = document.getElementById((deliveryType==='express')?'opt_exp':'opt_std');
+    if (targetOpt) targetOpt.classList.add('selected');
     renderCartUI();
 };
 
-window.updateCustomWrapPreferencesCosts = (checkboxEl) => { giftWrapFee = checkboxEl.checked ? 49 : 0; renderCartUI(); };
+window.updateCustomWrapPreferencesCosts = (checkboxEl) => { 
+    giftWrapFee = checkboxEl.checked ? 49 : 0; 
+    renderCartUI(); 
+};
 
 window.pickPaymentMode = (paymentType, domElement) => { 
     selectedPaymentMode = paymentType; 
     document.querySelectorAll('.pay-option').forEach(el=>el.classList.remove('selected')); 
     domElement.classList.add('selected');
-}
+};
 
 window.removeCartItem = (index) => { 
     cartItems.splice(index, 1); 
@@ -255,21 +287,33 @@ window.removeCartItem = (index) => {
     }
 
     if(cartItems.length === 0){
-        document.getElementById('mainScroll').style.display = 'none'; document.getElementById('bottomCheckoutBar').style.display = 'none'; document.getElementById('emptyCartView').style.display = 'flex';
-    } else { renderCartUI(); }
-}
+        const mainScroll = document.getElementById('mainScroll');
+        const bottomBar = document.getElementById('bottomCheckoutBar');
+        const emptyView = document.getElementById('emptyCartView');
+        if (mainScroll) mainScroll.style.display = 'none'; 
+        if (bottomBar) bottomBar.style.display = 'none'; 
+        if (emptyView) emptyView.style.display = 'flex';
+    } else { 
+        renderCartUI(); 
+    }
+};
 
 function renderCartUI(){
     const orderContainer = document.getElementById('orderItemsContainer'); 
     if(!orderContainer) return; 
     orderContainer.innerHTML = '';
-    document.getElementById('itemCountBadge').innerText = `${cartItems.length} ITEMS`;
+    
+    const countBadge = document.getElementById('itemCountBadge');
+    if (countBadge) countBadge.innerText = `${cartItems.length} ITEMS`;
 
-    let totalMRP = 0; let totalCartValue = 0;
+    let totalMRP = 0; 
+    let totalCartValue = 0;
+
     cartItems.forEach((item, index) => {
-        let product = productDatabase[item.productId]; if(!product) return;
+        let product = productDatabase[item.productId]; 
+        if(!product) return;
         let currentPrice = parseCurrencyNumber(product.price);
-        let originalMrp = product.mrp ? parseCurrencyNumber(product.mrp) : (currentPrice + 540);
+        let originalMrp = product.mrp ? parseCurrencyNumber(product.mrp) : (currentPrice + 500);
         
         totalMRP += (originalMrp * item.qty);
         totalCartValue += (currentPrice * item.qty);
@@ -287,25 +331,45 @@ function renderCartUI(){
             </div>`;
     });
 
-    document.getElementById('billMrp').innerText = `₹ ${totalMRP.toLocaleString()}`;
-    document.getElementById('billDiscount').innerText = `- ₹ ${(totalMRP - totalCartValue).toLocaleString()}`;
+    const billMrp = document.getElementById('billMrp');
+    const billDisc = document.getElementById('billDiscount');
+    const promoRow = document.getElementById('billPromoRow');
+    const promoDisc = document.getElementById('billPromoDiscount');
+    const billDelivery = document.getElementById('billDelivery');
+    const rowGift = document.getElementById('row_gift');
+    const billTotal = document.getElementById('billTotal');
+    const bottomTotal = document.getElementById('bottomTotal');
+
+    if (billMrp) billMrp.innerText = `₹ ${totalMRP.toLocaleString()}`;
+    if (billDisc) billDisc.innerText = `- ₹ ${(totalMRP - totalCartValue).toLocaleString()}`;
     
-    if (promoDiscountAmount) { document.getElementById('billPromoRow').style.display='flex'; document.getElementById('billPromoDiscount').innerText=`- ₹ ${promoDiscountAmount.toLocaleString()}`;} else document.getElementById('billPromoRow').style.display='none';
-    if (deliveryFee) { document.getElementById('billDelivery').innerText = `₹ 99`; document.getElementById('billDelivery').className=''; } else { document.getElementById('billDelivery').innerText = `Free`; document.getElementById('billDelivery').className='green-txt'; }
+    if (promoDiscountAmount && promoRow && promoDisc) { 
+        promoRow.style.display = 'flex'; 
+        promoDisc.innerText = `- ₹ ${promoDiscountAmount.toLocaleString()}`;
+    } else if (promoRow) {
+        promoRow.style.display = 'none';
+    }
+
+    if (billDelivery) {
+        if (deliveryFee) { 
+            billDelivery.innerText = `₹ 99`; 
+            billDelivery.className = ''; 
+        } else { 
+            billDelivery.innerText = `Free`; 
+            billDelivery.className = 'green-txt'; 
+        }
+    }
     
-    document.getElementById('row_gift').style.display = giftWrapFee ? 'flex' : 'none';
+    if (rowGift) rowGift.style.display = giftWrapFee ? 'flex' : 'none';
     let finalPayableAmount = Math.max(0, totalCartValue + deliveryFee + giftWrapFee - promoDiscountAmount);
     
-    document.getElementById('billTotal').innerText = `₹ ${finalPayableAmount.toLocaleString()}`;
-    document.getElementById('bottomTotal').innerText = `₹ ${finalPayableAmount.toLocaleString()}`;
+    if (billTotal) billTotal.innerText = `₹ ${finalPayableAmount.toLocaleString()}`;
+    if (bottomTotal) bottomTotal.innerText = `₹ ${finalPayableAmount.toLocaleString()}`;
 
-    // Trigger suggestions rendering
     renderWishlistSuggestions();
 }
 
-// ==========================================
-// 🔥 ROBUST PROMO CODE LOGIC 🔥
-// ==========================================
+// PROMO CODE LOGIC
 window.verifyAndApplyCouponAPI = async () => {
     let inputField = document.getElementById('promoInput'); 
     if(!inputField) return;
@@ -314,33 +378,27 @@ window.verifyAndApplyCouponAPI = async () => {
     if(code.length < 3) return ToastAlert.show("Please enter a valid coupon code.", false);
     
     const btn = document.getElementById('promoBtn'); 
-    const originalText = btn.innerHTML;
-    btn.innerHTML = '<div class="btn-spinner"></div>'; 
-    btn.disabled = true;
+    const originalText = btn ? btn.innerHTML : '';
+    if (btn) { btn.innerHTML = '<div class="btn-spinner"></div>'; btn.disabled = true; }
 
     let discountAmt = 0;
     let isValid = false;
 
     try {
-        // Testing endpoints resiliently based on user_data structure
         let response = await fetch(`https://ssxpq15in.vercel.app/api/promo_codes/${code}`);
         if (!response.ok) response = await fetch(`https://ssxpq15in.vercel.app/api/promocodes/${code}`);
-        if (!response.ok) response = await fetch(`https://server-js-psi-five.vercel.app/api/promocodes/${code}`);
         
         if (response.ok) {
             let result = await response.json();
             let promoData = result.data || result;
-            
             if (promoData && promoData.isActive !== false) {
                 discountAmt = Number(promoData.amount || promoData.discountAmount || promoData.discount || 0);
                 if(discountAmt > 0) isValid = true;
             }
         }
-    } catch(error) {
-        console.warn("Promo API fallback triggered");
-    }
+    } catch(error) {}
 
-    // Hardcoded Fallback for testing/safety if API fails
+    // Fallbacks
     if (!isValid) {
         if(code === 'LUXURY500') { discountAmt = 500; isValid = true; }
         else if(code === 'AAVIRA200') { discountAmt = 200; isValid = true; }
@@ -352,17 +410,22 @@ window.verifyAndApplyCouponAPI = async () => {
         ToastAlert.show('Invalid or Expired Coupon Code.', false);
     }
     
-    btn.innerHTML = originalText; 
-    btn.disabled = false;
-}
+    if (btn) { btn.innerHTML = originalText; btn.disabled = false; }
+};
 
 function applyPromoUI(code, discount) {
     appliedPromoCode = code;
     promoDiscountAmount = discount;
     localStorage.setItem('savedPromoCache', JSON.stringify({label: code, discount: discount}));
-    document.getElementById('promoInputGroup').style.display='none'; 
-    document.getElementById('apCodeName').innerText = code; 
-    document.getElementById('appliedPromoBox').style.display='flex';
+    
+    const pGroup = document.getElementById('promoInputGroup');
+    const apCode = document.getElementById('apCodeName');
+    const apBox = document.getElementById('appliedPromoBox');
+    
+    if (pGroup) pGroup.style.display = 'none'; 
+    if (apCode) apCode.innerText = code; 
+    if (apBox) apBox.style.display = 'flex';
+    
     ToastAlert.show("Coupon applied successfully!", true); 
     renderCartUI();
 }
@@ -371,12 +434,18 @@ window.removeActiveCoupon = () => {
     appliedPromoCode = ""; 
     promoDiscountAmount = 0; 
     localStorage.removeItem('savedPromoCache'); 
-    document.getElementById('promoInputGroup').style.display='flex'; 
-    document.getElementById('promoInput').value=''; 
-    document.getElementById('appliedPromoBox').style.display='none'; 
+    
+    const pGroup = document.getElementById('promoInputGroup');
+    const pInput = document.getElementById('promoInput');
+    const apBox = document.getElementById('appliedPromoBox');
+
+    if (pGroup) pGroup.style.display = 'flex'; 
+    if (pInput) pInput.value = ''; 
+    if (apBox) apBox.style.display = 'none'; 
+    
     renderCartUI(); 
     ToastAlert.show("Coupon Removed", true);
-}
+};
 
 window.forceWhatsAppRedirect = () => {
     if (whatsappTimerInterval) clearInterval(whatsappTimerInterval);
@@ -386,30 +455,37 @@ window.forceWhatsAppRedirect = () => {
 };
 
 // ==========================================
-//  SUBMIT ORDER - FULL DATABASE SCHEMA 
+// 🔥 SUBMIT FINAL ORDER & SYNC STATE 🔥
 // ==========================================
 window.submitFinalOrder = async () => {
-    let isFormValid = true; let firstErrorField = null;
-    ['ad_name', 'ad_phone', 'ad_pin', 'ad_city', 'ad_address', 'ad_email'].forEach(id=>{ 
+    let isFormValid = true; 
+    let firstErrorField = null;
+    
+    ['ad_name', 'ad_phone', 'ad_pin', 'ad_city', 'ad_address', 'ad_email'].forEach(id => { 
         let inputEl = document.getElementById(id); 
-        if(!validateInputField(inputEl, true)){ isFormValid=false; inputEl.closest('.pro-input-group').classList.add('is-invalid'); firstErrorField = inputEl;} 
+        if(!validateInputField(inputEl, true)){ 
+            isFormValid = false; 
+            if (inputEl) inputEl.closest('.pro-input-group').classList.add('is-invalid'); 
+            if (!firstErrorField) firstErrorField = inputEl;
+        } 
     });
     
-    if(!isFormValid){ ToastAlert.show('Please fill all required address fields.', false); if(firstErrorField) firstErrorField.scrollIntoView({behavior:'smooth'}); return; }
+    if(!isFormValid){ 
+        ToastAlert.show('Please fill all required address fields correctly.', false); 
+        if(firstErrorField) firstErrorField.scrollIntoView({behavior:'smooth'}); 
+        return; 
+    }
 
-    let successSound = new Audio('success_music.mp3');
+    const processModal = document.getElementById('processModal');
+    const processText = document.getElementById('processText');
+    if (processModal) processModal.classList.add('active');
+    if (processText) processText.innerText = 'Creating Secure Invoice Request...';
 
-    document.getElementById('processModal').classList.add('active');
-    document.getElementById('processText').innerText = 'Creating Secure Invoice Request...';
-
-    let productsCost = 0; let cleanStringOfItems = [];
-    
+    let productsCost = 0;
     let formattedItemsPayload = cartItems.map(item => {
         let dbProduct = productDatabase[item.productId] || {}; 
         let price = parseCurrencyNumber(dbProduct.price || 0); 
         productsCost += (price * item.qty);
-        
-        cleanStringOfItems.push(`${item.qty}x ${dbProduct.name ? dbProduct.name.substring(0,35) : "Exclusive Item"}... (Size: ${item.size || 'Standard'}) - ₹${price.toLocaleString()}`);
         
         return {
             productId: item.productId,
@@ -422,21 +498,25 @@ window.submitFinalOrder = async () => {
         };
     });
 
-    let finalOrderId = "ORD-" + Math.floor(Math.random() * 881239841).toString();
-    let customerName = document.getElementById('ad_name').value.trim();
-    let customerPhone = document.getElementById('ad_phone').value.trim();
-    let customerEmail = document.getElementById('ad_email').value.trim();
-    let customerMapLink = document.getElementById('ad_map_link') ? document.getElementById('ad_map_link').value.trim() : "";
-    let customerAddress = `${document.getElementById('ad_address').value.trim()}, ${document.getElementById('ad_city').value.trim()} - Pincode: ${document.getElementById('ad_pin').value.trim()}`;
+    // Generate Standard AVF Order ID
+    const randomNum = Math.floor(100000 + Math.random() * 900000);
+    const finalOrderId = `AVF-${randomNum}`;
     
-    let totalAmountToPay = Math.max(0, productsCost + deliveryFee + giftWrapFee - promoDiscountAmount);
-    let orderCurrentState = (selectedPaymentMode === 'online') ? 'Pending Payment' : 'Placed';
+    const customerName = document.getElementById('ad_name').value.trim();
+    const customerPhone = document.getElementById('ad_phone').value.trim();
+    const customerEmail = document.getElementById('ad_email').value.trim();
+    const customerMapLink = document.getElementById('ad_map_link') ? document.getElementById('ad_map_link').value.trim() : "";
+    const customerAddress = `${document.getElementById('ad_address').value.trim()}, ${document.getElementById('ad_city').value.trim()} - Pincode: ${document.getElementById('ad_pin').value.trim()}`;
     
+    const totalAmountToPay = Math.max(0, productsCost + deliveryFee + giftWrapFee - promoDiscountAmount);
+    const orderCurrentState = (selectedPaymentMode === 'online') ? 'Processing' : 'Processing';
+    
+    // Save to Vercel/Backend Database
     try { 
         if (typeof window.sendOrderToVercel === 'function'){
             let payloadData = {
                 orderId: finalOrderId,
-                userId: localStorage.getItem('aavira_user_email') || 'Guest User',
+                userId: customerEmail || customerPhone,
                 customerName: customerName,
                 email: customerEmail,
                 phone: customerPhone,
@@ -453,49 +533,71 @@ window.submitFinalOrder = async () => {
             };
             await window.sendOrderToVercel(payloadData);
         }
-    } catch(e) { console.error("Database Save Failed", e); } 
+    } catch(e) { 
+        console.error("Database Save Failed", e); 
+    } 
 
-    // Clear Cart and Promo memory
-    if(!isBuyNowMode) { localStorage.removeItem('aavira_cart'); }
+    // 🔥 1. CLEAR CART, PROMO & ADDRESS DRAFT MEMORY 🔥
+    if(!isBuyNowMode) { 
+        localStorage.removeItem('aavira_cart'); 
+    }
     localStorage.removeItem('savedPromoCache');
+    localStorage.removeItem('checkoutAddressDraft'); // <--- Address draft cleared!
 
-    let previousOrders = JSON.parse(localStorage.getItem('aavira_placed_orders'))||[];
-    previousOrders.push(finalOrderId);
+    // 🔥 2. STRICT ORDER & USER ISOLATION SYNC 🔥
+    // Save current user credentials on this device so orders screen syncs immediately
+    localStorage.setItem('aavira_user_phone', customerPhone);
+    if (customerEmail) localStorage.setItem('aavira_user_email', customerEmail);
+
+    let previousOrders = [];
+    try {
+        previousOrders = JSON.parse(localStorage.getItem('aavira_placed_orders')) || [];
+    } catch(e) {}
+    
+    if (!previousOrders.includes(finalOrderId)) {
+        previousOrders.push(finalOrderId);
+    }
     localStorage.setItem('aavira_placed_orders', JSON.stringify(previousOrders));
     
-    document.getElementById('displayOrderId').innerText = finalOrderId;
-    
-    try { successSound.play().catch(err => console.warn("Audio blocked or missing:", err)); } catch(e) { }
+    const displayOrderIdEl = document.getElementById('displayOrderId');
+    if (displayOrderIdEl) displayOrderIdEl.innerText = finalOrderId;
 
-    document.getElementById('gatewayBox').style.display='none'; 
-    document.getElementById('successBox').style.display='block';
+    const gatewayBox = document.getElementById('gatewayBox');
+    const successBox = document.getElementById('successBox');
+    if (gatewayBox) gatewayBox.style.display = 'none'; 
+    if (successBox) successBox.style.display = 'block';
 
-    let dynamicIcon = document.getElementById('dynamicModalIcon');
-    let popupActions = document.getElementById('popupActionBtns');
+    const dynamicIcon = document.getElementById('dynamicModalIcon');
+    const popupActions = document.getElementById('popupActionBtns');
 
     if (selectedPaymentMode === 'online') {
+        if (dynamicIcon) {
+            dynamicIcon.style.background = '#f59e0b'; 
+            dynamicIcon.style.border = '4px solid #fef3c7';
+            dynamicIcon.style.boxShadow = '0 10px 20px rgba(245,158,11, 0.2)';
+            dynamicIcon.innerHTML = '<i class="fa-solid fa-hourglass-half"></i>';
+        }
         
-        dynamicIcon.style.background = '#f59e0b'; 
-        dynamicIcon.style.border = '4px solid #fef3c7';
-        dynamicIcon.style.boxShadow = '0 10px 20px rgba(245,158,11, 0.2)';
-        dynamicIcon.innerHTML = '<i class="fa-solid fa-hourglass-half"></i>';
+        const titleEl = document.getElementById('successBoxTitle');
+        const descEl = document.getElementById('successBoxDesc');
+        if (titleEl) titleEl.innerText = 'Awaiting Payment ⏳';
+        if (descEl) descEl.innerText = 'Please complete the payment on WhatsApp to confirm your order.';
         
-        document.getElementById('successBoxTitle').innerText = 'Awaiting Payment ⏳';
-        document.getElementById('successBoxDesc').innerText = 'Please complete the payment on WhatsApp to confirm your order.';
-        
-        let cleanWhatsAppMessage = `*AAVIRA - ONLINE PAYMENT REQUEST*\n\nHello Team Aavira! I would like to complete the online payment for my order securely.\n\n*ORDER ID:* ${finalOrderId}\n*NAME:* ${customerName}\n*MOBILE:* ${customerPhone}\n\n*ADDRESS:* \n${customerAddress}\n${customerMapLink ? "*MAP LINK:* " + customerMapLink + "\n" : ""}\n*TOTAL TO PAY: ₹ ${totalAmountToPay.toLocaleString()}* \n\n_Please share the UPI ID / Scanner so I can complete this transaction. Thank you!_`;
+        let cleanWhatsAppMessage = `*AAVIRA - ONLINE PAYMENT REQUEST*\n\nHello Team Aavira! I would like to complete the online payment for my order.\n\n*ORDER ID:* #${finalOrderId}\n*NAME:* ${customerName}\n*MOBILE:* ${customerPhone}\n\n*ADDRESS:* \n${customerAddress}\n\n*TOTAL TO PAY: ₹ ${totalAmountToPay.toLocaleString()}*\n\n_Please share the UPI ID / Payment QR code. Thank you!_`;
         
         window.pendingWhatsAppUrl = `https://wa.me/919608720622?text=${encodeURIComponent(cleanWhatsAppMessage)}`;
 
-        popupActions.innerHTML = `
-            <button class="btn-pro-action whatsapp" onclick="forceWhatsAppRedirect()">
-                <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> 
-                Open WhatsApp <span id="waTimerTxt" style="font-size:11px; margin-left:4px; background:rgba(0,0,0,0.15); padding:3px 8px; border-radius:12px;">(5s)</span>
-            </button>
-            <button class="btn-pro-action outline" onclick="window.location.href='./'">
-                <i class="fa-solid fa-bag-shopping"></i> Continue Shopping
-            </button>
-        `;
+        if (popupActions) {
+            popupActions.innerHTML = `
+                <button class="btn-pro-action whatsapp" onclick="forceWhatsAppRedirect()">
+                    <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> 
+                    Open WhatsApp <span id="waTimerTxt" style="font-size:11px; margin-left:4px; background:rgba(0,0,0,0.15); padding:3px 8px; border-radius:12px;">(5s)</span>
+                </button>
+                <button class="btn-pro-action outline" onclick="window.location.href='orders.html'">
+                    <i class="fa-solid fa-box"></i> View My Orders
+                </button>
+            `;
+        }
 
         let countdown = 5;
         whatsappTimerInterval = setInterval(() => {
@@ -509,23 +611,31 @@ window.submitFinalOrder = async () => {
         }, 1000);
 
     } else {
-        dynamicIcon.style.background = 'var(--success)';
-        dynamicIcon.style.border = '4px solid #D1FAE5';
-        dynamicIcon.style.boxShadow = '0 10px 20px rgba(5,150,105, 0.2)';
-        dynamicIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
+        if (dynamicIcon) {
+            dynamicIcon.style.background = 'var(--success)';
+            dynamicIcon.style.border = '4px solid #D1FAE5';
+            dynamicIcon.style.boxShadow = '0 10px 20px rgba(5,150,105, 0.2)';
+            dynamicIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
+        }
 
-        document.getElementById('successBoxTitle').innerText = 'Order Placed Successfully! 🎉';
-        document.getElementById('successBoxDesc').innerText = 'Your order details have been securely recorded. We will process it shortly.';
+        const titleEl = document.getElementById('successBoxTitle');
+        const descEl = document.getElementById('successBoxDesc');
+        if (titleEl) titleEl.innerText = 'Order Placed Successfully! 🎉';
+        if (descEl) descEl.innerText = 'Your order details have been securely recorded. We will process it shortly.';
 
-        popupActions.innerHTML = `
-            <button class="btn-pro-action primary" onclick="handleTrackOrder()">
-                <i class="fa-solid fa-location-arrow"></i> Track Order
-            </button>
-            <button class="btn-pro-action outline" onclick="window.location.href='./'">
-                <i class="fa-solid fa-bag-shopping"></i> Continue Shopping
-            </button>
-        `;
+        if (popupActions) {
+            popupActions.innerHTML = `
+                <button class="btn-pro-action primary" onclick="handleTrackOrder()">
+                    <i class="fa-solid fa-location-arrow"></i> Track Order
+                </button>
+                <button class="btn-pro-action outline" onclick="window.location.href='./'">
+                    <i class="fa-solid fa-bag-shopping"></i> Continue Shopping
+                </button>
+            `;
+        }
     }
-}
+};
 
-window.handleTrackOrder = () => { window.location.href = 'orders'; }
+window.handleTrackOrder = () => { 
+    window.location.href = 'orders.html'; 
+};
