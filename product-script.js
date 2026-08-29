@@ -5,6 +5,7 @@ window.currentProductIdForReviews = null;
 window.customMeasurementsText = null; 
 window.currentProduct = null;
 window.selectedProductImage = null; 
+window.selectedColorName = "Standard";
 window.isCartProcessing = false; 
 window.defaultCarouselHtml = ''; 
 window.defaultDotsHtml = '';
@@ -16,10 +17,12 @@ const scrollArea = document.getElementById('mainScrollArea');
 const header = document.getElementById('mainHeader');
 
 // Sticky Header Box-Shadow on Scroll
-scrollArea.addEventListener('scroll', () => { 
-    if(scrollArea.scrollTop > 10) header.style.boxShadow = 'var(--shadow-sm)'; 
-    else header.style.boxShadow = 'none'; 
-});
+if (scrollArea && header) {
+    scrollArea.addEventListener('scroll', () => { 
+        if(scrollArea.scrollTop > 10) header.style.boxShadow = 'var(--shadow-sm)'; 
+        else header.style.boxShadow = 'none'; 
+    });
+}
 
 document.addEventListener('DOMContentLoaded', () => { 
     updateCartBadge(); 
@@ -43,11 +46,17 @@ window.toggleAccordion = function(btn) {
     const wasActive = item.classList.contains('active');
     document.querySelectorAll('.acc-item').forEach(el => el.classList.remove('active'));
     if(!wasActive) item.classList.add('active');
-}
+};
 
 // Modal Toggle Handlers
-window.openModal = function(id) { document.getElementById(id).classList.add('show'); }
-window.closeModal = function(id) { document.getElementById(id).classList.remove('show'); }
+window.openModal = function(id) { 
+    const el = document.getElementById(id);
+    if (el) el.classList.add('show'); 
+};
+window.closeModal = function(id) { 
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('show'); 
+};
 
 // Heart Wishlist Toggle
 window.toggleHeart = function(btn) {
@@ -59,7 +68,7 @@ window.toggleHeart = function(btn) {
         icon.classList.replace('fa-solid', 'fa-regular'); 
         icon.style.color = 'var(--text-dark)'; 
     }
-}
+};
 
 // ==========================================
 // SIZE SELECTION LOGIC
@@ -73,18 +82,22 @@ window.saveCustomSize = function() {
     window.customMeasurementsText = `Custom (B: ${bust}", W: ${waist}")`;
     
     document.querySelectorAll('.size-box').forEach(b => b.classList.remove('active'));
-    document.querySelector('.custom-size-btn').classList.add('active');
-    document.getElementById('sizeOptionsContainer').classList.remove('shake-error'); 
+    const customBtn = document.querySelector('.custom-size-btn');
+    if (customBtn) customBtn.classList.add('active');
+    
+    const sizeContainer = document.getElementById('sizeOptionsContainer');
+    if (sizeContainer) sizeContainer.classList.remove('shake-error'); 
     
     closeModal('customSizeSheet');
-}
+};
 
 window.selectSize = function(element) {
     window.customMeasurementsText = null; 
     document.querySelectorAll('.size-box').forEach(box => box.classList.remove('active'));
     element.classList.add('active'); 
-    document.getElementById('sizeOptionsContainer').classList.remove('shake-error');
-}
+    const sizeContainer = document.getElementById('sizeOptionsContainer');
+    if (sizeContainer) sizeContainer.classList.remove('shake-error');
+};
 
 function getSelectedSize() {
     const activeSize = document.querySelector('.size-box.active');
@@ -105,12 +118,20 @@ function triggerSizeError() {
 }
 
 // ==========================================
-// COLOR SWATCH & CAROUSEL LOGIC
+// 🔥 FIXED COLOR SWATCH & CAROUSEL LOGIC 🔥
 // ==========================================
-window.selectColorSwatch = function(element, imageUrl, isMainColor) {
+window.selectColorSwatch = function(element, imageUrl, colorName, isMainColor) {
     document.querySelectorAll('.color-swatch').forEach(el => el.classList.remove('active')); 
     element.classList.add('active');
+    
+    // Save selected image and color name globally
     window.selectedProductImage = imageUrl; 
+    window.selectedColorName = colorName || "As Shown";
+
+    const countInfo = document.getElementById('colorCountInfo');
+    if (countInfo) {
+        countInfo.innerText = `- Selected: ${window.selectedColorName}`;
+    }
 
     const loader = document.getElementById('mediaLoader'); 
     const carousel = document.getElementById('mediaCarousel'); 
@@ -125,21 +146,22 @@ window.selectColorSwatch = function(element, imageUrl, isMainColor) {
             dots.style.display = 'flex'; 
             window.scrollToSlide(0);
         } else {
-            carousel.innerHTML = `<div class="slide"><img src="${imageUrl}"></div>`; 
+            // Replace carousel view with the selected variation image
+            carousel.innerHTML = `<div class="slide" style="width:100%; height:100%; display:flex; justify-content:center; align-items:center;"><img src="${imageUrl}" style="width:100%; height:100%; object-fit:cover;"></div>`; 
             dots.innerHTML = ''; 
             dots.style.display = 'none'; 
             carousel.scrollTo({ left: 0 });
         }
         if (loader) loader.classList.remove('show');
-    }, 300); 
-}
+    }, 200); 
+};
 
 window.scrollToSlide = function(index) {
     const carousel = document.getElementById('mediaCarousel'); 
     if(carousel) carousel.scrollTo({ left: carousel.offsetWidth * index, behavior: 'smooth' });
-}
+};
 
-document.getElementById('mediaWrapper').addEventListener('scroll', function(e) {
+document.getElementById('mediaWrapper')?.addEventListener('scroll', function(e) {
     if(e.target.id === 'mediaCarousel') {
         const carousel = e.target; 
         const scrollIndex = Math.round(carousel.scrollLeft / carousel.offsetWidth);
@@ -151,10 +173,10 @@ document.getElementById('mediaWrapper').addEventListener('scroll', function(e) {
 }, true);
 
 // ==========================================
-// CART & BUY NOW LOGIC
+// 🔥 FIXED CART & BUY NOW LOGIC 🔥
 // ==========================================
 window.addToCart = function(event, isBuyNow = false) {
-    event.preventDefault();
+    if (event) event.preventDefault();
     if (!window.currentProduct) return;
     if (window.isCartProcessing) return; 
 
@@ -162,11 +184,21 @@ window.addToCart = function(event, isBuyNow = false) {
     if (!size) { triggerSizeError(); return; }
     
     window.isCartProcessing = true; 
-    let finalImage = window.selectedProductImage || window.currentProduct.imageMain || window.currentProduct.imageUrl;
+    
+    // Ensure selected color and image are used
+    let finalImage = window.selectedProductImage || window.currentProduct.imageMain || window.currentProduct.imageUrl || window.currentProduct.image;
+    let finalColor = window.selectedColorName || "Standard";
 
     if (isBuyNow) {
-        // Redirect to Checkout page with Query Params
-        window.location.href = `checkout?buy_now=${encodeURIComponent(window.currentProduct.id)}&size=${encodeURIComponent(size)}&color=${encodeURIComponent(finalImage)}`;
+        // 🔥 CRITICAL FIX: Send both color name AND image url in Query Params!
+        const buyNowUrl = `checkout.html?buy_now=${encodeURIComponent(window.currentProduct.id)}` +
+                          `&name=${encodeURIComponent(window.currentProduct.name || 'Exclusive Wear')}` +
+                          `&price=${encodeURIComponent(window.currentProduct.price || 0)}` +
+                          `&size=${encodeURIComponent(size)}` +
+                          `&color=${encodeURIComponent(finalColor)}` +
+                          `&image=${encodeURIComponent(finalImage)}`;
+                          
+        window.location.href = buyNowUrl;
         setTimeout(() => window.isCartProcessing = false, 1000); 
         return;
     }
@@ -182,6 +214,7 @@ window.addToCart = function(event, isBuyNow = false) {
             name: window.currentProduct.name, 
             price: Number(window.currentProduct.price), 
             size: size, 
+            color: finalColor, // Stored properly in Cart!
             image: finalImage, 
             qty: 1 
         }); 
@@ -189,14 +222,14 @@ window.addToCart = function(event, isBuyNow = false) {
     
     localStorage.setItem('aavira_cart', JSON.stringify(cart));
     updateCartBadge(); 
-    alert("Added to cart successfully!");
+    alert("Added to bag successfully!");
     
-    setTimeout(() => window.isCartProcessing = false, 600); 
-}
+    setTimeout(() => window.isCartProcessing = false, 500); 
+};
 
 window.buyNow = function(event) { 
     window.addToCart(event, true); 
-}
+};
 
 // ==========================================
 // MAIN PRODUCT DATA LOADING ENGINE
@@ -209,7 +242,6 @@ async function loadProductData() {
 
     let p = null;
 
-    // Check Normal Products
     if (typeof window.getVercelData === 'function') {
         try { 
             let allProducts = await window.getVercelData(); 
@@ -219,7 +251,6 @@ async function loadProductData() {
         } catch(e) {}
     }
     
-    // Check Main Products
     if (!p && typeof window.getMainProductsData === 'function') {
         try { 
             let mainProducts = await window.getMainProductsData(); 
@@ -229,7 +260,6 @@ async function loadProductData() {
         } catch(e) {}
     }
 
-    // Direct Backend Fallback
     if (!p) {
         try {
             const BACKEND_URL = "https://aavira-fashion-backend.vercel.app";
@@ -243,49 +273,66 @@ async function loadProductData() {
         } catch(e) {}
     }
 
-    // If still not found, Show Error Modal
     if (!p) { 
-        document.getElementById('errorPopup').classList.add('show'); 
+        document.getElementById('errorPopup')?.classList.add('show'); 
         return; 
     }
 
     window.currentProduct = p;
 
-    // Render Basic Details
+    // Basic Details
     let rawTitle = p.name || p.title || "Exclusive Collection";
     let cleanTitle = rawTitle.replace(/_/g, ' - ').replace(/\s+/g, ' ').trim(); 
-    document.getElementById('productTitle').innerText = cleanTitle; 
-    document.getElementById('productTitle').classList.remove('skeleton'); 
+    
+    const titleEl = document.getElementById('productTitle');
+    if (titleEl) {
+        titleEl.innerText = cleanTitle; 
+        titleEl.classList.remove('skeleton'); 
+    }
     
     let price = Number(p.price) || 0; 
-    let mrp = Number(p.mrp) || Number(p.originalPrice) || price;
+    let mrp = Number(p.mrp) || Number(p.originalPrice) || (price + 500);
     
-    document.getElementById('currentPrice').innerText = "₹" + price.toLocaleString('en-IN'); 
-    document.getElementById('currentPrice').classList.remove('skeleton'); 
-    document.getElementById('oldPrice').innerText = "₹" + mrp.toLocaleString('en-IN'); 
-    document.getElementById('oldPrice').classList.remove('skeleton'); 
+    const curPriceEl = document.getElementById('currentPrice');
+    const oldPriceEl = document.getElementById('oldPrice');
+    const discTagEl = document.getElementById('discountTag');
+
+    if (curPriceEl) { curPriceEl.innerText = "₹" + price.toLocaleString('en-IN'); curPriceEl.classList.remove('skeleton'); }
+    if (oldPriceEl) { oldPriceEl.innerText = "₹" + mrp.toLocaleString('en-IN'); oldPriceEl.classList.remove('skeleton'); }
     
-    if(mrp > price) { 
+    if(mrp > price && discTagEl) { 
         const discount = Math.round(((mrp - price) / mrp) * 100); 
-        document.getElementById('discountTag').innerText = discount + "% OFF"; 
-        document.getElementById('discountTag').style.display = "inline-block"; 
+        discTagEl.innerText = discount + "% OFF"; 
+        discTagEl.style.display = "inline-block"; 
     }
 
-    // Render Specifications
-    if(p.fabric) { document.getElementById('specFabric').innerText = p.fabric; }
-    if(p.pattern) { document.getElementById('specPattern').innerText = p.pattern; }
-    if(p.work) { document.getElementById('specWork').innerText = p.work; document.getElementById('workRow').style.display = 'list-item'; }
-    if(p.style) { document.getElementById('specStyle').innerText = p.style; document.getElementById('styleRow').style.display = 'list-item'; }
+    // Specifications
+    if(p.fabric && document.getElementById('specFabric')) document.getElementById('specFabric').innerText = p.fabric; 
+    if(p.pattern && document.getElementById('specPattern')) document.getElementById('specPattern').innerText = p.pattern; 
+    if(p.work && document.getElementById('specWork')) { 
+        document.getElementById('specWork').innerText = p.work; 
+        document.getElementById('workRow').style.display = 'list-item'; 
+    }
+    if(p.style && document.getElementById('specStyle')) { 
+        document.getElementById('specStyle').innerText = p.style; 
+        document.getElementById('styleRow').style.display = 'list-item'; 
+    }
 
-    if(p.description) { document.getElementById('productDescription').innerHTML = p.description.replace(/\*(.*?)\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>'); }
-    document.getElementById('productDescription').classList.remove('skeleton'); 
-    document.getElementById('productSku').innerText = "AV-" + String(window.currentProductIdForReviews).substring(0, 5).toUpperCase(); 
-    document.getElementById('productSku').classList.remove('skeleton');
+    if(p.description && document.getElementById('productDescription')) { 
+        document.getElementById('productDescription').innerHTML = p.description.replace(/\*(.*?)\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>'); 
+        document.getElementById('productDescription').classList.remove('skeleton'); 
+    }
+    
+    const skuEl = document.getElementById('productSku');
+    if (skuEl) {
+        skuEl.innerText = "AV-" + String(window.currentProductIdForReviews).substring(0, 5).toUpperCase(); 
+        skuEl.classList.remove('skeleton');
+    }
 
-    // Render Carousel
+    // Media Carousel Setup
     const carousel = document.getElementById('mediaCarousel'); 
     const dotsContainer = document.getElementById('carouselDots'); 
-    document.getElementById('mediaWrapper').classList.remove('skeleton');
+    document.getElementById('mediaWrapper')?.classList.remove('skeleton');
     
     let tempCarouselHtml = ''; 
     let tempDotsHtml = ''; 
@@ -293,48 +340,70 @@ async function loadProductData() {
     
     let mainImage = p.imageMain || p.image || p.imageUrl || p.img || 'https://placehold.co/400x400?text=No+Image';
     window.selectedProductImage = mainImage; 
+    window.selectedColorName = "Main Color";
 
-    if(mainImage) { tempCarouselHtml += `<div class="slide"><img src="${mainImage}"></div>`; tempDotsHtml += `<div class="dot active" onclick="window.scrollToSlide(${slideCount++})"></div>`; }
-    if(p.imageBack) { tempCarouselHtml += `<div class="slide"><img src="${p.imageBack}"></div>`; tempDotsHtml += `<div class="dot" onclick="window.scrollToSlide(${slideCount++})"></div>`; }
-    if(p.imageSide) { tempCarouselHtml += `<div class="slide"><img src="${p.imageSide}"></div>`; tempDotsHtml += `<div class="dot" onclick="window.scrollToSlide(${slideCount++})"></div>`; }
-    if(p.videoUrl) { tempCarouselHtml += `<div class="slide"><video src="${p.videoUrl}" playsinline loop autoplay muted controlsList="nodownload"></video></div>`; tempDotsHtml += `<div class="dot" onclick="window.scrollToSlide(${slideCount++})"></div>`; }
+    if(mainImage) { 
+        tempCarouselHtml += `<div class="slide"><img src="${mainImage}"></div>`; 
+        tempDotsHtml += `<div class="dot active" onclick="window.scrollToSlide(${slideCount++})"></div>`; 
+    }
+    if(p.imageBack) { 
+        tempCarouselHtml += `<div class="slide"><img src="${p.imageBack}"></div>`; 
+        tempDotsHtml += `<div class="dot" onclick="window.scrollToSlide(${slideCount++})"></div>`; 
+    }
+    if(p.imageSide) { 
+        tempCarouselHtml += `<div class="slide"><img src="${p.imageSide}"></div>`; 
+        tempDotsHtml += `<div class="dot" onclick="window.scrollToSlide(${slideCount++})"></div>`; 
+    }
+    if(p.videoUrl) { 
+        tempCarouselHtml += `<div class="slide"><video src="${p.videoUrl}" playsinline loop autoplay muted controlsList="nodownload"></video></div>`; 
+        tempDotsHtml += `<div class="dot" onclick="window.scrollToSlide(${slideCount++})"></div>`; 
+    }
 
     window.defaultCarouselHtml = tempCarouselHtml; 
     window.defaultDotsHtml = tempDotsHtml; 
-    carousel.innerHTML = tempCarouselHtml; 
-    dotsContainer.innerHTML = tempDotsHtml;
+    if (carousel) carousel.innerHTML = tempCarouselHtml; 
+    if (dotsContainer) dotsContainer.innerHTML = tempDotsHtml;
 
-    // Render Colors
-    let finalColorImages = [];
+    // 🔥 COLOR VARIATION RENDERER WITH NAMES 🔥
+    const colorNames = (p.colors && Array.isArray(p.colors) && p.colors.length > 0) 
+        ? p.colors 
+        : (p.colorsInfo ? p.colorsInfo.split(',') : []);
+
+    let colorOptionsList = [
+        { name: colorNames[0] ? colorNames[0].trim() : "Main Color", image: mainImage, isMain: true }
+    ];
+
     if (p.colorImages && Array.isArray(p.colorImages) && p.colorImages.length > 0) { 
-        finalColorImages = [mainImage, ...p.colorImages]; 
-    } else {
-        let foundDeep = false;
-        for (let key in p) { 
-            if (Array.isArray(p[key]) && p[key].length > 0 && typeof p[key][0] === 'string' && p[key][0].includes('res.cloudinary.com')) { 
-                if (key !== 'items' && key !== 'reviews' && key !== 'colors') { finalColorImages = [mainImage, ...p[key]]; foundDeep = true; break; } 
-            } 
-        }
-        if(!foundDeep) { finalColorImages = [mainImage]; }
+        p.colorImages.forEach((imgUrl, idx) => {
+            if (imgUrl && imgUrl !== mainImage) {
+                let name = colorNames[idx + 1] ? colorNames[idx + 1].trim() : `Color ${idx + 2}`;
+                colorOptionsList.push({ name: name, image: imgUrl, isMain: false });
+            }
+        });
     }
-    finalColorImages = [...new Set(finalColorImages)];
 
     const colorSection = document.getElementById('colorSectionWrapper'); 
     const colorOpts = document.getElementById('dynamicColorOptions');
     
-    if (finalColorImages.length > 0) { 
-        colorSection.style.display = 'block'; 
-        colorOpts.innerHTML = ''; 
-        document.getElementById('colorCountInfo').innerText = finalColorImages.length === 1 ? '(1 Option)' : `(${finalColorImages.length} Options)`;
-        
-        finalColorImages.forEach((cImgUrl, idx) => {
-            let activeCls = idx === 0 ? 'active' : ''; 
-            let isMainColor = idx === 0 ? true : false; 
-            colorOpts.innerHTML += `<div class="color-swatch ${activeCls}" onclick="selectColorSwatch(this, '${cImgUrl}', ${isMainColor})"><img src="${cImgUrl}" onerror="this.src='https://placehold.co/100x100?text=Img'"><i class="fa-solid fa-check"></i></div>`;
-        });
+    if (colorSection && colorOpts) { 
+        if (colorOptionsList.length > 1) {
+            colorSection.style.display = 'block'; 
+            colorOpts.innerHTML = ''; 
+            document.getElementById('colorCountInfo').innerText = `(${colorOptionsList.length} Options Available)`;
+            
+            colorOptionsList.forEach((opt, idx) => {
+                let activeCls = idx === 0 ? 'active' : ''; 
+                colorOpts.innerHTML += `
+                    <div class="color-swatch ${activeCls}" onclick="selectColorSwatch(this, '${opt.image}', '${opt.name}', ${opt.isMain})" title="${opt.name}">
+                        <img src="${opt.image}" onerror="this.src='https://placehold.co/100x100?text=Img'">
+                        <i class="fa-solid fa-check"></i>
+                    </div>`;
+            });
+        } else {
+            colorSection.style.display = 'none';
+        }
     }
 
-    // Trigger Reviews Load
     renderAdvancedRatingSystem(p.adminRating, p.adminReviewCount);
 }
 
@@ -360,6 +429,7 @@ function animateValue(obj, start, end, duration, isFloat) {
 window.renderAdvancedRatingSystem = async function(adminRatingVal, adminReviewCount) {
     const container = document.getElementById('ratingSummaryBox'); 
     const reviewsContainer = document.getElementById('reviewsList');
+    if (!container || !reviewsContainer) return;
     
     let realReviews = [];
     if(typeof window.getReviewsFromDatabase === 'function') {
@@ -419,12 +489,12 @@ window.renderAdvancedRatingSystem = async function(adminRatingVal, adminReviewCo
     }); 
     if(ratingSection) observer.observe(ratingSection);
 
-    // Reviews List Map
+    // Reviews List
     if (realReviews.length === 0) { 
         reviewsContainer.innerHTML = `<div style="width: 100%; text-align: center; padding: 25px 20px; background: var(--bg-light); border-radius: 12px; border: 1px dashed #d1d5db;"><h4 style="color: var(--text-dark); font-weight: 700; font-size:14px;">No reviews yet</h4><p style="font-size: 11px; color: var(--text-muted); margin-top:4px;">Be the first to share your experience!</p></div>`; 
-    } else {
+    } else { 
         let rHtml = '';
-        realReviews.forEach(r => {
+        realReviews.forEach(r => { 
             let rateVal = r.rating || r.score || 5; 
             let starsHtml = ''; 
             for(let i=1; i<=5; i++) starsHtml += `<i class="fa-solid fa-star" style="color: ${i <= rateVal ? 'var(--secondary-color)' : '#e5e7eb'}; font-size: 12px;"></i>`;
@@ -436,7 +506,7 @@ window.renderAdvancedRatingSystem = async function(adminRatingVal, adminReviewCo
         }); 
         reviewsContainer.innerHTML = rHtml;
     }
-}
+};
 
 window.handleWriteReviewClick = function() { 
     const savedName = localStorage.getItem('aavira_display_name'); 
@@ -445,7 +515,7 @@ window.handleWriteReviewClick = function() {
     } else { 
         openModal('reviewModal'); 
     } 
-}
+};
 
 window.setRating = function(val) { 
     selectedRating = parseInt(val); 
@@ -453,7 +523,7 @@ window.setRating = function(val) {
         if(parseInt(star.getAttribute('data-val')) <= val) star.classList.add('active'); 
         else star.classList.remove('active'); 
     }); 
-}
+};
 
 window.submitReview = async function() {
     if (selectedRating === 0) { alert("Please select a star rating!"); return; } 
@@ -496,7 +566,7 @@ window.submitReview = async function() {
     
     btn.innerHTML = ogText; 
     btn.disabled = false;
-}
+};
 
 // ==========================================
 // AUTH SYSTEM (LOGIN/SIGNUP)
@@ -507,7 +577,7 @@ window.toggleAuthView = function(viewMode) {
     document.getElementById('otpView').style.display = 'none'; 
     document.getElementById(viewMode + 'View').style.display = 'block'; 
     document.getElementById('authTitle').innerText = viewMode === 'signup' ? 'Create Account' : viewMode === 'login' ? 'Welcome Back' : 'Verify OTP'; 
-}
+};
 
 window.processSignup = async function() { 
     const name = document.getElementById('signupName').value.trim(); 
@@ -541,7 +611,7 @@ window.processSignup = async function() {
         alert("Auth system unavailable currently."); 
     }
     btn.innerText = 'Continue'; btn.disabled = false;
-}
+};
 
 window.verifySignupOTP = async function() { 
     const otp = document.getElementById('otpInput').value.trim(); 
@@ -564,7 +634,7 @@ window.verifySignupOTP = async function() {
         }
     }
     btn.innerText = 'Verify'; btn.disabled = false;
-}
+};
 
 window.processLogin = async function() { 
     const email = document.getElementById('loginEmail').value.trim(); 
@@ -591,7 +661,7 @@ window.processLogin = async function() {
         alert("Auth system unavailable currently."); 
     }
     btn.innerText = 'Secure Login'; btn.disabled = false;
-}
+};
 
 window.performGoogleLogin = async function() { 
     try { 
