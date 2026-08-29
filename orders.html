@@ -6,35 +6,32 @@
     <title>My Orders - Aavira Luxe</title>
     <meta name="theme-color" content="#ffffff">
     
-    <!-- Premium Fonts & Icons -->
+    <!-- Google Fonts & Font Awesome -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Linked CSS File -->
+    <!-- External CSS -->
     <link rel="stylesheet" href="jcc.css">
 </head>
 <body>
 
     <div class="app-container">
         
-        <!-- =========================================
-             SCREEN 1: MY ORDERS LIST
-             ========================================= -->
+        <!-- SCREEN 1: MY ORDERS LIST -->
         <div id="listView" style="display: flex; flex-direction: column; height: 100%;">
             
             <header class="header">
-                <button class="header-btn" onclick="window.location.href='./'"><i class="fa-solid fa-arrow-left"></i></button>
+                <button class="header-btn" onclick="goToHome()"><i class="fa-solid fa-arrow-left"></i></button>
                 <h1>My Orders</h1>
-                <div class="header-btn">
-                    <i class="fa-solid fa-magnifying-glass" onclick="toggleSearch(true)"></i>
-                    <i class="fa-solid fa-filter"></i>
+                <div class="header-btn-group">
+                    <button class="header-btn" id="btnRefresh" onclick="refreshOrders()" title="Refresh Orders"><i class="fa-solid fa-rotate-right"></i></button>
+                    <button class="header-btn" onclick="toggleSearch(true)"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
                 
-                <!-- Animated Advanced Search Overlay -->
                 <div class="search-overlay" id="searchOverlay">
-                    <i class="fa-solid fa-arrow-left close-search" onclick="toggleSearch(false)"></i>
-                    <input type="text" class="search-input" id="searchInput" placeholder="Search by Order ID or Product Name..." oninput="handleSearch()">
-                    <i class="fa-solid fa-xmark close-search" onclick="clearSearch()" style="font-size: 16px; opacity: 0.6;"></i>
+                    <button class="close-search" onclick="toggleSearch(false)"><i class="fa-solid fa-arrow-left"></i></button>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search Order ID or Product..." oninput="handleSearch()">
+                    <button class="close-search" onclick="toggleSearch(false)" style="color: var(--text-muted);"><i class="fa-solid fa-xmark"></i></button>
                 </div>
             </header>
 
@@ -49,61 +46,75 @@
 
             <div class="main-scroll" id="ordersListContainer">
                 <div id="loader">
-                    <div class="skel-card"><div class="skel-line" style="width: 50%;"></div><div class="skel-line" style="width: 100%; height:80px;"></div></div>
-                    <div class="skel-card"><div class="skel-line" style="width: 50%;"></div><div class="skel-line" style="width: 100%; height:80px;"></div></div>
+                    <div class="skel-card"><div class="skel-line" style="width: 40%;"></div><div class="skel-line" style="width: 100%; height:70px;"></div></div>
+                    <div class="skel-card"><div class="skel-line" style="width: 40%;"></div><div class="skel-line" style="width: 100%; height:70px;"></div></div>
                 </div>
 
                 <div class="empty-state" id="emptyState">
-                    <i class="fa-solid fa-shield-halved" style="font-size: 60px; color: #ddd; margin-bottom: 20px;"></i>
-                    <h3 style="font-size: 18px; color: var(--text-dark); margin-bottom: 8px;">No Orders Found</h3>
-                    <p style="font-size: 13px; color: var(--text-muted); padding: 0 20px;">You haven't placed any orders from this device, or you are not logged in.</p>
+                    <i class="fa-solid fa-box-open" style="font-size: 50px; color: #D1D5DB; margin-bottom: 14px;"></i>
+                    <h3 style="font-size: 16.5px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px;">No Orders Found</h3>
+                    <p style="font-size: 12.5px; color: var(--text-muted);">You don't have any orders in this tab.</p>
                 </div>
 
                 <div id="cardsWrapper"></div>
             </div>
         </div>
 
-        <!-- =========================================
-             SCREEN 2: ORDER DETAILS
-             ========================================= -->
+        <!-- SCREEN 2: ORDER DETAILS -->
         <div class="details-view" id="detailsView">
             <header class="header">
                 <button class="header-btn" onclick="closeOrderDetails()"><i class="fa-solid fa-arrow-left"></i></button>
                 <h1>Order Details</h1>
-                <div style="width: 20px;"></div>
+                <button class="header-btn" onclick="shareOrder()"><i class="fa-solid fa-share-nodes"></i></button>
             </header>
 
             <div class="dv-scroll">
                 
-                <div class="dv-top-card" style="animation-delay: 0.1s;">
-                    <div class="dv-tc-head">
+                <!-- Quick Actions Toolbar -->
+                <div class="dv-quick-actions">
+                    <button class="qa-btn" onclick="openInvoiceModal()"><i class="fa-solid fa-file-invoice"></i> Invoice / Bill</button>
+                    <button class="qa-btn" onclick="openWhatsApp()"><i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> Support</button>
+                    <button class="qa-btn" onclick="copyOrderId()"><i class="fa-regular fa-copy"></i> Copy ID</button>
+                </div>
+
+                <!-- DELIVERY OTP MASTER CARD -->
+                <div class="otp-master-card" id="dtDeliveryOtpCard">
+                    <div class="otp-header">
                         <div>
-                            <p style="font-size:11px; color:var(--text-muted); font-weight:600; margin-bottom:2px;">Order ID</p>
-                            <div style="display:flex; align-items:center;">
-                                <h3 id="dtOrderId" style="font-size:16px; font-weight:800; color:var(--text-dark);">#AVF</h3>
-                                <button class="copy-btn" onclick="copyOrderId()"><i class="fa-regular fa-copy"></i> Copy</button>
-                            </div>
-                            <p id="dtDate" style="font-size:11px; color:var(--text-muted); font-weight:500; margin-top:8px;">Placed on</p>
+                            <span class="otp-live-tag">Delivery in Progress</span>
+                            <h3 style="font-size:15px; font-weight:800; color:#78350F; margin-top:4px;">Delivery Confirmation PIN</h3>
                         </div>
+                        <button onclick="copyDeliveryOtp()" style="background:#fff; border:1px solid #F59E0B; color:#92400E; font-size:11px; font-weight:700; padding:6px 10px; border-radius:8px; cursor:pointer;">
+                            <i class="fa-regular fa-copy"></i> Copy PIN
+                        </button>
                     </div>
-                    <div class="dv-tc-body">
-                        <div class="img-wrapper" style="width:80px; height:80px;">
-                            <img id="dtImg" src="" class="oc-img" style="width:100%; height:100%; border-radius:10px; object-fit:cover; border:1px solid #eee; display:none;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="oc-img-fallback" id="dtImgFallback" style="width:100%; height:100%; border-radius:10px; background:#f0f0f0; display:flex; justify-content:center; align-items:center; color:#ccc; font-size:30px;"><i class="fa-solid fa-shirt"></i></div>
-                        </div>
-                        <div style="flex:1;">
-                            <h4 id="dtName" style="font-size:14px; font-weight:700; color:var(--text-dark); margin-bottom:6px; line-height:1.3;">Product Name</h4>
-                            <p id="dtMeta" style="font-size:12px; color:var(--text-muted); font-weight:500; margin-bottom:12px;">Size: M | Color: Standard</p>
-                            <div style="display:flex; justify-content:space-between; align-items:center;">
-                                <h3 id="dtPrice" style="font-size:16px; font-weight:800;">₹0.00</h3>
-                                <p id="dtQty" style="font-size:12px; color:var(--text-dark); font-weight:600;">Qty: 1</p>
-                            </div>
-                        </div>
+                    
+                    <div class="otp-box-group" id="dtOtpBoxes"></div>
+
+                    <div class="otp-warning-note">
+                        <i class="fa-solid fa-shield-halved" style="font-size:16px; color:#D97706; margin-top:2px;"></i>
+                        <div>Share this secret PIN with the delivery executive only when you receive and verify your package.</div>
                     </div>
                 </div>
 
+                <!-- Order ID & Multi-Item List -->
+                <div class="dv-top-card">
+                    <div class="dv-tc-head">
+                        <div>
+                            <p style="font-size:11px; color:var(--text-muted); font-weight:600;">Order ID</p>
+                            <div style="display:flex; align-items:center;">
+                                <h3 id="dtOrderId" style="font-size:15.5px; font-weight:800; color:var(--text-dark);">#AVF</h3>
+                                <button class="copy-btn" onclick="copyOrderId()"><i class="fa-regular fa-copy"></i> Copy</button>
+                            </div>
+                        </div>
+                        <p id="dtDate" style="font-size:11.5px; color:var(--text-muted); font-weight:600; text-align:right;">Placed on --</p>
+                    </div>
+
+                    <div id="dtItemsContainer"></div>
+                </div>
+
                 <!-- Tracking Timeline -->
-                <div class="tracking-card" style="animation-delay: 0.2s;">
+                <div class="tracking-card">
                     <h3 class="tracking-title">Tracking Status</h3>
                     
                     <div class="timeline" id="dtTimeline">
@@ -116,43 +127,39 @@
                         <i class="fa-solid fa-truck-fast"></i>
                         <div>
                             <p id="dtExpectedLabel">Expected Delivery</p>
-                            <h4 id="dtExpectedDate">29 Aug 2026</h4>
+                            <h4 id="dtExpectedDate">--</h4>
                         </div>
                     </div>
                 </div>
 
                 <!-- Delivery Address -->
-                <div class="info-card" style="animation-delay: 0.3s;">
+                <div class="info-card">
                     <div class="ic-row">
                         <div class="ic-icon"><i class="fa-solid fa-location-dot"></i></div>
                         <div class="ic-content">
                             <h4>Delivery Address</h4>
-                            <p id="dtAddressName" style="margin-bottom:4px;">Name</p>
-                            <p id="dtAddressFull" style="color:var(--text-muted); font-weight:500;">Address</p>
-                            <p id="dtAddressPhone" style="margin-top:8px; font-weight:600; font-size:13px;">Phone: </p>
+                            <p id="dtAddressName" style="margin-bottom:2px;">Name</p>
+                            <p id="dtAddressFull" style="color:var(--text-muted); font-weight:500; font-size:12.5px;">Address</p>
+                            <p id="dtAddressPhone" style="margin-top:4px; font-weight:600; font-size:12px;">Phone: </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- ORDER SUMMARY WITH PAYMENT STATUS -->
-                <div class="info-card" style="animation-delay: 0.4s;">
+                <!-- Order Summary -->
+                <div class="info-card">
                     <h3 class="tracking-title">Order Summary</h3>
-                    <div class="summary-row"><span>Subtotal</span><span id="dtSubtotal">₹0.00</span></div>
-                    <div class="summary-row"><span>Shipping Charge</span><span>₹0.00</span></div>
+                    <div class="summary-row"><span>Items Subtotal</span><span id="dtSubtotal">₹0.00</span></div>
+                    <div class="summary-row"><span>Shipping Charge</span><span id="dtShipping">₹0.00</span></div>
                     <div class="summary-row"><span style="color:var(--status-green);">Discount</span><span style="color:var(--status-green);" id="dtDiscount">- ₹0.00</span></div>
                     <div class="summary-row total"><span>Total Amount</span><span id="dtTotal">₹0.00</span></div>
                     
-                    <div id="dtPaymentStatusBox" style="margin-top: 16px; border-top: 1px dashed var(--border); padding-top: 16px;">
-                        <!-- JS Injected -->
-                    </div>
+                    <div id="dtPaymentStatusBox" style="margin-top: 14px; border-top: 1px dashed var(--border); padding-top: 14px;"></div>
                 </div>
 
-                <!-- Need Help & Cancel Option -->
-                <div class="info-card" style="border:none; padding:10px 0; background:transparent; box-shadow:none; animation-delay: 0.5s;">
-                    <h3 class="tracking-title" style="margin-bottom:6px;">Need Help?</h3>
-                    <p style="font-size:12px; color:var(--text-muted); font-weight:500;">You can contact our support team regarding your order.</p>
+                <!-- Actions -->
+                <div class="info-card" style="border:none; padding:10px 0; background:transparent;">
                     <div class="help-btns">
-                        <button class="h-btn btn-outline" onclick="openWhatsApp()"><i class="fa-brands fa-whatsapp" style="font-size:16px;"></i> Contact Support</button>
+                        <button class="h-btn btn-outline" id="dtReorderBtn" onclick="reorderCurrent()"><i class="fa-solid fa-arrow-rotate-right" style="color:var(--primary);"></i> Buy Again</button>
                         <button class="h-btn btn-cancel-outline" id="dtCancelBtn" style="display:none;" onclick="triggerCancelOrder()"><i class="fa-solid fa-ban"></i> Cancel Order</button>
                     </div>
                 </div>
@@ -160,23 +167,53 @@
             </div>
         </div>
 
-        <!-- =========================================
-             CANCEL CONFIRMATION MODAL
-             ========================================= -->
+        <!-- MODAL: INVOICE VIEWER -->
+        <div class="modal-overlay" id="invoiceModal" onclick="closeModal('invoiceModal')">
+            <div class="bottom-sheet" onclick="event.stopPropagation()">
+                <div class="sheet-drag"></div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="font-size: 17px; font-weight: 800; color: var(--text-dark);">Order Invoice</h3>
+                    <button onclick="closeModal('invoiceModal')" style="background:none; border:none; font-size:18px;"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                
+                <div class="invoice-card">
+                    <div style="text-align: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">
+                        <h2 style="font-size: 16px; font-weight: 800; color: var(--primary);">AAVIRA LUXE</h2>
+                        <p style="font-size: 11px; color: var(--text-muted);">Official Tax Invoice & Order Receipt</p>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                        <span>Order ID: <strong id="invOrderId"></strong></span>
+                        <span id="invDate"></span>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <p>Customer: <strong id="invName"></strong></p>
+                    </div>
+                    <div id="invItemsList" style="border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 8px 0; margin-bottom: 8px;"></div>
+                    <div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 13px;">
+                        <span>Total Paid</span>
+                        <span id="invTotal"></span>
+                    </div>
+                </div>
+
+                <button onclick="window.print()" style="width: 100%; padding: 14px; background: var(--text-dark); color: #fff; border: none; border-radius: 12px; font-weight: 700; font-size: 13.5px; cursor: pointer;"><i class="fa-solid fa-print"></i> Print / Save as PDF</button>
+            </div>
+        </div>
+
+        <!-- MODAL: CANCEL CONFIRMATION -->
         <div class="modal-overlay" id="cancelModal" onclick="closeModal('cancelModal')">
             <div class="bottom-sheet" onclick="event.stopPropagation()">
                 <div class="sheet-drag"></div>
                 <div style="text-align: center;">
-                    <div style="width:60px; height:60px; background:#FEF2F2; border-radius:50%; display:flex; justify-content:center; align-items:center; margin:0 auto 16px;">
-                        <i class="fa-solid fa-triangle-exclamation" style="font-size:28px; color:var(--error);"></i>
+                    <div style="width:50px; height:50px; background:#FEF2F2; border-radius:50%; display:flex; justify-content:center; align-items:center; margin:0 auto 12px;">
+                        <i class="fa-solid fa-triangle-exclamation" style="font-size:22px; color:var(--error);"></i>
                     </div>
-                    <h3 style="font-size:20px; font-weight:800; margin-bottom:10px; color:var(--text-dark);">Cancel Order?</h3>
-                    <p style="font-size:14px; color:var(--text-muted); margin-bottom:24px; line-height:1.5;">Are you sure you want to cancel your order <strong id="cancelModalOrderId" style="color:var(--text-dark);"></strong>? This action cannot be undone.</p>
+                    <h3 style="font-size:17px; font-weight:800; margin-bottom:6px; color:var(--text-dark);">Cancel Order?</h3>
+                    <p style="font-size:13px; color:var(--text-muted); margin-bottom:18px;">Are you sure you want to cancel order <strong id="cancelModalOrderId"></strong>?</p>
                 </div>
                 
-                <div style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
-                    <button id="btnConfirmCancel" onclick="executeCancelOrder()" style="background-color: var(--error); color: #ffffff; border: none; padding: 16px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); transition: 0.2s;">Yes, Cancel</button>
-                    <button onclick="closeModal('cancelModal')" style="background-color: var(--status-gray-light); color: var(--text-dark); border: 1px solid var(--border); padding: 16px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.2s;">No, Keep It</button>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <button id="btnConfirmCancel" onclick="executeCancelOrder()" style="background-color: var(--error); color: #ffffff; border: none; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 13.5px; cursor: pointer;">Yes, Cancel Order</button>
+                    <button onclick="closeModal('cancelModal')" style="background-color: var(--status-gray-light); color: var(--text-dark); border: 1px solid var(--border); padding: 14px; border-radius: 12px; font-weight: 700; font-size: 13.5px; cursor: pointer;">No, Keep Order</button>
                 </div>
             </div>
         </div>
@@ -185,7 +222,7 @@
 
     </div>
 
-    <!-- Linked JS File -->
+    <!-- External JS Engine -->
     <script src="tcc.js"></script>
 </body>
 </html>
