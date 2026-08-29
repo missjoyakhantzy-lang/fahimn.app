@@ -1,5 +1,5 @@
 /* =========================================================
-   AAVIRA LUXE - ORDERS ENGINE (tcc.js)
+   AAVIRA LUXE - ORDERS ENGINE (tcc.js) - v5.2 FINAL
    ========================================================= */
 
 let allOrdersData = [];
@@ -11,7 +11,7 @@ window.goToHome = function() {
     window.location.href = '/';
 };
 
-// Live Refresh
+// Live Refresh with spin animation
 window.refreshOrders = async function() {
     const btn = document.getElementById('btnRefresh');
     if (btn) btn.innerHTML = '<i class="fa-solid fa-rotate-right fa-spin"></i>';
@@ -44,13 +44,13 @@ window.handleSearch = function() {
     }
 };
 
-// 🔥 STRICT STATUS NORMALIZER: 'out for' IS MATCHED BEFORE 'deliver' 🔥
+// 🔥 STRICT STATUS NORMALIZER (Fixed 'Out for Delivery' Bug) 🔥
 function getStrictProductStatus(rawStatus) {
     if (!rawStatus) return "Processing";
     let s = String(rawStatus).trim().toLowerCase();
     
     if (s.includes('cancel')) return 'Cancelled';
-    // Matches Out for delivery first so it's not confused with 'Delivered'
+    // 'out for delivery' ko 'deliver' se pehle check karna zaroori hai
     if (s.includes('out for') || s.includes('outfordelivery') || s.includes('out_for_delivery')) return 'Out for Delivery';
     if (s.includes('deliver')) return 'Delivered';
     if (s.includes('ship')) return 'Shipped';
@@ -59,7 +59,7 @@ function getStrictProductStatus(rawStatus) {
     return 'Processing';
 }
 
-// Consistent 4-digit PIN generation
+// Consistent 4-digit Delivery PIN Generation
 function generateOrderDeliveryOtp(orderId) {
     const cleanStr = String(orderId || '1000').replace(/[^a-zA-Z0-9]/g, '');
     let hash = 0;
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchOrders();
 });
 
-// 🔥 STRICT DEVICE/USER ORDER ISOLATION FILTER 🔥
+// 🔥 SMART DUAL-LAYER ISOLATION (API Param + Client Filter) 🔥
 async function fetchOrders() {
     const userEmail = (localStorage.getItem('aavira_user_email') || localStorage.getItem('user_email') || '').trim().toLowerCase();
     const rawUserPhone = (localStorage.getItem('aavira_user_phone') || localStorage.getItem('user_phone') || '').replace(/[^0-9]/g, '');
@@ -123,34 +123,55 @@ async function fetchOrders() {
                              (userId && userId !== 'undefined' && userId !== 'null') ||
                              (localPlacedOrderIds.length > 0);
 
+    // Agar device par koi identity ya order nahi hai -> Show Empty State immediately
+    if (!isUserIdentified) {
+        allOrdersData = [];
+        const loader = document.getElementById('loader');
+        if (loader) loader.style.display = 'none';
+        document.getElementById('emptyState').style.display = 'flex';
+        document.getElementById('cardsWrapper').innerHTML = '';
+        return;
+    }
+
     try {
-        const response = await fetch(`https://ssxpq15in.vercel.app/api/orders?nocache=${new Date().getTime()}`);
+        // Build API URL (Supports backend filtering if available, else fetches all)
+        let apiUrl = `https://ssxpq15in.vercel.app/api/orders?nocache=${new Date().getTime()}`;
+        if (userPhone) apiUrl += `&phone=${encodeURIComponent(userPhone)}`;
+        else if (userEmail) apiUrl += `&email=${encodeURIComponent(userEmail)}`;
+
+        const response = await fetch(apiUrl);
         const result = await response.json();
         
         const loader = document.getElementById('loader');
         if (loader) loader.style.display = 'none';
 
-        if (response.ok && result.status === "success" && Array.isArray(result.data) && isUserIdentified) {
+        if (response.ok && result.status === "success" && Array.isArray(result.data)) {
             
+            // Strict Client-Side Verification Filter
             allOrdersData = result.data.filter(order => {
                 if (!order) return false;
 
+                // 1. Check Placed Order ID on this phone
                 const oId = String(order.orderId || order.id || order._id || '').trim().toUpperCase();
                 if (oId && localPlacedOrderIds.includes(oId)) return true;
 
+                // 2. Check User ID
                 const oUserId = String(order.userId || order.user_id || order.uid || '').trim();
                 if (userId && oUserId && userId === oUserId) return true;
 
-                const oEmail = String(order.email || order.userEmail || order.customerEmail || '').trim().toLowerCase();
-                if (userEmail && oEmail && userEmail === oEmail) return true;
-
+                // 3. Check Phone (Last 10 Digits)
                 const rawOPhone = String(order.phone || order.userPhone || order.customerPhone || '').replace(/[^0-9]/g, '');
                 const oPhone = rawOPhone.length >= 10 ? rawOPhone.slice(-10) : '';
                 if (userPhone && oPhone && userPhone === oPhone) return true;
 
+                // 4. Check Email (Strict non-empty)
+                const oEmail = String(order.email || order.userEmail || order.customerEmail || '').trim().toLowerCase();
+                if (userEmail && oEmail && userEmail === oEmail) return true;
+
                 return false;
             });
 
+            // Locally Cancelled status sync
             let locallyCancelled = [];
             try {
                 locallyCancelled = JSON.parse(localStorage.getItem('aavira_cancelled_orders') || '[]');
@@ -163,6 +184,7 @@ async function fetchOrders() {
                 }
             });
 
+            // Sort newest first
             allOrdersData.sort((a,b) => parseOrderDate(b.createdAt) - parseOrderDate(a.createdAt));
 
             if (allOrdersData.length === 0) {
@@ -235,7 +257,7 @@ function getSmartExpectedDate(rawDateObj, currentStatus) {
     expected.setDate(expected.getDate() + 5); 
     let now = new Date();
     if (currentStatus === 'Out for Delivery') {
-        return now;
+        return now; // Delivering Today!
     }
     if (currentStatus !== 'Delivered' && currentStatus !== 'Cancelled' && expected < now) {
         expected = new Date(now.getTime());
@@ -340,6 +362,7 @@ window.openOrderDetails = function(internalId) {
     document.getElementById('dtOrderId').innerText = order.orderId || order.id || '#AVF';
     document.getElementById('dtDate').innerText = `Placed on ${formatDateTime(rawDate)}`;
     
+    // Render All Items
     const itemsContainer = document.getElementById('dtItemsContainer');
     itemsContainer.innerHTML = '';
     
@@ -372,7 +395,7 @@ window.openOrderDetails = function(internalId) {
         `;
     });
 
-    // 🔥 DELIVERY OTP CARD DISPLAY 🔥
+    // Delivery OTP Box for Out for Delivery
     const otpCard = document.getElementById('dtDeliveryOtpCard');
     if(status === 'Out for Delivery') {
         otpCard.style.display = 'flex';
@@ -405,7 +428,7 @@ window.openOrderDetails = function(internalId) {
         dtCancelBtn.style.display = 'none';
     }
 
-    // Payment UI
+    // Payment Section
     let pStatus = String(order.paymentStatus || 'Pending').toLowerCase();
     let pMethod = String(order.paymentMethod || 'Online');
     let payColor, payBg, payText, payIcon, payActionHtml;
