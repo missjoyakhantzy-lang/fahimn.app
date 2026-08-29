@@ -6,7 +6,7 @@
     <title>My Profile - Aavira Luxe</title>
     <meta name="theme-color" content="#ffffff">
     
-    <!-- Google Fonts & Font Awesome Icons -->
+    <!-- Google Fonts & Font Awesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,16 +14,16 @@
     
     <style>
         :root {
-            --primary: #E11D48; /* Exact Coral Pink */
+            --primary: #E11D48;
             --primary-light: #FFF1F2;
             --primary-border: #FECDD3;
-            --text-dark: #1E293B;
+            --text-dark: #111827;
             --text-muted: #64748B;
             --text-light: #94A3B8;
             --border: #F1F5F9;
             --bg-page: #F8FAFC;
             --card-bg: #FFFFFF;
-            --nav-gray: #8E9BAE; /* Exact Screenshot Navbar Color */
+            --nav-gray: #8E9BAE;
             --font: 'Plus Jakarta Sans', sans-serif;
             --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.02);
             --smooth: cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -63,7 +63,7 @@
             box-shadow: 0 0 40px rgba(0,0,0,0.1);
         }
 
-        /* TOP HEADER */
+        /* HEADER */
         .top-header {
             display: flex;
             justify-content: space-between;
@@ -100,9 +100,7 @@
             transition: 0.2s;
         }
 
-        .h-icon-btn:active { transform: scale(0.9); }
-
-        /* SCROLLABLE MAIN CONTENT (With proper padding so navbar doesn't cover content) */
+        /* SCROLLABLE MAIN CONTENT */
         .main-content {
             flex: 1;
             overflow-y: auto;
@@ -112,9 +110,7 @@
         }
         .main-content::-webkit-scrollbar { display: none; }
 
-        /* =========================================================
-           TOP PROFILE HERO CARD
-           ========================================================= */
+        /* PROFILE HERO CARD */
         .profile-card {
             background: var(--card-bg);
             border-radius: 20px;
@@ -130,7 +126,6 @@
             gap: 14px;
             position: relative;
             padding-bottom: 16px;
-            cursor: pointer;
         }
 
         .avatar-container {
@@ -149,7 +144,7 @@
             align-items: center;
             justify-content: center;
             color: #F472B6;
-            font-size: 34px;
+            font-size: 32px;
             overflow: hidden;
             font-weight: 800;
             text-transform: uppercase;
@@ -181,7 +176,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .name-row h2 {
@@ -208,13 +203,29 @@
             flex-shrink: 0;
         }
 
+        .btn-direct-login {
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 7px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
+            box-shadow: 0 3px 10px rgba(225, 29, 72, 0.25);
+        }
+
         .info-row {
             display: flex;
             align-items: center;
             gap: 8px;
             font-size: 12px;
             color: var(--text-muted);
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             font-weight: 500;
             white-space: nowrap;
             overflow: hidden;
@@ -235,13 +246,7 @@
             white-space: nowrap;
         }
 
-        .profile-chevron {
-            color: #CBD5E1;
-            font-size: 15px;
-            padding-left: 4px;
-        }
-
-        /* 4 QUICK STATS ROW WITH VERTICAL DIVIDERS */
+        /* 4 QUICK STATS */
         .stats-divider {
             height: 1px;
             background: #F1F5F9;
@@ -369,7 +374,7 @@
         }
 
         /* =========================================================
-           ✨ PERFECTED THIN OUTLINE NAVBAR (STABLE POSITION) ✨
+           ✨ EXACT THIN-LINE NAVBAR (MATCHING SCREENSHOT) ✨
            ========================================================= */
         .bottom-nav {
             position: absolute;
@@ -416,9 +421,7 @@
             font-weight: 600;
         }
 
-        /* =========================================================
-           🔥 MODAL & BOTTOM SHEET FIX (BUTTON NEVER COVERED) 🔥
-           ========================================================= */
+        /* MODALS & BOTTOM SHEETS */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -527,8 +530,6 @@
             box-shadow: 0 4px 15px rgba(225, 29, 72, 0.25);
         }
 
-        .modal-btn:active { transform: scale(0.97); }
-
         .modal-link {
             font-size: 12px;
             text-align: center;
@@ -574,7 +575,7 @@
             <h1 class="header-title">My Profile</h1>
             <div class="header-icons">
                 <button class="h-icon-btn" onclick="showToast('No new notifications')"><i class="fa-regular fa-bell"></i></button>
-                <button class="h-icon-btn" onclick="handleProfileHeaderAction()"><i class="fa-solid fa-gear"></i></button>
+                <button class="h-icon-btn" onclick="openProfileSettings()"><i class="fa-solid fa-gear"></i></button>
             </div>
         </header>
 
@@ -583,8 +584,8 @@
 
             <!-- 1. TOP PROFILE HERO CARD -->
             <div class="profile-card">
-                <div class="profile-upper" onclick="handleProfileHeaderAction()">
-                    <div class="avatar-container">
+                <div class="profile-upper">
+                    <div class="avatar-container" onclick="openProfileSettings()">
                         <div class="avatar-img" id="userAvatar">
                             <i class="fa-regular fa-user"></i>
                         </div>
@@ -593,38 +594,47 @@
                     
                     <div class="user-info-col">
                         <div class="name-row">
-                            <h2 id="dispUserName">Your Name</h2>
-                            <button class="btn-edit-pill" onclick="event.stopPropagation(); handleProfileHeaderAction()">
-                                <i class="fa-solid fa-pen" style="font-size: 9px;"></i> <span id="btnEditActionText">Edit Profile</span>
+                            <h2 id="dispUserName">Guest User</h2>
+                            <button class="btn-edit-pill" id="btnEditProfile" onclick="openModal('editProfileModal')" style="display: none;">
+                                <i class="fa-solid fa-pen" style="font-size: 9px;"></i> Edit Profile
                             </button>
                         </div>
                         
-                        <div class="info-row">
-                            <i class="fa-solid fa-phone"></i>
-                            <span id="dispUserPhone">Your Phone Number</span>
+                        <!-- Logged Out State: Clean Login Button -->
+                        <div id="guestLoginPromptBox">
+                            <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 4px;">Sign in to view orders & address</p>
+                            <button class="btn-direct-login" onclick="openModal('loginModal')">
+                                <i class="fa-solid fa-right-to-bracket"></i> Login / Sign Up
+                            </button>
                         </div>
-                        
-                        <div class="info-row">
-                            <i class="fa-regular fa-envelope"></i>
-                            <span id="dispUserEmail">Your Email Address</span>
-                        </div>
-                        
-                        <div class="info-row">
-                            <i class="fa-solid fa-location-dot"></i>
-                            <span id="dispUserAddress">Your Address</span>
+
+                        <!-- Logged In State: Phone, Email, Address -->
+                        <div id="loggedInInfoBox" style="display: none;">
+                            <div class="info-row">
+                                <i class="fa-solid fa-phone"></i>
+                                <span id="dispUserPhone">Your Phone Number</span>
+                            </div>
+                            <div class="info-row">
+                                <i class="fa-regular fa-envelope"></i>
+                                <span id="dispUserEmail">Your Email Address</span>
+                            </div>
+                            <div class="info-row">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <span id="dispUserAddress">Your Address</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="profile-chevron">
-                        <i class="fa-solid fa-chevron-right"></i>
+                    <div class="profile-chevron" onclick="openProfileSettings()">
+                        <i class="fa-solid fa-chevron-right" style="color: #CBD5E1;"></i>
                     </div>
                 </div>
 
                 <div class="stats-divider"></div>
 
-                <!-- 4 QUICK ACTIONS ROW -->
+                <!-- 4 QUICK ACTIONS ROW (REAL LOCALSTORAGE DATA) -->
                 <div class="quick-stats-row">
-                    <div class="stat-item" onclick="window.location.href='orders.html'">
+                    <div class="stat-item" onclick="window.location.href='orders'">
                         <i class="fa-solid fa-bag-shopping"></i>
                         <h4 id="statOrdersCount">0</h4>
                         <p>View your orders</p>
@@ -653,7 +663,7 @@
             <!-- 2. SECTION: MY ORDERS -->
             <div class="section-label">My Orders</div>
             <div class="menu-card">
-                <div class="menu-row" onclick="window.location.href='orders.html'">
+                <div class="menu-row" onclick="window.location.href='orders'">
                     <div class="menu-row-left">
                         <div class="menu-icon-box">
                             <i class="fa-solid fa-cube"></i>
@@ -681,7 +691,7 @@
                     <div class="menu-row-right"><i class="fa-solid fa-chevron-right"></i></div>
                 </div>
 
-                <div class="menu-row" onclick="handleProfileHeaderAction()">
+                <div class="menu-row" onclick="openProfileSettings()">
                     <div class="menu-row-left">
                         <div class="menu-icon-box"><i class="fa-regular fa-user"></i></div>
                         <div class="menu-titles">
@@ -729,17 +739,6 @@
                     <div class="menu-row-right"><i class="fa-solid fa-chevron-right"></i></div>
                 </div>
 
-                <div class="menu-row" onclick="openModal('termsModal')">
-                    <div class="menu-row-left">
-                        <div class="menu-icon-box"><i class="fa-regular fa-file-lines"></i></div>
-                        <div class="menu-titles">
-                            <h3>Terms & Conditions</h3>
-                            <p>Read our terms and conditions</p>
-                        </div>
-                    </div>
-                    <div class="menu-row-right"><i class="fa-solid fa-chevron-right"></i></div>
-                </div>
-
                 <div class="menu-row" onclick="openModal('privacyModal')">
                     <div class="menu-row-left">
                         <div class="menu-icon-box"><i class="fa-solid fa-shield-halved"></i></div>
@@ -751,12 +750,13 @@
                     <div class="menu-row-right"><i class="fa-solid fa-chevron-right"></i></div>
                 </div>
 
-                <div class="menu-row" id="authActionRow" onclick="handleAuthRowClick()">
+                <!-- Logout Row: ONLY Visible when user is logged in -->
+                <div class="menu-row" id="logoutRow" onclick="handleLogout()" style="display: none;">
                     <div class="menu-row-left">
-                        <div class="menu-icon-box" id="authRowIconBox"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
+                        <div class="menu-icon-box" style="background:#FFF1F2; color:#E11D48;"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
                         <div class="menu-titles">
-                            <h3 id="authRowTitle" style="color:var(--text-dark);">Logout</h3>
-                            <p id="authRowSubtitle">Sign out from your account</p>
+                            <h3 style="color:#E11D48;">Logout</h3>
+                            <p>Sign out from your account</p>
                         </div>
                     </div>
                     <div class="menu-row-right"><i class="fa-solid fa-chevron-right"></i></div>
@@ -766,7 +766,7 @@
         </main>
 
         <!-- =========================================================
-             ✨ 5. EXACT SCREENSHOT NAVBAR: HOME, CATEGORIES, SEARCH, ORDERS, PROFILE ✨
+             ✨ EXACT CLEAN NAVBAR (HOME, CATEGORIES, SEARCH, ORDERS, PROFILE) ✨
              ========================================================= -->
         <nav class="bottom-nav">
             <a href="./" class="nav-link">
@@ -777,7 +777,7 @@
                 <span>Home</span>
             </a>
 
-            <a href="categories.html" class="nav-link">
+            <a href="categories" class="nav-link">
                 <svg class="nav-svg-icon" viewBox="0 0 24 24">
                     <rect x="3.5" y="3.5" width="7" height="7" rx="2"/>
                     <rect x="13.5" y="3.5" width="7" height="7" rx="2"/>
@@ -787,7 +787,7 @@
                 <span>Categories</span>
             </a>
 
-            <a href="search.html" class="nav-link">
+            <a href="search" class="nav-link">
                 <svg class="nav-svg-icon" viewBox="0 0 24 24">
                     <circle cx="11" cy="11" r="7"/>
                     <line x1="16.5" y1="16.5" x2="21" y2="21"/>
@@ -795,7 +795,7 @@
                 <span>Search</span>
             </a>
 
-            <a href="orders.html" class="nav-link">
+            <a href="orders" class="nav-link">
                 <svg class="nav-svg-icon" viewBox="0 0 24 24">
                     <path d="M12 2.5L3.5 7.5v9L12 21.5l8.5-5v-9L12 2.5z"/>
                     <polyline points="3.5 7.5 12 12.5 20.5 7.5"/>
@@ -804,7 +804,7 @@
                 <span>Orders</span>
             </a>
 
-            <a href="profile.html" class="nav-link active">
+            <a href="profile" class="nav-link active">
                 <svg class="nav-svg-icon" viewBox="0 0 24 24">
                     <circle cx="12" cy="7.5" r="4"/>
                     <path d="M4.5 20.5c0-4.14 3.36-7.5 7.5-7.5s7.5 3.36 7.5 7.5"/>
@@ -814,9 +814,9 @@
         </nav>
 
         <!-- =========================================================
-             MODALS: FIXED LOGIN/SIGNUP/OTP & SETTINGS
+             MODALS: AUTH, EDIT PROFILE, ADDRESS, COUPONS
              ========================================================= -->
-        <!-- REAL AUTH MODAL (NEVER COVERS BUTTON) -->
+        <!-- REAL AUTH MODAL -->
         <div id="loginModal" class="modal-overlay" onclick="closeModal('loginModal')">
             <div class="bottom-sheet" onclick="event.stopPropagation()">
                 <div class="sheet-handle"></div>
@@ -863,12 +863,12 @@
                     <input type="text" class="modal-input" id="inpEditName" placeholder="Full Name" required>
                     <input type="tel" class="modal-input" id="inpEditPhone" placeholder="Mobile Number (10 Digits)" maxlength="10" required>
                     <input type="email" class="modal-input" id="inpEditEmail" placeholder="Email Address" required>
-                    <button type="submit" class="modal-btn" id="btnSaveProfile">Save to Account & Server</button>
+                    <button type="submit" class="modal-btn" id="btnSaveProfile">Save to Account</button>
                 </form>
             </div>
         </div>
 
-        <!-- ADDRESS MODAL (MATCHES CHECKOUT aavira_saved_address) -->
+        <!-- ADDRESS MODAL -->
         <div class="modal-overlay" id="addressModal" onclick="closeModal('addressModal')">
             <div class="bottom-sheet" onclick="event.stopPropagation()">
                 <div class="sheet-handle"></div>
@@ -975,19 +975,7 @@
             </div>
         </div>
 
-        <!-- TERMS MODAL -->
-        <div class="modal-overlay" id="termsModal" onclick="closeModal('termsModal')">
-            <div class="bottom-sheet" onclick="event.stopPropagation()">
-                <div class="sheet-handle"></div>
-                <div class="modal-header">
-                    <h3>Terms & Conditions</h3>
-                    <button class="modal-close-btn" onclick="closeModal('termsModal')"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-                <p style="font-size:12.5px; color:#64748B; line-height:1.6;">Welcome to Aavira Luxe. By placing an order, you agree to our handcrafted ethnic product terms, shipping schedules, and exchange policies.</p>
-            </div>
-        </div>
-
-        <!-- PRIVACY MODAL -->
+        <!-- PRIVACY POLICY MODAL -->
         <div class="modal-overlay" id="privacyModal" onclick="closeModal('privacyModal')">
             <div class="bottom-sheet" onclick="event.stopPropagation()">
                 <div class="sheet-handle"></div>
@@ -1004,68 +992,90 @@
 
     </div>
 
-    <!-- DATA PROVIDER SCRIPT -->
+    <!-- DATA PROVIDER LINK -->
     <script src="user_data.js"></script>
 
-    <!-- REAL ENGINE JAVASCRIPT -->
+    <!-- REAL LOCALSTORAGE & SERVER SYNC ENGINE -->
     <script>
         let tempSignupData = { name: "", email: "", pwd: "" };
 
         document.addEventListener('DOMContentLoaded', () => {
-            syncAllData();
+            loadRealUserData();
         });
 
-        // 1. DYNAMIC AUTO-SYNC FROM LOCALSTORAGE
-        function syncAllData() {
-            const userName = localStorage.getItem('aavira_display_name') || "Your Name";
-            const userPhone = localStorage.getItem('aavira_user_phone') || "Your Phone Number";
-            const userEmail = localStorage.getItem('aavira_user_email') || "Your Email Address";
+        // 1. DYNAMIC AUTO-SYNC WITH LOCALSTORAGE
+        function loadRealUserData() {
+            const userEmail = localStorage.getItem('aavira_user_email') || '';
+            const userName = localStorage.getItem('aavira_display_name') || '';
+            const userPhone = localStorage.getItem('aavira_user_phone') || '';
             
-            const isUserLoggedIn = (userEmail !== '' && userEmail !== 'Your Email Address');
+            const isUserLoggedIn = (userEmail !== '' && userEmail !== 'undefined');
 
-            // Set Profile Header Info
-            document.getElementById('dispUserName').innerText = userName;
-            document.getElementById('dispUserPhone').innerText = userPhone;
-            document.getElementById('dispUserEmail').innerText = userEmail;
+            const dispName = document.getElementById('dispUserName');
+            const dispPhone = document.getElementById('dispUserPhone');
+            const dispEmail = document.getElementById('dispUserEmail');
+            const dispAddress = document.getElementById('dispUserAddress');
+            const avatarEl = document.getElementById('userAvatar');
+            
+            const editBtn = document.getElementById('btnEditProfile');
+            const guestLoginBox = document.getElementById('guestLoginPromptBox');
+            const loggedInInfoBox = document.getElementById('loggedInInfoBox');
+            const logoutRow = document.getElementById('logoutRow');
 
-            // Real Address formatting
-            let savedAddress = "Your Address";
+            // Format Address
+            let savedAddress = "Add Delivery Address";
             try {
                 const ad = JSON.parse(localStorage.getItem('aavira_saved_address'));
                 if (ad && ad.street) {
                     savedAddress = `${ad.street}, ${ad.city || ''} - ${ad.pin || ''}`;
                 }
             } catch(e) {}
-            document.getElementById('dispUserAddress').innerText = savedAddress;
 
-            // Avatar initial / photo
-            const avatarEl = document.getElementById('userAvatar');
-            if (avatarEl) {
-                if (isUserLoggedIn && userName !== "Your Name") {
+            if (isUserLoggedIn) {
+                // User Logged In
+                dispName.innerText = userName || "Aavira Member";
+                dispPhone.innerText = userPhone || "Add Mobile Number";
+                dispEmail.innerText = userEmail;
+                dispAddress.innerText = savedAddress;
+
+                editBtn.style.display = "inline-flex";
+                guestLoginBox.style.display = "none";
+                loggedInInfoBox.style.display = "block";
+                logoutRow.style.display = "flex"; // Show Logout row
+
+                if (userName) {
                     avatarEl.innerText = userName.charAt(0).toUpperCase();
                 } else {
                     avatarEl.innerHTML = '<i class="fa-regular fa-user"></i>';
                 }
+            } else {
+                // User Logged Out (Guest Mode)
+                dispName.innerText = "Guest User";
+                editBtn.style.display = "none";
+                guestLoginBox.style.display = "block";
+                loggedInInfoBox.style.display = "none";
+                logoutRow.style.display = "none"; // Hide Logout row
+                avatarEl.innerHTML = '<i class="fa-regular fa-user"></i>';
             }
 
-            // Real Orders Count
+            // Real Orders Count from LocalStorage
             let localOrders = [];
             try {
                 localOrders = JSON.parse(localStorage.getItem('aavira_placed_orders')) || [];
             } catch(e) {}
             document.getElementById('statOrdersCount').innerText = localOrders.length;
 
-            // Real Wishlist Count
+            // Real Wishlist Count from LocalStorage
             let wishlist = [];
             try {
                 wishlist = JSON.parse(localStorage.getItem('aavira_wishlist')) || [];
             } catch(e) {}
             document.getElementById('statWishlistCount').innerText = wishlist.length;
 
-            // Pre-fill Edit Forms
-            document.getElementById('inpEditName').value = (userName !== "Your Name") ? userName : "";
-            document.getElementById('inpEditPhone').value = (userPhone !== "Your Phone Number") ? userPhone.replace(/\D/g, '').slice(-10) : "";
-            document.getElementById('inpEditEmail').value = (userEmail !== "Your Email Address") ? userEmail : "";
+            // Pre-fill Forms
+            document.getElementById('inpEditName').value = userName;
+            document.getElementById('inpEditPhone').value = userPhone.replace(/\D/g, '').slice(-10);
+            document.getElementById('inpEditEmail').value = userEmail;
 
             try {
                 const ad = JSON.parse(localStorage.getItem('aavira_saved_address'));
@@ -1079,26 +1089,16 @@
             } catch(e) {}
         }
 
-        // Header click router
-        window.handleProfileHeaderAction = function() {
+        window.openProfileSettings = function() {
             const userEmail = localStorage.getItem('aavira_user_email');
-            if (!userEmail || userEmail === 'Your Email Address') {
+            if (!userEmail) {
                 openModal('loginModal');
             } else {
                 openModal('editProfileModal');
             }
         };
 
-        window.handleAuthRowClick = function() {
-            const userEmail = localStorage.getItem('aavira_user_email');
-            if (userEmail && userEmail !== 'Your Email Address') {
-                handleLogout();
-            } else {
-                openModal('loginModal');
-            }
-        };
-
-        // Modal Open / Close
+        // 2. MODAL CONTROLS
         window.openModal = function(id) {
             const modal = document.getElementById(id);
             if (modal) {
@@ -1115,7 +1115,7 @@
             }
         };
 
-        // 2. REAL AUTH METHODS VIA DELIVERYBOY / USER_DATA.JS
+        // 3. REAL AUTH METHODS
         window.toggleAuthView = function(viewMode) {
             document.getElementById('loginView').style.display = 'none';
             document.getElementById('signupView').style.display = 'none';
@@ -1184,7 +1184,7 @@
                         localStorage.setItem('aavira_user_email', tempSignupData.email);
                         showToast("Account Verified & Logged In!");
                         closeModal('loginModal');
-                        syncAllData();
+                        loadRealUserData();
                     } else {
                         showToast(res.data?.message || "Invalid OTP!");
                     }
@@ -1215,7 +1215,7 @@
                         localStorage.setItem('aavira_user_email', email);
                         showToast("Login Successful!");
                         closeModal('loginModal');
-                        syncAllData();
+                        loadRealUserData();
                     } else {
                         showToast(res.data?.message || "Invalid Email or Password!");
                     }
@@ -1228,7 +1228,7 @@
             btn.disabled = false;
         };
 
-        // 3. SAVE PROFILE TO LOCALSTORAGE & SERVER
+        // 4. SAVE PROFILE DETAILS
         window.saveProfileToServer = async function(e) {
             e.preventDefault();
             const btn = document.getElementById('btnSaveProfile');
@@ -1253,14 +1253,14 @@
                 });
             } catch(err) {}
 
-            syncAllData();
+            loadRealUserData();
             closeModal('editProfileModal');
             showToast("Profile Updated Successfully!");
             btn.innerText = ogText;
             btn.disabled = false;
         };
 
-        // 4. SAVE ADDRESS TO LOCALSTORAGE & SERVER
+        // 5. SAVE ADDRESS DETAILS (SYNCED WITH CHECKOUT aavira_saved_address)
         window.saveAddressToServer = async function(e) {
             e.preventDefault();
             const btn = document.getElementById('btnSaveAddress');
@@ -1276,7 +1276,6 @@
                 street: document.getElementById('ad_street').value.trim()
             };
 
-            // Save to localStorage matching Checkout standard
             localStorage.setItem('aavira_saved_address', JSON.stringify(ad));
 
             try {
@@ -1289,7 +1288,7 @@
                 });
             } catch(err) {}
 
-            syncAllData();
+            loadRealUserData();
             closeModal('addressModal');
             showToast("Address Saved Successfully!");
             btn.innerText = ogText;
@@ -1319,7 +1318,7 @@
                 localStorage.removeItem('aavira_user_email');
                 localStorage.removeItem('aavira_user_phone');
                 showToast("Logged out successfully!");
-                setTimeout(() => window.location.reload(), 500);
+                setTimeout(() => window.location.reload(), 400);
             }
         };
 
