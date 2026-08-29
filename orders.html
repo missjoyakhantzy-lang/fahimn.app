@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- External CSS -->
+    <!-- Linked CSS File -->
     <link rel="stylesheet" href="jcc.css">
 </head>
 <body>
@@ -54,9 +54,9 @@
                 </div>
 
                 <div class="empty-state" id="emptyState">
-                    <i class="fa-solid fa-box-open" style="font-size: 60px; color: #ddd; margin-bottom: 20px;"></i>
+                    <i class="fa-solid fa-shield-halved" style="font-size: 60px; color: #ddd; margin-bottom: 20px;"></i>
                     <h3 style="font-size: 18px; color: var(--text-dark); margin-bottom: 8px;">No Orders Found</h3>
-                    <p style="font-size: 13px; color: var(--text-muted);">We couldn't find any orders matching your criteria.</p>
+                    <p style="font-size: 13px; color: var(--text-muted); padding: 0 20px;">You haven't placed any orders from this device, or you are not logged in.</p>
                 </div>
 
                 <div id="cardsWrapper"></div>
@@ -176,7 +176,7 @@
                 
                 <div style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
                     <button id="btnConfirmCancel" onclick="executeCancelOrder()" style="background-color: var(--error); color: #ffffff; border: none; padding: 16px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); transition: 0.2s;">Yes, Cancel</button>
-                    <button onclick="closeModal('cancelModal')" style="background-color: var(--gray-light); color: var(--text-dark); border: 1px solid var(--border); padding: 16px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.2s;">No, Keep It</button>
+                    <button onclick="closeModal('cancelModal')" style="background-color: var(--status-gray-light); color: var(--text-dark); border: 1px solid var(--border); padding: 16px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.2s;">No, Keep It</button>
                 </div>
             </div>
         </div>
@@ -185,7 +185,7 @@
 
     </div>
 
-    <!-- External JS -->
+    <!-- Linked JS File -->
     <script src="tcc.js"></script>
 </body>
 </html>
