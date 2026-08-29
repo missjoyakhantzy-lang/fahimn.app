@@ -637,5 +637,5 @@ window.submitFinalOrder = async () => {
 };
 
 window.handleTrackOrder = () => { 
-    window.location.href = 'orders.html'; 
+    window.location.href = 'orders'; 
 };
