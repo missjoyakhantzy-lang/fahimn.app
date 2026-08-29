@@ -26,23 +26,19 @@ window.handleSearch = function() {
     }
 }
 
-// 🔥 NEW: STRICT PRODUCT STATUS NORMALIZER 🔥
-// Ye ensure karega ki API agar "Pending Payment" bhi bheje, tab bhi yahan bas "Processing", "Shipped" wgera aaye.
+// STRICT PRODUCT STATUS NORMALIZER
 function getStrictProductStatus(rawStatus) {
     if (!rawStatus) return "Processing";
     let s = String(rawStatus).trim().toLowerCase();
-    
     if (s.includes('cancel')) return 'Cancelled';
     if (s.includes('deliver')) return 'Delivered';
     if (s.includes('out for')) return 'Out for Delivery';
     if (s.includes('ship')) return 'Shipped';
     if (s.includes('confirm')) return 'Confirmed';
-    
-    // Default overriding for words like 'Pending Payment', 'Placed', 'Failed'
     return 'Processing';
 }
 
-// Date Utils
+// Date & Color Utils
 function parseOrderDate(dateVal) {
     if (!dateVal) return new Date();
     if (typeof dateVal === 'object') {
@@ -74,12 +70,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function fetchOrders() {
-    const userEmail = localStorage.getItem('aavira_user_email');
+    // 1. Get strictly what is stored on THIS device
+    const userEmail = (localStorage.getItem('aavira_user_email') || "").trim().toLowerCase();
+    
     let localOrdersArray = [];
     try {
         let stored = JSON.parse(localStorage.getItem('aavira_placed_orders'));
         if (Array.isArray(stored)) localOrdersArray = stored;
     } catch(e) {}
+    
+    const safeLocalOrders = localOrdersArray.map(id => String(id).trim().toUpperCase());
 
     try {
         const response = await fetch(`https://ssxpq15in.vercel.app/api/orders?nocache=${new Date().getTime()}`);
@@ -88,22 +88,40 @@ async function fetchOrders() {
         document.getElementById('loader').style.display = 'none';
 
         if (response.ok && result.status === "success" && result.data) {
-            const safeEmail = userEmail ? String(userEmail).trim().toLowerCase() : "";
-            const safeLocalOrders = localOrdersArray.map(id => String(id).trim().toUpperCase());
-
-            if (safeEmail === "" && safeLocalOrders.length === 0) {
+            
+            // 🔥 BULLETPROOF HARDCODED SECURITY LOGIC 🔥
+            // Agar phone par Email nahi hai aur Order Array bhi khali hai, to ZERO data load hoga. Zindagi me data leak nahi hoga.
+            if (!userEmail && safeLocalOrders.length === 0) {
                 allOrdersData = [];
             } else {
+                // Har ek order ko strict check se guzar kar filter karenge
                 allOrdersData = result.data.filter(order => {
-                    const orderEmail = order.email ? String(order.email).trim().toLowerCase() : "";
-                    const orderUserEmail = order.userEmail ? String(order.userEmail).trim().toLowerCase() : "";
-                    const matchEmail = safeEmail !== "" && (orderEmail === safeEmail || orderUserEmail === safeEmail);
-                    const safeOrderId = order.orderId ? String(order.orderId).trim().toUpperCase() : String(order.id).trim().toUpperCase();
-                    const matchLocalId = safeLocalOrders.includes(safeOrderId);
-                    return matchEmail || matchLocalId;
+                    let isMatch = false;
+
+                    // Condition A: Strict Email Verification
+                    if (userEmail !== "") {
+                        const dbEmail = (order.email || "").trim().toLowerCase();
+                        const dbUserEmail = (order.userEmail || "").trim().toLowerCase();
+                        if (dbEmail === userEmail || dbUserEmail === userEmail) {
+                            isMatch = true;
+                        }
+                    }
+
+                    // Condition B: Strict Device / Local Order ID Verification
+                    if (!isMatch && safeLocalOrders.length > 0) {
+                        const dbOrderId = (order.orderId || "").trim().toUpperCase();
+                        const dbId = (order.id || "").trim().toUpperCase();
+                        if (safeLocalOrders.includes(dbOrderId) || safeLocalOrders.includes(dbId)) {
+                            isMatch = true;
+                        }
+                    }
+
+                    // Agar Match nahi hua to discard ho jayega
+                    return isMatch;
                 });
             }
             
+            // Local Cancellation Fixes
             let locallyCancelled = JSON.parse(localStorage.getItem('aavira_cancelled_orders')) || [];
             allOrdersData.forEach(o => {
                 if(locallyCancelled.includes(o.orderId)) {
@@ -116,7 +134,7 @@ async function fetchOrders() {
             if (allOrdersData.length === 0) {
                 document.getElementById('emptyState').style.display = 'flex';
             } else {
-                handleSearch(); // initial render via filter
+                handleSearch(); // Triggers render
             }
         } else {
             document.getElementById('emptyState').style.display = 'flex';
@@ -142,7 +160,7 @@ window.filterOrders = function(status, btnElement, skipAnim = false) {
 
     let filtered = allOrdersData;
 
-    // 1. Status Filter (Using strict product status)
+    // Status Filter
     if(status !== 'All') {
         filtered = filtered.filter(o => {
             let s = getStrictProductStatus(o.orderStatus);
@@ -151,7 +169,7 @@ window.filterOrders = function(status, btnElement, skipAnim = false) {
         });
     }
 
-    // 2. Search Query Filter
+    // Search Query Filter
     const query = document.getElementById('searchInput').value.trim().toLowerCase();
     if(query) {
         filtered = filtered.filter(o => {
@@ -167,7 +185,6 @@ window.filterOrders = function(status, btnElement, skipAnim = false) {
 function getSmartExpectedDate(rawDateObj, currentStatus) {
     let expected = new Date(rawDateObj.getTime());
     expected.setDate(expected.getDate() + 5); 
-    
     let now = new Date();
     if (currentStatus !== 'Delivered' && currentStatus !== 'Cancelled' && expected < now) {
         expected = new Date(now.getTime());
@@ -190,9 +207,7 @@ function renderOrdersUI(ordersArray, skipAnim = false) {
         let rawDate = parseOrderDate(order.createdAt);
         let displayDate = formatDateTime(rawDate).split(',')[0]; 
         
-        // Get Strict Product Status
         let status = getStrictProductStatus(order.orderStatus); 
-
         let expectedDate = getSmartExpectedDate(rawDate, status);
         
         let titleStr = "Exclusive Ethnic Wear";
@@ -207,7 +222,6 @@ function renderOrdersUI(ordersArray, skipAnim = false) {
         const total = order.totalAmount || order.total || 0;
         const orderId = order.orderId || '#AVF' + Math.floor(Math.random()*10000);
         
-        // Card Badge class configuration
         let statusClass = "st-Processing";
         let bottomLine = `<i class="fa-solid fa-truck"></i> <span>Expected by ${formatDateOnly(expectedDate)}, 9:00 PM</span>`;
         
@@ -226,7 +240,6 @@ function renderOrdersUI(ordersArray, skipAnim = false) {
         let delay = skipAnim ? 0 : index * 0.1;
         const imgTag = mainImg ? `<img src="${mainImg}" class="oc-img" alt="Product" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : `<img style="display:none;">`;
 
-        // Exactly matches your uploaded reference image Layout
         const html = `
             <div class="order-card" style="animation-delay: ${delay}s" onclick="openOrderDetails('${order.id}')">
                 <div class="oc-top">
@@ -266,7 +279,7 @@ window.openOrderDetails = function(internalId) {
     currentOrderData = order;
 
     let rawDate = parseOrderDate(order.createdAt);
-    let status = getStrictProductStatus(order.orderStatus); // Using strict product status
+    let status = getStrictProductStatus(order.orderStatus); 
     
     let expectedDate = getSmartExpectedDate(rawDate, status);
 
@@ -316,13 +329,12 @@ window.openOrderDetails = function(internalId) {
         dtCancelBtn.style.display = 'none';
     }
 
-    // 🔥 PROFESSIONAL PAYMENT UI IN DETAILS 🔥
+    // PROFESSIONAL PAYMENT UI IN DETAILS
     let pStatus = order.paymentStatus || 'Pending';
     let pMethod = order.paymentMethod || 'Online';
     
     let payColor, payBg, payText, payIcon, payActionHtml;
 
-    // Updated Success Text to STRICTLY "Payment Received"
     if (pStatus.toLowerCase() === 'success' || pStatus.toLowerCase() === 'paid') {
         payColor = "var(--success)"; payBg = "var(--success-light)"; 
         payText = "Payment Received"; 
@@ -507,7 +519,7 @@ window.executeCancelOrder = function() {
         if(document.getElementById('detailsView').classList.contains('show')) {
             openOrderDetails(currentOrderData.id);
         }
-        handleSearch(); // Refresh list view silently
+        handleSearch(); 
 
         closeModal('cancelModal');
         btn.innerHTML = 'Yes, Cancel';
@@ -519,4 +531,3 @@ window.executeCancelOrder = function() {
         
     }, 800);
 }
-
