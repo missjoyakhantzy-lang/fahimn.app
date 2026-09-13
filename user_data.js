@@ -13,7 +13,6 @@ const AUTH_URL = "https://ssxpq15in.vercel.app";
 // 1. DATA FETCHING (Products, Main Products, Banners, Categories)
 // ==========================================
 
-// 👉 Normal Products Fetcher
 window.getVercelData = async function() {
     try { 
         const res = await fetch(`${VERCEL_URL}/api/products`); 
@@ -25,7 +24,6 @@ window.getVercelData = async function() {
     }
 };
 
-// 👉 🔥 Main Products Fetcher 🔥
 window.getMainProductsData = async function() {
     try { 
         const res = await fetch(`${VERCEL_URL}/api/main_products`); 
@@ -37,7 +35,6 @@ window.getMainProductsData = async function() {
     }
 };
 
-// 👉 Banners Fetcher
 window.getBannersData = async function() {
     try { 
         const res = await fetch(`${VERCEL_URL}/api/banners`); 
@@ -48,7 +45,6 @@ window.getBannersData = async function() {
     }
 };
 
-// 👉 Categories Fetcher
 window.getCategoriesData = async function() {
     try { 
         const res = await fetch(`${VERCEL_URL}/api/categories`); 
@@ -79,7 +75,7 @@ window.sendOrderToVercel = async function(orderPayload) {
 
 
 // ==========================================
-// 3. PRODUCT REVIEWS LOGIC (Specific Product ke liye)
+// 3. PRODUCT REVIEWS LOGIC
 // ==========================================
 window.saveReviewToDatabase = async function(productId, reviewData) {
     try {
@@ -107,16 +103,14 @@ window.getReviewsFromDatabase = async function(productId) {
 
 
 // ==========================================
-// 🌟 3.1. GLOBAL EXPERIENCE / STYLE DIARIES (HOME PAGE KE LIYE NAYA RASTA) 🌟
+// 🌟 3.1. GLOBAL EXPERIENCE 🌟
 // ==========================================
-
-// 👉 1. Vercel par Experience Bhejne ka Rasta (POST)
 window.sendToVercelExperience = async function(expData) {
     try {
         const response = await fetch(`${VERCEL_URL}/api/experience`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(expData) // Isme Name, Email, Text, Rating aur Cloudinary Photo URL hoga
+            body: JSON.stringify(expData)
         });
         const result = await response.json();
         return (response.ok && result.status === "success");
@@ -126,12 +120,10 @@ window.sendToVercelExperience = async function(expData) {
     }
 };
 
-// 👉 2. Vercel se Experience Laane ka Rasta (GET - Taki puri duniya dekh sake)
 window.getVercelExperiences = async function() {
     try {
         const response = await fetch(`${VERCEL_URL}/api/experience`);
         const result = await response.json();
-        // Agar data milta hai to return karega, warna khali array dega
         return (response.ok && result.status === "success" && result.data) ? result.data : [];
     } catch (error) {
         console.error("Experience Fetch Error:", error);
@@ -199,11 +191,19 @@ window.DeliveryBoy = {
         }
     },
 
-    googleLogin: async function() {
-        return new Promise((resolve) => { 
-            setTimeout(() => { 
-                resolve({ success: true, userName: "Google User", email: "user@gmail.com" }); 
-            }, 1500); 
-        });
+    // 🔥 NEW: Real Google Login API Call 🔥
+    googleLogin: async function(token) {
+        try {
+            const response = await fetch(`${AUTH_URL}/api/google-login`, {
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ googleToken: token })
+            });
+            const data = await response.json(); 
+            return { ok: response.ok, data: data };
+        } catch (error) { 
+            console.error("Google Login API Error:", error);
+            return { ok: false, data: { success: false, message: 'Google Auth Server Error!' } }; 
+        }
     }
 };
