@@ -1,177 +1,377 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
 
     <title>Aavira - Create Account</title>
 
-    <!-- Premium Fonts -->
+
+    <!-- ==========================================
+         PREMIUM FONTS
+         ========================================== -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;600;700&display=swap"
         rel="stylesheet"
     >
 
-    <!-- Icons -->
+
+    <!-- ==========================================
+         ICONS
+         ========================================== -->
+
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Tailwind -->
+
+    <!-- ==========================================
+         TAILWIND
+         ========================================== -->
+
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Google Identity Services -->
+
+    <!-- ==========================================
+         GOOGLE IDENTITY SERVICES
+         ========================================== -->
+
     <script
         src="https://accounts.google.com/gsi/client"
         async
         defer
     ></script>
 
+
     <script>
+
         tailwind.config = {
+
             theme: {
+
                 extend: {
+
                     colors: {
+
                         'rani-pink': '#D81B60',
+
                         'soft-pink': '#FFF5F8',
+
                         'border-pink': '#FDE2EB'
+
                     },
+
 
                     fontFamily: {
-                        'serif': ['"Playfair Display"', 'serif'],
-                        'sans': ['"Inter"', 'sans-serif']
+
+                        'serif': [
+                            '"Playfair Display"',
+                            'serif'
+                        ],
+
+                        'sans': [
+                            '"Inter"',
+                            'sans-serif'
+                        ]
+
                     },
+
 
                     animation: {
-                        'fade-in': 'fadeIn 0.4s ease-out forwards'
+
+                        'fade-in':
+                            'fadeIn 0.4s ease-out forwards'
+
                     },
 
+
                     keyframes: {
+
                         fadeIn: {
+
                             '0%': {
+
                                 opacity: '0',
-                                transform: 'scale(0.98)'
+
+                                transform:
+                                    'scale(0.98)'
+
                             },
 
                             '100%': {
+
                                 opacity: '1',
-                                transform: 'scale(1)'
+
+                                transform:
+                                    'scale(1)'
+
                             }
+
                         }
+
                     }
+
                 }
+
             }
-        }
+
+        };
+
     </script>
+
 
     <style>
 
+        /* ==========================================
+           BODY
+           ========================================== */
+
         body {
+
             background-color: transparent;
-            -webkit-tap-highlight-color: transparent;
+
+            -webkit-tap-highlight-color:
+                transparent;
+
             min-height: 100vh;
+
             display: flex;
+
             flex-direction: column;
+
         }
+
+
+        /* ==========================================
+           VIEWS
+           ========================================== */
 
         .view-hidden {
+
             display: none;
+
         }
+
 
         .view-active {
+
             display: flex;
+
             flex-direction: column;
-            animation: fadeIn 0.4s ease-out forwards;
+
+            animation:
+                fadeIn 0.4s ease-out forwards;
+
             width: 100%;
+
         }
+
+
+        /* ==========================================
+           FLOWER PETALS
+           ========================================== */
 
         .floral-petal {
+
             position: absolute;
-            background: linear-gradient(
-                135deg,
-                #fbcfe8 0%,
-                #fce7f3 100%
-            );
-            border-radius: 0 100% 0 100%;
-            transform-origin: bottom left;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fbcfe8 0%,
+                    #fce7f3 100%
+                );
+
+            border-radius:
+                0 100% 0 100%;
+
+            transform-origin:
+                bottom left;
+
             opacity: 0.6;
+
         }
+
+
+        /* ==========================================
+           DOT LOADER
+           ========================================== */
 
         .dot-loader {
+
             display: inline-flex;
+
             align-items: center;
+
             justify-content: center;
+
             gap: 6px;
+
         }
+
 
         .dot-loader span {
+
             width: 8px;
+
             height: 8px;
-            background-color: currentColor;
+
+            background-color:
+                currentColor;
+
             border-radius: 50%;
-            animation: dotBounce 1.4s infinite ease-in-out both;
+
+            animation:
+                dotBounce 1.4s infinite
+                ease-in-out both;
+
         }
+
 
         .dot-loader span:nth-child(1) {
-            animation-delay: -0.32s;
+
+            animation-delay:
+                -0.32s;
+
         }
 
+
         .dot-loader span:nth-child(2) {
-            animation-delay: -0.16s;
+
+            animation-delay:
+                -0.16s;
+
         }
+
 
         @keyframes dotBounce {
 
             0%,
             80%,
             100% {
-                transform: scale(0);
+
+                transform:
+                    scale(0);
+
             }
+
 
             40% {
-                transform: scale(1);
+
+                transform:
+                    scale(1);
+
             }
+
         }
 
+
         /* ==========================================
-           GOOGLE STATUS POPUP ANIMATION
+           GOOGLE STATUS POPUP
            ========================================== */
 
         .google-status-popup {
-            transform: translate(-50%, -20px);
+
+            transform:
+                translate(-50%, -20px);
+
             opacity: 0;
+
             pointer-events: none;
+
             transition:
                 opacity 0.3s ease,
                 transform 0.3s ease;
+
         }
 
+
         .google-status-popup.show {
-            transform: translate(-50%, 0);
+
+            transform:
+                translate(-50%, 0);
+
             opacity: 1;
+
         }
+
 
         /* ==========================================
            GOOGLE SPINNER
            ========================================== */
 
         .google-spinner {
+
             width: 20px;
+
             height: 20px;
-            border: 2px solid #fbcfe8;
-            border-top-color: #D81B60;
+
+            border:
+                2px solid #fbcfe8;
+
+            border-top-color:
+                #D81B60;
+
             border-radius: 50%;
-            animation: googleSpin 0.75s linear infinite;
+
+            animation:
+                googleSpin 0.75s linear infinite;
+
         }
 
+
         @keyframes googleSpin {
+
             to {
-                transform: rotate(360deg);
+
+                transform:
+                    rotate(360deg);
+
             }
+
+        }
+
+
+        /* ==========================================
+           GOOGLE OFFICIAL BUTTON CONTAINER
+           ========================================== */
+
+        #googleButtonDiv {
+
+            width: 100%;
+
+            min-height: 48px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+        }
+
+
+        #googleButtonDiv > div {
+
+            max-width: 100%;
+
         }
 
     </style>
+
 </head>
 
 
@@ -189,7 +389,9 @@
         class="fixed top-0 left-0 w-full bg-[#FAFAFA] -z-10 pointer-events-none overflow-hidden"
     >
 
-        <div class="absolute bottom-0 left-0 w-64 h-64">
+        <div
+            class="absolute bottom-0 left-0 w-64 h-64"
+        >
 
             <div
                 class="floral-petal w-40 h-40 rotate-[15deg] absolute bottom-10 left-10 opacity-70"
@@ -218,21 +420,26 @@
     >
 
         <span id="toast-icon-wrapper">
+
             <i
                 data-lucide="check-circle"
                 class="w-5 h-5 text-green-500"
             ></i>
+
         </span>
 
+
         <span id="toast-msg">
+
             Success
+
         </span>
 
     </div>
 
 
     <!-- ==========================================
-         GOOGLE LOGIN STATUS POPUP
+         GOOGLE STATUS POPUP
          ========================================== -->
 
     <div
@@ -242,7 +449,9 @@
 
         <div class="flex items-center gap-3">
 
-            <!-- Status Icon -->
+
+            <!-- STATUS ICON -->
+
             <div
                 id="googleStatusIcon"
                 class="w-10 h-10 rounded-full bg-pink-50 flex items-center justify-center shrink-0"
@@ -253,21 +462,27 @@
             </div>
 
 
-            <!-- Status Text -->
+            <!-- STATUS TEXT -->
+
             <div class="min-w-0">
 
                 <div
                     id="googleStatusTitle"
                     class="font-semibold text-gray-900 text-sm"
                 >
+
                     Google Login
+
                 </div>
+
 
                 <div
                     id="googleStatusMessage"
                     class="text-xs text-gray-500 mt-1 leading-4 break-words"
                 >
+
                     Google login start ho raha hai...
+
                 </div>
 
             </div>
@@ -286,10 +501,14 @@
         class="fixed inset-0 z-50 bg-[#FAFAFA]/70 backdrop-blur-[2px] hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300"
     >
 
-        <div class="dot-loader text-rani-pink scale-[1.5]">
+        <div
+            class="dot-loader text-rani-pink scale-[1.5]"
+        >
 
             <span></span>
+
             <span></span>
+
             <span></span>
 
         </div>
@@ -310,19 +529,23 @@
              LOGO
              ========================================== -->
 
-        <div class="text-center mb-8 shrink-0">
+        <div
+            class="text-center mb-8 shrink-0"
+        >
 
             <img
                 src="file_0000000015bc82119a5830b82bcd3a20.png"
                 alt="Aavira Fashion"
                 class="h-20 sm:h-24 object-contain mx-auto"
                 onerror="this.src='https://via.placeholder.com/150x50?text=Aavira+Logo'"
-            />
+            >
 
         </div>
 
 
-        <div class="w-full relative min-h-[400px]">
+        <div
+            class="w-full relative min-h-[400px]"
+        >
 
 
             <!-- ==========================================
@@ -334,18 +557,25 @@
                 class="view-active"
             >
 
-                <div class="text-center mb-8">
+                <div
+                    class="text-center mb-8"
+                >
 
                     <h2
                         class="font-serif text-[30px] font-bold text-gray-900 mb-1"
                     >
+
                         Create Account
+
                     </h2>
+
 
                     <p
                         class="text-[14px] text-gray-500 font-medium"
                     >
+
                         Start your fashion journey with us
+
                     </p>
 
                 </div>
@@ -356,12 +586,15 @@
 
                     <!-- NAME -->
 
-                    <div class="relative flex items-center">
+                    <div
+                        class="relative flex items-center"
+                    >
 
                         <i
                             data-lucide="user"
                             class="absolute left-5 w-5 h-5 text-rani-pink"
                         ></i>
+
 
                         <input
                             type="text"
@@ -375,12 +608,15 @@
 
                     <!-- EMAIL -->
 
-                    <div class="relative flex items-center">
+                    <div
+                        class="relative flex items-center"
+                    >
 
                         <i
                             data-lucide="mail"
                             class="absolute left-5 w-5 h-5 text-rani-pink"
                         ></i>
+
 
                         <input
                             type="email"
@@ -394,12 +630,15 @@
 
                     <!-- PASSWORD -->
 
-                    <div class="relative flex items-center">
+                    <div
+                        class="relative flex items-center"
+                    >
 
                         <i
                             data-lucide="lock"
                             class="absolute left-5 w-5 h-5 text-rani-pink"
                         ></i>
+
 
                         <input
                             type="password"
@@ -407,6 +646,7 @@
                             placeholder="Create Password"
                             class="w-full bg-soft-pink border border-border-pink rounded-full py-4 pl-14 pr-12 text-[15px] text-gray-800 outline-none focus:bg-white focus:border-rani-pink focus:ring-4 focus:ring-pink-50 transition-all placeholder:text-gray-400"
                         >
+
 
                         <button
                             type="button"
@@ -438,6 +678,7 @@
                             Create Account
                         </span>
 
+
                         <i
                             data-lucide="arrow-right"
                             class="w-5 h-5"
@@ -448,9 +689,13 @@
                 </div>
 
 
-                <div class="text-center mt-8">
+                <div
+                    class="text-center mt-8"
+                >
 
-                    <p class="text-[14px] text-gray-500">
+                    <p
+                        class="text-[14px] text-gray-500"
+                    >
 
                         Already have an account?
 
@@ -485,18 +730,25 @@
                 class="view-hidden"
             >
 
-                <div class="text-center mb-8">
+                <div
+                    class="text-center mb-8"
+                >
 
                     <h2
                         class="font-serif text-[30px] font-bold text-gray-900 mb-1"
                     >
+
                         Welcome Back
+
                     </h2>
+
 
                     <p
                         class="text-[14px] text-gray-500 font-medium"
                     >
+
                         Login to continue your fashion journey
+
                     </p>
 
                 </div>
@@ -507,12 +759,15 @@
 
                     <!-- EMAIL -->
 
-                    <div class="relative flex items-center">
+                    <div
+                        class="relative flex items-center"
+                    >
 
                         <i
                             data-lucide="mail"
                             class="absolute left-5 w-5 h-5 text-rani-pink"
                         ></i>
+
 
                         <input
                             type="email"
@@ -526,12 +781,15 @@
 
                     <!-- PASSWORD -->
 
-                    <div class="relative flex items-center">
+                    <div
+                        class="relative flex items-center"
+                    >
 
                         <i
                             data-lucide="lock"
                             class="absolute left-5 w-5 h-5 text-rani-pink"
                         ></i>
+
 
                         <input
                             type="password"
@@ -539,6 +797,7 @@
                             placeholder="Password"
                             class="w-full bg-soft-pink border border-border-pink rounded-full py-4 pl-14 pr-12 text-[15px] text-gray-800 outline-none focus:bg-white focus:border-rani-pink focus:ring-4 focus:ring-pink-50 transition-all placeholder:text-gray-400"
                         >
+
 
                         <button
                             type="button"
@@ -559,13 +818,17 @@
 
                     <!-- FORGOT PASSWORD -->
 
-                    <div class="text-right pt-1 pb-1">
+                    <div
+                        class="text-right pt-1 pb-1"
+                    >
 
                         <a
                             href="#"
                             class="text-[13px] font-medium text-rani-pink hover:underline"
                         >
+
                             Forgot Password?
+
                         </a>
 
                     </div>
@@ -584,6 +847,7 @@
                             Login
                         </span>
 
+
                         <i
                             data-lucide="arrow-right"
                             class="w-5 h-5"
@@ -594,72 +858,56 @@
                 </div>
 
 
-                <!-- OR -->
+                <!-- ==========================================
+                     OR
+                     ========================================== -->
 
-                <div class="flex items-center gap-4 my-6 relative">
+                <div
+                    class="flex items-center gap-4 my-6 relative"
+                >
 
-                    <div class="h-px bg-gray-200 flex-1"></div>
+                    <div
+                        class="h-px bg-gray-200 flex-1"
+                    ></div>
+
 
                     <span
                         class="text-[12px] text-gray-400 font-bold uppercase tracking-wider px-2"
                     >
+
                         Or
+
                     </span>
 
-                    <div class="h-px bg-gray-200 flex-1"></div>
+
+                    <div
+                        class="h-px bg-gray-200 flex-1"
+                    ></div>
 
                 </div>
 
 
                 <!-- ==========================================
-                     GOOGLE LOGIN BUTTON
+                     OFFICIAL GOOGLE BUTTON
                      ========================================== -->
 
-                <button
-                    type="button"
-                    onclick="performGoogleLogin()"
-                    id="googleLoginButton"
-                    class="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 rounded-full py-3.5 hover:bg-gray-50 hover:shadow-sm transition-all text-[15px] font-medium text-gray-800 relative overflow-hidden"
+                <div
+                    id="googleButtonDiv"
+                    class="w-full flex justify-center min-h-[48px]"
+                ></div>
+
+
+                <!-- ==========================================
+                     CREATE ACCOUNT
+                     ========================================== -->
+
+                <div
+                    class="text-center mt-8"
                 >
 
-                    <!-- Loading Animation -->
-
-                    <span
-                        id="googleButtonLoader"
-                        class="hidden dot-loader text-rani-pink"
+                    <p
+                        class="text-[14px] text-gray-500"
                     >
-
-                        <span></span>
-                        <span></span>
-                        <span></span>
-
-                    </span>
-
-
-                    <!-- Google Icon -->
-
-                    <img
-                        id="googleButtonIcon"
-                        src="https://www.svgrepo.com/show/475656/google-color.svg"
-                        class="w-5 h-5"
-                        alt="Google"
-                    >
-
-
-                    <!-- Button Text -->
-
-                    <span id="googleButtonText">
-                        Continue with Google
-                    </span>
-
-                </button>
-
-
-                <!-- CREATE ACCOUNT -->
-
-                <div class="text-center mt-8">
-
-                    <p class="text-[14px] text-gray-500">
 
                         Don't have an account?
 
@@ -694,19 +942,26 @@
                 class="view-hidden"
             >
 
-                <div class="text-center mb-8">
+                <div
+                    class="text-center mb-8"
+                >
 
                     <h2
                         class="font-serif text-[30px] font-bold text-gray-900 mb-1"
                     >
+
                         Verification
+
                     </h2>
+
 
                     <p
                         class="text-[14px] text-gray-500 font-medium"
                         id="otpSubText"
                     >
+
                         Enter the code sent to your email
+
                     </p>
 
                 </div>
@@ -714,7 +969,10 @@
 
                 <div class="space-y-6">
 
-                    <div class="relative flex items-center">
+
+                    <div
+                        class="relative flex items-center"
+                    >
 
                         <input
                             type="text"
@@ -740,6 +998,7 @@
                             Verify & Login
                         </span>
 
+
                         <i
                             data-lucide="check-circle"
                             class="w-5 h-5"
@@ -750,7 +1009,9 @@
                 </div>
 
 
-                <div class="text-center mt-8">
+                <div
+                    class="text-center mt-8"
+                >
 
                     <button
                         type="button"
@@ -782,41 +1043,62 @@
             class="shrink-0 w-full pt-10 pb-4 flex items-center justify-center gap-4 opacity-70 mt-auto"
         >
 
-            <div class="h-px bg-gray-300 w-8"></div>
+            <div
+                class="h-px bg-gray-300 w-8"
+            ></div>
+
 
             <span
                 class="text-[9px] font-bold text-gray-500 uppercase tracking-[0.3em]"
             >
+
                 Fashion For A Better You
+
             </span>
 
-            <div class="h-px bg-gray-300 w-8"></div>
+
+            <div
+                class="h-px bg-gray-300 w-8"
+            ></div>
 
         </div>
 
     </div>
 
 
-    <!-- USER DATA -->
+    <!-- ==========================================
+         USER DATA
+         ========================================== -->
 
     <script src="user_data.js"></script>
 
 
     <script>
 
+
         // ==========================================
         // GLOBAL VARIABLES
         // ==========================================
 
         let tempSignupData = {
+
             name: "",
+
             email: "",
+
             pwd: ""
+
         };
 
-        let toastTimeout;
+
+        let toastTimeout = null;
+
 
         let googleInitialized = false;
+
+
+        let googleButtonRendered = false;
+
 
         let googleLoginProcessing = false;
 
@@ -828,6 +1110,11 @@
         document.addEventListener(
             "DOMContentLoaded",
             () => {
+
+
+                // ==========================================
+                // BACKGROUND
+                // ==========================================
 
                 const fixedBg =
                     document.getElementById(
@@ -873,101 +1160,54 @@
                 );
 
 
-                lucide.createIcons();
+                // ==========================================
+                // LUCIDE
+                // ==========================================
+
+                if (
+                    typeof lucide !==
+                    "undefined"
+                ) {
+
+                    lucide.createIcons();
+
+                }
 
 
                 // ==========================================
-                // GOOGLE AUTH - PAGE LOAD
+                // GOOGLE
                 // ==========================================
 
-                const initGoogleAuth = () => {
-
-                    if (
-                        typeof google !== "undefined" &&
-                        google.accounts &&
-                        google.accounts.id
-                    ) {
-
-                        if (googleInitialized) {
-                            return true;
-                        }
+                initGoogleButton();
 
 
-                        try {
-
-                            google.accounts.id.initialize({
-
-                                client_id:
-                                    "247971292356-8906dpm406huv7uidlblhjum8vg3dfj3.apps.googleusercontent.com",
-
-                                callback:
-                                    handleGoogleLoginResponse
-
-                            });
-
-
-                            googleInitialized = true;
-
-
-                            console.log(
-                                "Google Authentication Ready"
-                            );
-
-
-                            return true;
-
-                        } catch (error) {
-
-                            console.error(
-                                "Google initialization error:",
-                                error
-                            );
-
-
-                            return false;
-
-                        }
-
-                    }
-
-
-                    return false;
-
-                };
-
-
-                // Immediately try
-                initGoogleAuth();
-
-
-                // Try after page load
                 window.addEventListener(
                     "load",
                     () => {
 
-                        initGoogleAuth();
+                        initGoogleButton();
 
                     }
                 );
 
 
                 // ==========================================
-                // GOOGLE SCRIPT LATE LOAD RETRY
+                // GOOGLE LATE LOAD RETRY
                 // ==========================================
 
                 let retryCount = 0;
 
 
-                const googleRetryTimer =
+                const retryTimer =
                     setInterval(
                         () => {
 
                             if (
-                                initGoogleAuth()
+                                initGoogleButton()
                             ) {
 
                                 clearInterval(
-                                    googleRetryTimer
+                                    retryTimer
                                 );
 
                                 return;
@@ -979,11 +1219,16 @@
 
 
                             if (
-                                retryCount >= 30
+                                retryCount >= 50
                             ) {
 
                                 clearInterval(
-                                    googleRetryTimer
+                                    retryTimer
+                                );
+
+
+                                console.error(
+                                    "Google Identity Services could not be loaded."
                                 );
 
                             }
@@ -997,102 +1242,265 @@
 
 
         // ==========================================
+        // GOOGLE INITIALIZATION + OFFICIAL BUTTON
+        // ==========================================
+
+        function initGoogleButton() {
+
+
+            // Google library ready?
+            if (
+                typeof google === "undefined" ||
+                !google.accounts ||
+                !google.accounts.id
+            ) {
+
+                return false;
+
+            }
+
+
+            const googleButtonDiv =
+                document.getElementById(
+                    "googleButtonDiv"
+                );
+
+
+            if (!googleButtonDiv) {
+
+                return false;
+
+            }
+
+
+            // Already rendered
+            if (
+                googleButtonRendered
+            ) {
+
+                return true;
+
+            }
+
+
+            try {
+
+
+                // ==========================================
+                // GOOGLE INITIALIZE
+                // ==========================================
+
+                if (!googleInitialized) {
+
+                    google.accounts.id.initialize({
+
+                        client_id:
+                            "247971292356-8906dpm406huv7uidlblhjum8vg3dfj3.apps.googleusercontent.com",
+
+                        callback:
+                            handleGoogleLoginResponse,
+
+                        auto_select:
+                            false,
+
+                        use_fedcm_for_prompt:
+                            true
+
+                    });
+
+
+                    googleInitialized =
+                        true;
+
+                }
+
+
+                // ==========================================
+                // OFFICIAL GOOGLE BUTTON
+                // ==========================================
+
+                google.accounts.id.renderButton(
+
+                    googleButtonDiv,
+
+                    {
+
+                        theme:
+                            "outline",
+
+                        size:
+                            "large",
+
+                        width:
+                            "370",
+
+                        text:
+                            "continue_with",
+
+                        shape:
+                            "pill",
+
+                        logo_alignment:
+                            "left"
+
+                    }
+
+                );
+
+
+                googleButtonRendered =
+                    true;
+
+
+                console.log(
+                    "Google official button rendered successfully."
+                );
+
+
+                return true;
+
+
+            } catch (error) {
+
+                console.error(
+                    "Google button render error:",
+                    error
+                );
+
+
+                return false;
+
+            }
+
+        }
+
+
+        // ==========================================
         // GENERAL TOAST
         // ==========================================
 
-        window.showToast = function(
-            message,
-            type = "success"
-        ) {
+        window.showToast =
+            function(
+                message,
+                type = "success"
+            ) {
 
-            const toast =
-                document.getElementById(
-                    "toast"
+
+                const toast =
+                    document.getElementById(
+                        "toast"
+                    );
+
+
+                const msg =
+                    document.getElementById(
+                        "toast-msg"
+                    );
+
+
+                const iconWrapper =
+                    document.getElementById(
+                        "toast-icon-wrapper"
+                    );
+
+
+                if (
+                    !toast ||
+                    !msg ||
+                    !iconWrapper
+                ) {
+
+                    return;
+
+                }
+
+
+                clearTimeout(
+                    toastTimeout
                 );
 
 
-            const msg =
-                document.getElementById(
-                    "toast-msg"
+                msg.innerText =
+                    message;
+
+
+                if (
+                    type === "error"
+                ) {
+
+                    iconWrapper.innerHTML = `
+
+                        <i
+                            data-lucide="alert-circle"
+                            class="w-5 h-5 text-rani-pink"
+                        ></i>
+
+                    `;
+
+                } else {
+
+                    iconWrapper.innerHTML = `
+
+                        <i
+                            data-lucide="check-circle"
+                            class="w-5 h-5 text-green-500"
+                        ></i>
+
+                    `;
+
+                }
+
+
+                if (
+                    typeof lucide !==
+                    "undefined"
+                ) {
+
+                    lucide.createIcons();
+
+                }
+
+
+                toast.classList.remove(
+
+                    "opacity-0",
+
+                    "-translate-y-24",
+
+                    "pointer-events-none"
+
                 );
 
 
-            const iconWrapper =
-                document.getElementById(
-                    "toast-icon-wrapper"
+                toast.classList.add(
+                    "translate-y-0"
                 );
 
 
-            if (!toast || !msg || !iconWrapper) {
-                return;
-            }
+                toastTimeout =
+                    setTimeout(
+                        () => {
+
+                            toast.classList.add(
+
+                                "opacity-0",
+
+                                "-translate-y-24",
+
+                                "pointer-events-none"
+
+                            );
 
 
-            clearTimeout(
-                toastTimeout
-            );
+                            toast.classList.remove(
+                                "translate-y-0"
+                            );
 
+                        },
+                        3000
+                    );
 
-            msg.innerText =
-                message;
-
-
-            if (type === "error") {
-
-                iconWrapper.innerHTML = `
-                    <i
-                        data-lucide="alert-circle"
-                        class="w-5 h-5 text-rani-pink"
-                    ></i>
-                `;
-
-            } else {
-
-                iconWrapper.innerHTML = `
-                    <i
-                        data-lucide="check-circle"
-                        class="w-5 h-5 text-green-500"
-                    ></i>
-                `;
-
-            }
-
-
-            lucide.createIcons();
-
-
-            toast.classList.remove(
-                "opacity-0",
-                "-translate-y-24",
-                "pointer-events-none"
-            );
-
-
-            toast.classList.add(
-                "translate-y-0"
-            );
-
-
-            toastTimeout =
-                setTimeout(
-                    () => {
-
-                        toast.classList.add(
-                            "opacity-0",
-                            "-translate-y-24",
-                            "pointer-events-none"
-                        );
-
-
-                        toast.classList.remove(
-                            "translate-y-0"
-                        );
-
-                    },
-                    3000
-                );
-
-        };
+            };
 
 
         // ==========================================
@@ -1103,6 +1511,7 @@
             message,
             type = "loading"
         ) {
+
 
             const popup =
                 document.getElementById(
@@ -1134,7 +1543,9 @@
                 !title ||
                 !text
             ) {
+
                 return;
+
             }
 
 
@@ -1142,14 +1553,20 @@
             // LOADING
             // ==========================================
 
-            if (type === "loading") {
+            if (
+                type === "loading"
+            ) {
 
                 icon.className =
                     "w-10 h-10 rounded-full bg-pink-50 flex items-center justify-center shrink-0";
 
 
                 icon.innerHTML = `
-                    <div class="google-spinner"></div>
+
+                    <div
+                        class="google-spinner"
+                    ></div>
+
                 `;
 
 
@@ -1167,17 +1584,21 @@
             // SUCCESS
             // ==========================================
 
-            else if (type === "success") {
+            else if (
+                type === "success"
+            ) {
 
                 icon.className =
                     "w-10 h-10 rounded-full bg-green-50 flex items-center justify-center shrink-0";
 
 
                 icon.innerHTML = `
+
                     <i
                         data-lucide="check-circle"
                         class="w-5 h-5 text-green-500"
                     ></i>
+
                 `;
 
 
@@ -1189,7 +1610,14 @@
                     message;
 
 
-                lucide.createIcons();
+                if (
+                    typeof lucide !==
+                    "undefined"
+                ) {
+
+                    lucide.createIcons();
+
+                }
 
             }
 
@@ -1198,17 +1626,21 @@
             // ERROR
             // ==========================================
 
-            else if (type === "error") {
+            else if (
+                type === "error"
+            ) {
 
                 icon.className =
                     "w-10 h-10 rounded-full bg-pink-50 flex items-center justify-center shrink-0";
 
 
                 icon.innerHTML = `
+
                     <i
                         data-lucide="alert-circle"
                         class="w-5 h-5 text-rani-pink"
                     ></i>
+
                 `;
 
 
@@ -1220,13 +1652,20 @@
                     message;
 
 
-                lucide.createIcons();
+                if (
+                    typeof lucide !==
+                    "undefined"
+                ) {
+
+                    lucide.createIcons();
+
+                }
 
             }
 
 
             // ==========================================
-            // SHOW
+            // SHOW POPUP
             // ==========================================
 
             popup.classList.add(
@@ -1270,274 +1709,175 @@
 
 
         // ==========================================
-        // GOOGLE BUTTON LOADING
-        // ==========================================
-
-        function setGoogleButtonLoading(
-            loading,
-            text = "Continue with Google"
-        ) {
-
-            const button =
-                document.getElementById(
-                    "googleLoginButton"
-                );
-
-
-            const loader =
-                document.getElementById(
-                    "googleButtonLoader"
-                );
-
-
-            const icon =
-                document.getElementById(
-                    "googleButtonIcon"
-                );
-
-
-            const buttonText =
-                document.getElementById(
-                    "googleButtonText"
-                );
-
-
-            if (!button) {
-                return;
-            }
-
-
-            if (loading) {
-
-                button.disabled = true;
-
-
-                button.classList.add(
-                    "opacity-70",
-                    "cursor-wait"
-                );
-
-
-                if (loader) {
-
-                    loader.classList.remove(
-                        "hidden"
-                    );
-
-                }
-
-
-                if (icon) {
-
-                    icon.classList.add(
-                        "hidden"
-                    );
-
-                }
-
-
-                if (buttonText) {
-
-                    buttonText.innerText =
-                        text;
-
-                }
-
-            } else {
-
-                button.disabled = false;
-
-
-                button.classList.remove(
-                    "opacity-70",
-                    "cursor-wait"
-                );
-
-
-                if (loader) {
-
-                    loader.classList.add(
-                        "hidden"
-                    );
-
-                }
-
-
-                if (icon) {
-
-                    icon.classList.remove(
-                        "hidden"
-                    );
-
-                }
-
-
-                if (buttonText) {
-
-                    buttonText.innerText =
-                        text;
-
-                }
-
-            }
-
-        }
-
-
-        // ==========================================
         // VIEW SWITCHER
         // ==========================================
 
-        window.switchView = function(
-            viewId
-        ) {
+        window.switchView =
+            function(
+                viewId
+            ) {
 
-            const loader =
-                document.getElementById(
-                    "screenTransitionLoader"
+
+                const loader =
+                    document.getElementById(
+                        "screenTransitionLoader"
+                    );
+
+
+                if (!loader) {
+                    return;
+                }
+
+
+                loader.classList.remove(
+                    "hidden"
                 );
 
 
-            loader.classList.remove(
-                "hidden"
-            );
+                loader.classList.add(
+                    "flex"
+                );
 
 
-            loader.classList.add(
-                "flex"
-            );
+                setTimeout(
+                    () => {
+
+                        loader.classList.remove(
+                            "opacity-0"
+                        );
+
+                    },
+                    10
+                );
 
 
-            setTimeout(
-                () => {
+                setTimeout(
+                    () => {
 
-                    loader.classList.remove(
-                        "opacity-0"
-                    );
-
-                },
-                10
-            );
+                        document.getElementById(
+                            "loginView"
+                        ).className =
+                            "view-hidden";
 
 
-            setTimeout(
-                () => {
-
-                    document.getElementById(
-                        "loginView"
-                    ).className =
-                        "view-hidden";
+                        document.getElementById(
+                            "signupView"
+                        ).className =
+                            "view-hidden";
 
 
-                    document.getElementById(
-                        "signupView"
-                    ).className =
-                        "view-hidden";
+                        document.getElementById(
+                            "otpView"
+                        ).className =
+                            "view-hidden";
 
 
-                    document.getElementById(
-                        "otpView"
-                    ).className =
-                        "view-hidden";
+                        document.getElementById(
+                            viewId
+                        ).className =
+                            "view-active";
 
 
-                    document.getElementById(
-                        viewId
-                    ).className =
-                        "view-active";
+                        loader.classList.add(
+                            "opacity-0"
+                        );
 
 
-                    loader.classList.add(
-                        "opacity-0"
-                    );
+                        setTimeout(
+                            () => {
+
+                                loader.classList.add(
+                                    "hidden"
+                                );
 
 
-                    setTimeout(
-                        () => {
+                                loader.classList.remove(
+                                    "flex"
+                                );
 
-                            loader.classList.add(
-                                "hidden"
-                            );
+                            },
+                            300
+                        );
 
+                    },
+                    400
+                );
 
-                            loader.classList.remove(
-                                "flex"
-                            );
-
-                        },
-                        300
-                    );
-
-                },
-                400
-            );
-
-        };
+            };
 
 
         // ==========================================
         // PASSWORD TOGGLE
         // ==========================================
 
-        window.togglePassword = function(
-            inputId,
-            buttonId
-        ) {
-
-            const input =
-                document.getElementById(
-                    inputId
-                );
-
-
-            const btn =
-                document.getElementById(
-                    buttonId
-                );
-
-
-            if (
-                !input ||
-                !btn
-            ) {
-                return;
-            }
-
-
-            if (
-                input.type === "password"
+        window.togglePassword =
+            function(
+                inputId,
+                buttonId
             ) {
 
-                input.type =
-                    "text";
+
+                const input =
+                    document.getElementById(
+                        inputId
+                    );
 
 
-                btn.innerHTML = `
-                    <i
-                        data-lucide="eye"
-                        class="w-5 h-5"
-                    ></i>
-                `;
-
-            } else {
-
-                input.type =
-                    "password";
+                const btn =
+                    document.getElementById(
+                        buttonId
+                    );
 
 
-                btn.innerHTML = `
-                    <i
-                        data-lucide="eye-off"
-                        class="w-5 h-5"
-                    ></i>
-                `;
+                if (
+                    !input ||
+                    !btn
+                ) {
 
-            }
+                    return;
+
+                }
 
 
-            lucide.createIcons();
+                if (
+                    input.type ===
+                    "password"
+                ) {
 
-        };
+                    input.type =
+                        "text";
+
+
+                    btn.innerHTML = `
+
+                        <i
+                            data-lucide="eye"
+                            class="w-5 h-5"
+                        ></i>
+
+                    `;
+
+                } else {
+
+                    input.type =
+                        "password";
+
+
+                    btn.innerHTML = `
+
+                        <i
+                            data-lucide="eye-off"
+                            class="w-5 h-5"
+                        ></i>
+
+                    `;
+
+                }
+
+
+                lucide.createIcons();
+
+            };
 
 
         // ==========================================
@@ -1549,6 +1889,7 @@
             isLoading,
             originalHtml
         ) {
+
 
             const btn =
                 document.getElementById(
@@ -1568,21 +1909,31 @@
 
 
                 btn.classList.add(
+
                     "opacity-90",
+
                     "cursor-not-allowed"
+
                 );
 
 
                 btn.innerHTML = `
-                    <div class="dot-loader text-white mr-2">
+
+                    <div
+                        class="dot-loader text-white mr-2"
+                    >
+
                         <span></span>
                         <span></span>
                         <span></span>
+
                     </div>
+
 
                     <span>
                         Processing...
                     </span>
+
                 `;
 
             } else {
@@ -1592,8 +1943,11 @@
 
 
                 btn.classList.remove(
+
                     "opacity-90",
+
                     "cursor-not-allowed"
+
                 );
 
 
@@ -1609,516 +1963,12 @@
 
 
         // ==========================================
-        // GOOGLE AUTH INITIALIZATION
-        // ==========================================
-
-        function initGoogleAuth() {
-
-            if (
-                typeof google === "undefined" ||
-                !google.accounts ||
-                !google.accounts.id
-            ) {
-
-                return false;
-
-            }
-
-
-            if (googleInitialized) {
-
-                return true;
-
-            }
-
-
-            try {
-
-                google.accounts.id.initialize({
-
-                    client_id:
-                        "247971292356-8906dpm406huv7uidlblhjum8vg3dfj3.apps.googleusercontent.com",
-
-                    callback:
-                        handleGoogleLoginResponse
-
-                });
-
-
-                googleInitialized =
-                    true;
-
-
-                console.log(
-                    "Google Authentication Ready"
-                );
-
-
-                return true;
-
-            } catch (error) {
-
-                console.error(
-                    "Google initialization error:",
-                    error
-                );
-
-
-                return false;
-
-            }
-
-        }
-
-
-        // ==========================================
-        // GOOGLE LOGIN CLICK
-        // ==========================================
-
-        window.performGoogleLogin =
-            function() {
-
-                if (
-                    googleLoginProcessing
-                ) {
-
-                    return;
-
-                }
-
-
-                googleLoginProcessing =
-                    true;
-
-
-                // ==========================================
-                // STATUS 1
-                // ==========================================
-
-                showGoogleStatus(
-                    "Google login start ho raha hai...",
-                    "loading"
-                );
-
-
-                setGoogleButtonLoading(
-                    true,
-                    "Connecting..."
-                );
-
-
-                // ==========================================
-                // START GOOGLE
-                // ==========================================
-
-                setTimeout(
-                    () => {
-
-                        // Check Google service
-                        if (
-                            typeof google === "undefined" ||
-                            !google.accounts ||
-                            !google.accounts.id
-                        ) {
-
-                            googleLoginProcessing =
-                                false;
-
-
-                            setGoogleButtonLoading(
-                                false
-                            );
-
-
-                            showGoogleStatus(
-                                "Google service load nahi hui. Internet connection check karein.",
-                                "error"
-                            );
-
-
-                            return;
-
-                        }
-
-
-                        // ==========================================
-                        // INITIALIZE IF NEEDED
-                        // ==========================================
-
-                        if (
-                            !googleInitialized
-                        ) {
-
-                            const initialized =
-                                initGoogleAuth();
-
-
-                            if (!initialized) {
-
-                                googleLoginProcessing =
-                                    false;
-
-
-                                setGoogleButtonLoading(
-                                    false
-                                );
-
-
-                                showGoogleStatus(
-                                    "Google authentication initialize nahi ho paya.",
-                                    "error"
-                                );
-
-
-                                return;
-
-                            }
-
-                        }
-
-
-                        // ==========================================
-                        // STATUS 2
-                        // ==========================================
-
-                        showGoogleStatus(
-                            "Google account verification open ho rahi hai...",
-                            "loading"
-                        );
-
-
-                        setGoogleButtonLoading(
-                            true,
-                            "Opening Google..."
-                        );
-
-
-                        try {
-
-                            // ==========================================
-                            // GOOGLE PROMPT
-                            // ==========================================
-
-                            google.accounts.id.prompt(
-                                (
-                                    notification
-                                ) => {
-
-                                    console.log(
-                                        "Google Prompt Status:",
-                                        notification
-                                    );
-
-
-                                    // Prompt unavailable
-                                    if (
-                                        notification &&
-                                        typeof notification.isNotDisplayed === "function" &&
-                                        notification.isNotDisplayed()
-                                    ) {
-
-                                        console.warn(
-                                            "Google prompt was not displayed."
-                                        );
-
-
-                                        showGoogleStatus(
-                                            "Google account window display nahi ho saki. Please try again.",
-                                            "error"
-                                        );
-
-
-                                        googleLoginProcessing =
-                                            false;
-
-
-                                        setGoogleButtonLoading(
-                                            false
-                                        );
-
-                                    }
-
-
-                                    // Prompt skipped
-                                    else if (
-                                        notification &&
-                                        typeof notification.isSkippedMoment === "function" &&
-                                        notification.isSkippedMoment()
-                                    ) {
-
-                                        console.warn(
-                                            "Google prompt was skipped."
-                                        );
-
-
-                                        showGoogleStatus(
-                                            "Google verification cancel ya skip ho gayi.",
-                                            "error"
-                                        );
-
-
-                                        googleLoginProcessing =
-                                            false;
-
-
-                                        setGoogleButtonLoading(
-                                            false
-                                        );
-
-                                    }
-
-                                }
-                            );
-
-
-                        } catch (error) {
-
-                            console.error(
-                                "Google prompt error:",
-                                error
-                            );
-
-
-                            googleLoginProcessing =
-                                false;
-
-
-                            setGoogleButtonLoading(
-                                false
-                            );
-
-
-                            showGoogleStatus(
-                                "Google login popup open nahi ho saka.",
-                                "error"
-                            );
-
-                        }
-
-                    },
-                    150
-                );
-
-            };
-
-
-        // ==========================================
-        // GOOGLE LOGIN RESPONSE
-        // ==========================================
-
-        async function handleGoogleLoginResponse(
-            response
-        ) {
-
-            try {
-
-                // ==========================================
-                // CHECK CREDENTIAL
-                // ==========================================
-
-                if (
-                    !response ||
-                    !response.credential
-                ) {
-
-                    googleLoginProcessing =
-                        false;
-
-
-                    setGoogleButtonLoading(
-                        false
-                    );
-
-
-                    showGoogleStatus(
-                        "Google verification se credential nahi mila.",
-                        "error"
-                    );
-
-
-                    return;
-
-                }
-
-
-                // ==========================================
-                // STATUS 3
-                // ==========================================
-
-                showGoogleStatus(
-                    "Google account verified. Server par login ho raha hai...",
-                    "loading"
-                );
-
-
-                setGoogleButtonLoading(
-                    true,
-                    "Signing in..."
-                );
-
-
-                const googleToken =
-                    response.credential;
-
-
-                console.log(
-                    "Google credential received."
-                );
-
-
-                // ==========================================
-                // BACKEND CHECK
-                // ==========================================
-
-                if (
-                    !window.DeliveryBoy ||
-                    typeof window.DeliveryBoy.googleLogin !==
-                    "function"
-                ) {
-
-                    throw new Error(
-                        "Google login backend available nahi hai."
-                    );
-
-                }
-
-
-                // ==========================================
-                // SEND GOOGLE TOKEN
-                // ==========================================
-
-                const result =
-                    await window.DeliveryBoy.googleLogin(
-                        googleToken
-                    );
-
-
-                // ==========================================
-                // SUCCESS
-                // ==========================================
-
-                if (
-                    result &&
-                    result.ok &&
-                    result.data &&
-                    result.data.success
-                ) {
-
-                    const userName =
-                        result.data.userName ||
-                        result.data.name ||
-                        "Aavira User";
-
-
-                    const userEmail =
-                        result.data.email ||
-                        "";
-
-
-                    // Save user
-                    localStorage.setItem(
-                        "aavira_display_name",
-                        userName
-                    );
-
-
-                    localStorage.setItem(
-                        "aavira_user_email",
-                        userEmail
-                    );
-
-
-                    // ==========================================
-                    // SUCCESS STATUS
-                    // ==========================================
-
-                    showGoogleStatus(
-                        "Login successful! Aapko Aavira par redirect kiya ja raha hai...",
-                        "success"
-                    );
-
-
-                    setGoogleButtonLoading(
-                        true,
-                        "Redirecting..."
-                    );
-
-
-                    console.log(
-                        "Google Login Successful."
-                    );
-
-
-                    // ==========================================
-                    // REDIRECT
-                    // ==========================================
-
-                    setTimeout(
-                        () => {
-
-                            window.location.replace(
-                                "index.html"
-                            );
-
-                        },
-                        700
-                    );
-
-
-                    return;
-
-                }
-
-
-                // ==========================================
-                // BACKEND FAILED
-                // ==========================================
-
-                const serverMessage =
-                    result?.data?.message ||
-                    result?.message ||
-                    "Server Google login accept nahi kar saka.";
-
-
-                throw new Error(
-                    serverMessage
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Google Login Error:",
-                    error
-                );
-
-
-                googleLoginProcessing =
-                    false;
-
-
-                setGoogleButtonLoading(
-                    false
-                );
-
-
-                showGoogleStatus(
-                    error.message ||
-                    "Google Login failed. Please try again.",
-                    "error"
-                );
-
-            }
-
-        }
-
-
-        // ==========================================
         // SIGNUP
         // ==========================================
 
         window.processSignup =
             async function() {
+
 
                 const name =
                     document.getElementById(
@@ -2156,6 +2006,7 @@
 
 
                 const originalBtnHTML = `
+
                     <span>
                         Create Account
                     </span>
@@ -2164,17 +2015,24 @@
                         data-lucide="arrow-right"
                         class="w-5 h-5"
                     ></i>
+
                 `;
 
 
                 setBtnLoading(
+
                     "btnSignupAction",
+
                     true,
+
                     originalBtnHTML
+
                 );
 
 
-                if (!window.DeliveryBoy) {
+                if (
+                    !window.DeliveryBoy
+                ) {
 
                     window.showToast(
                         "System error: Unable to connect to server.",
@@ -2183,9 +2041,13 @@
 
 
                     setBtnLoading(
+
                         "btnSignupAction",
+
                         false,
+
                         originalBtnHTML
+
                     );
 
 
@@ -2195,9 +2057,13 @@
 
 
                 tempSignupData = {
+
                     name,
+
                     email,
+
                     pwd
+
                 };
 
 
@@ -2205,16 +2071,24 @@
 
                     const result =
                         await window.DeliveryBoy.sendOTP(
+
                             email,
+
                             name
+
                         );
 
 
                     if (
+
                         result &&
+
                         result.ok &&
+
                         result.data &&
+
                         result.data.success
+
                     ) {
 
                         window.showToast(
@@ -2236,12 +2110,17 @@
                     } else {
 
                         window.showToast(
+
                             result?.data?.message ||
+
                             "Error sending code.",
+
                             "error"
+
                         );
 
                     }
+
 
                 } catch (error) {
 
@@ -2260,20 +2139,25 @@
 
 
                 setBtnLoading(
+
                     "btnSignupAction",
+
                     false,
+
                     originalBtnHTML
+
                 );
 
             };
 
 
         // ==========================================
-        // VERIFY OTP
+        // OTP VERIFY
         // ==========================================
 
         window.verifySignupOTP =
             async function() {
+
 
                 const otpVal =
                     document.getElementById(
@@ -2297,6 +2181,7 @@
 
 
                 const originalBtnHTML = `
+
                     <span>
                         Verify & Login
                     </span>
@@ -2305,17 +2190,24 @@
                         data-lucide="check-circle"
                         class="w-5 h-5"
                     ></i>
+
                 `;
 
 
                 setBtnLoading(
+
                     "btnOtpAction",
+
                     true,
+
                     originalBtnHTML
+
                 );
 
 
-                if (!window.DeliveryBoy) {
+                if (
+                    !window.DeliveryBoy
+                ) {
 
                     window.showToast(
                         "System error: Unable to connect to server.",
@@ -2324,9 +2216,13 @@
 
 
                     setBtnLoading(
+
                         "btnOtpAction",
+
                         false,
+
                         originalBtnHTML
+
                     );
 
 
@@ -2339,35 +2235,54 @@
 
                     const result =
                         await window.DeliveryBoy.verifyOTP(
+
                             tempSignupData.email,
+
                             otpVal,
+
                             tempSignupData.name,
+
                             tempSignupData.pwd
+
                         );
 
 
                     if (
+
                         result &&
+
                         result.ok &&
+
                         result.data &&
+
                         result.data.success
+
                     ) {
 
                         localStorage.setItem(
+
                             "aavira_display_name",
+
                             tempSignupData.name
+
                         );
 
 
                         localStorage.setItem(
+
                             "aavira_user_email",
+
                             tempSignupData.email
+
                         );
 
 
                         window.showToast(
+
                             "Welcome to Aavira!",
+
                             "success"
+
                         );
 
 
@@ -2385,12 +2300,17 @@
                     } else {
 
                         window.showToast(
+
                             result?.data?.message ||
+
                             "Invalid OTP code",
+
                             "error"
+
                         );
 
                     }
+
 
                 } catch (error) {
 
@@ -2409,9 +2329,13 @@
 
 
                 setBtnLoading(
+
                     "btnOtpAction",
+
                     false,
+
                     originalBtnHTML
+
                 );
 
             };
@@ -2423,6 +2347,7 @@
 
         window.processLogin =
             async function() {
+
 
                 const email =
                     document.getElementById(
@@ -2442,8 +2367,11 @@
                 ) {
 
                     window.showToast(
+
                         "Please enter email & password.",
+
                         "error"
+
                     );
 
 
@@ -2453,6 +2381,7 @@
 
 
                 const originalBtnHTML = `
+
                     <span>
                         Login
                     </span>
@@ -2461,28 +2390,42 @@
                         data-lucide="arrow-right"
                         class="w-5 h-5"
                     ></i>
+
                 `;
 
 
                 setBtnLoading(
+
                     "btnLoginAction",
+
                     true,
+
                     originalBtnHTML
+
                 );
 
 
-                if (!window.DeliveryBoy) {
+                if (
+                    !window.DeliveryBoy
+                ) {
 
                     window.showToast(
+
                         "System error: Unable to connect to server.",
+
                         "error"
+
                     );
 
 
                     setBtnLoading(
+
                         "btnLoginAction",
+
                         false,
+
                         originalBtnHTML
+
                     );
 
 
@@ -2495,34 +2438,52 @@
 
                     const result =
                         await window.DeliveryBoy.login(
+
                             email,
+
                             pwd
+
                         );
 
 
                     if (
+
                         result &&
+
                         result.ok &&
+
                         result.data &&
+
                         result.data.success
+
                     ) {
 
                         localStorage.setItem(
+
                             "aavira_display_name",
+
                             result.data.userName ||
+
                             email.split("@")[0]
+
                         );
 
 
                         localStorage.setItem(
+
                             "aavira_user_email",
+
                             email
+
                         );
 
 
                         window.showToast(
+
                             "Signed In successfully!",
+
                             "success"
+
                         );
 
 
@@ -2540,12 +2501,17 @@
                     } else {
 
                         window.showToast(
+
                             result?.data?.message ||
+
                             "Invalid credentials.",
+
                             "error"
+
                         );
 
                     }
+
 
                 } catch (error) {
 
@@ -2564,14 +2530,250 @@
 
 
                 setBtnLoading(
+
                     "btnLoginAction",
+
                     false,
+
                     originalBtnHTML
+
                 );
 
             };
 
+
+        // ==========================================
+        // GOOGLE LOGIN RESPONSE
+        // ==========================================
+
+        async function handleGoogleLoginResponse(
+            response
+        ) {
+
+
+            // ==========================================
+            // CHECK GOOGLE RESPONSE
+            // ==========================================
+
+            if (
+                !response ||
+                !response.credential
+            ) {
+
+
+                showGoogleStatus(
+
+                    "Google verification se credential nahi mila.",
+
+                    "error"
+
+                );
+
+
+                googleLoginProcessing =
+                    false;
+
+
+                return;
+
+            }
+
+
+            // ==========================================
+            // GOOGLE VERIFIED
+            // ==========================================
+
+            showGoogleStatus(
+
+                "Google account verified. Server par login ho raha hai...",
+
+                "loading"
+
+            );
+
+
+            try {
+
+
+                const googleToken =
+                    response.credential;
+
+
+                // ==========================================
+                // BACKEND CHECK
+                // ==========================================
+
+                if (
+
+                    !window.DeliveryBoy ||
+
+                    typeof window.DeliveryBoy.googleLogin !==
+                    "function"
+
+                ) {
+
+                    throw new Error(
+
+                        "Google login backend available nahi hai."
+
+                    );
+
+                }
+
+
+                // ==========================================
+                // SEND TOKEN TO BACKEND
+                // ==========================================
+
+                const result =
+                    await window.DeliveryBoy.googleLogin(
+
+                        googleToken
+
+                    );
+
+
+                // ==========================================
+                // LOGIN SUCCESS
+                // ==========================================
+
+                if (
+
+                    result &&
+
+                    result.ok &&
+
+                    result.data &&
+
+                    result.data.success
+
+                ) {
+
+
+                    const userName =
+                        result.data.userName ||
+
+                        result.data.name ||
+
+                        "Aavira User";
+
+
+                    const userEmail =
+                        result.data.email ||
+
+                        "";
+
+
+                    // ==========================================
+                    // SAVE USER
+                    // ==========================================
+
+                    localStorage.setItem(
+
+                        "aavira_display_name",
+
+                        userName
+
+                    );
+
+
+                    localStorage.setItem(
+
+                        "aavira_user_email",
+
+                        userEmail
+
+                    );
+
+
+                    // ==========================================
+                    // SUCCESS STATUS
+                    // ==========================================
+
+                    showGoogleStatus(
+
+                        "Login successful! Aavira par redirect ho raha hai...",
+
+                        "success"
+
+                    );
+
+
+                    console.log(
+
+                        "Google Login Successful. Redirecting..."
+
+                    );
+
+
+                    // ==========================================
+                    // REDIRECT STATUS
+                    // ==========================================
+
+                    setTimeout(
+                        () => {
+
+                            window.location.replace(
+                                "index.html"
+                            );
+
+                        },
+                        800
+                    );
+
+
+                    return;
+
+                }
+
+
+                // ==========================================
+                // BACKEND ERROR
+                // ==========================================
+
+                throw new Error(
+
+                    result?.data?.message ||
+
+                    result?.message ||
+
+                    "Google Login failed in system."
+
+                );
+
+
+            } catch (error) {
+
+
+                console.error(
+
+                    "Google Login Error:",
+
+                    error
+
+                );
+
+
+                googleLoginProcessing =
+                    false;
+
+
+                showGoogleStatus(
+
+                    error.message ||
+
+                    "Google Login failed. Please try again.",
+
+                    "error"
+
+                );
+
+            }
+
+        }
+
     </script>
 
 </body>
+
 </html>
