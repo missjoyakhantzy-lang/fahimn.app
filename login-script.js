@@ -2,8 +2,9 @@
     'use strict';
 
     const CONFIG = {
+        // NOTE: Make sure this Client ID is correct and authorized in Google Cloud Console
         GOOGLE_CLIENT_ID: "247971292356-8906dpm406huv7uidlblhjum8vg3dfj3.apps.googleusercontent.com",
-        GOOGLE_PROMPT_TIMEOUT_MS: 15000,
+        GOOGLE_PROMPT_TIMEOUT_MS: 30000, // Increased timeout for popup window
         OTP_LENGTH: 6,
         MIN_PASSWORD_LENGTH: 6,
         RESEND_COOLDOWN_SECONDS: 30,
@@ -260,6 +261,9 @@
         window.location.href = 'index.html';
     }
 
+    // ------------------------------------------------------------------
+    // UPDATED GOOGLE LOGIN - Using Popup instead of One Tap
+    // ------------------------------------------------------------------
     function performGoogleLogin(triggerBtnId) {
         if (typeof google === 'undefined' || !google.accounts) {
             showToast('Google service unable to load. Check connection.', 'error');
@@ -274,24 +278,40 @@
             loadingLabel: 'Connecting...'
         });
 
-        google.accounts.id.initialize({
-            client_id: CONFIG.GOOGLE_CLIENT_ID,
-            callback: handleGoogleLoginResponse
-        });
+        try {
+            const client = google.accounts.oauth2.initTokenClient({
+                client_id: CONFIG.GOOGLE_CLIENT_ID,
+                scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+                callback: (response) => {
+                    if (response && response.access_token) {
+                        handleGoogleLoginResponse(response.access_token);
+                    }
+                },
+                error_callback: (error) => {
+                    resetGoogleButton();
+                    // Agar user ne khud window close ki hai, to error mat dikhao
+                    if (error.type !== 'popup_closed' && error.type !== 'access_denied') {
+                        showToast('Google sign-in failed or cancelled.', 'error');
+                    }
+                }
+            });
 
-        clearTimeout(googlePromptTimeout);
-        googlePromptTimeout = setTimeout(() => {
+            // Trigger the explicit popup
+            client.requestAccessToken();
+            
+            // Safety timeout in case the popup gets stuck or blocked
+            clearTimeout(googlePromptTimeout);
+            googlePromptTimeout = setTimeout(() => {
+                if(isSubmitting) {
+                    resetGoogleButton();
+                    showToast('Google sign-in timed out. Please try again.', 'error');
+                }
+            }, CONFIG.GOOGLE_PROMPT_TIMEOUT_MS);
+
+        } catch (err) {
             resetGoogleButton();
-            showToast('Google sign-in timed out. Please try again.', 'error');
-        }, CONFIG.GOOGLE_PROMPT_TIMEOUT_MS);
-
-        google.accounts.id.prompt((notification) => {
-            if (notification.isNotDisplayed() || notification.isSkippedMoment() || notification.isDismissedMoment()) {
-                clearTimeout(googlePromptTimeout);
-                resetGoogleButton();
-                showToast('Google sign-in was cancelled.', 'error');
-            }
-        });
+            showToast('Unable to initialize Google Sign-In.', 'error');
+        }
     }
 
     function resetGoogleButton() {
@@ -302,9 +322,8 @@
         }
     }
 
-    async function handleGoogleLoginResponse(response) {
+    async function handleGoogleLoginResponse(googleAccessToken) {
         clearTimeout(googlePromptTimeout);
-        const googleToken = response.credential;
         showToast('Google verified! Signing you in...', 'success');
 
         try {
@@ -313,7 +332,8 @@
                 return;
             }
 
-            const result = await window.DeliveryBoy.googleLogin(googleToken);
+            // Backend is given the OAuth access token
+            const result = await window.DeliveryBoy.googleLogin(googleAccessToken);
 
             if (result && result.ok && result.data && result.data.success) {
                 persistSession(result.data.userName, result.data.email);
@@ -328,6 +348,7 @@
             resetGoogleButton();
         }
     }
+    // ------------------------------------------------------------------
 
     function resolveSendResetOtp() {
         if (!window.DeliveryBoy) return null;
