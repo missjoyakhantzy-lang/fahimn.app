@@ -1,255 +1,615 @@
-// 🔥 TUMHARA NAYA VERCEL BACKEND URL 🔥
-const SERVER_URL = "https://ecommerce-backend-eight-lac.vercel.app";
+(function () {
+    'use strict';
 
-let isSignup = true;
-let tempSignupData = { name: "", email: "", pwd: "" };
-let tempResetEmail = "";
+    const CONFIG = {
+        GOOGLE_CLIENT_ID: "247971292356-8906dpm406huv7uidlblhjum8vg3dfj3.apps.googleusercontent.com",
+        GOOGLE_PROMPT_TIMEOUT_MS: 15000,
+        OTP_LENGTH: 6,
+        MIN_PASSWORD_LENGTH: 6,
+        RESEND_COOLDOWN_SECONDS: 30,
+        TOAST_DURATION: 3000,
+        VIEW_TRANSITION_DELAY: 400,
+        AUTO_SUBMIT_DELAY_MS: 150,
+        STORAGE_KEYS: {
+            NAME: 'aavira_display_name',
+            EMAIL: 'aavira_user_email'
+        }
+    };
 
-if(window.innerWidth <= 850) { document.getElementById('mobileLogo').style.display = 'block'; }
-window.addEventListener('resize', () => {
-    if(window.innerWidth <= 850) document.getElementById('mobileLogo').style.display = 'block';
-    else document.getElementById('mobileLogo').style.display = 'none';
-});
+    const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const GOOGLE_BTN_ORIGINAL_HTML =
+        '<img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-4 h-4" alt="Google">' +
+        '<span>Continue with Google</span>';
 
-window.showToast = function(msg, isSuccess = false) {
-    const toast = document.getElementById('toast');
-    document.getElementById('toastMsg').innerText = msg;
-    toast.style.backgroundColor = isSuccess ? '#10b981' : '#ef4444';
-    document.getElementById('toastIconType').className = isSuccess ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-exclamation';
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 4000);
-}
+    let pendingSignup = { name: '', email: '', pwd: '' };
+    let pendingReset = { email: '' };
+    let toastTimer = null;
+    let resendCooldownInterval = null;
+    let googlePromptTimeout = null;
+    let activeGoogleBtnId = null; 
+    let isSubmitting = false; 
 
-window.toggleTheme = function() {
-    const body = document.body;
-    const icon = document.getElementById('themeIcon');
-    if(body.getAttribute('data-theme') === 'dark') { 
-        body.setAttribute('data-theme', 'light'); 
-        icon.className = 'fa-solid fa-moon'; 
-    } else { 
-        body.setAttribute('data-theme', 'dark'); 
-        icon.className = 'fa-solid fa-sun'; 
+    document.addEventListener('DOMContentLoaded', () => {
+        lucide.createIcons();
+        setupFixedBackground();
+        setupEnterKeySubmit();
+        setupOtpBoxGroup('otpBoxGroup', verifySignupOTP);
+        setupOtpBoxGroup('resetOtpBoxGroup', processResetPassword);
+    });
+
+    function setupFixedBackground() {
+        const fixedBg = document.getElementById('fixedBg');
+        const setHeight = () => {
+            fixedBg.style.height = (window.visualViewport ? window.visualViewport.height : window.innerHeight) + 'px';
+        };
+        setHeight();
+        window.addEventListener('resize', setHeight);
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', setHeight);
+        }
     }
-}
 
-window.switchMode = function(mode) {
-    isSignup = (mode === 'signup');
-    document.getElementById('tabSignup').classList.toggle('active', isSignup);
-    document.getElementById('tabLogin').classList.toggle('active', !isSignup);
-    document.getElementById('nameBox').style.display = isSignup ? 'block' : 'none';
-    document.getElementById('showForgotBtn').style.display = isSignup ? 'none' : 'block';
-    document.getElementById('headerTitle').innerText = isSignup ? 'Create Account' : 'Welcome Back';
-    document.getElementById('headerSub').innerText = isSignup ? 'Join Aavira to unlock premium access.' : 'Sign in to jump back into your account.';
-    document.getElementById('mainActionBtn').innerHTML = isSignup ? 'Create My Account' : 'Secure Login <i class="fa-solid fa-arrow-right-to-bracket" style="margin-left: 5px;"></i>';
-}
-
-window.togglePwd = function(inputId, iconId) {
-    const inp = document.getElementById(inputId); 
-    const ico = document.getElementById(iconId);
-    if(inp.type === 'password') { 
-        inp.type = 'text'; 
-        ico.className = 'fa-regular fa-eye eye-btn'; 
-    } else { 
-        inp.type = 'password'; 
-        ico.className = 'fa-regular fa-eye-slash eye-btn'; 
-    }
-}
-
-window.openForgotScreen = function() {
-    document.getElementById('headerTitle').innerText = 'Reset Password';
-    document.getElementById('headerSub').innerText = 'Securely recover your account.';
-    document.getElementById('authTabs').style.display = 'none';
-    document.getElementById('screenMain').classList.remove('active');
-    setTimeout(() => document.getElementById('screenForgot').classList.add('active'), 200);
-}
-
-window.backToMain = function() {
-    document.getElementById('authTabs').style.display = 'flex';
-    document.getElementById('screenForgot').classList.remove('active');
-    document.getElementById('screenReset').classList.remove('active');
-    setTimeout(() => { 
-        document.getElementById('screenMain').classList.add('active'); 
-        window.switchMode('login'); 
-    }, 200);
-}
-
-window.backToLoginFromOtp = function() {
-    document.getElementById('authTabs').style.display = 'flex';
-    document.getElementById('screenOTP').classList.remove('active');
-    setTimeout(() => { 
-        document.getElementById('screenMain').classList.add('active'); 
-        window.switchMode('signup'); 
-    }, 200);
-}
-
-// 🔥 LOGIN & SIGNUP LOGIC 🔥
-window.processAuth = async function() {
-    const email = document.getElementById('authEmail').value.trim();
-    const pwd = document.getElementById('authPwd').value.trim();
-    const name = document.getElementById('regName').value.trim();
-
-    if(!email || !pwd) { window.showToast("Email and password required!"); return; }
-
-    const btn = document.getElementById('mainActionBtn');
-    const originalText = btn.innerHTML;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
-    btn.disabled = true;
-
-    try {
-        if(!isSignup) {
-            // LOGIN API CALL
-            const res = await fetch(`${SERVER_URL}/api/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: email, password: pwd })
+    function setupEnterKeySubmit() {
+        const fieldToAction = {
+            signupName: processSignup,
+            signupEmail: processSignup,
+            signupPassword: processSignup,
+            loginEmail: processLogin,
+            loginPassword: processLogin,
+            forgotEmail: processForgotPassword,
+            newPassword: processResetPassword,
+            confirmPassword: processResetPassword
+        };
+        Object.keys(fieldToAction).forEach((id) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    fieldToAction[id]();
+                }
             });
-            const data = await res.json();
+        });
+    }
 
-            if(data.success) {
-                localStorage.setItem('aavira_user', JSON.stringify(data.user));
-                window.showToast("Login Successful! Redirecting...", true);
-                setTimeout(() => window.location.href = "index.html", 1500);
-            } else {
-                window.showToast(data.message || "Invalid Credentials");
-                btn.innerHTML = originalText; btn.disabled = false;
+    function setupOtpBoxGroup(groupId, onComplete) {
+        const group = document.getElementById(groupId);
+        if (!group) return;
+        const boxes = Array.from(group.querySelectorAll('.otp-box'));
+
+        const playPop = (box) => {
+            box.classList.remove('otp-box-filled');
+            void box.offsetWidth;
+            box.classList.add('otp-box-filled');
+        };
+
+        const checkAutoSubmit = () => {
+            const allFilled = boxes.every((b) => b.value.length === 1);
+            if (allFilled && typeof onComplete === 'function') {
+                setTimeout(onComplete, CONFIG.AUTO_SUBMIT_DELAY_MS);
             }
+        };
+
+        boxes.forEach((box, index) => {
+            box.addEventListener('input', () => {
+                box.value = box.value.replace(/[^0-9]/g, '').slice(-1);
+                if (box.value) {
+                    playPop(box);
+                    if (boxes[index + 1]) boxes[index + 1].focus();
+                } else {
+                    box.classList.remove('otp-box-filled');
+                }
+                checkAutoSubmit();
+            });
+
+            box.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !box.value && boxes[index - 1]) {
+                    boxes[index - 1].focus();
+                } else if (e.key === 'ArrowLeft' && boxes[index - 1]) {
+                    e.preventDefault();
+                    boxes[index - 1].focus();
+                } else if (e.key === 'ArrowRight' && boxes[index + 1]) {
+                    e.preventDefault();
+                    boxes[index + 1].focus();
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (typeof onComplete === 'function') onComplete();
+                }
+            });
+
+            box.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
+                if (!pasted) return;
+                pasted.split('').slice(0, boxes.length).forEach((digit, i) => {
+                    boxes[i].value = digit;
+                    playPop(boxes[i]);
+                });
+                const nextEmpty = boxes.findIndex((b) => !b.value);
+                (boxes[nextEmpty] || boxes[boxes.length - 1]).focus();
+                checkAutoSubmit();
+            });
+        });
+    }
+
+    function getOtpBoxValue(groupId) {
+        const group = document.getElementById(groupId);
+        if (!group) return '';
+        return Array.from(group.querySelectorAll('.otp-box')).map((b) => b.value).join('');
+    }
+
+    function clearOtpBoxGroup(groupId) {
+        const group = document.getElementById(groupId);
+        if (!group) return;
+        const boxes = Array.from(group.querySelectorAll('.otp-box'));
+        boxes.forEach((b) => { b.value = ''; b.classList.remove('otp-box-filled'); });
+        if (boxes[0]) boxes[0].focus();
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        const msg = document.getElementById('toast-msg');
+        const iconWrapper = document.getElementById('toast-icon-wrapper');
+
+        clearTimeout(toastTimer);
+        msg.innerText = message;
+        iconWrapper.innerHTML = type === 'error'
+            ? '<i data-lucide="alert-circle" class="w-5 h-5 text-rani-pink"></i>'
+            : '<i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>';
+        lucide.createIcons();
+
+        toast.classList.remove('opacity-0', '-translate-y-24', 'pointer-events-none');
+        toast.classList.add('translate-y-0');
+
+        toastTimer = setTimeout(() => {
+            toast.classList.add('opacity-0', '-translate-y-24', 'pointer-events-none');
+            toast.classList.remove('translate-y-0');
+        }, CONFIG.TOAST_DURATION);
+    }
+
+    function switchView(viewId) {
+        const loader = document.getElementById('screenTransitionLoader');
+        const views = ['loginView', 'signupView', 'otpView', 'forgotView', 'resetOtpView'];
+
+        if (viewId !== 'resetOtpView') {
+            clearInterval(resendCooldownInterval);
+            const resendBtn = document.getElementById('btnResendReset');
+            if (resendBtn) {
+                resendBtn.disabled = false;
+                resendBtn.innerText = 'Resend Code';
+            }
+        }
+
+        loader.classList.remove('hidden');
+        loader.classList.add('flex');
+        setTimeout(() => loader.classList.remove('opacity-0'), 10);
+
+        setTimeout(() => {
+            views.forEach((id) => {
+                document.getElementById(id).className = id === viewId ? 'view-active' : 'view-hidden';
+            });
+
+            loader.classList.add('opacity-0');
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                loader.classList.remove('flex');
+            }, 300);
+        }, CONFIG.VIEW_TRANSITION_DELAY);
+    }
+
+    function togglePassword(inputId, buttonId) {
+        const input = document.getElementById(inputId);
+        const btn = document.getElementById(buttonId);
+        const isHidden = input.type === 'password';
+
+        input.type = isHidden ? 'text' : 'password';
+        btn.innerHTML = isHidden
+            ? '<i data-lucide="eye" class="w-4 h-4"></i>'
+            : '<i data-lucide="eye-off" class="w-4 h-4"></i>';
+        lucide.createIcons();
+    }
+
+    function setBtnLoading(btnId, isLoading, originalHtml, opts = {}) {
+        const btn = document.getElementById(btnId);
+        const loaderColor = opts.loaderColor || 'text-white';
+        const loadingLabel = opts.loadingLabel || 'Processing...';
+
+        if (isLoading) {
+            btn.disabled = true;
+            btn.classList.add('opacity-90', 'cursor-not-allowed');
+            btn.innerHTML = `<div class="dot-loader ${loaderColor} mr-2"><span></span><span></span><span></span></div> <span>${loadingLabel}</span>`;
         } else {
-            // SIGNUP - SEND OTP API CALL
-            if(!name) { window.showToast("Please enter Full Name."); btn.innerHTML = originalText; btn.disabled = false; return; }
-            tempSignupData = { name, email, pwd };
-
-            const res = await fetch(`${SERVER_URL}/api/send-otp`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userEmail: email, userName: name })
-            });
-            const data = await res.json();
-
-            if(data.success) {
-                window.showToast("Verification OTP sent!", true);
-                document.getElementById('headerTitle').innerText = 'Verify Identity';
-                document.getElementById('headerSub').innerText = `OTP sent to ${email}`;
-                document.getElementById('authTabs').style.display = 'none';
-                document.getElementById('screenMain').classList.remove('active');
-                setTimeout(() => document.getElementById('screenOTP').classList.add('active'), 200);
-                btn.innerHTML = originalText; btn.disabled = false;
-            } else { 
-                window.showToast(data.message || "Failed to send OTP."); 
-                btn.innerHTML = originalText; btn.disabled = false; 
-            }
+            btn.disabled = false;
+            btn.classList.remove('opacity-90', 'cursor-not-allowed');
+            btn.innerHTML = originalHtml;
         }
-    } catch (err) {
-        console.error(err);
-        window.showToast("Server Error! Please check your connection."); 
-        btn.innerHTML = originalText; btn.disabled = false;
+        lucide.createIcons();
     }
-}
 
-// 🔥 VERIFY OTP & REGISTER USER (CRASH-PROOF) 🔥
-window.verifyOTP = async function() {
-    const otpVal = document.getElementById('otpInput').value.trim();
-    if(otpVal.length !== 6) { window.showToast("Enter complete 6-digit OTP!"); return; }
-    
-    const vBtn = document.getElementById('verifyOtpBtn');
-    vBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Finalizing...'; 
-    vBtn.disabled = true;
+    function validateSignupInputs(name, email, pwd) {
+        if (!name || !email || !pwd) return 'All fields are required.';
+        if (name.length < 2) return 'Please enter your full name.';
+        if (!EMAIL_REGEX.test(email)) return 'Please enter a valid email address.';
+        if (pwd.length < CONFIG.MIN_PASSWORD_LENGTH) return `Password must be at least ${CONFIG.MIN_PASSWORD_LENGTH} characters.`;
+        return null;
+    }
 
-    try {
-        // 1. Verify OTP
-        const otpRes = await fetch(`${SERVER_URL}/api/verify-otp`, {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userEmail: tempSignupData.email, userOTP: otpVal })
+    function validateLoginInputs(email, pwd) {
+        if (!email || !pwd) return 'Please enter email & password.';
+        return null;
+    }
+
+    function extractErrorMessage(result, fallback) {
+        return (result && result.data && result.data.message) || fallback;
+    }
+
+    function persistSession(name, email) {
+        try {
+            localStorage.setItem(CONFIG.STORAGE_KEYS.NAME, name);
+            localStorage.setItem(CONFIG.STORAGE_KEYS.EMAIL, email);
+        } catch (e) {
+            console.warn('Unable to persist session locally:', e);
+        }
+    }
+
+    function redirectHome(delay = 1000) {
+        setTimeout(() => { window.location.href = 'index.html'; }, delay);
+    }
+
+    function goToHome() {
+        window.location.href = 'index.html';
+    }
+
+    function performGoogleLogin(triggerBtnId) {
+        if (typeof google === 'undefined' || !google.accounts) {
+            showToast('Google service unable to load. Check connection.', 'error');
+            return;
+        }
+        if (isSubmitting) return;
+
+        isSubmitting = true;
+        activeGoogleBtnId = triggerBtnId;
+        setBtnLoading(triggerBtnId, true, GOOGLE_BTN_ORIGINAL_HTML, {
+            loaderColor: 'text-rani-pink',
+            loadingLabel: 'Connecting...'
         });
-        const otpData = await otpRes.json();
 
-        if(otpData.success) {
-            // 2. Register User in Database
-            const regRes = await fetch(`${SERVER_URL}/api/register`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: tempSignupData.email, password: tempSignupData.pwd, name: tempSignupData.name })
-            });
-            const regData = await regRes.json();
+        google.accounts.id.initialize({
+            client_id: CONFIG.GOOGLE_CLIENT_ID,
+            callback: handleGoogleLoginResponse
+        });
 
-            if(regData.success) {
-                localStorage.setItem('aavira_user', JSON.stringify(regData.user));
-                window.showToast("Account Created! Welcome to Aavira.", true);
-                setTimeout(() => window.location.href = "index.html", 2000);
+        clearTimeout(googlePromptTimeout);
+        googlePromptTimeout = setTimeout(() => {
+            resetGoogleButton();
+            showToast('Google sign-in timed out. Please try again.', 'error');
+        }, CONFIG.GOOGLE_PROMPT_TIMEOUT_MS);
+
+        google.accounts.id.prompt((notification) => {
+            if (notification.isNotDisplayed() || notification.isSkippedMoment() || notification.isDismissedMoment()) {
+                clearTimeout(googlePromptTimeout);
+                resetGoogleButton();
+                showToast('Google sign-in was cancelled.', 'error');
+            }
+        });
+    }
+
+    function resetGoogleButton() {
+        isSubmitting = false;
+        if (activeGoogleBtnId) {
+            setBtnLoading(activeGoogleBtnId, false, GOOGLE_BTN_ORIGINAL_HTML);
+            activeGoogleBtnId = null;
+        }
+    }
+
+    async function handleGoogleLoginResponse(response) {
+        clearTimeout(googlePromptTimeout);
+        const googleToken = response.credential;
+        showToast('Google verified! Signing you in...', 'success');
+
+        try {
+            if (!window.DeliveryBoy || !window.DeliveryBoy.googleLogin) {
+                showToast('Google login succeeded, but backend linking is pending.', 'success');
+                return;
+            }
+
+            const result = await window.DeliveryBoy.googleLogin(googleToken);
+
+            if (result && result.ok && result.data && result.data.success) {
+                persistSession(result.data.userName, result.data.email);
+                showToast('Signed in successfully!', 'success');
+                redirectHome();
             } else {
-                window.showToast(regData.message || "Registration failed."); 
-                vBtn.innerHTML = 'Verify & Complete Setup'; vBtn.disabled = false;
+                showToast(extractErrorMessage(result, 'Google login failed.'), 'error');
             }
-        } else { 
-            window.showToast(otpData.message || "Invalid OTP!"); 
-            vBtn.innerHTML = 'Verify & Complete Setup'; vBtn.disabled = false; 
+        } catch (err) {
+            showToast('Network error. Please try again.', 'error');
+        } finally {
+            resetGoogleButton();
         }
-    } catch (err) {
-        console.error(err);
-        window.showToast("Server error! Please try again."); 
-        vBtn.innerHTML = 'Verify & Complete Setup'; vBtn.disabled = false; 
     }
-}
 
-window.sendResetOTP = async function() {
-    const email = document.getElementById('resetEmail').value.trim();
-    if(!email) { window.showToast("Please enter your email."); return; }
-    
-    const btn = document.getElementById('sendResetOtpBtn');
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending OTP...'; 
-    btn.disabled = true;
+    function resolveSendResetOtp() {
+        if (!window.DeliveryBoy) return null;
+        return window.DeliveryBoy.sendPasswordResetOTP
+            || window.DeliveryBoy.sendResetOTP
+            || window.DeliveryBoy.forgotPassword
+            || null;
+    }
 
-    try {
-        const res = await fetch(`${SERVER_URL}/api/send-reset-otp`, {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userEmail: email })
-        });
-        const data = await res.json();
+    function resolveConfirmReset() {
+        if (!window.DeliveryBoy) return null;
+        return window.DeliveryBoy.resetPassword
+            || window.DeliveryBoy.confirmPasswordReset
+            || window.DeliveryBoy.verifyPasswordReset
+            || null;
+    }
 
-        if(data.success) {
-            tempResetEmail = email;
-            window.showToast("OTP sent to your email!", true);
-            document.getElementById('headerTitle').innerText = 'Set New Password';
-            document.getElementById('headerSub').innerText = 'Create a strong new password.';
-            document.getElementById('screenForgot').classList.remove('active');
-            setTimeout(() => document.getElementById('screenReset').classList.add('active'), 200);
-        } else { 
-            window.showToast(data.message || "Failed to send OTP."); 
-            btn.innerHTML = 'Send Reset OTP <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false; 
+    function validateForgotEmail(email) {
+        if (!email) return 'Please enter your registered email.';
+        if (!EMAIL_REGEX.test(email)) return 'Please enter a valid email address.';
+        return null;
+    }
+
+    function validateResetPasswordInputs(otp, newPwd, confirmPwd) {
+        if (otp.length !== CONFIG.OTP_LENGTH) return `Enter the complete ${CONFIG.OTP_LENGTH}-digit code.`;
+        if (newPwd.length < CONFIG.MIN_PASSWORD_LENGTH) return `Password must be at least ${CONFIG.MIN_PASSWORD_LENGTH} characters.`;
+        if (newPwd !== confirmPwd) return 'New password and confirm password do not match.';
+        return null;
+    }
+
+    function startResendCooldown() {
+        const btn = document.getElementById('btnResendReset');
+        let remaining = CONFIG.RESEND_COOLDOWN_SECONDS;
+
+        btn.disabled = true;
+        btn.innerText = `Resend Code (${remaining}s)`;
+
+        clearInterval(resendCooldownInterval);
+        resendCooldownInterval = setInterval(() => {
+            remaining -= 1;
+            if (remaining <= 0) {
+                clearInterval(resendCooldownInterval);
+                btn.disabled = false;
+                btn.innerText = 'Resend Code';
+            } else {
+                btn.innerText = `Resend Code (${remaining}s)`;
+            }
+        }, 1000);
+    }
+
+    async function processForgotPassword() {
+        if (isSubmitting) return;
+
+        const email = document.getElementById('forgotEmail').value.trim().toLowerCase();
+        const validationError = validateForgotEmail(email);
+        if (validationError) {
+            showToast(validationError, 'error');
+            return;
         }
-    } catch (err) {
-        window.showToast("Server error!"); 
-        btn.innerHTML = 'Send Reset OTP <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false;
-    }
-}
 
-window.updatePassword = async function() {
-    const otpVal = document.getElementById('resetOtpInput').value.trim();
-    const newPwd = document.getElementById('newPwdInput').value.trim();
-    
-    if(otpVal.length !== 6) { window.showToast("Please enter 6-digit OTP!"); return; }
-    if(newPwd.length < 6) { window.showToast("Password must be at least 6 characters!"); return; }
-    
-    const btn = document.getElementById('updatePwdBtn');
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Updating...'; 
-    btn.disabled = true;
-
-    try {
-        const res = await fetch(`${SERVER_URL}/api/update-password`, {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userEmail: tempResetEmail, userOTP: otpVal, newPassword: newPwd })
-        });
-        const data = await res.json();
-
-        if(data.success) {
-            window.showToast("Password Updated Successfully!", true);
-            document.getElementById('resetOtpInput').value = ""; 
-            document.getElementById('newPwdInput').value = "";
-            setTimeout(() => window.backToMain(), 2000);
-        } else { 
-            window.showToast(data.message || "Invalid OTP!"); 
-            btn.innerHTML = 'Secure Update <i class="fa-solid fa-check"></i>'; btn.disabled = false; 
+        const sendResetOtp = resolveSendResetOtp();
+        if (!sendResetOtp) {
+            showToast('Password reset service is not available right now.', 'error');
+            return;
         }
-    } catch (err) {
-        window.showToast("Server error!"); 
-        btn.innerHTML = 'Secure Update <i class="fa-solid fa-check"></i>'; btn.disabled = false;
+
+        const originalBtnHTML = '<span>Send Reset Code</span><i data-lucide="arrow-right" class="w-4 h-4"></i>';
+        isSubmitting = true;
+        setBtnLoading('btnForgotAction', true, originalBtnHTML);
+        pendingReset = { email };
+
+        try {
+            const result = await sendResetOtp(email);
+            if (result && result.ok && result.data && result.data.success) {
+                showToast('Reset code sent to your email!', 'success');
+                document.getElementById('resetOtpSubText').innerText = email;
+                clearOtpBoxGroup('resetOtpBoxGroup');
+                document.getElementById('newPassword').value = '';
+                document.getElementById('confirmPassword').value = '';
+                switchView('resetOtpView');
+                startResendCooldown();
+            } else {
+                showToast(extractErrorMessage(result, 'Unable to send reset code. Please check the email and try again.'), 'error');
+            }
+        } catch (err) {
+            showToast('Network error. Please try again.', 'error');
+        } finally {
+            setBtnLoading('btnForgotAction', false, originalBtnHTML);
+            isSubmitting = false;
+        }
     }
-}
+
+    async function resendResetOtp() {
+        if (isSubmitting || !pendingReset.email) return;
+
+        const sendResetOtp = resolveSendResetOtp();
+        if (!sendResetOtp) {
+            showToast('Password reset service is not available right now.', 'error');
+            return;
+        }
+
+        try {
+            const result = await sendResetOtp(pendingReset.email);
+            if (result && result.ok && result.data && result.data.success) {
+                showToast('A new code has been sent.', 'success');
+                startResendCooldown();
+            } else {
+                showToast(extractErrorMessage(result, 'Unable to resend code.'), 'error');
+            }
+        } catch (err) {
+            showToast('Network error. Please try again.', 'error');
+        }
+    }
+
+    async function processResetPassword() {
+        if (isSubmitting) return;
+
+        const otp = getOtpBoxValue('resetOtpBoxGroup');
+        const newPwd = document.getElementById('newPassword').value.trim();
+        const confirmPwd = document.getElementById('confirmPassword').value.trim();
+
+        const validationError = validateResetPasswordInputs(otp, newPwd, confirmPwd);
+        if (validationError) {
+            showToast(validationError, 'error');
+            return;
+        }
+
+        const confirmReset = resolveConfirmReset();
+        if (!confirmReset) {
+            showToast('Password reset service is not available right now.', 'error');
+            return;
+        }
+
+        const originalBtnHTML = '<span>Reset Password</span><i data-lucide="check-circle" class="w-4 h-4"></i>';
+        isSubmitting = true;
+        setBtnLoading('btnResetAction', true, originalBtnHTML);
+
+        try {
+            const result = await confirmReset(pendingReset.email, otp, newPwd);
+            if (result && result.ok && result.data && result.data.success) {
+                showToast('Password reset successfully! Please login.', 'success');
+                clearInterval(resendCooldownInterval);
+                document.getElementById('loginEmail').value = pendingReset.email;
+                document.getElementById('loginPassword').value = '';
+                pendingReset = { email: '' };
+                setTimeout(() => switchView('loginView'), 1200);
+            } else {
+                showToast(extractErrorMessage(result, 'Invalid or expired code.'), 'error');
+            }
+        } catch (err) {
+            showToast('Network error. Please try again.', 'error');
+        } finally {
+            setBtnLoading('btnResetAction', false, originalBtnHTML);
+            isSubmitting = false;
+        }
+    }
+
+    async function processSignup() {
+        if (isSubmitting) return;
+
+        const name = document.getElementById('signupName').value.trim();
+        const email = document.getElementById('signupEmail').value.trim().toLowerCase();
+        const pwd = document.getElementById('signupPassword').value.trim();
+
+        const validationError = validateSignupInputs(name, email, pwd);
+        if (validationError) {
+            showToast(validationError, 'error');
+            return;
+        }
+
+        if (!window.DeliveryBoy) {
+            showToast('System error: Unable to connect to server.', 'error');
+            return;
+        }
+
+        const originalBtnHTML = '<span>Create Account</span><i data-lucide="arrow-right" class="w-4 h-4"></i>';
+        isSubmitting = true;
+        setBtnLoading('btnSignupAction', true, originalBtnHTML);
+        pendingSignup = { name, email, pwd };
+
+        try {
+            const result = await window.DeliveryBoy.sendOTP(email, name);
+            if (result && result.ok && result.data && result.data.success) {
+                showToast('Verification code sent!', 'success');
+                document.getElementById('otpSubText').innerText = email;
+                clearOtpBoxGroup('otpBoxGroup');
+                switchView('otpView');
+            } else {
+                showToast(extractErrorMessage(result, 'Error sending code.'), 'error');
+            }
+        } catch (err) {
+            showToast('Network error. Please try again.', 'error');
+        } finally {
+            setBtnLoading('btnSignupAction', false, originalBtnHTML);
+            isSubmitting = false;
+        }
+    }
+
+    async function verifySignupOTP() {
+        if (isSubmitting) return;
+
+        const otpVal = getOtpBoxValue('otpBoxGroup');
+        if (otpVal.length !== CONFIG.OTP_LENGTH) {
+            showToast(`Enter the complete ${CONFIG.OTP_LENGTH}-digit code.`, 'error');
+            return;
+        }
+
+        if (!window.DeliveryBoy) {
+            showToast('System error: Unable to connect to server.', 'error');
+            return;
+        }
+
+        const originalBtnHTML = '<span>Verify & Login</span><i data-lucide="check-circle" class="w-4 h-4"></i>';
+        isSubmitting = true;
+        setBtnLoading('btnOtpAction', true, originalBtnHTML);
+
+        try {
+            const result = await window.DeliveryBoy.verifyOTP(
+                pendingSignup.email, otpVal, pendingSignup.name, pendingSignup.pwd
+            );
+            if (result && result.ok && result.data && result.data.success) {
+                persistSession(pendingSignup.name, pendingSignup.email);
+                showToast('Welcome to Aavira!', 'success');
+                redirectHome(1500);
+            } else {
+                showToast(extractErrorMessage(result, 'Invalid OTP code.'), 'error');
+            }
+        } catch (err) {
+            showToast('Network error. Please try again.', 'error');
+        } finally {
+            setBtnLoading('btnOtpAction', false, originalBtnHTML);
+            isSubmitting = false;
+        }
+    }
+
+    async function processLogin() {
+        if (isSubmitting) return;
+
+        const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+        const pwd = document.getElementById('loginPassword').value.trim();
+
+        const validationError = validateLoginInputs(email, pwd);
+        if (validationError) {
+            showToast(validationError, 'error');
+            return;
+        }
+
+        if (!window.DeliveryBoy) {
+            showToast('System error: Unable to connect to server.', 'error');
+            return;
+        }
+
+        const originalBtnHTML = '<span>Login</span><i data-lucide="arrow-right" class="w-4 h-4"></i>';
+        isSubmitting = true;
+        setBtnLoading('btnLoginAction', true, originalBtnHTML);
+
+        try {
+            const result = await window.DeliveryBoy.login(email, pwd);
+            if (result && result.ok && result.data && result.data.success) {
+                persistSession(result.data.userName || email.split('@')[0], email);
+                showToast('Signed in successfully!', 'success');
+                redirectHome();
+            } else {
+                showToast(extractErrorMessage(result, 'Invalid credentials.'), 'error');
+            }
+        } catch (err) {
+            showToast('Network error. Please try again.', 'error');
+        } finally {
+            setBtnLoading('btnLoginAction', false, originalBtnHTML);
+            isSubmitting = false;
+        }
+    }
+
+    window.showToast = showToast;
+    window.switchView = switchView;
+    window.togglePassword = togglePassword;
+    window.performGoogleLogin = performGoogleLogin;
+    window.processSignup = processSignup;
+    window.verifySignupOTP = verifySignupOTP;
+    window.processLogin = processLogin;
+    window.processForgotPassword = processForgotPassword;
+    window.resendResetOtp = resendResetOtp;
+    window.processResetPassword = processResetPassword;
+    window.goToHome = goToHome;
+})();
