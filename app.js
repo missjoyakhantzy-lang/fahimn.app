@@ -1,20 +1,8 @@
-/**
- * Homepage interactions, data rendering, and Firebase messaging integration.
- * Loaded before Tailwind so its configuration is available during CDN initialization.
- */
-window.tailwind = window.tailwind || {};
-window.tailwind.config = {
-    theme: {
-        extend: {
-            colors: { 'rani-pink': '#D81B60', 'ethnic-gold': '#D4AF37', 'luxury-bg': '#FDFBF7' },
-            fontFamily: {
-                serif: ['Playfair Display', 'serif'],
-                sans: ['Inter', 'sans-serif'],
-                script: ['Dancing Script', 'cursive']
-            }
-        }
-    }
-};
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getMessaging, getToken, onMessage, isSupported } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-messaging.js";
+import { getFirestore, doc, setDoc, getDoc, updateDoc, increment, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+// Yahan par firebase-auth.js se data import kiya gaya hai
+import { firebaseConfig, VAPID_KEY } from "./firebase-auth.js";
 
 let lStartX = 0;
 window.allProductsList=[];let lastScrollTop=window.pageYOffset||document.documentElement.scrollTop,isNavManuallyHidden=!1,toastTimeout,scrollTicking=!1,expFile=null,expRating=5;const mainHeader=document.getElementById('main-header');
@@ -28,10 +16,6 @@ const openOverlay=(id,fs)=>{let el=document.getElementById(id);if(el)el.classLis
 const restoreFocus=()=>{document.body.style.overflow=''};
 window.vibrateApp=(m=40)=>{if("vibrate"in navigator)navigator.vibrate(m)};
 
-/* ── LOCAL LOADING HELPERS ──
-   Instead of one full-screen loader, we attach a small shimmer overlay
-   directly onto the element that was tapped (a card, a button, a link).
-   Only that element blurs/shimmers while the action completes. */
 window.startLocalLoad=(el)=>{
     if(!el||el.classList.contains('is-loading'))return;
     el.classList.add('is-loading');
@@ -65,8 +49,6 @@ window.goToProduct=(id,el)=>{
     window.triggerDotAction(`product?id=${id}`,el);
 };
 
-/* ── Arrow "View" button on a product card — the icon itself spins while we navigate,
-     same idea as the ring-spinner on the Proceed button in the cart page. ── */
 window.viewProduct=(e,id)=>{
     if(e){e.preventDefault();e.stopPropagation();}
     const btn=e?e.currentTarget:null;
@@ -83,9 +65,6 @@ window.viewProduct=(e,id)=>{
     setTimeout(()=>{ window.location.href=`product?id=${id}`; },480);
 };
 
-/* Deterministic pseudo rating/stock so every card shows consistent "social proof"
-   (star rating + review count + low-stock urgency) — common on Amazon/Myntra/Flipkart
-   listing pages — without needing extra backend fields. */
 window.getProductSignals=(id)=>{
     let h=0;const s=String(id);
     for(let i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))>>>0;}
@@ -128,7 +107,6 @@ const ethnicColors=[{name:"Red",hex:"#FF0000"},{name:"Blue",hex:"#0000FF"},{name
 window.openColorSheet=()=>{let s=document.getElementById('premiumColorSheet'),c=document.getElementById('colorSheetContent'),b=document.getElementById('colorSheetBg'),ct=document.getElementById('colorSwatchesContainer');if(!s||!c||!ct)return;window.vibrateApp(30);ct.innerHTML=ethnicColors.map(k=>`<div class="flex flex-col items-center gap-1.5 cursor-pointer group" onclick="selectColorAndSearch('${k.name}','${k.hex}')"><div class="w-12 h-12 rounded-full border ${k.hex==='#FFFFFF'?'border-gray-300':'border-black/5'} shadow-[0_4px_15px_rgba(0,0,0,0.08)] group-hover:scale-110 transition-transform flex items-center justify-center relative overflow-hidden"><div class="absolute inset-0 opacity-20 bg-white"></div><div class="w-full h-full" style="background-color:${k.hex}"></div></div><span class="text-[10px] font-semibold text-gray-600 text-center w-full truncate group-hover:text-ethnic-gold">${k.name}</span></div>`).join('');s.classList.remove('hidden');s.classList.add('flex');document.body.style.overflow='hidden';requestAnimationFrame(()=>{requestAnimationFrame(()=>{b.classList.remove('opacity-0');c.classList.remove('translate-y-full')})})};
 window.closeColorSheet=()=>{let c=document.getElementById('colorSheetContent'),s=document.getElementById('premiumColorSheet'),b=document.getElementById('colorSheetBg');c.classList.add('translate-y-full');b.classList.add('opacity-0');document.body.style.overflow='';setTimeout(()=>{s.classList.add('hidden');s.classList.remove('flex')},500)};
 
-/* Colour match results now load with a local shimmer inside the grid only — no full-screen dimming. */
 window.selectColorAndSearch=(n,h)=>{
     window.closeColorSheet();
     setTimeout(()=>{
@@ -162,8 +140,6 @@ window.processPromoCode=async()=>{let c=document.getElementById('promoInput').va
 window.removePromoCode=()=>{localStorage.removeItem('aavira_active_promo');window.updateProfileUI();window.showToast("Promo Code Removed","success")};
 window.loadSkeletons=()=>{document.getElementById('category-container').innerHTML=Array(4).fill(`<div class="flex flex-col items-center gap-2"><div class="w-[72px] h-[72px] rounded-full bg-gray-200 animate-pulse shadow-sm"></div></div>`).join('');let p=`<div class="w-[160px] shrink-0 bg-white border border-gray-100 p-2.5 shadow-sm rounded-none"><div class="w-full aspect-[1/1.1] bg-gray-100 animate-pulse mb-3 rounded-none"></div><div class="h-2 bg-gray-200 animate-pulse w-3/4 mb-2"></div><div class="h-2 bg-gray-200 animate-pulse w-1/2 mb-4"></div></div>`;document.getElementById('trending-container').innerHTML=Array(3).fill(p).join('');let exP=`<div class="bg-white flex flex-col relative shadow-[0_8px_30px_-4px_rgba(0,0,0,0.05)] border border-gray-100"><div class="w-full aspect-[4/5] bg-gray-100 animate-pulse"></div><div class="p-4"><div class="h-4 bg-gray-200 animate-pulse w-1/2 mb-2"></div><div class="h-3 bg-gray-200 animate-pulse w-1/3 mb-4"></div><div class="flex justify-between items-end mt-4"><div class="h-4 bg-gray-200 animate-pulse w-1/4"></div><div class="h-8 bg-gray-200 animate-pulse w-1/3 rounded-lg"></div></div></div></div>`;document.getElementById('exclusive-container').innerHTML=Array(2).fill(exP).join('');document.getElementById('new-arrivals-container').innerHTML=Array(4).fill(p.replace('w-[160px] shrink-0','w-full')).join('')};
 
-/* ── PRODUCT CARD (small / grid) — "Add to Cart" button removed; rating + urgency tag
-     added (a la Amazon/Myntra listing cards); arrow "View" button spins itself on tap ── */
 window.generateProductCard=(p,i)=>{
     let pr=Number(p.price)||0,m=Number(p.mrp)||pr,d=m>pr?Math.round(((m-pr)/m)*100):0,mh=m>pr?`<span class="text-[10px] text-gray-400 line-through font-sans ml-1">₹${m}</span>`:'',w=safeJson('aavira_wishlist',[]).map(String).includes(String(p.id)),ca=Array.isArray(p.colors)?p.colors:[],ch='',id=jsArg(p.id),name=escapeHtml(p.name),image=escapeHtml(safeImageUrl(p.img)),sig=window.getProductSignals(p.id);
     if(ca.length>0){let sw=ca.slice(0,3).map(c=>`<span class="w-2.5 h-2.5 rounded-full border border-gray-200 shadow-sm" style="background-color:${safeColor(c)}"></span>`).join(''),mt=ca.length>1?`${ca.length} Colours`:'1 Colour';ch=`<div class="flex items-center gap-1.5 mb-2"><div class="flex -space-x-1">${sw}</div><span class="text-[9px] text-gray-400 font-medium tracking-wider uppercase ml-1">${mt}</span></div>`}else{ch=`<div class="mb-2"><span class="text-[9px] text-gray-400 font-medium tracking-wider uppercase">1 Colour</span></div>`}
@@ -190,8 +166,6 @@ window.generateProductCard=(p,i)=>{
     </div>`;
 };
 
-/* ── FEATURED CARD (large) — "Add to Cart" button removed; rating + Bestseller ribbon
-     added (a la Amazon/Myntra); arrow View button spins itself on tap ── */
 window.generateFeaturedCard=(p)=>{
     let pr=Number(p.price)||0,m=Number(p.mrp)||pr,d=m>pr?Math.round(((m-pr)/m)*100):0,mh=m>pr?`<span class="text-[12px] text-gray-400 line-through font-sans ml-2">₹${m}</span>`:'',w=safeJson('aavira_wishlist',[]).map(String).includes(String(p.id)),id=jsArg(p.id),name=escapeHtml(p.name),image=escapeHtml(safeImageUrl(p.img)),sig=window.getProductSignals(p.id);
     let dh=d>0?`<div class="absolute top-3 left-3 z-10 bg-white px-3 py-1 text-[10px] font-bold text-rani-pink uppercase tracking-widest shadow-md">${d}% OFF</div>`:'';
@@ -265,26 +239,15 @@ document.addEventListener("DOMContentLoaded",()=>{let lt=document.getElementById
 
 window.initializeAppEngine=()=>{window.updateProfileUI();window.updateNotifBadge();window.loadSkeletons();window.updateCartCount();window.initFadeAnimations();window.renderExperiences();if(typeof window.syncNotificationsFromDB==='function')window.syncNotificationsFromDB();if(typeof lucide!=='undefined')lucide.createIcons();let s=document.getElementById('sidebar'),tx=0;s.addEventListener('touchstart',e=>{tx=e.changedTouches[0].screenX},{passive:!0});s.addEventListener('touchend',e=>{if(tx-e.changedTouches[0].screenX>50)window.closeSidebar()},{passive:!0});setTimeout(async()=>{let nm=localStorage.getItem('aavira_display_name'),dbP=Promise.resolve();if(nm&&nm.toLowerCase()!=="guest user"&&typeof window.getWishlistFromDB==='function'){dbP=window.getWishlistFromDB(nm).then(w=>{if(w&&w.length>0)localStorage.setItem('aavira_wishlist',JSON.stringify(w.map(String)))}).catch(()=>{})}try{await Promise.all([typeof window.fetchBanners==='function'?window.fetchBanners():Promise.resolve(),typeof window.fetchCategories==='function'?window.fetchCategories():Promise.resolve(),typeof window.fetchProducts==='function'?window.fetchProducts():Promise.resolve(),typeof window.fetchExperiences==='function'?window.fetchExperiences():Promise.resolve(),dbP])}finally{if(typeof lucide!=='undefined')lucide.createIcons()}},50)};
 
+// Yahan initialization imported config ka use kar raha hai
+const a = initializeApp(firebaseConfig);
+const d = getFirestore(a);
+let m = null;
 
-Promise.all([
-    import('https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js'),
-    import('https://www.gstatic.com/firebasejs/10.8.1/firebase-messaging.js'),
-    import('https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js')
-]).then(([firebaseApp, firebaseMessaging, firebaseFirestore]) => {
-    const { initializeApp } = firebaseApp;
-    const { getMessaging, getToken, onMessage, isSupported } = firebaseMessaging;
-    const { getFirestore, doc, setDoc, getDoc, collection, getDocs, query, orderBy } = firebaseFirestore;
-
-const c={apiKey:"AIzaSyAzuolDDiCoMWiJeSRmpo9my2DcxyBj_jA",authDomain:"messaging-d0a0c.firebaseapp.com",projectId:"messaging-d0a0c",storageBucket:"messaging-d0a0c.firebasestorage.app",messagingSenderId:"271709445992",appId:"1:271709445992:web:7a0c706288d88fee6a80dd"},a=initializeApp(c),d=getFirestore(a);let m=null;
 window.syncNotificationsFromDB=async()=>{try{let q=query(collection(d,"admin_broadcasts"),orderBy("createdAt","desc")),s=await getDocs(q),n=[],r=JSON.parse(localStorage.getItem('aavira_read_notifs'))||{};s.forEach(x=>{let dt=x.data(),t=dt.createdAt?dt.createdAt.toDate().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):new Date().toLocaleTimeString();n.push({id:x.id,title:dt.title,body:dt.body,link:dt.link||'',time:t,read:r[x.id]?!0:!1})});localStorage.setItem('aavira_notifications',JSON.stringify(n));if(typeof window.renderNotifications==='function')window.renderNotifications();if(typeof window.updateNotifBadge==='function')window.updateNotifBadge()}catch(e){}};
 window.loadReferralStats=async(e)=>{try{let s=await getDoc(doc(d,"users",e));if(s.exists()){let x=s.data();document.getElementById('refCount').innerText=x.referralCount||0;document.getElementById('refEarned').innerText="₹"+(x.referralEarned||0)}}catch(e){}};
 isSupported().then((s)=>{if(s){m=getMessaging(a);onMessage(m,(p)=>{let t=p.notification?.title||"Update";if(typeof window.showToast==='function')window.showToast(`🔔 ${t}`,"success");window.vibrateApp(100);window.syncNotificationsFromDB()})}});
-window.requestNotificationPermission=async(e)=>{if(e)e.preventDefault();if(typeof window.closeSidebar==='function')window.closeSidebar();if(!('Notification'in window)){window.showToast("Notifications not supported in this browser.","error");return}try{if(!m){window.showToast("Not supported.","error");return}let p=await Notification.requestPermission();if(p==='granted'){window.showToast("Connecting...","success");let sw=await navigator.serviceWorker.register('./firebase-messaging-sw.js'),t=await getToken(m,{vapidKey:'BIvjJEeeRfowF8ZpdgRKn-vH_rNOzW48Rd9Y37kNdeISUsmKkiihJtFPc4c0rWbFBOhb4kJ3Yj-5jTl2kO9-yAU',serviceWorkerRegistration:sw});if(t){let ue=localStorage.getItem('aavira_user_email')||'guest_user',un=localStorage.getItem('aavira_display_name')||'Guest';await setDoc(doc(d,"fcm_tokens",t),{token:t,email:ue,name:un,platform:navigator.userAgent,createdAt:new Date()});window.showToast("Enabled! 🔔","success");window.closeDynamicBanner('notif');fetch(`https://ssxpq15in.vercel.app/api/broadcast`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tokens:[t],title:"🎉 Welcome!",body:`Hi ${un}, thanks for enabling notifications!`})}).catch(()=>{});setTimeout(()=>{if(typeof window.openNotificationCenter==='function')window.openNotificationCenter()},1500)}else{window.showToast("Failed.","error")}}else{window.showToast("Denied.","error")}}catch(err){window.showToast("Error.","error")}};
-    if (document.readyState !== 'loading') window.syncNotificationsFromDB();
-}).catch((error) => {
-    console.error('Firebase services could not be initialized.', error);
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    window.initializeAppEngine();
-});
+window.requestNotificationPermission=async(e)=>{if(e)e.preventDefault();if(typeof window.closeSidebar==='function')window.closeSidebar();if(!('Notification'in window)){window.showToast("Notifications not supported in this browser.","error");return}try{if(!m){window.showToast("Not supported.","error");return}let p=await Notification.requestPermission();if(p==='granted'){window.showToast("Connecting...","success");let sw=await navigator.serviceWorker.register('./firebase-messaging-sw.js');
+// Yahan imported VAPID_KEY ka use ho raha hai
+let t=await getToken(m,{vapidKey:VAPID_KEY,serviceWorkerRegistration:sw});if(t){let ue=localStorage.getItem('aavira_user_email')||'guest_user',un=localStorage.getItem('aavira_display_name')||'Guest';await setDoc(doc(d,"fcm_tokens",t),{token:t,email:ue,name:un,platform:navigator.userAgent,createdAt:new Date()});window.showToast("Enabled! 🔔","success");window.closeDynamicBanner('notif');fetch(`https://ssxpq15in.vercel.app/api/broadcast`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tokens:[t],title:"🎉 Welcome!",body:`Hi ${un}, thanks for enabling notifications!`})}).catch(()=>{});setTimeout(()=>{if(typeof window.openNotificationCenter==='function')window.openNotificationCenter()},1500)}else{window.showToast("Failed.","error")}}else{window.showToast("Denied.","error")}}catch(err){window.showToast("Error.","error")}};
+document.addEventListener("DOMContentLoaded",()=>{window.initializeAppEngine()});
