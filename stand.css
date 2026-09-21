@@ -1,3 +1,4 @@
+/* Shared presentation styles for the Aavira homepage. */
 html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
 body{background-color:#FDFBF7;-webkit-overflow-scrolling:touch;overflow-x:clip;overscroll-behavior-y:none}
 .no-scrollbar::-webkit-scrollbar{display:none}
