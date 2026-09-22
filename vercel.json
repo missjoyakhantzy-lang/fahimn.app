@@ -3,6 +3,8 @@
   "trailingSlash": false,
   "redirects": [
     { "source": "/login.html", "destination": "/auth/aavirafashion", "permanent": true },
+    { "source": "/login", "destination": "/auth/aavirafashion", "permanent": true },
+    { "source": "/auth/aavirafashion/", "destination": "/auth/aavirafashion", "permanent": true },
     { "source": "/profile.html", "destination": "/profile", "permanent": true },
     { "source": "/product.html", "destination": "/product", "permanent": true },
     { "source": "/cart.html", "destination": "/cart", "permanent": true },
