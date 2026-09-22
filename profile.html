@@ -293,22 +293,6 @@
             flex-direction: column;
             gap: 6px;
         }
-
-        /* AUTH UI */
-        .auth-header { background: linear-gradient(135deg, #ec136d, #c70d55); padding: 25px 22px 18px; color: white; position: relative; }
-        .auth-header h2 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 2px; font-weight: 700; }
-        .auth-header p { font-size: 12px; opacity: 0.9; }
-        .auth-close { position: absolute; top: 18px; right: 18px; background: rgba(255,255,255,0.2); color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 16px; }
-
-        .auth-body { padding: 22px 20px calc(30px + env(safe-area-inset-bottom, 20px)); }
-        .auth-input-group { position: relative; margin-bottom: 14px; }
-        .auth-input-group i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #9CA3AF; font-size: 20px; }
-        .auth-input-group input { width: 100%; padding: 14px 14px 14px 48px; background: #F9FAFB; border: 1.5px solid #E5E7EB; border-radius: 12px; font-size: 13px; font-weight: 500; font-family: 'Poppins'; outline: none; transition: 0.3s; color: #1F2937; }
-        .auth-input-group input:focus { background: #FFFFFF; border-color: #ec136d; box-shadow: 0 0 0 4px rgba(236, 19, 109, 0.1); }
-        
-        .modal-link { font-size: 12px; text-align: center; margin-top: 16px; color: #6B7280; font-weight: 500;}
-        .modal-link span { color: #ec136d; font-weight: 700; cursor: pointer; }
-
         /* TOAST */
         .pro-toast { 
             position: fixed; 
@@ -358,7 +342,7 @@
                         <!-- Guest UI -->
                         <div id="guestProfileUI">
                             <div class="badge guest"><i class="ph-fill ph-user"></i> Guest Mode</div>
-                            <button class="login-prompt-btn" onclick="window.openLoginModal()">Login / Sign Up</button>
+                            <button class="login-prompt-btn" onclick="window.location.href='login.html'">Login / Sign Up</button>
                         </div>
 
                         <!-- VIP UI -->
@@ -488,58 +472,6 @@
         <!-- ==============================================
              ALL MODALS (Real Functional Popups)
              ============================================== -->
-        
-        <!-- 1. AUTH MODAL -->
-        <div id="loginModal" class="modal-overlay" onclick="window.closeModal('loginModal')">
-            <div class="bottom-sheet-modal" onclick="event.stopPropagation()">
-                <div class="auth-header">
-                    <i class="ph-bold ph-x auth-close" onclick="window.closeModal('loginModal')"></i>
-                    <h2 id="authTitle">Join Aavira Luxe</h2>
-                    <p id="authSubtitle">Discover premium ethnic fashion.</p>
-                </div>
-                
-                <div class="auth-body">
-                    <div id="signupView" style="display: none;">
-                        <div class="auth-input-group">
-                            <input type="text" id="signupName" placeholder="Full Name" autocomplete="off">
-                            <i class="ph-light ph-user"></i>
-                        </div>
-                        <div class="auth-input-group">
-                            <input type="email" id="signupEmail" placeholder="Email Address" autocomplete="off">
-                            <i class="ph-light ph-envelope"></i>
-                        </div>
-                        <div class="auth-input-group">
-                            <input type="password" id="signupPassword" placeholder="Create Password" autocomplete="new-password">
-                            <i class="ph-light ph-lock-key"></i>
-                        </div>
-                        <button type="button" id="btnSignupAction" onclick="window.processSignup()" class="modal-btn">Get Secure OTP</button>
-                        <p class="modal-link">Already have an account? <span onclick="window.toggleAuthView('login')">Login here</span></p>
-                    </div>
-                    
-                    <div id="loginView">
-                        <div class="auth-input-group">
-                            <input type="email" id="loginEmail" placeholder="Email Address" autocomplete="off">
-                            <i class="ph-light ph-envelope"></i>
-                        </div>
-                        <div class="auth-input-group">
-                            <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password">
-                            <i class="ph-light ph-lock-key"></i>
-                        </div>
-                        <button type="button" id="btnLoginAction" onclick="window.processLogin()" class="modal-btn">Secure Login</button>
-                        <p class="modal-link">New to Aavira? <span onclick="window.toggleAuthView('signup')">Create Account</span></p>
-                    </div>
-                    
-                    <div id="otpView" style="display: none; text-align: center;">
-                        <p style="font-size: 13px; color: #6B7280; margin-bottom: 16px;" id="otpSubText">Code sent to your email.</p>
-                        <div class="auth-input-group">
-                            <input type="text" id="otpInput" placeholder="------" maxlength="6" autocomplete="off" style="text-align:center; font-size:22px; font-weight:700; letter-spacing:8px; padding-left: 16px;">
-                        </div>
-                        <button type="button" id="btnOtpAction" onclick="window.verifySignupOTP()" class="modal-btn">Verify & Login</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- 2. EDIT PROFILE MODAL -->
         <div id="editProfileModal" class="modal-overlay" onclick="window.closeModal('editProfileModal')">
             <div class="bottom-sheet-modal" style="padding: 24px calc(20px + env(safe-area-inset-bottom, 20px));" onclick="event.stopPropagation()">
@@ -683,9 +615,6 @@
         <div id="toast" class="pro-toast">Message</div>
 
     </div>
-
-    <!-- 🔗 DATA PROVIDER LINK -->
-    <script src="user_data.js"></script>
 
     <!-- 🔥 REAL FIREBASE SDK & NOTIFICATION PUSH ENGINE 🔥 -->
     <script type="module">
@@ -851,8 +780,6 @@
 
     <!-- CORE UI JAVASCRIPT -->
     <script>
-        let tempSignupData = { name: "", email: "", pwd: "" };
-
         window.showToast = function(message) {
             const toast = document.getElementById('toast');
             if(!toast) return;
@@ -1018,116 +945,6 @@
                 window.updateProfileUI();
                 window.showToast("Logged out securely!");
             }
-        };
-
-        window.openLoginModal = function() {
-            window.toggleAuthView('login');
-            window.openModal('loginModal');
-        };
-
-        window.toggleAuthView = function(viewMode) {
-            document.getElementById('loginView').style.display = 'none';
-            document.getElementById('signupView').style.display = 'none';
-            document.getElementById('otpView').style.display = 'none';
-            
-            if(viewMode === 'signup') { 
-                document.getElementById('signupView').style.display = 'block'; 
-                document.getElementById('authTitle').innerText = "Create Account"; 
-            }
-            else if(viewMode === 'login') { 
-                document.getElementById('loginView').style.display = 'block'; 
-                document.getElementById('authTitle').innerText = "Welcome Back"; 
-            }
-            else if(viewMode === 'otp') { 
-                document.getElementById('otpView').style.display = 'block'; 
-                document.getElementById('authTitle').innerText = "Verify Email OTP"; 
-            }
-        };
-        
-        window.processSignup = async function() {
-            const name = document.getElementById('signupName').value.trim();
-            const email = document.getElementById('signupEmail').value.trim().toLowerCase();
-            const pwd = document.getElementById('signupPassword').value.trim();
-            
-            if(!name || !email || !pwd) return window.showToast("All fields are required.");
-            
-            const btn = document.getElementById('btnSignupAction');
-            const ogText = btn.innerText;
-            btn.innerText = 'Processing...'; btn.disabled = true;
-            
-            try {
-                if (typeof window.DeliveryBoy !== 'undefined') {
-                    const checkRes = await window.DeliveryBoy.checkEmailExists(email);
-                    if (checkRes && checkRes.exists) {
-                        window.showToast("Email already registered. Please Login.");
-                        window.toggleAuthView('login');
-                        btn.innerText = ogText; btn.disabled = false;
-                        return;
-                    }
-
-                    const result = await window.DeliveryBoy.sendOTP(email, name);
-                    if(result && result.ok && result.data && result.data.success) {
-                        tempSignupData = { name, email, pwd };
-                        document.getElementById('otpSubText').innerText = `Sent to ${email}`;
-                        window.toggleAuthView('otp');
-                        window.showToast("Verification code sent!");
-                    } else {
-                        window.showToast(result.data?.message || "Error sending code.");
-                    }
-                }
-            } catch (error) { window.showToast("Network Error."); }
-            
-            btn.innerText = ogText; btn.disabled = false;
-        };
-        
-        window.verifySignupOTP = async function() {
-            const otpVal = document.getElementById('otpInput').value.trim();
-            if(otpVal.length !== 6) return window.showToast("Enter 6-digit OTP.");
-            
-            const vBtn = document.getElementById('btnOtpAction');
-            vBtn.innerText = 'Verifying...'; vBtn.disabled = true;
-            
-            try {
-                if (typeof window.DeliveryBoy !== 'undefined') {
-                    const result = await window.DeliveryBoy.verifyOTP(tempSignupData.email, otpVal, tempSignupData.name, tempSignupData.pwd);
-                    if(result && result.ok && result.data && result.data.success) {
-                        localStorage.setItem('aavira_display_name', tempSignupData.name);
-                        localStorage.setItem('aavira_user_email', tempSignupData.email);
-                        window.showToast("Welcome to Aavira Luxe!");
-                        window.closeModal('loginModal');
-                        window.updateProfileUI();
-                    } else { window.showToast(result.data?.message || "Invalid OTP"); }
-                }
-            } catch (error) { window.showToast("Network Error"); }
-            
-            vBtn.innerText = 'Verify & Login'; vBtn.disabled = false; 
-        };
-        
-        window.processLogin = async function() {
-            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-            const pwd = document.getElementById('loginPassword').value.trim();
-            
-            if(!email || !pwd) return window.showToast("Enter email and password.");
-            
-            const btn = document.getElementById('btnLoginAction');
-            btn.innerText = 'Checking...'; btn.disabled = true;
-            
-            try {
-                if (typeof window.DeliveryBoy !== 'undefined') {
-                    const result = await window.DeliveryBoy.login(email, pwd);
-                    if(result && result.ok && result.data && result.data.success) {
-                        localStorage.setItem('aavira_display_name', result.data.userName || email.split('@')[0]);
-                        localStorage.setItem('aavira_user_email', email);
-                        window.showToast("Signed In successfully!");
-                        window.closeModal('loginModal');
-                        window.updateProfileUI();
-                    } else { 
-                        window.showToast(result.data?.message || "Invalid Email or Password."); 
-                    }
-                }
-            } catch(e) { window.showToast("Network Error"); }
-            
-            btn.innerText = 'Secure Login'; btn.disabled = false;
         };
 
         document.addEventListener("DOMContentLoaded", () => {
