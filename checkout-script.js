@@ -593,7 +593,7 @@ window.submitFinalOrder = async () => {
                     <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> 
                     Open WhatsApp <span id="waTimerTxt" style="font-size:11px; margin-left:4px; background:rgba(0,0,0,0.15); padding:3px 8px; border-radius:12px;">(5s)</span>
                 </button>
-                <button class="btn-pro-action outline" onclick="window.location.href='orders.html'">
+                <button class="btn-pro-action outline" onclick="window.location.href='/orders'">
                     <i class="fa-solid fa-box"></i> View My Orders
                 </button>
             `;

@@ -191,7 +191,7 @@ window.addToCart = function(event, isBuyNow = false) {
 
     if (isBuyNow) {
         // 🔥 CRITICAL FIX: Send both color name AND image url in Query Params!
-        const buyNowUrl = `checkout.html?buy_now=${encodeURIComponent(window.currentProduct.id)}` +
+        const buyNowUrl = `/checkout?buy_now=${encodeURIComponent(window.currentProduct.id)}` +
                           `&name=${encodeURIComponent(window.currentProduct.name || 'Exclusive Wear')}` +
                           `&price=${encodeURIComponent(window.currentProduct.price || 0)}` +
                           `&size=${encodeURIComponent(size)}` +

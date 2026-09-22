@@ -78,11 +78,11 @@
     </div>
 
     <nav class="bottom" aria-label="Bottom navigation">
-      <button class="nav-item" onclick="location.href='index.html'"><i data-lucide="home"></i><span>Home</span></button>
-      <button class="nav-item" onclick="location.href='index.html#explore'"><i data-lucide="compass"></i><span>Explore</span></button>
+      <button class="nav-item" onclick="location.href='/'"><i data-lucide="home"></i><span>Home</span></button>
+      <button class="nav-item" onclick="location.href='/#explore'"><i data-lucide="compass"></i><span>Explore</span></button>
       <button class="nav-item active" aria-current="page"><i data-lucide="tag"></i><span>Offers</span></button>
-      <button class="nav-item" onclick="location.href='profile.html'"><i data-lucide="heart"></i><span>Saved</span></button>
-      <button class="nav-item" onclick="location.href='profile.html'"><i data-lucide="user"></i><span>Profile</span></button>
+      <button class="nav-item" onclick="location.href='/profile'"><i data-lucide="heart"></i><span>Saved</span></button>
+      <button class="nav-item" onclick="location.href='/profile'"><i data-lucide="user"></i><span>Profile</span></button>
     </nav>
   </main>
 
@@ -100,7 +100,7 @@
     async function copyCode(code){try{await navigator.clipboard.writeText(code);showToast(code+' copied to clipboard')}catch(e){const t=document.createElement('textarea');t.value=code;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();showToast(code+' copied to clipboard')}}
     function claim(code){$('sheetTitle').textContent='Offer Ready';$('sheetText').textContent='Your code '+code+' is ready. Copy it and apply it at checkout.';$('sheetButton').textContent='Copy '+code;$('sheetButton').onclick=()=>{copyCode(code);closeModal()};$('modal').classList.add('show');setTimeout(()=>lucide.createIcons(),20)}
     function closeModal(){$('modal').classList.remove('show')}
-    function goBack(){if(history.length>1)history.back();else location.href='index.html'}
+    function goBack(){if(history.length>1)history.back();else location.href='/'}
     async function shareOffer(){const data={title:'Aavira Luxe Offers',text:'Check out the latest Aavira Luxe exclusive offers.',url:location.href};try{if(navigator.share)await navigator.share(data);else await copyCode(location.href)}catch(e){}}
   </script>
 </body>

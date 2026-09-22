@@ -261,14 +261,14 @@
                 
                 // Clean URL product link
                 card.innerHTML = `
-                    <div class="w-img-wrapper" onclick="window.location.href='product.html?id=${p.id}'">
+                    <div class="w-img-wrapper" onclick="window.location.href='/product?id=${p.id}'">
                         <div class="w-img" style="background-image: url('${img}');"></div>
                     </div>
                     <button class="btn-remove" onclick="removeWishlistItem('${p.id}', this)"><i class="fa-solid fa-trash-can"></i></button>
                     
                     <div class="w-info">
                         <div>
-                            <h4 class="w-title" onclick="window.location.href='product.html?id=${p.id}'">${p.name}</h4>
+                            <h4 class="w-title" onclick="window.location.href='/product?id=${p.id}'">${p.name}</h4>
                             <div class="w-price-row">
                                 <span class="w-price">₹${cPrice.toLocaleString('en-IN')}</span>
                                 ${discount > 0 ? `<span class="w-old">₹${oPrice.toLocaleString('en-IN')}</span><span class="w-off">${discount}% OFF</span>` : ''}

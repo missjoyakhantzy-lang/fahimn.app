@@ -254,11 +254,11 @@
     }
 
     function redirectHome(delay = 1000) {
-        setTimeout(() => { window.location.href = 'index.html'; }, delay);
+        setTimeout(() => { window.location.href = '/'; }, delay);
     }
 
     function goToHome() {
-        window.location.href = 'index.html';
+        window.location.href = '/';
     }
 
     // ------------------------------------------------------------------
