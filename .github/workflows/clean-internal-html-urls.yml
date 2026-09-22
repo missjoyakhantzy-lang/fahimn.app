@@ -1,0 +1,73 @@
+name: Normalize internal URLs
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Remove .html from internal references
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          replacements = {
+              'login.html': '/auth/aavirafashion',
+              'profile.html': '/profile',
+              'product.html': '/product',
+              'cart.html': '/cart',
+              'checkout.html': '/checkout',
+              'categories.html': '/categories',
+              'offer.html': '/offer',
+              'orders.html': '/orders',
+              'support.html': '/support',
+              'terms.html': '/terms',
+              'wishlist.html': '/wishlist',
+              'index.html': '/',
+          }
+
+          allowed = {'.html', '.js', '.css'}
+          skip = {'.git', '.github'}
+
+          for path in Path('.').rglob('*'):
+              if not path.is_file() or path.suffix not in allowed:
+                  continue
+              if any(part in skip for part in path.parts):
+                  continue
+              try:
+                  text = path.read_text(encoding='utf-8')
+              except UnicodeDecodeError:
+                  continue
+              original = text
+              for old, new in replacements.items():
+                  text = text.replace(old, new)
+              if text != original:
+                  path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit normalized URLs and remove this workflow
+        shell: bash
+        run: |
+          rm -f .github/workflows/clean-internal-html-urls.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No URL changes needed."
+            exit 0
+          fi
+          git commit -m "fix: remove html extensions from internal URLs"
+          git push
