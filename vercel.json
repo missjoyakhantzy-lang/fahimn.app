@@ -1,0 +1,30 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/login.html", "destination": "/auth/aavirafashion", "permanent": true },
+    { "source": "/profile.html", "destination": "/profile", "permanent": true },
+    { "source": "/product.html", "destination": "/product", "permanent": true },
+    { "source": "/cart.html", "destination": "/cart", "permanent": true },
+    { "source": "/checkout.html", "destination": "/checkout", "permanent": true },
+    { "source": "/categories.html", "destination": "/categories", "permanent": true },
+    { "source": "/orders.html", "destination": "/orders", "permanent": true },
+    { "source": "/offer.html", "destination": "/offer", "permanent": true },
+    { "source": "/support.html", "destination": "/support", "permanent": true },
+    { "source": "/terms.html", "destination": "/terms", "permanent": true },
+    { "source": "/wishlist.html", "destination": "/wishlist", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/auth/aavirafashion", "destination": "/login.html" },
+    { "source": "/profile", "destination": "/profile.html" },
+    { "source": "/product", "destination": "/product.html" },
+    { "source": "/cart", "destination": "/cart.html" },
+    { "source": "/checkout", "destination": "/checkout.html" },
+    { "source": "/categories", "destination": "/categories.html" },
+    { "source": "/orders", "destination": "/orders.html" },
+    { "source": "/offer", "destination": "/offer.html" },
+    { "source": "/support", "destination": "/support.html" },
+    { "source": "/terms", "destination": "/terms.html" },
+    { "source": "/wishlist", "destination": "/wishlist.html" }
+  ]
+}
