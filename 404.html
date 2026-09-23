@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#FDFBF7">
+<title>Page Not Found — Aavira</title>
+<meta name="description" content="The page you are looking for could not be found.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+:root{--pink:#D81B60;--pink-dark:#B81550;--bg:#FDFBF7;--ink:#19151A;--muted:#756E73}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg)}
+body{font-family:Inter,system-ui,sans-serif;color:var(--ink);overflow-x:hidden}
+.page{min-height:100svh;display:flex;align-items:center;justify-content:center;padding:28px 20px;position:relative;isolation:isolate;overflow:hidden}
+.glow{position:absolute;border-radius:999px;filter:blur(55px);pointer-events:none;z-index:-1}
+.glow.one{width:260px;height:260px;background:rgba(216,27,96,.10);top:-80px;left:-90px}
+.glow.two{width:300px;height:300px;background:rgba(216,27,96,.07);right:-120px;bottom:-100px}
+.flower{position:absolute;width:190px;height:190px;border:1px solid rgba(216,27,96,.10);border-radius:55% 45% 60% 40%;transform:rotate(28deg);z-index:-1}
+.flower.a{left:-100px;bottom:80px}.flower.b{right:-110px;top:80px;transform:rotate(210deg)}
+.card{width:min(100%,430px);text-align:center}
+.brand{height:52px;display:flex;align-items:center;justify-content:center;margin-bottom:28px}
+.brand img{max-width:180px;max-height:52px;object-fit:contain}
+.code{font-family:"Playfair Display",serif;font-size:clamp(92px,27vw,150px);font-weight:700;line-height:.85;letter-spacing:-.07em;color:var(--pink);margin:0 0 18px;text-shadow:0 12px 30px rgba(216,27,96,.12)}
+.icon{width:76px;height:76px;margin:0 auto 22px;border-radius:24px;background:#fff;border:1px solid #F4DCE5;box-shadow:0 18px 45px rgba(216,27,96,.10);display:flex;align-items:center;justify-content:center;color:var(--pink)}
+h1{font-family:"Playfair Display",serif;font-size:30px;line-height:1.15;margin:0 0 10px}
+p{font-size:14px;line-height:1.7;color:var(--muted);margin:0 auto;max-width:330px}
+.actions{display:flex;gap:10px;justify-content:center;margin-top:28px;flex-wrap:wrap}
+a{min-height:48px;padding:0 22px;border-radius:999px;text-decoration:none;font-size:13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.2s}
+.home{background:linear-gradient(135deg,var(--pink),var(--pink-dark));color:#fff;box-shadow:0 12px 25px rgba(216,27,96,.22)}
+.back{background:#fff;color:var(--pink);border:1px solid #F4DCE5}
+a:hover{transform:translateY(-2px)}
+.footer{margin-top:30px;font-size:9px;color:#AAA2A8;letter-spacing:.18em;text-transform:uppercase}
+@media(max-width:380px){.page{padding:22px 16px}.brand{margin-bottom:20px}.icon{width:68px;height:68px;margin-bottom:18px}h1{font-size:27px}.actions a{width:100%}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="page">
+<div class="glow one"></div><div class="glow two"></div><div class="flower a"></div><div class="flower b"></div>
+<section class="card" aria-labelledby="title">
+<div class="brand"><img src="/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira Fashion" onerror="this.style.display='none'"></div>
+<div class="icon" aria-hidden="true"><i data-lucide="compass" style="width:34px;height:34px"></i></div>
+<div class="code" aria-hidden="true">404</div>
+<h1 id="title">This page went out of style.</h1>
+<p>The page you're looking for doesn't exist or may have moved. Let's take you back to Aavira.</p>
+<div class="actions">
+<a class="home" href="/"><i data-lucide="house" style="width:16px;height:16px"></i>Back to Home</a>
+<a class="back" href="javascript:history.back()"><i data-lucide="arrow-left" style="width:16px;height:16px"></i>Go Back</a>
+</div>
+<div class="footer">Aavira · Luxury Ethnic Elegance</div>
+</section>
+</main>
+<script>lucide.createIcons();</script>
+</body>
+</html>
