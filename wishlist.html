@@ -95,7 +95,7 @@
         @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
-  <link rel="stylesheet" href="/aavira-ui.css">
+  <style data-aavira-ui>body.aavira-theme{--primary:#D81B60;--primary-color:#D81B60;--pink:#D81B60;background:#FDFBF7!important;color:#242024}.aavira-spinner-done{animation:none!important;transform:none!important}</style>
 </head>
 <body>
 
@@ -343,6 +343,6 @@
             }, 300);
         }
     </script>
-  <script src="/aavira-ui.js"></script>
+  <script data-aavira-ui>(function(){function f(){document.body.classList.add("aavira-theme");var s=document.querySelectorAll(".mini-spin,.fa-spin");for(var i=0;i<s.length;i++){(function(e){setTimeout(function(){e.classList.add("aavira-spinner-done")},4000)})(s[i])}}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",f,{once:true}):f()})();</script>
 </body>
 </html>
