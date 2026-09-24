@@ -47,7 +47,24 @@ body{background-color:#FDFBF7;-webkit-overflow-scrolling:touch;overflow-x:clip;o
 @media (min-width:640px){#bottomNavContainer{width:420px;left:50%;transform:translateX(-50%);border-left:1px solid #e5e7eb;border-right:1px solid #e5e7eb}.nav-hidden{transform:translate(-50%,100%)!important}}
 </style>
   <link rel="stylesheet" href="/aavira-ui.css">
-</head>
+<style>
+.aavira-company-footer{background:#17151A;color:#fff;padding:38px 22px 28px;border-top:3px solid rgba(201,162,39,.35);position:relative;overflow:hidden}
+.aavira-footer-inner{width:min(100%,1050px);margin:auto}
+.aavira-footer-top{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:27px;border-bottom:1px solid rgba(255,255,255,.09)}
+.aavira-footer-brand{font:600 25px "Playfair Display",serif}
+.aavira-footer-brand span{color:#D81B60}
+.aavira-footer-tag{font-size:11px;color:#A9A1A6;line-height:1.6;text-align:right}
+.aavira-footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;padding:28px 0}
+.aavira-company-footer h2{font-size:11px;letter-spacing:.13em;text-transform:uppercase;margin:0 0 15px;color:#fff}
+.aavira-company-footer a,.aavira-company-footer p{display:block;font-size:11px;color:#9F979D;line-height:1.9;margin:0 0 4px}
+.aavira-company-footer a:hover{color:#fff}
+.aavira-footer-social{display:flex;gap:8px}
+.aavira-footer-social a{width:34px;height:34px;border:1px solid rgba(255,255,255,.10);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#A9A1A6;margin:0}
+.aavira-footer-social svg{width:15px;height:15px}
+.aavira-footer-bottom{padding-top:20px;border-top:1px solid rgba(255,255,255,.09);display:flex;justify-content:space-between;gap:15px;align-items:center}
+.aavira-footer-copy{font-size:9px;color:#827A80;letter-spacing:.08em}
+@media(max-width:650px){.aavira-company-footer{padding:32px 18px 24px}.aavira-footer-top{align-items:flex-start;flex-direction:column}.aavira-footer-tag{text-align:left}.aavira-footer-grid{grid-template-columns:repeat(2,1fr);gap:25px 18px}.aavira-footer-bottom{align-items:flex-start;flex-direction:column}}
+</style></head>
 <body class="font-sans text-gray-800 selection:bg-rani-pink selection:text-white antialiased">
 
 <div id="toast" role="status" aria-live="polite" class="fixed top-8 left-4 right-4 sm:left-1/2 sm:-translate-x-1/2 sm:w-max bg-white/95 backdrop-blur-xl border border-gray-100 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-2xl px-5 py-4 transition-all duration-400 transform -translate-y-full opacity-0 scale-90 z-[99999] flex items-center gap-3 pointer-events-none">
@@ -200,7 +217,50 @@ body{background-color:#FDFBF7;-webkit-overflow-scrolling:touch;overflow-x:clip;o
 </section>
 </main>
 
-<footer class="bg-rani-pink text-white mt-auto pt-14 pb-[90px] px-6 relative overflow-hidden rounded-t-[40px] fade-up"><div class="absolute inset-0 opacity-10 mix-blend-overlay" style="background-image:url('https://www.transparenttextures.com/patterns/cubes.png');pointer-events:none;"></div><div class="relative z-10 flex flex-col items-center text-center mb-10"><img src="file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" class="h-12 object-contain mb-2 brightness-0 invert" /><p class="text-[9px] font-bold tracking-[0.3em] text-white/90 uppercase mb-5">Luxury Ethnic Wear</p><p class="text-xs text-white/80 leading-relaxed font-sans max-w-[280px]">Curating timeless elegance and handcrafted traditions for the modern connoisseur.</p></div><div class="relative z-10 flex justify-center gap-6 mb-10"><div class="flex flex-col items-center gap-2"><div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white border border-white/20 shadow-sm"><i data-lucide="shield-check" class="w-5 h-5"></i></div><span class="text-[9px] font-semibold text-white/80 uppercase tracking-wider">Authentic</span></div><div class="flex flex-col items-center gap-2"><div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white border border-white/20 shadow-sm"><i data-lucide="gem" class="w-5 h-5"></i></div><span class="text-[9px] font-semibold text-white/80 uppercase tracking-wider">Premium</span></div><div class="flex flex-col items-center gap-2"><div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white border border-white/20 shadow-sm"><i data-lucide="truck" class="w-5 h-5"></i></div><span class="text-[9px] font-semibold text-white/80 uppercase tracking-wider">Global</span></div></div><div class="relative z-10 w-full rounded-2xl bg-white/10 p-6 text-center border border-white/20 shadow-sm mb-8"><i data-lucide="mail" class="w-6 h-6 text-white mx-auto mb-3"></i><h3 class="font-serif text-xl font-bold text-white mb-2">Join the Club</h3><p class="text-[11px] text-white/70 mb-5 leading-relaxed">Subscribe for exclusive access to new collections and secret luxury offers.</p><div class="flex rounded-full bg-white/10 border border-white/30 overflow-hidden shadow-sm p-1"><input type="email" id="newsletterEmail" placeholder="Email address..." class="w-full bg-transparent text-xs px-4 outline-none text-white placeholder-white/50"><button id="btnNewsletter" onclick="subscribeNewsletter()" class="bg-white rounded-full text-rani-pink text-[10px] uppercase tracking-widest font-bold px-6 py-2.5">Join</button></div></div><div class="relative z-10 flex flex-wrap items-center justify-center gap-4 mt-6 border-t border-white/20 pt-6 mb-6"><a href="terms" class="text-[9px] text-white/70 font-semibold uppercase tracking-widest">Terms</a><span class="text-white/30">•</span><a href="terms" class="text-[9px] text-white/70 font-semibold uppercase tracking-widest">Privacy</a><span class="text-white/30">•</span><a href="support" class="text-[9px] text-white/70 font-semibold uppercase tracking-widest">Support</a></div><div class="relative z-10 text-center"><p class="text-[9px] text-white/50 uppercase tracking-wider">© 2026 Aavira. All Rights Reserved.</p></div></footer>
+<footer class="aavira-company-footer fade-up">
+  <div class="aavira-footer-inner">
+    <div class="aavira-footer-top">
+      <div class="aavira-footer-brand">Aavira <span>Fashion</span></div>
+      <div class="aavira-footer-tag">Luxury ethnic fashion<br>Designed for modern elegance.</div>
+    </div>
+
+    <div class="aavira-footer-grid">
+      <div>
+        <h2>Explore</h2>
+        <a href="/">Home</a>
+        <a href="/categories">Collections</a>
+        <a href="/offer">Offers</a>
+        <a href="/wishlist">Wishlist</a>
+      </div>
+      <div>
+        <h2>Shopping</h2>
+        <a href="/cart">Shopping Bag</a>
+        <a href="/orders">My Orders</a>
+        <a href="/profile">My Account</a>
+        <a href="/support">Support</a>
+      </div>
+      <div>
+        <h2>Information</h2>
+        <a href="/terms">Terms &amp; Conditions</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/support">Help Center</a>
+      </div>
+      <div>
+        <h2>Stay Connected</h2>
+        <p>Discover new collections, premium styles and exclusive offers.</p>
+        <div class="aavira-footer-social">
+          <a href="/" aria-label="Home"><i data-lucide="globe"></i></a>
+          <a href="/support" aria-label="Support"><i data-lucide="headphones"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="aavira-footer-bottom">
+      <div class="aavira-footer-copy">© 2026 Aavira Fashion. All rights reserved.</div>
+      <div class="aavira-footer-copy">Luxury Ethnic Elegance</div>
+    </div>
+  </div>
+</footer>
 
 <div class="fixed bottom-[110px] right-4 flex flex-col gap-4 z-[40]"><button onclick="openColorSheet()" class="bg-white text-rani-pink border border-gray-100 w-[50px] h-[50px] rounded-full shadow-lg flex items-center justify-center animate-float"><i data-lucide="palette" class="w-5 h-5"></i></button><div class="relative w-[50px] h-[50px]"><div class="absolute inset-0 rounded-full animate-pulse-ring"></div><a href="https://wa.me/919608720622" target="_blank" class="absolute inset-0 bg-[#25D366] text-white rounded-full shadow-lg flex items-center justify-center border border-[#1DA851]"><i data-lucide="message-circle" class="w-5 h-5"></i></a></div></div>
 <div id="bottomNavContainer" class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 z-50 transition-transform duration-[800ms] flex justify-between items-end pt-3 pb-4 px-4 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
