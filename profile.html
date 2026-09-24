@@ -336,7 +336,6 @@ body.aavira-theme .card-loading-overlay{
                 <div class="top-bar">
                     <i class="ph-light ph-arrow-left" onclick="window.location.href='./'"></i>
                     <h2>My Profile</h2>
-                    <i class="ph-light ph-gear" onclick="window.openModal('notificationsModal')"></i>
                 </div>
                 
                 <div class="profile-info">
@@ -417,16 +416,7 @@ body.aavira-theme .card-loading-overlay{
                         </div>
                     </div>
                     <i class="ph-bold ph-caret-right"></i>
-                </div>
-
-                <div class="menu-item" onclick="window.openModal('notificationsModal')">
-                    <div class="menu-left">
-                        <i class="ph-light ph-bell-ringing"></i> 
-                        <div class="menu-text">
-                            <span class="title">Notifications & Preferences</span>
-                            <span class="sub">Notifications, preferences & account security</span>
-                        </div>
-                    </div>
+                </div></div>
                     <i class="ph-bold ph-caret-right"></i>
                 </div>
                 
@@ -540,74 +530,7 @@ body.aavira-theme .card-loading-overlay{
                 </div>
             </div>
         </div>
-
-        <!-- 5. 🔥 ULTRA-ADVANCED PUSH NOTIFICATIONS & SETTINGS MODAL 🔥 -->
-        <div id="notificationsModal" class="modal-overlay" onclick="window.closeModal('notificationsModal')">
-            <div class="bottom-sheet-modal" style="padding: 24px calc(20px + env(safe-area-inset-bottom, 20px));" onclick="event.stopPropagation()">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-                    <h3 style="font-size: 18px; font-weight:700; color:#1E293B;">System & Notification Engine</h3>
-                    <i class="ph-bold ph-x" style="font-size: 18px; cursor: pointer;" onclick="window.closeModal('notificationsModal')"></i>
-                </div>
-                
-                <!-- 1. Web Push Notification Toggle -->
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <h4>Real Device Push Alerts</h4>
-                        <p id="pushStatusText">Generate live Web Push (FCM) Token</p>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" id="pushNotificationToggle" onchange="window.toggleDevicePushNotification(this.checked)">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-
-                <!-- 2. FCM Device Token Viewer Box -->
-                <div id="fcmTokenDisplayBox" class="token-box" style="display: none;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <strong style="color:#ec136d; font-size:11.5px;"><i class="ph-bold ph-shield-check"></i> Device FCM Token (Active)</strong>
-                        <button onclick="window.copyDeviceFcmToken()" style="background:#ec136d; color:#fff; border:none; padding:3px 8px; border-radius:6px; font-size:10px; font-weight:700; cursor:pointer;">Copy</button>
-                    </div>
-                    <span id="fcmTokenString" style="font-size: 10px; line-height: 1.3;">Loading Token...</span>
-                </div>
-
-                <!-- 3. WhatsApp & SMS Updates -->
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <h4>Order Updates</h4>
-                        <p>Delivery and order status updates</p>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" id="smsTrackingToggle" checked onchange="window.saveLocalPref('sms_alerts', this.checked)">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-
-                <!-- 4. Haptic Touch Engine -->
-                <div class="setting-row">
-                    <div class="setting-info">
-                        <h4>Haptic Feedback</h4>
-                        <p>Vibration on buttons & actions</p>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" id="hapticToggle" checked onchange="window.saveLocalPref('haptic_feedback', this.checked)">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-
-                <!-- 5. Cache & Storage Cleaner -->
-                <div style="margin-top: 16px; padding: 14px; background: #FFF1F2; border-radius: 14px; border: 1px solid #FECDD3; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <h4 style="font-size: 12.5px; font-weight: 700; color: #BE123C;">Clear Local Data</h4>
-                        <p style="font-size: 10.5px; color: #64748B;">Remove saved drafts and local preferences</p>
-                    </div>
-                    <button onclick="window.clearAppCacheOnly()" style="background:#BE123C; color:#fff; border:none; padding:6px 12px; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer;">Clean</button>
-                </div>
-
-                <button type="button" onclick="window.closeModal('notificationsModal')" class="modal-btn" style="margin-top: 18px;">Done</button>
-            </div>
-        </div>
-
-        <!-- 6. PRIVACY POLICY MODAL -->
+        <!-- PRIVACY POLICY MODAL -->
         <div id="privacyModal" class="modal-overlay" onclick="window.closeModal('privacyModal')">
             <div class="bottom-sheet-modal" style="padding: 24px calc(20px + env(safe-area-inset-bottom, 20px));" onclick="event.stopPropagation()">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
@@ -622,169 +545,6 @@ body.aavira-theme .card-loading-overlay{
         <div id="toast" class="pro-toast">Message</div>
 
     </div>
-
-    <!-- 🔥 REAL FIREBASE SDK & NOTIFICATION PUSH ENGINE 🔥 -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-        import { getMessaging, getToken, isSupported } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js";
-
-        // Aavira Production Firebase Credentials
-        const firebaseConfig = {
-            apiKey: "AIzaSyCMGx6C5_al22KjCmdhGVKugJoR2UmZ1Ng",
-            authDomain: "aavira-co-in.firebaseapp.com",
-            projectId: "aavira-co-in",
-            storageBucket: "aavira-co-in.firebasestorage.app",
-            messagingSenderId: "247971292356",
-            appId: "1:247971292356:web:82780c6dffe9ba530f9591"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // ==========================================
-        // 🔔 1. REAL FCM WEB PUSH NOTIFICATION ENGINE
-        // ==========================================
-        window.toggleDevicePushNotification = async function(enable) {
-            const toggle = document.getElementById('pushNotificationToggle');
-            const tokenBox = document.getElementById('fcmTokenDisplayBox');
-            const tokenStr = document.getElementById('fcmTokenString');
-            const statusTxt = document.getElementById('pushStatusText');
-
-            if (!enable) {
-                localStorage.removeItem('aavira_fcm_token');
-                localStorage.setItem('aavira_push_enabled', 'false');
-                if (tokenBox) tokenBox.style.display = 'none';
-                if (statusTxt) statusTxt.innerText = "Push notifications disabled.";
-                window.showToast("Push notifications disabled.");
-                return;
-            }
-
-            // Check Browser Support
-            const supported = await isSupported();
-            if (!supported || !('Notification' in window)) {
-                window.showToast("Push notifications not supported on this browser.");
-                if (toggle) toggle.checked = false;
-                return;
-            }
-
-            try {
-                // 1. Request Real Permission
-                const permission = await Notification.requestPermission();
-                if (permission !== 'granted') {
-                    window.showToast("Permission denied! Please enable in site settings.");
-                    if (toggle) toggle.checked = false;
-                    localStorage.setItem('aavira_push_enabled', 'false');
-                    return;
-                }
-
-                // 2. Service Worker Registration
-                let swReg = null;
-                if ('serviceWorker' in navigator) {
-                    try {
-                        swReg = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-                    } catch(e) {
-                        console.warn("SW Registration fallback:", e);
-                    }
-                }
-
-                // 3. Generate Real FCM Token
-                const messaging = getMessaging(app);
-                if (statusTxt) statusTxt.innerText = "Generating FCM Token...";
-                
-                const token = await getToken(messaging, {
-                    serviceWorkerRegistration: swReg || undefined
-                });
-
-                if (token) {
-                    localStorage.setItem('aavira_fcm_token', token);
-                    localStorage.setItem('aavira_push_enabled', 'true');
-                    
-                    if (tokenBox) tokenBox.style.display = 'flex';
-                    if (tokenStr) tokenStr.innerText = token;
-                    if (statusTxt) statusTxt.innerText = "Real FCM Token Active & Synced!";
-
-                    // 4. Save Token to Firestore (fcm_tokens Collection)
-                    const userEmail = localStorage.getItem('aavira_user_email') || 'guest_device';
-                    const tokenDocId = token.slice(-25).replace(/[^a-zA-Z0-9]/g, '');
-                    
-                    await setDoc(doc(db, "fcm_tokens", tokenDocId), {
-                        token: token,
-                        email: userEmail,
-                        device: navigator.userAgent,
-                        platform: navigator.platform || 'mobile_web',
-                        createdAt: serverTimestamp(),
-                        updatedAt: serverTimestamp()
-                    }, { merge: true });
-
-                    // 5. Trigger Instant In-Browser Test Notification
-                    try {
-                        new Notification("Aavira Fashion Alerts", {
-                            body: "Notifications active! You will receive live delivery & exclusive offer updates.",
-                            icon: "https://aavirafashion.shop/favicon.ico"
-                        });
-                    } catch(e) {}
-
-                    window.showToast("Push Notifications Enabled Successfully!");
-                } else {
-                    window.showToast("Could not generate FCM Token. Check internet.");
-                    if (toggle) toggle.checked = false;
-                }
-
-            } catch (error) {
-                console.error("FCM Token Error:", error);
-                window.showToast("Notification Engine Error: " + (error.message || "Retry"));
-                if (toggle) toggle.checked = false;
-            }
-        };
-
-        // Initialize Toggle State on Page Load
-        window.checkPushNotificationState = function() {
-            const savedToken = localStorage.getItem('aavira_fcm_token');
-            const pushPref = localStorage.getItem('aavira_push_enabled');
-            const toggle = document.getElementById('pushNotificationToggle');
-            const tokenBox = document.getElementById('fcmTokenDisplayBox');
-            const tokenStr = document.getElementById('fcmTokenString');
-            const statusTxt = document.getElementById('pushStatusText');
-
-            if (savedToken && pushPref === 'true') {
-                if (toggle) toggle.checked = true;
-                if (tokenBox) tokenBox.style.display = 'flex';
-                if (tokenStr) tokenStr.innerText = savedToken;
-                if (statusTxt) statusTxt.innerText = "FCM Token Active & Synced!";
-            } else {
-                if (toggle) toggle.checked = false;
-                if (tokenBox) tokenBox.style.display = 'none';
-            }
-        };
-
-        window.copyDeviceFcmToken = function() {
-            const token = localStorage.getItem('aavira_fcm_token');
-            if (token) {
-                navigator.clipboard.writeText(token).catch(()=>{});
-                window.showToast("FCM Token Copied!");
-            }
-        };
-
-        window.saveLocalPref = function(key, val) {
-            localStorage.setItem(`aavira_pref_${key}`, val);
-            window.showToast("Setting Updated!");
-        };
-
-        window.clearAppCacheOnly = function() {
-            if (confirm("Clear cached images, drafts and stale network data?")) {
-                localStorage.removeItem('checkoutAddressDraft');
-                localStorage.removeItem('aavira_pref_sms');
-                localStorage.removeItem('aavira_pref_email');
-                window.showToast("Local data cleared successfully!");
-            }
-        };
-
-        document.addEventListener('DOMContentLoaded', () => {
-            window.checkPushNotificationState();
-        });
-    </script>
-
     <!-- CORE UI JAVASCRIPT -->
     <script>
         window.showToast = function(message) {
@@ -948,7 +708,6 @@ body.aavira-theme .card-loading-overlay{
                 localStorage.removeItem('aavira_display_name');
                 localStorage.removeItem('aavira_user_email');
                 localStorage.removeItem('aavira_user_phone');
-                localStorage.removeItem('aavira_fcm_token');
                 window.updateProfileUI();
                 window.showToast("Logged out securely!");
             }
