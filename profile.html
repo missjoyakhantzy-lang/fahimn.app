@@ -6,9 +6,11 @@
     <title>Aavira Fashion — My Profile</title>
     <meta name="theme-color" content="#ec136d">
 
-    <!-- Phosphor Icons & Fonts -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Aavira Home UI Icons & Fonts — kept consistent across screens -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
     
 <style>
@@ -18,7 +20,7 @@
   --border:#E7E0D9;--soft-pink:#F9E8EE;--danger:#B4233C;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{width:100%;min-height:100%;font-family:Inter,Poppins,system-ui,sans-serif;background:var(--ivory);color:var(--charcoal)}
+html,body{width:100%;min-height:100%;font-family:Inter,system-ui,sans-serif;background:var(--ivory);color:var(--charcoal)}
 body{display:flex;justify-content:center;overflow:hidden}
 button,input{font:inherit}
 .app-container{
@@ -87,7 +89,7 @@ button,input{font:inherit}
   border-top:1px solid var(--border);z-index:50;box-shadow:0 -8px 24px rgba(35,25,30,.07);backdrop-filter:blur(14px)
 }
 .nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#8D858B;cursor:pointer;width:20%;text-decoration:none}
-.nav-item i{font-size:21px}.nav-item span{font-size:9px;font-weight:600}.nav-item.active,.nav-item.active i{color:var(--rani)}
+.nav-item i{width:24px;height:24px;stroke-width:1.5}.nav-item span{font-size:10px;font-weight:500;letter-spacing:.025em}.nav-item.active,.nav-item.active i{color:var(--rani)}
 
 .modal-overlay{position:fixed;inset:0;background:rgba(27,20,24,.56);z-index:999;display:none;justify-content:center;align-items:flex-end;backdrop-filter:blur(6px);opacity:0;transition:opacity .25s ease}
 .modal-overlay.show{display:flex;opacity:1}
@@ -114,6 +116,29 @@ button,input{font:inherit}
  body{padding:16px 0}.app-container{height:calc(100svh - 32px);border-radius:24px}
 }
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* Home-screen navigation parity: same fixed position, surface, spacing and icon language. */
+#bottomNavContainer.bottom-nav{
+  position:fixed!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  width:100%!important;
+  height:76px!important;
+  min-height:76px!important;
+  box-sizing:border-box!important;
+  background:#FDFBF7!important;
+  border-top:1px solid #E7E0D9!important;
+  padding:10px 4px calc(10px + env(safe-area-inset-bottom,0px))!important;
+  box-shadow:0 -1px 10px rgba(36,32,36,.04)!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  z-index:9999!important;
+}
+#bottomNavContainer .nav-item{width:20%!important;color:#756D73!important;text-decoration:none!important;}
+#bottomNavContainer .nav-item.active,
+#bottomNavContainer .nav-item.active i{color:#D81B60!important;}
+#bottomNavContainer .nav-item i{width:24px!important;height:24px!important;stroke-width:1.5!important;}
 </style>
 <style data-aavira-ui>
 /* Aavira Fashion — Global Corporate Design System
@@ -455,13 +480,13 @@ body.aavira-theme .card-loading-overlay{
 
         </div> 
 
-        <!-- 5. Bottom Navigation (Clean URLs & Phosphor Icons) -->
-        <nav class="bottom-nav">
-            <a href="./" class="nav-item"><i class="ph-light ph-house"></i><span>Home</span></a>
-            <a href="categories" class="nav-item"><i class="ph-light ph-squares-four"></i><span>Categories</span></a>
-            <a href="search" class="nav-item"><i class="ph-light ph-magnifying-glass"></i><span>Search</span></a>
-            <a href="orders" class="nav-item"><i class="ph-light ph-package"></i><span>Orders</span></a>
-            <a href="profile" class="nav-item active"><i class="ph-fill ph-user"></i><span>Profile</span></a>
+        <!-- 5. Bottom Navigation — same icons, sizing and typography as Home -->
+        <nav id="bottomNavContainer" class="bottom-nav" aria-label="Primary navigation">
+            <a href="./" class="nav-item"><i data-lucide="home" aria-hidden="true"></i><span>Home</span></a>
+            <a href="categories" class="nav-item"><i data-lucide="layout-grid" aria-hidden="true"></i><span>Collections</span></a>
+            <a href="search" class="nav-item"><i data-lucide="search" aria-hidden="true"></i><span>Search</span></a>
+            <a href="orders" class="nav-item"><i data-lucide="package" aria-hidden="true"></i><span>Orders</span></a>
+            <a href="profile" class="nav-item active"><i data-lucide="user" aria-hidden="true"></i><span>Profile</span></a>
         </nav>
 
         <!-- ==============================================
@@ -606,6 +631,7 @@ body.aavira-theme .card-loading-overlay{
             }
 
             window.syncRealCounts();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
 
             const savedPhone = localStorage.getItem('aavira_user_phone') || '';
             document.getElementById('editName').value = savedName !== "Guest User" ? savedName : '';
@@ -713,6 +739,7 @@ body.aavira-theme .card-loading-overlay{
 
         document.addEventListener("DOMContentLoaded", () => {
             window.updateProfileUI();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         });
     </script>
 <script data-aavira-ui>(function(){'use strict';function markTheme(){if(document.body)document.body.classList.add('aavira-theme')}function stopLongSpinners(){var seen=new WeakSet();function w(root){var a=[];if(root&&root.nodeType===1)a.push(root);if(root&&root.querySelectorAll)a=a.concat([].slice.call(root.querySelectorAll('.mini-spin,.fa-spin')));a.forEach(function(e){if(seen.has(e))return;seen.add(e);setTimeout(function(){e.classList.add('aavira-spinner-done')},4000)})}w(document.body);new MutationObserver(function(ms){ms.forEach(function(m){[].slice.call(m.addedNodes||[]).forEach(w)})}).observe(document.body,{childList:true,subtree:true})}function init(){if(!document.body)return;markTheme();stopLongSpinners()}document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init,{once:true}):init()})();</script>
