@@ -46,6 +46,7 @@ body{background-color:#FDFBF7;-webkit-overflow-scrolling:touch;overflow-x:clip;o
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:0.01ms!important}}
 @media (min-width:640px){#bottomNavContainer{width:420px;left:50%;transform:translateX(-50%);border-left:1px solid #e5e7eb;border-right:1px solid #e5e7eb}.nav-hidden{transform:translate(-50%,100%)!important}}
 </style>
+  <link rel="stylesheet" href="/aavira-ui.css">
 </head>
 <body class="font-sans text-gray-800 selection:bg-rani-pink selection:text-white antialiased">
 
@@ -471,5 +472,6 @@ isSupported().then((s)=>{if(s){m=getMessaging(a);onMessage(m,(p)=>{let t=p.notif
 window.requestNotificationPermission=async(e)=>{if(e)e.preventDefault();if(typeof window.closeSidebar==='function')window.closeSidebar();if(!('Notification'in window)){window.showToast("Notifications not supported in this browser.","error");return}try{if(!m){window.showToast("Not supported.","error");return}let p=await Notification.requestPermission();if(p==='granted'){window.showToast("Connecting...","success");let sw=await navigator.serviceWorker.register('./firebase-messaging-sw.js'),t=await getToken(m,{vapidKey:'BIvjJEeeRfowF8ZpdgRKn-vH_rNOzW48Rd9Y37kNdeISUsmKkiihJtFPc4c0rWbFBOhb4kJ3Yj-5jTl2kO9-yAU',serviceWorkerRegistration:sw});if(t){let ue=localStorage.getItem('aavira_user_email')||'guest_user',un=localStorage.getItem('aavira_display_name')||'Guest';await setDoc(doc(d,"fcm_tokens",t),{token:t,email:ue,name:un,platform:navigator.userAgent,createdAt:new Date()});window.showToast("Enabled! 🔔","success");window.closeDynamicBanner('notif');fetch(`https://ssxpq15in.vercel.app/api/broadcast`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tokens:[t],title:"🎉 Welcome!",body:`Hi ${un}, thanks for enabling notifications!`})}).catch(()=>{});setTimeout(()=>{if(typeof window.openNotificationCenter==='function')window.openNotificationCenter()},1500)}else{window.showToast("Failed.","error")}}else{window.showToast("Denied.","error")}}catch(err){window.showToast("Error.","error")}};
 document.addEventListener("DOMContentLoaded",()=>{window.initializeAppEngine()});
 </script>
+  <script src="/aavira-ui.js"></script>
 </body>
 </html>
