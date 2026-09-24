@@ -43,6 +43,27 @@ body {
     50% { margin-top: -10px; }
 }
 
+/* Aavira action-button ring spinner — matches the home-screen spinner */
+.mini-spin {
+    width: 15px;
+    height: 15px;
+    border: 2px solid rgba(17,17,17,.15);
+    border-top-color: #111;
+    border-radius: 50%;
+    display: inline-block;
+    flex: 0 0 15px;
+    animation: authRingSpin .55s linear infinite;
+}
+.mini-spin.white {
+    border-color: rgba(255,255,255,.35);
+    border-top-color: #fff;
+}
+.mini-spin.rani {
+    border-color: rgba(216,27,96,.20);
+    border-top-color: #D81B60;
+}
+@keyframes authRingSpin { to { transform: rotate(360deg); } }
+
 .dot-loader { 
     display: inline-flex; 
     align-items: center; 
