@@ -1,59 +1,343 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#FDFBF7">
-<title>Page Not Found — Aavira</title>
-<meta name="description" content="The page you are looking for could not be found.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest"></script>
-<style>
-:root{--pink:#D81B60;--pink-dark:#B81550;--bg:#FDFBF7;--ink:#19151A;--muted:#756E73}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:var(--bg)}
-body{font-family:Inter,system-ui,sans-serif;color:var(--ink);overflow-x:hidden}
-.page{min-height:100svh;display:flex;align-items:center;justify-content:center;padding:28px 20px;position:relative;isolation:isolate;overflow:hidden}
-.glow{position:absolute;border-radius:999px;filter:blur(55px);pointer-events:none;z-index:-1}
-.glow.one{width:260px;height:260px;background:rgba(216,27,96,.10);top:-80px;left:-90px}
-.glow.two{width:300px;height:300px;background:rgba(216,27,96,.07);right:-120px;bottom:-100px}
-.flower{position:absolute;width:190px;height:190px;border:1px solid rgba(216,27,96,.10);border-radius:55% 45% 60% 40%;transform:rotate(28deg);z-index:-1}
-.flower.a{left:-100px;bottom:80px}.flower.b{right:-110px;top:80px;transform:rotate(210deg)}
-.card{width:min(100%,430px);text-align:center}
-.brand{height:52px;display:flex;align-items:center;justify-content:center;margin-bottom:28px}
-.brand img{max-width:180px;max-height:52px;object-fit:contain}
-.code{font-family:"Playfair Display",serif;font-size:clamp(92px,27vw,150px);font-weight:700;line-height:.85;letter-spacing:-.07em;color:var(--pink);margin:0 0 18px;text-shadow:0 12px 30px rgba(216,27,96,.12)}
-.icon{width:76px;height:76px;margin:0 auto 22px;border-radius:24px;background:#fff;border:1px solid #F4DCE5;box-shadow:0 18px 45px rgba(216,27,96,.10);display:flex;align-items:center;justify-content:center;color:var(--pink)}
-h1{font-family:"Playfair Display",serif;font-size:30px;line-height:1.15;margin:0 0 10px}
-p{font-size:14px;line-height:1.7;color:var(--muted);margin:0 auto;max-width:330px}
-.actions{display:flex;gap:10px;justify-content:center;margin-top:28px;flex-wrap:wrap}
-a{min-height:48px;padding:0 22px;border-radius:999px;text-decoration:none;font-size:13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.2s}
-.home{background:linear-gradient(135deg,var(--pink),var(--pink-dark));color:#fff;box-shadow:0 12px 25px rgba(216,27,96,.22)}
-.back{background:#fff;color:var(--pink);border:1px solid #F4DCE5}
-a:hover{transform:translateY(-2px)}
-.footer{margin-top:30px;font-size:9px;color:#AAA2A8;letter-spacing:.18em;text-transform:uppercase}
-@media(max-width:380px){.page{padding:22px 16px}.brand{margin-bottom:20px}.icon{width:68px;height:68px;margin-bottom:18px}h1{font-size:27px}.actions a{width:100%}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#F7F1E7">
+  <meta name="description" content="The page you are looking for could not be found.">
+  <title>404 — Aavira Fashion</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --rani: #D81B60;
+      --rani-dark: #B71550;
+      --gold: #C9A227;
+      --gold-soft: #E7D39A;
+      --ivory: #F7F1E7;
+      --cream: #FCF8F1;
+      --charcoal: #242024;
+      --muted: #746C70;
+      --white: #FFFFFF;
+      --gray: #E5DFD8;
+      --soft-pink: #F9E7EE;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--charcoal);
+      background: var(--ivory);
+      overflow-x: hidden;
+    }
+
+    .page {
+      min-height: 100svh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 18px;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .ambient {
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(70px);
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    .ambient.one {
+      width: 330px;
+      height: 330px;
+      left: -150px;
+      top: -110px;
+      background: rgba(216, 27, 96, .12);
+    }
+
+    .ambient.two {
+      width: 380px;
+      height: 380px;
+      right: -190px;
+      bottom: -150px;
+      background: rgba(201, 162, 39, .12);
+    }
+
+    .ornament {
+      position: absolute;
+      width: 230px;
+      height: 230px;
+      border: 1px solid rgba(201, 162, 39, .20);
+      border-radius: 58% 42% 55% 45%;
+      transform: rotate(32deg);
+      z-index: -1;
+    }
+
+    .ornament.left { left: -155px; bottom: 9%; }
+    .ornament.right {
+      right: -160px;
+      top: 10%;
+      transform: rotate(212deg);
+    }
+
+    .shell {
+      width: min(100%, 470px);
+      text-align: center;
+    }
+
+    .brand {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 52px;
+      margin-bottom: 22px;
+    }
+
+    .brand img {
+      width: auto;
+      max-width: 190px;
+      max-height: 58px;
+      object-fit: contain;
+    }
+
+    .brand-fallback {
+      display: none;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 25px;
+      font-weight: 600;
+      letter-spacing: .02em;
+      color: var(--charcoal);
+    }
+
+    .brand-fallback span { color: var(--rani); }
+
+    .card {
+      background: rgba(255, 255, 255, .92);
+      border: 1px solid var(--gray);
+      border-radius: 30px;
+      padding: 28px 22px 24px;
+      box-shadow:
+        0 24px 70px rgba(49, 37, 42, .10),
+        0 5px 18px rgba(216, 27, 96, .05);
+      backdrop-filter: blur(10px);
+    }
+
+    .label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: var(--soft-pink);
+      border: 1px solid rgba(216, 27, 96, .12);
+      color: var(--rani);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .visual {
+      width: min(100%, 330px);
+      height: 190px;
+      margin: 0 auto 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .visual::before {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 42px;
+      bottom: 8px;
+      border-radius: 50%;
+      background: rgba(216, 27, 96, .10);
+      filter: blur(18px);
+    }
+
+    .visual img {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 18px 20px rgba(45, 30, 37, .15));
+    }
+
+    .fallback-404 {
+      display: none;
+      position: relative;
+      z-index: 1;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 118px;
+      line-height: .8;
+      font-weight: 700;
+      letter-spacing: -.08em;
+      color: var(--rani);
+      text-shadow: 0 15px 28px rgba(216, 27, 96, .14);
+    }
+
+    h1 {
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(28px, 7vw, 36px);
+      line-height: 1.12;
+      margin: 10px 0 10px;
+      color: var(--charcoal);
+    }
+
+    .gold-line {
+      width: 54px;
+      height: 2px;
+      margin: 0 auto 15px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .message {
+      max-width: 350px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.75;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .btn {
+      min-height: 48px;
+      padding: 0 19px;
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--rani), var(--rani-dark));
+      box-shadow: 0 12px 25px rgba(216, 27, 96, .22);
+    }
+
+    .btn-secondary {
+      color: var(--charcoal);
+      background: var(--white);
+      border: 1px solid var(--gray);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .footer {
+      margin-top: 19px;
+      color: #A49B9F;
+      font-size: 9px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 390px) {
+      .page { padding: 18px 14px; }
+      .card { padding: 23px 16px 20px; border-radius: 25px; }
+      .brand { margin-bottom: 15px; }
+      .visual { height: 165px; }
+      .actions .btn { width: 100%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition: none !important;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<main class="page">
-<div class="glow one"></div><div class="glow two"></div><div class="flower a"></div><div class="flower b"></div>
-<section class="card" aria-labelledby="title">
-<div class="brand"><img src="/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira Fashion" onerror="this.style.display='none'"></div>
-<div class="icon" aria-hidden="true"><i data-lucide="compass" style="width:34px;height:34px"></i></div>
-<div class="code" aria-hidden="true">404</div>
-<h1 id="title">This page went out of style.</h1>
-<p>The page you're looking for doesn't exist or may have moved. Let's take you back to Aavira.</p>
-<div class="actions">
-<a class="home" href="/"><i data-lucide="house" style="width:16px;height:16px"></i>Back to Home</a>
-<a class="back" href="javascript:history.back()"><i data-lucide="arrow-left" style="width:16px;height:16px"></i>Go Back</a>
-</div>
-<div class="footer">Aavira · Luxury Ethnic Elegance</div>
-</section>
-</main>
-<script>lucide.createIcons();</script>
+  <main class="page">
+    <div class="ambient one"></div>
+    <div class="ambient two"></div>
+    <div class="ornament left"></div>
+    <div class="ornament right"></div>
+
+    <section class="shell" aria-labelledby="page-title">
+      <div class="brand">
+        <img
+          src="public/file_0000000015bc82119a5830b82bcd3a20.png"
+          alt="Aavira Fashion"
+          onerror="this.style.display='none';document.querySelector('.brand-fallback').style.display='block';"
+        >
+        <div class="brand-fallback">Aavira <span>Fashion</span></div>
+      </div>
+
+      <div class="card">
+        <div class="label">
+          <i data-lucide="sparkles" style="width:13px;height:13px"></i>
+          Page Not Found
+        </div>
+
+        <div class="visual" aria-label="404 Page Not Found">
+          <img
+            src="public/404.png"
+            alt="404"
+            onerror="this.style.display='none';document.querySelector('.fallback-404').style.display='block';"
+          >
+          <div class="fallback-404">404</div>
+        </div>
+
+        <h1 id="page-title">This page went out of style.</h1>
+        <div class="gold-line"></div>
+
+        <p class="message">
+          The page you’re looking for doesn’t exist, has moved, or is temporarily unavailable.
+          Let’s get you back to Aavira Fashion.
+        </p>
+
+        <div class="actions">
+          <a class="btn btn-primary" href="/">
+            <i data-lucide="house" style="width:16px;height:16px"></i>
+            Back to Home
+          </a>
+
+          <a class="btn btn-secondary" href="javascript:history.back()">
+            <i data-lucide="arrow-left" style="width:16px;height:16px"></i>
+            Go Back
+          </a>
+        </div>
+
+        <div class="footer">Aavira Fashion · Luxury Ethnic Elegance</div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
 </body>
 </html>
