@@ -715,11 +715,7 @@ document.addEventListener("DOMContentLoaded",()=>{let lt=document.getElementById
 
 window.initializeAppEngine=()=>{window.updateProfileUI();window.loadSkeletons();window.updateCartCount();window.initFadeAnimations();window.renderExperiences();if(typeof lucide!=='undefined')lucide.createIcons();let s=document.getElementById('sidebar'),tx=0;s.addEventListener('touchstart',e=>{tx=e.changedTouches[0].screenX},{passive:!0});s.addEventListener('touchend',e=>{if(tx-e.changedTouches[0].screenX>50)window.closeSidebar()},{passive:!0});setTimeout(async()=>{let nm=localStorage.getItem('aavira_display_name'),dbP=Promise.resolve();if(nm&&nm.toLowerCase()!=="guest user"&&typeof window.getWishlistFromDB==='function'){dbP=window.getWishlistFromDB(nm).then(w=>{if(w&&w.length>0)localStorage.setItem('aavira_wishlist',JSON.stringify(w.map(String)))}).catch(()=>{})}try{await Promise.all([typeof window.fetchBanners==='function'?window.fetchBanners():Promise.resolve(),typeof window.fetchCategories==='function'?window.fetchCategories():Promise.resolve(),typeof window.fetchProducts==='function'?window.fetchProducts():Promise.resolve(),typeof window.fetchExperiences==='function'?window.fetchExperiences():Promise.resolve(),dbP])}finally{if(typeof lucide!=='undefined')lucide.createIcons()}},50)};
 </script>
-<script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";import{getMessaging,getToken,onMessage,isSupported}from"https://www.gstatic.com/firebasejs/10.8.1/firebase-messaging.js";import{getFirestore,doc,setDoc,getDoc,updateDoc,increment,collection,getDocs,query,orderBy}from"https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-const c={apiKey:"AIzaSyAzuolDDiCoMWiJeSRmpo9my2DcxyBj_jA",authDomain:"messaging-d0a0c.firebaseapp.com",projectId:"messaging-d0a0c",storageBucket:"messaging-d0a0c.firebasestorage.app",messagingSenderId:"271709445992",appId:"1:271709445992:web:7a0c706288d88fee6a80dd"},a=initializeApp(c),d=getFirestore(a);let m=null;
-document.addEventListener("DOMContentLoaded",()=>{window.initializeAppEngine()});
-</script>
+<script>document.addEventListener("DOMContentLoaded",()=>{window.initializeAppEngine()});</script>
 <script data-aavira-ui>
 (function(){'use strict';
 function markTheme(){if(document.body)document.body.classList.add('aavira-theme');}
