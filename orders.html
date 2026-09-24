@@ -12,7 +12,215 @@
     
     <!-- External CSS -->
     <link rel="stylesheet" href="jcc.css">
-  <link rel="stylesheet" href="/aavira-ui.css">
+<style data-aavira-ui>
+/* Aavira Fashion — Global Corporate Design System
+   Applied across inner pages without replacing page functionality. */
+:root{
+  --aavira-rani:#D81B60;
+  --aavira-rani-dark:#B71550;
+  --aavira-gold:#D4AF37;
+  --aavira-ivory:#FDFBF7;
+  --aavira-cream:#FCF9F4;
+  --aavira-white:#FFFFFF;
+  --aavira-charcoal:#242024;
+  --aavira-muted:#756D73;
+  --aavira-border:#E7E0D9;
+  --aavira-soft-pink:#F9E8EE;
+}
+
+body.aavira-theme{
+  --primary:#D81B60;
+  --primary-color:#D81B60;
+  --primary-light:rgba(216,27,96,.08);
+  --pink:#D81B60;
+  --pink-s:rgba(216,27,96,.12);
+  --pink-sh:rgba(216,27,96,.24);
+  --secondary:#D4AF37;
+  --ethnic-gold:#D4AF37;
+  --gold:#D4AF37;
+  --gold-soft:#E7D39A;
+  --text-dark:#242024;
+  --text-main:#242024;
+  --text-muted:#756D73;
+  --text-light:#9B9298;
+  --border:#E7E0D9;
+  --border-color:#E7E0D9;
+  --bg-body:#FDFBF7;
+  --bg-page:#FDFBF7;
+  --bg-main:#FDFBF7;
+  --bg-light:#FCF9F4;
+  --bg:#FDFBF7;
+  --card:#FFFFFF;
+  --white:#FFFFFF;
+  background:var(--aavira-ivory)!important;
+  color:var(--aavira-charcoal);
+}
+
+body.aavira-theme .app-container,
+body.aavira-theme .shell,
+body.aavira-theme .app{
+  background:var(--aavira-cream);
+}
+
+body.aavira-theme .pro-header,
+body.aavira-theme .hdr,
+body.aavira-theme .header{
+  background:rgba(255,255,255,.96)!important;
+  border-color:var(--aavira-border)!important;
+  box-shadow:0 4px 18px rgba(36,32,36,.045);
+  backdrop-filter:blur(14px);
+}
+
+body.aavira-theme .pro-header .title,
+body.aavira-theme .header h1,
+body.aavira-theme .hdr-center,
+body.aavira-theme .header-center .title{
+  color:var(--aavira-charcoal)!important;
+}
+
+body.aavira-theme .header-icon-btn,
+body.aavira-theme .header-btn,
+body.aavira-theme .close-search{
+  color:var(--aavira-charcoal)!important;
+}
+
+body.aavira-theme .main-content,
+body.aavira-theme .main-scroll,
+body.aavira-theme .scroll,
+body.aavira-theme .scrollable-content{
+  background:var(--aavira-ivory)!important;
+}
+
+body.aavira-theme .pro-card,
+body.aavira-theme .order-card,
+body.aavira-theme .menu-container,
+body.aavira-theme .stats-card,
+body.aavira-theme .s-card,
+body.aavira-theme .tracking-card,
+body.aavira-theme .dv-top-card,
+body.aavira-theme .rating-summary-wrapper,
+body.aavira-theme .pro-card,
+body.aavira-theme .suggest-section{
+  border-color:var(--aavira-border)!important;
+  box-shadow:0 8px 24px rgba(36,32,36,.055);
+}
+
+body.aavira-theme .tab.active,
+body.aavira-theme .size-chart-link,
+body.aavira-theme .help-link-text,
+body.aavira-theme .menu-left>i,
+body.aavira-theme .stat-item i,
+body.aavira-theme .nav-item.active,
+body.aavira-theme .nav-item.active i,
+body.aavira-theme .cart-badge,
+body.aavira-theme .discount-tag,
+body.aavira-theme .price-row .current-price + *{
+  color:var(--aavira-rani)!important;
+}
+
+body.aavira-theme .tab-indicator{
+  background:var(--aavira-rani)!important;
+}
+
+body.aavira-theme .menu-left>i{
+  background:var(--aavira-soft-pink)!important;
+}
+
+body.aavira-theme .bottom-nav,
+body.aavira-theme #bottomNavContainer{
+  background:rgba(255,255,255,.97)!important;
+  border-top-color:var(--aavira-border)!important;
+  box-shadow:0 -8px 24px rgba(36,32,36,.07);
+  backdrop-filter:blur(14px);
+}
+
+body.aavira-theme .btn-confirm,
+body.aavira-theme .promo-btn,
+body.aavira-theme .modal-btn,
+body.aavira-theme .modal-btn-primary{
+  background:linear-gradient(135deg,var(--aavira-rani),var(--aavira-rani-dark))!important;
+  color:#fff!important;
+  border-color:transparent!important;
+  box-shadow:0 10px 22px rgba(216,27,96,.18);
+}
+
+body.aavira-theme .pro-input:focus,
+body.aavira-theme .promo-input:focus,
+body.aavira-theme .search-input:focus{
+  border-color:var(--aavira-rani)!important;
+  box-shadow:0 0 0 3px rgba(216,27,96,.08)!important;
+}
+
+body.aavira-theme input,
+body.aavira-theme textarea,
+body.aavira-theme select{
+  color:var(--aavira-charcoal);
+}
+
+body.aavira-theme .speed-option.selected,
+body.aavira-theme .pay-option.selected{
+  border-color:var(--aavira-rani)!important;
+  background:var(--aavira-soft-pink)!important;
+}
+
+body.aavira-theme .color-swatch.active{
+  border-color:var(--aavira-rani)!important;
+  box-shadow:0 6px 16px rgba(216,27,96,.14);
+}
+
+body.aavira-theme .size-box.active{
+  background:var(--aavira-rani)!important;
+  border-color:var(--aavira-rani)!important;
+}
+
+body.aavira-theme .trust-badges .badge i,
+body.aavira-theme .rating-stars-main{
+  color:var(--aavira-gold)!important;
+}
+
+body.aavira-theme .dv-tc-head{
+  background:var(--aavira-soft-pink)!important;
+}
+
+body.aavira-theme .timeline-progress-line,
+body.aavira-theme .tl-icon.done,
+body.aavira-theme .tl-icon.current{
+  background:var(--aavira-rani)!important;
+}
+
+body.aavira-theme .status-badge.st-Confirmed{
+  background:var(--aavira-soft-pink)!important;
+  color:var(--aavira-rani)!important;
+}
+
+body.aavira-theme .product-title,
+body.aavira-theme .o-info h4,
+body.aavira-theme .current-price,
+body.aavira-theme .b-total{
+  color:var(--aavira-charcoal)!important;
+}
+
+body.aavira-theme .media-wrapper,
+body.aavira-theme .media-carousel,
+body.aavira-theme .slide img{
+  background:var(--aavira-cream)!important;
+  border-color:var(--aavira-border)!important;
+}
+
+body.aavira-theme .card-loading-overlay{
+  background:linear-gradient(120deg,rgba(255,255,255,0) 0%,rgba(249,232,238,.55) 45%,rgba(255,255,255,.92) 50%,rgba(249,232,238,.55) 55%,rgba(255,255,255,0) 100%)!important;
+}
+
+100%{background-position:-100% 0}}
+
+@media(max-width:420px){
+  body.aavira-theme .app-container,
+  body.aavira-theme .shell,
+  body.aavira-theme .app{max-width:420px}
+}
+
+.aavira-spinner-done{animation:none!important;transform:none!important;}
+</style>
 </head>
 <body>
 
@@ -225,6 +433,8 @@
 
     <!-- External JS Engine -->
     <script src="tcc.js"></script>
-  <script src="/aavira-ui.js"></script>
+<script data-aavira-ui>
+(function(){'use strict';function markTheme(){if(document.body)document.body.classList.add('aavira-theme');}function stopLongSpinners(){var seen=new WeakSet();function watch(root){var nodes=[];if(root&&root.nodeType===1)nodes.push(root);if(root&&root.querySelectorAll)nodes=nodes.concat(Array.prototype.slice.call(root.querySelectorAll('.mini-spin,.fa-spin')));for(var i=0;i<nodes.length;i++){var el=nodes[i];if(seen.has(el))continue;seen.add(el);setTimeout(function(target){return function(){if(target&&target.classList)target.classList.add('aavira-spinner-done');};}(el),4000);}}watch(document.body);new MutationObserver(function(ms){for(var i=0;i<ms.length;i++){var a=ms[i].addedNodes||[];for(var j=0;j<a.length;j++)watch(a[j]);}}).observe(document.body,{childList:true,subtree:true});}function init(){if(!document.body)return;markTheme();stopLongSpinners();}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();})();
+</script>
 </body>
 </html>
