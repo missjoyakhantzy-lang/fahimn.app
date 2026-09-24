@@ -31,6 +31,14 @@ body{background-color:#FDFBF7;-webkit-overflow-scrolling:touch;overflow-x:clip;o
 /* Keep the primary header solid and premium; no glass blur. */
 #main-header{background:#fff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
 #bottomNavContainer{
+  position:fixed!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  z-index:9999!important;
+  transform:translateY(0)!important;
+  visibility:visible!important;
+  opacity:1!important;
   background:#FDFBF7!important;
   background-color:#FDFBF7!important;
   backdrop-filter:none!important;
@@ -44,6 +52,14 @@ body{background-color:#FDFBF7;-webkit-overflow-scrolling:touch;overflow-x:clip;o
 }
 #bottomNavContainer a{color:#756D73;}
 #bottomNavContainer a:hover{color:#D81B60;}
+
+/* The bottom navigation is persistent. Never allow scroll handlers, stale classes,
+   or responsive transforms to move it off-screen. */
+#bottomNavContainer.translate-y-full,
+#bottomNavContainer.nav-hidden{
+  transform:translateY(0)!important;
+}
+#bottomNavContainer{transition:none!important;}
 
 body.aavira-theme .main-content,
 body.aavira-theme .main-scroll,
