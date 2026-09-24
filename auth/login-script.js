@@ -210,10 +210,13 @@
         const loaderColor = opts.loaderColor || 'text-white';
         const loadingLabel = opts.loadingLabel || 'Processing...';
 
+        if (!btn) return;
+
         if (isLoading) {
             btn.disabled = true;
             btn.classList.add('opacity-90', 'cursor-not-allowed');
-            btn.innerHTML = `<div class="dot-loader ${loaderColor} mr-2"><span></span><span></span><span></span></div> <span>${loadingLabel}</span>`;
+            const spinnerClass = loaderColor === 'text-rani-pink' ? 'mini-spin rani' : 'mini-spin white';
+            btn.innerHTML = `<span class="${spinnerClass}" aria-hidden="true"></span><span>${loadingLabel}</span>`;
         } else {
             btn.disabled = false;
             btn.classList.remove('opacity-90', 'cursor-not-allowed');
@@ -439,11 +442,16 @@
     async function resendResetOtp() {
         if (isSubmitting || !pendingReset.email) return;
 
+        const btn = document.getElementById('btnResendReset');
+        const originalBtnHTML = btn ? btn.innerHTML : '<span>Resend Code</span>';
         const sendResetOtp = resolveSendResetOtp();
         if (!sendResetOtp) {
             showToast('Password reset service is not available right now.', 'error');
             return;
         }
+
+        isSubmitting = true;
+        setBtnLoading('btnResendReset', true, originalBtnHTML, { loadingLabel: 'Sending...' });
 
         try {
             const result = await sendResetOtp(pendingReset.email);
@@ -455,6 +463,9 @@
             }
         } catch (err) {
             showToast('Network error. Please try again.', 'error');
+        } finally {
+            setBtnLoading('btnResendReset', false, originalBtnHTML);
+            isSubmitting = false;
         }
     }
 
