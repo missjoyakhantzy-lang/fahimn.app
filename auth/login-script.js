@@ -150,7 +150,26 @@
     function showToast(message, type = 'error') {
         // Normal success/info messages stay silent. Only actual errors are shown.
         if (type !== 'error') return;
+
         const toast = document.getElementById('toast');
+        const msg = document.getElementById('toast-msg');
+        const iconWrapper = document.getElementById('toast-icon-wrapper');
+        if (!toast || !msg || !iconWrapper) return;
+
+        clearTimeout(toastTimer);
+        msg.innerText = message;
+        iconWrapper.innerHTML = '<i data-lucide="alert-circle" class="w-5 h-5 text-rani-pink"></i>';
+        lucide.createIcons();
+
+        toast.classList.remove('opacity-0', '-translate-y-24', 'pointer-events-none');
+        toast.classList.add('translate-y-0');
+
+        toastTimer = setTimeout(() => {
+            toast.classList.add('opacity-0', '-translate-y-24', 'pointer-events-none');
+            toast.classList.remove('translate-y-0');
+        }, CONFIG.TOAST_DURATION);
+    }
+
     function switchView(viewId) {
         const views = ['loginView', 'signupView', 'otpView', 'forgotView', 'resetOtpView'];
 
@@ -163,6 +182,15 @@
             }
         }
 
+        const target = document.getElementById(viewId);
+        if (!target) return;
+
+        views.forEach((id) => {
+            const view = document.getElementById(id);
+            if (view) view.className = id === viewId ? 'view-active' : 'view-hidden';
+        });
+
+        lucide.createIcons();
     }
 
     function togglePassword(inputId, buttonId) {
