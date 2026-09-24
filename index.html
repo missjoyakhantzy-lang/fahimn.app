@@ -25,6 +25,13 @@ body{background-color:#FDFBF7;-webkit-overflow-scrolling:touch;overflow-x:clip;o
 .animate-float{animation:float 3s ease-in-out infinite}
 @keyframes pulse-ring{0%{transform:scale(0.8);box-shadow:0 0 0 0 rgba(37,211,102,0.7)}70%{transform:scale(1);box-shadow:0 0 0 12px rgba(37,211,102,0)}100%{transform:scale(0.8);box-shadow:0 0 0 0 rgba(37,211,102,0)}}
 .animate-pulse-ring{animation:pulse-ring 2s infinite}
+/* Product action ring spinner — same visual language as the app's action spinners */
+.mini-spin{width:15px;height:15px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;display:inline-block;flex:0 0 15px;animation:aaviraRingSpin .55s linear infinite;}
+@keyframes aaviraRingSpin{to{transform:rotate(360deg)}}
+/* Keep the primary header solid and premium; no glass blur. */
+#main-header{background:#fff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+#bottomNavContainer{background:#fff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+
 .fade-up{opacity:0;transform:translateY(20px);transition:opacity .6s ease-out,transform .6s cubic-bezier(0.2,0.8,0.2,1);will-change:opacity,transform}
 .fade-up.visible{opacity:1;transform:translateY(0)}
 
@@ -762,13 +769,13 @@ window.getProductSignals=(id)=>{
 };
 
 window.revealBottomNav=()=>{isNavManuallyHidden=!1;let n=document.getElementById('bottomNavContainer'),p=document.getElementById('dynamic-action-banner');if(n)n.classList.remove('translate-y-full','nav-hidden');if(p&&!p.classList.contains('hidden'))p.style.transform='translate(-50%, 0)'};
-window.hideBottomNav=()=>{isNavManuallyHidden=!0;let n=document.getElementById('bottomNavContainer'),p=document.getElementById('dynamic-action-banner');if(n)n.classList.add('translate-y-full','nav-hidden');if(p&&!p.classList.contains('hidden'))p.style.transform='translate(-50%, 70px)'};
+window.hideBottomNav=()=>{isNavManuallyHidden=!1;let p=document.getElementById('dynamic-action-banner');if(p&&!p.classList.contains('hidden'))p.style.transform='translate(-50%, 0)'};
 
 window.closeDynamicBanner=(type)=>{let banner=document.getElementById('dynamic-action-banner');if(banner){banner.style.transform='translate(-50%, 150px)';setTimeout(()=>{banner.classList.add('hidden');banner.classList.remove('flex');if(type==='notif'){sessionStorage.setItem('notifBannerShown','true');setTimeout(window.checkDynamicBanner,100)}else if(type==='login'){sessionStorage.setItem('loginBannerShown','true')}},500)}};
 
 window.checkDynamicBanner=()=>{let b=document.getElementById('dynamic-action-banner');if(!b)return;let email=localStorage.getItem('aavira_user_email'),shown=sessionStorage.getItem('loginBannerShown');if(email||shown){b.classList.add('hidden');b.classList.remove('flex');return}b.innerHTML='<div class="flex items-center gap-3"><div class="flex-1"><p class="text-[11px] font-bold text-ethnic-gold">Flat 20% OFF</p><p class="text-[10px] text-gray-300">Sign in to claim your first order gift.</p></div><button onclick="triggerDotAction(\'login\',this)" class="bg-white text-gray-900 px-4 py-2 rounded-xl text-[11px] font-bold">Sign In</button></div>';b.classList.remove('hidden');b.classList.add('flex');if(typeof lucide!=='undefined')lucide.createIcons();window.bannerTimeout=setTimeout(()=>closeDynamicBanner('login'),7000)};
 
-window.addEventListener('scroll',()=>{if(!scrollTicking){window.requestAnimationFrame(()=>{let s=window.pageYOffset||document.documentElement.scrollTop,d=s-lastScrollTop;if(Math.abs(d)>5){if(s>80&&d>0){if(mainHeader)mainHeader.style.transform='translateY(-100%)'}else{if(mainHeader)mainHeader.style.transform='translateY(0)'}if(s>150&&d>0){if(!isNavManuallyHidden)hideBottomNav()}else if(d<0){if(isNavManuallyHidden)revealBottomNav()}}lastScrollTop=s<=0?0:s;scrollTicking=!1});scrollTicking=!0}});
+window.addEventListener('scroll',()=>{if(!scrollTicking){window.requestAnimationFrame(()=>{let s=window.pageYOffset||document.documentElement.scrollTop,d=s-lastScrollTop;if(Math.abs(d)>5){if(s>80&&d>0){if(mainHeader)mainHeader.style.transform='translateY(-100%)'}else{if(mainHeader)mainHeader.style.transform='translateY(0)'}}lastScrollTop=s<=0?0:s;scrollTicking=!1});scrollTicking=!0}});
 
 const fadeObserver=new IntersectionObserver((e,o)=>{e.forEach(i=>{if(i.isIntersecting){i.target.classList.add('visible');o.unobserve(i.target)}})},{threshold:0.05,rootMargin:'0px 0px 50px 0px'});
 window.initFadeAnimations=()=>document.querySelectorAll('.fade-up').forEach(e=>fadeObserver.observe(e));
