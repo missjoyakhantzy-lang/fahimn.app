@@ -30,7 +30,26 @@ body{background-color:#FDFBF7;-webkit-overflow-scrolling:touch;overflow-x:clip;o
 @keyframes aaviraRingSpin{to{transform:rotate(360deg)}}
 /* Keep the primary header solid and premium; no glass blur. */
 #main-header{background:#fff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
-#bottomNavContainer{background:#fff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+#bottomNavContainer{
+  background:#FDFBF7!important;
+  background-color:#FDFBF7!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  height:76px!important;
+  min-height:76px!important;
+  box-sizing:border-box!important;
+  padding-top:10px!important;
+  padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))!important;
+  box-shadow:0 -1px 10px rgba(36,32,36,.04)!important;
+}
+#bottomNavContainer a{color:#756D73;}
+#bottomNavContainer a:hover{color:#D81B60;}
+
+body.aavira-theme .main-content,
+body.aavira-theme .main-scroll,
+body.aavira-theme .scroll,
+body.aavira-theme .scrollable-content{background:#FDFBF7!important;}
+
 
 .fade-up{opacity:0;transform:translateY(20px);transition:opacity .6s ease-out,transform .6s cubic-bezier(0.2,0.8,0.2,1);will-change:opacity,transform}
 .fade-up.visible{opacity:1;transform:translateY(0)}
