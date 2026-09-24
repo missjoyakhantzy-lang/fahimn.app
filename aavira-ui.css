@@ -212,3 +212,16 @@ body.aavira-theme .card-loading-overlay{
   .aavira-img-loading,.aavira-loader-logo-wrap,.aavira-loader-track span{animation:none!important}
   .aavira-global-loader{transition:none!important}
 }
+
+/* Individual action-button spinner — intentionally NOT a page/global loader. */
+.aavira-btn-loading{
+  position:relative!important;
+  pointer-events:none!important;
+  opacity:.88;
+}
+.aavira-action-spinner{
+  width:15px!important;
+  height:15px!important;
+  flex:0 0 15px;
+  margin-left:2px;
+}
