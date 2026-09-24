@@ -147,29 +147,11 @@
         if (boxes[0]) boxes[0].focus();
     }
 
-    function showToast(message, type = 'success') {
+    function showToast(message, type = 'error') {
+        // Normal success/info messages stay silent. Only actual errors are shown.
+        if (type !== 'error') return;
         const toast = document.getElementById('toast');
-        const msg = document.getElementById('toast-msg');
-        const iconWrapper = document.getElementById('toast-icon-wrapper');
-
-        clearTimeout(toastTimer);
-        msg.innerText = message;
-        iconWrapper.innerHTML = type === 'error'
-            ? '<i data-lucide="alert-circle" class="w-5 h-5 text-rani-pink"></i>'
-            : '<i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>';
-        lucide.createIcons();
-
-        toast.classList.remove('opacity-0', '-translate-y-24', 'pointer-events-none');
-        toast.classList.add('translate-y-0');
-
-        toastTimer = setTimeout(() => {
-            toast.classList.add('opacity-0', '-translate-y-24', 'pointer-events-none');
-            toast.classList.remove('translate-y-0');
-        }, CONFIG.TOAST_DURATION);
-    }
-
     function switchView(viewId) {
-        const loader = document.getElementById('screenTransitionLoader');
         const views = ['loginView', 'signupView', 'otpView', 'forgotView', 'resetOtpView'];
 
         if (viewId !== 'resetOtpView') {
@@ -181,21 +163,6 @@
             }
         }
 
-        loader.classList.remove('hidden');
-        loader.classList.add('flex');
-        setTimeout(() => loader.classList.remove('opacity-0'), 10);
-
-        setTimeout(() => {
-            views.forEach((id) => {
-                document.getElementById(id).className = id === viewId ? 'view-active' : 'view-hidden';
-            });
-
-            loader.classList.add('opacity-0');
-            setTimeout(() => {
-                loader.classList.add('hidden');
-                loader.classList.remove('flex');
-            }, 300);
-        }, CONFIG.VIEW_TRANSITION_DELAY);
     }
 
     function togglePassword(inputId, buttonId) {
