@@ -1,0 +1,64 @@
+<!-- Aavira Fashion — Home Sidebar (exact Home sidebar markup) -->
+<!-- Required icon library: Lucide -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<!-- SIDEBAR -->
+<div id="sidebarOverlay" class="fixed inset-0 bg-black/60 hidden opacity-0 transition-opacity duration-300 z-[60]" onclick="closeSidebar()"></div>
+<div id="sidebar" class="fixed top-0 left-0 w-[85%] max-w-[340px] h-full bg-gradient-to-b from-[#FFF5F7] via-white to-[#FFF5F7] z-[70] transform -translate-x-full transition-transform duration-500 shadow-2xl flex flex-col rounded-none overflow-hidden">
+    <div class="relative pt-12 pb-6 px-6 flex-shrink-0 border-b border-pink-100">
+        <button onclick="closeSidebar()" class="absolute top-5 right-5 p-2 bg-white/50 rounded-full flex items-center justify-center text-gray-600 hover:bg-pink-100 hover:text-rani-pink transition-colors"><i data-lucide="x" class="w-4 h-4"></i></button>
+        <div class="flex justify-center mb-6"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" class="h-20 max-w-full object-contain mx-auto drop-shadow-sm" /></div>
+        <div id="guestProfileUI" class="flex flex-col transition-all w-full items-center text-center">
+            <div class="w-16 h-16 bg-pink-100 border border-pink-200 rounded-full flex items-center justify-center text-rani-pink mb-3"><i data-lucide="user" class="w-8 h-8"></i></div>
+            <h3 class="font-serif text-[20px] text-gray-900 font-bold leading-tight">Welcome, Guest</h3>
+            <p class="text-gray-500 text-[11px] mt-1 mb-5 font-medium uppercase tracking-wider">Log in for privileges</p>
+            <button onclick="triggerDotAction('login', this)" class="bg-[#FFF0F5] border border-pink-200 text-rani-pink text-[13px] font-bold tracking-widest uppercase px-8 py-3.5 rounded-xl hover:bg-rani-pink hover:text-white transition-all w-full flex items-center justify-center gap-2"><i data-lucide="log-in" class="w-4 h-4"></i> Sign In</button>
+        </div>
+        <div id="vipProfileUI" class="hidden flex-col items-center w-full">
+            <div class="flex items-center gap-4 w-full mb-4">
+                <div class="w-16 h-16 bg-pink-200 text-rani-pink rounded-full flex items-center justify-center font-bold text-3xl border-2 border-white shadow-sm shrink-0"><span id="profileInitial">M</span></div>
+                <div class="flex-1 flex flex-col justify-center">
+                    <h3 id="vipName" class="text-gray-900 font-bold text-[18px] leading-tight flex items-center gap-1.5">User Name</h3>
+                    <p class="text-[10px] font-bold text-gray-500 mt-1 uppercase tracking-widest">Aavira Member</p>
+                    <div class="inline-flex items-center gap-1 mt-1.5 bg-pink-100 px-2 py-0.5 rounded text-[9px] font-bold text-rani-pink w-max"><i data-lucide="crown" class="w-3 h-3"></i> Valued Customer</div>
+                </div>
+                <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+            </div>
+            <button onclick="handleLogout()" class="w-full mt-2 bg-[#FFF0F5] border border-pink-200 py-3.5 rounded-xl text-[12px] font-bold tracking-widest uppercase text-rani-pink hover:bg-rani-pink hover:text-white flex items-center justify-center gap-2 transition-all shadow-sm"><i data-lucide="log-out" class="w-4 h-4"></i> Sign Out</button>
+        </div>
+    </div>
+    <div class="flex-1 overflow-y-auto py-2 px-4 space-y-1 bg-white pb-6 mt-2">
+        <a href="./" class="flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors"><i data-lucide="home" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="text-[15px] font-medium">Home</span><i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-400"></i></a>
+        <a href="categories" class="flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors"><i data-lucide="layout-grid" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="text-[15px] font-medium">Collections</span><i data-lucide="plus" class="w-4 h-4 ml-auto text-rani-pink"></i></a>
+        <a href="#" onclick="event.preventDefault();triggerDotAction('cart', this)" class="flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors"><i data-lucide="shopping-bag" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="text-[15px] font-medium">My Cart</span><i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-400"></i></a>
+        <a href="orders" class="flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors"><i data-lucide="package" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="text-[15px] font-medium">My Orders</span><i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-400"></i></a>
+        <a href="wishlist" class="flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors"><i data-lucide="heart" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="text-[15px] font-medium">My Wishlist</span><i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-400"></i></a>
+        <div class="h-[1px] bg-gray-100 my-2 mx-2"></div>
+        <a href="#" onclick="openPromoModal()" class="flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors"><i data-lucide="ticket" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="text-[15px] font-medium">Apply Promo Code</span><i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-400"></i></a>
+        <a href="#" onclick="openReferralCenter()" class="flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors"><i data-lucide="share-2" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="text-[15px] font-medium">Refer & Earn</span><i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-400"></i></a>
+        <div class="h-[1px] bg-gray-100 my-2 mx-2"></div>
+        <a href="support" class="flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors"><i data-lucide="headphones" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="text-[15px] font-medium">Customer Support</span><i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-400"></i></a>
+        <div class="mt-6 bg-[#FFF0F5] border border-pink-100 rounded-2xl p-4 flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+                <i data-lucide="sparkles" class="w-6 h-6 text-rani-pink opacity-80"></i>
+                <div><p class="font-serif text-rani-pink font-bold text-[14px] leading-tight">Style Inspires</p><p class="font-serif text-rani-pink font-bold text-[14px] leading-tight">Confidence ♡</p></div>
+            </div>
+            <div class="border-l border-pink-200 pl-3">
+                <p class="text-[9px] text-gray-500 uppercase tracking-widest font-bold mb-1.5">Follow Us</p>
+                <div class="flex gap-2 text-white">
+                    <a href="#" class="w-5 h-5 bg-rani-pink rounded-full flex items-center justify-center hover:scale-110 transition-transform"><svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></a>
+                    <a href="#" class="w-5 h-5 bg-rani-pink rounded-full flex items-center justify-center hover:scale-110 transition-transform"><svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+                    <a href="#" class="w-5 h-5 bg-rani-pink rounded-full flex items-center justify-center hover:scale-110 transition-transform"><svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg></a>
+                </div>
+            </div>
+        </div>
+        <p class="text-center text-[10px] text-gray-400 mt-2 pb-6 tracking-widest">Aavira Fashion v1.0.0</p>
+    </div>
+</div>
+
+<!--
+Required parent-page functions used by this sidebar:
+closeSidebar(), triggerDotAction(), handleLogout(), openPromoModal(), openReferralCenter().
+The Home page already provides these functions.
+Icons use Lucide via data-lucide attributes and are rendered with lucide.createIcons().
+-->
