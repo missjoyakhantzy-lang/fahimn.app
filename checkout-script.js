@@ -544,20 +544,33 @@ window.submitFinalOrder = async () => {
     localStorage.removeItem('savedPromoCache');
     localStorage.removeItem('checkoutAddressDraft'); // <--- Address draft cleared!
 
-    // 🔥 2. STRICT ORDER & USER ISOLATION SYNC 🔥
-    // Save current user credentials on this device so orders screen syncs immediately
-    localStorage.setItem('aavira_user_phone', customerPhone);
-    if (customerEmail) localStorage.setItem('aavira_user_email', customerEmail);
+    // 🔒 ORDER IDENTITY ISOLATION
+    // Checkout must NEVER turn a guest email into a logged-in session.
+    // Logged-in users keep their existing account session; guests get only
+    // the single order they just placed.
+    const savedEmail = (localStorage.getItem('aavira_user_email') || '').trim().toLowerCase();
+    const savedName = (localStorage.getItem('aavira_display_name') || '').trim();
+    const isSignedIn = !!(savedEmail && savedName && savedName.toLowerCase() !== 'guest user');
 
-    let previousOrders = [];
-    try {
-        previousOrders = JSON.parse(localStorage.getItem('aavira_placed_orders')) || [];
-    } catch(e) {}
-    
-    if (!previousOrders.includes(finalOrderId)) {
-        previousOrders.push(finalOrderId);
+    if (isSignedIn) {
+        localStorage.setItem('aavira_user_phone', customerPhone);
+        let previousOrders = [];
+        try {
+            previousOrders = JSON.parse(localStorage.getItem('aavira_placed_orders')) || [];
+            if (!Array.isArray(previousOrders)) previousOrders = [];
+        } catch(e) {
+            previousOrders = [];
+        }
+        if (!previousOrders.includes(finalOrderId)) previousOrders.push(finalOrderId);
+        localStorage.setItem('aavira_placed_orders', JSON.stringify(previousOrders));
+        localStorage.removeItem('aavira_guest_order_id');
+    } else {
+        // Guest mode: only this exact order can appear on Orders.
+        localStorage.removeItem('aavira_user_phone');
+        localStorage.removeItem('aavira_guest_order_ids');
+        localStorage.setItem('aavira_guest_order_id', finalOrderId);
+        localStorage.setItem('aavira_placed_orders', JSON.stringify([finalOrderId]));
     }
-    localStorage.setItem('aavira_placed_orders', JSON.stringify(previousOrders));
     
     const displayOrderIdEl = document.getElementById('displayOrderId');
     if (displayOrderIdEl) displayOrderIdEl.innerText = finalOrderId;
