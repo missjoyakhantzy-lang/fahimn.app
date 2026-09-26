@@ -1294,28 +1294,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // 🔥 BULLETPROOF FETCH ORDERS (MULTI-KEY & DIRECT FALLBACK SUPPORT) 🔥
 async function fetchOrders() {
-    // 1. Gather all possible phone formats from LocalStorage
-    const rawUserPhone = (localStorage.getItem('aavira_user_phone') || localStorage.getItem('user_phone') || localStorage.getItem('phone') || '').replace(/[^0-9]/g, '');
+    // A signed-in account is identified ONLY by the auth session already
+    // created by the login page. Checkout email alone is never a login signal.
+    const savedEmail = (localStorage.getItem('aavira_user_email') || '').trim().toLowerCase();
+    const savedName = (localStorage.getItem('aavira_display_name') || '').trim();
+    const isSignedIn = !!(savedEmail && savedName && savedName.toLowerCase() !== 'guest user');
+
+    const rawUserPhone = (localStorage.getItem('aavira_user_phone') || '').replace(/[^0-9]/g, '');
     const userPhone = rawUserPhone.length >= 10 ? rawUserPhone.slice(-10) : '';
 
-    // 2. Gather all possible email formats from LocalStorage
-    const userEmail = (localStorage.getItem('aavira_user_email') || localStorage.getItem('user_email') || localStorage.getItem('email') || '').trim().toLowerCase();
+    // Guest mode is deliberately restricted to ONE exact order ID.
+    const guestOrderId = (localStorage.getItem('aavira_guest_order_id') || '').trim();
 
-    // 3. Gather Placed Orders (with safe parsing and clean IDs)
     let localPlacedOrderIds = [];
-    try {
-        const stored = JSON.parse(localStorage.getItem('aavira_placed_orders') || '[]');
-        if (Array.isArray(stored)) {
-            localPlacedOrderIds = stored.map(id => cleanIdString(id)).filter(id => id && id !== 'UNDEFINED' && id !== 'NULL');
-        }
-    } catch(e) {
-        localPlacedOrderIds = [];
+    if (isSignedIn) {
+        try {
+            const stored = JSON.parse(localStorage.getItem('aavira_placed_orders') || '[]');
+            if (Array.isArray(stored)) {
+                localPlacedOrderIds = stored.map(id => cleanIdString(id))
+                    .filter(id => id && id !== 'UNDEFINED' && id !== 'NULL');
+            }
+        } catch(e) {}
+    } else if (guestOrderId) {
+        localPlacedOrderIds = [cleanIdString(guestOrderId)];
     }
 
-    const isUserIdentified = (userEmail !== '') || (userPhone !== '') || (localPlacedOrderIds.length > 0);
-
-    // Agar device par koi identity ya order record nahi hai toh empty state
-    if (!isUserIdentified) {
+    // Guest: no email/phone lookup. Fetch only the order just placed.
+    if (!isSignedIn && !guestOrderId) {
         allOrdersData = [];
         const loader = document.getElementById('loader');
         if (loader) loader.style.display = 'none';
@@ -1326,67 +1331,60 @@ async function fetchOrders() {
 
     try {
         let rawOrders = [];
+        const VERCEL_BACKEND = "https://server-js-psi-five.vercel.app";
+        let fetchUrl = `${VERCEL_BACKEND}/api/orders?nocache=${new Date().getTime()}`;
 
-        // 👉 Step A: Call user_data.js
-        if (typeof window.getOrdersFromVercel === 'function') {
-            rawOrders = await window.getOrdersFromVercel(userPhone, userEmail);
+        if (isSignedIn) {
+            // Account users can see only their own account orders.
+            if (savedEmail) fetchUrl += `&email=${encodeURIComponent(savedEmail)}`;
+            else if (userPhone) fetchUrl += `&phone=${encodeURIComponent(userPhone)}`;
+        } else {
+            // Guest can see exactly one order.
+            fetchUrl += `&orderId=${encodeURIComponent(guestOrderId)}`;
         }
 
-        // 👉 Step B: Fail-safe Direct Fetch if user_data.js wasn't ready
-        if (!rawOrders || rawOrders.length === 0) {
-            try {
-                const VERCEL_BACKEND = "https://server-js-psi-five.vercel.app";
-                let fetchUrl = `${VERCEL_BACKEND}/api/orders?nocache=${new Date().getTime()}`;
-                if (userPhone) fetchUrl += `&phone=${encodeURIComponent(userPhone)}`;
-                else if (userEmail) fetchUrl += `&email=${encodeURIComponent(userEmail)}`;
-
-                const res = await fetch(fetchUrl);
-                const json = await res.json();
-                if (res.ok && json.status === "success" && Array.isArray(json.data)) {
-                    rawOrders = json.data;
-                }
-            } catch(e) {}
+        const res = await fetch(fetchUrl);
+        const json = await res.json();
+        if (res.ok && json.status === "success" && Array.isArray(json.data)) {
+            rawOrders = json.data;
         }
 
         const loader = document.getElementById('loader');
         if (loader) loader.style.display = 'none';
 
         if (Array.isArray(rawOrders) && rawOrders.length > 0) {
-            
-            // 🔥 BULLETPROOF CLIENT FILTER 🔥
-            allOrdersData = rawOrders.filter(order => {
-                if (!order) return false;
+            if (isSignedIn) {
+                // Defense-in-depth: account orders must match the signed-in identity.
+                allOrdersData = rawOrders.filter(order => {
+                    if (!order) return false;
+                    const oEmail = String(order.email || order.customerEmail || order.userEmail || '').trim().toLowerCase();
+                    const oPhone = String(order.phone || order.customerPhone || order.userPhone || '')
+                        .replace(/[^0-9]/g, '').slice(-10);
 
-                // 1. Match by Order ID (Clean comparison ignoring '#', spaces, dashes)
-                const oCleanId = cleanIdString(order.orderId || order.id || order._id);
-                if (oCleanId && localPlacedOrderIds.includes(oCleanId)) return true;
+                    return (savedEmail && oEmail === savedEmail) ||
+                           (userPhone && oPhone === userPhone);
+                });
+            } else {
+                // Defense-in-depth: guest gets only the requested order.
+                const target = cleanIdString(guestOrderId);
+                allOrdersData = rawOrders.filter(order =>
+                    cleanIdString(order.orderId || order.id || order._id) === target
+                ).slice(0, 1);
+            }
 
-                // 2. Match by Phone Number (Checks order.phone, customerPhone, userPhone, userId)
-                const rawOPhone = String(order.phone || order.customerPhone || order.userPhone || order.userId || '').replace(/[^0-9]/g, '');
-                const oPhone = rawOPhone.length >= 10 ? rawOPhone.slice(-10) : '';
-                if (userPhone && oPhone && userPhone === oPhone) return true;
-
-                // 3. Match by Email Address (Checks order.email, customerEmail, userEmail, userId)
-                const oEmail = String(order.email || order.customerEmail || order.userEmail || order.userId || '').trim().toLowerCase();
-                if (userEmail && oEmail && userEmail === oEmail) return true;
-
-                return false;
-            });
-
-            // Local Cancelled Sync
+            // Apply local cancellation state.
             let locallyCancelled = [];
             try {
                 locallyCancelled = JSON.parse(localStorage.getItem('aavira_cancelled_orders') || '[]');
             } catch(e) {}
 
-            allOrdersData.forEach(o => {
-                const checkId = cleanIdString(o.orderId || o.id || o._id);
-                if(locallyCancelled.some(cId => cleanIdString(cId) === checkId)) {
-                    o.orderStatus = 'Cancelled';
+            allOrdersData.forEach(order => {
+                const checkId = cleanIdString(order.orderId || order.id || order._id);
+                if (locallyCancelled.some(cId => cleanIdString(cId) === checkId)) {
+                    order.orderStatus = 'Cancelled';
                 }
             });
 
-            // Sort newest first
             allOrdersData.sort((a,b) => parseOrderDate(b.createdAt) - parseOrderDate(a.createdAt));
 
             if (allOrdersData.length === 0) {
@@ -1396,7 +1394,6 @@ async function fetchOrders() {
                 document.getElementById('emptyState').style.display = 'none';
                 handleSearch();
             }
-
         } else {
             allOrdersData = [];
             document.getElementById('emptyState').style.display = 'flex';
@@ -1409,7 +1406,6 @@ async function fetchOrders() {
         document.getElementById('emptyState').style.display = 'flex';
     }
 }
-
 function updateTabIndicator(btnElement) {
     if (!btnElement) return;
     const indicator = document.getElementById('tabIndicator');
