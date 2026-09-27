@@ -28,10 +28,119 @@
             } 
         }
     </script>
+    <!-- Inlined Auth Styles -->
+    <style data-auth-inline>
+.auth-toast-success{border-color:#d1fae5!important;color:#166534!important}.auth-toast-success i{color:#16a34a!important}.auth-toast-error{border-color:#FDE2E2!important}.auth-toast-error i{color:#D81B60!important}.auth-toast-message{max-width:calc(100vw - 110px);overflow:hidden;text-overflow:ellipsis}
+/* ------------------------------------------------------------
+   LOCK THE VIEWPORT
+   ------------------------------------------------------------ */
+html, body {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+body {
+    background-color: transparent;
+    -webkit-tap-highlight-color: transparent;
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+.view-hidden { display: none; }
+.view-active { 
+    display: flex; 
+    flex-direction: column; 
+    animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+    width: 100%; 
+}
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/auth/login-style.css">
-  <style data-aavira-ui>body.aavira-theme{--primary:#D81B60;--primary-color:#D81B60;background:#FDFBF7!important;color:#242024}.aavira-spinner-done{animation:none!important;transform:none!important}.auth-error-toast{border-color:#FDE2E2!important}.button-loading{pointer-events:none}</style>
+.auth-card {
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.auth-card::-webkit-scrollbar { display: none; }
+
+/* -------------------- DECORATIVE BACKGROUND -------------------- */
+.floral-petal {
+    position: absolute;
+    background: linear-gradient(135deg, #fbcfe8 0%, #fce7f3 100%);
+    border-radius: 0 100% 0 100%;
+    transform-origin: bottom left;
+    opacity: 0.6;
+    animation: floatPetal 7s ease-in-out infinite;
+}
+@keyframes floatPetal {
+    0%, 100% { margin-top: 0px; }
+    50% { margin-top: -10px; }
+}
+
+/* Aavira action-button ring spinner — matches the home-screen spinner */
+.mini-spin {
+    width: 15px;
+    height: 15px;
+    border: 2px solid rgba(17,17,17,.15);
+    border-top-color: #111;
+    border-radius: 50%;
+    display: inline-block;
+    flex: 0 0 15px;
+    animation: authRingSpin .55s linear infinite;
+}
+.mini-spin.white {
+    border-color: rgba(255,255,255,.35);
+    border-top-color: #fff;
+}
+.mini-spin.rani {
+    border-color: rgba(216,27,96,.20);
+    border-top-color: #D81B60;
+}
+@keyframes authRingSpin { to { transform: rotate(360deg); } }
+
+.dot-loader { 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 6px; 
+}
+.dot-loader span { 
+    width: 8px; 
+    height: 8px; 
+    background-color: currentColor; 
+    border-radius: 50%; 
+    animation: dotBounce 1.4s infinite ease-in-out both; 
+}
+.dot-loader span:nth-child(1) { animation-delay: -0.32s; }
+.dot-loader span:nth-child(2) { animation-delay: -0.16s; }
+@keyframes dotBounce { 
+    0%, 80%, 100% { transform: scale(0); } 
+    40% { transform: scale(1); } 
+}
+
+.view-header-back {
+    width: 2rem;
+    height: 2rem;
+}
+
+/* -------------------- OTP DIGIT BOXES -------------------- */
+.otp-box {
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+.otp-box:focus {
+    transform: translateY(-2px);
+}
+@keyframes otpPop {
+    0% { transform: scale(0.8); }
+    55% { transform: scale(1.12); }
+    100% { transform: scale(1); }
+}
+.otp-box-filled {
+    animation: otpPop 0.22s ease;
+    border-color: #D81B60 !important;
+    background-color: #ffffff !important;
+}
+
+    </style>
 </head>
 <body class="font-sans text-gray-800 antialiased selection:bg-rani-pink selection:text-white relative">
 
@@ -53,16 +162,10 @@
     </div>
 
     <!-- ERROR NOTIFICATION ONLY -->
-    <div id="toast" role="alert" aria-live="assertive" class="fixed top-4 left-1/2 -translate-x-1/2 bg-white border border-red-100 text-gray-800 text-sm font-medium px-6 py-3 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 transform -translate-y-24 opacity-0 z-[9999] whitespace-nowrap flex items-center gap-3 pointer-events-none">
+    <div id="toast" role="alert" aria-live="assertive" class="fixed top-4 left-1/2 -translate-x-1/2 bg-white border-gray-200 text-gray-800 text-sm font-medium px-6 py-3 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 transform -translate-y-24 opacity-0 z-[9999] whitespace-nowrap flex items-center gap-3 pointer-events-none">
         <span id="toast-icon-wrapper"><i data-lucide="alert-circle" class="w-5 h-5 text-rani-pink"></i></span>
-        <span id="toast-msg"></span>
+        <span id="toast-msg" class="auth-toast-message"></span>
     </div>
-
-    <!-- MAIN TRANSITION LOADER -->
-    <div id="screenTransitionLoader" class="fixed inset-0 z-50 bg-[#FAFAFA]/70 backdrop-blur-[2px] hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300">
-        <div class="dot-loader text-rani-pink scale-[1.5]"><span></span><span></span><span></span></div>
-    </div>
-
     <div class="auth-card flex-1 flex flex-col justify-center w-full max-w-[400px] mx-auto px-5 py-3 z-10 relative">
         <div class="text-center mb-3 shrink-0">
             <img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira Fashion" class="h-11 object-contain mx-auto" onerror="this.src='https://via.placeholder.com/150x50?text=Aavira+Logo'" />
@@ -279,10 +382,864 @@
             <div class="h-px bg-gray-300 w-6"></div>
         </div>
     </div>
+    <!-- Inlined Auth Data + Logic -->
+    <script>
+// ==========================================
+// user_data.js (DATA PROVIDER & DELIVERY BOY)
+// ==========================================
 
-    <!-- Scripts Link -->
-    <script src="/user_data.js"></script>
-    <script src="/auth/login-script.js"></script>
-  <script data-aavira-ui>(function(){function f(){document.body.classList.add("aavira-theme");var s=document.querySelectorAll(".mini-spin,.fa-spin");for(var i=0;i<s.length;i++){(function(e){setTimeout(function(){e.classList.add("aavira-spinner-done")},4000)})(s[i])}}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",f,{once:true}):f()})();</script>
+// 🔥 1. PRODUCTS, MAIN PRODUCTS & BANNERS KE LIYE URL 🔥
+const VERCEL_URL = "https://server-js-psi-five.vercel.app";
+
+// 🔥 2. OTP, LOGIN AUR ORDERS KE LIYE NAYA URL 🔥
+const AUTH_URL = "https://ssxpq15in.vercel.app";
+
+
+// ==========================================
+// 1. DATA FETCHING (Products, Main Products, Banners, Categories)
+// ==========================================
+
+window.getVercelData = async function() {
+    try { 
+        const res = await fetch(`${VERCEL_URL}/api/products`); 
+        const data = await res.json(); 
+        return (res.ok && data.status === "success") ? data.data : []; 
+    } catch (e) { 
+        console.error("Products Fetch Error:", e);
+        return []; 
+    }
+};
+
+window.getMainProductsData = async function() {
+    try { 
+        const res = await fetch(`${VERCEL_URL}/api/main_products`); 
+        const data = await res.json(); 
+        return (res.ok && data.status === "success") ? data.data : []; 
+    } catch (e) { 
+        console.error("Main Products Fetch Error:", e);
+        return []; 
+    }
+};
+
+window.getBannersData = async function() {
+    try { 
+        const res = await fetch(`${VERCEL_URL}/api/banners`); 
+        const data = await res.json(); 
+        return (res.ok && data.status === "success") ? data.data : []; 
+    } catch (e) { 
+        return []; 
+    }
+};
+
+window.getCategoriesData = async function() {
+    try { 
+        const res = await fetch(`${VERCEL_URL}/api/categories`); 
+        const data = await res.json(); 
+        return (res.ok && data.status === "success") ? data.data : []; 
+    } catch (e) { 
+        return []; 
+    }
+};
+
+
+// ==========================================
+// 2. ORDERS LOGIC
+// ==========================================
+window.sendOrderToVercel = async function(orderPayload) {
+    try {
+        const response = await fetch(`${AUTH_URL}/api/orders`, { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify(orderPayload) 
+        });
+        const result = await response.json(); 
+        return (response.ok && result.status === "success");
+    } catch (error) { 
+        return false; 
+    }
+};
+
+
+// ==========================================
+// 3. PRODUCT REVIEWS LOGIC
+// ==========================================
+window.saveReviewToDatabase = async function(productId, reviewData) {
+    try {
+        const response = await fetch(`${VERCEL_URL}/api/add-review`, { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify({ productId: productId, review: reviewData }) 
+        });
+        const result = await response.json(); 
+        return result.success;
+    } catch (error) { 
+        return false; 
+    }
+};
+
+window.getReviewsFromDatabase = async function(productId) {
+    try {
+        const response = await fetch(`${VERCEL_URL}/api/get-reviews?productId=${productId}`);
+        const result = await response.json(); 
+        return (response.ok && result.success) ? result.data : [];
+    } catch (error) { 
+        return []; 
+    }
+};
+
+
+// ==========================================
+// 🌟 3.1. GLOBAL EXPERIENCE 🌟
+// ==========================================
+window.sendToVercelExperience = async function(expData) {
+    try {
+        const response = await fetch(`${VERCEL_URL}/api/experience`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(expData)
+        });
+        const result = await response.json();
+        return (response.ok && result.status === "success");
+    } catch (error) {
+        console.error("Experience Submit Error:", error);
+        return false;
+    }
+};
+
+window.getVercelExperiences = async function() {
+    try {
+        const response = await fetch(`${VERCEL_URL}/api/experience`);
+        const result = await response.json();
+        return (response.ok && result.status === "success" && result.data) ? result.data : [];
+    } catch (error) {
+        console.error("Experience Fetch Error:", error);
+        return [];
+    }
+};
+
+
+// ==========================================
+// 4. LOGIN & OTP DELIVERY BOY
+// ==========================================
+window.DeliveryBoy = {
+    sendOTP: async function(email, name) {
+        try {
+            const response = await fetch(`${AUTH_URL}/api/send-otp`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userEmail: email, userName: name })
+            });
+            const data = await response.json(); 
+            return { ok: response.ok, data: data };
+        } catch (error) { 
+            return { ok: false, data: { success: false, message: 'Auth Server Error!' } }; 
+        }
+    },
+
+    verifyOTP: async function(email, userOtp, name, pwd) {
+        try {
+            const response = await fetch(`${AUTH_URL}/api/verify-otp`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userEmail: email, userOTP: userOtp, userName: name, userPassword: pwd })
+            });
+            const data = await response.json(); 
+            return { ok: response.ok, data: data };
+        } catch (error) { 
+            return { ok: false, data: { success: false, message: 'Auth Server Error!' } }; 
+        }
+    },
+
+    login: async function(email, pwd) {
+        try {
+            const response = await fetch(`${AUTH_URL}/api/login`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userEmail: email, userPassword: pwd })
+            });
+            const data = await response.json(); 
+            return { ok: response.ok, data: data };
+        } catch (error) { 
+            return { ok: false, data: { success: false, message: 'Auth Server Error!' } }; 
+        }
+    },
+
+    checkEmailExists: async function(email) {
+        try {
+            const response = await fetch(`${AUTH_URL}/api/login`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userEmail: email, userPassword: "DUMMY_PASSWORD_CHECK_123" })
+            });
+            const data = await response.json();
+            if (data.message === "Incorrect Password!" || (data.message && data.message.includes("already registered"))) {
+                return { exists: true };
+            }
+            return { exists: false };
+        } catch (error) { 
+            return { exists: false }; 
+        }
+    },
+
+    // 🔥 NEW: Real Google Login API Call 🔥
+    googleLogin: async function(token) {
+        try {
+            const response = await fetch(`${AUTH_URL}/api/google-login`, {
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ googleToken: token })
+            });
+            const data = await response.json(); 
+            return { ok: response.ok, data: data };
+        } catch (error) { 
+            console.error("Google Login API Error:", error);
+            return { ok: false, data: { success: false, message: 'Google Auth Server Error!' } }; 
+        }
+    }
+};
+
+    </script>
+    <script>
+(function () {
+    'use strict';
+
+    const CONFIG = {
+        // NOTE: Make sure this Client ID is correct and authorized in Google Cloud Console
+        GOOGLE_CLIENT_ID: "247971292356-8906dpm406huv7uidlblhjum8vg3dfj3.apps.googleusercontent.com",
+        GOOGLE_PROMPT_TIMEOUT_MS: 30000, // Increased timeout for popup window
+        OTP_LENGTH: 6,
+        MIN_PASSWORD_LENGTH: 6,
+        RESEND_COOLDOWN_SECONDS: 30,
+        TOAST_DURATION: 3000,
+        VIEW_TRANSITION_DELAY: 400,
+        AUTO_SUBMIT_DELAY_MS: 150,
+        STORAGE_KEYS: {
+            NAME: 'aavira_display_name',
+            EMAIL: 'aavira_user_email'
+        }
+    };
+
+    const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const GOOGLE_BTN_ORIGINAL_HTML =
+        '<img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-4 h-4" alt="Google">' +
+        '<span>Continue with Google</span>';
+
+    let pendingSignup = { name: '', email: '', pwd: '' };
+    let pendingReset = { email: '' };
+    let toastTimer = null;
+    let resendCooldownInterval = null;
+    let googlePromptTimeout = null;
+    let activeGoogleBtnId = null; 
+    let isSubmitting = false; 
+
+    document.addEventListener('DOMContentLoaded', () => {
+        lucide.createIcons();
+        setupFixedBackground();
+        setupEnterKeySubmit();
+        setupOtpBoxGroup('otpBoxGroup', verifySignupOTP);
+        setupOtpBoxGroup('resetOtpBoxGroup', processResetPassword);
+    });
+
+    function setupFixedBackground() {
+        const fixedBg = document.getElementById('fixedBg');
+        const setHeight = () => {
+            fixedBg.style.height = (window.visualViewport ? window.visualViewport.height : window.innerHeight) + 'px';
+        };
+        setHeight();
+        window.addEventListener('resize', setHeight);
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', setHeight);
+        }
+    }
+
+    function setupEnterKeySubmit() {
+        const fieldToAction = {
+            signupName: processSignup,
+            signupEmail: processSignup,
+            signupPassword: processSignup,
+            loginEmail: processLogin,
+            loginPassword: processLogin,
+            forgotEmail: processForgotPassword,
+            newPassword: processResetPassword,
+            confirmPassword: processResetPassword
+        };
+        Object.keys(fieldToAction).forEach((id) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    fieldToAction[id]();
+                }
+            });
+        });
+    }
+
+    function setupOtpBoxGroup(groupId, onComplete) {
+        const group = document.getElementById(groupId);
+        if (!group) return;
+        const boxes = Array.from(group.querySelectorAll('.otp-box'));
+
+        const playPop = (box) => {
+            box.classList.remove('otp-box-filled');
+            void box.offsetWidth;
+            box.classList.add('otp-box-filled');
+        };
+
+        const checkAutoSubmit = () => {
+            const allFilled = boxes.every((b) => b.value.length === 1);
+            if (allFilled && typeof onComplete === 'function') {
+                setTimeout(onComplete, CONFIG.AUTO_SUBMIT_DELAY_MS);
+            }
+        };
+
+        boxes.forEach((box, index) => {
+            box.addEventListener('input', () => {
+                box.value = box.value.replace(/[^0-9]/g, '').slice(-1);
+                if (box.value) {
+                    playPop(box);
+                    if (boxes[index + 1]) boxes[index + 1].focus();
+                } else {
+                    box.classList.remove('otp-box-filled');
+                }
+                checkAutoSubmit();
+            });
+
+            box.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !box.value && boxes[index - 1]) {
+                    boxes[index - 1].focus();
+                } else if (e.key === 'ArrowLeft' && boxes[index - 1]) {
+                    e.preventDefault();
+                    boxes[index - 1].focus();
+                } else if (e.key === 'ArrowRight' && boxes[index + 1]) {
+                    e.preventDefault();
+                    boxes[index + 1].focus();
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (typeof onComplete === 'function') onComplete();
+                }
+            });
+
+            box.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
+                if (!pasted) return;
+                pasted.split('').slice(0, boxes.length).forEach((digit, i) => {
+                    boxes[i].value = digit;
+                    playPop(boxes[i]);
+                });
+                const nextEmpty = boxes.findIndex((b) => !b.value);
+                (boxes[nextEmpty] || boxes[boxes.length - 1]).focus();
+                checkAutoSubmit();
+            });
+        });
+    }
+
+    function getOtpBoxValue(groupId) {
+        const group = document.getElementById(groupId);
+        if (!group) return '';
+        return Array.from(group.querySelectorAll('.otp-box')).map((b) => b.value).join('');
+    }
+
+    function clearOtpBoxGroup(groupId) {
+        const group = document.getElementById(groupId);
+        if (!group) return;
+        const boxes = Array.from(group.querySelectorAll('.otp-box'));
+        boxes.forEach((b) => { b.value = ''; b.classList.remove('otp-box-filled'); });
+        if (boxes[0]) boxes[0].focus();
+    }
+
+    function showToast(message, type = 'error') {
+        const toast = document.getElementById('toast');
+        const msg = document.getElementById('toast-msg');
+        const iconWrapper = document.getElementById('toast-icon-wrapper');
+        if (!toast || !msg || !iconWrapper) return;
+
+        clearTimeout(toastTimer);
+        msg.textContent = message;
+
+        const isSuccess = type === 'success';
+        toast.classList.toggle('auth-toast-success', isSuccess);
+        toast.classList.toggle('auth-toast-error', !isSuccess);
+        iconWrapper.innerHTML = '<i data-lucide="' + (isSuccess ? 'check-circle-2' : 'alert-circle') + '" class="w-5 h-5"></i>';
+        lucide.createIcons();
+
+        toast.classList.remove('opacity-0', '-translate-y-24', 'pointer-events-none');
+        toast.classList.add('translate-y-0');
+
+        toastTimer = setTimeout(() => {
+            toast.classList.add('opacity-0', '-translate-y-24', 'pointer-events-none');
+            toast.classList.remove('translate-y-0');
+        }, CONFIG.TOAST_DURATION);
+    }
+
+    function switchView(viewId) {
+        const views = ['loginView', 'signupView', 'otpView', 'forgotView', 'resetOtpView'];
+
+        if (viewId !== 'resetOtpView') {
+            clearInterval(resendCooldownInterval);
+            const resendBtn = document.getElementById('btnResendReset');
+            if (resendBtn) {
+                resendBtn.disabled = false;
+                resendBtn.innerText = 'Resend Code';
+            }
+        }
+
+        const target = document.getElementById(viewId);
+        if (!target) return;
+
+        views.forEach((id) => {
+            const view = document.getElementById(id);
+            if (view) view.className = id === viewId ? 'view-active' : 'view-hidden';
+        });
+
+        lucide.createIcons();
+    }
+
+    function togglePassword(inputId, buttonId) {
+        const input = document.getElementById(inputId);
+        const btn = document.getElementById(buttonId);
+        const isHidden = input.type === 'password';
+
+        input.type = isHidden ? 'text' : 'password';
+        btn.innerHTML = isHidden
+            ? '<i data-lucide="eye" class="w-4 h-4"></i>'
+            : '<i data-lucide="eye-off" class="w-4 h-4"></i>';
+        lucide.createIcons();
+    }
+
+    function setBtnLoading(btnId, isLoading, originalHtml, opts = {}) {
+        const btn = document.getElementById(btnId);
+        const loaderColor = opts.loaderColor || 'text-white';
+        const loadingLabel = opts.loadingLabel || 'Processing...';
+
+        if (!btn) return;
+
+        if (isLoading) {
+            btn.disabled = true;
+            btn.classList.add('opacity-90', 'cursor-not-allowed');
+            const spinnerClass = loaderColor === 'text-rani-pink' ? 'mini-spin rani' : 'mini-spin white';
+            btn.innerHTML = `<span class="${spinnerClass}" aria-hidden="true"></span><span>${loadingLabel}</span>`;
+        } else {
+            btn.disabled = false;
+            btn.classList.remove('opacity-90', 'cursor-not-allowed');
+            btn.innerHTML = originalHtml;
+        }
+        lucide.createIcons();
+    }
+
+    function validateSignupInputs(name, email, pwd) {
+        if (!name || !email || !pwd) return 'All fields are required.';
+        if (name.length < 2) return 'Please enter your full name.';
+        if (!EMAIL_REGEX.test(email)) return 'Please enter a valid email address.';
+        if (pwd.length < CONFIG.MIN_PASSWORD_LENGTH) return `Password must be at least ${CONFIG.MIN_PASSWORD_LENGTH} characters.`;
+        return null;
+    }
+
+    function validateLoginInputs(email, pwd) {
+        if (!email || !pwd) return 'Please enter email & password.';
+        return null;
+    }
+
+    function extractErrorMessage(result, fallback) {
+        return (result && result.data && result.data.message) || fallback;
+    }
+
+    function persistSession(name, email) {
+        try {
+            localStorage.setItem(CONFIG.STORAGE_KEYS.NAME, name);
+            localStorage.setItem(CONFIG.STORAGE_KEYS.EMAIL, email);
+        } catch (e) {
+            console.warn('Unable to persist session locally:', e);
+        }
+    }
+
+    function redirectHome(delay = 1000) {
+        setTimeout(() => { window.location.href = '/'; }, delay);
+    }
+
+    function goToHome() {
+        window.location.href = '/';
+    }
+
+    // ------------------------------------------------------------------
+    // UPDATED GOOGLE LOGIN - Using Popup instead of One Tap
+    // ------------------------------------------------------------------
+    function performGoogleLogin(triggerBtnId) {
+        if (typeof google === 'undefined' || !google.accounts) {
+            showToast('Google service unable to load. Check connection.', 'error');
+            return;
+        }
+        if (isSubmitting) return;
+
+        isSubmitting = true;
+        activeGoogleBtnId = triggerBtnId;
+        setBtnLoading(triggerBtnId, true, GOOGLE_BTN_ORIGINAL_HTML, {
+            loaderColor: 'text-rani-pink',
+            loadingLabel: 'Connecting...'
+        });
+
+        try {
+            const client = google.accounts.oauth2.initTokenClient({
+                client_id: CONFIG.GOOGLE_CLIENT_ID,
+                scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+                callback: (response) => {
+                    if (response && response.access_token) {
+                        handleGoogleLoginResponse(response.access_token);
+                    }
+                },
+                error_callback: (error) => {
+                    resetGoogleButton();
+                    // Agar user ne khud window close ki hai, to error mat dikhao
+                    if (error.type !== 'popup_closed' && error.type !== 'access_denied') {
+                        showToast('Google sign-in failed or cancelled.', 'error');
+                    }
+                }
+            });
+
+            // Trigger the explicit popup
+            client.requestAccessToken();
+            
+            // Safety timeout in case the popup gets stuck or blocked
+            clearTimeout(googlePromptTimeout);
+            googlePromptTimeout = setTimeout(() => {
+                if(isSubmitting) {
+                    resetGoogleButton();
+                    showToast('Google sign-in timed out. Please try again.', 'error');
+                }
+            }, CONFIG.GOOGLE_PROMPT_TIMEOUT_MS);
+
+        } catch (err) {
+            resetGoogleButton();
+            showToast('Unable to initialize Google Sign-In.', 'error');
+        }
+    }
+
+    function resetGoogleButton() {
+        isSubmitting = false;
+        if (activeGoogleBtnId) {
+            setBtnLoading(activeGoogleBtnId, false, GOOGLE_BTN_ORIGINAL_HTML);
+            activeGoogleBtnId = null;
+        }
+    }
+
+    async function handleGoogleLoginResponse(googleAccessToken) {
+        clearTimeout(googlePromptTimeout);
+        showToast('Google verified! Signing you in...', 'success');
+
+        try {
+            if (!window.DeliveryBoy || !window.DeliveryBoy.googleLogin) {
+                showToast('Google login succeeded, but backend linking is pending.', 'success');
+                return;
+            }
+
+            // Backend is given the OAuth access token
+            const result = await window.DeliveryBoy.googleLogin(googleAccessToken);
+
+            if (result && result.ok && result.data && result.data.success) {
+                persistSession(result.data.userName, result.data.email);
+                showToast('Signed in successfully!', 'success');
+                redirectHome();
+            } else {
+                showToast(extractErrorMessage(result, 'Google login failed.'), 'error');
+            }
+        } catch (err) {
+            showToast('Network error. Please try again.', 'error');
+        } finally {
+            resetGoogleButton();
+        }
+    }
+    // ------------------------------------------------------------------
+
+    function resolveSendResetOtp() {
+        if (!window.DeliveryBoy) return null;
+        return window.DeliveryBoy.sendPasswordResetOTP
+            || window.DeliveryBoy.sendResetOTP
+            || window.DeliveryBoy.forgotPassword
+            || null;
+    }
+
+    function resolveConfirmReset() {
+        if (!window.DeliveryBoy) return null;
+        return window.DeliveryBoy.resetPassword
+            || window.DeliveryBoy.confirmPasswordReset
+            || window.DeliveryBoy.verifyPasswordReset
+            || null;
+    }
+
+    function validateForgotEmail(email) {
+        if (!email) return 'Please enter your registered email.';
+        if (!EMAIL_REGEX.test(email)) return 'Please enter a valid email address.';
+        return null;
+    }
+
+    function validateResetPasswordInputs(otp, newPwd, confirmPwd) {
+        if (otp.length !== CONFIG.OTP_LENGTH) return `Enter the complete ${CONFIG.OTP_LENGTH}-digit code.`;
+        if (newPwd.length < CONFIG.MIN_PASSWORD_LENGTH) return `Password must be at least ${CONFIG.MIN_PASSWORD_LENGTH} characters.`;
+        if (newPwd !== confirmPwd) return 'New password and confirm password do not match.';
+        return null;
+    }
+
+    function startResendCooldown() {
+        const btn = document.getElementById('btnResendReset');
+        let remaining = CONFIG.RESEND_COOLDOWN_SECONDS;
+
+        btn.disabled = true;
+        btn.innerText = `Resend Code (${remaining}s)`;
+
+        clearInterval(resendCooldownInterval);
+        resendCooldownInterval = setInterval(() => {
+            remaining -= 1;
+            if (remaining <= 0) {
+                clearInterval(resendCooldownInterval);
+                btn.disabled = false;
+                btn.innerText = 'Resend Code';
+            } else {
+                btn.innerText = `Resend Code (${remaining}s)`;
+            }
+        }, 1000);
+    }
+
+    async function processForgotPassword() {
+        if (isSubmitting) return;
+
+        const email = document.getElementById('forgotEmail').value.trim().toLowerCase();
+        const validationError = validateForgotEmail(email);
+        if (validationError) {
+            showToast(validationError, 'error');
+            return;
+        }
+
+        const sendResetOtp = resolveSendResetOtp();
+        if (!sendResetOtp) {
+            showToast('Password reset service is not available right now.', 'error');
+            return;
+        }
+
+        const originalBtnHTML = '<span>Send Reset Code</span><i data-lucide="arrow-right" class="w-4 h-4"></i>';
+        isSubmitting = true;
+        setBtnLoading('btnForgotAction', true, originalBtnHTML);
+        pendingReset = { email };
+
+        try {
+            const result = await sendResetOtp(email);
+            if (result && result.ok && result.data && result.data.success) {
+                showToast('Reset code sent to your email!', 'success');
+                document.getElementById('resetOtpSubText').innerText = email;
+                clearOtpBoxGroup('resetOtpBoxGroup');
+                document.getElementById('newPassword').value = '';
+                document.getElementById('confirmPassword').value = '';
+                switchView('resetOtpView');
+                startResendCooldown();
+            } else {
+                showToast(extractErrorMessage(result, 'Unable to send reset code. Please check the email and try again.'), 'error');
+            }
+        } catch (err) {
+            showToast('Network error. Please try again.', 'error');
+        } finally {
+            setBtnLoading('btnForgotAction', false, originalBtnHTML);
+            isSubmitting = false;
+        }
+    }
+
+    async function resendResetOtp() {
+        if (isSubmitting || !pendingReset.email) return;
+
+        const btn = document.getElementById('btnResendReset');
+        const originalBtnHTML = btn ? btn.innerHTML : '<span>Resend Code</span>';
+        const sendResetOtp = resolveSendResetOtp();
+        if (!sendResetOtp) {
+            showToast('Password reset service is not available right now.', 'error');
+            return;
+        }
+
+        isSubmitting = true;
+        setBtnLoading('btnResendReset', true, originalBtnHTML, { loadingLabel: 'Sending...' });
+
+        try {
+            const result = await sendResetOtp(pendingReset.email);
+            if (result && result.ok && result.data && result.data.success) {
+                showToast('A new code has been sent.', 'success');
+                startResendCooldown();
+            } else {
+                showToast(extractErrorMessage(result, 'Unable to resend code.'), 'error');
+            }
+        } catch (err) {
+            showToast('Network error. Please try again.', 'error');
+        } finally {
+            setBtnLoading('btnResendReset', false, originalBtnHTML);
+            isSubmitting = false;
+        }
+    }
+
+    async function processResetPassword() {
+        if (isSubmitting) return;
+
+        const otp = getOtpBoxValue('resetOtpBoxGroup');
+        const newPwd = document.getElementById('newPassword').value.trim();
+        const confirmPwd = document.getElementById('confirmPassword').value.trim();
+
+        const validationError = validateResetPasswordInputs(otp, newPwd, confirmPwd);
+        if (validationError) {
+            showToast(validationError, 'error');
+            return;
+        }
+
+        const confirmReset = resolveConfirmReset();
+        if (!confirmReset) {
+            showToast('Password reset service is not available right now.', 'error');
+            return;
+        }
+
+        const originalBtnHTML = '<span>Reset Password</span><i data-lucide="check-circle" class="w-4 h-4"></i>';
+        isSubmitting = true;
+        setBtnLoading('btnResetAction', true, originalBtnHTML);
+
+        try {
+            const result = await confirmReset(pendingReset.email, otp, newPwd);
+            if (result && result.ok && result.data && result.data.success) {
+                showToast('Password reset successfully! Please login.', 'success');
+                clearInterval(resendCooldownInterval);
+                document.getElementById('loginEmail').value = pendingReset.email;
+                document.getElementById('loginPassword').value = '';
+                pendingReset = { email: '' };
+                setTimeout(() => switchView('loginView'), 1200);
+            } else {
+                showToast(extractErrorMessage(result, 'Invalid or expired code.'), 'error');
+            }
+        } catch (err) {
+            showToast('Network error. Please try again.', 'error');
+        } finally {
+            setBtnLoading('btnResetAction', false, originalBtnHTML);
+            isSubmitting = false;
+        }
+    }
+
+    async function processSignup() {
+        if (isSubmitting) return;
+
+        const name = document.getElementById('signupName').value.trim();
+        const email = document.getElementById('signupEmail').value.trim().toLowerCase();
+        const pwd = document.getElementById('signupPassword').value.trim();
+
+        const validationError = validateSignupInputs(name, email, pwd);
+        if (validationError) {
+            showToast(validationError, 'error');
+            return;
+        }
+
+        if (!window.DeliveryBoy) {
+            showToast('System error: Unable to connect to server.', 'error');
+            return;
+        }
+
+        const originalBtnHTML = '<span>Create Account</span><i data-lucide="arrow-right" class="w-4 h-4"></i>';
+        isSubmitting = true;
+        setBtnLoading('btnSignupAction', true, originalBtnHTML);
+        pendingSignup = { name, email, pwd };
+
+        try {
+            const result = await window.DeliveryBoy.sendOTP(email, name);
+            if (result && result.ok && result.data && result.data.success) {
+                showToast('Verification code sent!', 'success');
+                document.getElementById('otpSubText').innerText = email;
+                clearOtpBoxGroup('otpBoxGroup');
+                switchView('otpView');
+            } else {
+                showToast(extractErrorMessage(result, 'Error sending code.'), 'error');
+            }
+        } catch (err) {
+            showToast('Network error. Please try again.', 'error');
+        } finally {
+            setBtnLoading('btnSignupAction', false, originalBtnHTML);
+            isSubmitting = false;
+        }
+    }
+
+    async function verifySignupOTP() {
+        if (isSubmitting) return;
+
+        const otpVal = getOtpBoxValue('otpBoxGroup');
+        if (otpVal.length !== CONFIG.OTP_LENGTH) {
+            showToast(`Enter the complete ${CONFIG.OTP_LENGTH}-digit code.`, 'error');
+            return;
+        }
+
+        if (!window.DeliveryBoy) {
+            showToast('System error: Unable to connect to server.', 'error');
+            return;
+        }
+
+        const originalBtnHTML = '<span>Verify & Login</span><i data-lucide="check-circle" class="w-4 h-4"></i>';
+        isSubmitting = true;
+        setBtnLoading('btnOtpAction', true, originalBtnHTML);
+
+        try {
+            const result = await window.DeliveryBoy.verifyOTP(
+                pendingSignup.email, otpVal, pendingSignup.name, pendingSignup.pwd
+            );
+            if (result && result.ok && result.data && result.data.success) {
+                persistSession(pendingSignup.name, pendingSignup.email);
+                showToast('Welcome to Aavira!', 'success');
+                redirectHome(1500);
+            } else {
+                showToast(extractErrorMessage(result, 'Invalid OTP code.'), 'error');
+            }
+        } catch (err) {
+            showToast('Network error. Please try again.', 'error');
+        } finally {
+            setBtnLoading('btnOtpAction', false, originalBtnHTML);
+            isSubmitting = false;
+        }
+    }
+
+    async function processLogin() {
+        if (isSubmitting) return;
+
+        const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+        const pwd = document.getElementById('loginPassword').value.trim();
+
+        const validationError = validateLoginInputs(email, pwd);
+        if (validationError) {
+            showToast(validationError, 'error');
+            return;
+        }
+
+        if (!window.DeliveryBoy) {
+            showToast('System error: Unable to connect to server.', 'error');
+            return;
+        }
+
+        const originalBtnHTML = '<span>Login</span><i data-lucide="arrow-right" class="w-4 h-4"></i>';
+        isSubmitting = true;
+        setBtnLoading('btnLoginAction', true, originalBtnHTML);
+
+        try {
+            const result = await window.DeliveryBoy.login(email, pwd);
+            if (result && result.ok && result.data && result.data.success) {
+                persistSession(result.data.userName || email.split('@')[0], email);
+                showToast('Signed in successfully!', 'success');
+                redirectHome();
+            } else {
+                showToast(extractErrorMessage(result, 'Invalid credentials.'), 'error');
+            }
+        } catch (err) {
+            showToast('Network error. Please try again.', 'error');
+        } finally {
+            setBtnLoading('btnLoginAction', false, originalBtnHTML);
+            isSubmitting = false;
+        }
+    }
+
+    window.showToast = showToast;
+    window.switchView = switchView;
+    window.togglePassword = togglePassword;
+    window.performGoogleLogin = performGoogleLogin;
+    window.processSignup = processSignup;
+    window.verifySignupOTP = verifySignupOTP;
+    window.processLogin = processLogin;
+    window.processForgotPassword = processForgotPassword;
+    window.resendResetOtp = resendResetOtp;
+    window.processResetPassword = processResetPassword;
+    window.goToHome = goToHome;
+})();
+
+    </script>
 </body>
 </html>
