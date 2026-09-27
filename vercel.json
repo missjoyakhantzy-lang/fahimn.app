@@ -5,6 +5,8 @@
     { "source": "/login.html", "destination": "/auth/aavirafashion", "permanent": true },
     { "source": "/login", "destination": "/auth/aavirafashion", "permanent": true },
     { "source": "/auth/aavirafashion/", "destination": "/auth/aavirafashion", "permanent": true },
+    { "source": "/auth/verify.html", "destination": "/auth/verify", "permanent": true },
+    { "source": "/auth/verify/", "destination": "/auth/verify", "permanent": true },
     { "source": "/profile.html", "destination": "/profile", "permanent": true },
     { "source": "/product.html", "destination": "/product", "permanent": true },
     { "source": "/cart.html", "destination": "/cart", "permanent": true },
@@ -18,6 +20,7 @@
   ],
   "rewrites": [
     { "source": "/auth/aavirafashion", "destination": "/login.html" },
+    { "source": "/auth/verify", "destination": "/auth/verify.html" },
     { "source": "/profile", "destination": "/profile.html" },
     { "source": "/product", "destination": "/product.html" },
     { "source": "/cart", "destination": "/cart.html" },
