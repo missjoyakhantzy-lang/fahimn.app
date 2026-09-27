@@ -133,7 +133,7 @@
             <div class="profile-logo text-[25px] leading-none">Aavira Fashion</div>
             <div class="text-[8px] font-bold tracking-[3px] mt-1.5 opacity-90">PREMIUM ETHNIC WEAR</div>
         </div>
-        <button onclick="showToast('Settings')" class="w-10 h-10 rounded-full bg-black/20 flex items-center justify-center active:scale-90 transition-transform">
+        <button onclick="openSettingsPanel()" class="w-10 h-10 rounded-full bg-black/20 flex items-center justify-center active:scale-90 transition-transform">
             <i data-lucide="settings" class="w-5 h-5"></i>
         </button>
     </header>
@@ -349,7 +349,6 @@
 
         const guestUI = document.getElementById('guestProfileUI');
         const vipUI = document.getElementById('vipProfileUI');
-        const logoutBtn = document.getElementById('logoutBtnWrapper');
         const identityGuestActions = document.getElementById('identityGuestActions');
 
         guestUI.classList.add('hidden');
@@ -377,7 +376,6 @@
         }
 
         if (isLoggedIn) {
-            logoutBtn.classList.remove('hidden');
 
             document.getElementById('vipName').innerText = userName;
             document.getElementById('vipEmail').innerText = userEmail || 'user@example.com';
@@ -390,7 +388,6 @@
             }
 
         } else {
-            logoutBtn.classList.add('hidden');
             document.getElementById('vipName').innerText = 'Guest User';
             document.getElementById('vipEmail').innerText = 'Guest Account';
             document.getElementById('profileInitial').innerText = 'G';
