@@ -397,8 +397,8 @@ body.aavira-theme .card-loading-overlay{
                         <h3 class="text-[23px] text-[#121722] font-extrabold leading-tight truncate">Guest User</h3>
                         <p class="text-gray-500 text-[13px] mt-1 mb-3">Guest Account</p>
                         <div class="flex gap-2">
-                            <button onclick="triggerDotAction('login', this)" class="bg-rani-pink text-white text-[12px] font-bold px-6 py-2.5 rounded-full hover:opacity-90 transition-all">Login</button>
-                            <button onclick="window.location.href='/auth/verify'" class="bg-[#FFF0F5] border border-pink-100 text-rani-pink text-[12px] font-bold px-6 py-2.5 rounded-full hover:bg-pink-50 transition-all">Sign Up</button>
+                            <button onclick="triggerDotAction('login', this)" class="bg-rani-pink text-white text-[12px] font-bold px-6 py-2.5 rounded-full hover:opacity-90 transition-all flex items-center justify-center gap-2"><span>Login</span></button>
+                            <button onclick="triggerDotAction('/auth/verify', this)" class="bg-[#FFF0F5] border border-pink-100 text-rani-pink text-[12px] font-bold px-6 py-2.5 rounded-full hover:bg-pink-50 transition-all flex items-center justify-center gap-2"><span>Sign Up</span></button>
                         </div>
                     </div>
                 </div>
@@ -789,6 +789,14 @@ window.stopLocalLoad=(el)=>{
 window.triggerDotAction=(url,el=null)=>{
     window.vibrateApp(30);
     if(el)window.startLocalLoad(el);
+    if(el && (url==='login'||url==='/auth/verify')){
+        const label=el.querySelector('span');
+        if(label){
+            label.dataset.originalText=label.textContent;
+            label.innerHTML='<span class="inline-block w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin"></span>';
+        }
+        el.disabled=true;
+    }
     if(url==='login')url='/auth/verify';
     if(!url||url==='#'||url.trim()===''){
         setTimeout(()=>{if(el)window.stopLocalLoad(el);window.showToast("Offer / Page Not Found","error")},450);
