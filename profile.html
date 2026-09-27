@@ -34,9 +34,26 @@
 
     <style>
         body {
-            background-color: #EEF0F3;
+            background: #FFF4F8;
             -webkit-tap-highlight-color: transparent;
         }
+        .profile-shell{background:linear-gradient(180deg,#FFF0F5 0%,#FFF7FA 28%,#FFFFFF 100%);}
+        .profile-hero{position:relative;min-height:112px;background:radial-gradient(circle at 12% 18%,rgba(255,255,255,.22) 0 2px,transparent 3px),radial-gradient(circle at 82% 20%,rgba(255,255,255,.16) 0 2px,transparent 3px),radial-gradient(circle at 55% 78%,rgba(255,255,255,.12) 0 2px,transparent 3px),linear-gradient(135deg,#D81B60 0%,#C2185B 52%,#B81550 100%);border-radius:0 0 34px 34px;overflow:hidden;}
+        .profile-hero:before,.profile-hero:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.12);border-radius:50%;pointer-events:none;}
+        .profile-hero:before{width:180px;height:180px;left:-55px;top:-110px}.profile-hero:after{width:220px;height:220px;right:-75px;top:-125px}
+        .profile-logo{font-family:'Playfair Display',serif;letter-spacing:-.3px}
+        .profile-main-card{margin:-20px 14px 0;position:relative;z-index:3;background:#fff;border-radius:26px;box-shadow:0 10px 28px rgba(216,27,96,.10);border:1px solid rgba(216,27,96,.07);overflow:hidden}
+        .profile-stat+.profile-stat{border-left:1px solid #F1E8EC}
+        .profile-avatar{width:76px;height:76px;border-radius:50%;background:#FFF0F5;border:3px solid #D81B60;color:#D81B60;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;overflow:hidden;flex-shrink:0}
+        .profile-menu-card{margin:18px 14px 28px;background:#fff;border:1px solid #F3E6EC;border-radius:26px;padding:7px 14px;box-shadow:0 8px 22px rgba(31,20,26,.05)}
+        .profile-menu-row{min-height:66px;border-bottom:1px solid #F1EDF0}
+        .profile-menu-row:last-child{border-bottom:0}
+        .profile-menu-icon{width:42px;height:42px;border-radius:50%;background:#FFF0F5;color:#D81B60;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .profile-menu-icon i{width:21px;height:21px}
+        .profile-menu-title{font-size:14px;font-weight:700;color:#171317;line-height:1.15}
+        .profile-menu-sub{font-size:11px;color:#7B7479;margin-top:3px;line-height:1.25}
+        .profile-chevron{color:#6B6870;width:19px;height:19px;flex-shrink:0}
+        .profile-logout{background:#FFF0F5;color:#D81B60;border:1px solid #F6D4E1}
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 
@@ -99,326 +116,109 @@
 
 <div class="w-full max-w-[440px] bg-white min-h-screen flex flex-col relative shadow-2xl overflow-x-hidden">
 
-    <!-- HEADER -->
-    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-pink-100 flex items-center justify-between px-5 py-4">
-        <button onclick="window.location.href='./'" class="w-9 h-9 rounded-full bg-pink-50 flex items-center justify-center text-gray-600 hover:bg-pink-100 hover:text-rani-pink transition-colors active:scale-90">
-            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+    <!-- AAVIRA PROFILE HEADER -->
+    <header class="profile-hero sticky top-0 z-50 flex items-start justify-between px-5 pt-4 pb-7 text-white">
+        <button onclick="window.location.href='./'" class="w-10 h-10 rounded-full bg-black/20 flex items-center justify-center active:scale-90 transition-transform">
+            <i data-lucide="chevron-left" class="w-6 h-6"></i>
         </button>
-        <div class="text-center">
-            <h1 class="font-serif text-lg font-bold text-gray-900 leading-none">My Profile</h1>
-            <p class="text-[9px] font-bold text-rani-pink uppercase tracking-[2px] mt-1">Aavira Member</p>
+        <div class="text-center pt-0.5">
+            <div class="profile-logo text-[25px] leading-none">Aavira Fashion</div>
+            <div class="text-[8px] font-bold tracking-[3px] mt-1.5 opacity-90">PREMIUM ETHNIC WEAR</div>
         </div>
-        <button onclick="window.location.href='cart.html'" class="w-9 h-9 rounded-full bg-pink-50 flex items-center justify-center text-gray-600 hover:bg-pink-100 hover:text-rani-pink transition-colors active:scale-90 relative">
-            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-            <span id="headerCartBadge" class="hidden absolute -top-1 -right-1 bg-rani-pink text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">0</span>
+        <button onclick="showToast('Settings')" class="w-10 h-10 rounded-full bg-black/20 flex items-center justify-center active:scale-90 transition-transform">
+            <i data-lucide="settings" class="w-5 h-5"></i>
         </button>
     </header>
 
     <!-- SCROLLABLE CONTENT -->
-    <div class="flex-1 overflow-y-auto hide-scroll pb-10 entrance">
+    <div class="flex-1 overflow-y-auto hide-scroll pb-8 entrance profile-shell">
+        <div id="guestProfileUI" class="hidden"></div>
 
-        <!-- ============================== -->
-        <!-- 1. GUEST PROFILE UI -->
-        <!-- ============================== -->
-        <div id="guestProfileUI" class="hidden flex-col items-center text-center mt-6 mx-5 p-8 bg-white border border-pink-100 rounded-3xl shadow-sm">
-            <div class="w-20 h-20 bg-pink-50 border border-pink-100 rounded-full flex items-center justify-center text-rani-pink mb-4">
-                <i data-lucide="user" class="w-10 h-10"></i>
+        <section id="vipProfileUI" class="profile-main-card">
+            <div class="px-5 pt-4 pb-4 flex items-center gap-4">
+                <div class="relative">
+                    <div id="profileAvatar" class="profile-avatar"><span id="profileInitial">G</span></div>
+                    <div class="absolute -right-1 -bottom-1 w-7 h-7 rounded-full bg-rani-pink text-white border-2 border-white flex items-center justify-center shadow-sm">
+                        <i data-lucide="camera" class="w-3.5 h-3.5"></i>
+                    </div>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-1.5">
+                        <h2 id="vipName" class="text-[20px] font-extrabold text-gray-900 truncate">Guest User</h2>
+                        <i id="verifiedTick" data-lucide="badge-check" class="hidden w-4 h-4 text-rani-pink shrink-0"></i>
+                    </div>
+                    <p id="vipEmail" class="text-[12px] text-gray-500 mt-1 truncate">Guest Account</p>
+                    <div id="tierPill" class="inline-flex items-center gap-1 mt-2 px-2.5 py-1 rounded-full bg-pink-50 text-rani-pink text-[9px] font-bold tracking-wider">
+                        <i data-lucide="shield" class="w-3 h-3"></i><span id="tierLabel">Silver Member</span>
+                    </div>
+                </div>
+                <button onclick="handleTierCardClick()" class="shrink-0 text-gray-500 active:scale-90">
+                    <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                </button>
             </div>
-            <h3 class="font-serif text-[24px] text-gray-900 font-bold leading-tight mb-1">
-                Welcome, Guest
-            </h3>
-            <p class="text-gray-500 text-[12px] font-medium mb-6">
-                Sign in to track orders, save your wishlist, and unlock exclusive member privileges.
-            </p>
-            <button onclick="window.location.href='/auth/aavirafashion.html'" class="bg-[#FFF0F5] border border-pink-200 text-rani-pink text-[14px] font-bold tracking-widest uppercase px-8 py-3.5 rounded-xl hover:bg-rani-pink hover:text-white transition-all w-full flex items-center justify-center gap-2 active:scale-95 shadow-sm">
-                <i data-lucide="log-in" class="w-4 h-4"></i> Sign In
+
+            <div class="grid grid-cols-4 border-t border-gray-100">
+                <button onclick="window.location.href='orders.html'" class="profile-stat py-4 flex flex-col items-center">
+                    <i data-lucide="shopping-bag" class="w-5 h-5 text-rani-pink"></i><span id="statOrders" class="text-[18px] font-extrabold text-gray-900 mt-1">0</span><span class="text-[10px] text-gray-500">Orders</span>
+                </button>
+                <button onclick="window.location.href='wishlist.html'" class="profile-stat py-4 flex flex-col items-center">
+                    <i data-lucide="heart" class="w-5 h-5 text-rani-pink"></i><span id="statWishlist" class="text-[18px] font-extrabold text-gray-900 mt-1">0</span><span class="text-[10px] text-gray-500">Wishlist</span>
+                </button>
+                <button onclick="showToast('Total spent: ₹'+(document.getElementById('statSpent')?.innerText||'0'))" class="profile-stat py-4 flex flex-col items-center">
+                    <i data-lucide="wallet-cards" class="w-5 h-5 text-rani-pink"></i><span id="statSpent" class="text-[18px] font-extrabold text-gray-900 mt-1">0</span><span class="text-[10px] text-gray-500">Total Spent</span>
+                </button>
+                <button onclick="showToast((document.getElementById('pointsLabel')?.innerText||'0 points'))" class="profile-stat py-4 flex flex-col items-center">
+                    <i data-lucide="star" class="w-5 h-5 text-rani-pink"></i><span id="statRewards" class="text-[18px] font-extrabold text-gray-900 mt-1">0</span><span class="text-[10px] text-gray-500">Reward Points</span>
+                </button>
+            </div>
+
+            <div class="hidden">
+                <span id="pointsLabel">0 points</span><span id="nextTierLabel">Next: Gold</span>
+                <div id="tierProgressBar"></div><div id="tierBadgeIcon"></div>
+                <span id="referralCode">AAVIRA00</span><div id="referralCard"></div>
+                <div id="memberSinceStrip"><span id="memberSinceText"></span></div>
+            </div>
+        </section>
+
+        <section class="profile-menu-card">
+            <a href="#" onclick="event.preventDefault();showToast('Profile details')" class="profile-menu-row flex items-center gap-3">
+                <span class="profile-menu-icon"><i data-lucide="user"></i></span><span class="flex-1"><span class="profile-menu-title block">My Profile</span><span class="profile-menu-sub block">Manage your personal information</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
+            </a>
+            <a href="#" onclick="event.preventDefault();showToast('Address book coming soon!')" class="profile-menu-row flex items-center gap-3">
+                <span class="profile-menu-icon"><i data-lucide="map-pin"></i></span><span class="flex-1"><span class="profile-menu-title block">Addresses</span><span class="profile-menu-sub block">Manage your delivery addresses</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
+            </a>
+            <a href="orders.html" class="profile-menu-row flex items-center gap-3">
+                <span class="profile-menu-icon"><i data-lucide="package"></i></span><span class="flex-1"><span class="profile-menu-title block">My Orders</span><span class="profile-menu-sub block">Track and view your orders</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
+            </a>
+            <a href="wishlist.html" class="profile-menu-row flex items-center gap-3">
+                <span class="profile-menu-icon"><i data-lucide="heart"></i></span><span class="flex-1"><span class="profile-menu-title block">Wishlist</span><span class="profile-menu-sub block">Your saved products</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
+            </a>
+            <a href="#" onclick="event.preventDefault();showToast('Payment methods coming soon!')" class="profile-menu-row flex items-center gap-3">
+                <span class="profile-menu-icon"><i data-lucide="credit-card"></i></span><span class="flex-1"><span class="profile-menu-title block">Payment Methods</span><span class="profile-menu-sub block">Manage cards, UPI & wallets</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
+            </a>
+            <a href="offer.html" class="profile-menu-row flex items-center gap-3">
+                <span class="profile-menu-icon"><i data-lucide="tag"></i></span><span class="flex-1"><span class="profile-menu-title block">My Offers</span><span class="profile-menu-sub block">View available offers & coupons</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
+            </a>
+            <a href="#" onclick="event.preventDefault();showToast('Coupons coming soon!')" class="profile-menu-row flex items-center gap-3">
+                <span class="profile-menu-icon"><i data-lucide="ticket"></i></span><span class="flex-1"><span class="profile-menu-title block">My Coupons</span><span class="profile-menu-sub block">Your saved coupons</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
+            </a>
+            <a href="#" onclick="event.preventDefault();showToast('Notification preferences')" class="profile-menu-row flex items-center gap-3">
+                <span class="profile-menu-icon"><i data-lucide="bell"></i></span><span class="flex-1"><span class="profile-menu-title block">Notifications</span><span class="profile-menu-sub block">Order updates, offers & more</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
+            </a>
+            <a href="terms.html" class="profile-menu-row flex items-center gap-3">
+                <span class="profile-menu-icon"><i data-lucide="shield-check"></i></span><span class="flex-1"><span class="profile-menu-title block">Privacy Policy</span><span class="profile-menu-sub block">Read our privacy policy</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
+            </a>
+            <a href="support.html" class="profile-menu-row flex items-center gap-3">
+                <span class="profile-menu-icon"><i data-lucide="circle-help"></i></span><span class="flex-1"><span class="profile-menu-title block">Help & Support</span><span class="profile-menu-sub block">Get help for your orders</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
+            </a>
+            <a href="#" onclick="event.preventDefault();showToast('Settings')" class="profile-menu-row flex items-center gap-3">
+                <span class="profile-menu-icon"><i data-lucide="settings"></i></span><span class="flex-1"><span class="profile-menu-title block">Settings</span><span class="profile-menu-sub block">Notifications, language, privacy and more</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
+            </a>
+            <button id="logoutBtnWrapper" onclick="handleLogout()" class="hidden profile-logout w-full my-2.5 py-3 rounded-2xl text-[14px] font-bold items-center justify-center gap-2 active:scale-[.98] transition-transform">
+                <i data-lucide="log-out" class="w-5 h-5"></i> Logout
             </button>
-
-            <!-- Quick stats, visible even before signing in -->
-            <div class="w-full mt-6 pt-6 border-t border-gray-100 grid grid-cols-3 gap-3">
-                <button onclick="window.location.href='orders.html'" class="flex flex-col items-center justify-center gap-1.5 bg-gray-50 border border-gray-100 rounded-2xl py-3.5 hover:bg-gray-100 transition-colors active:scale-95">
-                    <i data-lucide="package" class="w-5 h-5 text-rani-pink"></i>
-                    <span id="guestStatOrders" class="font-bold text-base text-gray-900">0</span>
-                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Orders</span>
-                </button>
-                <button onclick="window.location.href='cart.html'" class="flex flex-col items-center justify-center gap-1.5 bg-gray-50 border border-gray-100 rounded-2xl py-3.5 hover:bg-gray-100 transition-colors active:scale-95">
-                    <i data-lucide="shopping-bag" class="w-5 h-5 text-rani-pink"></i>
-                    <span id="guestStatCart" class="font-bold text-base text-gray-900">0</span>
-                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">In Bag</span>
-                </button>
-                <button onclick="window.location.href='wishlist.html'" class="flex flex-col items-center justify-center gap-1.5 bg-gray-50 border border-gray-100 rounded-2xl py-3.5 hover:bg-gray-100 transition-colors active:scale-95">
-                    <i data-lucide="heart" class="w-5 h-5 text-rani-pink"></i>
-                    <span id="guestStatWishlist" class="font-bold text-base text-gray-900">0</span>
-                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Wishlist</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- ============================== -->
-        <!-- 2. VIP / LOGGED-IN UI -->
-        <!-- ============================== -->
-        <div id="vipProfileUI" class="hidden flex-col w-full mt-4">
-
-            <!-- User Card — deep charcoal-plum, gold accents: a premium "membership card" feel -->
-            <button id="tierCard" type="button" onclick="handleTierCardClick()" class="mx-5 w-[calc(100%-2.5rem)] text-left rounded-3xl p-6 shadow-lg motif-bg relative overflow-hidden border-0 appearance-none" style="background: linear-gradient(135deg, #D81B60 0%, #B81550 100%);">
-                <div class="flex items-center gap-4">
-                    <!-- Avatar -->
-                    <div class="relative shrink-0">
-                        <div class="w-16 h-16 bg-white/10 text-white rounded-full flex items-center justify-center font-bold text-2xl border border-amber-200/30 backdrop-blur-sm">
-                            <span id="profileInitial">M</span>
-                        </div>
-                        <div id="tierBadgeIcon" class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-white flex items-center justify-center shadow border border-gray-100">
-                            <i data-lucide="crown" class="w-3.5 h-3.5 text-amber-500"></i>
-                        </div>
-                    </div>
-                    <!-- Info -->
-                    <div class="flex-1 flex flex-col justify-center min-w-0">
-                        <div class="flex items-center gap-1.5 min-w-0">
-                            <h3 id="vipName" class="text-white font-bold text-[18px] leading-tight truncate">User Name</h3>
-                            <i id="verifiedTick" data-lucide="badge-check" class="hidden w-4 h-4 text-amber-300 shrink-0"></i>
-                        </div>
-                        <p id="vipEmail" class="text-[11px] font-medium text-white/60 mt-1 truncate">user@email.com</p>
-                        <div id="tierPill" class="inline-flex items-center gap-1 mt-1.5 bg-amber-400/10 px-2 py-0.5 rounded text-[9px] font-bold text-amber-300 w-max tracking-widest border border-amber-400/25">
-                            <span id="tierLabel">Silver Member</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Loyalty progress -->
-                <div class="mt-5 pt-4 border-t border-white/10">
-                    <div class="flex items-center justify-between mb-1.5">
-                        <span class="text-[11px] font-semibold text-amber-200/90 flex items-center gap-1">
-                            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-                            <span id="pointsLabel">0 points</span>
-                        </span>
-                        <span id="nextTierLabel" class="text-[10px] font-medium text-white/45">Silver</span>
-                    </div>
-                    <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-                        <div id="tierProgressBar" class="progress-fill h-full rounded-full" style="width: 0%; background: linear-gradient(90deg, #D9A441, #F1D28A);"></div>
-                    </div>
-                </div>
-            </button>
-
-            <!-- Stats — a single, quiet data panel, separate from the card above and the menu below -->
-            <div class="mx-5 mt-3 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
-                <div class="h-[3px]" style="background: linear-gradient(90deg, #D81B60, #B81550);"></div>
-                <div class="grid grid-cols-3 divide-x divide-gray-100">
-                    <button onclick="window.location.href='orders.html'" class="flex flex-col items-center gap-1 py-4 hover:bg-gray-50 transition-colors">
-                        <i data-lucide="package" class="w-4 h-4 text-gray-400"></i>
-                        <span id="statOrders" class="font-bold text-xl text-gray-900 mt-0.5">0</span>
-                        <span class="text-[9px] font-semibold text-gray-400 uppercase tracking-wider">Orders</span>
-                    </button>
-                    <button onclick="window.location.href='wishlist.html'" class="flex flex-col items-center gap-1 py-4 hover:bg-gray-50 transition-colors">
-                        <i data-lucide="heart" class="w-4 h-4 text-gray-400"></i>
-                        <span id="statWishlist" class="font-bold text-xl text-gray-900 mt-0.5">0</span>
-                        <span class="text-[9px] font-semibold text-gray-400 uppercase tracking-wider">Wishlist</span>
-                    </button>
-                    <button onclick="window.location.href='cart.html'" class="flex flex-col items-center gap-1 py-4 hover:bg-gray-50 transition-colors">
-                        <i data-lucide="shopping-bag" class="w-4 h-4 text-gray-400"></i>
-                        <span id="statCart" class="font-bold text-xl text-gray-900 mt-0.5">0</span>
-                        <span class="text-[9px] font-semibold text-gray-400 uppercase tracking-wider">In Bag</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="mx-5 mt-3 grid grid-cols-3 gap-3">
-                <button onclick="window.location.href='orders.html'" class="flex flex-col items-center justify-center gap-1.5 bg-white border border-pink-50 rounded-2xl py-3.5 shadow-sm hover:bg-pink-50/50 transition-colors active:scale-95">
-                    <i data-lucide="truck" class="w-5 h-5 text-rani-pink"></i>
-                    <span class="text-[10px] font-bold text-gray-600">Track Order</span>
-                </button>
-                <button onclick="showToast('Adding your last order to bag...')" class="flex flex-col items-center justify-center gap-1.5 bg-white border border-pink-50 rounded-2xl py-3.5 shadow-sm hover:bg-pink-50/50 transition-colors active:scale-95">
-                    <i data-lucide="repeat-2" class="w-5 h-5 text-rani-pink"></i>
-                    <span class="text-[10px] font-bold text-gray-600">Reorder</span>
-                </button>
-                <button onclick="window.location.href='support.html'" class="flex flex-col items-center justify-center gap-1.5 bg-white border border-pink-50 rounded-2xl py-3.5 shadow-sm hover:bg-pink-50/50 transition-colors active:scale-95">
-                    <i data-lucide="headphones" class="w-5 h-5 text-rani-pink"></i>
-                    <span class="text-[10px] font-bold text-gray-600">Get Help</span>
-                </button>
-            </div>
-
-            <!-- Referral Card -->
-            <div id="referralCard" class="mx-5 mt-3 bg-white border border-pink-100 rounded-2xl p-4 shadow-sm">
-                <div class="flex items-center gap-2 mb-2.5">
-                    <div class="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center shrink-0">
-                        <i data-lucide="gift" class="w-4 h-4 text-rani-pink"></i>
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-[13px] font-bold text-gray-900 leading-tight">Give ₹200, Get ₹200</p>
-                        <p class="text-[10px] text-gray-400 font-medium">Share your code with a friend</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-2">
-                    <div class="flex-1 border border-dashed border-pink-200 bg-pink-50/50 rounded-xl px-3 py-2 text-center">
-                        <span id="referralCode" class="text-[14px] font-bold tracking-[3px] text-rani-pink">AAVIRA00</span>
-                    </div>
-                    <button onclick="copyReferralCode()" class="w-10 h-10 rounded-xl bg-rani-pink text-white flex items-center justify-center shrink-0 active:scale-90 transition-transform">
-                        <i data-lucide="copy" class="w-4 h-4"></i>
-                    </button>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- ============================== -->
-        <!-- 3. MAIN MENU LIST -->
-        <!-- ============================== -->
-        <div class="mx-5 mt-6 bg-white border border-pink-100 rounded-3xl p-3 shadow-sm">
-
-            <!-- My Orders -->
-            <a href="orders.html" class="flex items-center px-3 py-3.5 text-gray-800 hover:bg-pink-50 rounded-xl group transition-colors">
-                <i data-lucide="package-open" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i>
-                <span class="text-[15px] font-medium">My Orders</span>
-                <i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-300 group-hover:text-rani-pink transition-colors"></i>
-            </a>
-
-            <!-- My Wishlist -->
-            <a href="wishlist.html" class="flex items-center px-3 py-3.5 text-gray-800 hover:bg-pink-50 rounded-xl group transition-colors">
-                <i data-lucide="heart" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i>
-                <span class="text-[15px] font-medium">My Wishlist</span>
-                <i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-300 group-hover:text-rani-pink transition-colors"></i>
-            </a>
-
-            <!-- My Cart -->
-            <a href="cart.html" class="flex items-center px-3 py-3.5 text-gray-800 hover:bg-pink-50 rounded-xl group transition-colors">
-                <i data-lucide="shopping-bag" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i>
-                <span class="text-[15px] font-medium">My Bag</span>
-                <span id="menuCartBadge" class="hidden ml-auto mr-3 bg-rani-pink text-white text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
-                <i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-300 group-hover:text-rani-pink transition-colors"></i>
-            </a>
-
-            <!-- Saved Addresses -->
-            <a href="#" onclick="event.preventDefault(); showToast('Address book coming soon!');" class="flex items-center px-3 py-3.5 text-gray-800 hover:bg-pink-50 rounded-xl group transition-colors">
-                <i data-lucide="map-pin" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i>
-                <span class="text-[15px] font-medium">Saved Addresses</span>
-                <i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-300 group-hover:text-rani-pink transition-colors"></i>
-            </a>
-
-            <!-- Payment Methods -->
-            <a href="#" onclick="event.preventDefault(); showToast('Payment methods coming soon!');" class="flex items-center px-3 py-3.5 text-gray-800 hover:bg-pink-50 rounded-xl group transition-colors">
-                <i data-lucide="credit-card" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i>
-                <span class="text-[15px] font-medium">Payment Methods</span>
-                <i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-300 group-hover:text-rani-pink transition-colors"></i>
-            </a>
-
-            <!-- Divider -->
-            <div class="h-[1px] bg-gray-100 my-2 mx-3"></div>
-
-            <!-- Apply Promo Code -->
-            <a href="#" onclick="event.preventDefault(); showToast('Promo section coming soon!');" class="flex items-center px-3 py-3.5 text-gray-800 hover:bg-pink-50 rounded-xl group transition-colors">
-                <i data-lucide="ticket" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i>
-                <span class="text-[15px] font-medium">Apply Promo Code</span>
-                <i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-300 group-hover:text-rani-pink transition-colors"></i>
-            </a>
-
-            <!-- Refer & Earn -->
-            <a href="#referralCard" onclick="document.getElementById('referralCard')?.scrollIntoView({behavior:'smooth', block:'center'});" class="flex items-center px-3 py-3.5 text-gray-800 hover:bg-pink-50 rounded-xl group transition-colors">
-                <i data-lucide="share-2" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i>
-                <span class="text-[15px] font-medium">Refer & Earn</span>
-                <i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-300 group-hover:text-rani-pink transition-colors"></i>
-            </a>
-
-            <!-- Divider -->
-            <div class="h-[1px] bg-gray-100 my-2 mx-3"></div>
-
-            <!-- Notification Preferences (expandable) -->
-            <details class="group/details">
-                <summary class="flex items-center px-3 py-3.5 text-gray-800 hover:bg-pink-50 rounded-xl transition-colors">
-                    <i data-lucide="bell" class="w-5 h-5 mr-4 text-rani-pink opacity-80"></i>
-                    <span class="text-[15px] font-medium">Notification Preferences</span>
-                    <i data-lucide="chevron-right" class="chev w-4 h-4 ml-auto text-gray-300"></i>
-                </summary>
-                <div class="px-3 pb-2 pt-1 space-y-1">
-                    <div class="flex items-center justify-between py-2.5 px-3">
-                        <span class="text-[13px] font-medium text-gray-600">Order updates</span>
-                        <button type="button" data-pref="orderUpdates" onclick="toggleNotifPref(this)" class="toggle-btn relative w-9 h-5 rounded-full">
-                            <span class="toggle-track absolute inset-0 rounded-full bg-gray-200"></span>
-                            <span class="toggle-knob absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow"></span>
-                        </button>
-                    </div>
-                    <div class="flex items-center justify-between py-2.5 px-3">
-                        <span class="text-[13px] font-medium text-gray-600">Offers & promotions</span>
-                        <button type="button" data-pref="promotions" onclick="toggleNotifPref(this)" class="toggle-btn relative w-9 h-5 rounded-full">
-                            <span class="toggle-track absolute inset-0 rounded-full bg-gray-200"></span>
-                            <span class="toggle-knob absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow"></span>
-                        </button>
-                    </div>
-                    <div class="flex items-center justify-between py-2.5 px-3">
-                        <span class="text-[13px] font-medium text-gray-600">WhatsApp updates</span>
-                        <button type="button" data-pref="whatsapp" onclick="toggleNotifPref(this)" class="toggle-btn relative w-9 h-5 rounded-full">
-                            <span class="toggle-track absolute inset-0 rounded-full bg-gray-200"></span>
-                            <span class="toggle-knob absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow"></span>
-                        </button>
-                    </div>
-                </div>
-            </details>
-
-            <!-- Divider -->
-            <div class="h-[1px] bg-gray-100 my-2 mx-3"></div>
-
-            <!-- Customer Support -->
-            <a href="support.html" class="flex items-center px-3 py-3.5 text-gray-800 hover:bg-pink-50 rounded-xl group transition-colors">
-                <i data-lucide="headphones" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i>
-                <span class="text-[15px] font-medium">Customer Support</span>
-                <i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-300 group-hover:text-rani-pink transition-colors"></i>
-            </a>
-
-            <!-- Help Center / FAQs -->
-            <a href="#" onclick="event.preventDefault(); showToast('Help Center coming soon!');" class="flex items-center px-3 py-3.5 text-gray-800 hover:bg-pink-50 rounded-xl group transition-colors">
-                <i data-lucide="help-circle" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i>
-                <span class="text-[15px] font-medium">Help Center & FAQs</span>
-                <i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-300 group-hover:text-rani-pink transition-colors"></i>
-            </a>
-
-            <!-- Rate Us -->
-            <a href="#" onclick="event.preventDefault(); showToast('Thanks! We appreciate your support.');" class="flex items-center px-3 py-3.5 text-gray-800 hover:bg-pink-50 rounded-xl group transition-colors">
-                <i data-lucide="star" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i>
-                <span class="text-[15px] font-medium">Rate Aavira</span>
-                <i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-300 group-hover:text-rani-pink transition-colors"></i>
-            </a>
-
-            <!-- WhatsApp -->
-            <a href="https://wa.me/919608720622" target="_blank" class="flex items-center px-3 py-3.5 text-gray-800 hover:bg-green-50 rounded-xl group transition-colors">
-                <i data-lucide="message-circle" class="w-5 h-5 mr-4 text-green-500 opacity-80 group-hover:opacity-100 transition-opacity"></i>
-                <span class="text-[15px] font-medium">WhatsApp Us</span>
-                <i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-300 group-hover:text-green-500 transition-colors"></i>
-            </a>
-
-            <!-- Divider -->
-            <div class="h-[1px] bg-gray-100 my-2 mx-3"></div>
-
-            <!-- About & Legal -->
-            <a href="#" onclick="event.preventDefault(); showToast('Privacy Policy & Terms coming soon!');" class="flex items-center px-3 py-3.5 text-gray-800 hover:bg-pink-50 rounded-xl group transition-colors">
-                <i data-lucide="shield-check" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i>
-                <span class="text-[15px] font-medium">Privacy & Terms</span>
-                <i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-300 group-hover:text-rani-pink transition-colors"></i>
-            </a>
-        </div>
-
-        <!-- Member Since strip -->
-        <div id="memberSinceStrip" class="hidden mx-5 mt-4 flex items-center justify-center gap-1.5 text-gray-400">
-            <i data-lucide="calendar-heart" class="w-3.5 h-3.5"></i>
-            <span id="memberSinceText" class="text-[10px] font-semibold tracking-wide">Member since —</span>
-        </div>
-
-        <!-- LOGOUT BUTTON (Only shows if logged in) -->
-        <div id="logoutBtnWrapper" class="hidden mx-5 mt-4 mb-8">
-            <button onclick="handleLogout()" class="w-full bg-[#FFF0F5] border border-pink-200 py-3.5 rounded-2xl text-[13px] font-bold tracking-widest uppercase text-rani-pink hover:bg-rani-pink hover:text-white flex items-center justify-center gap-2 transition-all active:scale-95 shadow-sm">
-                <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
-            </button>
-        </div>
-
-        <!-- Footer Branding -->
-        <div class="flex items-center justify-center gap-4 mt-2 mb-4">
-            <a href="https://wa.me/919608720622" target="_blank" class="text-gray-300 hover:text-rani-pink transition-colors"><i data-lucide="message-circle" class="w-4 h-4"></i></a>
-            <a href="#" onclick="event.preventDefault();" class="text-gray-300 hover:text-rani-pink transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
-            <a href="#" onclick="event.preventDefault();" class="text-gray-300 hover:text-rani-pink transition-colors"><i data-lucide="mail" class="w-4 h-4"></i></a>
-        </div>
-        <p class="text-center text-[10px] text-gray-400 mb-10 tracking-widest uppercase">
-            Aavira Fashion v1.0.0
-        </p>
-
-    </div>
+        </section>
+        <div class="text-center text-[9px] text-gray-400 tracking-[2px] uppercase mb-4">Aavira Fashion v1.0.0</div>
 
     <!-- TOAST NOTIFICATION -->
     <div id="toastBox" class="profile-toast">
@@ -578,10 +378,11 @@
 
             const cartQty = Array.isArray(cart) ? cart.reduce((sum, item) => sum + (parseInt(item.qty, 10) || 1), 0) : 0;
             const orderCount = Array.isArray(orders) ? orders.length : 0;
+            const totalSpent = Array.isArray(orders) ? orders.reduce((sum, order) => sum + (Number(order.totalAmount ?? order.total ?? order.amount ?? 0) || 0), 0) : 0;
 
-            document.getElementById('statCart').innerText = cartQty;
             document.getElementById('statWishlist').innerText = Array.isArray(wishlist) ? wishlist.length : 0;
             document.getElementById('statOrders').innerText = orderCount;
+            document.getElementById('statSpent').innerText = totalSpent > 0 ? Math.round(totalSpent).toLocaleString('en-IN') : '0';
 
             // Handle Menu & Header Cart Badges
             const headerBadge = document.getElementById('headerCartBadge');
@@ -597,17 +398,18 @@
             // Loyalty tier & progress
             const { points, current, next, progressPct } = computeTier(orderCount);
             document.getElementById('pointsLabel').innerText = `${points} points`;
+            document.getElementById('statRewards').innerText = points;
             document.getElementById('tierLabel').innerText = `${current.name} Member`;
             document.getElementById('nextTierLabel').innerText = next ? `Next: ${next.name}` : 'Top tier';
             document.getElementById('tierProgressBar').style.width = `${progressPct}%`;
             document.getElementById('tierBadgeIcon').innerHTML = `<i data-lucide="${current.icon}" class="w-3.5 h-3.5 ${current.badgeColor}"></i>`;
 
             // Referral code
-            document.getElementById('referralCode').innerText = getOrCreateReferralCode(userName);
+            const referralCodeEl = document.getElementById('referralCode');
+            if (referralCodeEl) referralCodeEl.innerText = getOrCreateReferralCode(userName);
 
             // Member since
-            memberSinceStrip.classList.remove('hidden');
-            document.getElementById('memberSinceText').innerText = `Member since ${getOrCreateMemberSince()}`;
+            if (memberSinceStrip) memberSinceStrip.classList.add('hidden');
 
             // Notification toggles
             paintNotifToggles();
@@ -629,8 +431,7 @@
             document.getElementById('pointsLabel').innerText = '0 points';
             document.getElementById('tierLabel').innerText = 'Silver Member';
             document.getElementById('nextTierLabel').innerText = 'Next: Gold';
-            document.getElementById('tierProgressBar').style.width = '0%';
-            document.getElementById('tierBadgeIcon').innerHTML = '<i data-lucide="shield" class="w-3.5 h-3.5 text-rani-pink"></i>';
+            document.getElementById('statRewards').innerText = '0';
 
             // Guest cart/wishlist/orders can still be shown locally.
             const guestCart = safeGet('aavira_cart', []);
@@ -639,8 +440,9 @@
             const guestCartQty = Array.isArray(guestCart) ? guestCart.reduce((sum, item) => sum + (parseInt(item.qty, 10) || 1), 0) : 0;
 
             document.getElementById('statOrders').innerText = Array.isArray(guestOrders) ? guestOrders.length : 0;
-            document.getElementById('statCart').innerText = guestCartQty;
             document.getElementById('statWishlist').innerText = Array.isArray(guestWishlist) ? guestWishlist.length : 0;
+            document.getElementById('statSpent').innerText = '0';
+            document.getElementById('statRewards').innerText = '0';
         }
 
         // 🚨 CRITICAL: Render all Lucide Icons AFTER the HTML is modified/loaded
