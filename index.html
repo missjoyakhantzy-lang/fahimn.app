@@ -372,18 +372,18 @@ body.aavira-theme .card-loading-overlay{
 </div>
 
 <!-- SIDEBAR -->
-<div id="sidebarOverlay" class="fixed inset-0 bg-black/60 hidden opacity-0 transition-opacity duration-300 z-[60]" onclick="closeSidebar()"></div>
-<div id="sidebar" class="fixed top-0 left-0 w-[85%] max-w-[340px] h-full bg-gradient-to-b from-[#FFF5F7] via-white to-[#FFF5F7] z-[70] transform -translate-x-full transition-transform duration-500 shadow-2xl flex flex-col rounded-none overflow-hidden">
+<div id="sidebarOverlay" class="fixed inset-0 bg-black/60 hidden opacity-0 transition-opacity duration-300 z-[9990]" onclick="closeSidebar()"></div>
+<div id="sidebar" class="fixed top-0 left-0 w-[85%] max-w-[340px] h-full bg-gradient-to-b from-[#FFF5F7] via-white to-[#FFF5F7] z-[10000] transform -translate-x-full transition-transform duration-500 shadow-2xl flex flex-col rounded-none overflow-hidden">
     <div class="relative pt-8 pb-6 px-6 flex-shrink-0 border-b border-pink-100 bg-white">
         <button onclick="closeSidebar()" class="absolute top-4 right-4 p-2 bg-white border border-pink-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-pink-50 hover:text-rani-pink transition-colors z-10">
             <i data-lucide="x" class="w-4 h-4"></i>
         </button>
-        <div class="absolute top-3 left-3 w-16 h-16 flex items-center justify-center overflow-hidden">
-            <img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira Fashion" class="w-14 h-14 object-contain object-center mix-blend-multiply" />
+        <div class="absolute top-3 left-3 w-[68px] h-[68px] flex items-center justify-center overflow-hidden">
+            <img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira Fashion" class="w-16 h-16 object-contain object-center mix-blend-multiply" />
         </div>
 
         <div id="guestProfileUI" class="flex flex-col transition-all w-full items-center text-center pt-5">
-            <div class="w-full bg-transparent rounded-[26px] border border-pink-100 shadow-none px-4 py-4">
+            <div class="w-full bg-transparent rounded-[26px] border-0 shadow-none px-4 py-4">
                 <div class="flex items-center text-left gap-3">
                     <div class="relative shrink-0">
                         <div class="w-[68px] h-[68px] bg-[#FFF0F5] border-[3px] border-rani-pink rounded-full flex items-center justify-center text-rani-pink font-extrabold text-[32px]">
@@ -428,7 +428,7 @@ body.aavira-theme .card-loading-overlay{
             </div>
         </div>
     </div>
-    <div class="flex-1 overflow-y-auto py-2 px-4 space-y-1 bg-white pb-6 mt-2">
+    <div class="flex-1 overflow-y-auto py-2 px-4 space-y-1 bg-white pb-24 mt-2">
         <a href="./" class="flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors"><i data-lucide="home" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="text-[15px] font-medium">Home</span><i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-400"></i></a>
         <a href="categories" class="flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors"><i data-lucide="layout-grid" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="text-[15px] font-medium">Collections</span><i data-lucide="plus" class="w-4 h-4 ml-auto text-rani-pink"></i></a>
         <a href="#" onclick="event.preventDefault();triggerDotAction('cart', this)" class="flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors"><i data-lucide="shopping-bag" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="text-[15px] font-medium">My Cart</span><i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-400"></i></a>
