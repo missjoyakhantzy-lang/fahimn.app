@@ -49,8 +49,6 @@
         .profile-menu-card{margin:18px 14px 28px;background:#fff;border:1px solid #F3E6EC;border-radius:26px;padding:7px 14px;box-shadow:0 8px 22px rgba(31,20,26,.05)}
         .profile-menu-row{min-height:66px;border-bottom:1px solid #F1EDF0}
         .profile-menu-row:last-child{border-bottom:0}
-        .profile-menu-icon{width:42px;height:42px;border-radius:50%;background:#FFF0F5;color:#D81B60;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-        .profile-menu-icon i{width:21px;height:21px}
         .profile-menu-title{font-size:14px;font-weight:700;color:#171317;line-height:1.15}
         .profile-menu-sub{font-size:11px;color:#7B7479;margin-top:3px;line-height:1.25}
         .profile-chevron{color:#6B6870;width:19px;height:19px;flex-shrink:0}
@@ -61,7 +59,6 @@
         .settings-sheet.show{transform:translate(-50%,0)}
         .settings-scroll{max-height:calc(88vh - 62px);overflow-y:auto}
         .settings-row{min-height:58px;display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #F1EDF0}
-        .settings-icon{width:40px;height:40px;border-radius:13px;background:#FFF0F5;color:#D81B60;display:flex;align-items:center;justify-content:center;flex-shrink:0}
         .settings-danger{color:#C62828;background:#FFF3F3}.settings-danger-text{color:#C62828}
         .settings-value{font-size:10px;color:#8B8589;margin-top:2px}
         .settings-switch{width:42px;height:24px;border-radius:999px;background:#D9D5D8;position:relative;transition:.2s;flex-shrink:0}
@@ -184,34 +181,34 @@
         </section>
 
         <section class="profile-menu-card">
-            <a href="#" onclick="event.preventDefault();showToast('Profile details')" class="profile-menu-row flex items-center gap-3">
-                <span class="profile-menu-icon"><i data-lucide="user"></i></span><span class="flex-1"><span class="profile-menu-title block">My Profile</span><span class="profile-menu-sub block">Manage your personal information</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
+            <a href="#" onclick="event.preventDefault();showToast('Profile details')" class="profile-menu-row flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
+                <i data-lucide="user" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">My Profile</span><span class="profile-menu-sub block">Manage your personal information</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
             </a>
-            <a href="#" onclick="event.preventDefault();showToast('Address book coming soon!')" class="profile-menu-row flex items-center gap-3">
-                <span class="profile-menu-icon"><i data-lucide="map-pin"></i></span><span class="flex-1"><span class="profile-menu-title block">Addresses</span><span class="profile-menu-sub block">Manage your delivery addresses</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
+            <a href="#" onclick="event.preventDefault();showToast('Address book coming soon!')" class="profile-menu-row flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
+                <i data-lucide="map-pin" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Addresses</span><span class="profile-menu-sub block">Manage your delivery addresses</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
             </a>
-            <a href="orders.html" class="profile-menu-row flex items-center gap-3">
-                <span class="profile-menu-icon"><i data-lucide="package"></i></span><span class="flex-1"><span class="profile-menu-title block">My Orders</span><span class="profile-menu-sub block">Track and view your orders</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
+            <a href="orders.html" class="profile-menu-row flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
+                <i data-lucide="package" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">My Orders</span><span class="profile-menu-sub block">Track and view your orders</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
             </a>
-            <a href="wishlist.html" class="profile-menu-row flex items-center gap-3">
-                <span class="profile-menu-icon"><i data-lucide="heart"></i></span><span class="flex-1"><span class="profile-menu-title block">Wishlist</span><span class="profile-menu-sub block">Your saved products</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
+            <a href="wishlist.html" class="profile-menu-row flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
+                <i data-lucide="heart" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Wishlist</span><span class="profile-menu-sub block">Your saved products</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
             </a>
-            <a href="cart.html" class="profile-menu-row flex items-center gap-3">
+            <a href="cart.html" class="profile-menu-row flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
                 <span class="profile-menu-icon"><i data-lucide="shopping-cart"></i></span><span class="flex-1"><span class="profile-menu-title block">My Cart</span><span class="profile-menu-sub block">Items waiting to checkout</span></span><span id="menuCartBadge" class="hidden text-[11px] font-bold text-white bg-rani-pink rounded-full min-w-[20px] h-5 px-1.5 flex items-center justify-center">0</span><i data-lucide="chevron-right" class="profile-chevron"></i>
             </a>
-            <a href="#" onclick="event.preventDefault();showToast('Payment methods coming soon!')" class="profile-menu-row flex items-center gap-3">
-                <span class="profile-menu-icon"><i data-lucide="credit-card"></i></span><span class="flex-1"><span class="profile-menu-title block">Payment Methods</span><span class="profile-menu-sub block">Manage cards, UPI & wallets</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
+            <a href="#" onclick="event.preventDefault();showToast('Payment methods coming soon!')" class="profile-menu-row flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
+                <i data-lucide="credit-card" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Payment Methods</span><span class="profile-menu-sub block">Manage cards, UPI & wallets</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
             </a>
-            <a href="offer.html" class="profile-menu-row flex items-center gap-3">
-                <span class="profile-menu-icon"><i data-lucide="tag"></i></span><span class="flex-1"><span class="profile-menu-title block">My Offers</span><span class="profile-menu-sub block">View available offers & coupons</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
+            <a href="offer.html" class="profile-menu-row flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
+                <i data-lucide="tag" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">My Offers</span><span class="profile-menu-sub block">View available offers & coupons</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
             </a>
-            <a href="#" onclick="event.preventDefault();showToast('Coupons coming soon!')" class="profile-menu-row flex items-center gap-3">
-                <span class="profile-menu-icon"><i data-lucide="ticket"></i></span><span class="flex-1"><span class="profile-menu-title block">My Coupons</span><span class="profile-menu-sub block">Your saved coupons</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
+            <a href="#" onclick="event.preventDefault();showToast('Coupons coming soon!')" class="profile-menu-row flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
+                <i data-lucide="ticket" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">My Coupons</span><span class="profile-menu-sub block">Your saved coupons</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
             </a>
 
             <details class="profile-menu-row">
                 <summary class="flex items-center gap-3 min-h-[66px]">
-                    <span class="profile-menu-icon"><i data-lucide="bell"></i></span><span class="flex-1"><span class="profile-menu-title block">Notifications</span><span class="profile-menu-sub block">Order updates, offers & more</span></span><i data-lucide="chevron-right" class="profile-chevron chev"></i>
+                    <i data-lucide="bell" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Notifications</span><span class="profile-menu-sub block">Order updates, offers & more</span></span><i data-lucide="chevron-right" class="profile-chevron chev"></i>
                 </summary>
                 <div class="pb-4 pl-[54px] pr-1 space-y-3.5">
                     <label class="flex items-center justify-between gap-3">
@@ -238,14 +235,14 @@
                 </div>
             </details>
 
-            <a href="terms.html" class="profile-menu-row flex items-center gap-3">
+            <a href="terms.html" class="profile-menu-row flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
                 <span class="profile-menu-icon"><i data-lucide="shield-check"></i></span><span class="flex-1"><span class="profile-menu-title block">Privacy Policy</span><span class="profile-menu-sub block">Read our privacy policy</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
             </a>
-            <a href="support.html" class="profile-menu-row flex items-center gap-3">
+            <a href="support.html" class="profile-menu-row flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
                 <span class="profile-menu-icon"><i data-lucide="circle-help"></i></span><span class="flex-1"><span class="profile-menu-title block">Help & Support</span><span class="profile-menu-sub block">Get help for your orders</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
             </a>
-            <button type="button" onclick="openSettingsPanel()" class="profile-menu-row w-full flex items-center gap-3 text-left">
-                <span class="profile-menu-icon"><i data-lucide="settings"></i></span><span class="flex-1"><span class="profile-menu-title block">Settings</span><span class="profile-menu-sub block">Account, privacy, storage and preferences</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
+            <button type="button" onclick="openSettingsPanel()" class="profile-menu-row w-full flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors text-left">
+                <i data-lucide="settings" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Settings</span><span class="profile-menu-sub block">Account, privacy, storage and preferences</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
             </button>
         </section>
         <div class="text-center text-[9px] text-gray-400 tracking-[2px] uppercase mb-4">Aavira Fashion v1.0.0</div>
@@ -260,19 +257,19 @@
         </div>
         <div class="settings-scroll pb-6">
             <div class="px-5 pt-4 pb-2 text-[10px] font-extrabold uppercase tracking-[1.6px] text-gray-400">Preferences</div>
-            <button type="button" class="settings-row w-full text-left" onclick="toggleSetting('darkMode')"><span class="settings-icon"><i data-lucide="moon"></i></span><span class="flex-1"><span class="profile-menu-title block">Dark Mode</span><span class="settings-value">Save your theme preference</span></span><span id="darkModeSwitch" class="settings-switch"></span></button>
-            <button type="button" class="settings-row w-full text-left" onclick="toggleSetting('compactMode')"><span class="settings-icon"><i data-lucide="panels-top-left"></i></span><span class="flex-1"><span class="profile-menu-title block">Compact Layout</span><span class="settings-value">Reduce menu spacing</span></span><span id="compactModeSwitch" class="settings-switch"></span></button>
-            <button type="button" class="settings-row w-full text-left" onclick="toggleSetting('sound')"><span class="settings-icon"><i data-lucide="volume-2"></i></span><span class="flex-1"><span class="profile-menu-title block">Interaction Sound</span><span class="settings-value">Save interface preference</span></span><span id="soundSwitch" class="settings-switch"></span></button>
+            <button type="button" class="settings-row w-full text-left group hover:bg-gray-50 transition-colors rounded-xl" onclick="toggleSetting('darkMode')"><i data-lucide="moon" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Dark Mode</span><span class="settings-value">Save your theme preference</span></span><span id="darkModeSwitch" class="settings-switch"></span></button>
+            <button type="button" class="settings-row w-full text-left group hover:bg-gray-50 transition-colors rounded-xl" onclick="toggleSetting('compactMode')"><i data-lucide="panels-top-left" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Compact Layout</span><span class="settings-value">Reduce menu spacing</span></span><span id="compactModeSwitch" class="settings-switch"></span></button>
+            <button type="button" class="settings-row w-full text-left group hover:bg-gray-50 transition-colors rounded-xl" onclick="toggleSetting('sound')"><i data-lucide="volume-2" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Interaction Sound</span><span class="settings-value">Save interface preference</span></span><span id="soundSwitch" class="settings-switch"></span></button>
             <div class="px-5 pt-5 pb-2 text-[10px] font-extrabold uppercase tracking-[1.6px] text-gray-400">Account & Privacy</div>
-            <button type="button" class="settings-row w-full text-left" onclick="showToast(localStorage.getItem('aavira_user_email')||'Guest account')"><span class="settings-icon"><i data-lucide="user-round"></i></span><span class="flex-1"><span class="profile-menu-title block">Account</span><span class="settings-value">View signed-in account</span></span><i data-lucide="chevron-right" class="profile-chevron"></i></button>
-            <a href="terms.html" class="settings-row"><span class="settings-icon"><i data-lucide="shield-check"></i></span><span class="flex-1"><span class="profile-menu-title block">Privacy & Security</span><span class="settings-value">Privacy policy and safety</span></span><i data-lucide="chevron-right" class="profile-chevron"></i></a>
-            <button type="button" class="settings-row w-full text-left" onclick="showStorageInfo()"><span class="settings-icon"><i data-lucide="database"></i></span><span class="flex-1"><span class="profile-menu-title block">Storage & Data</span><span id="storageInfo" class="settings-value">Checking local data…</span></span><i data-lucide="chevron-right" class="profile-chevron"></i></button>
+            <button type="button" class="settings-row w-full text-left group hover:bg-gray-50 transition-colors rounded-xl" onclick="showToast(localStorage.getItem('aavira_user_email')||'Guest account')"><i data-lucide="user-round" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Account</span><span class="settings-value">View signed-in account</span></span><i data-lucide="chevron-right" class="profile-chevron"></i></button>
+            <a href="terms.html" class="settings-row"><i data-lucide="shield-check" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Privacy & Security</span><span class="settings-value">Privacy policy and safety</span></span><i data-lucide="chevron-right" class="profile-chevron"></i></a>
+            <button type="button" class="settings-row w-full text-left group hover:bg-gray-50 transition-colors rounded-xl" onclick="showStorageInfo()"><i data-lucide="database" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Storage & Data</span><span id="storageInfo" class="settings-value">Checking local data…</span></span><i data-lucide="chevron-right" class="profile-chevron"></i></button>
             <div class="px-5 pt-5 pb-2 text-[10px] font-extrabold uppercase tracking-[1.6px] text-gray-400">Data Controls</div>
-            <button type="button" class="settings-row w-full text-left" onclick="clearWishlistData()"><span class="settings-icon settings-danger"><i data-lucide="heart-off"></i></span><span class="flex-1"><span class="profile-menu-title block settings-danger-text">Clear Wishlist</span><span class="settings-value">Delete all saved wishlist items</span></span><i data-lucide="trash-2" class="profile-chevron settings-danger-text"></i></button>
-            <button type="button" class="settings-row w-full text-left" onclick="clearCartData()"><span class="settings-icon settings-danger"><i data-lucide="shopping-cart"></i></span><span class="flex-1"><span class="profile-menu-title block settings-danger-text">Clear Cart</span><span class="settings-value">Delete all cart items</span></span><i data-lucide="trash-2" class="profile-chevron settings-danger-text"></i></button>
-            <button type="button" class="settings-row w-full text-left" onclick="clearLocalAppData()"><span class="settings-icon settings-danger"><i data-lucide="database-zap"></i></span><span class="flex-1"><span class="profile-menu-title block settings-danger-text">Clear App Data</span><span class="settings-value">Clear local cart, wishlist, preferences and drafts</span></span><i data-lucide="trash-2" class="profile-chevron settings-danger-text"></i></button>
+            <button type="button" class="settings-row w-full text-left group hover:bg-gray-50 transition-colors rounded-xl" onclick="clearWishlistData()"><i data-lucide="heart-off" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block settings-danger-text">Clear Wishlist</span><span class="settings-value">Delete all saved wishlist items</span></span><i data-lucide="trash-2" class="profile-chevron settings-danger-text"></i></button>
+            <button type="button" class="settings-row w-full text-left group hover:bg-gray-50 transition-colors rounded-xl" onclick="clearCartData()"><i data-lucide="shopping-cart" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block settings-danger-text">Clear Cart</span><span class="settings-value">Delete all cart items</span></span><i data-lucide="trash-2" class="profile-chevron settings-danger-text"></i></button>
+            <button type="button" class="settings-row w-full text-left group hover:bg-gray-50 transition-colors rounded-xl" onclick="clearLocalAppData()"><i data-lucide="database-zap" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block settings-danger-text">Clear App Data</span><span class="settings-value">Clear local cart, wishlist, preferences and drafts</span></span><i data-lucide="trash-2" class="profile-chevron settings-danger-text"></i></button>
             <div class="px-5 pt-5 pb-2 text-[10px] font-extrabold uppercase tracking-[1.6px] text-gray-400">Session</div>
-            <button type="button" onclick="handleLogout()" class="settings-row w-full text-left"><span class="settings-icon settings-danger"><i data-lucide="log-out"></i></span><span class="flex-1"><span class="profile-menu-title block settings-danger-text">Log Out</span><span class="settings-value">Sign out of this device</span></span><i data-lucide="chevron-right" class="profile-chevron settings-danger-text"></i></button>
+            <button type="button" onclick="handleLogout()" class="settings-row w-full text-left group hover:bg-gray-50 transition-colors rounded-xl"><i data-lucide="log-out" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block settings-danger-text">Log Out</span><span class="settings-value">Sign out of this device</span></span><i data-lucide="chevron-right" class="profile-chevron settings-danger-text"></i></button>
         </div>
     </section>
 
