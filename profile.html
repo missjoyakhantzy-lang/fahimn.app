@@ -57,14 +57,21 @@
         .settings-backdrop.show{opacity:1;pointer-events:auto}
         .settings-sheet{position:fixed;left:50%;bottom:0;width:min(440px,100%);max-height:88vh;transform:translate(-50%,105%);background:#fff;border-radius:28px 28px 0 0;z-index:91;box-shadow:0 -18px 50px rgba(0,0,0,.18);transition:transform .28s cubic-bezier(.16,1,.3,1);overflow:hidden}
         .settings-sheet.show{transform:translate(-50%,0)}
-        .account-sheet{position:fixed;inset:0;background:#fff;z-index:95;transform:translateX(100%);transition:transform .28s cubic-bezier(.16,1,.3,1);overflow:hidden}
+        .account-sheet{position:fixed;inset:0;background:#fff;z-index:95;transform:translateX(100%);transition:transform .28s cubic-bezier(.16,1,.3,1);overflow-y:auto;overscroll-behavior:contain}
         .account-sheet.show{transform:translateX(0)}
-        .account-scroll{height:calc(100% - 64px);overflow-y:auto}
+        .account-scroll{min-height:100%;overflow:visible}
         .account-field{width:100%;border:1px solid #E9E3E7;background:#FFFBFD;border-radius:14px;padding:12px 13px;font-size:13px;outline:none;transition:border-color .2s,box-shadow .2s}
         .account-field:focus{border-color:#D81B60;box-shadow:0 0 0 3px rgba(216,27,96,.10)}
         .account-action{background:#D81B60;color:#fff;border-radius:14px;padding:12px 16px;font-size:13px;font-weight:800}
         .account-secondary{background:#FFF0F5;color:#D81B60;border:1px solid #F6D4E1;border-radius:14px;padding:11px 16px;font-size:12px;font-weight:800}
-        .account-status{font-size:11px;min-height:18px}
+        .account-status{font-size:11px;min-height:20px;color:#D81B60;margin-top:8px}
+        .account-option{display:flex;align-items:center;gap:12px;padding:15px 14px;background:#fff;border:1px solid #F0E8EC;border-radius:18px;box-shadow:0 4px 16px rgba(30,15,22,.04);transition:.18s}
+        .account-option:active{transform:scale(.985)}
+        .account-option-icon{width:42px;height:42px;border-radius:13px;background:#FFF0F5;color:#D81B60;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .account-option strong{display:block;font-size:13.5px;color:#161217}.account-option small{display:block;font-size:10.5px;color:#858086;margin-top:3px}
+        .account-section-title{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:800;margin-bottom:16px}.account-section-title svg{width:19px;height:19px;color:#D81B60}
+        .account-label{display:block;font-size:11px;font-weight:700;color:#615B60;margin-bottom:6px}
+        .account-info-box{display:flex;gap:10px;align-items:flex-start;background:#FFF0F5;border:1px solid #F7D7E3;border-radius:16px;padding:13px;font-size:11px;line-height:1.5;color:#625B60}.account-info-box svg{width:18px;height:18px;color:#D81B60;flex-shrink:0}
         .settings-scroll{max-height:calc(88vh - 62px);overflow-y:auto}
         .settings-row{min-height:58px;display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #F1EDF0}
         .settings-danger{color:#C62828;background:#FFF3F3}.settings-danger-text{color:#C62828}
@@ -258,78 +265,65 @@
 
     <!-- ACCOUNT MANAGEMENT SCREEN -->
     <section id="accountSheet" class="account-sheet" aria-hidden="true">
-        <header class="h-[64px] px-5 flex items-center gap-3 border-b border-gray-100">
-            <button type="button" onclick="closeAccountScreen()" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center active:scale-90">
+        <header class="h-[64px] px-5 flex items-center gap-3 border-b border-gray-100 bg-white sticky top-0 z-10">
+            <button type="button" onclick="accountBack()" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center active:scale-90">
                 <i data-lucide="arrow-left" class="w-5 h-5"></i>
             </button>
-            <div class="flex-1">
+            <div class="flex-1 min-w-0">
                 <h3 class="text-[17px] font-extrabold">Account</h3>
-                <p class="text-[10px] text-gray-500">Update your personal account details</p>
+                <p id="accountHeaderSub" class="text-[10px] text-gray-500">Manage your personal details</p>
             </div>
-            <i data-lucide="user-cog" class="w-5 h-5 text-rani-pink"></i>
+            <i data-lucide="user-cog" class="w-5 h-5 text-rani-pink shrink-0"></i>
         </header>
 
-        <div class="account-scroll px-5 pt-5 pb-8">
+        <div class="account-scroll px-5 pt-5 pb-10">
             <div class="bg-[#FFF0F5] rounded-2xl p-4 mb-5 flex items-center gap-3">
-                <div class="w-12 h-12 rounded-full bg-white border-2 border-rani-pink flex items-center justify-center text-rani-pink font-extrabold text-xl">
-                    <span id="accountInitial">G</span>
-                </div>
-                <div class="min-w-0">
-                    <div id="accountCurrentName" class="font-extrabold text-[15px] truncate">Guest User</div>
-                    <div id="accountCurrentEmail" class="text-[11px] text-gray-500 truncate">Guest Account</div>
-                </div>
+                <div class="w-12 h-12 rounded-full bg-white border-2 border-rani-pink flex items-center justify-center text-rani-pink font-extrabold text-xl shrink-0"><span id="accountInitial">G</span></div>
+                <div class="min-w-0"><div id="accountCurrentName" class="font-extrabold text-[15px] truncate">Guest User</div><div id="accountCurrentEmail" class="text-[11px] text-gray-500 truncate">Guest Account</div></div>
             </div>
 
             <div id="accountGuestNotice" class="hidden bg-gray-50 border border-gray-100 rounded-2xl p-4 mb-5">
-                <div class="flex gap-3">
-                    <i data-lucide="info" class="w-5 h-5 text-rani-pink shrink-0"></i>
-                    <div>
-                        <div class="text-[13px] font-bold">Sign in required</div>
-                        <div class="text-[11px] text-gray-500 mt-1">Create or sign in to an account before changing name, email or password.</div>
-                        <button onclick="window.location.href='/auth/aavirafashion.html'" class="account-secondary mt-3">Sign In / Sign Up</button>
-                    </div>
-                </div>
+                <div class="flex gap-3"><i data-lucide="info" class="w-5 h-5 text-rani-pink shrink-0"></i><div><div class="text-[13px] font-bold">Sign in required</div><div class="text-[11px] text-gray-500 mt-1">Sign in before changing your account information or password.</div><button onclick="window.location.href='/auth/aavirafashion.html'" class="account-secondary mt-3">Sign In / Sign Up</button></div></div>
             </div>
 
-            <form id="accountForm" onsubmit="return submitAccountUpdate(event)" class="space-y-4">
-                <div class="text-[10px] font-extrabold uppercase tracking-[1.5px] text-gray-400">Personal Information</div>
-                <div>
-                    <label class="block text-[11px] font-bold text-gray-600 mb-1.5">Name</label>
-                    <input id="accountName" class="account-field" type="text" autocomplete="name" placeholder="Your name">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-gray-600 mb-1.5">Email Address</label>
-                    <input id="accountEmail" class="account-field" type="email" autocomplete="email" placeholder="you@example.com">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-gray-600 mb-1.5">Current Password</label>
-                    <input id="accountCurrentPassword" class="account-field" type="password" autocomplete="current-password" placeholder="Enter current password">
-                </div>
-
-                <div class="border-t border-gray-100 pt-4">
-                    <div class="flex items-center justify-between gap-3 mb-3">
-                        <div class="flex items-center gap-2">
-                            <i data-lucide="key-round" class="w-4 h-4 text-rani-pink"></i>
-                            <span class="text-[13px] font-extrabold">Password & Security</span>
-                        </div>
-                        <button type="button" onclick="togglePasswordUpdate()" id="passwordUpdateToggle" class="account-secondary !py-2 !px-3">Reset Password</button>
-                    </div>
-                    <div id="passwordUpdatePanel" class="hidden space-y-3">
-                        <div class="bg-[#FFF0F5] rounded-xl p-3 text-[10.5px] text-gray-600">
-                            Enter your current password above, then choose a new password below.
-                        </div>
-                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5">New Password</label>
-                        <input id="accountNewPassword" class="account-field" type="password" autocomplete="new-password" placeholder="Enter new password">
-                        <label class="block text-[11px] font-bold text-gray-600 mt-3 mb-1.5">Confirm New Password</label>
-                        <input id="accountConfirmPassword" class="account-field" type="password" autocomplete="new-password" placeholder="Repeat new password">
-                    </div>
-                </div>
-
-                <div id="accountStatus" class="account-status text-rani-pink"></div>
-                <button id="accountSaveBtn" type="submit" class="account-action w-full flex items-center justify-center gap-2">
-                    <i data-lucide="save" class="w-4 h-4"></i><span>Save Changes</span>
+            <div id="accountOptions" class="space-y-3">
+                <button type="button" onclick="openAccountSection('information')" class="account-option w-full text-left">
+                    <span class="account-option-icon"><i data-lucide="user-pen"></i></span><span class="flex-1"><strong>Information Update</strong><small>Update your name and email address</small></span><i data-lucide="chevron-right" class="text-gray-400"></i>
                 </button>
+                <button type="button" onclick="openAccountSection('password')" class="account-option w-full text-left">
+                    <span class="account-option-icon"><i data-lucide="key-round"></i></span><span class="flex-1"><strong>Change Password</strong><small>Verify your email before changing password</small></span><i data-lucide="chevron-right" class="text-gray-400"></i>
+                </button>
+            </div>
+
+            <form id="informationSection" onsubmit="return submitInformationUpdate(event)" class="hidden space-y-4">
+                <div class="account-section-title"><i data-lucide="user-pen"></i><span>Personal Information</span></div>
+                <div><label class="account-label">Name</label><input id="accountName" class="account-field" type="text" autocomplete="name" placeholder="Your name"></div>
+                <div><label class="account-label">Email Address</label><input id="accountEmail" class="account-field" type="email" autocomplete="email" placeholder="you@example.com"></div>
+                <div><label class="account-label">Current Password</label><input id="accountInfoPassword" class="account-field" type="password" autocomplete="current-password" placeholder="Enter current password"></div>
+                <div id="accountInfoStatus" class="account-status"></div>
+                <button id="informationSaveBtn" type="submit" class="account-action w-full flex items-center justify-center gap-2"><i data-lucide="save" class="w-4 h-4"></i><span>Update Information</span></button>
             </form>
+
+            <section id="passwordSection" class="hidden">
+                <div class="account-section-title"><i data-lucide="shield-check"></i><span>Change Password</span></div>
+                <div id="passwordRequestState">
+                    <div class="account-info-box"><i data-lucide="mail"></i><span>A verification code will be sent to your registered email address before the new password is saved.</span></div>
+                    <label class="account-label mt-4">New Password</label>
+                    <input id="newPasswordOnly" class="account-field" type="password" autocomplete="new-password" placeholder="Enter new password">
+                    <label class="account-label mt-4">Confirm New Password</label>
+                    <input id="confirmPasswordOnly" class="account-field" type="password" autocomplete="new-password" placeholder="Repeat new password">
+                    <div id="passwordRequestStatus" class="account-status"></div>
+                    <button id="sendPasswordCodeBtn" type="button" onclick="requestPasswordChange()" class="account-action w-full mt-3 flex items-center justify-center gap-2"><i data-lucide="send" class="w-4 h-4"></i><span>Send Verification Code</span></button>
+                </div>
+                <div id="passwordVerifyState" class="hidden">
+                    <div class="account-info-box"><i data-lucide="mail-check"></i><span>Enter the 6-digit verification code sent to <strong id="verificationEmailLabel"></strong>.</span></div>
+                    <label class="account-label mt-4">Verification Code</label>
+                    <input id="passwordOtp" class="account-field text-center tracking-[7px] font-extrabold text-[18px]" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="000000">
+                    <div id="passwordVerifyStatus" class="account-status"></div>
+                    <button id="verifyPasswordBtn" type="button" onclick="verifyPasswordChange()" class="account-action w-full mt-3 flex items-center justify-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4"></i><span>Verify & Change Password</span></button>
+                    <button type="button" onclick="backToPasswordRequest()" class="account-secondary w-full mt-2">Use a different password</button>
+                </div>
+            </section>
         </div>
     </section>
 
@@ -410,83 +404,90 @@
         btn.classList.toggle('toggle-on', prefs[key]);
     };
 
-    const ACCOUNT_API_URL = 'https://server-js-psi-five.vercel.app/api/account/update';
+    const ACCOUNT_API_URL = 'https://server-js-psi-five.vercel.app/api/account';
+    let pendingPasswordValue = '';
 
     window.openAccountScreen=function(){
-        const sheet=document.getElementById('accountSheet');
-        if(!sheet)return;
-        const email=localStorage.getItem('aavira_user_email')||'';
-        const name=localStorage.getItem('aavira_display_name')||'Guest User';
+        const sheet=document.getElementById('accountSheet'); if(!sheet)return;
+        const email=localStorage.getItem('aavira_user_email')||'', name=localStorage.getItem('aavira_display_name')||'Guest User';
         const logged=Boolean(email && name && name.toLowerCase()!=='guest user');
         document.getElementById('accountCurrentName').innerText=name;
         document.getElementById('accountCurrentEmail').innerText=email||'Guest Account';
         document.getElementById('accountInitial').innerText=(name.trim().charAt(0)||'G').toUpperCase();
-        document.getElementById('accountName').value=logged?name:'';
-        document.getElementById('accountEmail').value=logged?email:'';
         document.getElementById('accountGuestNotice').classList.toggle('hidden',logged);
-        document.getElementById('accountForm').classList.toggle('hidden',!logged);
-        sheet.classList.add('show');sheet.setAttribute('aria-hidden','false');
-        closeSettingsPanel();
+        document.getElementById('accountOptions').classList.toggle('hidden',!logged);
+        document.getElementById('informationSection').classList.add('hidden');
+        document.getElementById('passwordSection').classList.add('hidden');
+        sheet.classList.add('show');sheet.setAttribute('aria-hidden','false');closeSettingsPanel();
         if(window.lucide)lucide.createIcons();
     };
-    window.closeAccountScreen=function(){
-        const sheet=document.getElementById('accountSheet');
-        if(!sheet)return;
-        sheet.classList.remove('show');sheet.setAttribute('aria-hidden','true');
-    };
-    window.togglePasswordUpdate=function(){
-        const panel=document.getElementById('passwordUpdatePanel');
-        const btn=document.getElementById('passwordUpdateToggle');
-        if(!panel||!btn)return;
-        const opening=panel.classList.contains('hidden');
-        panel.classList.toggle('hidden',!opening);
-        btn.innerText=opening?'Cancel Password Update':'Reset Password';
-        if(!opening){
-            document.getElementById('accountNewPassword').value='';
-            document.getElementById('accountConfirmPassword').value='';
+    window.accountBack=function(){const infoHidden=document.getElementById('informationSection').classList.contains('hidden'), passHidden=document.getElementById('passwordSection').classList.contains('hidden');if(!infoHidden||!passHidden){closeAccountSection()}else{closeAccountScreen()}};
+    window.closeAccountScreen=function(){const s=document.getElementById('accountSheet');if(s){s.classList.remove('show');s.setAttribute('aria-hidden','true')}};
+    window.openAccountSection=function(section){
+        document.getElementById('accountOptions').classList.add('hidden');
+        document.getElementById('informationSection').classList.toggle('hidden',section!=='information');
+        document.getElementById('passwordSection').classList.toggle('hidden',section!=='password');
+        document.getElementById('accountHeaderSub').innerText=section==='password'?'Securely change your password':'Update your personal information';
+        if(section==='information'){
+            document.getElementById('accountName').value=localStorage.getItem('aavira_display_name')||'';
+            document.getElementById('accountEmail').value=localStorage.getItem('aavira_user_email')||'';
+            document.getElementById('accountInfoPassword').value='';
+        } else {
+            backToPasswordRequest();
         }
+        if(window.lucide)lucide.createIcons();
+    };
+    window.closeAccountSection=function(){
+        document.getElementById('accountOptions').classList.remove('hidden');
+        document.getElementById('informationSection').classList.add('hidden');
+        document.getElementById('passwordSection').classList.add('hidden');
+        document.getElementById('accountHeaderSub').innerText='Manage your personal details';
+        if(window.lucide)lucide.createIcons();
     };
 
-    window.submitAccountUpdate=async function(event){
+    window.submitInformationUpdate=async function(event){
         event.preventDefault();
-        const name=document.getElementById('accountName').value.trim();
-        const email=document.getElementById('accountEmail').value.trim().toLowerCase();
-        const currentPassword=document.getElementById('accountCurrentPassword').value;
-        const newPassword=document.getElementById('accountNewPassword').value;
-        const confirmPassword=document.getElementById('accountConfirmPassword').value;
-        const status=document.getElementById('accountStatus');
-        const btn=document.getElementById('accountSaveBtn');
+        const name=document.getElementById('accountName').value.trim(), email=document.getElementById('accountEmail').value.trim().toLowerCase(), currentPassword=document.getElementById('accountInfoPassword').value, status=document.getElementById('accountInfoStatus'), btn=document.getElementById('informationSaveBtn');
         if(!name||!email||!currentPassword){status.innerText='Name, email and current password are required.';return false}
-        if(newPassword!==confirmPassword){status.innerText='New passwords do not match.';return false}
-        if(newPassword && newPassword.length<6){status.innerText='New password must be at least 6 characters.';return false}
-        btn.disabled=true;
-        const original=btn.innerHTML;
-        btn.innerHTML='<span class="inline-block w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin"></span><span>Saving...</span>';
-        status.innerText='';
+        btn.disabled=true;const original=btn.innerHTML;btn.innerHTML='<span class="inline-block w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin"></span><span>Updating...</span>';status.innerText='';
         try{
             const currentEmail=localStorage.getItem('aavira_user_email')||'';
-            const response=await fetch(ACCOUNT_API_URL,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({currentEmail,currentPassword,name,newEmail:email,newPassword:(!document.getElementById('passwordUpdatePanel')?.classList.contains('hidden') ? newPassword : undefined)})});
-            const result=await response.json().catch(()=>({}));
-            if(!response.ok||!result.success)throw new Error(result.message||'Unable to update account.');
-            localStorage.setItem('aavira_display_name',result.user.name);
-            localStorage.setItem('aavira_user_email',result.user.email);
-            document.getElementById('accountCurrentName').innerText=result.user.name;
-            document.getElementById('accountCurrentEmail').innerText=result.user.email;
-            document.getElementById('accountInitial').innerText=result.user.name.trim().charAt(0).toUpperCase();
-            document.getElementById('vipName').innerText=result.user.name;
-            document.getElementById('vipEmail').innerText=result.user.email;
-            document.getElementById('profileInitial').innerText=result.user.name.trim().charAt(0).toUpperCase();
-            document.getElementById('accountCurrentPassword').value='';
-            document.getElementById('accountNewPassword').value='';
-            document.getElementById('accountConfirmPassword').value='';
-            document.getElementById('passwordUpdatePanel')?.classList.add('hidden');
-            const passwordToggle=document.getElementById('passwordUpdateToggle');
-            if(passwordToggle)passwordToggle.innerText='Reset Password';
-            status.innerText='';
-            showToast('Account updated successfully');
-        }catch(error){status.innerText=error.message||'Unable to update account.'}
+            const response=await fetch(ACCOUNT_API_URL+'/information',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({currentEmail,currentPassword,name,newEmail:email})});
+            const result=await response.json().catch(()=>({})); if(!response.ok||!result.success)throw new Error(result.message||'Unable to update information.');
+            localStorage.setItem('aavira_display_name',result.user.name);localStorage.setItem('aavira_user_email',result.user.email);
+            document.getElementById('accountCurrentName').innerText=result.user.name;document.getElementById('accountCurrentEmail').innerText=result.user.email;document.getElementById('accountInitial').innerText=result.user.name.trim().charAt(0).toUpperCase();
+            const n=document.getElementById('vipName'),e=document.getElementById('vipEmail'),i=document.getElementById('profileInitial');if(n)n.innerText=result.user.name;if(e)e.innerText=result.user.email;if(i)i.innerText=result.user.name.trim().charAt(0).toUpperCase();
+            document.getElementById('accountInfoPassword').value='';status.innerText='Information updated successfully.';
+        }catch(err){status.innerText=err.message||'Unable to update information.'}
+        finally{btn.disabled=false;btn.innerHTML=original;if(window.lucide)lucide.createIcons()} return false;
+    };
+
+    window.backToPasswordRequest=function(){
+        pendingPasswordValue='';document.getElementById('passwordRequestState').classList.remove('hidden');document.getElementById('passwordVerifyState').classList.add('hidden');
+        document.getElementById('newPasswordOnly').value='';document.getElementById('confirmPasswordOnly').value='';document.getElementById('passwordOtp').value='';
+        document.getElementById('passwordRequestStatus').innerText='';document.getElementById('passwordVerifyStatus').innerText='';
+    };
+    window.requestPasswordChange=async function(){
+        const password=document.getElementById('newPasswordOnly').value, confirm=document.getElementById('confirmPasswordOnly').value, status=document.getElementById('passwordRequestStatus'), btn=document.getElementById('sendPasswordCodeBtn'), email=(localStorage.getItem('aavira_user_email')||'').trim().toLowerCase();
+        if(!email){status.innerText='Please sign in first.';return} if(password.length<6){status.innerText='New password must be at least 6 characters.';return} if(password!==confirm){status.innerText='Passwords do not match.';return}
+        btn.disabled=true;const original=btn.innerHTML;btn.innerHTML='<span class="inline-block w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin"></span><span>Sending...</span>';status.innerText='';
+        try{
+            const response=await fetch(ACCOUNT_API_URL+'/password/request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+            const result=await response.json().catch(()=>({}));if(!response.ok||!result.success)throw new Error(result.message||'Verification email could not be sent.');
+            pendingPasswordValue=password;document.getElementById('verificationEmailLabel').innerText=email;document.getElementById('passwordRequestState').classList.add('hidden');document.getElementById('passwordVerifyState').classList.remove('hidden');document.getElementById('passwordOtp').focus();
+        }catch(err){status.innerText=err.message||'Verification email could not be sent.'}
         finally{btn.disabled=false;btn.innerHTML=original;if(window.lucide)lucide.createIcons()}
-        return false;
+    };
+    window.verifyPasswordChange=async function(){
+        const otp=document.getElementById('passwordOtp').value.trim(), status=document.getElementById('passwordVerifyStatus'), btn=document.getElementById('verifyPasswordBtn'), email=(localStorage.getItem('aavira_user_email')||'').trim().toLowerCase();
+        if(!/^\d{6}$/.test(otp)){status.innerText='Enter the 6-digit verification code.';return} if(!pendingPasswordValue){status.innerText='Password request expired. Start again.';return}
+        btn.disabled=true;const original=btn.innerHTML;btn.innerHTML='<span class="inline-block w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin"></span><span>Verifying...</span>';status.innerText='';
+        try{
+            const response=await fetch(ACCOUNT_API_URL+'/password/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,otp,newPassword:pendingPasswordValue})});
+            const result=await response.json().catch(()=>({}));if(!response.ok||!result.success)throw new Error(result.message||'Verification failed.');
+            pendingPasswordValue='';document.getElementById('passwordVerifyStatus').innerText='Password updated successfully.';document.getElementById('passwordOtp').value='';document.getElementById('newPasswordOnly').value='';document.getElementById('confirmPasswordOnly').value='';
+        }catch(err){status.innerText=err.message||'Verification failed.'}
+        finally{btn.disabled=false;btn.innerHTML=original;if(window.lucide)lucide.createIcons()}
     };
 
     function getSetting(key, fallback=false){try{const v=localStorage.getItem('aavira_setting_'+key);return v===null?fallback:JSON.parse(v)}catch{return fallback}}
