@@ -65,6 +65,30 @@
 
         .progress-fill { transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
 
+        /* Orders-screen style bottom toast */
+        .profile-toast {
+            position: fixed;
+            bottom: calc(30px + env(safe-area-inset-bottom, 0px));
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #111827;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+            z-index: 1000;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            white-space: nowrap;
+        }
+        .profile-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
         details > summary { list-style: none; cursor: pointer; }
         details > summary::-webkit-details-marker { display: none; }
         details[open] .chev { transform: rotate(90deg); }
@@ -106,7 +130,7 @@
             <p class="text-gray-500 text-[12px] font-medium mb-6">
                 Sign in to track orders, save your wishlist, and unlock exclusive member privileges.
             </p>
-            <button onclick="window.location.href='login.html'" class="bg-[#FFF0F5] border border-pink-200 text-rani-pink text-[14px] font-bold tracking-widest uppercase px-8 py-3.5 rounded-xl hover:bg-rani-pink hover:text-white transition-all w-full flex items-center justify-center gap-2 active:scale-95 shadow-sm">
+            <button onclick="window.location.href='/auth/aavirafashion.html'" class="bg-[#FFF0F5] border border-pink-200 text-rani-pink text-[14px] font-bold tracking-widest uppercase px-8 py-3.5 rounded-xl hover:bg-rani-pink hover:text-white transition-all w-full flex items-center justify-center gap-2 active:scale-95 shadow-sm">
                 <i data-lucide="log-in" class="w-4 h-4"></i> Sign In
             </button>
 
@@ -136,7 +160,7 @@
         <div id="vipProfileUI" class="hidden flex-col w-full mt-4">
 
             <!-- User Card — deep charcoal-plum, gold accents: a premium "membership card" feel -->
-            <div id="tierCard" class="mx-5 rounded-3xl p-6 shadow-lg motif-bg relative overflow-hidden" style="background: linear-gradient(135deg, #211D24 0%, #3A2A38 100%);">
+            <button id="tierCard" type="button" onclick="handleTierCardClick()" class="mx-5 w-[calc(100%-2.5rem)] text-left rounded-3xl p-6 shadow-lg motif-bg relative overflow-hidden border-0 appearance-none" style="background: linear-gradient(135deg, #D81B60 0%, #B81550 100%);">
                 <div class="flex items-center gap-4">
                     <!-- Avatar -->
                     <div class="relative shrink-0">
@@ -173,11 +197,11 @@
                         <div id="tierProgressBar" class="progress-fill h-full rounded-full" style="width: 0%; background: linear-gradient(90deg, #D9A441, #F1D28A);"></div>
                     </div>
                 </div>
-            </div>
+            </button>
 
             <!-- Stats — a single, quiet data panel, separate from the card above and the menu below -->
             <div class="mx-5 mt-3 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
-                <div class="h-[3px]" style="background: linear-gradient(90deg, #211D24, #3A2A38);"></div>
+                <div class="h-[3px]" style="background: linear-gradient(90deg, #D81B60, #B81550);"></div>
                 <div class="grid grid-cols-3 divide-x divide-gray-100">
                     <button onclick="window.location.href='orders.html'" class="flex flex-col items-center gap-1 py-4 hover:bg-gray-50 transition-colors">
                         <i data-lucide="package" class="w-4 h-4 text-gray-400"></i>
@@ -397,9 +421,8 @@
     </div>
 
     <!-- TOAST NOTIFICATION -->
-    <div id="toastBox" class="fixed top-[-100px] left-1/2 -translate-x-1/2 bg-gray-900 text-white px-5 py-3 rounded-2xl flex items-center gap-3 shadow-xl transition-all duration-300 z-[100]">
-        <i data-lucide="check-circle" class="w-5 h-5 text-green-400"></i>
-        <span id="toastMsg" class="text-xs font-medium tracking-wide">Action Successful</span>
+    <div id="toastBox" class="profile-toast">
+        <span id="toastMsg">Action Successful!</span>
     </div>
 
 </div>
@@ -418,13 +441,22 @@
         }
     };
 
-    // Toast Notification System
+    // Orders-style toast notification.
     function showToast(message) {
         const toast = document.getElementById('toastBox');
+        if (!toast) return;
         document.getElementById('toastMsg').innerText = message;
-        toast.classList.replace('top-[-100px]', 'top-20');
-        setTimeout(() => toast.classList.replace('top-20', 'top-[-100px]'), 2500);
+        toast.classList.add('show');
+        clearTimeout(window.__profileToastTimer);
+        window.__profileToastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
     }
+
+    // Guest can view the membership card; actions can still explain what requires login.
+    window.handleTierCardClick = function () {
+        const userName = localStorage.getItem('aavira_display_name');
+        const isLoggedIn = Boolean(userName && userName.toLowerCase() !== 'guest user');
+        showToast(isLoggedIn ? 'Membership card opened' : 'Sign in to unlock member benefits');
+    };
 
     // ---- New, additive features (do not touch existing keys/behaviour) ----
 
@@ -580,23 +612,35 @@
             // Notification toggles
             paintNotifToggles();
         } else {
-            // Show Guest UI
-            vipUI.classList.add('hidden');
-            vipUI.classList.remove('flex');
+            // Guest mode: keep the same membership card visible without requiring login.
+            guestUI.classList.add('hidden');
+            guestUI.classList.remove('flex');
+            vipUI.classList.remove('hidden');
+            vipUI.classList.add('flex');
             logoutBtn.classList.add('hidden');
             memberSinceStrip.classList.add('hidden');
-            guestUI.classList.remove('hidden');
-            guestUI.classList.add('flex');
 
-            // Cart/wishlist/orders can exist in this app even before sign-in, so show real counts
+            document.getElementById('vipName').innerText = 'Guest User';
+            document.getElementById('vipEmail').innerText = 'Guest Account';
+            document.getElementById('profileInitial').innerText = 'G';
+            document.getElementById('verifiedTick').classList.add('hidden');
+
+            // Guest membership always starts at Silver with zero points.
+            document.getElementById('pointsLabel').innerText = '0 points';
+            document.getElementById('tierLabel').innerText = 'Silver Member';
+            document.getElementById('nextTierLabel').innerText = 'Next: Gold';
+            document.getElementById('tierProgressBar').style.width = '0%';
+            document.getElementById('tierBadgeIcon').innerHTML = '<i data-lucide="shield" class="w-3.5 h-3.5 text-rani-pink"></i>';
+
+            // Guest cart/wishlist/orders can still be shown locally.
             const guestCart = safeGet('aavira_cart', []);
             const guestWishlist = safeGet('aavira_wishlist', []);
             const guestOrders = safeGet('aavira_orders', []);
             const guestCartQty = Array.isArray(guestCart) ? guestCart.reduce((sum, item) => sum + (parseInt(item.qty, 10) || 1), 0) : 0;
 
-            document.getElementById('guestStatOrders').innerText = Array.isArray(guestOrders) ? guestOrders.length : 0;
-            document.getElementById('guestStatCart').innerText = guestCartQty;
-            document.getElementById('guestStatWishlist').innerText = Array.isArray(guestWishlist) ? guestWishlist.length : 0;
+            document.getElementById('statOrders').innerText = Array.isArray(guestOrders) ? guestOrders.length : 0;
+            document.getElementById('statCart').innerText = guestCartQty;
+            document.getElementById('statWishlist').innerText = Array.isArray(guestWishlist) ? guestWishlist.length : 0;
         }
 
         // 🚨 CRITICAL: Render all Lucide Icons AFTER the HTML is modified/loaded
