@@ -398,7 +398,7 @@ body.aavira-theme .card-loading-overlay{
                         <p class="text-gray-500 text-[13px] mt-1 mb-3">Guest Account</p>
                         <div class="flex gap-2">
                             <button onclick="triggerDotAction('login', this)" class="bg-rani-pink text-white text-[12px] font-bold px-6 py-2.5 rounded-full hover:opacity-90 transition-all">Login</button>
-                            <button onclick="window.location.href='/auth/aavirafashion.html'" class="bg-[#FFF0F5] border border-pink-100 text-rani-pink text-[12px] font-bold px-6 py-2.5 rounded-full hover:bg-pink-50 transition-all">Sign Up</button>
+                            <button onclick="window.location.href='/auth/verify'" class="bg-[#FFF0F5] border border-pink-100 text-rani-pink text-[12px] font-bold px-6 py-2.5 rounded-full hover:bg-pink-50 transition-all">Sign Up</button>
                         </div>
                     </div>
                 </div>
@@ -789,6 +789,7 @@ window.stopLocalLoad=(el)=>{
 window.triggerDotAction=(url,el=null)=>{
     window.vibrateApp(30);
     if(el)window.startLocalLoad(el);
+    if(url==='login')url='/auth/verify';
     if(!url||url==='#'||url.trim()===''){
         setTimeout(()=>{if(el)window.stopLocalLoad(el);window.showToast("Offer / Page Not Found","error")},450);
     }else{
