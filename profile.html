@@ -55,6 +55,18 @@
         .profile-menu-sub{font-size:11px;color:#7B7479;margin-top:3px;line-height:1.25}
         .profile-chevron{color:#6B6870;width:19px;height:19px;flex-shrink:0}
         .profile-logout{background:#FFF0F5;color:#D81B60;border:1px solid #F6D4E1}
+        .settings-backdrop{position:fixed;inset:0;background:rgba(17,12,15,.52);z-index:90;opacity:0;pointer-events:none;transition:opacity .22s ease}
+        .settings-backdrop.show{opacity:1;pointer-events:auto}
+        .settings-sheet{position:fixed;left:50%;bottom:0;width:min(440px,100%);max-height:88vh;transform:translate(-50%,105%);background:#fff;border-radius:28px 28px 0 0;z-index:91;box-shadow:0 -18px 50px rgba(0,0,0,.18);transition:transform .28s cubic-bezier(.16,1,.3,1);overflow:hidden}
+        .settings-sheet.show{transform:translate(-50%,0)}
+        .settings-scroll{max-height:calc(88vh - 62px);overflow-y:auto}
+        .settings-row{min-height:58px;display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #F1EDF0}
+        .settings-icon{width:40px;height:40px;border-radius:13px;background:#FFF0F5;color:#D81B60;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .settings-danger{color:#C62828;background:#FFF3F3}.settings-danger-text{color:#C62828}
+        .settings-value{font-size:10px;color:#8B8589;margin-top:2px}
+        .settings-switch{width:42px;height:24px;border-radius:999px;background:#D9D5D8;position:relative;transition:.2s;flex-shrink:0}
+        .settings-switch:after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.18);transition:.2s}
+        .settings-switch.on{background:#D81B60}.settings-switch.on:after{transform:translateX(18px)}
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 
@@ -232,15 +244,37 @@
             <a href="support.html" class="profile-menu-row flex items-center gap-3">
                 <span class="profile-menu-icon"><i data-lucide="circle-help"></i></span><span class="flex-1"><span class="profile-menu-title block">Help & Support</span><span class="profile-menu-sub block">Get help for your orders</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
             </a>
-            <a href="#" onclick="event.preventDefault();showToast('Settings')" class="profile-menu-row flex items-center gap-3">
-                <span class="profile-menu-icon"><i data-lucide="settings"></i></span><span class="flex-1"><span class="profile-menu-title block">Settings</span><span class="profile-menu-sub block">Notifications, language, privacy and more</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
-            </a>
-            <button id="logoutBtnWrapper" onclick="handleLogout()" class="hidden profile-logout w-full my-2.5 py-3 rounded-2xl text-[14px] font-bold items-center justify-center gap-2 active:scale-[.98] transition-transform">
-                <i data-lucide="log-out" class="w-5 h-5"></i> Logout
+            <button type="button" onclick="openSettingsPanel()" class="profile-menu-row w-full flex items-center gap-3 text-left">
+                <span class="profile-menu-icon"><i data-lucide="settings"></i></span><span class="flex-1"><span class="profile-menu-title block">Settings</span><span class="profile-menu-sub block">Account, privacy, storage and preferences</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
             </button>
         </section>
         <div class="text-center text-[9px] text-gray-400 tracking-[2px] uppercase mb-4">Aavira Fashion v1.0.0</div>
     </div>
+
+    <!-- ADVANCED SETTINGS SHEET -->
+    <div id="settingsBackdrop" class="settings-backdrop" onclick="closeSettingsPanel()"></div>
+    <section id="settingsSheet" class="settings-sheet" aria-hidden="true">
+        <div class="h-[62px] px-5 flex items-center justify-between border-b border-gray-100">
+            <div class="flex items-center gap-3"><div class="settings-icon"><i data-lucide="settings"></i></div><div><h3 class="text-[17px] font-extrabold">Settings</h3><p class="text-[10px] text-gray-500">Manage your Aavira account</p></div></div>
+            <button type="button" onclick="closeSettingsPanel()" class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center active:scale-90"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div class="settings-scroll pb-6">
+            <div class="px-5 pt-4 pb-2 text-[10px] font-extrabold uppercase tracking-[1.6px] text-gray-400">Preferences</div>
+            <button type="button" class="settings-row w-full text-left" onclick="toggleSetting('darkMode')"><span class="settings-icon"><i data-lucide="moon"></i></span><span class="flex-1"><span class="profile-menu-title block">Dark Mode</span><span class="settings-value">Save your theme preference</span></span><span id="darkModeSwitch" class="settings-switch"></span></button>
+            <button type="button" class="settings-row w-full text-left" onclick="toggleSetting('compactMode')"><span class="settings-icon"><i data-lucide="panels-top-left"></i></span><span class="flex-1"><span class="profile-menu-title block">Compact Layout</span><span class="settings-value">Reduce menu spacing</span></span><span id="compactModeSwitch" class="settings-switch"></span></button>
+            <button type="button" class="settings-row w-full text-left" onclick="toggleSetting('sound')"><span class="settings-icon"><i data-lucide="volume-2"></i></span><span class="flex-1"><span class="profile-menu-title block">Interaction Sound</span><span class="settings-value">Save interface preference</span></span><span id="soundSwitch" class="settings-switch"></span></button>
+            <div class="px-5 pt-5 pb-2 text-[10px] font-extrabold uppercase tracking-[1.6px] text-gray-400">Account & Privacy</div>
+            <button type="button" class="settings-row w-full text-left" onclick="showToast(localStorage.getItem('aavira_user_email')||'Guest account')"><span class="settings-icon"><i data-lucide="user-round"></i></span><span class="flex-1"><span class="profile-menu-title block">Account</span><span class="settings-value">View signed-in account</span></span><i data-lucide="chevron-right" class="profile-chevron"></i></button>
+            <a href="terms.html" class="settings-row"><span class="settings-icon"><i data-lucide="shield-check"></i></span><span class="flex-1"><span class="profile-menu-title block">Privacy & Security</span><span class="settings-value">Privacy policy and safety</span></span><i data-lucide="chevron-right" class="profile-chevron"></i></a>
+            <button type="button" class="settings-row w-full text-left" onclick="showStorageInfo()"><span class="settings-icon"><i data-lucide="database"></i></span><span class="flex-1"><span class="profile-menu-title block">Storage & Data</span><span id="storageInfo" class="settings-value">Checking local data…</span></span><i data-lucide="chevron-right" class="profile-chevron"></i></button>
+            <div class="px-5 pt-5 pb-2 text-[10px] font-extrabold uppercase tracking-[1.6px] text-gray-400">Data Controls</div>
+            <button type="button" class="settings-row w-full text-left" onclick="clearWishlistData()"><span class="settings-icon settings-danger"><i data-lucide="heart-off"></i></span><span class="flex-1"><span class="profile-menu-title block settings-danger-text">Clear Wishlist</span><span class="settings-value">Delete all saved wishlist items</span></span><i data-lucide="trash-2" class="profile-chevron settings-danger-text"></i></button>
+            <button type="button" class="settings-row w-full text-left" onclick="clearCartData()"><span class="settings-icon settings-danger"><i data-lucide="shopping-cart"></i></span><span class="flex-1"><span class="profile-menu-title block settings-danger-text">Clear Cart</span><span class="settings-value">Delete all cart items</span></span><i data-lucide="trash-2" class="profile-chevron settings-danger-text"></i></button>
+            <button type="button" class="settings-row w-full text-left" onclick="clearLocalAppData()"><span class="settings-icon settings-danger"><i data-lucide="database-zap"></i></span><span class="flex-1"><span class="profile-menu-title block settings-danger-text">Clear App Data</span><span class="settings-value">Clear local cart, wishlist, preferences and drafts</span></span><i data-lucide="trash-2" class="profile-chevron settings-danger-text"></i></button>
+            <div class="px-5 pt-5 pb-2 text-[10px] font-extrabold uppercase tracking-[1.6px] text-gray-400">Session</div>
+            <button type="button" onclick="handleLogout()" class="settings-row w-full text-left"><span class="settings-icon settings-danger"><i data-lucide="log-out"></i></span><span class="flex-1"><span class="profile-menu-title block settings-danger-text">Log Out</span><span class="settings-value">Sign out of this device</span></span><i data-lucide="chevron-right" class="profile-chevron settings-danger-text"></i></button>
+        </div>
+    </section>
 
     <!-- TOAST NOTIFICATION -->
     <div id="toastBox" class="profile-toast">
@@ -294,6 +328,18 @@
         saveNotifPrefs(prefs);
         btn.classList.toggle('toggle-on', prefs[key]);
     };
+
+    function getSetting(key, fallback=false){try{const v=localStorage.getItem('aavira_setting_'+key);return v===null?fallback:JSON.parse(v)}catch{return fallback}}
+    function setSetting(key,value){localStorage.setItem('aavira_setting_'+key,JSON.stringify(Boolean(value)))}
+    function syncSettingSwitch(key){const el=document.getElementById(key+'Switch');if(el)el.classList.toggle('on',getSetting(key,false))}
+    window.toggleSetting=function(key){const next=!getSetting(key,false);setSetting(key,next);syncSettingSwitch(key);showToast(next?'Preference enabled':'Preference disabled')};
+    window.openSettingsPanel=function(){const s=document.getElementById('settingsSheet'),b=document.getElementById('settingsBackdrop');if(!s||!b)return;s.classList.add('show');b.classList.add('show');s.setAttribute('aria-hidden','false');['darkMode','compactMode','sound'].forEach(syncSettingSwitch);showStorageInfo();if(window.lucide)lucide.createIcons()};
+    window.closeSettingsPanel=function(){const s=document.getElementById('settingsSheet'),b=document.getElementById('settingsBackdrop');if(!s||!b)return;s.classList.remove('show');b.classList.remove('show');s.setAttribute('aria-hidden','true')};
+    window.showStorageInfo=function(){const keys=['aavira_cart','aavira_wishlist','aavira_placed_orders','aavira_guest_order_id','aavira_notif_prefs'];const n=keys.filter(k=>localStorage.getItem(k)!==null).length;const el=document.getElementById('storageInfo');if(el)el.innerText=n+' local data groups stored'};
+    function confirmClear(label,action){if(window.confirm('Clear '+label+'? This cannot be undone.'))action()}
+    window.clearWishlistData=function(){confirmClear('wishlist',()=>{localStorage.removeItem('aavira_wishlist');const e=document.getElementById('statWishlist');if(e)e.innerText='0';showToast('Wishlist cleared');showStorageInfo()})};
+    window.clearCartData=function(){confirmClear('cart',()=>{localStorage.removeItem('aavira_cart');document.getElementById('menuCartBadge')?.classList.add('hidden');showToast('Cart cleared');showStorageInfo()})};
+    window.clearLocalAppData=function(){confirmClear('app data',()=>{const keep=['aavira_display_name','aavira_user_email','aavira_user_phone'];Object.keys(localStorage).forEach(k=>{if(k.startsWith('aavira_')&&!keep.includes(k))localStorage.removeItem(k)});['statWishlist','statOrders','statSpent','statRewards'].forEach(id=>{const e=document.getElementById(id);if(e)e.innerText='0'});document.getElementById('menuCartBadge')?.classList.add('hidden');showToast('App data cleared');showStorageInfo()})};
 
     // Main App Initialization
     function initProfileUI() {
