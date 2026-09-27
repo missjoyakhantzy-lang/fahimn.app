@@ -43,7 +43,7 @@
         .profile-hero:before{width:180px;height:180px;left:-55px;top:-110px}.profile-hero:after{width:220px;height:220px;right:-75px;top:-125px}
         .profile-logo{font-family:'Playfair Display',serif;letter-spacing:-.3px}
         .profile-main-card{margin:-20px 14px 0;position:relative;z-index:3;background:#fff;border-radius:26px;box-shadow:0 10px 28px rgba(216,27,96,.10);border:1px solid rgba(216,27,96,.07);overflow:hidden}
-        .profile-stat+.profile-stat{border-left:1px solid #F1E8EC}
+        .profile-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:100%;min-width:0}.profile-stat{min-width:0;width:100%;overflow:hidden}.profile-stat+.profile-stat{border-left:1px solid #F1E8EC}
         .profile-avatar{width:76px;height:76px;border-radius:50%;background:#FFF0F5;border:3px solid #D81B60;color:#D81B60;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;overflow:hidden;flex-shrink:0}
         .profile-menu-card{margin:18px 14px 28px;background:#fff;border:1px solid #F3E6EC;border-radius:26px;padding:7px 14px;box-shadow:0 8px 22px rgba(31,20,26,.05)}
         .profile-menu-row{min-height:66px;border-bottom:1px solid #F1EDF0}
@@ -135,8 +135,8 @@
         <div id="guestProfileUI" class="hidden"></div>
 
         <section id="vipProfileUI" class="profile-main-card">
-            <div class="px-5 pt-4 pb-4 flex items-center gap-4">
-                <div class="relative">
+            <div class="px-5 pt-4 pb-4 flex items-center gap-4 min-w-0">
+                <div class="relative shrink-0">
                     <div id="profileAvatar" class="profile-avatar"><span id="profileInitial">G</span></div>
                     <div class="absolute -right-1 -bottom-1 w-7 h-7 rounded-full bg-rani-pink text-white border-2 border-white flex items-center justify-center shadow-sm">
                         <i data-lucide="camera" class="w-3.5 h-3.5"></i>
@@ -148,16 +148,12 @@
                         <i id="verifiedTick" data-lucide="badge-check" class="hidden w-4 h-4 text-rani-pink shrink-0"></i>
                     </div>
                     <p id="vipEmail" class="text-[12px] text-gray-500 mt-1 truncate">Guest Account</p>
-                    <div id="tierPill" class="inline-flex items-center gap-1 mt-2 px-2.5 py-1 rounded-full bg-pink-50 text-rani-pink text-[9px] font-bold tracking-wider">
-                        <i data-lucide="shield" class="w-3 h-3"></i><span id="tierLabel">Silver Member</span>
-                    </div>
+
                 </div>
-                <button onclick="handleTierCardClick()" class="shrink-0 text-gray-500 active:scale-90">
-                    <i data-lucide="chevron-right" class="w-6 h-6"></i>
-                </button>
+
             </div>
 
-            <div class="grid grid-cols-4 border-t border-gray-100">
+            <div class="profile-stats border-t border-gray-100">
                 <button onclick="window.location.href='orders.html'" class="profile-stat py-4 flex flex-col items-center">
                     <i data-lucide="shopping-bag" class="w-5 h-5 text-rani-pink"></i><span id="statOrders" class="text-[18px] font-extrabold text-gray-900 mt-1">0</span><span class="text-[10px] text-gray-500">Orders</span>
                 </button>
@@ -172,12 +168,6 @@
                 </button>
             </div>
 
-            <div class="hidden">
-                <span id="pointsLabel">0 points</span><span id="nextTierLabel">Next: Gold</span>
-                <div id="tierProgressBar"></div><div id="tierBadgeIcon"></div>
-                <span id="referralCode">AAVIRA00</span><div id="referralCard"></div>
-                <div id="memberSinceStrip"><span id="memberSinceText"></span></div>
-            </div>
         </section>
 
         <section class="profile-menu-card">
@@ -219,6 +209,7 @@
             </button>
         </section>
         <div class="text-center text-[9px] text-gray-400 tracking-[2px] uppercase mb-4">Aavira Fashion v1.0.0</div>
+    </div>
 
     <!-- TOAST NOTIFICATION -->
     <div id="toastBox" class="profile-toast">
@@ -250,13 +241,6 @@
         clearTimeout(window.__profileToastTimer);
         window.__profileToastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
     }
-
-    // Guest can view the membership card; actions can still explain what requires login.
-    window.handleTierCardClick = function () {
-        const userName = localStorage.getItem('aavira_display_name');
-        const isLoggedIn = Boolean(userName && userName.toLowerCase() !== 'guest user');
-        showToast(isLoggedIn ? 'Membership card opened' : 'Sign in to unlock member benefits');
-    };
 
     // ---- New, additive features (do not touch existing keys/behaviour) ----
 
@@ -351,7 +335,6 @@
         const guestUI = document.getElementById('guestProfileUI');
         const vipUI = document.getElementById('vipProfileUI');
         const logoutBtn = document.getElementById('logoutBtnWrapper');
-        const memberSinceStrip = document.getElementById('memberSinceStrip');
 
         if (isLoggedIn) {
             // Show VIP UI
@@ -398,8 +381,7 @@
             // Loyalty tier & progress
             const { points, current, next, progressPct } = computeTier(orderCount);
             document.getElementById('pointsLabel').innerText = `${points} points`;
-            document.getElementById('statRewards').innerText = points;
-            document.getElementById('tierLabel').innerText = `${current.name} Member`;
+            document.getElementById('statRewards').innerText = orderCount * 120;
             document.getElementById('nextTierLabel').innerText = next ? `Next: ${next.name}` : 'Top tier';
             document.getElementById('tierProgressBar').style.width = `${progressPct}%`;
             document.getElementById('tierBadgeIcon').innerHTML = `<i data-lucide="${current.icon}" class="w-3.5 h-3.5 ${current.badgeColor}"></i>`;
@@ -427,10 +409,6 @@
             document.getElementById('profileInitial').innerText = 'G';
             document.getElementById('verifiedTick').classList.add('hidden');
 
-            // Guest membership always starts at Silver with zero points.
-            document.getElementById('pointsLabel').innerText = '0 points';
-            document.getElementById('tierLabel').innerText = 'Silver Member';
-            document.getElementById('nextTierLabel').innerText = 'Next: Gold';
             document.getElementById('statRewards').innerText = '0';
 
             // Guest cart/wishlist/orders can still be shown locally.
