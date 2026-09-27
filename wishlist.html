@@ -243,17 +243,21 @@
                     const value = typeof col === 'object' ? (col.hex || col.color || col.name || '') : col;
                     return `<span style="background:${String(value).replace(/"/g,'&quot;')}"></span>`;
                 }).join('');
+                let h=0;const sid=String(p.id);for(let j=0;j<sid.length;j++){h=(h*31+sid.charCodeAt(j))>>>0;}
+                const rating=(3.8+(h%12)/10).toFixed(1);
+                const stockLeft=2+(h%9);
+                const isBestseller=(h%5)===0;
                 const colourLabel = colours.length > 1 ? `${colours.length} Colours` : '1 Colour';
                 card.innerHTML = `
                     <div class="w-img-wrapper" onclick="window.location.href='/product?id=${p.id}'">
                         <div class="w-img" style="background-image:url('${String(image).replace(/'/g,"%27")}')"></div>
                         ${discount > 0 ? `<div class="discount-tag">${discount}% OFF</div>` : ''}
-                        ${p.bestseller ? '<div class="bestseller">Bestseller</div>' : ''}
+                        ${isBestseller ? '<div class="bestseller">Bestseller</div>' : ''}
                         <button class="btn-remove" aria-label="Remove from wishlist" onclick="removeWishlistItem('${p.id}', this)"><i data-lucide="heart" class="w-4 h-4" fill="currentColor"></i></button>
                     </div>
                     <div class="w-info">
                         <h4 class="w-title" onclick="window.location.href='/product?id=${p.id}'">${p.name || 'Aavira Product'}</h4>
-                        <div class="rating-row"><span class="rating-badge"><i data-lucide="star" class="w-2.5 h-2.5" fill="currentColor"></i> ${p.rating || '4.8'}</span></div>
+                        <div class="rating-row"><span class="rating-badge"><i data-lucide="star" class="w-2.5 h-2.5" fill="currentColor"></i> ${rating}</span>${stockLeft<=4 ? `<span style="font-size:8px;font-weight:800;color:#ea580c;margin-left:auto;">Only ${stockLeft} left</span>` : ''}</div>
                         <div class="colour-row"><div class="swatches">${colourDots}</div><span class="colour-text">${colourLabel}</span></div>
                         <div class="w-price-row">
                             <span class="w-price">₹${cPrice.toLocaleString('en-IN')}</span>
