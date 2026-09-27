@@ -215,8 +215,8 @@
             </a>
 
             <details class="profile-menu-row">
-                <summary class="flex items-center gap-3 min-h-[66px]">
-                    <i data-lucide="bell" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Notifications</span><span class="profile-menu-sub block">Order updates, offers & more</span></span><i data-lucide="chevron-right" class="profile-chevron chev"></i>
+                <summary class="flex items-center px-2 py-3.5 min-h-[66px] text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
+                    <i data-lucide="bell" class="w-5 h-5 mr-4 shrink-0 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1 min-w-0"><span class="profile-menu-title block">Notifications</span><span class="profile-menu-sub block">Order updates, offers & more</span></span><i data-lucide="chevron-right" class="profile-chevron chev ml-auto shrink-0"></i>
                 </summary>
                 <div class="pb-4 pl-[54px] pr-1 space-y-3.5">
                     <label class="flex items-center justify-between gap-3">
@@ -292,6 +292,7 @@
             </div>
 
             <form id="accountForm" onsubmit="return submitAccountUpdate(event)" class="space-y-4">
+                <div class="text-[10px] font-extrabold uppercase tracking-[1.5px] text-gray-400">Personal Information</div>
                 <div>
                     <label class="block text-[11px] font-bold text-gray-600 mb-1.5">Name</label>
                     <input id="accountName" class="account-field" type="text" autocomplete="name" placeholder="Your name">
@@ -306,14 +307,22 @@
                 </div>
 
                 <div class="border-t border-gray-100 pt-4">
-                    <div class="flex items-center gap-2 mb-3">
-                        <i data-lucide="key-round" class="w-4 h-4 text-rani-pink"></i>
-                        <span class="text-[13px] font-extrabold">Password</span>
+                    <div class="flex items-center justify-between gap-3 mb-3">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="key-round" class="w-4 h-4 text-rani-pink"></i>
+                            <span class="text-[13px] font-extrabold">Password & Security</span>
+                        </div>
+                        <button type="button" onclick="togglePasswordUpdate()" id="passwordUpdateToggle" class="account-secondary !py-2 !px-3">Reset Password</button>
                     </div>
-                    <label class="block text-[11px] font-bold text-gray-600 mb-1.5">New Password</label>
-                    <input id="accountNewPassword" class="account-field" type="password" autocomplete="new-password" placeholder="Leave blank to keep current password">
-                    <label class="block text-[11px] font-bold text-gray-600 mt-3 mb-1.5">Confirm New Password</label>
-                    <input id="accountConfirmPassword" class="account-field" type="password" autocomplete="new-password" placeholder="Repeat new password">
+                    <div id="passwordUpdatePanel" class="hidden space-y-3">
+                        <div class="bg-[#FFF0F5] rounded-xl p-3 text-[10.5px] text-gray-600">
+                            Enter your current password above, then choose a new password below.
+                        </div>
+                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5">New Password</label>
+                        <input id="accountNewPassword" class="account-field" type="password" autocomplete="new-password" placeholder="Enter new password">
+                        <label class="block text-[11px] font-bold text-gray-600 mt-3 mb-1.5">Confirm New Password</label>
+                        <input id="accountConfirmPassword" class="account-field" type="password" autocomplete="new-password" placeholder="Repeat new password">
+                    </div>
                 </div>
 
                 <div id="accountStatus" class="account-status text-rani-pink"></div>
@@ -425,6 +434,19 @@
         if(!sheet)return;
         sheet.classList.remove('show');sheet.setAttribute('aria-hidden','true');
     };
+    window.togglePasswordUpdate=function(){
+        const panel=document.getElementById('passwordUpdatePanel');
+        const btn=document.getElementById('passwordUpdateToggle');
+        if(!panel||!btn)return;
+        const opening=panel.classList.contains('hidden');
+        panel.classList.toggle('hidden',!opening);
+        btn.innerText=opening?'Cancel Password Update':'Reset Password';
+        if(!opening){
+            document.getElementById('accountNewPassword').value='';
+            document.getElementById('accountConfirmPassword').value='';
+        }
+    };
+
     window.submitAccountUpdate=async function(event){
         event.preventDefault();
         const name=document.getElementById('accountName').value.trim();
@@ -443,7 +465,7 @@
         status.innerText='';
         try{
             const currentEmail=localStorage.getItem('aavira_user_email')||'';
-            const response=await fetch(ACCOUNT_API_URL,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({currentEmail,currentPassword,name,newEmail:email,newPassword:newPassword||undefined})});
+            const response=await fetch(ACCOUNT_API_URL,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({currentEmail,currentPassword,name,newEmail:email,newPassword:(!document.getElementById('passwordUpdatePanel')?.classList.contains('hidden') ? newPassword : undefined)})});
             const result=await response.json().catch(()=>({}));
             if(!response.ok||!result.success)throw new Error(result.message||'Unable to update account.');
             localStorage.setItem('aavira_display_name',result.user.name);
@@ -457,6 +479,9 @@
             document.getElementById('accountCurrentPassword').value='';
             document.getElementById('accountNewPassword').value='';
             document.getElementById('accountConfirmPassword').value='';
+            document.getElementById('passwordUpdatePanel')?.classList.add('hidden');
+            const passwordToggle=document.getElementById('passwordUpdateToggle');
+            if(passwordToggle)passwordToggle.innerText='Reset Password';
             status.innerText='';
             showToast('Account updated successfully');
         }catch(error){status.innerText=error.message||'Unable to update account.'}
@@ -541,6 +566,13 @@
         if (window.lucide) {
             lucide.createIcons();
         }
+        document.querySelectorAll('details > summary').forEach(summary => {
+            summary.addEventListener('click', () => {
+                requestAnimationFrame(() => {
+                    if (window.lucide) lucide.createIcons();
+                });
+            });
+        });
     }
 
     // Logout Action
