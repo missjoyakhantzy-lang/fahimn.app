@@ -42,9 +42,14 @@
         .profile-hero:before,.profile-hero:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.12);border-radius:50%;pointer-events:none;}
         .profile-hero:before{width:180px;height:180px;left:-55px;top:-110px}.profile-hero:after{width:220px;height:220px;right:-75px;top:-125px}
         .profile-logo{font-family:'Playfair Display',serif;letter-spacing:-.3px}
-        .profile-main-card{margin:-20px 14px 0;position:relative;z-index:3;background:#fff;border-radius:26px;box-shadow:0 10px 28px rgba(216,27,96,.10);border:1px solid rgba(216,27,96,.07);overflow:hidden}
+        .profile-main-card{margin:14px 14px 0;position:relative;z-index:3;background:#fff;border-radius:26px;box-shadow:0 10px 28px rgba(216,27,96,.10);border:1px solid rgba(216,27,96,.07);overflow:hidden}
         .profile-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:100%;min-width:0}.profile-stat{min-width:0;width:100%;overflow:hidden}.profile-stat+.profile-stat{border-left:1px solid #F1E8EC}
         .profile-avatar{width:76px;height:76px;border-radius:50%;background:#FFF0F5;border:3px solid #D81B60;color:#D81B60;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;overflow:hidden;flex-shrink:0}
+        .profile-membership-card{margin:16px 14px 0;background:#fff;border:1px solid #F3E6EC;border-radius:26px;padding:16px;box-shadow:0 8px 22px rgba(31,20,26,.05)}
+        .membership-card-premium{position:relative;margin:16px 14px 0;border-radius:26px;padding:18px;overflow:hidden;background:radial-gradient(circle at 14% 18%,rgba(255,255,255,.16) 0 2px,transparent 3px),radial-gradient(circle at 86% 14%,rgba(255,255,255,.13) 0 2px,transparent 3px),radial-gradient(circle at 62% 88%,rgba(255,255,255,.10) 0 2px,transparent 3px),linear-gradient(135deg,#D81B60 0%,#C2185B 55%,#B81550 100%);box-shadow:0 14px 30px rgba(184,21,80,.28)}
+        .membership-card-premium:before,.membership-card-premium:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.14);border-radius:50%;pointer-events:none;z-index:0}
+        .membership-card-premium:before{width:150px;height:150px;right:-55px;top:-95px}
+        .membership-card-premium:after{width:110px;height:110px;left:-42px;bottom:-60px}
         .profile-menu-card{margin:18px 14px 28px;background:#fff;border:1px solid #F3E6EC;border-radius:26px;padding:7px 14px;box-shadow:0 8px 22px rgba(31,20,26,.05)}
         .profile-menu-row{min-height:66px;border-bottom:1px solid #F1EDF0}
         .profile-menu-row:last-child{border-bottom:0}
@@ -148,12 +153,19 @@
                         <i id="verifiedTick" data-lucide="badge-check" class="hidden w-4 h-4 text-rani-pink shrink-0"></i>
                     </div>
                     <p id="vipEmail" class="text-[12px] text-gray-500 mt-1 truncate">Guest Account</p>
-
+                    <p id="memberSinceStrip" class="hidden text-[10.5px] text-gray-400 mt-1">Member since <span id="memberSinceText"></span></p>
+                    <div id="identityGuestActions" class="hidden items-center gap-2 mt-2">
+                        <button onclick="window.location.href='auth/verification.html'" class="bg-rani-pink text-white text-[11.5px] font-bold px-3.5 py-1.5 rounded-full active:scale-95 transition-transform">Login</button>
+                        <button onclick="window.location.href='auth/verification.html'" class="bg-rani-light text-rani-pink text-[11.5px] font-bold px-3.5 py-1.5 rounded-full active:scale-95 transition-transform">Sign Up</button>
+                    </div>
                 </div>
-
             </div>
 
-            <div class="profile-stats border-t border-gray-100">
+        </section>
+
+        <!-- QUICK STATS (moved out of the identity card so each sits in its own well-fitted spot) -->
+        <section class="profile-membership-card !p-0 overflow-hidden">
+            <div class="profile-stats">
                 <button onclick="window.location.href='orders.html'" class="profile-stat py-4 flex flex-col items-center">
                     <i data-lucide="shopping-bag" class="w-5 h-5 text-rani-pink"></i><span id="statOrders" class="text-[18px] font-extrabold text-gray-900 mt-1">0</span><span class="text-[10px] text-gray-500">Orders</span>
                 </button>
@@ -163,11 +175,47 @@
                 <button onclick="showToast('Total spent: ₹'+(document.getElementById('statSpent')?.innerText||'0'))" class="profile-stat py-4 flex flex-col items-center">
                     <i data-lucide="wallet-cards" class="w-5 h-5 text-rani-pink"></i><span id="statSpent" class="text-[18px] font-extrabold text-gray-900 mt-1">0</span><span class="text-[10px] text-gray-500">Total Spent</span>
                 </button>
-                <button onclick="showToast('Reward points')" class="profile-stat py-4 flex flex-col items-center">
+                <button onclick="showToast((document.getElementById('pointsLabel')?.innerText||'0 points'))" class="profile-stat py-4 flex flex-col items-center">
                     <i data-lucide="star" class="w-5 h-5 text-rani-pink"></i><span id="statRewards" class="text-[18px] font-extrabold text-gray-900 mt-1">0</span><span class="text-[10px] text-gray-500">Reward Points</span>
                 </button>
             </div>
+        </section>
 
+        <!-- MEMBERSHIP TIER + REFERRAL (premium Rani Pink card; members only) -->
+        <section id="membershipCard" class="hidden membership-card-premium">
+            <div class="flex items-center justify-between mb-4 relative z-10">
+                <div class="min-w-0">
+                    <div id="cardHolderName" class="text-[15px] font-extrabold text-white truncate">Guest User</div>
+                    <div id="cardHolderEmail" class="text-[11px] text-white/70 truncate">Guest Account</div>
+                </div>
+                <i data-lucide="sparkles" class="w-5 h-5 text-white/60 shrink-0"></i>
+            </div>
+
+            <div id="membershipMemberContent" class="relative z-10">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <span id="tierBadgeIcon" class="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center shrink-0"></span>
+                        <div class="min-w-0">
+                            <div id="tierName" class="text-[13.5px] font-extrabold text-white truncate">Silver Member</div>
+                            <div id="pointsLabel" class="text-[11px] text-white/70">0 points</div>
+                        </div>
+                    </div>
+                    <span id="nextTierLabel" class="text-[10px] font-bold text-white bg-white/15 px-2.5 py-1 rounded-full whitespace-nowrap shrink-0">Top tier</span>
+                </div>
+                <div class="w-full h-2 bg-white/20 rounded-full overflow-hidden mt-3">
+                    <div id="tierProgressBar" class="progress-fill h-2 bg-white rounded-full" style="width:0%"></div>
+                </div>
+
+                <div class="mt-4 pt-4 border-t border-white/15 flex items-center justify-between gap-3">
+                    <div class="min-w-0">
+                        <div class="text-[10.5px] text-white/70">Your referral code</div>
+                        <div id="referralCode" class="text-[15px] font-extrabold tracking-wide text-white truncate">AAVIRA123</div>
+                    </div>
+                    <button onclick="copyReferralCode()" class="shrink-0 flex items-center gap-1.5 bg-white text-rani-pink text-[12px] font-bold pl-3 pr-3.5 py-2 rounded-full active:scale-95 transition-transform">
+                        <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy
+                    </button>
+                </div>
+            </div>
         </section>
 
         <section class="profile-menu-card">
@@ -183,6 +231,9 @@
             <a href="wishlist.html" class="profile-menu-row flex items-center gap-3">
                 <span class="profile-menu-icon"><i data-lucide="heart"></i></span><span class="flex-1"><span class="profile-menu-title block">Wishlist</span><span class="profile-menu-sub block">Your saved products</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
             </a>
+            <a href="cart.html" class="profile-menu-row flex items-center gap-3">
+                <span class="profile-menu-icon"><i data-lucide="shopping-cart"></i></span><span class="flex-1"><span class="profile-menu-title block">My Cart</span><span class="profile-menu-sub block">Items waiting to checkout</span></span><span id="menuCartBadge" class="hidden text-[11px] font-bold text-white bg-rani-pink rounded-full min-w-[20px] h-5 px-1.5 flex items-center justify-center">0</span><i data-lucide="chevron-right" class="profile-chevron"></i>
+            </a>
             <a href="#" onclick="event.preventDefault();showToast('Payment methods coming soon!')" class="profile-menu-row flex items-center gap-3">
                 <span class="profile-menu-icon"><i data-lucide="credit-card"></i></span><span class="flex-1"><span class="profile-menu-title block">Payment Methods</span><span class="profile-menu-sub block">Manage cards, UPI & wallets</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
             </a>
@@ -192,9 +243,36 @@
             <a href="#" onclick="event.preventDefault();showToast('Coupons coming soon!')" class="profile-menu-row flex items-center gap-3">
                 <span class="profile-menu-icon"><i data-lucide="ticket"></i></span><span class="flex-1"><span class="profile-menu-title block">My Coupons</span><span class="profile-menu-sub block">Your saved coupons</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
             </a>
-            <a href="#" onclick="event.preventDefault();showToast('Notification preferences')" class="profile-menu-row flex items-center gap-3">
-                <span class="profile-menu-icon"><i data-lucide="bell"></i></span><span class="flex-1"><span class="profile-menu-title block">Notifications</span><span class="profile-menu-sub block">Order updates, offers & more</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
-            </a>
+
+            <details class="profile-menu-row">
+                <summary class="flex items-center gap-3 min-h-[66px]">
+                    <span class="profile-menu-icon"><i data-lucide="bell"></i></span><span class="flex-1"><span class="profile-menu-title block">Notifications</span><span class="profile-menu-sub block">Order updates, offers & more</span></span><i data-lucide="chevron-right" class="profile-chevron chev"></i>
+                </summary>
+                <div class="pb-4 pl-[54px] pr-1 space-y-3.5">
+                    <label class="flex items-center justify-between gap-3">
+                        <span class="text-[12.5px] font-medium text-gray-700">Order updates</span>
+                        <button type="button" class="toggle-btn relative w-10 h-5 shrink-0" data-pref="orderUpdates" onclick="toggleNotifPref(this)">
+                            <span class="toggle-track absolute inset-0 rounded-full bg-gray-300"></span>
+                            <span class="toggle-knob absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow"></span>
+                        </button>
+                    </label>
+                    <label class="flex items-center justify-between gap-3">
+                        <span class="text-[12.5px] font-medium text-gray-700">Promotions & offers</span>
+                        <button type="button" class="toggle-btn relative w-10 h-5 shrink-0" data-pref="promotions" onclick="toggleNotifPref(this)">
+                            <span class="toggle-track absolute inset-0 rounded-full bg-gray-300"></span>
+                            <span class="toggle-knob absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow"></span>
+                        </button>
+                    </label>
+                    <label class="flex items-center justify-between gap-3">
+                        <span class="text-[12.5px] font-medium text-gray-700">WhatsApp updates</span>
+                        <button type="button" class="toggle-btn relative w-10 h-5 shrink-0" data-pref="whatsapp" onclick="toggleNotifPref(this)">
+                            <span class="toggle-track absolute inset-0 rounded-full bg-gray-300"></span>
+                            <span class="toggle-knob absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow"></span>
+                        </button>
+                    </label>
+                </div>
+            </details>
+
             <a href="terms.html" class="profile-menu-row flex items-center gap-3">
                 <span class="profile-menu-icon"><i data-lucide="shield-check"></i></span><span class="flex-1"><span class="profile-menu-title block">Privacy Policy</span><span class="profile-menu-sub block">Read our privacy policy</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
             </a>
@@ -242,9 +320,7 @@
         window.__profileToastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
     }
 
-    // ---- New, additive features (do not touch existing keys/behaviour) ----
-
-    // Referral code: generated once per user and persisted
+    // ---- Referral code: generated once per user and persisted ----
     function getOrCreateReferralCode(name) {
         let code = localStorage.getItem('aavira_referral_code');
         if (!code) {
@@ -257,7 +333,9 @@
     }
 
     window.copyReferralCode = function () {
-        const code = document.getElementById('referralCode').innerText;
+        const codeEl = document.getElementById('referralCode');
+        if (!codeEl) return;
+        const code = codeEl.innerText;
         const done = () => showToast(`Copied "${code}" to clipboard`);
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(code).then(done).catch(done);
@@ -265,6 +343,92 @@
             done();
         }
     };
+
+    // Member-since date: set on first visit, persisted, never overwritten
+    function getOrCreateMemberSince() {
+        let stamp = localStorage.getItem('aavira_member_since');
+        if (!stamp) {
+            stamp = new Date().toISOString();
+            localStorage.setItem('aavira_member_since', stamp);
+        }
+        try {
+            return new Date(stamp).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+        } catch {
+            return 'recently';
+        }
+    }
+
+    // Notification preferences, default all ON, stored as one JSON object
+    function loadNotifPrefs() {
+        return safeGet('aavira_notif_prefs', { orderUpdates: true, promotions: true, whatsapp: true });
+    }
+    function saveNotifPrefs(prefs) {
+        localStorage.setItem('aavira_notif_prefs', JSON.stringify(prefs));
+    }
+    function paintNotifToggles() {
+        const prefs = loadNotifPrefs();
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            const key = btn.getAttribute('data-pref');
+            btn.classList.toggle('toggle-on', Boolean(prefs[key]));
+        });
+    }
+    window.toggleNotifPref = function (btn) {
+        const key = btn.getAttribute('data-pref');
+        const prefs = loadNotifPrefs();
+        prefs[key] = !prefs[key];
+        saveNotifPrefs(prefs);
+        btn.classList.toggle('toggle-on', prefs[key]);
+    };
+
+    // Loyalty tier, computed from order history so it grows with real usage
+    function computeTier(orderCount) {
+        const points = orderCount * 120;
+        const tiers = [
+            { name: 'Silver', min: 0, icon: 'shield', badgeColor: 'text-slate-100' },
+            { name: 'Gold', min: 240, icon: 'crown', badgeColor: 'text-amber-300' },
+            { name: 'Platinum', min: 600, icon: 'gem', badgeColor: 'text-indigo-200' },
+        ];
+        let current = tiers[0];
+        let next = tiers[1];
+        for (let i = 0; i < tiers.length; i++) {
+            if (points >= tiers[i].min) {
+                current = tiers[i];
+                next = tiers[i + 1] || null;
+            }
+        }
+        let progressPct = 100;
+        if (next) {
+            const span = next.min - current.min;
+            progressPct = Math.min(100, Math.round(((points - current.min) / span) * 100));
+        }
+        return { points, current, next, progressPct };
+    }
+
+    // Paints the premium membership card (tier, points, progress, referral code).
+    // Shown only for logged-in members; guests never see this card.
+    function paintMembershipCard({ show, orderCount, referralName, displayName, displayEmail }) {
+        const card = document.getElementById('membershipCard');
+        if (card) card.classList.toggle('hidden', !show);
+        if (!show) return;
+
+        const cardName = document.getElementById('cardHolderName');
+        const cardEmail = document.getElementById('cardHolderEmail');
+        if (cardName) cardName.innerText = displayName;
+        if (cardEmail) cardEmail.innerText = displayEmail;
+
+        const { points, current, next, progressPct } = computeTier(orderCount);
+        document.getElementById('tierName').innerText = `${current.name} Member`;
+        document.getElementById('pointsLabel').innerText = `${points} points`;
+        document.getElementById('statRewards').innerText = points;
+        document.getElementById('nextTierLabel').innerText = next ? `Next: ${next.name}` : 'Top tier';
+        document.getElementById('tierProgressBar').style.width = `${progressPct}%`;
+        document.getElementById('tierBadgeIcon').innerHTML = `<i data-lucide="${current.icon}" class="w-4 h-4 ${current.badgeColor}"></i>`;
+
+        const referralCodeEl = document.getElementById('referralCode');
+        if (referralCodeEl) referralCodeEl.innerText = getOrCreateReferralCode(referralName);
+
+        if (window.lucide) lucide.createIcons();
+    }
 
     // Main App Initialization
     function initProfileUI() {
@@ -275,66 +439,69 @@
         const guestUI = document.getElementById('guestProfileUI');
         const vipUI = document.getElementById('vipProfileUI');
         const logoutBtn = document.getElementById('logoutBtnWrapper');
+        const memberSinceStrip = document.getElementById('memberSinceStrip');
+        const memberSinceText = document.getElementById('memberSinceText');
+        const identityGuestActions = document.getElementById('identityGuestActions');
+
+        guestUI.classList.add('hidden');
+        guestUI.classList.remove('flex');
+        vipUI.classList.remove('hidden');
+        vipUI.classList.add('flex');
+
+        // Cart / wishlist / orders are tracked locally for both guests and members
+        const cart = safeGet('aavira_cart', []);
+        const wishlist = safeGet('aavira_wishlist', []);
+        const orders = safeGet('aavira_orders', []);
+        const cartQty = Array.isArray(cart) ? cart.reduce((sum, item) => sum + (parseInt(item.qty, 10) || 1), 0) : 0;
+        const orderCount = Array.isArray(orders) ? orders.length : 0;
+        const totalSpent = Array.isArray(orders) ? orders.reduce((sum, order) => sum + (Number(order.totalAmount ?? order.total ?? order.amount ?? 0) || 0), 0) : 0;
+
+        document.getElementById('statOrders').innerText = orderCount;
+        document.getElementById('statWishlist').innerText = Array.isArray(wishlist) ? wishlist.length : 0;
+        document.getElementById('statSpent').innerText = totalSpent > 0 ? Math.round(totalSpent).toLocaleString('en-IN') : '0';
+
+        const menuCartBadge = document.getElementById('menuCartBadge');
+        if (menuCartBadge) {
+            menuCartBadge.innerText = cartQty;
+            menuCartBadge.classList.toggle('hidden', cartQty === 0);
+        }
 
         if (isLoggedIn) {
-            // Show VIP UI
-            if (guestUI) { guestUI.classList.add('hidden'); guestUI.classList.remove('flex'); }
-            if (vipUI) { vipUI.classList.remove('hidden'); vipUI.classList.add('flex'); }
-            if (logoutBtn) logoutBtn.classList.remove('hidden');
+            logoutBtn.classList.remove('hidden');
 
-            // Set User Details
             document.getElementById('vipName').innerText = userName;
             document.getElementById('vipEmail').innerText = userEmail || 'user@example.com';
             document.getElementById('profileInitial').innerText = userName.trim().charAt(0).toUpperCase();
+            document.getElementById('verifiedTick').classList.toggle('hidden', !userEmail);
 
-            const verifiedTick = document.getElementById('verifiedTick');
-            if (userEmail) {
-                verifiedTick.classList.remove('hidden');
+            if (memberSinceStrip && memberSinceText) {
+                memberSinceText.innerText = getOrCreateMemberSince();
+                memberSinceStrip.classList.remove('hidden');
+            }
+            if (identityGuestActions) {
+                identityGuestActions.classList.add('hidden');
+                identityGuestActions.classList.remove('flex');
             }
 
-            // Load Quick Stats (Orders, Wishlist, Cart)
-            const cart = safeGet('aavira_cart', []);
-            const wishlist = safeGet('aavira_wishlist', []);
-            const orders = safeGet('aavira_orders', []);
-
-            const cartQty = Array.isArray(cart) ? cart.reduce((sum, item) => sum + (parseInt(item.qty, 10) || 1), 0) : 0;
-            const orderCount = Array.isArray(orders) ? orders.length : 0;
-            const totalSpent = Array.isArray(orders) ? orders.reduce((sum, order) => sum + (Number(order.totalAmount ?? order.total ?? order.amount ?? 0) || 0), 0) : 0;
-
-            document.getElementById('statWishlist').innerText = Array.isArray(wishlist) ? wishlist.length : 0;
-            document.getElementById('statOrders').innerText = orderCount;
-            document.getElementById('statSpent').innerText = totalSpent > 0 ? Math.round(totalSpent).toLocaleString('en-IN') : '0';
-
-            document.getElementById('statRewards').innerText = orderCount * 120;
-
-            // Notification toggles
-            paintNotifToggles();
+            paintMembershipCard({ show: true, orderCount, referralName: userName, displayName: userName, displayEmail: userEmail || 'user@example.com' });
         } else {
-            // Guest mode: keep the same membership card visible without requiring login.
-            guestUI.classList.add('hidden');
-            guestUI.classList.remove('flex');
-            vipUI.classList.remove('hidden');
-            vipUI.classList.add('flex');
-            if (logoutBtn) logoutBtn.classList.add('hidden');
+            logoutBtn.classList.add('hidden');
+            if (memberSinceStrip) memberSinceStrip.classList.add('hidden');
 
             document.getElementById('vipName').innerText = 'Guest User';
             document.getElementById('vipEmail').innerText = 'Guest Account';
             document.getElementById('profileInitial').innerText = 'G';
             document.getElementById('verifiedTick').classList.add('hidden');
+            if (identityGuestActions) {
+                identityGuestActions.classList.remove('hidden');
+                identityGuestActions.classList.add('flex');
+            }
 
-            document.getElementById('statRewards').innerText = '0';
-
-            // Guest cart/wishlist/orders can still be shown locally.
-            const guestCart = safeGet('aavira_cart', []);
-            const guestWishlist = safeGet('aavira_wishlist', []);
-            const guestOrders = safeGet('aavira_orders', []);
-            const guestCartQty = Array.isArray(guestCart) ? guestCart.reduce((sum, item) => sum + (parseInt(item.qty, 10) || 1), 0) : 0;
-
-            document.getElementById('statOrders').innerText = Array.isArray(guestOrders) ? guestOrders.length : 0;
-            document.getElementById('statWishlist').innerText = Array.isArray(guestWishlist) ? guestWishlist.length : 0;
-            document.getElementById('statSpent').innerText = '0';
-            document.getElementById('statRewards').innerText = '0';
+            paintMembershipCard({ show: false, orderCount, referralName: '', displayName: 'Guest User', displayEmail: 'Guest Account' });
         }
+
+        // Notification toggles
+        paintNotifToggles();
 
         // 🚨 CRITICAL: Render all Lucide Icons AFTER the HTML is modified/loaded
         if (window.lucide) {
