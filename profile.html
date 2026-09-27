@@ -163,7 +163,7 @@
                 <button onclick="showToast('Total spent: ₹'+(document.getElementById('statSpent')?.innerText||'0'))" class="profile-stat py-4 flex flex-col items-center">
                     <i data-lucide="wallet-cards" class="w-5 h-5 text-rani-pink"></i><span id="statSpent" class="text-[18px] font-extrabold text-gray-900 mt-1">0</span><span class="text-[10px] text-gray-500">Total Spent</span>
                 </button>
-                <button onclick="showToast((document.getElementById('pointsLabel')?.innerText||'0 points'))" class="profile-stat py-4 flex flex-col items-center">
+                <button onclick="showToast('Reward points')" class="profile-stat py-4 flex flex-col items-center">
                     <i data-lucide="star" class="w-5 h-5 text-rani-pink"></i><span id="statRewards" class="text-[18px] font-extrabold text-gray-900 mt-1">0</span><span class="text-[10px] text-gray-500">Reward Points</span>
                 </button>
             </div>
@@ -266,66 +266,6 @@
         }
     };
 
-    // Member-since date: set on first visit, persisted, never overwritten
-    function getOrCreateMemberSince() {
-        let stamp = localStorage.getItem('aavira_member_since');
-        if (!stamp) {
-            stamp = new Date().toISOString();
-            localStorage.setItem('aavira_member_since', stamp);
-        }
-        try {
-            return new Date(stamp).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
-        } catch {
-            return 'recently';
-        }
-    }
-
-    // Notification preferences, default all ON, stored as one JSON object
-    function loadNotifPrefs() {
-        return safeGet('aavira_notif_prefs', { orderUpdates: true, promotions: true, whatsapp: true });
-    }
-    function saveNotifPrefs(prefs) {
-        localStorage.setItem('aavira_notif_prefs', JSON.stringify(prefs));
-    }
-    function paintNotifToggles() {
-        const prefs = loadNotifPrefs();
-        document.querySelectorAll('.toggle-btn').forEach(btn => {
-            const key = btn.getAttribute('data-pref');
-            btn.classList.toggle('toggle-on', Boolean(prefs[key]));
-        });
-    }
-    window.toggleNotifPref = function (btn) {
-        const key = btn.getAttribute('data-pref');
-        const prefs = loadNotifPrefs();
-        prefs[key] = !prefs[key];
-        saveNotifPrefs(prefs);
-        btn.classList.toggle('toggle-on', prefs[key]);
-    };
-
-    // Loyalty tier, computed from order history so it grows with real usage
-    function computeTier(orderCount) {
-        const points = orderCount * 120;
-        const tiers = [
-            { name: 'Silver', min: 0, icon: 'shield', badgeColor: 'text-slate-400' },
-            { name: 'Gold', min: 240, icon: 'crown', badgeColor: 'text-amber-500' },
-            { name: 'Platinum', min: 600, icon: 'gem', badgeColor: 'text-indigo-400' },
-        ];
-        let current = tiers[0];
-        let next = tiers[1];
-        for (let i = 0; i < tiers.length; i++) {
-            if (points >= tiers[i].min) {
-                current = tiers[i];
-                next = tiers[i + 1] || null;
-            }
-        }
-        let progressPct = 100;
-        if (next) {
-            const span = next.min - current.min;
-            progressPct = Math.min(100, Math.round(((points - current.min) / span) * 100));
-        }
-        return { points, current, next, progressPct };
-    }
-
     // Main App Initialization
     function initProfileUI() {
         const userName = localStorage.getItem('aavira_display_name');
@@ -338,11 +278,9 @@
 
         if (isLoggedIn) {
             // Show VIP UI
-            guestUI.classList.add('hidden');
-            guestUI.classList.remove('flex');
-            vipUI.classList.remove('hidden');
-            vipUI.classList.add('flex');
-            logoutBtn.classList.remove('hidden');
+            if (guestUI) { guestUI.classList.add('hidden'); guestUI.classList.remove('flex'); }
+            if (vipUI) { vipUI.classList.remove('hidden'); vipUI.classList.add('flex'); }
+            if (logoutBtn) logoutBtn.classList.remove('hidden');
 
             // Set User Details
             document.getElementById('vipName').innerText = userName;
@@ -367,31 +305,7 @@
             document.getElementById('statOrders').innerText = orderCount;
             document.getElementById('statSpent').innerText = totalSpent > 0 ? Math.round(totalSpent).toLocaleString('en-IN') : '0';
 
-            // Handle Menu & Header Cart Badges
-            const headerBadge = document.getElementById('headerCartBadge');
-            const menuBadge = document.getElementById('menuCartBadge');
-
-            if (cartQty > 0) {
-                headerBadge.innerText = cartQty;
-                menuBadge.innerText = cartQty;
-                headerBadge.classList.remove('hidden');
-                menuBadge.classList.remove('hidden');
-            }
-
-            // Loyalty tier & progress
-            const { points, current, next, progressPct } = computeTier(orderCount);
-            document.getElementById('pointsLabel').innerText = `${points} points`;
             document.getElementById('statRewards').innerText = orderCount * 120;
-            document.getElementById('nextTierLabel').innerText = next ? `Next: ${next.name}` : 'Top tier';
-            document.getElementById('tierProgressBar').style.width = `${progressPct}%`;
-            document.getElementById('tierBadgeIcon').innerHTML = `<i data-lucide="${current.icon}" class="w-3.5 h-3.5 ${current.badgeColor}"></i>`;
-
-            // Referral code
-            const referralCodeEl = document.getElementById('referralCode');
-            if (referralCodeEl) referralCodeEl.innerText = getOrCreateReferralCode(userName);
-
-            // Member since
-            if (memberSinceStrip) memberSinceStrip.classList.add('hidden');
 
             // Notification toggles
             paintNotifToggles();
@@ -401,8 +315,7 @@
             guestUI.classList.remove('flex');
             vipUI.classList.remove('hidden');
             vipUI.classList.add('flex');
-            logoutBtn.classList.add('hidden');
-            memberSinceStrip.classList.add('hidden');
+            if (logoutBtn) logoutBtn.classList.add('hidden');
 
             document.getElementById('vipName').innerText = 'Guest User';
             document.getElementById('vipEmail').innerText = 'Guest Account';
