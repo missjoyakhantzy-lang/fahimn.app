@@ -54,11 +54,8 @@ window.getCategoriesData = async function() {
 };
 
 // ==========================================
-// 2. ORDERS LOGIC
-// ==========================================
-// Keep the local account cache in sync with the same order that was
-// successfully written to the backend. Profile uses this cache for its
-// order count and the Orders screen can use it as a safe local fallback.
+ // 2. ORDERS LOGIC
+ // ==========================================
 window.getLocalAaviraOrders = function() {
     try {
         const raw = localStorage.getItem('aavira_orders');
@@ -69,21 +66,50 @@ window.getLocalAaviraOrders = function() {
     }
 };
 
+// Keep ONLY the current account's orders in local storage.
+// This prevents orders from one account being displayed after another login.
 window.syncAaviraOrderLocally = function(orderPayload) {
     try {
         if (!orderPayload || !orderPayload.orderId) return false;
-        const orders = window.getLocalAaviraOrders();
-        const id = String(orderPayload.orderId).trim();
-        const index = orders.findIndex(order => String(order?.orderId || order?.id || '').trim() === id);
 
+        const email = String(orderPayload.email || orderPayload.customerEmail || '').trim().toLowerCase();
+        const phone = String(orderPayload.phone || orderPayload.customerPhone || '')
+            .replace(/[^0-9]/g, '').slice(-10);
+
+        const currentEmail = String(localStorage.getItem('aavira_user_email') || '').trim().toLowerCase();
+        const currentPhone = String(localStorage.getItem('aavira_user_phone') || '')
+            .replace(/[^0-9]/g, '').slice(-10);
+        const currentName = String(localStorage.getItem('aavira_display_name') || '').trim();
+        const signedIn = !!(currentEmail && currentName && currentName.toLowerCase() !== 'guest user');
+
+        // A signed-in order must belong to the current signed-in identity.
+        if (signedIn && email && email !== currentEmail && (!phone || phone !== currentPhone)) return false;
+
+        const id = String(orderPayload.orderId).trim();
         const normalized = {
             ...orderPayload,
             id: orderPayload.id || id,
             orderId: id,
             totalAmount: Number(orderPayload.totalAmount ?? orderPayload.total ?? orderPayload.amount ?? 0) || 0,
-            userId: orderPayload.userId || orderPayload.email || orderPayload.customerEmail || ''
+            userId: orderPayload.userId || email || phone
         };
 
+        // Replace the local cache with only the order set for this identity.
+        let orders = window.getLocalAaviraOrders().filter(order => {
+            const oEmail = String(order?.email || order?.customerEmail || '').trim().toLowerCase();
+            const oPhone = String(order?.phone || order?.customerPhone || '')
+                .replace(/[^0-9]/g, '').slice(-10);
+
+            if (signedIn) {
+                return (!!currentEmail && oEmail === currentEmail) ||
+                       (!!currentPhone && oPhone === currentPhone);
+            }
+            return String(order?.orderId || order?.id || '').trim() === id;
+        });
+
+        const index = orders.findIndex(order =>
+            String(order?.orderId || order?.id || '').trim() === id
+        );
         if (index >= 0) orders[index] = { ...orders[index], ...normalized };
         else orders.unshift(normalized);
 
@@ -93,6 +119,46 @@ window.syncAaviraOrderLocally = function(orderPayload) {
     } catch (e) {
         console.error('Local Order Sync Error:', e);
         return false;
+    }
+};
+
+window.getAaviraOrdersForCurrentUser = async function() {
+    try {
+        const email = String(localStorage.getItem('aavira_user_email') || '').trim().toLowerCase();
+        const name = String(localStorage.getItem('aavira_display_name') || '').trim();
+        const phone = String(localStorage.getItem('aavira_user_phone') || '').replace(/[^0-9]/g, '').slice(-10);
+        const signedIn = !!(email && name && name.toLowerCase() !== 'guest user');
+
+        if (!signedIn && !localStorage.getItem('aavira_guest_order_id')) return [];
+
+        let url = `${VERCEL_URL}/api/orders?nocache=${Date.now()}`;
+        if (signedIn) {
+            if (email) url += `&email=${encodeURIComponent(email)}`;
+            else if (phone) url += `&phone=${encodeURIComponent(phone)}`;
+        } else {
+            url += `&orderId=${encodeURIComponent(localStorage.getItem('aavira_guest_order_id'))}`;
+        }
+
+        const response = await fetch(url);
+        const result = await response.json();
+        if (!response.ok || result.status !== 'success' || !Array.isArray(result.data)) return [];
+
+        const filtered = result.data.filter(order => {
+            const oEmail = String(order?.email || order?.customerEmail || '').trim().toLowerCase();
+            const oPhone = String(order?.phone || order?.customerPhone || '').replace(/[^0-9]/g, '').slice(-10);
+            const oId = String(order?.orderId || order?.id || '').trim();
+
+            if (signedIn) {
+                return (!!email && oEmail === email) || (!!phone && oPhone === phone);
+            }
+            return oId === String(localStorage.getItem('aavira_guest_order_id') || '').trim();
+        });
+
+        localStorage.setItem('aavira_orders', JSON.stringify(filtered));
+        return filtered;
+    } catch (error) {
+        console.error('Current User Order Sync Error:', error);
+        return [];
     }
 };
 
@@ -106,7 +172,6 @@ window.sendOrderToVercel = async function(orderPayload) {
         const result = await response.json();
         const saved = response.ok && result.status === "success";
 
-        // Never mark the local order as saved unless the backend confirmed it.
         if (saved) window.syncAaviraOrderLocally(orderPayload);
         return saved;
     } catch (error) {
