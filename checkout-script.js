@@ -511,31 +511,39 @@ window.submitFinalOrder = async () => {
     const totalAmountToPay = Math.max(0, productsCost + deliveryFee + giftWrapFee - promoDiscountAmount);
     const orderCurrentState = (selectedPaymentMode === 'online') ? 'Processing' : 'Processing';
     
-    // Save to Vercel/Backend Database
-    try { 
-        if (typeof window.sendOrderToVercel === 'function'){
-            let payloadData = {
-                orderId: finalOrderId,
-                userId: customerEmail || customerPhone,
-                customerName: customerName,
-                email: customerEmail,
-                phone: customerPhone,
-                address: customerAddress,
-                mapLink: customerMapLink, 
-                items: formattedItemsPayload,
-                totalAmount: totalAmountToPay,
-                paymentMethod: selectedPaymentMode,
-                paymentStatus: (selectedPaymentMode === 'online' ? 'Pending' : 'COD'),
-                orderStatus: orderCurrentState,
-                promoCodeUsed: appliedPromoCode || "",
-                promoDiscount: promoDiscountAmount || 0,
-                createdAt: new Date().toISOString()
-            };
-            await window.sendOrderToVercel(payloadData);
+    // Save to Vercel/Backend Database — only continue when the server confirms the order.
+    let orderSaved = false;
+    try {
+        if (typeof window.sendOrderToVercel !== 'function') {
+            throw new Error('Order service is unavailable.');
         }
-    } catch(e) { 
-        console.error("Database Save Failed", e); 
-    } 
+
+        const payloadData = {
+            orderId: finalOrderId,
+            userId: customerEmail || customerPhone,
+            customerName: customerName,
+            email: customerEmail,
+            phone: customerPhone,
+            address: customerAddress,
+            mapLink: customerMapLink,
+            items: formattedItemsPayload,
+            totalAmount: totalAmountToPay,
+            paymentMethod: selectedPaymentMode,
+            paymentStatus: (selectedPaymentMode === 'online' ? 'Pending' : 'COD'),
+            orderStatus: orderCurrentState,
+            promoCodeUsed: appliedPromoCode || "",
+            promoDiscount: promoDiscountAmount || 0,
+            createdAt: new Date().toISOString()
+        };
+
+        orderSaved = await window.sendOrderToVercel(payloadData);
+        if (!orderSaved) throw new Error('Backend did not confirm the order.');
+    } catch(e) {
+        console.error("Database Save Failed", e);
+        if (processModal) processModal.classList.remove('active');
+        ToastAlert.show('Order could not be saved. Please try again.', false);
+        return;
+    }
 
     // 🔥 1. CLEAR CART, PROMO & ADDRESS DRAFT MEMORY 🔥
     if(!isBuyNowMode) { 
@@ -638,7 +646,7 @@ window.submitFinalOrder = async () => {
 
         if (popupActions) {
             popupActions.innerHTML = `
-                <button class="btn-pro-action primary" onclick="handleTrackOrder()">
+                <button class="btn-pro-action primary" onclick="handleTrackOrder('${finalOrderId}')">
                     <i class="fa-solid fa-location-arrow"></i> Track Order
                 </button>
                 <button class="btn-pro-action outline" onclick="window.location.href='./'">
@@ -649,6 +657,11 @@ window.submitFinalOrder = async () => {
     }
 };
 
-window.handleTrackOrder = () => { 
-    window.location.href = 'orders'; 
+window.handleTrackOrder = (orderId) => {
+    const cleanId = String(orderId || '').trim();
+    if (cleanId) {
+        localStorage.setItem('aavira_guest_order_id', cleanId);
+        localStorage.setItem('aavira_placed_orders', JSON.stringify([cleanId]));
+    }
+    window.location.href = '/orders';
 };
