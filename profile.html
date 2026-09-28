@@ -520,7 +520,12 @@
         // Cart / wishlist / orders are tracked locally for both guests and members
         const cart = safeGet('aavira_cart', []);
         const wishlist = safeGet('aavira_wishlist', []);
-        const orders = safeGet('aavira_orders', []);
+        let orders = [];
+        if (typeof window.getAaviraOrdersForCurrentUser === 'function') {
+            orders = await window.getAaviraOrdersForCurrentUser();
+        } else {
+            orders = safeGet('aavira_orders', []);
+        }
         const cartQty = Array.isArray(cart) ? cart.reduce((sum, item) => sum + (parseInt(item.qty, 10) || 1), 0) : 0;
         const orderCount = Array.isArray(orders) ? orders.length : 0;
         const totalSpent = Array.isArray(orders) ? orders.reduce((sum, order) => sum + (Number(order.totalAmount ?? order.total ?? order.amount ?? 0) || 0), 0) : 0;
