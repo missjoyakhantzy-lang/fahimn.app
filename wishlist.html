@@ -10,17 +10,20 @@
 <style>
 :root{
  --rani:#D81B60;--rani-dark:#B71550;--rani-light:#FDF0F5;
- --gold:#D4AF37;--ivory:#FDFBF7;--white:#FFFFFF;
+ --gold:#D4AF37;--ivory:#FDFBF7;
  --text:#242024;--muted:#756D73;--border:#E7E0D9;
  --green:#16a34a;--orange:#ea580c;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{width:100%;min-height:100%;background:var(--ivory);font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;color:var(--text)}
-body{display:flex;justify-content:center;overflow-x:hidden}
-.app-container{width:100%;max-width:460px;min-height:100vh;background:var(--ivory);display:flex;flex-direction:column;position:relative}
-.pro-header{height:68px;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(255,255,255,.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+html,body{height:100%;width:100%;background:var(--ivory);font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;color:var(--text)}
+body{display:flex;justify-content:center;height:100dvh;overflow:hidden}
+
+/* FIX 1: App proper full height flex, taaki footer hide na ho */
+.app-container{width:100%;max-width:460px;height:100dvh;background:var(--ivory);display:flex;flex-direction:column;position:relative;overflow:hidden}
+
+.pro-header{height:68px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(255,255,255,.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);z-index:50}
 .header-left,.header-right{display:flex;align-items:center;gap:8px}
-.icon-btn{width:40px;height:40px;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s}
+.icon-btn{width:40px;height:40px;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:13px;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .icon-btn:active{transform:scale(.92)}
 .header-titles{text-align:center}
 .header-titles h1{font:700 17px "Playfair Display",serif;letter-spacing:.04em}
@@ -28,41 +31,39 @@ body{display:flex;justify-content:center;overflow-x:hidden}
 .cart-icon-wrapper{position:relative}
 .cart-badge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 4px;border-radius:10px;background:var(--rani);color:#fff;border:2px solid #fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center}
 
-.main-content{flex:1;overflow-y:auto;padding:14px 14px 140px;scrollbar-width:none}
+/* Scroll area */
+.main-content{flex:1;overflow-y:auto;overflow-x:hidden;padding:14px 14px 20px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .main-content::-webkit-scrollbar{display:none}
 
-/* Summary Card */
+/* Savings */
 .savings-card{background:linear-gradient(135deg,#1a1520 0%,#3a1426 50%,#7a1740 100%);color:#fff;border-radius:18px;padding:14px 15px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;position:relative;overflow:hidden}
 .savings-card::after{content:'';position:absolute;right:-30px;top:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(212,175,55,.35),transparent 70%)}
 .savings-card h3{font-size:13px;font-weight:800}
 .savings-card p{font-size:11px;opacity:.8;margin-top:3px}
-.savings-card .save-badge{background:var(--gold);color:#111;font-size:11px;font-weight:800;padding:7px 12px;border-radius:12px;z-index:1}
+.savings-card .save-badge{background:var(--gold);color:#111;font-size:11px;font-weight:800;padding:7px 12px;border-radius:12px;z-index:1;white-space:nowrap}
 
-/* Search + Sort */
 .search-row{display:flex;gap:8px;margin-bottom:10px}
 .search-box{flex:1;background:#fff;border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;gap:8px;padding:0 12px;height:42px}
-.search-box input{border:0;outline:0;flex:1;font-size:12.5px;font-family:inherit;background:transparent}
-.search-box svg{color:#9ca3af}
+.search-box input{border:0;outline:0;flex:1;font-size:12.5px;font-family:inherit;background:transparent;min-width:0}
 .sort-select{height:42px;border:1px solid var(--border);border-radius:12px;background:#fff;font-size:11.5px;font-weight:700;padding:0 10px;outline:none;max-width:118px;font-family:inherit}
 
-/* Filter chips */
 .filter-chips{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;scrollbar-width:none}
 .filter-chips::-webkit-scrollbar{display:none}
-.chip{flex-shrink:0;border:1px solid var(--border);background:#fff;padding:8px 14px;border-radius:100px;font-size:11px;font-weight:700;cursor:pointer;color:var(--muted);transition:.2s}
+.chip{flex-shrink:0;border:1px solid var(--border);background:#fff;padding:8px 14px;border-radius:100px;font-size:11px;font-weight:700;cursor:pointer;color:var(--muted)}
 .chip.active{background:var(--text);color:#fff;border-color:var(--text)}
 
 .wishlist-toolbar{display:flex;align-items:center;justify-content:space-between;margin:4px 2px 12px}
 .toolbar-title{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .toolbar-sub{font-size:11px;color:var(--muted);margin-top:2px}
-.toolbar-actions{display:flex;gap:8px}
-.clear-btn,.share-btn{border:1px solid #F4D6E1;background:#fff;color:var(--rani);font-size:10.5px;font-weight:800;padding:8px 12px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:5px}
-.share-btn{border-color:var(--border);color:var(--text)}
+.clear-btn{border:1px solid #F4D6E1;background:#fff;color:var(--rani);font-size:10.5px;font-weight:800;padding:8px 12px;border-radius:10px;cursor:pointer}
 
-.grid-container{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid-container{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-bottom:10px}
 .w-card{background:#fff;display:flex;flex-direction:column;position:relative;border-radius:16px;border:1px solid #f3f0ee;overflow:hidden;box-shadow:0 4px 20px -4px rgba(0,0,0,.06);animation:popIn .35s ease}
 .w-card.removing{transform:scale(.86);opacity:0;transition:.3s}
 .w-card.out-stock{opacity:.85}
-.w-img-wrapper{position:relative;background:#f9f8f7;cursor:pointer;overflow:hidden;width:100%;aspect-ratio:1/1.12}
+
+/* FIX 2: Product view 1:1 square */
+.w-img-wrapper{position:relative;background:#f9f8f7;cursor:pointer;overflow:hidden;width:100%;aspect-ratio:1/1;flex-shrink:0}
 .w-img{position:absolute;inset:0;width:100%;height:100%;background-size:cover;background-position:center;transition:transform .6s ease}
 .w-card:hover .w-img{transform:scale(1.05)}
 .discount-tag{position:absolute;top:8px;left:8px;z-index:10;background:#fff;padding:4px 8px;font-size:9px;font-weight:800;color:var(--rani);border-radius:7px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
@@ -70,7 +71,7 @@ body{display:flex;justify-content:center;overflow-x:hidden}
 .bestseller{position:absolute;bottom:0;left:0;right:0;z-index:10;background:rgba(17,24,39,.88);color:#fff;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;text-align:center;padding:5px}
 .out-label{position:absolute;inset:0;background:rgba(255,255,255,.65);display:flex;align-items:center;justify-content:center;z-index:5;font-size:11px;font-weight:800;color:#111}
 .btn-remove{position:absolute;top:6px;right:6px;z-index:10;width:32px;height:32px;border:0;background:rgba(255,255,255,.95);color:var(--rani);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-.btn-remove.muted{color:#9ca3af}
+
 .w-info{padding:11px 11px 12px;display:flex;flex-direction:column;flex:1}
 .w-title{font-size:12.5px;font-weight:600;color:#1f2937;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:5px;cursor:pointer}
 .rating-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
@@ -85,29 +86,31 @@ body{display:flex;justify-content:center;overflow-x:hidden}
 .w-price-row{display:flex;align-items:baseline;gap:6px;padding-top:9px;margin-top:auto;border-top:1px solid #f3f4f6}
 .w-price{font-size:15px;font-weight:800;color:#111827}
 .w-old{font-size:10.5px;color:#9ca3af;text-decoration:line-through}
-.w-actions{display:flex;gap:7px;margin-top:10px}
-.move-btn{flex:1;background:var(--rani);color:#fff;border:0;border-radius:10px;font-size:11px;font-weight:800;padding:9px 0;cursor:pointer;transition:.2s}
+
+/* Card buttons - hamesha visible */
+.w-actions{display:flex;gap:7px;margin-top:10px;position:relative;z-index:5}
+.move-btn{flex:1;background:var(--rani);color:#fff;border:0;border-radius:10px;font-size:11px;font-weight:800;padding:10px 0;cursor:pointer}
 .move-btn:active{transform:scale(.96)}
-.move-btn:disabled{background:#e5e7eb;color:#9ca3af;cursor:not-allowed}
-.view-btn{width:34px;height:34px;display:flex;align-items:center;justify-content:center;background:var(--rani-light);color:var(--rani);border:0;border-radius:10px;cursor:pointer;flex-shrink:0}
+.move-btn:disabled{background:#e5e7eb;color:#9ca3af}
+.view-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:var(--rani-light);color:var(--rani);border:0;border-radius:10px;cursor:pointer;flex-shrink:0}
 
-/* Bottom bar */
-.bottom-cta{position:absolute;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:12px 14px 16px;display:flex;align-items:center;gap:12px;z-index:40}
-.bottom-price b{font-size:16px;display:block}
+/* FIX 1: Bottom bar ab flex footer hai - hide nahi hoga */
+.bottom-cta{flex-shrink:0;background:#fff;border-top:1px solid var(--border);padding:12px 14px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:12px;z-index:60;box-shadow:0 -6px 20px rgba(0,0,0,.06)}
+.bottom-price{flex-shrink:0;min-width:90px}
+.bottom-price b{font-size:16px;display:block;line-height:1.1}
 .bottom-price span{font-size:11px;color:var(--muted)}
-.move-all-btn{flex:1;background:var(--rani);color:#fff;border:0;border-radius:14px;padding:14px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 8px 20px rgba(216,27,96,.25)}
+.move-all-btn{flex:1;background:var(--rani);color:#fff;border:0;border-radius:14px;padding:15px 10px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 8px 20px rgba(216,27,96,.25);white-space:nowrap}
+.move-all-btn:active{transform:scale(.97)}
 
-/* Empty */
 .empty-wishlist-state{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;text-align:center;padding:20px}
 .empty-wishlist-state .icon-circle{width:84px;height:84px;background:#F9E8EE;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:18px;color:var(--rani)}
 .empty-wishlist-state h2{font:700 23px "Playfair Display",serif;margin-bottom:8px}
 .empty-wishlist-state p{font-size:12.5px;color:var(--muted);line-height:1.6;max-width:270px;margin-bottom:22px}
-.explore-btn{background:var(--rani);color:#fff;padding:14px 30px;border-radius:14px;font-size:12px;font-weight:800;text-decoration:none;box-shadow:0 9px 20px rgba(216,27,96,.2)}
+.explore-btn{background:var(--rani);color:#fff;padding:14px 30px;border-radius:14px;font-size:12px;font-weight:800;text-decoration:none}
 
-/* Modal */
 .modal-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:100;display:none;align-items:flex-end;justify-content:center}
 .modal-overlay.open{display:flex}
-.modal{background:#fff;width:100%;border-radius:22px 22px 0 0;padding:18px 18px 24px;animation:slideUp .3s ease;max-height:85%;overflow-y:auto}
+.modal{background:#fff;width:100%;border-radius:22px 22px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom));animation:slideUp .3s ease;max-height:85%;overflow-y:auto}
 @keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
 .modal h3{font-size:15px;font-weight:800;margin-bottom:4px}
 .modal p{font-size:12px;color:var(--muted);margin-bottom:14px}
@@ -117,18 +120,16 @@ body{display:flex;justify-content:center;overflow-x:hidden}
 .modal-btn{width:100%;background:var(--rani);color:#fff;border:0;border-radius:13px;padding:14px;font-size:13px;font-weight:800;cursor:pointer}
 .modal-close{width:100%;background:#f3f4f6;color:#111;border:0;border-radius:13px;padding:12px;font-size:12px;font-weight:700;cursor:pointer;margin-top:8px}
 
-/* Skeleton + toast */
 .skel-card{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden}
-.skel-img{height:185px;width:100%}
+.skel-img{height:185px;width:100%;aspect-ratio:1/1}
 .skel-box{background:linear-gradient(90deg,#f1eeee 25%,#fff 50%,#f1eeee 75%);background-size:200% 100%;animation:shimmer 1.3s infinite}
 .skel-info{padding:11px}.skel-line{height:9px;border-radius:5px;margin-bottom:7px}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 @keyframes popIn{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
-.pro-toast{position:absolute;bottom:96px;left:50%;transform:translateX(-50%) translateY(20px);background:#111827;color:#fff;padding:11px 20px;border-radius:50px;font-size:12px;font-weight:700;z-index:200;opacity:0;pointer-events:none;transition:.3s;white-space:nowrap;box-shadow:0 10px 20px rgba(0,0,0,.25);display:flex;align-items:center;gap:8px}
+.pro-toast{position:absolute;bottom:92px;left:50%;transform:translateX(-50%) translateY(20px);background:#111827;color:#fff;padding:11px 18px;border-radius:50px;font-size:12px;font-weight:700;z-index:200;opacity:0;pointer-events:none;transition:.3s;white-space:nowrap;display:flex;align-items:center;gap:8px;max-width:90%}
 .pro-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@media(min-width:640px){.app-container{box-shadow:0 0 40px rgba(36,32,36,.08)}}
+@media(min-width:640px){.app-container{box-shadow:0 0 40px rgba(36,32,36,.08);border-left:1px solid var(--border);border-right:1px solid var(--border)}}
 </style>
-<style data-aavira-ui>body.aavira-theme{--primary:#D81B60}</style>
 </head>
 <body>
 <div class="app-container">
@@ -139,7 +140,7 @@ body{display:flex;justify-content:center;overflow-x:hidden}
 </div>
 <div class="header-titles"><h1>MY WISHLIST</h1><p id="headerItemCount">0 Items</p></div>
 <div class="header-right">
-<button class="icon-btn" onclick="shareWishlist()" title="Share"><i data-lucide="share-2" style="width:18px;height:18px"></i></button>
+<button class="icon-btn" onclick="shareWishlist()"><i data-lucide="share-2" style="width:18px;height:18px"></i></button>
 <a href="/cart" class="icon-btn cart-icon-wrapper"><i data-lucide="shopping-bag" style="width:18px;height:18px"></i><span class="cart-badge" id="topCartBadge" style="display:none">0</span></a>
 </div>
 </header>
@@ -147,7 +148,7 @@ body{display:flex;justify-content:center;overflow-x:hidden}
 <main class="main-content">
 <div id="contentWrap" style="display:none">
 <div class="savings-card">
-<div><h3 id="saveTitle">Your Collection</h3><p id="saveSub">0 items saved</p></div>
+<div><h3>Your Collection</h3><p id="saveSub">0 items</p></div>
 <div class="save-badge" id="saveBadge">Save ₹0</div>
 </div>
 
@@ -163,21 +164,19 @@ body{display:flex;justify-content:center;overflow-x:hidden}
 </div>
 
 <div class="filter-chips" id="filterChips">
-<button class="chip active" data-f="all" onclick="setFilter('all',this)">All</button>
-<button class="chip" data-f="drop" onclick="setFilter('drop',this)">Price Drop</button>
-<button class="chip" data-f="best" onclick="setFilter('best',this)">Bestseller</button>
-<button class="chip" data-f="lowstock" onclick="setFilter('lowstock',this)">Low Stock</button>
+<button class="chip active" onclick="setFilter('all',this)">All</button>
+<button class="chip" onclick="setFilter('drop',this)">Price Drop</button>
+<button class="chip" onclick="setFilter('best',this)">Bestseller</button>
+<button class="chip" onclick="setFilter('lowstock',this)">Low Stock</button>
 </div>
 
 <div class="wishlist-toolbar">
-<div><div class="toolbar-title">Saved Collection</div><div class="toolbar-sub" id="toolbarSub">Your handpicked pieces</div></div>
-<div class="toolbar-actions">
+<div><div class="toolbar-title">Saved Collection</div><div class="toolbar-sub" id="toolbarSub"></div></div>
 <button class="clear-btn" onclick="askClear()">Clear</button>
-</div>
 </div>
 
 <div class="grid-container" id="wishlistGrid"></div>
-<div id="noResult" style="display:none;text-align:center;padding:30px 10px;color:var(--muted);font-size:12px">No products match your search.</div>
+<div id="noResult" style="display:none;text-align:center;padding:30px 10px;color:var(--muted);font-size:12px">No products match.</div>
 </div>
 
 <div class="grid-container" id="skeletonView">
@@ -188,11 +187,12 @@ body{display:flex;justify-content:center;overflow-x:hidden}
 <div id="emptyWishlistView" class="empty-wishlist-state">
 <div class="icon-circle"><i data-lucide="heart-off" style="width:34px;height:34px"></i></div>
 <h2>Nothing saved yet!</h2>
-<p>Tap the heart on any product to save your favourite Aavira ethnic wear here.</p>
+<p>Tap the heart on any product to save here.</p>
 <a href="./" class="explore-btn">Start Exploring</a>
 </div>
 </main>
 
+<!-- FIX: ye ab hamesha dikhega, hide nahi hoga -->
 <div class="bottom-cta" id="bottomBar" style="display:none">
 <div class="bottom-price"><b id="totalPrice">₹0</b><span id="totalMrp">0 items</span></div>
 <button class="move-all-btn" onclick="moveAllToBag()">Move All to Bag</button>
@@ -201,7 +201,7 @@ body{display:flex;justify-content:center;overflow-x:hidden}
 <div class="modal-overlay" id="sizeModal">
 <div class="modal">
 <h3 id="modalTitle">Select Size</h3>
-<p>Choose a size to move this piece to your bag</p>
+<p>Choose a size to move to bag</p>
 <div class="size-grid" id="sizeGrid"></div>
 <button class="modal-btn" onclick="confirmMove()">Add to Bag • <span id="modalPrice"></span></button>
 <button class="modal-close" onclick="closeModal()">Cancel</button>
@@ -212,7 +212,7 @@ body{display:flex;justify-content:center;overflow-x:hidden}
 <div class="modal" style="text-align:center">
 <div style="width:60px;height:60px;background:#FDF0F5;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:var(--rani)"><i data-lucide="trash-2" style="width:24px;height:24px"></i></div>
 <h3>Clear wishlist?</h3>
-<p>All <span id="clearCount"></span> saved items will be removed.</p>
+<p>All <span id="clearCount"></span> items will be removed.</p>
 <button class="modal-btn" onclick="confirmClear()">Yes, Clear All</button>
 <button class="modal-close" onclick="document.getElementById('clearModal').classList.remove('open')">Keep My List</button>
 </div>
@@ -225,21 +225,17 @@ body{display:flex;justify-content:center;overflow-x:hidden}
 <script>
 let wishlistIds=[], allProducts=[], filtered=[], activeFilter='all', pendingMoveId=null, selectedSize='M';
 const SIZES=['XS','S','M','L','XL','XXL','Free Size'];
-
 function parsePrice(v){return parseInt(String(v??'').replace(/[^0-9]/g,''))||0}
 function hashId(s){let h=0;s=String(s);for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h}
 function toast(m){const t=document.getElementById('alertToast');document.getElementById('toastMsg').innerText=m;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),2600);try{navigator.vibrate&&navigator.vibrate(30)}catch(e){}}
 function icons(){if(window.lucide)lucide.createIcons()}
-
 document.addEventListener('DOMContentLoaded',()=>{updateCartBadge();initWishlist();icons()});
-
 function updateCartBadge(){
  let cart=[];try{cart=JSON.parse(localStorage.getItem('aavira_cart'))||[]}catch(e){}
  const b=document.getElementById('topCartBadge');
  const total=cart.reduce((s,i)=>s+(i.qty||1),0);
  b.innerText=total;b.style.display=total>0?'flex':'none';
 }
-
 async function initWishlist(){
  try{wishlistIds=(JSON.parse(localStorage.getItem('aavira_wishlist'))||[]).map(id=>String(id).trim())}catch(e){wishlistIds=[]}
  if(!wishlistIds.length){showEmpty();return}
@@ -248,7 +244,7 @@ async function initWishlist(){
    const all=await window.getVercelData();
    allProducts=all.filter(p=>wishlistIds.includes(String(p.id).trim()));
   }
- }catch(e){console.error(e)}
+ }catch(e){}
  if(!allProducts.length){showEmpty()}else{
   document.getElementById('skeletonView').style.display='none';
   document.getElementById('contentWrap').style.display='block';
@@ -257,12 +253,11 @@ async function initWishlist(){
 }
 function showEmpty(){
  document.getElementById('skeletonView').style.display='none';
- const cw=document.getElementById('contentWrap');if(cw)cw.style.display='none';
+ document.getElementById('contentWrap').style.display='none';
  document.getElementById('bottomBar').style.display='none';
  document.getElementById('emptyWishlistView').style.display='flex';
  document.getElementById('headerItemCount').innerText='0 Items';icons();
 }
-
 function meta(p){
  const c=parsePrice(p.price);let o=p.mrp?parsePrice(p.mrp):c+450;
  const d=o>c?Math.round((o-c)/o*100):0;
@@ -272,13 +267,11 @@ function meta(p){
  const drop=d>=20;
  return {c,o,d,rating,rc,stock,best,out,drop};
 }
-
 function setFilter(f,el){
  activeFilter=f;
  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
  el.classList.add('active');applySortFilter();
 }
-
 function applySortFilter(){
  const q=(document.getElementById('searchInput').value||'').toLowerCase().trim();
  const sort=document.getElementById('sortSelect').value;
@@ -296,21 +289,18 @@ function applySortFilter(){
  else if(sort==='rating')filtered.sort((a,b)=>meta(b).rating-meta(a).rating);
  render();
 }
-
 function render(){
  const grid=document.getElementById('wishlistGrid');grid.innerHTML='';
  document.getElementById('noResult').style.display=filtered.length?'none':'block';
  document.getElementById('headerItemCount').innerText=`${allProducts.length} Item${allProducts.length>1?'s':''}`;
- document.getElementById('toolbarSub').innerText=`${filtered.length} piece${filtered.length!==1?'s':''} showing`;
-
+ document.getElementById('toolbarSub').innerText=`${filtered.length} pieces showing`;
  let total=0,save=0;
  allProducts.forEach(p=>{const m=meta(p);total+=m.c;save+=Math.max(0,m.o-m.c)});
  document.getElementById('saveSub').innerText=`${allProducts.length} items • Total ₹${total.toLocaleString('en-IN')}`;
  document.getElementById('saveBadge').innerText=`Save ₹${save.toLocaleString('en-IN')}`;
  document.getElementById('totalPrice').innerText='₹'+total.toLocaleString('en-IN');
- document.getElementById('totalMrp').innerText=`${allProducts.length} items • Save ₹${save.toLocaleString('en-IN')}`;
+ document.getElementById('totalMrp').innerText=`${allProducts.length} items`;
  document.getElementById('bottomBar').style.display=allProducts.length?'flex':'none';
-
  filtered.forEach(p=>{
   const m=meta(p);
   const img=p.imageMain||p.image||p.imageUrl||'https://placehold.co/400x440/f5f5f5/cccccc?text=Aavira';
@@ -335,7 +325,7 @@ function render(){
     <h4 class="w-title" onclick="goProduct('${p.id}')">${p.name||'Aavira Product'}</h4>
     <div class="rating-row"><span class="rating-badge"><i data-lucide="star" style="width:10px;height:10px" fill="currentColor"></i>${m.rating}</span><span class="rating-count">(${m.rc})</span></div>
     <div class="colour-row"><div class="swatches">${dots}</div><span class="colour-text">${cols.length||1} Colour${(cols.length||1)>1?'s':''}</span></div>
-    ${!m.out&&m.stock<=4?`<div class="urgency-row"><i data-lucide="flame" style="width:12px;height:12px"></i>Only ${m.stock} left in stock</div>`:''}
+    ${!m.out&&m.stock<=4?`<div class="urgency-row"><i data-lucide="flame" style="width:12px;height:12px"></i>Only ${m.stock} left</div>`:''}
     <div class="w-price-row"><span class="w-price">₹${m.c.toLocaleString('en-IN')}</span>${m.d>0?`<span class="w-old">₹${m.o.toLocaleString('en-IN')}</span>`:''}</div>
     <div class="w-actions">
      <button class="move-btn" ${m.out?'disabled':''} onclick="openSizeModal('${p.id}')">${m.out?'Sold Out':'Move to Bag'}</button>
@@ -346,10 +336,7 @@ function render(){
  });
  icons();
 }
-
 function goProduct(id){window.location.href='/product?id='+id}
-
-// Remove
 function removeItem(id,btn){
  const card=btn.closest('.w-card');card.classList.add('removing');
  setTimeout(()=>{
@@ -360,8 +347,6 @@ function removeItem(id,btn){
   toast('Removed from wishlist');
  },280);
 }
-
-// Clear
 function askClear(){
  if(!allProducts.length)return;
  document.getElementById('clearCount').innerText=allProducts.length;
@@ -373,14 +358,11 @@ function confirmClear(){
  document.getElementById('clearModal').classList.remove('open');
  showEmpty();toast('Wishlist cleared');
 }
-
-// Size modal + Move to bag
 function openSizeModal(id){
  pendingMoveId=id;selectedSize='M';
  const p=allProducts.find(x=>String(x.id)===String(id));if(!p)return;
- const m=meta(p);
  document.getElementById('modalTitle').innerText=p.name||'Select Size';
- document.getElementById('modalPrice').innerText='₹'+m.c.toLocaleString('en-IN');
+ document.getElementById('modalPrice').innerText='₹'+meta(p).c.toLocaleString('en-IN');
  const g=document.getElementById('sizeGrid');g.innerHTML='';
  let avail=SIZES;
  if(Array.isArray(p.sizes)&&p.sizes.length)avail=p.sizes;
@@ -413,10 +395,9 @@ function confirmMove(){
   allProducts=allProducts.filter(x=>String(x.id)!==String(p.id));
   pendingMoveId=null;
   if(!allProducts.length)showEmpty();else applySortFilter();
-  toast('Moved to bag • Size '+selectedSize);
+  toast('Moved to bag • '+selectedSize);
  },280);
 }
-
 function moveAllToBag(){
  let cart=[];try{cart=JSON.parse(localStorage.getItem('aavira_cart'))||[]}catch(e){}
  let added=0;
@@ -431,12 +412,10 @@ function moveAllToBag(){
  toast(added+' items moved to bag');
  window.location.href='/cart';
 }
-
 function shareWishlist(){
  const link=window.location.origin+'/wishlist?ids='+wishlistIds.join(',');
- const text='My Aavira Luxe Wishlist ('+wishlistIds.length+' items): '+link;
- if(navigator.share){navigator.share({title:'My Wishlist',text,url:link}).catch(()=>{})}
- else{navigator.clipboard.writeText(text).then(()=>toast('Wishlist link copied')).catch(()=>toast(link))}
+ if(navigator.share){navigator.share({title:'My Wishlist',url:link}).catch(()=>{})}
+ else{navigator.clipboard.writeText(link).then(()=>toast('Link copied')).catch(()=>{})}
 }
 document.getElementById('sizeModal').addEventListener('click',e=>{if(e.target.id==='sizeModal')closeModal()});
 </script>
