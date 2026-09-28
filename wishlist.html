@@ -1,350 +1,444 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <title>Aavira Luxe - My Wishlist</title>
-    <meta name="theme-color" content="#ffffff">
-    
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <style>
-        :root{
-            --rani:#D81B60;--rani-dark:#B71550;--gold:#D4AF37;
-            --ivory:#FDFBF7;--white:#FFFFFF;--text:#242024;--muted:#756D73;--border:#E7E0D9;
-        }
-        *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-        html,body{width:100%;min-height:100%;background:var(--ivory);font-family:Inter,system-ui,sans-serif;color:var(--text)}
-        body{display:flex;justify-content:center;overflow:hidden}
-        button,a{font:inherit}
-        .app-container{width:100%;max-width:460px;height:100vh;background:var(--ivory);display:flex;flex-direction:column;position:relative;overflow:hidden}
-        .pro-header{height:70px;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid var(--border);box-shadow:0 4px 18px rgba(36,32,36,.045);z-index:50;flex-shrink:0}
-        .icon-btn{width:40px;height:40px;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:13px;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer;transition:.2s}
-        .icon-btn:active{transform:scale(.92)}
-        .header-titles{text-align:center;min-width:0}
-        .header-titles h1{font:700 17px "Playfair Display",serif;letter-spacing:.02em;color:var(--text)}
-        .header-titles p{font-size:9px;font-weight:700;color:var(--rani);text-transform:uppercase;letter-spacing:.12em;margin-top:2px}
-        .cart-icon-wrapper{position:relative}
-        .cart-badge{position:absolute;top:-3px;right:-3px;width:17px;height:17px;border-radius:50%;background:var(--rani);color:#fff;border:2px solid #fff;font-size:8px;font-weight:800;align-items:center;justify-content:center}
-        .main-content{flex:1;overflow-y:auto;padding:14px 14px 34px;scrollbar-width:none}
-        .main-content::-webkit-scrollbar{display:none}
-        .wishlist-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 2px 14px}
-        .toolbar-title{font-size:11px;font-weight:800;color:var(--text);letter-spacing:.08em;text-transform:uppercase}
-        .toolbar-sub{font-size:9px;color:var(--muted);margin-top:3px}
-        .clear-btn{border:0;background:#fff;color:var(--rani);font-size:10px;font-weight:800;padding:8px 11px;border-radius:10px;border:1px solid #F4D6E1;cursor:pointer}
-        .grid-container{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-bottom:24px}
-        .skel-card{background:#fff;border:1px solid var(--border);overflow:hidden}
-        .skel-img{height:185px;width:100%}
-        .skel-box{background:linear-gradient(90deg,#f1eeee 25%,#fff 50%,#f1eeee 75%);background-size:200% 100%;animation:shimmer 1.3s infinite}
-        .skel-info{padding:11px}.skel-line{height:9px;border-radius:5px;margin-bottom:7px}
-        @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-        .w-card{background:#fff;display:flex;flex-direction:column;position:relative;border-radius:0;box-shadow:0 4px 20px -4px rgba(0,0,0,.03);border:1px solid #f3f0ee;overflow:hidden;transition:all .3s;animation:popIn .35s ease}
-        .w-card.removing{transform:scale(.86);opacity:0;transition:.3s}
-        .w-img-wrapper{position:relative;background:#f9f8f7;cursor:pointer;overflow:hidden;width:100%;aspect-ratio:1/1.1}
-        .w-img{position:absolute;inset:0;width:100%;height:100%;background-size:cover;background-position:center;transition:transform .7s ease}
-        .w-card:hover .w-img{transform:scale(1.05)}
-        .discount-tag{position:absolute;top:8px;left:8px;z-index:10;background:#fff;padding:3px 8px;font-size:9px;font-weight:800;color:var(--rani);text-transform:uppercase;letter-spacing:.08em;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-        .bestseller{position:absolute;bottom:0;left:0;right:0;z-index:10;background:rgba(17,24,39,.85);color:#fff;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;text-align:center;padding:5px}
-        .btn-remove{position:absolute;top:8px;right:8px;z-index:10;width:30px;height:30px;border:0;background:transparent;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;filter:drop-shadow(0 2px 4px rgba(0,0,0,.55));transition:transform .2s}
-        .btn-remove:active{transform:scale(.88)}
-        .w-info{padding:12px 12px 12px;display:flex;flex-direction:column;flex:1;background:#fff}
-        .w-title{font-size:13px;font-weight:600;color:#374151;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px;cursor:pointer}
-        .rating-row{display:flex;align-items:center;gap:5px;margin-bottom:7px;min-height:18px}
-        .rating-badge{display:inline-flex;align-items:center;gap:3px;background:#16a34a;color:#fff;font-size:9px;font-weight:800;padding:2px 6px 2px 5px;border-radius:5px}
-        .colour-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;min-height:14px}
-        .swatches{display:flex;margin-left:1px}
-        .swatches span{width:12px;height:12px;border-radius:50%;border:1px solid #e5e7eb;margin-left:-3px;box-shadow:0 1px 2px rgba(0,0,0,.08)}
-        .swatches span:first-child{margin-left:0}
-        .colour-text{font-size:10px;color:#9ca3af;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
-        .urgency-row{font-size:9px;font-weight:700;color:#ea580c;margin-bottom:5px;display:flex;align-items:center;gap:4px}
-        .w-price-row{display:flex;align-items:center;justify-content:space-between;padding-top:10px;margin-top:auto;border-top:1px solid #f3f4f6;position:relative;z-index:20}
-        .price-group{display:flex;align-items:baseline;gap:7px}
-        .w-price{font-size:15px;font-weight:800;color:#111827;line-height:1}
-        .w-old{font-size:10px;color:#9ca3af;text-decoration:line-through}
-        .view-btn{width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:var(--rani);color:#fff;border:0;border-radius:50%;cursor:pointer;flex-shrink:0;box-shadow:0 2px 8px rgba(216,27,96,.16)}
-        .empty-wishlist-state{display:none;flex-direction:column;align-items:center;justify-content:center;height:72vh;text-align:center;padding:20px}
-        .empty-wishlist-state .icon-circle{width:84px;height:84px;background:#F9E8EE;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:18px;color:var(--rani)}
-        .empty-wishlist-state h2{font:700 23px "Playfair Display",serif;margin-bottom:8px}
-        .empty-wishlist-state p{font-size:12px;color:var(--muted);line-height:1.5;max-width:260px;margin-bottom:24px}
-        .explore-btn{background:var(--rani);color:#fff;padding:13px 28px;border-radius:14px;font-size:12px;font-weight:800;text-decoration:none;box-shadow:0 9px 20px rgba(216,27,96,.18)}
-        .pro-toast{position:fixed;bottom:92px;left:50%;transform:translateX(-50%) translateY(20px);background:#111827;color:#fff;padding:10px 18px;border-radius:50px;font-size:11px;font-weight:700;z-index:10060;opacity:0;pointer-events:none;transition:.3s;white-space:nowrap;box-shadow:0 10px 20px rgba(0,0,0,.2)}
-        .pro-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-        @keyframes popIn{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
-        @media(min-width:640px){.app-container{box-shadow:0 0 40px rgba(36,32,36,.06)}}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Aavira Luxe - My Wishlist</title>
+<meta name="theme-color" content="#ffffff">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+:root{
+ --rani:#D81B60;--rani-dark:#B71550;--rani-light:#FDF0F5;
+ --gold:#D4AF37;--ivory:#FDFBF7;--white:#FFFFFF;
+ --text:#242024;--muted:#756D73;--border:#E7E0D9;
+ --green:#16a34a;--orange:#ea580c;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;min-height:100%;background:var(--ivory);font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;color:var(--text)}
+body{display:flex;justify-content:center;overflow-x:hidden}
+.app-container{width:100%;max-width:460px;min-height:100vh;background:var(--ivory);display:flex;flex-direction:column;position:relative}
+.pro-header{height:68px;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(255,255,255,.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.header-left,.header-right{display:flex;align-items:center;gap:8px}
+.icon-btn{width:40px;height:40px;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s}
+.icon-btn:active{transform:scale(.92)}
+.header-titles{text-align:center}
+.header-titles h1{font:700 17px "Playfair Display",serif;letter-spacing:.04em}
+.header-titles p{font-size:9px;font-weight:800;color:var(--rani);text-transform:uppercase;letter-spacing:.12em;margin-top:2px}
+.cart-icon-wrapper{position:relative}
+.cart-badge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 4px;border-radius:10px;background:var(--rani);color:#fff;border:2px solid #fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center}
 
-  <style data-aavira-ui>body.aavira-theme{--primary:#D81B60;--primary-color:#D81B60;--pink:#D81B60;background:#FDFBF7!important;color:#242024}.aavira-spinner-done{animation:none!important;transform:none!important}</style>
+.main-content{flex:1;overflow-y:auto;padding:14px 14px 140px;scrollbar-width:none}
+.main-content::-webkit-scrollbar{display:none}
+
+/* Summary Card */
+.savings-card{background:linear-gradient(135deg,#1a1520 0%,#3a1426 50%,#7a1740 100%);color:#fff;border-radius:18px;padding:14px 15px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;position:relative;overflow:hidden}
+.savings-card::after{content:'';position:absolute;right:-30px;top:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(212,175,55,.35),transparent 70%)}
+.savings-card h3{font-size:13px;font-weight:800}
+.savings-card p{font-size:11px;opacity:.8;margin-top:3px}
+.savings-card .save-badge{background:var(--gold);color:#111;font-size:11px;font-weight:800;padding:7px 12px;border-radius:12px;z-index:1}
+
+/* Search + Sort */
+.search-row{display:flex;gap:8px;margin-bottom:10px}
+.search-box{flex:1;background:#fff;border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;gap:8px;padding:0 12px;height:42px}
+.search-box input{border:0;outline:0;flex:1;font-size:12.5px;font-family:inherit;background:transparent}
+.search-box svg{color:#9ca3af}
+.sort-select{height:42px;border:1px solid var(--border);border-radius:12px;background:#fff;font-size:11.5px;font-weight:700;padding:0 10px;outline:none;max-width:118px;font-family:inherit}
+
+/* Filter chips */
+.filter-chips{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;scrollbar-width:none}
+.filter-chips::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;border:1px solid var(--border);background:#fff;padding:8px 14px;border-radius:100px;font-size:11px;font-weight:700;cursor:pointer;color:var(--muted);transition:.2s}
+.chip.active{background:var(--text);color:#fff;border-color:var(--text)}
+
+.wishlist-toolbar{display:flex;align-items:center;justify-content:space-between;margin:4px 2px 12px}
+.toolbar-title{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.toolbar-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.toolbar-actions{display:flex;gap:8px}
+.clear-btn,.share-btn{border:1px solid #F4D6E1;background:#fff;color:var(--rani);font-size:10.5px;font-weight:800;padding:8px 12px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:5px}
+.share-btn{border-color:var(--border);color:var(--text)}
+
+.grid-container{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.w-card{background:#fff;display:flex;flex-direction:column;position:relative;border-radius:16px;border:1px solid #f3f0ee;overflow:hidden;box-shadow:0 4px 20px -4px rgba(0,0,0,.06);animation:popIn .35s ease}
+.w-card.removing{transform:scale(.86);opacity:0;transition:.3s}
+.w-card.out-stock{opacity:.85}
+.w-img-wrapper{position:relative;background:#f9f8f7;cursor:pointer;overflow:hidden;width:100%;aspect-ratio:1/1.12}
+.w-img{position:absolute;inset:0;width:100%;height:100%;background-size:cover;background-position:center;transition:transform .6s ease}
+.w-card:hover .w-img{transform:scale(1.05)}
+.discount-tag{position:absolute;top:8px;left:8px;z-index:10;background:#fff;padding:4px 8px;font-size:9px;font-weight:800;color:var(--rani);border-radius:7px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.price-drop-tag{position:absolute;top:32px;left:8px;z-index:10;background:var(--green);color:#fff;padding:3px 7px;font-size:8.5px;font-weight:800;border-radius:7px}
+.bestseller{position:absolute;bottom:0;left:0;right:0;z-index:10;background:rgba(17,24,39,.88);color:#fff;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;text-align:center;padding:5px}
+.out-label{position:absolute;inset:0;background:rgba(255,255,255,.65);display:flex;align-items:center;justify-content:center;z-index:5;font-size:11px;font-weight:800;color:#111}
+.btn-remove{position:absolute;top:6px;right:6px;z-index:10;width:32px;height:32px;border:0;background:rgba(255,255,255,.95);color:var(--rani);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.btn-remove.muted{color:#9ca3af}
+.w-info{padding:11px 11px 12px;display:flex;flex-direction:column;flex:1}
+.w-title{font-size:12.5px;font-weight:600;color:#1f2937;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:5px;cursor:pointer}
+.rating-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.rating-badge{display:inline-flex;align-items:center;gap:3px;background:var(--green);color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:6px}
+.rating-count{font-size:10px;color:#9ca3af}
+.colour-row{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.swatches{display:flex;margin-left:1px}
+.swatches span{width:12px;height:12px;border-radius:50%;border:1px solid #e5e7eb;margin-left:-4px}
+.swatches span:first-child{margin-left:0}
+.colour-text{font-size:9.5px;color:#9ca3af;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.urgency-row{font-size:9.5px;font-weight:700;color:var(--orange);margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.w-price-row{display:flex;align-items:baseline;gap:6px;padding-top:9px;margin-top:auto;border-top:1px solid #f3f4f6}
+.w-price{font-size:15px;font-weight:800;color:#111827}
+.w-old{font-size:10.5px;color:#9ca3af;text-decoration:line-through}
+.w-actions{display:flex;gap:7px;margin-top:10px}
+.move-btn{flex:1;background:var(--rani);color:#fff;border:0;border-radius:10px;font-size:11px;font-weight:800;padding:9px 0;cursor:pointer;transition:.2s}
+.move-btn:active{transform:scale(.96)}
+.move-btn:disabled{background:#e5e7eb;color:#9ca3af;cursor:not-allowed}
+.view-btn{width:34px;height:34px;display:flex;align-items:center;justify-content:center;background:var(--rani-light);color:var(--rani);border:0;border-radius:10px;cursor:pointer;flex-shrink:0}
+
+/* Bottom bar */
+.bottom-cta{position:absolute;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:12px 14px 16px;display:flex;align-items:center;gap:12px;z-index:40}
+.bottom-price b{font-size:16px;display:block}
+.bottom-price span{font-size:11px;color:var(--muted)}
+.move-all-btn{flex:1;background:var(--rani);color:#fff;border:0;border-radius:14px;padding:14px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 8px 20px rgba(216,27,96,.25)}
+
+/* Empty */
+.empty-wishlist-state{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;text-align:center;padding:20px}
+.empty-wishlist-state .icon-circle{width:84px;height:84px;background:#F9E8EE;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:18px;color:var(--rani)}
+.empty-wishlist-state h2{font:700 23px "Playfair Display",serif;margin-bottom:8px}
+.empty-wishlist-state p{font-size:12.5px;color:var(--muted);line-height:1.6;max-width:270px;margin-bottom:22px}
+.explore-btn{background:var(--rani);color:#fff;padding:14px 30px;border-radius:14px;font-size:12px;font-weight:800;text-decoration:none;box-shadow:0 9px 20px rgba(216,27,96,.2)}
+
+/* Modal */
+.modal-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:100;display:none;align-items:flex-end;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;width:100%;border-radius:22px 22px 0 0;padding:18px 18px 24px;animation:slideUp .3s ease;max-height:85%;overflow-y:auto}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal h3{font-size:15px;font-weight:800;margin-bottom:4px}
+.modal p{font-size:12px;color:var(--muted);margin-bottom:14px}
+.size-grid{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:16px}
+.size-opt{border:1.5px solid var(--border);border-radius:11px;padding:10px 18px;font-size:12px;font-weight:800;cursor:pointer;background:#fff}
+.size-opt.selected{border-color:var(--rani);background:var(--rani-light);color:var(--rani)}
+.modal-btn{width:100%;background:var(--rani);color:#fff;border:0;border-radius:13px;padding:14px;font-size:13px;font-weight:800;cursor:pointer}
+.modal-close{width:100%;background:#f3f4f6;color:#111;border:0;border-radius:13px;padding:12px;font-size:12px;font-weight:700;cursor:pointer;margin-top:8px}
+
+/* Skeleton + toast */
+.skel-card{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.skel-img{height:185px;width:100%}
+.skel-box{background:linear-gradient(90deg,#f1eeee 25%,#fff 50%,#f1eeee 75%);background-size:200% 100%;animation:shimmer 1.3s infinite}
+.skel-info{padding:11px}.skel-line{height:9px;border-radius:5px;margin-bottom:7px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes popIn{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
+.pro-toast{position:absolute;bottom:96px;left:50%;transform:translateX(-50%) translateY(20px);background:#111827;color:#fff;padding:11px 20px;border-radius:50px;font-size:12px;font-weight:700;z-index:200;opacity:0;pointer-events:none;transition:.3s;white-space:nowrap;box-shadow:0 10px 20px rgba(0,0,0,.25);display:flex;align-items:center;gap:8px}
+.pro-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(min-width:640px){.app-container{box-shadow:0 0 40px rgba(36,32,36,.08)}}
+</style>
+<style data-aavira-ui>body.aavira-theme{--primary:#D81B60}</style>
 </head>
 <body>
+<div class="app-container">
 
-    <div class="app-container">
-        
-        <header class="pro-header">
-            <button class="icon-btn" aria-label="Go back" onclick="history.back()"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
-            <div class="header-titles">
-                <h1>MY WISHLIST</h1>
-                <p id="headerItemCount">0 Items</p>
-            </div>
-            <a href="/cart" class="icon-btn cart-icon-wrapper" aria-label="Open cart">
-                <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-                <span class="cart-badge" id="topCartBadge" style="display:none;">0</span>
-            </a>
-        </header>
+<header class="pro-header">
+<div class="header-left">
+<button class="icon-btn" onclick="history.back()"><i data-lucide="arrow-left" style="width:20px;height:20px"></i></button>
+</div>
+<div class="header-titles"><h1>MY WISHLIST</h1><p id="headerItemCount">0 Items</p></div>
+<div class="header-right">
+<button class="icon-btn" onclick="shareWishlist()" title="Share"><i data-lucide="share-2" style="width:18px;height:18px"></i></button>
+<a href="/cart" class="icon-btn cart-icon-wrapper"><i data-lucide="shopping-bag" style="width:18px;height:18px"></i><span class="cart-badge" id="topCartBadge" style="display:none">0</span></a>
+</div>
+</header>
 
-        <main class="main-content">
-            <div class="wishlist-toolbar"><div><div class="toolbar-title">Saved Collection</div><div class="toolbar-sub">Your handpicked Aavira pieces</div></div><button class="clear-btn" onclick="clearWishlist()">Clear All</button></div>
-            <!-- LOADING SKELETON -->
-            <div class="grid-container" id="skeletonView">
-                <div class="skel-card">
-                    <div class="skel-img skel-box"></div>
-                    <div class="skel-info">
-                        <div class="skel-line skel-box" style="width: 100%;"></div>
-                        <div class="skel-line skel-box" style="width: 70%;"></div>
-                        <div class="skel-line skel-box" style="width: 40%; margin-top:10px;"></div>
-                        <div class="skel-line skel-box" style="width: 100%; height:35px; margin-top:15px; border-radius:10px;"></div>
-                    </div>
-                </div>
-                <div class="skel-card">
-                    <div class="skel-img skel-box"></div>
-                    <div class="skel-info">
-                        <div class="skel-line skel-box" style="width: 100%;"></div>
-                        <div class="skel-line skel-box" style="width: 70%;"></div>
-                        <div class="skel-line skel-box" style="width: 40%; margin-top:10px;"></div>
-                        <div class="skel-line skel-box" style="width: 100%; height:35px; margin-top:15px; border-radius:10px;"></div>
-                    </div>
-                </div>
-            </div>
+<main class="main-content">
+<div id="contentWrap" style="display:none">
+<div class="savings-card">
+<div><h3 id="saveTitle">Your Collection</h3><p id="saveSub">0 items saved</p></div>
+<div class="save-badge" id="saveBadge">Save ₹0</div>
+</div>
 
-            <!-- EMPTY WISHLIST STATE -->
-            <div id="emptyWishlistView" class="empty-wishlist-state">
-                <div class="icon-circle"><i class="fa-solid fa-heart-crack"></i></div>
-                <h2>Nothing saved yet!</h2>
-                <p>Save your favorite premium ethnic wear here and buy them later.</p>
-                <a href="./" class="explore-btn">Start Exploring</a> 
-            </div>
+<div class="search-row">
+<div class="search-box"><i data-lucide="search" style="width:16px;height:16px"></i><input id="searchInput" placeholder="Search in wishlist..." oninput="applySortFilter()"></div>
+<select id="sortSelect" class="sort-select" onchange="applySortFilter()">
+<option value="recent">Recent</option>
+<option value="low">Price: Low-High</option>
+<option value="high">Price: High-Low</option>
+<option value="discount">Discount</option>
+<option value="rating">Rating</option>
+</select>
+</div>
 
-            <!-- WISHLIST GRID -->
-            <div class="grid-container" id="wishlistGrid" style="display: none;">
-                <!-- JS Will Inject Cards Here -->
-            </div>
+<div class="filter-chips" id="filterChips">
+<button class="chip active" data-f="all" onclick="setFilter('all',this)">All</button>
+<button class="chip" data-f="drop" onclick="setFilter('drop',this)">Price Drop</button>
+<button class="chip" data-f="best" onclick="setFilter('best',this)">Bestseller</button>
+<button class="chip" data-f="lowstock" onclick="setFilter('lowstock',this)">Low Stock</button>
+</div>
 
-        </main>
+<div class="wishlist-toolbar">
+<div><div class="toolbar-title">Saved Collection</div><div class="toolbar-sub" id="toolbarSub">Your handpicked pieces</div></div>
+<div class="toolbar-actions">
+<button class="clear-btn" onclick="askClear()">Clear</button>
+</div>
+</div>
 
-        <!-- TOAST ALERTS -->
-        <div class="pro-toast" id="alertToast">
-            <span id="toastIcon"></span>
-            <div class="toast-content"><h4 id="toastTitle">Alert</h4><p id="toastMessage">Message</p></div>
-        </div>
+<div class="grid-container" id="wishlistGrid"></div>
+<div id="noResult" style="display:none;text-align:center;padding:30px 10px;color:var(--muted);font-size:12px">No products match your search.</div>
+</div>
 
+<div class="grid-container" id="skeletonView">
+<div class="skel-card"><div class="skel-img skel-box"></div><div class="skel-info"><div class="skel-line skel-box" style="width:90%"></div><div class="skel-line skel-box" style="width:60%"></div></div></div>
+<div class="skel-card"><div class="skel-img skel-box"></div><div class="skel-info"><div class="skel-line skel-box" style="width:90%"></div><div class="skel-line skel-box" style="width:60%"></div></div></div>
+</div>
+
+<div id="emptyWishlistView" class="empty-wishlist-state">
+<div class="icon-circle"><i data-lucide="heart-off" style="width:34px;height:34px"></i></div>
+<h2>Nothing saved yet!</h2>
+<p>Tap the heart on any product to save your favourite Aavira ethnic wear here.</p>
+<a href="./" class="explore-btn">Start Exploring</a>
+</div>
+</main>
+
+<div class="bottom-cta" id="bottomBar" style="display:none">
+<div class="bottom-price"><b id="totalPrice">₹0</b><span id="totalMrp">0 items</span></div>
+<button class="move-all-btn" onclick="moveAllToBag()">Move All to Bag</button>
+</div>
+
+<div class="modal-overlay" id="sizeModal">
+<div class="modal">
+<h3 id="modalTitle">Select Size</h3>
+<p>Choose a size to move this piece to your bag</p>
+<div class="size-grid" id="sizeGrid"></div>
+<button class="modal-btn" onclick="confirmMove()">Add to Bag • <span id="modalPrice"></span></button>
+<button class="modal-close" onclick="closeModal()">Cancel</button>
+</div>
+</div>
+
+<div class="modal-overlay" id="clearModal">
+<div class="modal" style="text-align:center">
+<div style="width:60px;height:60px;background:#FDF0F5;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:var(--rani)"><i data-lucide="trash-2" style="width:24px;height:24px"></i></div>
+<h3>Clear wishlist?</h3>
+<p>All <span id="clearCount"></span> saved items will be removed.</p>
+<button class="modal-btn" onclick="confirmClear()">Yes, Clear All</button>
+<button class="modal-close" onclick="document.getElementById('clearModal').classList.remove('open')">Keep My List</button>
+</div>
+</div>
+
+<div class="pro-toast" id="alertToast"><i data-lucide="check-circle-2" style="width:15px;height:15px"></i><span id="toastMsg">Done</span></div>
+</div>
+
+<script src="user_data.js"></script>
+<script>
+let wishlistIds=[], allProducts=[], filtered=[], activeFilter='all', pendingMoveId=null, selectedSize='M';
+const SIZES=['XS','S','M','L','XL','XXL','Free Size'];
+
+function parsePrice(v){return parseInt(String(v??'').replace(/[^0-9]/g,''))||0}
+function hashId(s){let h=0;s=String(s);for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h}
+function toast(m){const t=document.getElementById('alertToast');document.getElementById('toastMsg').innerText=m;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),2600);try{navigator.vibrate&&navigator.vibrate(30)}catch(e){}}
+function icons(){if(window.lucide)lucide.createIcons()}
+
+document.addEventListener('DOMContentLoaded',()=>{updateCartBadge();initWishlist();icons()});
+
+function updateCartBadge(){
+ let cart=[];try{cart=JSON.parse(localStorage.getItem('aavira_cart'))||[]}catch(e){}
+ const b=document.getElementById('topCartBadge');
+ const total=cart.reduce((s,i)=>s+(i.qty||1),0);
+ b.innerText=total;b.style.display=total>0?'flex':'none';
+}
+
+async function initWishlist(){
+ try{wishlistIds=(JSON.parse(localStorage.getItem('aavira_wishlist'))||[]).map(id=>String(id).trim())}catch(e){wishlistIds=[]}
+ if(!wishlistIds.length){showEmpty();return}
+ try{
+  if(typeof window.getVercelData==='function'){
+   const all=await window.getVercelData();
+   allProducts=all.filter(p=>wishlistIds.includes(String(p.id).trim()));
+  }
+ }catch(e){console.error(e)}
+ if(!allProducts.length){showEmpty()}else{
+  document.getElementById('skeletonView').style.display='none';
+  document.getElementById('contentWrap').style.display='block';
+  applySortFilter();
+ }
+}
+function showEmpty(){
+ document.getElementById('skeletonView').style.display='none';
+ const cw=document.getElementById('contentWrap');if(cw)cw.style.display='none';
+ document.getElementById('bottomBar').style.display='none';
+ document.getElementById('emptyWishlistView').style.display='flex';
+ document.getElementById('headerItemCount').innerText='0 Items';icons();
+}
+
+function meta(p){
+ const c=parsePrice(p.price);let o=p.mrp?parsePrice(p.mrp):c+450;
+ const d=o>c?Math.round((o-c)/o*100):0;
+ const h=hashId(p.id);const rating=(3.8+(h%12)/10).toFixed(1);
+ const rc=120+(h%900);const stock=2+(h%9);const best=(h%5)===0;
+ const out=p.outOfStock===true||p.stock===0;
+ const drop=d>=20;
+ return {c,o,d,rating,rc,stock,best,out,drop};
+}
+
+function setFilter(f,el){
+ activeFilter=f;
+ document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+ el.classList.add('active');applySortFilter();
+}
+
+function applySortFilter(){
+ const q=(document.getElementById('searchInput').value||'').toLowerCase().trim();
+ const sort=document.getElementById('sortSelect').value;
+ filtered=allProducts.filter(p=>{
+  if(q && !(p.name||'').toLowerCase().includes(q))return false;
+  const m=meta(p);
+  if(activeFilter==='drop'&&!m.drop)return false;
+  if(activeFilter==='best'&&!m.best)return false;
+  if(activeFilter==='lowstock'&&!(m.stock<=4&&!m.out))return false;
+  return true;
+ });
+ if(sort==='low')filtered.sort((a,b)=>parsePrice(a.price)-parsePrice(b.price));
+ else if(sort==='high')filtered.sort((a,b)=>parsePrice(b.price)-parsePrice(a.price));
+ else if(sort==='discount')filtered.sort((a,b)=>meta(b).d-meta(a).d);
+ else if(sort==='rating')filtered.sort((a,b)=>meta(b).rating-meta(a).rating);
+ render();
+}
+
+function render(){
+ const grid=document.getElementById('wishlistGrid');grid.innerHTML='';
+ document.getElementById('noResult').style.display=filtered.length?'none':'block';
+ document.getElementById('headerItemCount').innerText=`${allProducts.length} Item${allProducts.length>1?'s':''}`;
+ document.getElementById('toolbarSub').innerText=`${filtered.length} piece${filtered.length!==1?'s':''} showing`;
+
+ let total=0,save=0;
+ allProducts.forEach(p=>{const m=meta(p);total+=m.c;save+=Math.max(0,m.o-m.c)});
+ document.getElementById('saveSub').innerText=`${allProducts.length} items • Total ₹${total.toLocaleString('en-IN')}`;
+ document.getElementById('saveBadge').innerText=`Save ₹${save.toLocaleString('en-IN')}`;
+ document.getElementById('totalPrice').innerText='₹'+total.toLocaleString('en-IN');
+ document.getElementById('totalMrp').innerText=`${allProducts.length} items • Save ₹${save.toLocaleString('en-IN')}`;
+ document.getElementById('bottomBar').style.display=allProducts.length?'flex':'none';
+
+ filtered.forEach(p=>{
+  const m=meta(p);
+  const img=p.imageMain||p.image||p.imageUrl||'https://placehold.co/400x440/f5f5f5/cccccc?text=Aavira';
+  const cols=Array.isArray(p.colors)?p.colors:[];
+  const dots=cols.slice(0,3).map(c=>{
+   const v=typeof c==='object'?(c.hex||c.code||c.color||'#ddd'):c;
+   return `<span style="background:${String(v).replace(/"/g,'')}"></span>`;
+  }).join('');
+  const card=document.createElement('div');
+  card.className='w-card'+(m.out?' out-stock':'');
+  card.id='wcard_'+p.id;
+  card.innerHTML=`
+   <div class="w-img-wrapper" onclick="goProduct('${p.id}')">
+    <div class="w-img" style="background-image:url('${String(img).replace(/'/g,"%27")}')"></div>
+    ${m.d>0?`<div class="discount-tag">${m.d}% OFF</div>`:''}
+    ${m.drop&&!m.out?`<div class="price-drop-tag">PRICE DROP</div>`:''}
+    ${m.best?`<div class="bestseller">★ Bestseller</div>`:''}
+    ${m.out?`<div class="out-label">OUT OF STOCK</div>`:''}
+    <button class="btn-remove" onclick="event.stopPropagation();removeItem('${p.id}',this)"><i data-lucide="heart" style="width:16px;height:16px" fill="currentColor"></i></button>
+   </div>
+   <div class="w-info">
+    <h4 class="w-title" onclick="goProduct('${p.id}')">${p.name||'Aavira Product'}</h4>
+    <div class="rating-row"><span class="rating-badge"><i data-lucide="star" style="width:10px;height:10px" fill="currentColor"></i>${m.rating}</span><span class="rating-count">(${m.rc})</span></div>
+    <div class="colour-row"><div class="swatches">${dots}</div><span class="colour-text">${cols.length||1} Colour${(cols.length||1)>1?'s':''}</span></div>
+    ${!m.out&&m.stock<=4?`<div class="urgency-row"><i data-lucide="flame" style="width:12px;height:12px"></i>Only ${m.stock} left in stock</div>`:''}
+    <div class="w-price-row"><span class="w-price">₹${m.c.toLocaleString('en-IN')}</span>${m.d>0?`<span class="w-old">₹${m.o.toLocaleString('en-IN')}</span>`:''}</div>
+    <div class="w-actions">
+     <button class="move-btn" ${m.out?'disabled':''} onclick="openSizeModal('${p.id}')">${m.out?'Sold Out':'Move to Bag'}</button>
+     <button class="view-btn" onclick="goProduct('${p.id}')"><i data-lucide="arrow-up-right" style="width:16px;height:16px"></i></button>
     </div>
+   </div>`;
+  grid.appendChild(card);
+ });
+ icons();
+}
 
-    <!-- EXTERNAL DATA SCRIPT -->
-    <script src="user_data.js"></script>
+function goProduct(id){window.location.href='/product?id='+id}
 
-    <!-- ✨ JAVASCRIPT LOGIC ✨ -->
-    <script>
-        window.triggerHaptic = function(type = 'light') {
-            try {
-                if (!navigator.vibrate) return;
-                if (type === 'light') navigator.vibrate(30);
-                else if (type === 'error') navigator.vibrate([60, 40, 60]);
-                else if (type === 'success') navigator.vibrate([40, 50, 40]);
-            } catch(e) {}
-        };
+// Remove
+function removeItem(id,btn){
+ const card=btn.closest('.w-card');card.classList.add('removing');
+ setTimeout(()=>{
+  wishlistIds=wishlistIds.filter(x=>String(x)!==String(id));
+  localStorage.setItem('aavira_wishlist',JSON.stringify(wishlistIds));
+  allProducts=allProducts.filter(p=>String(p.id)!==String(id));
+  if(!allProducts.length)showEmpty();else applySortFilter();
+  toast('Removed from wishlist');
+ },280);
+}
 
-        window.showToast = function(title, message, type = 'error') {
-            const toast = document.getElementById('alertToast');
-            if(!toast) return;
-            document.getElementById('toastTitle').innerText = title;
-            document.getElementById('toastMessage').innerText = message;
-            document.getElementById('toastIcon').innerHTML = type === 'error' ? '<i class="fa-solid fa-circle-xmark" style="color:#F87171;"></i>' : '<i class="fa-solid fa-circle-check" style="color:#34D399;"></i>';
-            window.triggerHaptic(type);
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3500);
-        }
+// Clear
+function askClear(){
+ if(!allProducts.length)return;
+ document.getElementById('clearCount').innerText=allProducts.length;
+ document.getElementById('clearModal').classList.add('open');icons();
+}
+function confirmClear(){
+ wishlistIds=[];allProducts=[];filtered=[];
+ localStorage.setItem('aavira_wishlist','[]');
+ document.getElementById('clearModal').classList.remove('open');
+ showEmpty();toast('Wishlist cleared');
+}
 
-        function parsePrice(val) { return parseInt(String(val).replace(/[^0-9]/g, '')) || 0; }
+// Size modal + Move to bag
+function openSizeModal(id){
+ pendingMoveId=id;selectedSize='M';
+ const p=allProducts.find(x=>String(x.id)===String(id));if(!p)return;
+ const m=meta(p);
+ document.getElementById('modalTitle').innerText=p.name||'Select Size';
+ document.getElementById('modalPrice').innerText='₹'+m.c.toLocaleString('en-IN');
+ const g=document.getElementById('sizeGrid');g.innerHTML='';
+ let avail=SIZES;
+ if(Array.isArray(p.sizes)&&p.sizes.length)avail=p.sizes;
+ avail.forEach(s=>{
+  const v=typeof s==='object'?(s.size||s.name||s.label):s;
+  const b=document.createElement('button');
+  b.className='size-opt'+(v===selectedSize?' selected':'');
+  b.innerText=v;b.onclick=()=>{selectedSize=v;g.querySelectorAll('.size-opt').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')};
+  g.appendChild(b);
+ });
+ document.getElementById('sizeModal').classList.add('open');
+}
+function closeModal(){document.getElementById('sizeModal').classList.remove('open')}
+function confirmMove(){
+ if(!pendingMoveId)return;
+ const p=allProducts.find(x=>String(x.id)===String(pendingMoveId));if(!p)return;
+ let color='As Shown';
+ if(p.colors&&p.colors.length)color=p.colors[0].name||p.colors[0];
+ else if(p.color)color=String(p.color).split(',')[0].trim();
+ let cart=[];try{cart=JSON.parse(localStorage.getItem('aavira_cart'))||[]}catch(e){}
+ const idx=cart.findIndex(i=>String(i.productId)===String(p.id)&&i.size===selectedSize&&i.color===color);
+ if(idx>-1)cart[idx].qty+=1;else cart.push({productId:String(p.id),size:selectedSize,color,qty:1});
+ localStorage.setItem('aavira_cart',JSON.stringify(cart));updateCartBadge();
+ closeModal();
+ const card=document.getElementById('wcard_'+p.id);
+ if(card){card.classList.add('removing')}
+ setTimeout(()=>{
+  wishlistIds=wishlistIds.filter(x=>String(x)!==String(p.id));
+  localStorage.setItem('aavira_wishlist',JSON.stringify(wishlistIds));
+  allProducts=allProducts.filter(x=>String(x.id)!==String(p.id));
+  pendingMoveId=null;
+  if(!allProducts.length)showEmpty();else applySortFilter();
+  toast('Moved to bag • Size '+selectedSize);
+ },280);
+}
 
-        let wishlistIds = [];
-        let wishlistProducts = [];
+function moveAllToBag(){
+ let cart=[];try{cart=JSON.parse(localStorage.getItem('aavira_cart'))||[]}catch(e){}
+ let added=0;
+ allProducts.forEach(p=>{
+  const m=meta(p);if(m.out)return;
+  let color='As Shown';if(p.colors&&p.colors.length)color=p.colors[0].name||p.colors[0];
+  const idx=cart.findIndex(i=>String(i.productId)===String(p.id));
+  if(idx>-1)cart[idx].qty+=1;else cart.push({productId:String(p.id),size:'M',color,qty:1});
+  added++;
+ });
+ localStorage.setItem('aavira_cart',JSON.stringify(cart));updateCartBadge();
+ toast(added+' items moved to bag');
+ window.location.href='/cart';
+}
 
-        document.addEventListener('DOMContentLoaded', () => {
-            updateCartBadge();
-            initWishlist();
-            if(typeof lucide!=='undefined') lucide.createIcons();
-        });
-
-        function updateCartBadge() {
-            let cart = [];
-            try { cart = JSON.parse(localStorage.getItem('aavira_cart')) || []; } catch(e){}
-            const badge = document.getElementById('topCartBadge');
-            if(badge) {
-                let total = cart.reduce((sum, item) => sum + item.qty, 0);
-                badge.innerText = total;
-                badge.style.display = total > 0 ? 'flex' : 'none';
-            }
-        }
-
-        async function initWishlist() {
-            try {
-                let storedWishlist = JSON.parse(localStorage.getItem('aavira_wishlist')) || [];
-                if(Array.isArray(storedWishlist)) {
-                    wishlistIds = storedWishlist.map(id => String(id).trim());
-                }
-            } catch(e) { wishlistIds = []; }
-
-            if (wishlistIds.length === 0) {
-                showEmptyState();
-                return;
-            }
-
-            try {
-                if(typeof window.getVercelData === 'function') {
-                    const allProducts = await window.getVercelData();
-                    // Filter only products that are in the wishlist
-                    wishlistProducts = allProducts.filter(p => wishlistIds.includes(String(p.id).trim()));
-                }
-            } catch(e) { console.error("API Fetch Error:", e); }
-
-            if(wishlistProducts.length === 0) {
-                showEmptyState();
-            } else {
-                renderWishlist();
-            }
-        }
-
-        function showEmptyState() {
-            document.getElementById('skeletonView').style.display = 'none';
-            document.getElementById('wishlistGrid').style.display = 'none';
-            document.getElementById('emptyWishlistView').style.display = 'flex';
-            document.getElementById('headerItemCount').innerText = "0 Items";
-        }
-
-        function renderWishlist() {
-            const grid = document.getElementById('wishlistGrid');
-            grid.innerHTML = '';
-            document.getElementById('skeletonView').style.display = 'none';
-            grid.style.display = 'grid';
-
-            document.getElementById('headerItemCount').innerText = `${wishlistProducts.length} Item${wishlistProducts.length > 1 ? 's' : ''}`;
-
-            wishlistProducts.forEach((p, index) => {
-                let cPrice = parsePrice(p.price); 
-                let oPrice = p.mrp ? parsePrice(p.mrp) : (cPrice + 450);
-                let discount = oPrice > cPrice ? Math.round(((oPrice - cPrice) / oPrice) * 100) : 0;
-                let img = p.imageMain || p.image || p.imageUrl;
-
-                const card = document.createElement('div');
-                card.className = 'w-card';
-                card.id = `wishlist_card_${p.id}`;
-                const image = img || 'https://placehold.co/400x440/f5f5f5/cccccc?text=Aavira';
-                const colours = Array.isArray(p.colors) ? p.colors : [];
-                const colourDots = colours.slice(0,3).map(col => {
-                    const value = typeof col === 'object' ? (col.hex || col.color || col.name || '') : col;
-                    return `<span style="background-color:${String(value).replace(/"/g,'&quot;')}"></span>`;
-                }).join('');
-                const colourLabel = colours.length > 1 ? `${colours.length} Colours` : '1 Colour';
-                let h=0;const sid=String(p.id);for(let j=0;j<sid.length;j++){h=(h*31+sid.charCodeAt(j))>>>0;}
-                const rating=(3.8+(h%12)/10).toFixed(1);
-                const stockLeft=2+(h%9);
-                const isBestseller=(h%5)===0;
-                card.innerHTML = `
-                    <div class="w-img-wrapper" onclick="window.location.href='/product?id=${p.id}'">
-                        <div class="w-img" style="background-image:url('${String(image).replace(/'/g,"%27")}')"></div>
-                        ${discount > 0 ? `<div class="discount-tag">${discount}% OFF</div>` : ''}
-                        ${isBestseller ? '<div class="bestseller">Bestseller</div>' : ''}
-                        <button class="btn-remove" aria-label="Remove from wishlist" onclick="removeWishlistItem('${p.id}', this)"><i data-lucide="heart" class="w-5 h-5" fill="currentColor"></i></button>
-                    </div>
-                    <div class="w-info">
-                        <h4 class="w-title" onclick="window.location.href='/product?id=${p.id}'">${p.name || 'Aavira Product'}</h4>
-                        <div class="rating-row"><span class="rating-badge"><i data-lucide="star" class="w-3 h-3" fill="currentColor"></i>${rating}</span></div>
-                        <div class="colour-row"><div class="swatches">${colourDots}</div><span class="colour-text">${colourLabel}</span></div>
-                        ${stockLeft<=4 ? `<div class="urgency-row"><i data-lucide="flame" class="w-3.5 h-3.5"></i>Only ${stockLeft} left</div>` : ''}
-                        <div class="w-price-row">
-                            <div class="price-group"><span class="w-price">₹${cPrice.toLocaleString('en-IN')}</span>${discount > 0 ? `<span class="w-old">₹${oPrice.toLocaleString('en-IN')}</span>` : ''}</div>
-                            <button class="view-btn" aria-label="View product" onclick="window.location.href='/product?id=${p.id}'"><i data-lucide="arrow-up-right" class="w-4 h-4"></i></button>
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-            if(typeof lucide!=='undefined') lucide.createIcons();
-        }
-
-        function clearWishlist() {
-            if (!wishlistIds.length) return;
-            if (!confirm('Clear all wishlist items?')) return;
-            wishlistIds = [];
-            wishlistProducts = [];
-            localStorage.setItem('aavira_wishlist','[]');
-            showEmptyState();
-            window.showToast('Wishlist Cleared','All saved items removed.','success');
-        }
-
-        window.removeWishlistItem = function(productId, btnEl) {
-            window.triggerHaptic('error');
-            const card = btnEl.closest('.w-card');
-            card.classList.add('removing'); 
-            
-            setTimeout(() => {
-                wishlistIds = wishlistIds.filter(id => String(id) !== String(productId));
-                localStorage.setItem('aavira_wishlist', JSON.stringify(wishlistIds));
-                
-                wishlistProducts = wishlistProducts.filter(p => String(p.id) !== String(productId));
-                
-                document.getElementById('headerItemCount').innerText = `${wishlistProducts.length} Items`;
-                
-                if(wishlistProducts.length === 0) { showEmptyState(); }
-                else { card.remove(); }
-                
-                window.showToast("Removed", "Item removed from wishlist.", "error");
-            }, 300); 
-        }
-
-        window.moveToBag = function(productId, btnEl) {
-            window.triggerHaptic('success');
-            
-            // Get product details
-            const p = wishlistProducts.find(x => String(x.id) === String(productId));
-            if(!p) return;
-
-            // Determine default color and size
-            let defaultColor = "As Shown";
-            if(p.colors && p.colors.length > 0) defaultColor = p.colors[0].name || p.colors[0];
-            else if(p.color) defaultColor = p.color.split(',')[0].trim();
-
-            // Add to Cart
-            let cart = [];
-            try { cart = JSON.parse(localStorage.getItem('aavira_cart')) || []; } catch(e){}
-            if(!Array.isArray(cart)) cart = [];
-
-            let exIdx = cart.findIndex(item => String(item.productId) === String(productId) && item.size === 'Free Size' && item.color === defaultColor);
-            if (exIdx > -1) { cart[exIdx].qty += 1; } 
-            else { cart.push({ productId: String(productId), size: 'Free Size', color: defaultColor, qty: 1 }); }
-            
-            localStorage.setItem('aavira_cart', JSON.stringify(cart));
-            updateCartBadge();
-
-            // Remove from Wishlist visually and locally
-            const card = btnEl.closest('.w-card');
-            card.classList.add('removing'); 
-            
-            setTimeout(() => {
-                wishlistIds = wishlistIds.filter(id => String(id) !== String(productId));
-                localStorage.setItem('aavira_wishlist', JSON.stringify(wishlistIds));
-                wishlistProducts = wishlistProducts.filter(p => String(p.id) !== String(productId));
-                document.getElementById('headerItemCount').innerText = `${wishlistProducts.length} Items`;
-                
-                if(wishlistProducts.length === 0) { showEmptyState(); }
-                else { card.remove(); }
-                
-                window.showToast("Added to Bag", "Product moved to your shopping cart! 🛍️", "success");
-            }, 300);
-        }
-    </script>
-  <script data-aavira-ui>(function(){function f(){document.body.classList.add("aavira-theme");var s=document.querySelectorAll(".mini-spin,.fa-spin");for(var i=0;i<s.length;i++){(function(e){setTimeout(function(){e.classList.add("aavira-spinner-done")},4000)})(s[i])}}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",f,{once:true}):f()})();</script>
+function shareWishlist(){
+ const link=window.location.origin+'/wishlist?ids='+wishlistIds.join(',');
+ const text='My Aavira Luxe Wishlist ('+wishlistIds.length+' items): '+link;
+ if(navigator.share){navigator.share({title:'My Wishlist',text,url:link}).catch(()=>{})}
+ else{navigator.clipboard.writeText(text).then(()=>toast('Wishlist link copied')).catch(()=>toast(link))}
+}
+document.getElementById('sizeModal').addEventListener('click',e=>{if(e.target.id==='sizeModal')closeModal()});
+</script>
 </body>
 </html>
