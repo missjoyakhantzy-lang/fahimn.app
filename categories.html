@@ -1,588 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <title>Aavira Luxe - Collections</title>
-    <meta name="theme-color" content="#ffffff">
-    
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Tailwind CSS (For Ultra Premium Grid) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = { theme: { extend: { colors: { 'primary': '#6A1B29', 'secondary': '#E5C158' } } } }
-    </script>
-
-    <style>
-        :root {
-            --primary: #6A1B29;
-            --primary-light: rgba(106, 27, 41, 0.05);
-            --secondary: #E5C158;
-            --text-main: #1A1A1A;
-            --text-muted: #6B7280;
-            --border: #F3F4F6;
-            --bg-page: #FFFFFF;
-            --font: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font); -webkit-tap-highlight-color: transparent; }
-        html, body { width: 100%; background: var(--bg-page); height: 100vh; display: flex; justify-content: center; overflow: hidden; }
-        
-        .app-container { width: 100%; max-width: 460px; background: var(--bg-page); height: 100vh; position: relative; box-shadow: 0 0 40px rgba(0,0,0,0.03); display: flex; flex-direction: column; overflow: hidden;}
-
-        /* 🔥 PREMIUM HEADER 🔥 */
-        .pro-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #fff; z-index: 100; flex-shrink: 0; border-bottom: 1px solid var(--border);}
-        .search-bar { flex: 1; background: #F9FAFB; border: 1px solid transparent; border-radius: 12px; padding: 10px 15px; display: flex; align-items: center; gap: 10px; margin: 0 12px; transition: 0.3s;}
-        .search-bar i { color: #9CA3AF; font-size: 14px; }
-        .search-bar input { border: none; background: transparent; outline: none; width: 100%; font-size: 13px; font-weight: 500; color: var(--text-main); }
-        .search-bar:focus-within { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px var(--primary-light); }
-        
-        .icon-btn { background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; padding: 4px; transition: 0.2s;}
-        .icon-btn:active { transform: scale(0.9); opacity: 0.7;}
-        
-        .cart-icon-wrapper { position: relative; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px;}
-        .cart-badge { position: absolute; top: 0; right: 0; background: var(--primary); color: white; font-size: 9px; font-weight: 700; width: 16px; height: 16px; display: flex; justify-content: center; align-items: center; border-radius: 50%; border: 2px solid white;}
-
-        /* 🔥 LUXURY CATEGORY PILLS 🔥 */
-        .cat-scroll-bar { display: flex; overflow-x: auto; gap: 10px; padding: 10px 16px 15px; background: #fff; border-bottom: 1px solid #F3F4F6; scrollbar-width: none; flex-shrink: 0;}
-        .cat-scroll-bar::-webkit-scrollbar { display: none; }
-        .cat-pill { padding: 8px 20px; background: #fff; border: 1px solid #E5E7EB; border-radius: 30px; font-size: 12px; font-weight: 600; color: #4B5563; white-space: nowrap; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); letter-spacing: 0.5px; text-transform: uppercase;}
-        .cat-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 4px 12px rgba(106, 27, 41, 0.25); }
-
-        /* MAIN PRODUCTS SCROLL (Fixed padding since bottom nav is removed) */
-        .main-content { flex: 1; overflow-y: auto; scrollbar-width: none; padding: 16px; padding-bottom: 30px; scroll-behavior: smooth; background: #FAFAFA;}
-        .main-content::-webkit-scrollbar { display: none; }
-
-        /* HEADER TEXT */
-        .right-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
-        .right-header h2 { font-size: 22px; font-weight: 800; color: var(--text-main); font-family: 'Playfair Display', serif; letter-spacing: 0.5px;}
-        .right-header p { font-size: 10px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; background: #eee; padding: 4px 10px; border-radius: 12px;}
-
-        /* PRODUCT GRID */
-        .products-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-        /* SKELETON LOADERS */
-        .skel-pulse { background: #eee; background-image: linear-gradient(90deg, #eee 25%, #e0e0e0 50%, #eee 75%); background-size: 200px 100%; animation: shimmer 1.5s infinite linear; }
-        @keyframes shimmer { 0% { background-position: -200px 0; } 100% { background-position: 200px 0; } }
-        
-        .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 60vh; text-align: center; padding: 20px;}
-        .empty-state i { font-size: 45px; color: #E5E7EB; margin-bottom: 15px; }
-        .empty-state h3 { font-size: 18px; color: var(--text-main); font-weight: 700; margin-bottom: 5px; font-family: 'Playfair Display', serif;}
-        .empty-state p { font-size: 13px; color: var(--text-muted); }
-
-        /* TOAST */
-        .pro-toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: #18181B; color: #fff; padding: 14px 20px; display: flex; align-items: center; gap: 14px; width: 90%; max-width: 340px; border-radius: 12px; z-index: 1000; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .pro-toast.show { top: 20px; }
-        .pro-toast h4 { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
-        .pro-toast p { font-size: 12px; color: #A1A1AA; }
-    </style>
-<style data-aavira-ui>
-/* Aavira Fashion — Global Corporate Design System
-   Applied across inner pages without replacing page functionality. */
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Aavira Luxe - Collections</title>
+<meta name="theme-color" content="#ffffff">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
 :root{
-  --aavira-rani:#D81B60;
-  --aavira-rani-dark:#B71550;
-  --aavira-gold:#D4AF37;
-  --aavira-ivory:#FDFBF7;
-  --aavira-cream:#FCF9F4;
-  --aavira-white:#FFFFFF;
-  --aavira-charcoal:#242024;
-  --aavira-muted:#756D73;
-  --aavira-border:#E7E0D9;
-  --aavira-soft-pink:#F9E8EE;
+ --rani:#D81B60; --rani-dark:#B71550; --rani-light:#FDF0F5;
+ --gold:#D4AF37; --ivory:#FDFBF7; --text:#242024; --muted:#756D73; --border:#E7E0D9;
+ --green:#16a34a; --orange:#ea580c;
+ --primary:#D81B60;
 }
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Plus Jakarta Sans",sans-serif;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;background:var(--ivory)}
+body{display:flex;justify-content:center;height:100dvh;overflow:hidden}
+.app-container{width:100%;max-width:460px;height:100dvh;background:var(--ivory);display:flex;flex-direction:column;position:relative;overflow:hidden;border-left:1px solid var(--border);border-right:1px solid var(--border)}
 
-body.aavira-theme{
-  --primary:#D81B60;
-  --primary-color:#D81B60;
-  --primary-light:rgba(216,27,96,.08);
-  --pink:#D81B60;
-  --pink-s:rgba(216,27,96,.12);
-  --pink-sh:rgba(216,27,96,.24);
-  --secondary:#D4AF37;
-  --ethnic-gold:#D4AF37;
-  --gold:#D4AF37;
-  --gold-soft:#E7D39A;
-  --text-dark:#242024;
-  --text-main:#242024;
-  --text-muted:#756D73;
-  --text-light:#9B9298;
-  --border:#E7E0D9;
-  --border-color:#E7E0D9;
-  --bg-body:#FDFBF7;
-  --bg-page:#FDFBF7;
-  --bg-main:#FDFBF7;
-  --bg-light:#FCF9F4;
-  --bg:#FDFBF7;
-  --card:#FFFFFF;
-  --white:#FFFFFF;
-  background:var(--aavira-ivory)!important;
-  color:var(--aavira-charcoal);
-}
+/* HEADER - rounded */
+.pro-header{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#fff;border-bottom:1px solid var(--border);flex-shrink:0}
+.icon-btn{width:40px;height:40px;flex-shrink:0;background:#fff;border:1px solid var(--border);border-radius:13px;display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;font-size:16px;text-decoration:none;position:relative}
+.icon-btn:active{transform:scale(.92)}
+.search-bar{flex:1;background:#F9FAFB;border:1px solid transparent;border-radius:13px;padding:0 12px;height:42px;display:flex;align-items:center;gap:9px;min-width:0}
+.search-bar i{color:#9CA3AF;font-size:13px}
+.search-bar input{border:0;background:transparent;outline:0;width:100%;font-size:13px;font-weight:500;color:var(--text);font-family:inherit}
+.search-bar:focus-within{border-color:var(--rani);background:#fff;box-shadow:0 0 0 3px rgba(216,27,96,.09)}
+.cart-badge{position:absolute;top:-5px;right:-5px;background:var(--rani);color:#fff;font-size:9px;font-weight:800;min-width:18px;height:18px;padding:0 4px;display:flex;align-items:center;justify-content:center;border-radius:10px;border:2px solid #fff}
 
-body.aavira-theme .app-container,
-body.aavira-theme .shell,
-body.aavira-theme .app{
-  background:var(--aavira-cream);
-}
+/* CATEGORY - rounded Rani */
+.cat-scroll-bar{display:flex;overflow-x:auto;gap:9px;padding:12px;background:#fff;border-bottom:1px solid #F3F4F6;scrollbar-width:none;flex-shrink:0}
+.cat-scroll-bar::-webkit-scrollbar{display:none}
+.cat-pill{padding:9px 20px;background:#fff;border:1px solid #E5E7EB;border-radius:100px;font-size:11px;font-weight:800;color:#4B5563;white-space:nowrap;cursor:pointer;letter-spacing:.06em;text-transform:uppercase;flex-shrink:0;transition:.25s}
+.cat-pill.active{background:var(--rani);color:#fff;border-color:var(--rani);box-shadow:0 6px 14px rgba(216,27,96,.28)}
 
-body.aavira-theme .pro-header,
-body.aavira-theme .hdr,
-body.aavira-theme .header{
-  background:rgba(255,255,255,.96)!important;
-  border-color:var(--aavira-border)!important;
-  box-shadow:0 4px 18px rgba(36,32,36,.045);
-  backdrop-filter:blur(14px);
-}
+.main-content{flex:1;overflow-y:auto;padding:14px 12px 24px;background:var(--ivory);scrollbar-width:none}
+.main-content::-webkit-scrollbar{display:none}
+.right-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.right-header h2{font-size:20px;font-weight:700;color:var(--text);font-family:"Playfair Display",serif}
+.right-header p{font-size:10px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.08em;background:#fff;border:1px solid var(--border);padding:6px 12px;border-radius:100px}
+.toolbar-row{display:flex;gap:8px;margin:10px 0 14px}
+.sort-select{flex:1;height:42px;border:1px solid var(--border);border-radius:100px;background:#fff;font-size:12px;font-weight:700;padding:0 14px;outline:none;font-family:inherit}
+.filter-chip-btn{height:42px;padding:0 16px;border:1px solid var(--border);background:#fff;border-radius:100px;font-size:12px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.filter-chip-btn.active{background:var(--rani);color:#fff;border-color:var(--rani)}
 
-body.aavira-theme .pro-header .title,
-body.aavira-theme .header h1,
-body.aavira-theme .hdr-center,
-body.aavira-theme .header-center .title{
-  color:var(--aavira-charcoal)!important;
-}
+/* PRODUCT - 1:1 NO ROUNDED SHARP */
+.products-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-bottom:10px}
+.p-card{background:#fff;display:flex;flex-direction:column;position:relative;border-radius:0;box-shadow:0 4px 20px -4px rgba(0,0,0,.06);border:1px solid #f3f0ee;overflow:hidden;animation:popIn .35s ease}
+.p-card:active{transform:scale(.97)}
+.p-img-wrap{position:relative;width:100%;aspect-ratio:1/1;background:#f8f7f6;overflow:hidden;cursor:pointer;border-radius:0;flex-shrink:0}
+.p-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;border-radius:0;transition:transform .6s ease}
+.p-card:hover .p-img{transform:scale(1.06)}
+.discount-tag{position:absolute;top:0;left:0;z-index:10;background:#fff;color:var(--rani);padding:5px 10px;font-size:10px;font-weight:800;letter-spacing:.04em;border-radius:0;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.price-drop{position:absolute;top:27px;left:0;z-index:10;background:var(--green);color:#fff;padding:3px 8px;font-size:8.5px;font-weight:800;border-radius:0}
+.bestseller{position:absolute;bottom:0;left:0;right:0;z-index:10;background:rgba(17,24,39,.88);color:#fff;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;text-align:center;padding:5px;border-radius:0}
+.btn-wish{position:absolute;top:6px;right:6px;z-index:10;width:32px;height:32px;border:0;background:rgba(255,255,255,.95);color:#9ca3af;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);font-size:14px}
+.btn-wish.wished{color:var(--rani)}
 
-body.aavira-theme .header-icon-btn,
-body.aavira-theme .header-btn,
-body.aavira-theme .close-search{
-  color:var(--aavira-charcoal)!important;
-}
+.p-info{padding:11px 11px 12px;display:flex;flex-direction:column;flex:1;background:#fff;border-radius:0}
+.p-brand{font-size:8.5px;font-weight:800;color:var(--gold);letter-spacing:.18em;text-transform:uppercase;margin-bottom:3px}
+.p-name{font-size:12.5px;font-weight:600;color:#1f2937;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:6px}
+.rating-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.rating-badge{display:inline-flex;align-items:center;gap:3px;background:var(--green);color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:5px}
+.rating-badge i{font-size:8px}
+.colour-row{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.swatches{display:flex}
+.swatches span{width:12px;height:12px;border-radius:50%;border:1px solid #e5e7eb;margin-left:-4px}
+.swatches span:first-child{margin-left:0}
+.colour-text{font-size:9.5px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.urgency{font-size:9.5px;font-weight:700;color:var(--orange);margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.p-price-row{display:flex;align-items:baseline;gap:6px;padding-top:9px;margin-top:auto;border-top:1px solid #f3f4f6;flex-wrap:wrap}
+.p-price{font-size:15px;font-weight:800;color:var(--rani)}
+.p-old{font-size:10.5px;color:#9ca3af;text-decoration:line-through}
+.p-off{font-size:9px;font-weight:800;color:var(--green);background:#f0fdf4;border:1px solid #bbf7d0;padding:2px 6px;border-radius:100px;margin-left:auto}
 
-body.aavira-theme .main-content,
-body.aavira-theme .main-scroll,
-body.aavira-theme .scroll,
-body.aavira-theme .scrollable-content{
-  background:var(--aavira-ivory)!important;
-}
-
-body.aavira-theme .pro-card,
-body.aavira-theme .order-card,
-body.aavira-theme .menu-container,
-body.aavira-theme .stats-card,
-body.aavira-theme .s-card,
-body.aavira-theme .tracking-card,
-body.aavira-theme .dv-top-card,
-body.aavira-theme .rating-summary-wrapper,
-body.aavira-theme .pro-card,
-body.aavira-theme .suggest-section{
-  border-color:var(--aavira-border)!important;
-  box-shadow:0 8px 24px rgba(36,32,36,.055);
-}
-
-body.aavira-theme .tab.active,
-body.aavira-theme .size-chart-link,
-body.aavira-theme .help-link-text,
-body.aavira-theme .menu-left>i,
-body.aavira-theme .stat-item i,
-body.aavira-theme .nav-item.active,
-body.aavira-theme .nav-item.active i,
-body.aavira-theme .cart-badge,
-body.aavira-theme .discount-tag,
-body.aavira-theme .price-row .current-price + *{
-  color:var(--aavira-rani)!important;
-}
-
-body.aavira-theme .tab-indicator{
-  background:var(--aavira-rani)!important;
-}
-
-body.aavira-theme .menu-left>i{
-  background:var(--aavira-soft-pink)!important;
-}
-
-body.aavira-theme .bottom-nav,
-body.aavira-theme #bottomNavContainer{
-  background:rgba(255,255,255,.97)!important;
-  border-top-color:var(--aavira-border)!important;
-  box-shadow:0 -8px 24px rgba(36,32,36,.07);
-  backdrop-filter:blur(14px);
-}
-
-body.aavira-theme .btn-confirm,
-body.aavira-theme .promo-btn,
-body.aavira-theme .modal-btn,
-body.aavira-theme .modal-btn-primary{
-  background:linear-gradient(135deg,var(--aavira-rani),var(--aavira-rani-dark))!important;
-  color:#fff!important;
-  border-color:transparent!important;
-  box-shadow:0 10px 22px rgba(216,27,96,.18);
-}
-
-body.aavira-theme .pro-input:focus,
-body.aavira-theme .promo-input:focus,
-body.aavira-theme .search-input:focus{
-  border-color:var(--aavira-rani)!important;
-  box-shadow:0 0 0 3px rgba(216,27,96,.08)!important;
-}
-
-body.aavira-theme input,
-body.aavira-theme textarea,
-body.aavira-theme select{
-  color:var(--aavira-charcoal);
-}
-
-body.aavira-theme .speed-option.selected,
-body.aavira-theme .pay-option.selected{
-  border-color:var(--aavira-rani)!important;
-  background:var(--aavira-soft-pink)!important;
-}
-
-body.aavira-theme .color-swatch.active{
-  border-color:var(--aavira-rani)!important;
-  box-shadow:0 6px 16px rgba(216,27,96,.14);
-}
-
-body.aavira-theme .size-box.active{
-  background:var(--aavira-rani)!important;
-  border-color:var(--aavira-rani)!important;
-}
-
-body.aavira-theme .trust-badges .badge i,
-body.aavira-theme .rating-stars-main{
-  color:var(--aavira-gold)!important;
-}
-
-body.aavira-theme .dv-tc-head{
-  background:var(--aavira-soft-pink)!important;
-}
-
-body.aavira-theme .timeline-progress-line,
-body.aavira-theme .tl-icon.done,
-body.aavira-theme .tl-icon.current{
-  background:var(--aavira-rani)!important;
-}
-
-body.aavira-theme .status-badge.st-Confirmed{
-  background:var(--aavira-soft-pink)!important;
-  color:var(--aavira-rani)!important;
-}
-
-body.aavira-theme .product-title,
-body.aavira-theme .o-info h4,
-body.aavira-theme .current-price,
-body.aavira-theme .b-total{
-  color:var(--aavira-charcoal)!important;
-}
-
-body.aavira-theme .media-wrapper,
-body.aavira-theme .media-carousel,
-body.aavira-theme .slide img{
-  background:var(--aavira-cream)!important;
-  border-color:var(--aavira-border)!important;
-}
-
-body.aavira-theme .card-loading-overlay{
-  background:linear-gradient(120deg,rgba(255,255,255,0) 0%,rgba(249,232,238,.55) 45%,rgba(255,255,255,.92) 50%,rgba(249,232,238,.55) 55%,rgba(255,255,255,0) 100%)!important;
-}
-
-100%{background-position:-100% 0}}
-
-@media(max-width:420px){
-  body.aavira-theme .app-container,
-  body.aavira-theme .shell,
-  body.aavira-theme .app{max-width:420px}
-}
-
-.aavira-spinner-done{animation:none!important;transform:none!important;}
+.skel-card{background:#fff;border:1px solid var(--border);border-radius:0;overflow:hidden}
+.skel-img{width:100%;aspect-ratio:1/1}
+.skel-box{background:linear-gradient(90deg,#eee 25%,#e0e0e0 50%,#eee 75%);background-size:200% 100%;animation:shimmer 1.3s infinite linear}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes popIn{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:50vh;text-align:center;padding:20px}
+.empty-state i{font-size:44px;color:#E5E7EB;margin-bottom:14px}
+.empty-state h3{font-size:18px;font-family:"Playfair Display",serif;margin-bottom:6px}
+.empty-state p{font-size:13px;color:var(--muted)}
+.pro-toast{position:absolute;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#111827;color:#fff;padding:11px 18px;border-radius:100px;font-size:12px;font-weight:700;z-index:200;opacity:0;pointer-events:none;transition:.3s;white-space:nowrap;display:flex;align-items:center;gap:8px;max-width:92%}
+.pro-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
+<div class="app-container">
+<header class="pro-header">
+<button class="icon-btn" onclick="window.location.href='./'"><i class="fa-solid fa-arrow-left"></i></button>
+<div class="search-bar"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="searchInput" placeholder="Search kurtis, sarees, lehengas..."></div>
+<a href="wishlist" class="icon-btn"><i class="fa-regular fa-heart"></i></a>
+<a href="cart" class="icon-btn"><i class="fa-solid fa-cart-shopping"></i><span class="cart-badge" id="topCartBadge" style="display:none">0</span></a>
+</header>
 
-    <div class="app-container">
-        
-        <!-- HEADER WITH SEARCH -->
-        <header class="pro-header">
-            <button class="icon-btn ripple" onclick="window.location.href='./'"><i class="fa-solid fa-arrow-left"></i></button>
-            <div class="search-bar">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="Search premium collection..." oninput="handleSearch()">
-            </div>
-            <a href="cart" class="icon-btn cart-icon-wrapper">
-                <i class="fa-solid fa-bag-shopping"></i>
-                <span class="cart-badge" id="topCartBadge" style="display:none;">0</span>
-            </a>
-        </header>
+<div class="cat-scroll-bar" id="categoryTabsContainer">
+<div class="cat-pill skel-box" style="width:70px;height:34px;color:transparent;border:0">All</div>
+<div class="cat-pill skel-box" style="width:95px;height:34px;color:transparent;border:0">..</div>
+</div>
 
-        <!-- 🔥 TOP CATEGORY BAR (Horizontal Pills) 🔥 -->
-        <div class="cat-scroll-bar" id="categoryTabsContainer">
-            <div class="cat-pill active skel-pulse" style="width: 60px; height: 35px; color: transparent; border:none;">All</div>
-            <div class="cat-pill skel-pulse" style="width: 80px; height: 35px; color: transparent; border:none;">Sarees</div>
-            <div class="cat-pill skel-pulse" style="width: 90px; height: 35px; color: transparent; border:none;">Lehengas</div>
-            <div class="cat-pill skel-pulse" style="width: 70px; height: 35px; color: transparent; border:none;">Suits</div>
-        </div>
+<div class="main-content" id="productsPanel">
+<div class="right-header"><h2 id="currentCategoryTitle">All Collection</h2><p id="productCountBadge">Loading...</p></div>
+<div class="toolbar-row">
+<select id="sortSelect" class="sort-select" onchange="applySort()">
+<option value="popular">Sort: Popular</option>
+<option value="new">Newest First</option>
+<option value="low">Price: Low to High</option>
+<option value="high">Price: High to Low</option>
+<option value="discount">Discount</option>
+<option value="rating">Rating</option>
+</select>
+<button class="filter-chip-btn" onclick="toggleDiscount(this)"><i class="fa-solid fa-filter"></i> 50%+ Off</button>
+</div>
+<div class="products-grid" id="productsGrid"></div>
+<div id="emptyProductState" class="empty-state" style="display:none"><i class="fa-solid fa-box-open"></i><h3 id="emptyStateTitle">No Products Found</h3><p>Try different search or category.</p></div>
+</div>
+<div class="pro-toast" id="alertToast"><span>♥</span><span id="toastMsg">Done</span></div>
+</div>
 
-        <!-- MAIN PRODUCTS AREA (Full Width 1:1) -->
-        <div class="main-content" id="productsPanel">
-            
-            <div class="right-header">
-                <h2 id="currentCategoryTitle">All Collection</h2>
-                <p id="productCountBadge">Loading...</p>
-            </div>
+<script src="user_data.js"></script>
+<script>
+let allProducts=[], allCategories=[], currentActiveCategory="All", currentSort="popular", only50Off=false, searchQ="";
+function parsePrice(v){return parseInt(String(v??'').replace(/[^0-9]/g,''))||0}
+function hashId(s){let h=0;s=String(s);for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h}
+function meta(p){
+ const c=parsePrice(p.price);let o=p.mrp?parsePrice(p.mrp):c+450;
+ const d=o>c?Math.round((o-c)/o*100):0;const h=hashId(p.id);
+ return {c,o,d,rating:(3.8+(h%12)/10).toFixed(1),stock:2+(h%9),best:(h%5)===0,out:p.outOfStock===true||p.stock===0};
+}
+function showToast(m){const t=document.getElementById('alertToast');document.getElementById('toastMsg').innerText=m;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),2500);try{navigator.vibrate&&navigator.vibrate(30)}catch(e){}}
+function triggerHaptic(){try{navigator.vibrate&&navigator.vibrate(30)}catch(e){}}
 
-            <!-- GRID (Ultra Legend CSS) -->
-            <div class="products-grid" id="productsGrid">
-                <!-- Skeletons -->
-                <div class="w-full bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm"><div class="w-full pt-[100%] skel-pulse"></div><div class="p-4"><div class="h-3 skel-pulse rounded w-3/4 mb-3"></div><div class="h-4 skel-pulse rounded w-1/2"></div></div></div>
-                <div class="w-full bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm"><div class="w-full pt-[100%] skel-pulse"></div><div class="p-4"><div class="h-3 skel-pulse rounded w-3/4 mb-3"></div><div class="h-4 skel-pulse rounded w-1/2"></div></div></div>
-                <div class="w-full bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm"><div class="w-full pt-[100%] skel-pulse"></div><div class="p-4"><div class="h-3 skel-pulse rounded w-3/4 mb-3"></div><div class="h-4 skel-pulse rounded w-1/2"></div></div></div>
-                <div class="w-full bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm"><div class="w-full pt-[100%] skel-pulse"></div><div class="p-4"><div class="h-3 skel-pulse rounded w-3/4 mb-3"></div><div class="h-4 skel-pulse rounded w-1/2"></div></div></div>
-            </div>
+document.addEventListener('DOMContentLoaded',()=>{updateCartBadge();loadData();
+ document.getElementById('searchInput').addEventListener('input',e=>{clearTimeout(e.target._d);e.target._d=setTimeout(()=>{searchQ=e.target.value.toLowerCase().trim();filterAndRender()},250)});
+});
 
-            <div id="emptyProductState" class="empty-state" style="display: none;">
-                <i class="fa-solid fa-box-open"></i>
-                <h3 id="emptyStateTitle">No Products Found</h3>
-                <p>We are adding new collections soon.</p>
-            </div>
-        </div>
+// NO FIREBASE - only user_data.js
+async function loadData(){
+ try{
+  if(typeof window.getVercelData==='function'){
+   allProducts=await window.getVercelData()||[];
+  } else { allProducts=[]; }
+  // categories auto from products
+  const set=new Set();
+  allProducts.forEach(p=>{if(p.category)set.add(p.category)});
+  allCategories=[...set];
+  const urlP=new URLSearchParams(window.location.search);const cp=urlP.get('cat');
+  if(cp)currentActiveCategory=decodeURIComponent(cp);
+  renderCategories(currentActiveCategory);filterAndRender();
+ }catch(e){console.error(e);showToast("Data load error");}
+}
+function renderCategories(active){
+ const bar=document.getElementById('categoryTabsContainer');
+ let html=`<div class="cat-pill ${active==='All'?'active':''}" onclick="selectCategory('All',this)">All</div>`;
+ allCategories.forEach(c=>{html+=`<div class="cat-pill ${active===c?'active':''}" onclick="selectCategory('${String(c).replace(/'/g,"\\'")}',this)">${c}</div>`});
+ bar.innerHTML=html;
+}
+function selectCategory(name,el){
+ triggerHaptic();
+ document.querySelectorAll('.cat-pill').forEach(x=>x.classList.remove('active'));el.classList.add('active');
+ currentActiveCategory=name;el.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+ filterAndRender();document.getElementById('productsPanel').scrollTo({top:0,behavior:'smooth'});
+}
+function applySort(){currentSort=document.getElementById('sortSelect').value;filterAndRender()}
+function toggleDiscount(btn){only50Off=!only50Off;btn.classList.toggle('active',only50Off);filterAndRender()}
 
-        <!-- TOAST ALERTS -->
-        <div class="pro-toast" id="alertToast">
-            <span id="toastIcon"></span>
-            <div class="toast-content"><h4 id="toastTitle">Alert</h4><p id="toastMessage">Message</p></div>
-        </div>
+function filterAndRender(){
+ let base=currentActiveCategory==="All"?[...allProducts]:allProducts.filter(p=>p.category===currentActiveCategory);
+ if(searchQ)base=base.filter(p=>(p.name||'').toLowerCase().includes(searchQ));
+ if(only50Off)base=base.filter(p=>meta(p).d>=50);
+ if(currentSort==='low')base.sort((a,b)=>parsePrice(a.price)-parsePrice(b.price));
+ else if(currentSort==='high')base.sort((a,b)=>parsePrice(b.price)-parsePrice(a.price));
+ else if(currentSort==='discount')base.sort((a,b)=>meta(b).d-meta(a).d);
+ else if(currentSort==='rating')base.sort((a,b)=>meta(b).rating-meta(a).rating);
+ renderUI(base, searchQ?`Search: "${searchQ}"`:(currentActiveCategory==="All"?"All Collection":currentActiveCategory));
+}
 
-    </div>
-
-    <!-- 🔥 FIREBASE LOGIC 🔥 -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCMGx6C5_al22KjCmdhGVKugJoR2UmZ1Ng",
-            authDomain: "aavira-co-in.firebaseapp.com",
-            projectId: "aavira-co-in",
-            storageBucket: "aavira-co-in.firebasestorage.app",
-            messagingSenderId: "247971292356",
-            appId: "1:247971292356:web:82780c6dffe9ba530f9591"
-        };
-        
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        window.mainProductsOnly = [];
-        window.allCategories = [];
-        let currentActiveCategory = "All";
-
-        document.addEventListener('DOMContentLoaded', () => {
-            updateCartBadge();
-            syncDataFromFirebase();
-        });
-
-        async function syncDataFromFirebase() {
-            try {
-                // Fetch Categories
-                const catSnap = await getDocs(collection(db, "categories"));
-                let categories = [];
-                catSnap.forEach(doc => categories.push({ id: doc.id, ...doc.data() }));
-                window.allCategories = categories;
-
-                // Fetch Products ONLY from "main_products"
-                let allProds = [];
-                const prodQuery = query(collection(db, "main_products"), orderBy("createdAt", "desc"));
-                const snapMain = await getDocs(prodQuery);
-                snapMain.forEach(doc => allProds.push({ id: doc.id, ...doc.data() }));
-                
-                window.mainProductsOnly = allProds;
-
-                const urlParams = new URLSearchParams(window.location.search);
-                const catParam = urlParams.get('cat');
-                if (catParam) { currentActiveCategory = decodeURIComponent(catParam); }
-
-                renderCategoriesUI(currentActiveCategory);
-                filterAndRenderProducts(currentActiveCategory);
-
-            } catch(e) {
-                console.error("Data Sync Error: ", e);
-                window.showToast("Network Error", "Could not sync catalog.", "error");
-            }
-        }
-
-        function renderCategoriesUI(activeCat) {
-            const topBar = document.getElementById('categoryTabsContainer');
-            
-            let html = `<div class="cat-pill ${activeCat === 'All' ? 'active' : ''}" onclick="selectCategory('All', this)">All</div>`;
-            
-            window.allCategories.forEach(cat => {
-                let isActive = activeCat === cat.name ? 'active' : '';
-                html += `<div class="cat-pill ${isActive}" onclick="selectCategory('${cat.name}', this)">${cat.name}</div>`;
-            });
-            
-            topBar.innerHTML = html;
-        }
-
-        window.selectCategory = function(catName, element) {
-            window.triggerHaptic('light');
-            document.querySelectorAll('.cat-pill').forEach(el => el.classList.remove('active'));
-            element.classList.add('active');
-            
-            currentActiveCategory = catName;
-            document.getElementById('searchInput').value = ''; 
-            
-            element.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-            
-            filterAndRenderProducts(catName);
-            document.getElementById('productsPanel').scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function filterAndRenderProducts(catName) {
-            let filtered = [];
-            if (catName === "All") filtered = window.mainProductsOnly;
-            else filtered = window.mainProductsOnly.filter(p => p.category === catName);
-            renderProductsUI(filtered, catName === "All" ? "All Collection" : catName);
-        }
-
-        // 🔥 ADVANCE LEGEND PRODUCT RENDERER 🔥
-        function renderProductsUI(productsArray, titleText) {
-            const grid = document.getElementById('productsGrid');
-            const emptyState = document.getElementById('emptyProductState');
-            
-            document.getElementById('currentCategoryTitle').innerText = titleText;
-            document.getElementById('productCountBadge').innerText = `${productsArray.length} ITEMS`;
-
-            grid.innerHTML = '';
-            
-            if(productsArray.length === 0) {
-                grid.style.display = 'none';
-                emptyState.style.display = 'flex';
-                document.getElementById('emptyStateTitle').innerText = `No ${titleText} Found`;
-                return;
-            }
-
-            grid.style.display = 'grid';
-            emptyState.style.display = 'none';
-
-            let wishlist = [];
-            try { wishlist = JSON.parse(localStorage.getItem('aavira_wishlist')) || []; } catch(e){}
-
-            productsArray.forEach(p => {
-                let cPrice = parseInt(String(p.price).replace(/[^0-9]/g, '')) || 0; 
-                let oPrice = p.mrp ? parseInt(String(p.mrp).replace(/[^0-9]/g, '')) : (cPrice + 450);
-                let discount = oPrice > cPrice ? Math.round(((oPrice - cPrice) / oPrice) * 100) : 0;
-                
-                let mrpHtml = discount > 0 ? `<span class="text-[10px] text-gray-400 line-through font-medium">₹${oPrice.toLocaleString('en-IN')}</span>` : ``; 
-                let offHtml = discount > 0 ? `<span class="text-[9px] font-bold text-green-700 bg-green-50/80 border border-green-100 px-1.5 py-0.5 rounded ml-auto tracking-wide">${discount}% OFF</span>` : ``;
-                
-                let img = p.imageMain || p.image || p.imageUrl;
-                let fallbackImg = `this.onerror=null;this.src='https://via.placeholder.com/400x400/f5f5f5/cccccc?text=Aavira';`;
-                let isWished = wishlist.includes(String(p.id));
-
-                // 👑 THE LEGENDARY CARD 👑
-                grid.innerHTML += `
-                    <div class="relative bg-white rounded-2xl overflow-hidden border border-gray-100/80 shadow-[0_4px_15px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(106,27,41,0.08)] transition-all duration-500 group active:scale-95">
-                        
-                        <!-- Glassmorphic Wishlist Button -->
-                        <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/70 backdrop-blur-md border border-white/50 shadow-sm flex items-center justify-center z-10 transition-transform active:scale-75 ${isWished ? 'text-red-500' : 'text-gray-400'} hover:bg-white" onclick="toggleHeart(event, this, '${p.id}')">
-                            <i class="${isWished ? 'fa-solid' : 'fa-regular'} fa-heart text-[13px] drop-shadow-sm"></i>
-                        </button>
-
-                        <!-- 1:1 Aspect Ratio Image Box -->
-                        <div class="relative w-full pt-[100%] bg-[#F8F9FA] cursor-pointer overflow-hidden" onclick="window.location.href='product?id=${p.id}'">
-                            <img src="${img}" onerror="${fallbackImg}" class="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
-                            <!-- Subtle Gradient Overlay for Luxe Feel -->
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        </div>
-
-                        <!-- Minimalist Premium Details -->
-                        <div class="p-3.5 flex flex-col bg-white relative z-20 cursor-pointer" onclick="window.location.href='product?id=${p.id}'">
-                            <div class="flex justify-between items-center mb-1">
-                                <h4 class="text-[8px] font-extrabold text-[#E5C158] tracking-[0.2em] uppercase">Aavira Luxe</h4>
-                                <i class="fa-solid fa-arrow-right text-gray-300 text-[10px] group-hover:text-[#6A1B29] transition-all duration-300 transform group-hover:translate-x-1"></i>
-                            </div>
-                            <h3 class="text-[13px] font-semibold text-gray-900 leading-snug mb-2 line-clamp-1 font-serif tracking-wide">${p.name}</h3>
-                            
-                            <div class="flex items-center flex-wrap gap-2 mt-auto">
-                                <span class="text-[15px] font-extrabold text-[#6A1B29] tracking-tight">₹${cPrice.toLocaleString('en-IN')}</span>
-                                ${mrpHtml}
-                                ${offHtml}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        // ==========================================
-        // 4. SEARCH LOGIC
-        // ==========================================
-        window.handleSearch = function() {
-            const query = document.getElementById('searchInput').value.toLowerCase().trim();
-            let baseArray = currentActiveCategory === "All" ? window.mainProductsOnly : window.mainProductsOnly.filter(p => p.category === currentActiveCategory);
-            
-            if (!query) {
-                renderProductsUI(baseArray, currentActiveCategory === "All" ? "All Collection" : currentActiveCategory);
-                return;
-            }
-
-            const filtered = baseArray.filter(p => p.name.toLowerCase().includes(query));
-            renderProductsUI(filtered, `Search: "${query}"`);
-        }
-
-        // ==========================================
-        // 5. UTILS (Heart & Cart Badge)
-        // ==========================================
-        window.toggleHeart = function(event, btn, id) {
-            event.preventDefault(); event.stopPropagation();
-            window.triggerHaptic('light');
-            
-            const icon = btn.querySelector('i'); 
-            let wishlist = JSON.parse(localStorage.getItem('aavira_wishlist')) || [];
-            const strId = String(id);
-            
-            if (btn.classList.contains('text-gray-400')) { 
-                btn.classList.remove('text-gray-400'); btn.classList.add('text-red-500');
-                icon.classList.replace('fa-regular', 'fa-solid');
-                if (!wishlist.includes(strId)) wishlist.push(strId); 
-                window.showToast("Saved to Wishlist ❤️", "success");
-            } else { 
-                btn.classList.remove('text-red-500'); btn.classList.add('text-gray-400');
-                icon.classList.replace('fa-solid', 'fa-regular');
-                wishlist = wishlist.filter(item => String(item) !== strId); 
-                window.showToast("Removed", "error");
-            }
-            localStorage.setItem('aavira_wishlist', JSON.stringify(wishlist));
-        }
-
-        function updateCartBadge() {
-            let cart = [];
-            try { cart = JSON.parse(localStorage.getItem('aavira_cart')) || []; } catch(e){}
-            const badge = document.getElementById('topCartBadge');
-            if(badge) {
-                let total = cart.reduce((sum, item) => sum + item.qty, 0);
-                badge.innerText = total;
-                badge.style.display = total > 0 ? 'flex' : 'none';
-            }
-        }
-
-        window.triggerHaptic = function(type = 'light') {
-            try {
-                if (!navigator.vibrate) return;
-                if (type === 'light') navigator.vibrate(30);
-                else if (type === 'error') navigator.vibrate([60, 40, 60]);
-            } catch(e) {}
-        };
-
-        window.showToast = function(title, message, type = 'success') {
-            const toast = document.getElementById('alertToast');
-            if(!toast) return;
-            document.getElementById('toastTitle').innerText = title;
-            document.getElementById('toastMessage').innerText = message;
-            document.getElementById('toastIcon').innerHTML = type === 'error' ? '<i class="fa-solid fa-circle-xmark" style="color:#F87171;"></i>' : '<i class="fa-solid fa-circle-check" style="color:#34D399;"></i>';
-            window.triggerHaptic(type);
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3500);
-        }
-    </script>
-<script data-aavira-ui>
-(function(){'use strict';
-function markTheme(){if(document.body)document.body.classList.add('aavira-theme');}
-function stopLongSpinners(){var seen=new WeakSet();function watch(root){var nodes=[];if(root&&root.nodeType===1)nodes.push(root);if(root&&root.querySelectorAll)nodes=nodes.concat(Array.prototype.slice.call(root.querySelectorAll('.mini-spin,.fa-spin')));for(var i=0;i<nodes.length;i++){var el=nodes[i];if(seen.has(el))continue;seen.add(el);setTimeout(function(target){return function(){if(target&&target.classList)target.classList.add('aavira-spinner-done');};}(el),4000);}}watch(document.body);new MutationObserver(function(ms){for(var i=0;i<ms.length;i++){var a=ms[i].addedNodes||[];for(var j=0;j<a.length;j++)watch(a[j]);}}).observe(document.body,{childList:true,subtree:true});}
-function init(){if(!document.body)return;markTheme();stopLongSpinners();}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();})();
+function renderUI(arr,title){
+ const grid=document.getElementById('productsGrid'),empty=document.getElementById('emptyProductState');
+ document.getElementById('currentCategoryTitle').innerText=title;
+ document.getElementById('productCountBadge').innerText=`${arr.length} ITEMS`;
+ grid.innerHTML='';
+ if(!arr.length){grid.style.display='none';empty.style.display='flex';document.getElementById('emptyStateTitle').innerText=`No ${title} Found`;return}
+ grid.style.display='grid';empty.style.display='none';
+ let wish=[];try{wish=JSON.parse(localStorage.getItem('aavira_wishlist'))||[]}catch(e){}
+ arr.forEach(p=>{
+  const m=meta(p);
+  const img=p.imageMain||p.image||p.imageUrl||'https://placehold.co/600x600/f5f5f5/cccccc?text=Aavira';
+  const isW=wish.includes(String(p.id));
+  const cols=Array.isArray(p.colors)?p.colors:[];
+  const dots=cols.slice(0,3).map(c2=>{const v=typeof c2==='object'?(c2.hex||c2.code||c2.color||'#ddd'):c2;return `<span style="background:${String(v).replace(/"/g,'')}"></span>`}).join('');
+  const card=document.createElement('div');card.className='p-card';
+  card.innerHTML=`
+   <div class="p-img-wrap" onclick="window.location.href='product?id=${p.id}'">
+    <img class="p-img" src="${String(img).replace(/"/g,'&quot;')}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x600/f5f5f5/cccccc?text=Aavira'">
+    ${m.d>0?`<div class="discount-tag">${m.d}% OFF</div>`:''}
+    ${m.d>=20&&!m.out?`<div class="price-drop">PRICE DROP</div>`:''}
+    ${m.best?`<div class="bestseller">★ Bestseller</div>`:''}
+    <button class="btn-wish ${isW?'wished':''}" onclick="toggleHeart(event,this,'${p.id}')"><i class="${isW?'fa-solid':'fa-regular'} fa-heart"></i></button>
+   </div>
+   <div class="p-info" onclick="window.location.href='product?id=${p.id}'">
+    <div class="p-brand">Aavira Luxe</div>
+    <div class="p-name">${p.name||'Aavira Product'}</div>
+    <div class="rating-row"><span class="rating-badge"><i class="fa-solid fa-star"></i>${m.rating}</span></div>
+    <div class="colour-row"><div class="swatches">${dots}</div><span class="colour-text">${cols.length||1} Colour${(cols.length||1)>1?'s':''}</span></div>
+    ${!m.out&&m.stock<=4?`<div class="urgency"><i class="fa-solid fa-fire"></i>Only ${m.stock} left</div>`:''}
+    <div class="p-price-row"><span class="p-price">₹${m.c.toLocaleString('en-IN')}</span>${m.d>0?`<span class="p-old">₹${m.o.toLocaleString('en-IN')}</span><span class="p-off">${m.d}% OFF</span>`:''}</div>
+   </div>`;
+  grid.appendChild(card);
+ });
+}
+function toggleHeart(e,btn,id){
+ e.preventDefault();e.stopPropagation();triggerHaptic();
+ const icon=btn.querySelector('i');let w=[];try{w=JSON.parse(localStorage.getItem('aavira_wishlist'))||[]}catch(e){}
+ const s=String(id);
+ if(btn.classList.contains('wished')){btn.classList.remove('wished');icon.classList.replace('fa-solid','fa-regular');w=w.filter(x=>String(x)!==s);showToast("Removed from wishlist");}
+ else{btn.classList.add('wished');icon.classList.replace('fa-regular','fa-solid');if(!w.includes(s))w.push(s);showToast("Saved to wishlist ♥");}
+ localStorage.setItem('aavira_wishlist',JSON.stringify(w));
+}
+function updateCartBadge(){
+ let cart=[];try{cart=JSON.parse(localStorage.getItem('aavira_cart'))||[]}catch(e){}
+ const b=document.getElementById('topCartBadge');const t=cart.reduce((s,i)=>s+(i.qty||1),0);
+ b.innerText=t;b.style.display=t>0?'flex':'none';
+}
 </script>
 </body>
 </html>
