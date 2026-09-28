@@ -59,9 +59,11 @@ window.getCategoriesData = async function() {
 // ==========================================
 // 2. ORDERS LOGIC
 // ==========================================
+// Orders are created and read from the same backend so a newly placed
+// order is immediately available on the Orders screen.
 window.sendOrderToVercel = async function(orderPayload) {
     try {
-        const response = await fetch(`${AUTH_URL}/api/orders`, { 
+        const response = await fetch(`${VERCEL_URL}/api/orders`, { 
             method: 'POST', 
             headers: { 'Content-Type': 'application/json' }, 
             body: JSON.stringify(orderPayload) 
@@ -69,6 +71,7 @@ window.sendOrderToVercel = async function(orderPayload) {
         const result = await response.json(); 
         return (response.ok && result.status === "success");
     } catch (error) { 
+        console.error("Order Save Error:", error);
         return false; 
     }
 };
@@ -78,7 +81,7 @@ window.sendOrderToVercel = async function(orderPayload) {
 // 3. PRODUCT REVIEWS LOGIC
 // ==========================================
 window.saveReviewToDatabase = async function(productId, reviewData) {
-    try {
+    try { 
         const response = await fetch(`${VERCEL_URL}/api/add-review`, { 
             method: 'POST', 
             headers: { 'Content-Type': 'application/json' }, 
@@ -92,7 +95,7 @@ window.saveReviewToDatabase = async function(productId, reviewData) {
 };
 
 window.getReviewsFromDatabase = async function(productId) {
-    try {
+    try { 
         const response = await fetch(`${VERCEL_URL}/api/get-reviews?productId=${productId}`);
         const result = await response.json(); 
         return (response.ok && result.success) ? result.data : [];
@@ -187,7 +190,7 @@ window.DeliveryBoy = {
             }
             return { exists: false };
         } catch (error) { 
-            return { exists: false }; 
+            return { exists: false };
         }
     },
 
