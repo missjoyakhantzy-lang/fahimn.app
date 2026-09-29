@@ -503,7 +503,7 @@
     window.clearLocalAppData=function(){confirmClear('app data',()=>{const keep=['aavira_display_name','aavira_user_email','aavira_user_phone'];Object.keys(localStorage).forEach(k=>{if(k.startsWith('aavira_')&&!keep.includes(k))localStorage.removeItem(k)});['statWishlist','statOrders','statSpent','statRewards'].forEach(id=>{const e=document.getElementById(id);if(e)e.innerText='0'});document.getElementById('menuCartBadge')?.classList.add('hidden');showToast('App data cleared');showStorageInfo()})};
 
     // Main App Initialization
-    function initProfileUI() {
+    async function initProfileUI() {
         const userName = localStorage.getItem('aavira_display_name');
         const userEmail = localStorage.getItem('aavira_user_email');
         const isLoggedIn = Boolean(userName && userName.toLowerCase() !== 'guest user');
