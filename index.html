@@ -1,808 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>Aavira - Luxury Ethnic Elegance</title>
 <meta name="description" content="Discover Aavira's luxury ethnic wear, handcrafted styles, exclusive collections, and new arrivals.">
 <meta name="theme-color" content="#ffffff">
 <link rel="canonical" href="https://aavirafashion.shop/">
-<meta property="og:type" content="website"><meta property="og:title" content="Aavira - Luxury Ethnic Elegance"><meta property="og:description" content="Discover luxury ethnic wear and handcrafted styles from Aavira."><meta property="og:url" content="https://aavirafashion.shop/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Aavira - Luxury Ethnic Elegance">
+<meta property="og:description" content="Discover luxury ethnic wear and handcrafted styles from Aavira.">
+<meta property="og:url" content="https://aavirafashion.shop/">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest"></script>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
-<script>tailwind.config={theme:{extend:{colors:{'rani-pink':'#D81B60','ethnic-gold':'#D4AF37','luxury-bg':'#FDFBF7'},fontFamily:{'serif':['"Playfair Display"','serif'],'sans':['"Inter"','sans-serif'],'script':['"Dancing Script"','cursive']}}}}</script>
+<script>
+tailwind.config={theme:{extend:{colors:{'rani-pink':'#D81B60','rani-dark':'#B71550','ethnic-gold':'#D4AF37','luxury-bg':'#FDFBF7'},fontFamily:{serif:['"Playfair Display"','serif'],sans:['"Inter"','sans-serif'],script:['"Dancing Script"','cursive']},boxShadow:{lux:'0 8px 30px -6px rgba(36,32,36,.12)',card:'0 4px 20px -4px rgba(0,0,0,.06)'}}}}
+const AUTH_URL='https://aavira-fashion-backend.vercel.app';
+</script>
 <style>
 html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
-body{background-color:#FDFBF7;-webkit-overflow-scrolling:touch;overflow-x:clip;overscroll-behavior-y:none}
-.no-scrollbar::-webkit-scrollbar{display:none}
-.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none;touch-action:pan-x pan-y}
+body{background:#FDFBF7;overflow-x:clip;overscroll-behavior-y:none}
+.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{scrollbar-width:none}
 @keyframes slideLeft{0%{transform:translateX(100vw)}100%{transform:translateX(-100%)}}
-.animate-slide-left{display:inline-block;white-space:nowrap;animation:slideLeft 12s linear infinite}
-@keyframes float{0%{transform:translateY(0px)}50%{transform:translateY(-6px)}100%{transform:translateY(0px)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .animate-float{animation:float 3s ease-in-out infinite}
-@keyframes pulse-ring{0%{transform:scale(0.8);box-shadow:0 0 0 0 rgba(37,211,102,0.7)}70%{transform:scale(1);box-shadow:0 0 0 12px rgba(37,211,102,0)}100%{transform:scale(0.8);box-shadow:0 0 0 0 rgba(37,211,102,0)}}
+@keyframes pulse-ring{0%{transform:scale(.85);box-shadow:0 0 0 0 rgba(37,211,102,.6)}70%{transform:scale(1);box-shadow:0 0 0 14px rgba(37,211,102,0)}100%{transform:scale(.85);box-shadow:0 0 0 0 rgba(37,211,102,0)}}
 .animate-pulse-ring{animation:pulse-ring 2s infinite}
-/* Product action ring spinner — same visual language as the app's action spinners */
-.mini-spin{width:15px;height:15px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;display:inline-block;flex:0 0 15px;animation:aaviraRingSpin .55s linear infinite;}
+.mini-spin{width:15px;height:15px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;display:inline-block;animation:aaviraRingSpin .55s linear infinite}
 @keyframes aaviraRingSpin{to{transform:rotate(360deg)}}
-/* Keep the primary header solid and premium; no glass blur. */
-#main-header{background:#fff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
-#bottomNavContainer{
-  position:fixed!important;
-  left:0!important;
-  right:0!important;
-  bottom:0!important;
-  z-index:9999!important;
-  transform:translateY(0)!important;
-  visibility:visible!important;
-  opacity:1!important;
-  background:#FDFBF7!important;
-  background-color:#FDFBF7!important;
-  backdrop-filter:none!important;
-  -webkit-backdrop-filter:none!important;
-  height:76px!important;
-  min-height:76px!important;
-  box-sizing:border-box!important;
-  padding-top:10px!important;
-  padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))!important;
-  box-shadow:0 -1px 10px rgba(36,32,36,.04)!important;
-}
-#bottomNavContainer a{color:#756D73;}
-#bottomNavContainer a:hover{color:#D81B60;}
-
-/* The bottom navigation is persistent. Never allow scroll handlers, stale classes,
-   or responsive transforms to move it off-screen. */
-#bottomNavContainer.translate-y-full,
-#bottomNavContainer.nav-hidden{
-  transform:translateY(0)!important;
-}
-#bottomNavContainer{transition:none!important;}
-
-body.aavira-theme .main-content,
-body.aavira-theme .main-scroll,
-body.aavira-theme .scroll,
-body.aavira-theme .scrollable-content{background:#FDFBF7!important;}
-
-
-.fade-up{opacity:0;transform:translateY(20px);transition:opacity .6s ease-out,transform .6s cubic-bezier(0.2,0.8,0.2,1);will-change:opacity,transform}
-.fade-up.visible{opacity:1;transform:translateY(0)}
-
-
-#imageLightbox{backdrop-filter:blur(10px)}
-.star-btn{font-size:28px;line-height:1;cursor:pointer;color:#D4AF37;transition:transform 0.1s}
-.star-btn:active{transform:scale(0.8)}
-.product-card::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,0.2) 100%);opacity:0;transition:opacity 0.3s ease;pointer-events:none;}
-.product-card:hover::after{opacity:1;}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:0.01ms!important}}
-@media (min-width:640px){#bottomNavContainer{width:420px;left:50%;transform:translateX(-50%);border-left:1px solid #e5e7eb;border-right:1px solid #e5e7eb}.nav-hidden{transform:translate(-50%,100%)!important}}
+.is-loading{position:relative!important;overflow:hidden!important;pointer-events:none}
+.card-loading-overlay{position:absolute;inset:0;z-index:20;pointer-events:none;background:linear-gradient(110deg,rgba(255,255,255,0) 20%,rgba(249,232,238,.7) 45%,rgba(255,255,255,.95) 50%,rgba(249,232,238,.7) 55%,rgba(255,255,255,0) 80%);background-size:200% 100%;animation:smokeSweep 1s linear infinite}
+@keyframes smokeSweep{0%{background-position:100% 0}100%{background-position:-100% 0}}
+.banner-dot{border-radius:999px;transition:all .35s ease;height:6px}
+#main-header{background:#fff;transition:transform .35s ease;z-index:40}
+#bottomNavContainer{position:fixed!important;left:0!important;right:0!important;bottom:0!important;z-index:9999!important;background:#fff!important;height:74px!important;box-sizing:border-box!important;padding-top:10px!important;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))!important;box-shadow:0 -8px 24px rgba(36,32,36,.07)!important;border-top:1px solid #EDE6DE!important;transition:none!important;transform:translateY(0)!important}
+@media(min-width:640px){#bottomNavContainer{left:50%!important;right:auto!important;width:420px!important;transform:translateX(-50%)!important;border-left:1px solid #eee;border-right:1px solid #eee}}
+#bottomNavContainer a{color:#756D73}#bottomNavContainer a.active{color:#D81B60}
+.fade-up{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+.fade-up.visible{opacity:1;transform:none}
+#imageLightbox{backdrop-filter:blur(12px)}
+.star-btn{font-size:30px;line-height:1;cursor:pointer;color:#D4AF37}
+.product-card{transition:transform .3s ease,box-shadow .3s ease}
+.product-card:hover{transform:translateY(-2px)}
+.sec-title{font-family:"Playfair Display",serif;font-size:22px;color:#1a1a1a;font-weight:700}
+.sec-sub{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#D4AF37;font-weight:700}
+.gold-line{height:2px;width:42px;background:linear-gradient(90deg,#D81B60,#D4AF37);border-radius:99px;margin-top:6px}
+.hero-gradient{background:linear-gradient(to top,rgba(0,0,0,.62) 0%,rgba(0,0,0,.18) 45%,rgba(0,0,0,0) 75%)}
+.aavira-company-footer{background:#17151A;color:#fff;padding:38px 22px 28px;border-top:3px solid rgba(212,175,55,.4)}
+.aavira-footer-inner{max-width:1050px;margin:auto}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
-<style data-aavira-ui>
-/* Aavira Fashion — Global Corporate Design System
-   Applied across inner pages without replacing page functionality. */
-:root{
-  --aavira-rani:#D81B60;
-  --aavira-rani-dark:#B71550;
-  --aavira-gold:#D4AF37;
-  --aavira-ivory:#FDFBF7;
-  --aavira-cream:#FCF9F4;
-  --aavira-white:#FFFFFF;
-  --aavira-charcoal:#242024;
-  --aavira-muted:#756D73;
-  --aavira-border:#E7E0D9;
-  --aavira-soft-pink:#F9E8EE;
-}
+</head>
+<body class="font-sans text-gray-800 antialiased selection:bg-[#D81B60] selection:text-white">
 
-body.aavira-theme{
-  --primary:#D81B60;
-  --primary-color:#D81B60;
-  --primary-light:rgba(216,27,96,.08);
-  --pink:#D81B60;
-  --pink-s:rgba(216,27,96,.12);
-  --pink-sh:rgba(216,27,96,.24);
-  --secondary:#D4AF37;
-  --ethnic-gold:#D4AF37;
-  --gold:#D4AF37;
-  --gold-soft:#E7D39A;
-  --text-dark:#242024;
-  --text-main:#242024;
-  --text-muted:#756D73;
-  --text-light:#9B9298;
-  --border:#E7E0D9;
-  --border-color:#E7E0D9;
-  --bg-body:#FDFBF7;
-  --bg-page:#FDFBF7;
-  --bg-main:#FDFBF7;
-  --bg-light:#FCF9F4;
-  --bg:#FDFBF7;
-  --card:#FFFFFF;
-  --white:#FFFFFF;
-  background:var(--aavira-ivory)!important;
-  color:var(--aavira-charcoal);
-}
+<div id="toast" class="fixed bottom-[92px] left-1/2 -translate-x-1/2 bg-[#111827] text-white px-5 py-2.5 rounded-full text-[12px] font-semibold shadow-xl whitespace-nowrap transition-all duration-300 translate-y-5 opacity-0 scale-95 z-[10060] pointer-events-none"><span id="toast-msg">Success</span></div>
 
-body.aavira-theme .app-container,
-body.aavira-theme .shell,
-body.aavira-theme .app{
-  background:var(--aavira-cream);
-}
-
-body.aavira-theme .pro-header,
-body.aavira-theme .hdr,
-body.aavira-theme .header{
-  background:rgba(255,255,255,.96)!important;
-  border-color:var(--aavira-border)!important;
-  box-shadow:0 4px 18px rgba(36,32,36,.045);
-  backdrop-filter:blur(14px);
-}
-
-body.aavira-theme .pro-header .title,
-body.aavira-theme .header h1,
-body.aavira-theme .hdr-center,
-body.aavira-theme .header-center .title{
-  color:var(--aavira-charcoal)!important;
-}
-
-body.aavira-theme .header-icon-btn,
-body.aavira-theme .header-btn,
-body.aavira-theme .close-search{
-  color:var(--aavira-charcoal)!important;
-}
-
-body.aavira-theme .main-content,
-body.aavira-theme .main-scroll,
-body.aavira-theme .scroll,
-body.aavira-theme .scrollable-content{
-  background:var(--aavira-ivory)!important;
-}
-
-body.aavira-theme .pro-card,
-body.aavira-theme .order-card,
-body.aavira-theme .menu-container,
-body.aavira-theme .stats-card,
-body.aavira-theme .s-card,
-body.aavira-theme .tracking-card,
-body.aavira-theme .dv-top-card,
-body.aavira-theme .rating-summary-wrapper,
-body.aavira-theme .pro-card,
-body.aavira-theme .suggest-section{
-  border-color:var(--aavira-border)!important;
-  box-shadow:0 8px 24px rgba(36,32,36,.055);
-}
-
-body.aavira-theme .tab.active,
-body.aavira-theme .size-chart-link,
-body.aavira-theme .help-link-text,
-body.aavira-theme .menu-left>i,
-body.aavira-theme .stat-item i,
-body.aavira-theme .nav-item.active,
-body.aavira-theme .nav-item.active i,
-body.aavira-theme .cart-badge,
-body.aavira-theme .discount-tag,
-body.aavira-theme .price-row .current-price + *{
-  color:var(--aavira-rani)!important;
-}
-
-body.aavira-theme .tab-indicator{
-  background:var(--aavira-rani)!important;
-}
-
-body.aavira-theme .menu-left>i{
-  background:var(--aavira-soft-pink)!important;
-}
-
-body.aavira-theme .bottom-nav,
-body.aavira-theme #bottomNavContainer{
-  background:rgba(255,255,255,.97)!important;
-  border-top-color:var(--aavira-border)!important;
-  box-shadow:0 -8px 24px rgba(36,32,36,.07);
-  backdrop-filter:blur(14px);
-}
-
-body.aavira-theme .btn-confirm,
-body.aavira-theme .promo-btn,
-body.aavira-theme .modal-btn,
-body.aavira-theme .modal-btn-primary{
-  background:linear-gradient(135deg,var(--aavira-rani),var(--aavira-rani-dark))!important;
-  color:#fff!important;
-  border-color:transparent!important;
-  box-shadow:0 10px 22px rgba(216,27,96,.18);
-}
-
-body.aavira-theme .pro-input:focus,
-body.aavira-theme .promo-input:focus,
-body.aavira-theme .search-input:focus{
-  border-color:var(--aavira-rani)!important;
-  box-shadow:0 0 0 3px rgba(216,27,96,.08)!important;
-}
-
-body.aavira-theme input,
-body.aavira-theme textarea,
-body.aavira-theme select{
-  color:var(--aavira-charcoal);
-}
-
-body.aavira-theme .speed-option.selected,
-body.aavira-theme .pay-option.selected{
-  border-color:var(--aavira-rani)!important;
-  background:var(--aavira-soft-pink)!important;
-}
-
-body.aavira-theme .color-swatch.active{
-  border-color:var(--aavira-rani)!important;
-  box-shadow:0 6px 16px rgba(216,27,96,.14);
-}
-
-body.aavira-theme .size-box.active{
-  background:var(--aavira-rani)!important;
-  border-color:var(--aavira-rani)!important;
-}
-
-body.aavira-theme .trust-badges .badge i,
-body.aavira-theme .rating-stars-main{
-  color:var(--aavira-gold)!important;
-}
-
-body.aavira-theme .dv-tc-head{
-  background:var(--aavira-soft-pink)!important;
-}
-
-body.aavira-theme .timeline-progress-line,
-body.aavira-theme .tl-icon.done,
-body.aavira-theme .tl-icon.current{
-  background:var(--aavira-rani)!important;
-}
-
-body.aavira-theme .status-badge.st-Confirmed{
-  background:var(--aavira-soft-pink)!important;
-  color:var(--aavira-rani)!important;
-}
-
-body.aavira-theme .product-title,
-body.aavira-theme .o-info h4,
-body.aavira-theme .current-price,
-body.aavira-theme .b-total{
-  color:var(--aavira-charcoal)!important;
-}
-
-body.aavira-theme .media-wrapper,
-body.aavira-theme .media-carousel,
-body.aavira-theme .slide img{
-  background:var(--aavira-cream)!important;
-  border-color:var(--aavira-border)!important;
-}
-
-body.aavira-theme .card-loading-overlay{
-  background:linear-gradient(120deg,rgba(255,255,255,0) 0%,rgba(249,232,238,.55) 45%,rgba(255,255,255,.92) 50%,rgba(249,232,238,.55) 55%,rgba(255,255,255,0) 100%)!important;
-}
-
-100%{background-position:-100% 0}}
-
-@media(max-width:420px){
-  body.aavira-theme .app-container,
-  body.aavira-theme .shell,
-  body.aavira-theme .app{max-width:420px}
-}
-
-.aavira-spinner-done{animation:none!important;transform:none!important;}
-</style>
-<style>
-.aavira-company-footer{background:#17151A;color:#fff;padding:38px 22px 28px;border-top:3px solid rgba(201,162,39,.35);position:relative;overflow:hidden}
-.aavira-footer-inner{width:min(100%,1050px);margin:auto}
-.aavira-footer-top{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:27px;border-bottom:1px solid rgba(255,255,255,.09)}
-.aavira-footer-brand{font:600 25px "Playfair Display",serif}
-.aavira-footer-brand span{color:#D81B60}
-.aavira-footer-tag{font-size:11px;color:#A9A1A6;line-height:1.6;text-align:right}
-.aavira-footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;padding:28px 0}
-.aavira-company-footer h2{font-size:11px;letter-spacing:.13em;text-transform:uppercase;margin:0 0 15px;color:#fff}
-.aavira-company-footer a,.aavira-company-footer p{display:block;font-size:11px;color:#9F979D;line-height:1.9;margin:0 0 4px}
-.aavira-company-footer a:hover{color:#fff}
-.aavira-footer-social{display:flex;gap:8px}
-.aavira-footer-social a{width:34px;height:34px;border:1px solid rgba(255,255,255,.10);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#A9A1A6;margin:0}
-.aavira-footer-social svg{width:15px;height:15px}
-.aavira-footer-bottom{padding-top:20px;border-top:1px solid rgba(255,255,255,.09);display:flex;justify-content:space-between;gap:15px;align-items:center}
-.aavira-footer-copy{font-size:9px;color:#827A80;letter-spacing:.08em}
-@media(max-width:650px){.aavira-company-footer{padding:32px 18px 24px}.aavira-footer-top{align-items:flex-start;flex-direction:column}.aavira-footer-tag{text-align:left}.aavira-footer-grid{grid-template-columns:repeat(2,1fr);gap:25px 18px}.aavira-footer-bottom{align-items:flex-start;flex-direction:column}}
-</style></head>
-<body class="font-sans text-gray-800 selection:bg-rani-pink selection:text-white antialiased">
-
-<div id="toast" role="status" aria-live="polite" class="fixed bottom-[92px] left-1/2 -translate-x-1/2 bg-[#111827] text-white px-5 py-2.5 rounded-full text-[12px] font-semibold shadow-[0_10px_20px_rgba(0,0,0,0.2)] whitespace-nowrap transition-all duration-300 transform translate-y-5 opacity-0 scale-95 z-[10060] pointer-events-none">
-    <span id="toast-msg">Success</span>
-</div>
-
-<div id="searchOverlay" role="dialog" aria-modal="true" class="fixed inset-0 bg-white/95 backdrop-blur-xl z-[100] transform translate-y-full transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] flex flex-col"><div class="h-16 flex items-center px-4 gap-3 border-b border-gray-100 shadow-sm"><button type="button" onclick="closeSearch()" class="text-gray-500 hover:text-rani-pink transition-colors"><i data-lucide="arrow-left" class="w-6 h-6"></i></button><div class="flex-1 bg-white rounded-2xl flex items-center px-4 py-2.5 gap-2 border border-gray-200 shadow-inner"><i data-lucide="search" class="w-4 h-4 text-gray-400"></i><input type="search" id="searchInput" oninput="handleSearch()" placeholder="Search authentic luxury..." class="flex-1 bg-transparent border-none outline-none text-sm font-medium"><button type="button" onclick="document.getElementById('searchInput').value='';handleSearch()" class="text-gray-400 hover:text-gray-800"><i data-lucide="x" class="w-4 h-4"></i></button></div></div><div id="searchResults" aria-live="polite" class="flex-1 overflow-y-auto p-4 space-y-3 bg-transparent"><div class="text-center text-gray-400 text-xs mt-16 font-serif italic flex flex-col items-center gap-3"><div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm border border-gray-100"><i data-lucide="search" class="w-7 h-7 text-gray-300"></i></div>Discover timeless elegance...</div></div></div>
-<div id="referralCenter" class="fixed inset-0 bg-luxury-bg z-[150] transform translate-x-full transition-transform duration-500 flex flex-col"><div class="h-16 flex items-center px-4 gap-3 bg-white border-b border-gray-100 shadow-sm"><button onclick="closeReferralCenter()" class="text-gray-500 hover:text-rani-pink transition-colors"><i data-lucide="arrow-left" class="w-6 h-6"></i></button><h3 class="font-serif text-[20px] text-gray-800 font-bold pt-1">Refer & Earn</h3></div><div class="flex-1 overflow-y-auto p-6 flex flex-col items-center bg-white"><div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center text-ethnic-gold mb-5 border border-gray-100 animate-float"><i data-lucide="gift" class="w-10 h-10"></i></div><h2 class="font-serif text-3xl font-bold text-gray-900 text-center mb-2">Invite Friends,<br>Earn Rewards</h2><p class="text-xs text-gray-500 text-center mb-8 px-4">Share your unique link. When your friend signs up, you both get a flat ₹500 discount.</p><div class="w-full bg-white rounded-3xl shadow-sm border border-gray-100 p-5 mb-6 grid grid-cols-2 gap-4 divide-x divide-gray-100"><div class="text-center"><p class="text-[10px] text-gray-400 font-bold">Joined</p><p id="refCount" class="text-3xl font-serif font-bold">0</p></div><div class="text-center"><p class="text-[10px] text-gray-400 font-bold">Earned</p><p id="refEarned" class="text-3xl font-serif font-bold text-ethnic-gold">₹0</p></div></div><div class="w-full bg-white rounded-3xl shadow-sm border border-gray-200 p-2 flex items-center gap-2 mb-8"><input type="text" id="referralLinkInput" readonly class="flex-1 bg-transparent text-xs text-gray-500 font-medium px-3 outline-none" value="Log in to generate link"><button onclick="copyReferralLink()" class="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-600"><i data-lucide="copy" class="w-5 h-5"></i></button></div><button onclick="shareReferralLink()" class="w-full bg-[#25D366] text-white font-bold text-[13px] py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2"><i data-lucide="share-2" class="w-5 h-5"></i>Share via WhatsApp</button></div></div>
-
-<div id="promoModal" class="fixed inset-0 z-[10050] hidden flex-col items-center justify-end sm:justify-center">
-    <div class="absolute inset-0 bg-black/60 opacity-0 transition-opacity duration-400" id="promoModalOverlay" onclick="closePromoModal()"></div>
-    <div id="promoModalContent" class="bg-white w-full max-w-[400px] rounded-t-[32px] sm:rounded-[32px] shadow-2xl z-10 transform translate-y-full opacity-0 transition-all duration-400 p-8 pb-28 sm:pb-8 flex flex-col relative">
-        <div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6 sm:hidden"></div>
-        <button onclick="closePromoModal()" class="absolute top-6 right-6 w-8 h-8 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 hover:text-rani-pink"><i data-lucide="x" class="w-4 h-4"></i></button>
-        <div class="text-center mb-6 mt-2">
-            <div class="w-14 h-14 bg-white border border-gray-100 rounded-full flex items-center justify-center text-ethnic-gold mx-auto mb-4 shadow-sm"><i data-lucide="ticket" class="w-6 h-6"></i></div>
-            <h2 class="font-serif text-3xl font-bold text-gray-900 mb-1">Promo Code</h2>
-            <p class="text-xs text-gray-500 font-medium">Apply your exclusive voucher</p>
-        </div>
-        <div class="space-y-4">
-            <input type="text" id="promoInput" placeholder="Enter Code" class="w-full bg-gray-50 border border-gray-200 text-gray-900 text-center uppercase tracking-widest font-bold text-sm rounded-2xl px-5 py-4 outline-none transition-all">
-            <button id="btnApplyPromo" onclick="processPromoCode()" class="w-full bg-rani-pink text-white font-bold text-sm tracking-wide py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2">Verify & Apply</button>
-        </div>
-    </div>
-</div>
-
-<div id="premiumColorSheet" class="fixed inset-x-0 bottom-0 z-[110] hidden flex-col justify-end pointer-events-none h-screen">
-    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 pointer-events-auto opacity-0" id="colorSheetBg" onclick="closeColorSheet()"></div>
-    <div class="bg-gradient-to-b from-white to-gray-50 w-full rounded-t-[36px] shadow-[0_-20px_60px_rgba(0,0,0,0.2)] transform translate-y-full transition-transform duration-500 p-6 pb-8 flex flex-col relative z-10 pointer-events-auto border-t-[3px] border-ethnic-gold/40" id="colorSheetContent">
-        <div class="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-6 shadow-inner"></div>
-        <div class="flex justify-between items-center mb-6 px-2">
-            <div><h3 class="font-serif text-[28px] font-bold text-gray-900 leading-none">Colors</h3><p class="text-[10px] text-ethnic-gold uppercase tracking-widest font-bold mt-1.5">Select your signature shade</p></div>
-            <button onclick="closeColorSheet()" class="w-9 h-9 bg-white shadow-sm rounded-full flex items-center justify-center text-gray-500 hover:text-rani-pink border border-gray-100"><i data-lucide="x" class="w-4 h-4"></i></button>
-        </div>
-        <div class="grid grid-cols-5 gap-y-6 gap-x-2 overflow-y-auto max-h-[50vh] no-scrollbar px-1 pb-4" id="colorSwatchesContainer"></div>
-    </div>
-</div>
-
-<div id="colorResultsOverlay" class="fixed inset-0 bg-luxury-bg z-[95] transform translate-x-full transition-transform duration-500 flex flex-col"><div class="h-16 border-b border-gray-200 flex items-center px-4 gap-3 bg-white/90 backdrop-blur-md shadow-sm"><button onclick="closeColorResults()" class="text-gray-500 hover:text-rani-pink"><i data-lucide="arrow-left" class="w-6 h-6"></i></button><div class="flex-1 flex items-center gap-2.5"><div id="selectedColorBadge" class="w-6 h-6 shadow-sm border border-gray-200 rounded-full"></div><h3 class="font-serif text-[18px] text-gray-800 font-semibold leading-none pt-1">Color Match</h3></div></div><div class="flex-1 overflow-y-auto p-4 bg-transparent"><p id="colorMatchText" class="text-[11px] text-gray-500 mb-4 ml-1 font-medium">Showing curated styles.</p><div id="colorResultsGrid" class="grid grid-cols-2 gap-3 pb-24"></div></div></div>
-
-<div id="imageLightbox" class="fixed inset-0 z-[99999] bg-black/95 hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300 touch-none"><button onclick="closeLightbox()" class="absolute top-6 right-6 text-white/70 hover:text-white p-2 z-50 bg-white/10 rounded-full backdrop-blur-md"><i data-lucide="x" class="w-6 h-6"></i></button><div class="relative w-full h-full flex items-center justify-center overflow-hidden" id="lightboxTouchArea"><img id="lbImg" src="" class="max-w-full max-h-[75vh] object-contain drop-shadow-2xl transition-transform duration-300" /></div><div class="absolute bottom-10 left-0 w-full text-center px-8 z-50"><p id="lbName" class="text-white font-bold text-lg mb-1 flex items-center justify-center gap-2"></p><div id="lbStars" class="text-ethnic-gold mb-2 text-[14px]"></div><p id="lbText" class="text-white/70 text-sm line-clamp-3 italic"></p></div><button onclick="lbPrev(event)" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white p-3 z-50 bg-black/30 rounded-full backdrop-blur-md"><i data-lucide="chevron-left" class="w-6 h-6"></i></button><button onclick="lbNext(event)" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white p-3 z-50 bg-black/30 rounded-full backdrop-blur-md"><i data-lucide="chevron-right" class="w-6 h-6"></i></button></div>
-
-<div id="expOverlay" class="fixed inset-0 bg-black/60 hidden opacity-0 transition-opacity duration-300 z-[120]" onclick="closeExpModal()"></div>
-<div id="expModal" class="fixed bottom-0 left-0 w-full max-w-[420px] mx-auto bg-white z-[130] transform translate-y-full transition-transform duration-500 rounded-t-[32px] p-6 shadow-2xl flex flex-col gap-4">
-    <div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-2"></div>
-    <div class="flex justify-between items-center border-b border-gray-100 pb-3">
-        <div><h3 class="font-serif text-2xl font-bold text-gray-900">Share your experience</h3></div>
-        <button onclick="closeExpModal()" class="text-gray-400 hover:text-rani-pink p-2 bg-gray-50 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
-    </div>
-    <div class="flex flex-col items-center my-2">
-        <p class="text-[11px] text-gray-400 uppercase tracking-widest font-bold mb-2">Tap to Rate</p>
-        <div class="flex gap-2" id="starSelector">
-            <span class="star-btn" onclick="setRating(1)">★</span><span class="star-btn" onclick="setRating(2)">★</span><span class="star-btn" onclick="setRating(3)">★</span><span class="star-btn" onclick="setRating(4)">★</span><span class="star-btn" onclick="setRating(5)">★</span>
-        </div>
-    </div>
-    <textarea id="expText" rows="3" placeholder="Share your experience with this product..." class="w-full bg-gray-50 border border-gray-200 rounded-2xl p-4 text-sm outline-none focus:border-rani-pink transition-colors resize-none"></textarea>
-    <div class="relative w-full h-32 bg-gray-50 border-2 border-dashed border-gray-300 rounded-2xl flex flex-col items-center justify-center overflow-hidden hover:bg-gray-100 transition-colors">
-        <input type="file" id="expFile" accept="image/*" onchange="handleExpPhoto(event)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20">
-        <div id="expPhotoAddBox" class="flex flex-col items-center text-gray-400"><i data-lucide="image-plus" class="w-8 h-8 mb-2"></i><span class="text-[11px] font-semibold uppercase tracking-wider">Add Photo</span></div>
-        <img id="expPhotoPreview" class="absolute inset-0 w-full h-full object-cover hidden z-10">
-    </div>
-    <button id="btnSubmitExp" onclick="submitExperience()" class="w-full bg-gray-900 text-white font-bold text-sm tracking-widest uppercase py-4 rounded-2xl shadow-lg hover:bg-black mt-2 transition-all">Submit Review</button>
-</div>
+<!-- SEARCH -->
+<div id="searchOverlay" class="fixed inset-0 bg-white/98 backdrop-blur-xl z-[100] translate-y-full transition-transform duration-500 flex flex-col">
+<div class="h-16 flex items-center px-4 gap-3 border-b border-gray-100"><button onclick="closeSearch()" class="text-gray-500"><i data-lucide="arrow-left" class="w-6 h-6"></i></button><div class="flex-1 bg-gray-50 rounded-2xl flex items-center px-4 py-2.5 gap-2 border border-gray-200"><i data-lucide="search" class="w-4 h-4 text-gray-400"></i><input id="searchInput" oninput="handleSearch()" placeholder="Search kurtis, sarees, lehengas..." class="flex-1 bg-transparent outline-none text-sm font-medium"><button onclick="clearSearch()" class="text-gray-400"><i data-lucide="x" class="w-4 h-4"></i></button></div></div>
+<div id="searchResults" class="flex-1 overflow-y-auto p-4 space-y-3"></div></div>
 
 <!-- SIDEBAR -->
 <div id="sidebarOverlay" class="fixed inset-0 bg-black/60 hidden opacity-0 transition-opacity duration-300 z-[9990]" onclick="closeSidebar()"></div>
-<div id="sidebar" class="fixed top-0 left-0 w-[85%] max-w-[340px] h-full bg-gradient-to-b from-[#FFF5F7] via-white to-[#FFF5F7] z-[10000] transform -translate-x-full transition-transform duration-500 shadow-2xl flex flex-col rounded-none overflow-hidden">
-    <div class="relative pt-8 pb-6 px-6 flex-shrink-0 border-b border-pink-100 bg-white">
-        <button onclick="closeSidebar()" class="absolute top-4 right-4 p-2 bg-white border border-pink-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-pink-50 hover:text-rani-pink transition-colors z-10">
-            <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
-        <div class="absolute top-2 left-2 w-[82px] h-[82px] flex items-center justify-center overflow-hidden">
-            <img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira Fashion" class="w-[78px] h-[78px] object-contain object-center mix-blend-multiply" />
-        </div>
-
-        <div id="guestProfileUI" class="flex flex-col transition-all w-full items-center text-center pt-5">
-            <div class="w-full bg-transparent rounded-[26px] border-0 shadow-none px-4 py-4">
-                <div class="flex items-center text-left gap-3">
-                    <div class="relative shrink-0">
-                        <div class="w-[68px] h-[68px] bg-[#FFF0F5] border-[3px] border-rani-pink rounded-full flex items-center justify-center text-rani-pink font-extrabold text-[32px]">
-                            G
-                        </div>
-                        <div class="absolute -right-1 -bottom-1 w-8 h-8 rounded-full bg-rani-pink border-[3px] border-white text-white flex items-center justify-center shadow-md">
-                            <i data-lucide="camera" class="w-4 h-4"></i>
-                        </div>
-                    </div>
-                    <div class="min-w-0 flex-1">
-                        <h3 class="text-[23px] text-[#121722] font-extrabold leading-tight truncate">Guest User</h3>
-                        <p class="text-gray-500 text-[13px] mt-1 mb-3">Guest Account</p>
-                        <div class="flex gap-2">
-                            <button onclick="triggerDotAction('login', this)" class="bg-rani-pink text-white text-[12px] font-bold px-6 py-2.5 rounded-full hover:opacity-90 transition-all flex items-center justify-center gap-2"><span>Login</span></button>
-                            <button onclick="triggerDotAction('/auth/verify', this)" class="bg-[#FFF0F5] border border-pink-100 text-rani-pink text-[12px] font-bold px-6 py-2.5 rounded-full hover:bg-pink-50 transition-all flex items-center justify-center gap-2"><span>Sign Up</span></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="vipProfileUI" class="hidden flex-col items-center w-full pt-5">
-            <div class="w-full bg-transparent rounded-[30px] border-0 shadow-none px-5 py-5">
-                <div class="flex items-center gap-4 w-full">
-                    <div class="relative shrink-0">
-                        <div class="w-[68px] h-[68px] bg-pink-100 text-rani-pink rounded-full flex items-center justify-center font-bold text-3xl border-2 border-rani-pink shadow-sm"><span id="profileInitial">M</span></div>
-                        <div class="absolute -right-1 -bottom-1 w-8 h-8 rounded-full bg-rani-pink border-2 border-white text-white flex items-center justify-center shadow-sm">
-                            <i data-lucide="camera" class="w-3.5 h-3.5"></i>
-                        </div>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <h3 id="vipName" class="text-gray-900 font-bold text-[18px] leading-tight flex items-center gap-1.5 truncate">User Name</h3>
-                        <p id="vipEmail" class="text-[11px] text-gray-500 mt-1 truncate">Aavira Member</p>
-                        <div class="inline-flex items-center gap-1 mt-2 bg-pink-100 px-2.5 py-1 rounded-full text-[9px] font-bold text-rani-pink w-max">
-                            <i data-lucide="crown" class="w-3 h-3"></i> Valued Customer
-                        </div>
-                    </div>
-                </div>
-                <button onclick="handleLogout()" class="w-full mt-4 bg-[#FFF0F5] border border-pink-200 py-3 rounded-full text-[12px] font-bold tracking-widest uppercase text-rani-pink hover:bg-rani-pink hover:text-white flex items-center justify-center gap-2 transition-all">
-                    <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="flex-1 overflow-y-auto py-2 px-4 space-y-1 bg-white pb-24 mt-2">
-        <a href="./" class="flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors"><i data-lucide="home" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="text-[15px] font-medium">Home</span><i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-400"></i></a>
-        <a href="categories" class="flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors"><i data-lucide="layout-grid" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="text-[15px] font-medium">Collections</span><i data-lucide="plus" class="w-4 h-4 ml-auto text-rani-pink"></i></a>
-        <a href="#" onclick="event.preventDefault();triggerDotAction('cart', this)" class="flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors"><i data-lucide="shopping-bag" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="text-[15px] font-medium">My Cart</span><i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-400"></i></a>
-        <a href="orders" class="flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors"><i data-lucide="package" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="text-[15px] font-medium">My Orders</span><i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-400"></i></a>
-        <a href="wishlist" class="flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors"><i data-lucide="heart" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="text-[15px] font-medium">My Wishlist</span><i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-400"></i></a>
-        <div class="h-[1px] bg-gray-100 my-2 mx-2"></div>
-        <a href="#" onclick="openPromoModal()" class="flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors"><i data-lucide="ticket" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="text-[15px] font-medium">Apply Promo Code</span><i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-400"></i></a>
-        <a href="#" onclick="openReferralCenter()" class="flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors"><i data-lucide="share-2" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="text-[15px] font-medium">Refer & Earn</span><i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-400"></i></a>
-        <div class="h-[1px] bg-gray-100 my-2 mx-2"></div>
-        <a href="support" class="flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors"><i data-lucide="headphones" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="text-[15px] font-medium">Customer Support</span><i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-gray-400"></i></a>
-        <div class="mt-6 bg-[#FFF0F5] border border-pink-100 rounded-2xl p-4 flex items-center justify-between mb-4">
-            <div class="flex items-center gap-3">
-                <i data-lucide="sparkles" class="w-6 h-6 text-rani-pink opacity-80"></i>
-                <div><p class="font-serif text-rani-pink font-bold text-[14px] leading-tight">Style Inspires</p><p class="font-serif text-rani-pink font-bold text-[14px] leading-tight">Confidence ♡</p></div>
-            </div>
-            <div class="border-l border-pink-200 pl-3">
-                <p class="text-[9px] text-gray-500 uppercase tracking-widest font-bold mb-1.5">Follow Us</p>
-                <div class="flex gap-2 text-white">
-                    <a href="#" class="w-5 h-5 bg-rani-pink rounded-full flex items-center justify-center hover:scale-110 transition-transform"><svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></a>
-                    <a href="#" class="w-5 h-5 bg-rani-pink rounded-full flex items-center justify-center hover:scale-110 transition-transform"><svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
-                    <a href="#" class="w-5 h-5 bg-rani-pink rounded-full flex items-center justify-center hover:scale-110 transition-transform"><svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg></a>
-                </div>
-            </div>
-        </div>
-        <p class="text-center text-[10px] text-gray-400 mt-2 pb-6 tracking-widest">Aavira Fashion v1.0.0</p>
-    </div>
+<aside id="sidebar" class="fixed top-0 left-0 w-[86%] max-w-[340px] h-full bg-white z-[10000] -translate-x-full transition-transform duration-500 shadow-2xl flex flex-col overflow-hidden">
+<div class="pt-8 pb-5 px-6 border-b border-pink-100 bg-gradient-to-b from-[#FFF5F7] to-white relative">
+<button onclick="closeSidebar()" class="absolute top-4 right-4 w-8 h-8 bg-white border rounded-full flex items-center justify-center text-gray-500"><i data-lucide="x" class="w-4 h-4"></i></button>
+<img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" onerror="this.src='https://placehold.co/120x120?text=A'" alt="Aavira" class="w-[72px] h-[72px] object-contain">
+<div id="guestProfileUI" class="pt-3"><h3 class="text-[20px] font-extrabold">Guest User</h3><p class="text-[12px] text-gray-500 mb-3">Guest Account</p><div class="flex gap-2"><button onclick="triggerDotAction('login',this)" class="bg-[#D81B60] text-white text-[12px] font-bold px-6 py-2.5 rounded-full"><span>Login</span></button><button onclick="triggerDotAction('/auth/verify',this)" class="bg-[#FFF0F5] border border-pink-100 text-[#D81B60] text-[12px] font-bold px-6 py-2.5 rounded-full"><span>Sign Up</span></button></div></div>
+<div id="vipProfileUI" class="hidden pt-3"><h3 id="vipName" class="font-bold text-[18px]">User</h3><p id="vipEmail" class="text-[11px] text-gray-500 truncate">Member</p><button onclick="handleLogout()" class="w-full mt-3 bg-[#FFF0F5] border border-pink-200 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-[#D81B60]">Sign Out</button></div>
 </div>
+<nav class="flex-1 overflow-y-auto p-3 space-y-1 pb-24">
+<a href="./" class="flex items-center px-3 py-3 hover:bg-gray-50 rounded-xl"><i data-lucide="home" class="w-5 h-5 mr-3 text-[#D81B60]"></i><span class="text-[14px] font-medium">Home</span></a>
+<a href="categories" class="flex items-center px-3 py-3 hover:bg-gray-50 rounded-xl"><i data-lucide="layout-grid" class="w-5 h-5 mr-3 text-[#D81B60]"></i><span class="text-[14px] font-medium">Collections</span></a>
+<a href="#" onclick="event.preventDefault();triggerDotAction('cart',this)" class="flex items-center px-3 py-3 hover:bg-gray-50 rounded-xl"><i data-lucide="shopping-bag" class="w-5 h-5 mr-3 text-[#D81B60]"></i><span class="text-[14px] font-medium">My Cart</span></a>
+<a href="orders" class="flex items-center px-3 py-3 hover:bg-gray-50 rounded-xl"><i data-lucide="package" class="w-5 h-5 mr-3 text-[#D81B60]"></i><span class="text-[14px] font-medium">My Orders</span></a>
+<a href="wishlist" class="flex items-center px-3 py-3 hover:bg-gray-50 rounded-xl"><i data-lucide="heart" class="w-5 h-5 mr-3 text-[#D81B60]"></i><span class="text-[14px] font-medium">Wishlist</span></a>
+<a href="#" onclick="event.preventDefault();openPromoModal()" class="flex items-center px-3 py-3 hover:bg-gray-50 rounded-xl"><i data-lucide="ticket" class="w-5 h-5 mr-3 text-[#D81B60]"></i><span class="text-[14px] font-medium">Promo Code</span></a>
+<a href="support" class="flex items-center px-3 py-3 hover:bg-gray-50 rounded-xl"><i data-lucide="headphones" class="w-5 h-5 mr-3 text-[#D81B60]"></i><span class="text-[14px] font-medium">Support</span></a>
+<p class="text-center text-[10px] text-gray-400 tracking-widest pt-6">AAVIRA FASHION v2.0</p>
+</nav>
+</aside>
 
-<div class="max-w-[420px] mx-auto min-h-screen bg-luxury-bg shadow-2xl relative text-slate-800 overflow-x-clip flex flex-col">
-<div id="dynamic-action-banner" class="fixed bottom-[85px] left-1/2 -translate-x-1/2 w-[92%] max-w-[380px] bg-gray-900 text-white rounded-2xl shadow-[0_15px_40px_rgba(0,0,0,0.3)] p-4 hidden items-center justify-between z-[60] transition-transform duration-[500ms] ease-[cubic-bezier(0.25,1,0.5,1)] border border-gray-800" style="transform: translate(-50%, 0)"></div>
+<div class="max-w-[420px] mx-auto min-h-screen bg-[#FDFBF7] shadow-2xl relative overflow-x-clip flex flex-col">
+<div id="dynamic-action-banner" class="fixed bottom-[85px] left-1/2 -translate-x-1/2 w-[92%] max-w-[380px] bg-gray-900 text-white rounded-2xl shadow-2xl p-4 hidden z-[60] border border-white/10"></div>
 
-<header id="main-header" class="sticky top-0 z-40 bg-white/85 backdrop-blur-md transition-all duration-300 border-b border-gray-100 shadow-sm">
-    <div class="mx-auto px-4 h-16 flex items-center justify-between">
-        <div class="flex items-center gap-4">
-            <button onclick="openSidebar()" class="w-10 h-10 border border-gray-200 rounded-full bg-white flex flex-col items-center justify-center gap-[4px] hover:bg-gray-50 shadow-sm shrink-0">
-                <span class="w-[18px] h-[1.5px] bg-gray-800 rounded-full"></span><span class="w-[22px] h-[1.5px] bg-gray-800 rounded-full"></span><span class="w-[14px] h-[1.5px] bg-gray-800 rounded-full"></span>
-            </button>
-            <img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" class="h-10 sm:h-11 object-contain shrink-0" />
-        </div>
-        <div class="flex items-center gap-3 shrink-0">
-            <button class="relative text-gray-700 hover:text-rani-pink" onclick="triggerDotAction('cart', this)"><i data-lucide="shopping-cart" class="w-5 h-5"></i><span id="cart-badge" class="absolute -top-1 -right-1 w-4 h-4 bg-rani-pink text-white text-[9px] font-bold rounded-full flex items-center justify-center hidden border border-white">0</span></button>
-        </div>
-    </div>
+<header id="main-header" class="sticky top-0 border-b border-gray-100 shadow-sm">
+<div class="px-4 h-16 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<button onclick="openSidebar()" aria-label="Menu" class="w-10 h-10 border border-gray-200 rounded-full bg-white flex flex-col items-center justify-center gap-[4px]"><span class="w-[18px] h-[1.5px] bg-gray-800 rounded-full"></span><span class="w-[22px] h-[1.5px] bg-gray-800 rounded-full"></span><span class="w-[14px] h-[1.5px] bg-gray-800 rounded-full"></span></button>
+<div class="leading-none"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" onerror="this.style.display='none'" alt="Aavira" class="h-9 object-contain"><p class="text-[8px] tracking-[.28em] uppercase text-[#D4AF37] font-bold -mt-0.5">Ethnic Luxury</p></div>
+</div>
+<div class="flex items-center gap-2">
+<button onclick="openSearch()" aria-label="Search" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center"><i data-lucide="search" class="w-5 h-5"></i></button>
+<button onclick="triggerDotAction('cart',this)" aria-label="Cart" class="relative w-10 h-10 rounded-full bg-gray-900 text-white flex items-center justify-center"><i data-lucide="shopping-cart" class="w-5 h-5"></i><span id="cart-badge" class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-[#D81B60] text-white text-[10px] font-bold rounded-full hidden items-center justify-center border-2 border-white">0</span></button>
+</div>
+</div>
 </header>
 
-<main class="w-full flex-1">
-<div class="relative w-full h-[60vh] group mb-10 fade-up visible"><div class="w-full h-full overflow-hidden relative shadow-lg"><div id="bannerCarousel" class="w-full h-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar bg-gray-100"></div><div id="banner-dots" class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20"></div></div></div>
-<section class="px-4 space-y-4 mb-10 fade-up"><h3 class="font-serif text-[22px] text-gray-900 border-b border-gray-200 pb-2 inline-block">Collections</h3><div id="category-container" class="flex justify-between items-start w-full overflow-x-auto no-scrollbar gap-4 pt-2"></div></section>
-<section class="px-4 space-y-4 mb-10 fade-up"><div class="flex justify-between items-end border-b border-gray-200 pb-2"><h3 class="font-serif text-[22px] text-gray-900 leading-none">Trending</h3><button onclick="openSearch()" class="text-[11px] font-semibold text-rani-pink uppercase tracking-widest hover:underline">Explore</button></div><div id="trending-container" class="flex flex-row gap-3 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4 pr-4 pt-2"></div></section>
-<section class="px-4 space-y-4 mb-10 fade-up"><h3 class="font-serif text-[22px] text-gray-900 border-b border-gray-200 pb-2 inline-block">Exclusive Picks</h3><div id="exclusive-container" class="flex flex-col gap-6 pt-2 pb-2"></div></section>
-<section class="px-4 space-y-4 mb-10 fade-up"><h3 class="font-serif text-[22px] text-gray-900 leading-none border-b border-gray-200 pb-2 inline-block">New Arrivals</h3><div id="new-arrivals-container" class="grid grid-cols-2 gap-3 pt-2 pb-6"></div></section>
-<section class="px-4 space-y-4 mb-12 fade-up">
-    <div class="flex justify-between items-end border-b border-gray-200 pb-2"><h3 class="font-sans text-[20px] font-bold text-gray-900 tracking-wide uppercase">Customer Reviews</h3></div>
-    <div id="experience-container" class="flex flex-row overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4 pt-2 gap-4"></div>
-    <button onclick="openExpModal()" class="w-full bg-gray-900 text-white font-bold text-sm tracking-widest uppercase py-4 rounded-2xl shadow-lg hover:bg-black transition-all mt-2 flex items-center justify-center gap-2"><i data-lucide="pen" class="w-4 h-4"></i> Share your experience</button>
+<main class="flex-1 w-full pb-6">
+<!-- HERO -->
+<div class="relative w-full h-[62vh] min-h-[440px] overflow-hidden fade-up visible" style="border-radius:0 0 32px 32px">
+<div id="bannerCarousel" class="w-full h-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar bg-[#EFE9E2]"></div>
+<div class="absolute inset-0 hero-gradient pointer-events-none"></div>
+<div class="absolute bottom-14 left-5 right-5 text-white pointer-events-none"><p class="text-[10px] tracking-[.3em] uppercase font-bold text-[#E7D39A] mb-1">New Season • Handcrafted</p><h1 class="font-serif text-[34px] leading-[1.05] font-bold">Luxury Ethnic<br><span class="italic font-medium">Elegance.</span></h1><button onclick="openSearch()" class="pointer-events-auto mt-3 bg-white text-gray-900 text-[12px] font-bold px-5 py-2.5 rounded-full inline-flex items-center gap-2">Shop Now <i data-lucide="arrow-right" class="w-4 h-4"></i></button></div>
+<div id="banner-dots" class="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-1.5 z-20"></div>
+</div>
+
+<section class="px-4 mt-7 mb-9 fade-up"><div class="flex items-end justify-between"><div><p class="sec-sub">Curated</p><h3 class="sec-title">Collections</h3><div class="gold-line"></div></div><a href="categories" class="text-[11px] font-bold text-[#D81B60] uppercase tracking-widest">View All</a></div><div id="category-container" class="flex gap-4 overflow-x-auto no-scrollbar pt-4 pb-1"></div></section>
+
+<section class="px-4 mb-9 fade-up"><div class="flex items-end justify-between"><div><p class="sec-sub">Most Loved</p><h3 class="sec-title">Trending Now</h3><div class="gold-line"></div></div><button onclick="openSearch()" class="text-[11px] font-bold text-[#D81B60] bg-pink-50 border border-pink-100 px-3 py-1.5 rounded-full uppercase tracking-widest">Explore</button></div><div id="trending-container" class="flex gap-3 overflow-x-auto no-scrollbar snap-x pt-4 pb-2"></div></section>
+
+<section class="px-4 mb-9 fade-up"><p class="sec-sub">Handpicked Luxury</p><h3 class="sec-title">Exclusive Picks</h3><div class="gold-line mb-4"></div><div id="exclusive-container" class="flex flex-col gap-5"></div></section>
+
+<section class="px-4 mb-9 fade-up"><p class="sec-sub">Just Landed</p><h3 class="sec-title">New Arrivals</h3><div class="gold-line mb-4"></div><div id="new-arrivals-container" class="grid grid-cols-2 gap-3"></div></section>
+
+<!-- NEWSLETTER -->
+<section class="mx-4 mb-10 rounded-[24px] bg-[#17151A] text-white p-6 relative overflow-hidden fade-up">
+<div class="absolute -top-10 -right-10 w-40 h-40 bg-[#D81B60]/30 rounded-full blur-2xl"></div>
+<h3 class="font-serif text-[22px] font-bold">Get ₹200 OFF</h3><p class="text-[12px] text-white/60 mt-1 mb-4">Join Aavira Circle for drops & private offers.</p>
+<div class="flex gap-2"><input id="newsletterEmail" type="email" placeholder="Email address" class="flex-1 bg-white/10 border border-white/15 rounded-2xl px-4 py-3 text-[13px] outline-none placeholder:text-white/40 focus:border-[#D4AF37]"><button id="btnNewsletter" onclick="subscribeNewsletter()" class="bg-[#D81B60] px-4 rounded-2xl font-bold text-[13px]">Join</button></div>
 </section>
+
+<section class="px-4 mb-12 fade-up"><div class="flex items-end justify-between mb-1"><div><p class="sec-sub">Verified Love</p><h3 class="sec-title">Customer Reviews</h3><div class="gold-line"></div></div></div><div id="experience-container" class="flex gap-3 overflow-x-auto no-scrollbar snap-x pt-4 pb-3"></div><button onclick="openExpModal()" class="w-full bg-gray-900 text-white font-bold text-[13px] tracking-widest uppercase py-4 rounded-2xl mt-2 flex items-center justify-center gap-2"><i data-lucide="pen-line" class="w-4 h-4"></i> Share your experience</button></section>
 </main>
 
-<footer class="aavira-company-footer fade-up">
-  <div class="aavira-footer-inner">
-    <div class="aavira-footer-top">
-      <div class="aavira-footer-brand">Aavira <span>Fashion</span></div>
-      <div class="aavira-footer-tag">Luxury ethnic fashion<br>Designed for modern elegance.</div>
-    </div>
+<footer class="aavira-company-footer fade-up"><div class="aavira-footer-inner">
+<div class="flex justify-between items-start gap-4 pb-6 border-b border-white/10"><div class="font-serif text-[24px] font-semibold">Aavira <span style="color:#D81B60">Fashion</span></div><div class="text-[11px] text-white/50 text-right leading-relaxed">Luxury ethnic fashion<br>Designed for modern elegance.</div></div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-6 py-6 text-[12px]"><div><h2 class="text-[11px] tracking-widest uppercase mb-3 font-bold">Explore</h2><a class="block text-white/55 py-1" href="/">Home</a><a class="block text-white/55 py-1" href="/categories">Collections</a><a class="block text-white/55 py-1" href="/wishlist">Wishlist</a></div><div><h2 class="text-[11px] tracking-widest uppercase mb-3 font-bold">Shopping</h2><a class="block text-white/55 py-1" href="/cart">Bag</a><a class="block text-white/55 py-1" href="/orders">Orders</a><a class="block text-white/55 py-1" href="/support">Support</a></div><div><h2 class="text-[11px] tracking-widest uppercase mb-3 font-bold">Info</h2><a class="block text-white/55 py-1" href="/terms">Terms</a><a class="block text-white/55 py-1" href="/privacy">Privacy</a></div><div><h2 class="text-[11px] tracking-widest uppercase mb-3 font-bold">Care</h2><p class="text-white/55 leading-relaxed">COD available • Easy 7-day exchange • Handcrafted quality</p></div></div>
+<div class="pt-4 border-t border-white/10 flex justify-between text-[10px] tracking-widest text-white/40"><span>© 2026 AAVIRA</span><span>LUXURY ETHNIC</span></div>
+</div></footer>
 
-    <div class="aavira-footer-grid">
-      <div>
-        <h2>Explore</h2>
-        <a href="/">Home</a>
-        <a href="/categories">Collections</a>
-        <a href="/offer">Offers</a>
-        <a href="/wishlist">Wishlist</a>
-      </div>
-      <div>
-        <h2>Shopping</h2>
-        <a href="/cart">Shopping Bag</a>
-        <a href="/orders">My Orders</a>
-        <a href="/profile">My Account</a>
-        <a href="/support">Support</a>
-      </div>
-      <div>
-        <h2>Information</h2>
-        <a href="/terms">Terms &amp; Conditions</a>
-        <a href="/privacy">Privacy Policy</a>
-        <a href="/support">Help Center</a>
-      </div>
-      <div>
-        <h2>Stay Connected</h2>
-        <p>Discover new collections, premium styles and exclusive offers.</p>
-        <div class="aavira-footer-social">
-          <a href="/" aria-label="Home"><i data-lucide="globe"></i></a>
-          <a href="/support" aria-label="Support"><i data-lucide="headphones"></i></a>
-        </div>
-      </div>
-    </div>
-
-    <div class="aavira-footer-bottom">
-      <div class="aavira-footer-copy">© 2026 Aavira Fashion. All rights reserved.</div>
-      <div class="aavira-footer-copy">Luxury Ethnic Elegance</div>
-    </div>
-  </div>
-</footer>
-
-<div class="fixed bottom-[110px] right-4 flex flex-col gap-4 z-[40]"><button onclick="openColorSheet()" class="bg-white text-rani-pink border border-gray-100 w-[50px] h-[50px] rounded-full shadow-lg flex items-center justify-center animate-float"><i data-lucide="palette" class="w-5 h-5"></i></button><div class="relative w-[50px] h-[50px]"><div class="absolute inset-0 rounded-full animate-pulse-ring"></div><a href="https://wa.me/919608720622" target="_blank" class="absolute inset-0 bg-[#25D366] text-white rounded-full shadow-lg flex items-center justify-center border border-[#1DA851]"><i data-lucide="message-circle" class="w-5 h-5"></i></a></div></div>
-<div id="bottomNavContainer" class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 z-50 transition-transform duration-[800ms] flex justify-between items-end pt-3 pb-4 px-4 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
-<a href="./" class="flex flex-col items-center justify-center gap-1.5 w-1/5 text-gray-400 hover:text-rani-pink"><i data-lucide="home" class="w-6 h-6 stroke-[1.5]"></i><span class="text-[10px] font-medium tracking-wide">Home</span></a>
-<a href="categories" class="flex flex-col items-center justify-center gap-1.5 w-1/5 text-gray-400 hover:text-rani-pink"><i data-lucide="layout-grid" class="w-6 h-6 stroke-[1.5]"></i><span class="text-[10px] font-medium tracking-wide">Collections</span></a>
-<a href="#" onclick="event.preventDefault();openSearch();" class="flex flex-col items-center justify-center gap-1.5 w-1/5 text-gray-400 hover:text-rani-pink group"><i data-lucide="search" class="w-6 h-6 stroke-[1.5]"></i><span class="text-[10px] font-medium tracking-wide">Search</span></a>
-<a href="orders" class="flex flex-col items-center justify-center gap-1.5 w-1/5 text-gray-400 hover:text-rani-pink"><i data-lucide="package" class="w-6 h-6 stroke-[1.5]"></i><span class="text-[10px] font-medium tracking-wide">Orders</span></a>
-<a href="profile" class="flex flex-col items-center justify-center gap-1.5 w-1/5 text-gray-400 hover:text-rani-pink"><i data-lucide="user" class="w-6 h-6 stroke-[1.5]"></i><span class="text-[10px] font-medium tracking-wide">Profile</span></a>
-</div>
+<div class="fixed bottom-[104px] right-4 flex flex-col gap-3 z-[40]">
+<button onclick="openColorSheet()" aria-label="Shop by color" class="bg-white text-[#D81B60] border w-[50px] h-[50px] rounded-full shadow-xl flex items-center justify-center animate-float"><i data-lucide="palette" class="w-5 h-5"></i></button>
+<a href="https://wa.me/919608720622" target="_blank" aria-label="WhatsApp" class="w-[50px] h-[50px] bg-[#25D366] text-white rounded-full shadow-xl flex items-center justify-center border border-[#1DA851]"><i data-lucide="message-circle" class="w-5 h-5"></i></a>
 </div>
 
+<nav id="bottomNavContainer">
+<a href="./" class="active flex flex-col items-center gap-1 w-1/5"><i data-lucide="home" class="w-6 h-6"></i><span class="text-[10px] font-medium">Home</span></a>
+<a href="categories" class="flex flex-col items-center gap-1 w-1/5"><i data-lucide="layout-grid" class="w-6 h-6"></i><span class="text-[10px] font-medium">Collections</span></a>
+<a href="#" onclick="event.preventDefault();openSearch();" class="flex flex-col items-center gap-1 w-1/5"><span class="w-12 h-8 -mt-6 bg-[#D81B60] rounded-full flex items-center justify-center text-white shadow-lg"><i data-lucide="search" class="w-5 h-5"></i></span><span class="text-[10px] font-medium">Search</span></a>
+<a href="orders" class="flex flex-col items-center gap-1 w-1/5"><i data-lucide="package" class="w-6 h-6"></i><span class="text-[10px] font-medium">Orders</span></a>
+<a href="profile" class="flex flex-col items-center gap-1 w-1/5"><i data-lucide="user" class="w-6 h-6"></i><span class="text-[10px] font-medium">Profile</span></a>
+</nav>
+</div>
+
+<!-- MODALS (promo, color, review, lightbox) : same IDs as before, fixed flex logic -->
+<div id="promoModal" class="fixed inset-0 z-[10050] hidden items-center justify-center p-4"><div class="absolute inset-0 bg-black/60" onclick="closePromoModal()"></div><div id="promoModalContent" class="bg-white w-full max-w-[400px] rounded-[28px] p-7 relative translate-y-8 opacity-0 transition-all duration-300"><button onclick="closePromoModal()" class="absolute top-4 right-4 w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button><h2 class="font-serif text-2xl font-bold text-center">Promo Code</h2><p class="text-xs text-gray-500 text-center mb-4">Apply your voucher</p><input id="promoInput" placeholder="ENTER CODE" class="w-full bg-gray-50 border rounded-2xl px-5 py-4 text-center uppercase tracking-widest font-bold text-sm outline-none focus:border-[#D81B60]"><button id="btnApplyPromo" onclick="processPromoCode()" class="w-full mt-3 bg-[#D81B60] text-white font-bold text-sm py-4 rounded-2xl">Verify & Apply</button></div></div>
+
+<div id="premiumColorSheet" class="fixed inset-0 z-[110] hidden items-end justify-center"><div class="absolute inset-0 bg-black/50" onclick="closeColorSheet()"></div><div id="colorSheetContent" class="bg-white w-full max-w-[420px] rounded-t-[28px] p-6 relative translate-y-full transition-transform duration-400 border-t-[3px] border-[#D4AF37]/50"><div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-4"></div><h3 class="font-serif text-[24px] font-bold">Shop by Color</h3><div id="colorSwatchesContainer" class="grid grid-cols-5 gap-y-5 mt-4 max-h-[50vh] overflow-y-auto no-scrollbar"></div></div></div>
+
+<div id="colorResultsOverlay" class="fixed inset-0 bg-[#FDFBF7] z-[95] translate-x-full transition-transform duration-500 flex flex-col"><div class="h-16 bg-white border-b flex items-center px-4 gap-3"><button onclick="closeColorResults()"><i data-lucide="arrow-left" class="w-6 h-6"></i></button><div id="selectedColorBadge" class="w-6 h-6 rounded-full border"></div><h3 class="font-serif font-semibold">Color Match</h3></div><div class="flex-1 overflow-y-auto p-4"><p id="colorMatchText" class="text-[11px] text-gray-500 mb-3"></p><div id="colorResultsGrid" class="grid grid-cols-2 gap-3 pb-24"></div></div></div>
+
+<div id="expOverlay" class="fixed inset-0 bg-black/60 hidden z-[120]" onclick="closeExpModal()"></div>
+<div id="expModal" class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[420px] bg-white z-[130] translate-y-full transition-transform duration-500 rounded-t-[28px] p-6 flex flex-col gap-3">
+<div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto"></div>
+<h3 class="font-serif text-xl font-bold">Share your experience</h3>
+<div class="flex gap-1 justify-center" id="starSelector"><span class="star-btn" onclick="setRating(1)">★</span><span class="star-btn" onclick="setRating(2)">★</span><span class="star-btn" onclick="setRating(3)">★</span><span class="star-btn" onclick="setRating(4)">★</span><span class="star-btn" onclick="setRating(5)">★</span></div>
+<textarea id="expText" rows="3" placeholder="Share your experience..." class="w-full bg-gray-50 border rounded-2xl p-4 text-sm outline-none focus:border-[#D81B60] resize-none"></textarea>
+<div class="relative h-28 bg-gray-50 border-2 border-dashed rounded-2xl flex items-center justify-center overflow-hidden"><input type="file" id="expFile" accept="image/*" onchange="handleExpPhoto(event)" class="absolute inset-0 opacity-0 cursor-pointer z-20"><div id="expPhotoAddBox" class="text-gray-400 text-[11px] font-bold">+ ADD PHOTO</div><img id="expPhotoPreview" class="absolute inset-0 w-full h-full object-cover hidden"></div>
+<button id="btnSubmitExp" onclick="submitExperience()" class="w-full bg-gray-900 text-white font-bold text-sm uppercase tracking-widest py-4 rounded-2xl">Submit Review</button>
+</div>
+
+<div id="imageLightbox" class="fixed inset-0 z-[99999] bg-black/95 hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300">
+<button onclick="closeLightbox()" class="absolute top-5 right-5 text-white bg-white/10 p-2 rounded-full"><i data-lucide="x" class="w-6 h-6"></i></button>
+<div id="lightboxTouchArea" class="w-full flex-1 flex items-center justify-center overflow-hidden px-6"><img id="lbImg" class="max-w-full max-h-[68vh] object-contain rounded-xl"></div>
+<div class="pb-10 text-center px-8"><p id="lbName" class="text-white font-bold"></p><div id="lbStars" class="text-[#D4AF37] text-sm"></div><p id="lbText" class="text-white/70 text-sm italic line-clamp-2"></p></div>
+<button onclick="lbPrev(event)" class="absolute left-3 top-1/2 bg-white/10 text-white p-3 rounded-full"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+<button onclick="lbNext(event)" class="absolute right-3 top-1/2 bg-white/10 text-white p-3 rounded-full"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+</div>
 
 <script>
-let lStartX = 0;
-window.allProductsList=[];let lastScrollTop=window.pageYOffset||document.documentElement.scrollTop,isNavManuallyHidden=!1,toastTimeout,scrollTicking=!1,expFile=null,expRating=5;const mainHeader=document.getElementById('main-header');
+/* ---------- utils ---------- */
+window.allProductsList=[];let toastTimeout,expRating=5,expFile=null,lStartX=0,lastScrollTop=0,scrollTicking=false;
+const $=id=>document.getElementById(id);
 const escapeHtml=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
-const jsArg=v=>JSON.stringify(String(v??'')).replace(/"/g,'&quot;');
-const safeUrl=v=>{let r=String(v??'').trim();if(!r)return'';try{let u=new URL(r,window.location.origin);return['http:','https:'].includes(u.protocol)?u.href:''}catch{return''}};
-const safeImageUrl=v=>safeUrl(v)||'https://placehold.co/400x400/f5f5f5/cccccc?text=Aavira';
-const safeColor=v=>/^#[0-9a-f]{3,8}$/i.test(String(v))||/^[a-z]+$/i.test(String(v))?String(v):'#d1d5db';
-const safeJson=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))||f}catch{return f}};
-const openOverlay=(id,fs)=>{let el=document.getElementById(id);if(el)el.classList.remove('translate-y-full','translate-x-full','hidden');document.body.style.overflow='hidden';if(fs)setTimeout(()=>document.querySelector(fs)?.focus(),300)};
-const restoreFocus=()=>{document.body.style.overflow=''};
-window.vibrateApp=(m=40)=>{if("vibrate"in navigator)navigator.vibrate(m)};
+const safeUrl=v=>{v=String(v??'').trim();if(!v)return'';try{const u=new URL(v,location.origin);return['http:','https:','data:','blob:'].includes(u.protocol)?v:''}catch{return''}};
+const safeImageUrl=v=>safeUrl(v)||'https://placehold.co/600x700/f5f5f5/999?text=Aavira';
+const safeColor=v=>/^#[0-9a-f]{3,8}$/i.test(String(v))||/^[a-z]+$/i.test(String(v))?String(v):'#ddd';
+const safeJson=(k,f)=>{try{const v=JSON.parse(localStorage.getItem(k));return v??f}catch{return f}};
+const refreshIcons=()=>{try{if(window.lucide&&lucide.createIcons)lucide.createIcons()}catch{}};
+const lockScroll=()=>document.body.style.overflow='hidden';
+const unlockScroll=()=>document.body.style.overflow='';
+window.vibrateApp=(m=30)=>{try{if(navigator.vibrate)navigator.vibrate(m)}catch{}};
+function showToast(m){vibrateApp(40);const s=$('toast'),g=$('toast-msg');if(!s)return;clearTimeout(toastTimeout);g.textContent=m;s.classList.remove('opacity-0','translate-y-5','scale-95');clearTimeout(showToast._t);showToast._t=setTimeout(()=>s.classList.add('opacity-0','translate-y-5','scale-95'),2000)}
+window.showToast=showToast;
 
-/* ── LOCAL LOADING HELPERS ──
-   Instead of one full-screen loader, we attach a small shimmer overlay
-   directly onto the element that was tapped (a card, a button, a link).
-   Only that element blurs/shimmers while the action completes. */
-window.startLocalLoad=(el)=>{
-    if(!el||el.classList.contains('is-loading'))return;
-    el.classList.add('is-loading');
-    const ov=document.createElement('span');
-    ov.className='card-loading-overlay';
-    el.appendChild(ov);
-};
-window.stopLocalLoad=(el)=>{
-    if(!el)return;
-    el.classList.remove('is-loading');
-    const ov=el.querySelector(':scope > .card-loading-overlay');
-    if(ov)ov.remove();
-};
+/* local loading */
+window.startLocalLoad=el=>{if(!el||el.classList.contains('is-loading'))return;el.classList.add('is-loading');const o=document.createElement('span');o.className='card-loading-overlay';el.appendChild(o)};
+window.stopLocalLoad=el=>{if(!el)return;el.classList.remove('is-loading');el.querySelector(':scope > .card-loading-overlay')?.remove()};
 
-window.triggerDotAction=(url,el=null)=>{
-    window.vibrateApp(30);
-    if(el)window.startLocalLoad(el);
-    if(el && (url==='login'||url==='/auth/verify')){
-        const label=el.querySelector('span');
-        if(label){
-            label.dataset.originalText=label.textContent;
-            label.innerHTML='<span class="inline-block w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin"></span>';
-        }
-        el.disabled=true;
-    }
-    if(url==='login')url='/auth/verify';
-    if(!url||url==='#'||url.trim()===''){
-        setTimeout(()=>{if(el)window.stopLocalLoad(el);window.showToast("Offer / Page Not Found","error")},450);
-    }else{
-        setTimeout(()=>window.location.href=url,420);
-    }
-};
+window.triggerDotAction=(url,el=null)=>{vibrateApp(20);if(el)startLocalLoad(el);if(url==='login')url='/auth/verify';if(!url||url==='#'){setTimeout(()=>{if(el)stopLocalLoad(el);showToast('Page not found')},400);return}setTimeout(()=>location.href=url,420)};
+window.goToProduct=(id,el)=>{let r=safeJson('aavira_recent',[]).filter(i=>String(i)!==String(id));r.unshift(String(id));localStorage.setItem('aavira_recent',JSON.stringify(r.slice(0,8)));triggerDotAction(`product?id=${encodeURIComponent(id)}`,el?el.closest('.product-card')||el:el)};
+window.viewProduct=(e,id)=>{if(e){e.preventDefault();e.stopPropagation()}const b=e?.currentTarget;if(!b||b.disabled)return;b.disabled=true;const o=b.innerHTML;b.innerHTML='<span class="mini-spin"></span>';window.goToProduct(id,null);setTimeout(()=>{b.innerHTML=o;b.disabled=false},2500)};
 
-window.goToProduct=(id,el)=>{
-    let r=safeJson('aavira_recent',[]);
-    r=r.filter(i=>String(i)!==String(id));
-    r.unshift(String(id));
-    if(r.length>8)r.pop();
-    localStorage.setItem('aavira_recent',JSON.stringify(r));
-    window.triggerDotAction(`product?id=${id}`,el);
-};
+window.getProductSignals=id=>{let h=0;const s=String(id);for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return{rating:(3.8+(h%12)/10).toFixed(1),stockLeft:2+(h%9),lowStock:(2+(h%9))<=4,bestseller:h%5===0}};
 
-/* ── Arrow "View" button on a product card — the icon itself spins while we navigate,
-     same idea as the ring-spinner on the Proceed button in the cart page. ── */
-window.viewProduct=(e,id)=>{
-    if(e){e.preventDefault();e.stopPropagation();}
-    const btn=e?e.currentTarget:null;
-    if(!btn||btn.disabled)return;
-    window.vibrateApp(30);
-    btn.disabled=true;
-    btn.dataset.originalHtml=btn.innerHTML;
-    btn.innerHTML='<span class="mini-spin white"></span>';
-    let r=safeJson('aavira_recent',[]);
-    r=r.filter(i=>String(i)!==String(id));
-    r.unshift(String(id));
-    if(r.length>8)r.pop();
-    localStorage.setItem('aavira_recent',JSON.stringify(r));
-    setTimeout(()=>{ window.location.href=`product?id=${id}`; },480);
-};
+/* header hide */
+const mainHeader=$('main-header');
+addEventListener('scroll',()=>{if(scrollTicking)return;scrollTicking=true;requestAnimationFrame(()=>{const s=scrollY;if(mainHeader)mainHeader.style.transform=(s>90&&s>lastScrollTop)?'translateY(-100%)':'translateY(0)';lastScrollTop=s;scrollTicking=false})},{passive:true});
 
-/* Deterministic pseudo rating/stock so every card shows consistent "social proof"
-   (star rating + review count + low-stock urgency) — common on Amazon/Myntra/Flipkart
-   listing pages — without needing extra backend fields. */
-window.getProductSignals=(id)=>{
-    let h=0;const s=String(id);
-    for(let i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))>>>0;}
-    const rating=(3.8+(h%12)/10).toFixed(1);
-    const reviews=42+(h%620);
-    const stockLeft=2+(h%9);
-    return{rating,reviews,lowStock:stockLeft<=4,stockLeft,bestseller:(h%5)===0};
-};
+/* fade */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.05});
+window.initFadeAnimations=()=>document.querySelectorAll('.fade-up:not(.visible)').forEach(el=>io.observe(el));
 
-window.revealBottomNav=()=>{isNavManuallyHidden=!1;let n=document.getElementById('bottomNavContainer'),p=document.getElementById('dynamic-action-banner');if(n)n.classList.remove('translate-y-full','nav-hidden');if(p&&!p.classList.contains('hidden'))p.style.transform='translate(-50%, 0)'};
-window.hideBottomNav=()=>{isNavManuallyHidden=!1;let p=document.getElementById('dynamic-action-banner');if(p&&!p.classList.contains('hidden'))p.style.transform='translate(-50%, 0)'};
+/* dynamic banner */
+window.closeDynamicBanner=t=>{const b=$('dynamic-action-banner');if(!b)return;b.style.transform='translate(-50%,150px)';setTimeout(()=>{b.classList.add('hidden');if(t==='login')sessionStorage.setItem('loginBannerShown','true')},400)};
+window.checkDynamicBanner=()=>{const b=$('dynamic-action-banner');if(!b)return;if(localStorage.getItem('aavira_user_email')||sessionStorage.getItem('loginBannerShown')){b.classList.add('hidden');return}b.innerHTML='<div class="flex items-center gap-3"><div class="flex-1"><p class="text-[11px] font-bold text-[#E7D39A]">Flat 20% OFF</p><p class="text-[11px] text-white/70">Sign in to claim first-order gift.</p></div><button onclick="triggerDotAction(\'login\',this)" class="bg-white text-gray-900 px-4 py-2 rounded-xl text-[11px] font-bold">Sign In</button><button onclick="closeDynamicBanner(\'login\')" class="text-white/50 text-lg leading-none">×</button></div>';b.classList.remove('hidden');setTimeout(()=>closeDynamicBanner('login'),7000)};
 
-window.closeDynamicBanner=(type)=>{let banner=document.getElementById('dynamic-action-banner');if(banner){banner.style.transform='translate(-50%, 150px)';setTimeout(()=>{banner.classList.add('hidden');banner.classList.remove('flex');if(type==='notif'){sessionStorage.setItem('notifBannerShown','true');setTimeout(window.checkDynamicBanner,100)}else if(type==='login'){sessionStorage.setItem('loginBannerShown','true')}},500)}};
+/* profile/cart */
+window.updateProfileUI=()=>{const n=localStorage.getItem('aavira_display_name');const g=$('guestProfileUI'),v=$('vipProfileUI');if(n&&n.toLowerCase()!=='guest user'){g?.classList.add('hidden');v?.classList.remove('hidden');if($('vipName'))$('vipName').textContent=n;if($('vipEmail'))$('vipEmail').textContent=localStorage.getItem('aavira_user_email')||'Aavira Member'}else{v?.classList.add('hidden');g?.classList.remove('hidden')}checkDynamicBanner()};
+window.handleLogout=()=>{localStorage.removeItem('aavira_display_name');localStorage.removeItem('aavira_user_email');sessionStorage.removeItem('loginBannerShown');updateProfileUI();closeSidebar();showToast('Logged out')};
+window.updateCartCount=()=>{const c=safeJson('aavira_cart',[]);const t=c.reduce((s,i)=>s+(Number(i.qty)||1),0);const b=$('cart-badge');if(!b)return;b.textContent=t;b.classList.toggle('hidden',t<=0);b.classList.toggle('flex',t>0)};
+window.toggleHeart=(e,btn,id)=>{if(e){e.preventDefault();e.stopPropagation()}vibrateApp(40);let w=safeJson('aavira_wishlist',[]).map(String);const on=w.includes(String(id));if(on){w=w.filter(x=>x!==String(id));btn.classList.remove('text-red-500');showToast('Removed from wishlist')}else{w.push(String(id));btn.classList.add('text-red-500');btn.querySelector('svg,i')?.setAttribute('fill','currentColor');showToast('Added to wishlist ❤️')}localStorage.setItem('aavira_wishlist',JSON.stringify(w));refreshIcons()};
 
-window.checkDynamicBanner=()=>{let b=document.getElementById('dynamic-action-banner');if(!b)return;let email=localStorage.getItem('aavira_user_email'),shown=sessionStorage.getItem('loginBannerShown');if(email||shown){b.classList.add('hidden');b.classList.remove('flex');return}b.innerHTML='<div class="flex items-center gap-3"><div class="flex-1"><p class="text-[11px] font-bold text-ethnic-gold">Flat 20% OFF</p><p class="text-[10px] text-gray-300">Sign in to claim your first order gift.</p></div><button onclick="triggerDotAction(\'login\',this)" class="bg-white text-gray-900 px-4 py-2 rounded-xl text-[11px] font-bold">Sign In</button></div>';b.classList.remove('hidden');b.classList.add('flex');if(typeof lucide!=='undefined')lucide.createIcons();window.bannerTimeout=setTimeout(()=>closeDynamicBanner('login'),7000)};
+/* search */
+window.openSearch=()=>{const o=$('searchOverlay');o.classList.remove('translate-y-full');lockScroll();renderSearchEmpty();setTimeout(()=>$('searchInput')?.focus(),250)};
+window.closeSearch=()=>{$('searchOverlay').classList.add('translate-y-full');unlockScroll()};
+window.clearSearch=()=>{$('searchInput').value='';handleSearch()};
+function renderSearchEmpty(){$('searchResults').innerHTML='<div class="text-center text-gray-400 text-xs mt-16 italic">Discover timeless elegance...</div>'}
+window.handleSearch=()=>{const q=$('searchInput').value.toLowerCase().trim(),c=$('searchResults');if(!q){renderSearchEmpty();return}const f=allProductsList.filter(p=>String(p.name||'').toLowerCase().includes(q));if(!f.length){c.innerHTML='<p class="text-center text-sm text-gray-400 mt-10">No match found.</p>';return}c.innerHTML=f.slice(0,20).map(p=>{const pr=Number(p.price)||0;return `<button onclick="goToProduct('${escapeHtml(String(p.id)).replace(/'/g,'')}')" class="flex gap-3 w-full text-left bg-white p-3 rounded-2xl border shadow-sm"><img src="${escapeHtml(safeImageUrl(p.img))}" class="w-16 h-16 rounded-xl object-cover bg-gray-50"><span class="flex-1"><span class="block text-[13px] font-semibold line-clamp-2">${escapeHtml(p.name)}</span><span class="text-sm font-bold">₹${pr}</span></span></button>`}).join('')};
 
-window.addEventListener('scroll',()=>{if(!scrollTicking){window.requestAnimationFrame(()=>{let s=window.pageYOffset||document.documentElement.scrollTop,d=s-lastScrollTop;if(Math.abs(d)>5){if(s>80&&d>0){if(mainHeader)mainHeader.style.transform='translateY(-100%)'}else{if(mainHeader)mainHeader.style.transform='translateY(0)'}}lastScrollTop=s<=0?0:s;scrollTicking=!1});scrollTicking=!0}});
+/* colors */
+const ethnicColors=[["Red","#E11D48"],["Maroon","#800000"],["Pink","#EC4899"],["Orange","#F97316"],["Gold","#D4AF37"],["Yellow","#EAB308"],["Green","#15803D"],["Olive","#808000"],["Blue","#2563EB"],["Navy","#1E3A8A"],["Sky Blue","#38BDF8"],["Purple","#7C3AED"],["Violet","#8B5CF6"],["Brown","#92400E"],["Black","#111111"],["White","#FFFFFF"],["Gray","#9CA3AF"],["Beige","#D6C7A8"],["Wine","#7A1E2E"],["Teal","#0D9488"]];
+window.openColorSheet=()=>{const s=$('premiumColorSheet'),c=$('colorSheetContent');$('colorSwatchesContainer').innerHTML=ethnicColors.map(([n,h])=>`<div class="flex flex-col items-center gap-1 cursor-pointer" onclick="selectColorAndSearch('${n}','${h}')"><span class="w-12 h-12 rounded-full border shadow" style="background:${h}"></span><span class="text-[10px] font-semibold text-gray-600">${n}</span></div>`).join('');s.classList.remove('hidden');s.classList.add('flex');lockScroll();requestAnimationFrame(()=>c.classList.remove('translate-y-full'))};
+window.closeColorSheet=()=>{const c=$('colorSheetContent');c.classList.add('translate-y-full');unlockScroll();setTimeout(()=>{ $('premiumColorSheet').classList.add('hidden');$('premiumColorSheet').classList.remove('flex')},350)};
+window.selectColorAndSearch=(n,h)=>{closeColorSheet();setTimeout(()=>{const o=$('colorResultsOverlay');$('selectedColorBadge').style.background=h;$('colorMatchText').textContent=`Curated collection in ${n}`;o.classList.remove('translate-x-full');lockScroll();const g=$('colorResultsGrid');g.innerHTML=Array(4).fill('<div class="relative aspect-[3/4] bg-gray-100 rounded-2xl overflow-hidden"><span class="card-loading-overlay"></span></div>').join('');setTimeout(()=>{const m=allProductsList.filter(p=>(p.colors||[]).some(c=>String(c).toLowerCase()===n.toLowerCase()));g.innerHTML=m.length?m.map(p=>generateProductCard(p,true)).join(''):`<div class="col-span-2 text-center py-20"><p class="font-serif text-xl font-bold">No match in ${escapeHtml(n)}</p><p class="text-sm text-gray-500">Try another shade.</p></div>`;refreshIcons()},600)},300)};
+window.closeColorResults=()=>{$('colorResultsOverlay').classList.add('translate-x-full');unlockScroll()};
 
-const fadeObserver=new IntersectionObserver((e,o)=>{e.forEach(i=>{if(i.isIntersecting){i.target.classList.add('visible');o.unobserve(i.target)}})},{threshold:0.05,rootMargin:'0px 0px 50px 0px'});
-window.initFadeAnimations=()=>document.querySelectorAll('.fade-up').forEach(e=>fadeObserver.observe(e));
-window.showToast=(m,t='success')=>{window.vibrateApp(40);let s=document.getElementById('toast'),g=document.getElementById('toast-msg');if(!s||!g)return;clearTimeout(toastTimeout);g.innerText=m;s.classList.remove('opacity-0','translate-y-5','scale-95');s.classList.add('opacity-100','translate-y-0','scale-100');toastTimeout=setTimeout(()=>{s.classList.remove('opacity-100','translate-y-0','scale-100');s.classList.add('opacity-0','translate-y-5','scale-95')},2000)};
-window.subscribeNewsletter=async()=>{let i=document.getElementById('newsletterEmail'),e=i.value.trim();if(!e||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){window.showToast('Valid email required.','error');i.focus();return}let b=document.getElementById('btnNewsletter'),o=b.innerText;b.innerHTML='<i data-lucide="loader" class="w-4 h-4 animate-spin"></i>';b.disabled=true;if(typeof lucide!=='undefined')lucide.createIcons();try{const{getFirestore,doc,setDoc}=await import('https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js');await setDoc(doc(getFirestore(),'newsletter_subscribers',e),{email:e,joinedAt:new Date(),status:'active'});fetch('https://aavira-fashion-backend.vercel.app/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e})}).catch(()=>{});window.showToast('Thanks for joining! 🎉','success');i.value=''}catch(err){window.showToast('Unable to subscribe.','error')}finally{b.innerText=o;b.disabled=false}};
-window.openReferralCenter=()=>{if(typeof window.closeSidebar==='function')window.closeSidebar();let e=localStorage.getItem('aavira_user_email');if(!e){window.showToast("Please log in!","warning");setTimeout(()=>{window.triggerDotAction('login')},1000);return}document.getElementById('referralLinkInput').value=window.location.origin+window.location.pathname+'?ref='+btoa(e);document.getElementById('referralCenter').classList.remove('translate-x-full');document.body.style.overflow='hidden';if(typeof window.loadReferralStats==='function')window.loadReferralStats(e)};
-window.closeReferralCenter=()=>{document.getElementById('referralCenter').classList.add('translate-x-full');document.body.style.overflow=''};
-window.copyReferralLink=async()=>{window.vibrateApp();try{await navigator.clipboard.writeText(document.getElementById('referralLinkInput').value);window.showToast('Link copied! 📋','success')}catch{window.showToast('Copy is unavailable.','error')}};
-window.shareReferralLink=()=>{let l=document.getElementById('referralLinkInput').value,m=`Discover Aavira! Use my link to sign up and get flat ₹500 OFF your first order! 🎁\n\n${l}`;window.open(`https://wa.me/?text=${encodeURIComponent(m)}`,'_blank')};
-window.updateProfileUI=()=>{let s=localStorage.getItem('aavira_display_name'),g=document.getElementById('guestProfileUI'),v=document.getElementById('vipProfileUI'),n=document.getElementById('vipName'),i=document.getElementById('profileInitial');if(s&&s.toLowerCase()!=="guest user"){if(g)g.classList.add('hidden');if(v){v.classList.remove('hidden');v.classList.add('flex')}if(n)n.innerText=s;if(i)i.innerText=s.charAt(0).toUpperCase()}else{if(v){v.classList.add('hidden');v.classList.remove('flex')}if(g)g.classList.remove('hidden')}let a=safeJson('aavira_active_promo',null),p=document.getElementById('activePromoBadge'),pt=document.getElementById('activePromoText');if(a){if(p){p.classList.remove('hidden');p.classList.add('flex')}if(pt)pt.innerText=`${a.code} (-₹${a.discount})`}else{if(p){p.classList.add('hidden');p.classList.remove('flex')}}window.checkDynamicBanner()};
-window.handleLogout=()=>{localStorage.removeItem('aavira_display_name');localStorage.removeItem('aavira_user_email');sessionStorage.removeItem('loginBannerShown');window.updateProfileUI();window.showToast("Logged out!","success");window.closeSidebar()};
-window.updateCartCount=()=>{let c=safeJson('aavira_cart',[]),b=document.getElementById('cart-badge'),total=c.reduce((sum,item)=>sum+(Number(item.qty)||1),0);if(b){b.innerText=total;if(total>0)b.classList.remove('hidden');else b.classList.add('hidden')}};
-window.toggleHeart=async(e,b,id)=>{if(e){e.preventDefault();e.stopPropagation();}window.vibrateApp(50);let i=b.querySelector('svg')||b.querySelector('i'),w=safeJson('aavira_wishlist',[]),s=String(id);b.classList.toggle('text-red-500');b.classList.toggle('text-white/90');if(b.classList.contains('text-red-500')){if(!w.includes(s))w.push(s);if(i)i.setAttribute('fill','currentColor');window.showToast("Added to Wishlist ❤️","success")}else{w=w.filter(x=>String(x)!==s);if(i)i.setAttribute('fill','none');window.showToast("Removed from Wishlist","success")}localStorage.setItem('aavira_wishlist',JSON.stringify(w))};
-window.openSearch=()=>openOverlay('searchOverlay','#searchInput');
-window.closeSearch=()=>{document.getElementById('searchOverlay').classList.add('translate-y-full');restoreFocus()};
-window.handleSearch=()=>{let q=document.getElementById('searchInput').value.toLowerCase().trim(),c=document.getElementById('searchResults');if(!q){c.innerHTML='<div class="text-center text-gray-400 text-xs mt-16 font-serif italic"><div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mx-auto mb-3"><i data-lucide="search" class="w-7 h-7 text-gray-300"></i></div>Discover timeless elegance...</div>';if(typeof lucide!=='undefined')lucide.createIcons();return}let f=window.allProductsList.filter(p=>String(p.name||'').toLowerCase().includes(q));if(f.length===0){c.innerHTML='<div class="text-center text-gray-400 text-xs mt-10 font-serif italic">No match found.</div>';return}let h='';f.forEach(p=>{let pr=Number(p.price)||0,m=Number(p.mrp)||pr;h+=`<button type="button" class="flex gap-4 w-full text-left bg-white p-3 rounded-2xl shadow-sm border border-gray-100 cursor-pointer" onclick="goToProduct(${jsArg(p.id)},this)"><img src="${escapeHtml(safeImageUrl(p.img))}" alt="${escapeHtml(p.name)}" class="w-20 h-20 object-cover bg-gray-50 rounded-xl" /><span class="flex-1 flex flex-col justify-center"><span class="text-[9px] text-ethnic-gold uppercase font-bold mb-1">Aavira Luxe</span><span class="text-[13px] font-medium text-gray-800 line-clamp-2">${escapeHtml(p.name)}</span><span class="mt-2 flex items-baseline gap-2"><span class="text-sm font-bold text-gray-900">₹${pr}</span>${m>pr?`<span class="text-[10px] text-gray-400 line-through">₹${m}</span>`:''}</span></span></button>`});c.innerHTML=h};
-const ethnicColors=[{name:"Red",hex:"#FF0000"},{name:"Blue",hex:"#0000FF"},{name:"Green",hex:"#008000"},{name:"Yellow",hex:"#FFFF00"},{name:"Orange",hex:"#FFA500"},{name:"Purple",hex:"#800080"},{name:"Pink",hex:"#FFC0CB"},{name:"Brown",hex:"#A52A2A"},{name:"Black",hex:"#000000"},{name:"White",hex:"#FFFFFF"},{name:"Gray",hex:"#808080"},{name:"Sky Blue",hex:"#87CEEB"},{name:"Lime",hex:"#00FF00"},{name:"Navy Blue",hex:"#000080"},{name:"Violet",hex:"#EE82EE"},{name:"Maroon",hex:"#800000"},{name:"Gold",hex:"#FFD700"},{name:"Magenta",hex:"#FF00FF"},{name:"Olive",hex:"#808000"},{name:"Coral",hex:"#FF7F50"}];
-window.openColorSheet=()=>{let s=document.getElementById('premiumColorSheet'),c=document.getElementById('colorSheetContent'),b=document.getElementById('colorSheetBg'),ct=document.getElementById('colorSwatchesContainer');if(!s||!c||!ct)return;window.vibrateApp(30);ct.innerHTML=ethnicColors.map(k=>`<div class="flex flex-col items-center gap-1.5 cursor-pointer group" onclick="selectColorAndSearch('${k.name}','${k.hex}')"><div class="w-12 h-12 rounded-full border ${k.hex==='#FFFFFF'?'border-gray-300':'border-black/5'} shadow-[0_4px_15px_rgba(0,0,0,0.08)] group-hover:scale-110 transition-transform flex items-center justify-center relative overflow-hidden"><div class="absolute inset-0 opacity-20 bg-white"></div><div class="w-full h-full" style="background-color:${k.hex}"></div></div><span class="text-[10px] font-semibold text-gray-600 text-center w-full truncate group-hover:text-ethnic-gold">${k.name}</span></div>`).join('');s.classList.remove('hidden');s.classList.add('flex');document.body.style.overflow='hidden';requestAnimationFrame(()=>{requestAnimationFrame(()=>{b.classList.remove('opacity-0');c.classList.remove('translate-y-full')})})};
-window.closeColorSheet=()=>{let c=document.getElementById('colorSheetContent'),s=document.getElementById('premiumColorSheet'),b=document.getElementById('colorSheetBg');c.classList.add('translate-y-full');b.classList.add('opacity-0');document.body.style.overflow='';setTimeout(()=>{s.classList.add('hidden');s.classList.remove('flex')},500)};
+/* sidebar/promo */
+window.openSidebar=()=>{updateProfileUI();$('sidebarOverlay').classList.remove('hidden');lockScroll();requestAnimationFrame(()=>{$('sidebarOverlay').classList.remove('opacity-0');$('sidebar').classList.remove('-translate-x-full')})};
+window.closeSidebar=()=>{$('sidebar').classList.add('-translate-x-full');$('sidebarOverlay').classList.add('opacity-0');unlockScroll();setTimeout(()=>$('sidebarOverlay').classList.add('hidden'),300)};
+window.openPromoModal=()=>{try{closeSidebar()}catch{};$('promoInput').value='';const m=$('promoModal');m.classList.remove('hidden');m.classList.add('flex');lockScroll();requestAnimationFrame(()=>$('promoModalContent').classList.remove('translate-y-8','opacity-0'))};
+window.closePromoModal=()=>{$('promoModalContent').classList.add('translate-y-8','opacity-0');unlockScroll();setTimeout(()=>{$('promoModal').classList.add('hidden');$('promoModal').classList.remove('flex')},300)};
+window.processPromoCode=async()=>{const code=$('promoInput').value.trim().toUpperCase();if(!code){showToast('Enter a promo code');return}const used=safeJson('aavira_used_promos',[]);if(used.includes(code)){showToast('Code already used');return}const b=$('btnApplyPromo');b.disabled=true;b.textContent='Checking...';try{const r=await fetch(`${AUTH_URL}/api/promocodes/${encodeURIComponent(code)}`);const j=await r.json();if(r.ok&&j.status==='success'){const d=Number(j.data.discountAmount||j.data.amount||0);localStorage.setItem('aavira_active_promo',JSON.stringify({code:j.data.id||code,discount:d}));used.push(code);localStorage.setItem('aavira_used_promos',JSON.stringify(used));showToast(`₹${d} OFF applied 🎉`);setTimeout(closePromoModal,900)}else showToast(j.message||'Invalid code')}catch{showToast('Network error')}b.disabled=false;b.textContent='Verify & Apply'};
 
-/* Colour match results now load with a local shimmer inside the grid only — no full-screen dimming. */
-window.selectColorAndSearch=(n,h)=>{
-    window.closeColorSheet();
-    setTimeout(()=>{
-        let o=document.getElementById('colorResultsOverlay'),b=document.getElementById('selectedColorBadge'),g=document.getElementById('colorResultsGrid');
-        if(!o||!b||!g)return;
-        b.style.backgroundColor=safeColor(h);
-        o.classList.remove('translate-x-full');
-        document.body.style.overflow='hidden';
-        document.getElementById('colorMatchText').innerText=`Curated collection in ${n}`;
-        g.innerHTML=Array(4).fill(`<div class="relative w-full aspect-[1/1.1] bg-gray-100 rounded-none overflow-hidden"><span class="card-loading-overlay" style="opacity:1;animation:smokeSweep .8s ease-in-out infinite;"></span></div>`).join('');
-        setTimeout(()=>{
-            let m=window.allProductsList.filter(p=>(Array.isArray(p.colors)?p.colors:[]).some(color=>String(color).toLowerCase()===String(n).toLowerCase()));
-            g.innerHTML='';
-            if(m.length>0){
-                m.forEach(p=>{g.innerHTML+=window.generateProductCard(p,!0)});
-                if(typeof lucide!=='undefined')lucide.createIcons();
-            }else{
-                g.innerHTML=`<div class="col-span-2 flex flex-col items-center justify-center mt-24 text-center px-4"><div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-gray-300 mb-4 shadow-sm border border-gray-100"><i data-lucide="search-x" class="w-8 h-8"></i></div><h4 class="font-serif text-gray-800 text-xl font-bold mb-2">No Match Found</h4><p class="text-sm text-gray-500 mt-1">Try another shade.</p></div>`;
-                if(typeof lucide!=='undefined')lucide.createIcons();
-            }
-        },500);
-    },400);
-};
+/* skeletons + cards */
+window.loadSkeletons=()=>{const sk='<div class="w-[150px] shrink-0 bg-white rounded-2xl border p-2"><div class="aspect-[3/4] bg-gray-100 rounded-xl animate-pulse relative overflow-hidden"><span class="card-loading-overlay"></span></div><div class="h-2 bg-gray-100 rounded mt-3 animate-pulse"></div></div>';$('trending-container').innerHTML=sk+sk+sk;$('new-arrivals-container').innerHTML=sk+sk;$('exclusive-container').innerHTML='<div class="h-[420px] bg-gray-100 rounded-[24px] animate-pulse relative overflow-hidden"><span class="card-loading-overlay"></span></div>';$('category-container').innerHTML=Array(5).fill('<div class="w-[72px] shrink-0"><div class="w-[72px] h-[72px] rounded-full bg-gray-200 animate-pulse"></div></div>').join('')};
 
-window.closeColorResults=()=>{document.getElementById('colorResultsOverlay').classList.add('translate-x-full');document.body.style.overflow=''};
-window.openSidebar=()=>{window.vibrateApp(40);window.updateProfileUI();let o=document.getElementById('sidebarOverlay'),s=document.getElementById('sidebar');o.classList.remove('hidden');document.body.style.overflow='hidden';setTimeout(()=>{o.classList.remove('opacity-0');s.classList.remove('-translate-x-full')},10)};
-window.closeSidebar=()=>{window.vibrateApp(30);let o=document.getElementById('sidebarOverlay'),s=document.getElementById('sidebar');s.classList.add('-translate-x-full');o.classList.add('opacity-0');document.body.style.overflow='';setTimeout(()=>{o.classList.add('hidden')},300)};
-window.openPromoModal=()=>{if(typeof window.closeSidebar==='function')window.closeSidebar();document.getElementById('promoInput').value='';let m=document.getElementById('promoModal'),o=document.getElementById('promoModalOverlay'),c=document.getElementById('promoModalContent');m.classList.remove('hidden');m.classList.add('flex');document.body.style.overflow='hidden';setTimeout(()=>{if(o)o.classList.remove('opacity-0');if(c)c.classList.remove('translate-y-full','opacity-0')},10)};
-window.closePromoModal=()=>{let o=document.getElementById('promoModalOverlay'),c=document.getElementById('promoModalContent');if(o)o.classList.add('opacity-0');if(c)c.classList.add('translate-y-full','opacity-0');document.body.style.overflow='';setTimeout(()=>{let m=document.getElementById('promoModal');if(m){m.classList.add('hidden');m.classList.remove('flex')}},400)};
-window.processPromoCode=async()=>{let c=document.getElementById('promoInput').value.trim().toUpperCase();if(!c){window.showToast("Enter a Promo Code!","error");return}let u=safeJson('aavira_used_promos',[]);if(u.includes(c)){window.showToast("Promo code already used once.","error");return}let b=document.getElementById('btnApplyPromo');b.innerHTML='<i data-lucide="loader" class="w-4 h-4 animate-spin inline"></i> Checking...';b.disabled=true;try{let r=await fetch(`${AUTH_URL}/api/promocodes/${encodeURIComponent(c)}`),res=await r.json();if(r.ok&&res.status==="success"){let d=Number(res.data.discountAmount)||Number(res.data.amount)||0;window.showToast(`Flat ₹${d} OFF applied! 🎉`,"success");localStorage.setItem('aavira_active_promo',JSON.stringify({code:res.data.id||c,discount:d}));u.push(c);localStorage.setItem('aavira_used_promos',JSON.stringify(u));window.updateProfileUI();setTimeout(()=>window.closePromoModal(),1200)}else{window.showToast(res.message||"Invalid code.","error")}}catch(e){window.showToast("Network Error.","error")}b.innerHTML='Verify & Apply';b.disabled=false;if(typeof lucide!=='undefined')lucide.createIcons()};
-window.removePromoCode=()=>{localStorage.removeItem('aavira_active_promo');window.updateProfileUI();window.showToast("Promo Code Removed","success")};
-window.loadSkeletons=()=>{document.getElementById('category-container').innerHTML=Array(4).fill(`<div class="flex flex-col items-center gap-2"><div class="w-[72px] h-[72px] rounded-full bg-gray-200 animate-pulse shadow-sm"></div></div>`).join('');let p=`<div class="w-[160px] shrink-0 bg-white border border-gray-100 p-2.5 shadow-sm rounded-none"><div class="w-full aspect-[1/1.1] bg-gray-100 animate-pulse mb-3 rounded-none"></div><div class="h-2 bg-gray-200 animate-pulse w-3/4 mb-2"></div><div class="h-2 bg-gray-200 animate-pulse w-1/2 mb-4"></div></div>`;document.getElementById('trending-container').innerHTML=Array(3).fill(p).join('');let exP=`<div class="bg-white flex flex-col relative shadow-[0_8px_30px_-4px_rgba(0,0,0,0.05)] border border-gray-100"><div class="w-full aspect-[4/5] bg-gray-100 animate-pulse"></div><div class="p-4"><div class="h-4 bg-gray-200 animate-pulse w-1/2 mb-2"></div><div class="h-3 bg-gray-200 animate-pulse w-1/3 mb-4"></div><div class="flex justify-between items-end mt-4"><div class="h-4 bg-gray-200 animate-pulse w-1/4"></div><div class="h-8 bg-gray-200 animate-pulse w-1/3 rounded-lg"></div></div></div></div>`;document.getElementById('exclusive-container').innerHTML=Array(2).fill(exP).join('');document.getElementById('new-arrivals-container').innerHTML=Array(4).fill(p.replace('w-[160px] shrink-0','w-full')).join('')};
+window.generateProductCard=(p,full)=>{const pr=Number(p.price)||0,mr=Number(p.mrp)||pr,d=mr>pr?Math.round((mr-pr)/mr*100):0;const w=safeJson('aavira_wishlist',[]).map(String).includes(String(p.id));const sig=getProductSignals(p.id);return `<div class="product-card ${full?'w-full':'w-[150px] shrink-0 snap-start'} bg-white rounded-2xl border border-gray-100 shadow-card overflow-hidden flex flex-col"><div class="relative aspect-[3/4] bg-gray-50 cursor-pointer overflow-hidden" onclick="goToProduct('${escapeHtml(String(p.id))}')"><img loading="lazy" src="${escapeHtml(safeImageUrl(p.img))}" alt="${escapeHtml(p.name)}" class="absolute inset-0 w-full h-full object-cover" onerror="this.src='https://placehold.co/600x700?text=Aavira'">${d?`<span class="absolute top-2 left-2 bg-white text-[#D81B60] text-[9px] font-bold px-2 py-0.5 rounded-full shadow">${d}% OFF</span>`:''}<button aria-label="wishlist" onclick="toggleHeart(event,this,'${escapeHtml(String(p.id))}')" class="absolute top-2 right-2 w-7 h-7 bg-black/25 backdrop-blur rounded-full flex items-center justify-center ${w?'text-red-500':'text-white'}"><i data-lucide="heart" class="w-4 h-4" ${w?'fill="currentColor"':''}></i></button>${sig.bestseller?'<span class="absolute bottom-0 inset-x-0 bg-black/80 text-white text-[8px] font-bold tracking-widest text-center py-1">BESTSELLER</span>':''}</div><div class="p-2.5 flex-1 flex flex-col"><p class="text-[12px] font-semibold line-clamp-1" onclick="goToProduct('${escapeHtml(String(p.id))}')">${escapeHtml(p.name)}</p><div class="flex items-center gap-1 mt-1"><span class="bg-green-600 text-white text-[9px] font-bold px-1.5 py-[1px] rounded flex items-center gap-0.5">★ ${sig.rating}</span>${sig.lowStock?`<span class="text-[9px] font-bold text-orange-600">Only ${sig.stockLeft} left</span>`:''}</div><div class="flex items-center justify-between mt-auto pt-2"><span class="text-[14px] font-extrabold">₹${pr}</span><button aria-label="view" onclick="viewProduct(event,'${escapeHtml(String(p.id))}')" class="w-7 h-7 rounded-full bg-[#D81B60] text-white flex items-center justify-center"><i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></button></div></div></div>`};
 
-/* ── PRODUCT CARD (small / grid) — "Add to Cart" button removed; rating + urgency tag
-     added (a la Amazon/Myntra listing cards); arrow "View" button spins itself on tap ── */
-window.generateProductCard=(p,i)=>{
-    let pr=Number(p.price)||0,m=Number(p.mrp)||pr,d=m>pr?Math.round(((m-pr)/m)*100):0,mh=m>pr?`<span class="text-[10px] text-gray-400 line-through font-sans ml-1">₹${m}</span>`:'',w=safeJson('aavira_wishlist',[]).map(String).includes(String(p.id)),ca=Array.isArray(p.colors)?p.colors:[],ch='',id=jsArg(p.id),name=escapeHtml(p.name),image=escapeHtml(safeImageUrl(p.img)),sig=window.getProductSignals(p.id);
-    if(ca.length>0){let sw=ca.slice(0,3).map(c=>`<span class="w-2.5 h-2.5 rounded-full border border-gray-200 shadow-sm" style="background-color:${safeColor(c)}"></span>`).join(''),mt=ca.length>1?`${ca.length} Colours`:'1 Colour';ch=`<div class="flex items-center gap-1.5 mb-2"><div class="flex -space-x-1">${sw}</div><span class="text-[9px] text-gray-400 font-medium tracking-wider uppercase ml-1">${mt}</span></div>`}else{ch=`<div class="mb-2"><span class="text-[9px] text-gray-400 font-medium tracking-wider uppercase">1 Colour</span></div>`}
-    let dh=d>0?`<div class="absolute top-2 left-2 z-10 bg-white px-2 py-0.5 text-[9px] font-bold text-rani-pink uppercase tracking-widest shadow-[0_2px_8px_rgba(0,0,0,0.1)] rounded-none">${d}% OFF</div>`:'';
-    let ratingRow=`<div class="flex items-center gap-1 mb-1.5"><span class="flex items-center gap-0.5 bg-green-600 text-white text-[9px] font-bold px-1.5 py-[1px] rounded"><i data-lucide="star" class="w-2.5 h-2.5" fill="currentColor"></i>${sig.rating}</span></div>`;
-    let urgencyTag=sig.lowStock?`<p class="text-[9px] font-bold text-orange-600 mb-1 flex items-center gap-1"><i data-lucide="flame" class="w-3 h-3"></i>Only ${sig.stockLeft} left</p>`:'';
-    return `<div class="product-card ${i?'w-full':'snap-start shrink-0 w-[160px]'} bg-white block flex flex-col relative rounded-none shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-lg transition-all duration-300 overflow-hidden">
-        <div class="relative bg-gray-50 cursor-pointer overflow-hidden w-full aspect-[1/1.1]" role="link" tabindex="0" aria-label="View ${name}" onclick="goToProduct(${id},this.closest('.product-card'))">
-            <img src="${image}" alt="${name}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105" onerror="this.src='https://placehold.co/400x400/f5f5f5/cccccc?text=Aavira'" />
-            ${dh}
-            ${sig.bestseller?`<div class="absolute bottom-0 left-0 right-0 z-10 bg-gray-900/85 text-white text-[8px] font-bold uppercase tracking-widest text-center py-1">Bestseller</div>`:''}
-            <button type="button" aria-label="Toggle ${name} in wishlist" class="absolute top-2 right-2 p-1 z-10 drop-shadow-md transition-transform hover:scale-110 ${w?'text-red-500':'text-white/90'}" onclick="toggleHeart(event, this, ${id})"><i data-lucide="heart" class="w-4 h-4" fill="${w?'currentColor':'rgba(0,0,0,0.5)'}"></i></button>
-        </div>
-        <div class="px-3 pt-3 pb-3 flex-1 flex flex-col bg-white">
-            <button type="button" class="font-sans text-[13px] text-left font-semibold text-gray-800 line-clamp-1 mb-1 cursor-pointer hover:text-rani-pink transition-colors" onclick="goToProduct(${id},this.closest('.product-card'))">${name}</button>
-            ${ratingRow}
-            ${ch}
-            ${urgencyTag}
-            <div class="flex items-center justify-between pt-2.5 mt-auto border-t border-gray-50 relative z-20">
-                <div class="flex items-baseline gap-1.5"><span class="text-[15px] font-bold text-gray-900 leading-none">₹${pr}</span>${mh}</div>
-                <button type="button" aria-label="View ${name}" class="w-7 h-7 flex items-center justify-center bg-rani-pink text-white hover:bg-[#c21554] transition-all rounded-full cursor-pointer shrink-0 shadow-sm" onclick="viewProduct(event,${id})"><i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></button>
-            </div>
-        </div>
-    </div>`;
-};
+window.generateFeaturedCard=p=>{const pr=Number(p.price)||0,mr=Number(p.mrp)||pr,d=mr>pr?Math.round((mr-pr)/mr*100):0;const w=safeJson('aavira_wishlist',[]).map(String).includes(String(p.id));const sig=getProductSignals(p.id);return `<div class="product-card bg-white rounded-[24px] border overflow-hidden shadow-lux"><div class="relative aspect-[4/5] cursor-pointer overflow-hidden" onclick="goToProduct('${escapeHtml(String(p.id))}')"><img loading="lazy" src="${escapeHtml(safeImageUrl(p.img))}" class="absolute inset-0 w-full h-full object-cover" onerror="this.src='https://placehold.co/800x1000?text=Aavira'"><span class="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent"></span>${d?`<span class="absolute top-3 left-3 bg-white text-[#D81B60] text-[10px] font-bold px-3 py-1 rounded-full shadow">${d}% OFF</span>`:''}<button onclick="toggleHeart(event,this,'${escapeHtml(String(p.id))}')" class="absolute top-3 right-3 w-9 h-9 bg-black/25 backdrop-blur rounded-full flex items-center justify-center ${w?'text-red-500':'text-white'}"><i data-lucide="heart" class="w-5 h-5" ${w?'fill="currentColor"':''}></i></button><span class="absolute bottom-3 left-3 text-white"><span class="text-[10px] tracking-widest uppercase text-white/80">Premium Exclusive</span><span class="block font-serif text-[20px] font-bold leading-tight line-clamp-1">${escapeHtml(p.name)}</span></span></div><div class="p-4 flex items-center justify-between"><div><div class="flex items-center gap-2"><span class="text-[18px] font-extrabold">₹${pr}</span>${mr>pr?`<span class="text-[12px] text-gray-400 line-through">₹${mr}</span>`:''}<span class="bg-green-600 text-white text-[10px] font-bold px-1.5 rounded">★ ${sig.rating}</span></div></div><button onclick="viewProduct(event,'${escapeHtml(String(p.id))}')" class="h-11 px-5 rounded-full bg-gray-900 text-white text-[12px] font-bold tracking-widest uppercase flex items-center gap-2">View <i data-lucide="arrow-right" class="w-4 h-4"></i></button></div></div>`};
 
-/* ── FEATURED CARD (large) — "Add to Cart" button removed; rating + Bestseller ribbon
-     added (a la Amazon/Myntra); arrow View button spins itself on tap ── */
-window.generateFeaturedCard=(p)=>{
-    let pr=Number(p.price)||0,m=Number(p.mrp)||pr,d=m>pr?Math.round(((m-pr)/m)*100):0,mh=m>pr?`<span class="text-[12px] text-gray-400 line-through font-sans ml-2">₹${m}</span>`:'',w=safeJson('aavira_wishlist',[]).map(String).includes(String(p.id)),id=jsArg(p.id),name=escapeHtml(p.name),image=escapeHtml(safeImageUrl(p.img)),sig=window.getProductSignals(p.id);
-    let dh=d>0?`<div class="absolute top-3 left-3 z-10 bg-white px-3 py-1 text-[10px] font-bold text-rani-pink uppercase tracking-widest shadow-md">${d}% OFF</div>`:'';
-    let bsRibbon=sig.bestseller?`<div class="absolute bottom-3 left-3 z-10 bg-gray-900/90 text-white px-3 py-1 text-[9px] font-bold uppercase tracking-widest flex items-center gap-1 shadow-md"><i data-lucide="crown" class="w-3 h-3 text-ethnic-gold"></i>Bestseller</div>`:'';
-    let ratingRow=`<div class="flex items-center gap-1.5 mb-1.5"><span class="flex items-center gap-0.5 bg-green-600 text-white text-[10px] font-bold px-1.5 py-[1px] rounded"><i data-lucide="star" class="w-3 h-3" fill="currentColor"></i>${sig.rating}</span>${sig.lowStock?`<span class="text-[9px] font-bold text-orange-600 flex items-center gap-0.5 ml-auto"><i data-lucide="flame" class="w-3 h-3"></i>${sig.stockLeft} left</span>`:''}</div>`;
-    return `<div class="product-card bg-white flex flex-col relative shadow-[0_8px_30px_-4px_rgba(0,0,0,0.05)] border border-gray-100 hover:shadow-xl transition-all duration-300 overflow-hidden group">
-        <div class="relative overflow-hidden w-full aspect-[4/5] cursor-pointer" role="link" tabindex="0" onclick="goToProduct(${id},this.closest('.product-card'))">
-            <img src="${image}" alt="${name}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.src='https://placehold.co/800x1000/f5f5f5/cccccc?text=Aavira'" />
-            ${dh}
-            ${bsRibbon}
-            <button type="button" class="absolute top-3 right-3 p-2 z-10 drop-shadow-md transition-transform hover:scale-110 ${w?'text-red-500':'text-white/90'}" onclick="toggleHeart(event, this, ${id})"><i data-lucide="heart" class="w-5 h-5" fill="${w?'currentColor':'rgba(0,0,0,0.4)'}"></i></button>
-        </div>
-        <div class="p-4 flex flex-col bg-white">
-            <h4 class="font-serif text-[18px] font-bold text-gray-900 line-clamp-1 mb-1 cursor-pointer hover:text-rani-pink transition-colors" onclick="goToProduct(${id},this.closest('.product-card'))">${name}</h4>
-            ${ratingRow}
-            <p class="text-[11px] text-gray-500 uppercase tracking-widest mb-3">Premium Exclusive</p>
-            <div class="flex items-center justify-between mt-auto">
-                <div class="flex items-baseline"><span class="text-[18px] font-bold text-gray-900">₹${pr}</span>${mh}</div>
-                <button type="button" aria-label="View ${name}" class="w-10 h-10 flex items-center justify-center bg-rani-pink text-white hover:bg-[#c21554] transition-all rounded-full cursor-pointer shrink-0 shadow-md" onclick="viewProduct(event,${id})"><i data-lucide="arrow-up-right" class="w-4 h-4"></i></button>
-            </div>
-        </div>
-    </div>`;
-};
+/* data */
+window.fetchBanners=async()=>{const c=$('bannerCarousel'),dots=$('banner-dots');try{let d=typeof getBannersData==='function'?await getBannersData():[];if(!d?.length)throw 0;c.innerHTML=d.map(b=>{const img=escapeHtml(safeImageUrl(b.imageUrl||b.image));const link=safeUrl(b.link||'');return `<div class="snap-start shrink-0 w-full h-full relative cursor-pointer" onclick="${link?`triggerDotAction('${link}',this)`:''}"><img src="${img}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/800x1000?text=Aavira'"></div>`}).join('');dots.innerHTML=d.map((_,i)=>`<span class="banner-dot ${i===0?'w-5 bg-white':'w-2 bg-white/50'}"></span>`).join('');clearInterval(window._bi);window._bi=setInterval(()=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const max=c.scrollWidth-c.clientWidth;if(c.scrollLeft>=max-10)c.scrollTo({left:0,behavior:'smooth'});else c.scrollBy({left:c.clientWidth,behavior:'smooth'})},3800);c.onscroll=()=>{const ix=Math.round(c.scrollLeft/Math.max(1,c.clientWidth));dots.querySelectorAll('.banner-dot').forEach((el,i)=>el.className=`banner-dot ${i===ix?'w-5 bg-white':'w-2 bg-white/50'}`)};}catch{c.innerHTML='<div class="w-full h-full flex flex-col items-center justify-center text-center p-8"><p class="font-serif text-xl">New collection arriving soon</p><button onclick="fetchBanners()" class="mt-3 text-sm font-bold text-[#D81B60] underline">Try again</button></div>';dots.innerHTML=''}};
 
-window.fetchBanners=async()=>{const c=document.getElementById('bannerCarousel'),dots=document.getElementById('banner-dots');try{let d=typeof window.getBannersData==='function'?await window.getBannersData():[];if(!Array.isArray(d)||d.length===0)throw new Error('No banners');c.innerHTML='';d.forEach(b=>{const image=escapeHtml(safeImageUrl(b.imageUrl||b.image||b.url)),link=b.link?safeUrl(b.link):'#';c.innerHTML+=`<button type="button" class="snap-start shrink-0 w-full h-full relative text-left" onclick="triggerDotAction('${link}',this)"><img src="${image}" alt="Featured collection" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/1200x800/f5f5f5/cccccc?text=Aavira'" /><span class="absolute inset-0 bg-black/20"></span></button>`});dots.innerHTML=d.map((_,i)=>`<span class="banner-dot h-1.5 ${i===0?'w-5 bg-white':'w-2 bg-white/50'}"></span>`).join('');if(window.bannerInterval)clearInterval(window.bannerInterval);window.bannerInterval=setInterval(()=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;let m=c.scrollWidth-c.clientWidth;if(c.scrollLeft>=m-10)c.scrollTo({left:0,behavior:'smooth'});else c.scrollBy({left:c.clientWidth,behavior:'smooth'})},3500);c.addEventListener('scroll',()=>{let ix=Math.round(c.scrollLeft/c.offsetWidth);document.querySelectorAll('.banner-dot').forEach((dt,i)=>dt.className=`banner-dot h-1.5 ${i===ix?'w-5 bg-white':'w-2 bg-white/50'}`)},{passive:true})}catch(e){c.innerHTML='<div class="w-full h-full flex flex-col items-center justify-center bg-gray-100 text-center p-6"><p class="font-serif text-xl text-gray-700">New collections are arriving soon.</p><button type="button" onclick="fetchBanners()" class="mt-4 text-sm font-bold text-rani-pink underline">Try again</button></div>';dots.innerHTML=''}};
-window.fetchCategories=async()=>{let c=document.getElementById('category-container');try{let a=typeof window.getCategoriesData==='function'?await window.getCategoriesData():[];if(!Array.isArray(a)||a.length===0)throw new Error('No categories');c.innerHTML='';a.forEach(d=>{let image=escapeHtml(safeImageUrl(d.image||d.imageUrl||d.url)),name=escapeHtml(d.name);c.innerHTML+=`<button type="button" aria-label="Browse ${name}" onclick="triggerDotAction('categories',this)" class="flex flex-col items-center gap-3 w-[72px] shrink-0"><span class="h-[72px] w-[72px] rounded-full overflow-hidden border border-gray-200 p-0.5 bg-white"><img src="${image}" alt="${name}" class="w-full h-full object-cover rounded-full" onerror="this.src='https://placehold.co/144x144/f5f5f5/cccccc?text=Aavira'"></span><span class="text-[9px] font-semibold text-gray-700 uppercase">${name}</span></button>`})}catch(e){c.innerHTML='<div class="w-full text-center text-sm text-gray-500 py-6">Collections are unavailable. <button type="button" onclick="fetchCategories()" class="font-bold text-rani-pink underline">Try again</button></div>'}};
+window.fetchCategories=async()=>{const c=$('category-container');try{let a=typeof getCategoriesData==='function'?await getCategoriesData():[];if(!a?.length)throw 0;c.innerHTML=a.map(x=>`<button onclick="triggerDotAction('categories',this)" class="flex flex-col items-center gap-2 w-[74px] shrink-0"><span class="w-[72px] h-[72px] rounded-full p-[3px] bg-gradient-to-tr from-[#D81B60] via-[#D4AF37] to-[#D81B60]"><span class="block w-full h-full rounded-full overflow-hidden border-2 border-white bg-white"><img loading="lazy" src="${escapeHtml(safeImageUrl(x.image))}" class="w-full h-full object-cover"></span></span><span class="text-[10px] font-bold uppercase tracking-wide text-center line-clamp-1">${escapeHtml(x.name)}</span></button>`).join('')}catch{c.innerHTML='<div class="text-sm text-gray-500 py-4">Collections unavailable. <button onclick="fetchCategories()" class="text-[#D81B60] font-bold underline">Retry</button></div>'}};
 
-window.fetchProducts=async()=>{
-    let trending=document.getElementById('trending-container'),exclusives=document.getElementById('exclusive-container'),arrivals=document.getElementById('new-arrivals-container');
-    try{
-        let d=typeof window.getVercelData==='function'?await window.getVercelData():[];
-        if(!Array.isArray(d)||d.length===0)throw new Error('No products');
-        window.allProductsList=d.map(x=>({
-            id:     x.id,
-            name:   x.name,
-            price:  x.price,
-            mrp:    x.mrp,
-            colors: Array.isArray(x.colors)?x.colors:[],
-            img:    x.imageMain||x.image||x.imageUrl||''
-        }));
-        trending.innerHTML='';exclusives.innerHTML='';arrivals.innerHTML='';
-        window.allProductsList.forEach((p,i)=>{
-            if(i<4)trending.innerHTML+=window.generateProductCard(p,!1);
-            else if(i>=4&&i<6)exclusives.innerHTML+=window.generateFeaturedCard(p);
-            else arrivals.innerHTML+=window.generateProductCard(p,!0);
-        });
-        if(window.allProductsList.length<6)arrivals.innerHTML='<p class="col-span-2 text-center text-sm text-gray-500 py-6">More new arrivals are coming soon.</p>';
-        window.initFadeAnimations();
-        if(typeof lucide!=='undefined')lucide.createIcons();
-    }catch(e){
-        const retry='<div class="w-full text-center text-sm text-gray-500 py-8">Products are unavailable. <button type="button" onclick="fetchProducts()" class="font-bold text-rani-pink underline">Try again</button></div>';
-        trending.innerHTML=retry;exclusives.innerHTML=retry;arrivals.innerHTML=retry;
-    }
-};
+window.fetchProducts=async()=>{const t=$('trending-container'),e=$('exclusive-container'),n=$('new-arrivals-container');try{let d=typeof getVercelData==='function'?await getVercelData():[];if(!d?.length)throw 0;allProductsList=d.map(x=>({id:x.id,name:x.name,price:x.price,mrp:x.mrp,colors:Array.isArray(x.colors)?x.colors:[],img:x.imageMain||x.image||''}));t.innerHTML='';e.innerHTML='';n.innerHTML='';allProductsList.forEach((p,i)=>{if(i<6)t.innerHTML+=generateProductCard(p,false);else if(i<8)e.innerHTML+=generateFeaturedCard(p);else n.innerHTML+=generateProductCard(p,true)});if(!e.innerHTML)e.innerHTML=allProductsList.slice(0,2).map(generateFeaturedCard).join('');if(!n.innerHTML)n.innerHTML='<p class="col-span-2 text-center text-sm text-gray-400 py-6">More arrivals coming soon.</p>';initFadeAnimations();refreshIcons()}catch{const r='<div class="w-full text-center text-sm text-gray-500 py-8">Products unavailable. <button onclick="fetchProducts()" class="text-[#D81B60] font-bold underline">Retry</button></div>';t.innerHTML=r;e.innerHTML=r;n.innerHTML=r}};
 
+/* reviews */
 window.photoExps=[];window.lbIndex=0;
-window.setRating=(val)=>{expRating=val;document.querySelectorAll('.star-btn').forEach((btn,idx)=>{btn.innerHTML=idx<val?'★':'☆'});window.vibrateApp(20)};
-window.renderExperiences=()=>{let x=safeJson('aavira_experiences',[]),c=document.getElementById('experience-container');if(!c)return;if(x.length===0){c.innerHTML=`<div class="w-full py-8 mx-1 text-center flex flex-col items-center justify-center bg-white border border-gray-100 shadow-sm"><div class="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 mb-2"><i data-lucide="message-square" class="w-5 h-5"></i></div><p class="text-[13px] font-bold text-gray-900">No Reviews Yet</p><p class="text-[10px] text-gray-500 mt-0.5">Be the first to share your style!</p></div>`;if(typeof lucide!=='undefined')lucide.createIcons();return}window.photoExps=x.filter(e=>e.photo&&e.photo.trim()!=="");c.innerHTML=x.map((e)=>{let pi=window.photoExps.indexOf(e);let rating=Math.max(1,Math.min(5,Number(e.rating)||5)),stars='★'.repeat(rating)+'☆'.repeat(5-rating),name=escapeHtml(e.name||'User'),text=escapeHtml(e.text||'');return `<div class="snap-center shrink-0 w-[90%] max-w-[300px] bg-white border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)] flex flex-col group rounded-none overflow-hidden">${(e.photo&&e.photo.trim()!=="")?`<button type="button" aria-label="Open photo from ${name}" class="w-full aspect-[1/1.1] bg-gray-50 flex items-center justify-center p-2 overflow-hidden cursor-pointer border-b border-gray-50" onclick="openLightbox(${pi})"><img src="${escapeHtml(safeUrl(e.photo))}" alt="Review photo" onerror="this.parentElement.style.display='none'" class="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-700 drop-shadow-sm rounded-md"></button>`:''}<div class="p-5 flex flex-col gap-1.5"><div class="text-ethnic-gold text-[16px] tracking-widest">${stars}</div><h4 class="text-[14px] font-bold text-gray-900 flex items-center gap-1.5">${name} <i data-lucide="circle-check" class="w-3.5 h-3.5 text-green-500 inline"></i></h4><p class="text-[12px] text-gray-600 leading-relaxed mt-1">"${text}"</p></div></div>`}).join('');if(typeof lucide!=='undefined')lucide.createIcons()};
-window.openExpModal=()=>{let e=localStorage.getItem('aavira_user_email');if(!e){window.showToast("Please log in to share!","warning");setTimeout(()=>{window.triggerDotAction('login')},1000);return}document.getElementById('expText').value='';expFile=null;window.setRating(5);document.getElementById('expPhotoPreview').src='';document.getElementById('expPhotoPreview').classList.add('hidden');document.getElementById('expPhotoAddBox').classList.remove('hidden');document.getElementById('expOverlay').classList.remove('hidden');setTimeout(()=>{document.getElementById('expOverlay').classList.remove('opacity-0');document.getElementById('expModal').classList.remove('translate-y-full')},10)};
-window.closeExpModal=()=>{document.getElementById('expModal').classList.add('translate-y-full');document.getElementById('expOverlay').classList.add('opacity-0');setTimeout(()=>document.getElementById('expOverlay').classList.add('hidden'),300)};
-window.handleExpPhoto=e=>{let f=e.target.files[0];if(!f)return;if(!f.type.startsWith('image/')||f.size>5*1024*1024){window.showToast('Choose an image under 5 MB.','error');e.target.value='';return}expFile=f;document.getElementById('expPhotoPreview').src=URL.createObjectURL(f);document.getElementById('expPhotoPreview').classList.remove('hidden');document.getElementById('expPhotoAddBox').classList.add('hidden')};
-window.submitExperience=async()=>{let t=document.getElementById('expText').value.trim();if(!t&&!expFile){window.showToast('Add text or photo!','error');return}let b=document.getElementById('btnSubmitExp'),o=b.innerText;b.innerHTML='<i data-lucide="loader" class="w-4 h-4 animate-spin inline"></i> Posting...';if(typeof lucide!=='undefined')lucide.createIcons();b.disabled=true;try{let pu="";if(expFile){let fd=new FormData();fd.append("file",expFile);fd.append("upload_preset","hcfer3tk");fd.append("cloud_name","lqbslpty");let cr=await fetch("https://api.cloudinary.com/v1_1/lqbslpty/image/upload",{method:"POST",body:fd});let cd=await cr.json();pu=cd.secure_url||""}let p={name:localStorage.getItem('aavira_display_name')||'User',email:localStorage.getItem('aavira_user_email'),text:t,photo:safeUrl(pu),rating:Math.max(1,Math.min(5,Number(expRating)||5)),date:new Date().toISOString()};let saved=false;if(typeof window.sendToVercelExperience==='function')saved=await window.sendToVercelExperience(p);else{let response=await fetch('https://aavira-fashion-backend.vercel.app/api/experience',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});saved=response.ok}if(!saved)throw new Error('Review was not saved');let x=safeJson('aavira_experiences',[]);x.unshift(p);localStorage.setItem('aavira_experiences',JSON.stringify(x));window.renderExperiences();window.showToast('Review submitted! 🎉','success');window.closeExpModal()}catch(e){window.showToast('Unable to share your review. Please try again.','error')}finally{b.innerText=o;b.disabled=false}};
-window.fetchExperiences=async()=>{try{let d=typeof window.getVercelExperiences==='function'?await window.getVercelExperiences():[];if(d&&d.length>0){localStorage.setItem('aavira_experiences',JSON.stringify(d))}else{localStorage.removeItem('aavira_experiences')}window.renderExperiences()}catch(e){}};
-window.openLightbox=(i)=>{if(window.photoExps.length===0)return;window.lbIndex=i;window.updateLbUI();let lb=document.getElementById('imageLightbox');lb.classList.remove('hidden');setTimeout(()=>lb.classList.remove('opacity-0'),10);document.body.style.overflow='hidden'};
-window.closeLightbox=()=>{let lb=document.getElementById('imageLightbox');lb.classList.add('opacity-0');setTimeout(()=>lb.classList.add('hidden'),300);document.body.style.overflow=''};
-window.updateLbUI=()=>{if(window.lbIndex<0)window.lbIndex=window.photoExps.length-1;if(window.lbIndex>=window.photoExps.length)window.lbIndex=0;let e=window.photoExps[window.lbIndex],rating=Math.max(1,Math.min(5,Number(e.rating)||5));document.getElementById('lbImg').src=safeUrl(e.photo);document.getElementById('lbName').innerHTML=`${escapeHtml(e.name||'User')} <i data-lucide="circle-check" class="w-4 h-4 text-green-500 inline"></i>`;document.getElementById('lbStars').innerText='★'.repeat(rating)+'☆'.repeat(5-rating);document.getElementById('lbText').innerText=e.text?`"${escapeHtml(e.text)}"`:''};
-window.lbNext=(e)=>{if(e)e.stopPropagation();window.lbIndex++;window.updateLbUI()};
-window.lbPrev=(e)=>{if(e)e.stopPropagation();window.lbIndex--;window.updateLbUI()};
-document.addEventListener('keydown',event=>{if(event.key!=='Escape')return;if(!document.getElementById('imageLightbox').classList.contains('hidden'))window.closeLightbox();else if(!document.getElementById('searchOverlay').classList.contains('translate-y-full'))window.closeSearch();else if(!document.getElementById('referralCenter').classList.contains('translate-x-full'))window.closeReferralCenter();else if(!document.getElementById('sidebarOverlay').classList.contains('hidden'))window.closeSidebar()});
-document.addEventListener("DOMContentLoaded",()=>{let lt=document.getElementById('lightboxTouchArea');if(lt){lt.addEventListener('touchstart',e=>lStartX=e.changedTouches[0].screenX,{passive:!0});lt.addEventListener('touchend',e=>{let d=lStartX-e.changedTouches[0].screenX;if(d>50)window.lbNext();else if(d<-50)window.lbPrev()},!0)}});
+window.setRating=v=>{expRating=Math.max(1,Math.min(5,v));document.querySelectorAll('#starSelector .star-btn').forEach((b,i)=>b.textContent=i<expRating?'★':'☆')};
+window.renderExperiences=()=>{const x=safeJson('aavira_experiences',[]);const c=$('experience-container');if(!x.length){c.innerHTML='<div class="w-full text-center bg-white border rounded-3xl py-8 px-4"><p class="font-bold text-[13px]">No reviews yet</p><p class="text-[11px] text-gray-500">Be the first to share your style!</p></div>';return}photoExps=x.filter(e=>safeUrl(e.photo));c.innerHTML=x.map(e=>{const pi=photoExps.indexOf(e);const r=Math.max(1,Math.min(5,Number(e.rating)||5));return `<div class="snap-start shrink-0 w-[270px] bg-white border rounded-3xl overflow-hidden shadow-card">${e.photo?`<div class="h-44 bg-gray-50 overflow-hidden cursor-pointer" onclick="openLightbox(${pi})"><img src="${escapeHtml(safeUrl(e.photo))}" class="w-full h-full object-cover"></div>`:''}<div class="p-4"><div class="text-[#D4AF37] tracking-widest">${'★'.repeat(r)}${'☆'.repeat(5-r)}</div><h4 class="text-[13px] font-bold mt-1">${escapeHtml(e.name||'Verified Buyer')} ✓</h4><p class="text-[12px] text-gray-600 mt-1 line-clamp-3">"${escapeHtml(e.text||'')}"</p></div></div>`}).join('');refreshIcons()};
+window.openExpModal=()=>{if(!localStorage.getItem('aavira_user_email')){showToast('Please login to review');setTimeout(()=>triggerDotAction('login'),800);return}$('expText').value='';expFile=null;setRating(5);$('expPhotoPreview').classList.add('hidden');$('expModal').classList.remove('translate-y-full');$('expOverlay').classList.remove('hidden');lockScroll()};
+window.closeExpModal=()=>{$('expModal').classList.add('translate-y-full');$('expOverlay').classList.add('hidden');unlockScroll()};
+window.handleExpPhoto=e=>{const f=e.target.files[0];if(!f)return;if(!f.type.startsWith('image/')||f.size>5*1024*1024){showToast('Image must be under 5MB');return}expFile=f;$('expPhotoPreview').src=URL.createObjectURL(f);$('expPhotoPreview').classList.remove('hidden');$('expPhotoAddBox').style.display='none'};
+window.submitExperience=async()=>{const t=$('expText').value.trim();if(!t&&!expFile){showToast('Add text or photo');return}const b=$('btnSubmitExp');b.disabled=true;b.textContent='Posting...';try{let url='';if(expFile){const fd=new FormData();fd.append('file',expFile);fd.append('upload_preset','hcfer3tk');const cr=await fetch('https://api.cloudinary.com/v1_1/lqbslpty/image/upload',{method:'POST',body:fd});const cd=await cr.json();url=cd.secure_url||''}const p={name:localStorage.getItem('aavira_display_name')||'User',text:t,photo:url,rating:expRating,date:new Date().toISOString()};let ok=false;if(typeof sendToVercelExperience==='function')ok=await sendToVercelExperience(p);else{const r=await fetch(`${AUTH_URL}/api/experience`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});ok=r.ok}if(!ok)throw 0;const x=safeJson('aavira_experiences',[]);x.unshift(p);localStorage.setItem('aavira_experiences',JSON.stringify(x));renderExperiences();showToast('Review submitted 🎉');closeExpModal()}catch{showToast('Could not submit review')}b.disabled=false;b.textContent='Submit Review'};
+window.fetchExperiences=async()=>{try{const d=typeof getVercelExperiences==='function'?await getVercelExperiences():[];if(d?.length)localStorage.setItem('aavira_experiences',JSON.stringify(d))}catch{}renderExperiences()};
 
-window.initializeAppEngine=()=>{window.updateProfileUI();window.loadSkeletons();window.updateCartCount();window.initFadeAnimations();window.renderExperiences();if(typeof lucide!=='undefined')lucide.createIcons();let s=document.getElementById('sidebar'),tx=0;s.addEventListener('touchstart',e=>{tx=e.changedTouches[0].screenX},{passive:!0});s.addEventListener('touchend',e=>{if(tx-e.changedTouches[0].screenX>50)window.closeSidebar()},{passive:!0});setTimeout(async()=>{let nm=localStorage.getItem('aavira_display_name'),dbP=Promise.resolve();if(nm&&nm.toLowerCase()!=="guest user"&&typeof window.getWishlistFromDB==='function'){dbP=window.getWishlistFromDB(nm).then(w=>{if(w&&w.length>0)localStorage.setItem('aavira_wishlist',JSON.stringify(w.map(String)))}).catch(()=>{})}try{await Promise.all([typeof window.fetchBanners==='function'?window.fetchBanners():Promise.resolve(),typeof window.fetchCategories==='function'?window.fetchCategories():Promise.resolve(),typeof window.fetchProducts==='function'?window.fetchProducts():Promise.resolve(),typeof window.fetchExperiences==='function'?window.fetchExperiences():Promise.resolve(),dbP])}finally{if(typeof lucide!=='undefined')lucide.createIcons()}},50)};
-</script>
-<script>document.addEventListener("DOMContentLoaded",()=>{window.initializeAppEngine()});</script>
-<script data-aavira-ui>
-(function(){'use strict';
-function markTheme(){if(document.body)document.body.classList.add('aavira-theme');}
-function stopLongSpinners(){var seen=new WeakSet();function watch(root){var nodes=[];if(root&&root.nodeType===1)nodes.push(root);if(root&&root.querySelectorAll)nodes=nodes.concat(Array.prototype.slice.call(root.querySelectorAll('.mini-spin,.fa-spin')));for(var i=0;i<nodes.length;i++){var el=nodes[i];if(seen.has(el))continue;seen.add(el);setTimeout(function(target){return function(){if(target&&target.classList)target.classList.add('aavira-spinner-done');};}(el),4000);}}watch(document.body);new MutationObserver(function(ms){for(var i=0;i<ms.length;i++){var a=ms[i].addedNodes||[];for(var j=0;j<a.length;j++)watch(a[j]);}}).observe(document.body,{childList:true,subtree:true});}
-function init(){if(!document.body)return;markTheme();stopLongSpinners();}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();})();
+/* lightbox */
+window.openLightbox=i=>{if(!photoExps.length||i<0)return;lbIndex=i;updateLbUI();const lb=$('imageLightbox');lb.classList.remove('hidden');lb.classList.add('flex');requestAnimationFrame(()=>lb.classList.remove('opacity-0'));lockScroll()};
+window.closeLightbox=()=>{const lb=$('imageLightbox');lb.classList.add('opacity-0');setTimeout(()=>{lb.classList.add('hidden');lb.classList.remove('flex')},250);unlockScroll()};
+window.updateLbUI=()=>{if(lbIndex<0)lbIndex=photoExps.length-1;if(lbIndex>=photoExps.length)lbIndex=0;const e=photoExps[lbIndex];const r=Math.max(1,Math.min(5,Number(e.rating)||5));$('lbImg').src=safeUrl(e.photo);$('lbName').textContent=e.name||'User';$('lbStars').textContent='★'.repeat(r)+'☆'.repeat(5-r);$('lbText').textContent=e.text?`"${e.text}"`:'';refreshIcons()};
+window.lbNext=e=>{e?.stopPropagation();lbIndex++;updateLbUI()};
+window.lbPrev=e=>{e?.stopPropagation();lbIndex--;updateLbUI()};
+addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(!$('imageLightbox').classList.contains('hidden'))closeLightbox();else if(!$('searchOverlay').classList.contains('translate-y-full'))closeSearch();else if(!$('sidebarOverlay').classList.contains('hidden'))closeSidebar()});
+document.addEventListener('DOMContentLoaded',()=>{const lt=$('lightboxTouchArea');if(lt){lt.addEventListener('touchstart',e=>lStartX=e.changedTouches[0].screenX,{passive:true});lt.addEventListener('touchend',e=>{const d=lStartX-e.changedTouches[0].screenX;if(d>50)lbNext();else if(d<-50)lbPrev()},{passive:true})}});
+
+window.subscribeNewsletter=async()=>{const i=$('newsletterEmail'),em=i.value.trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){showToast('Enter valid email');return}const b=$('btnNewsletter');b.disabled=true;b.textContent='...';try{fetch(`${AUTH_URL}/api/subscribe`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em})}).catch(()=>{});showToast('Welcome to Aavira Circle 🎉');i.value=''}catch{showToast('Try again')}b.disabled=false;b.textContent='Join'};
+
+window.initializeAppEngine=()=>{updateProfileUI();loadSkeletons();updateCartCount();initFadeAnimations();renderExperiences();setRating(5);refreshIcons();setTimeout(async()=>{try{await Promise.all([fetchBanners(),fetchCategories(),fetchProducts(),fetchExperiences()])}finally{refreshIcons();initFadeAnimations()}},60)};
+document.addEventListener('DOMContentLoaded',()=>{initializeAppEngine();setTimeout(refreshIcons,800)});
 </script>
 <script src="/user_data.js"></script>
 </body>
