@@ -97,7 +97,7 @@ a{color:inherit;text-decoration:none}
 .pcard:hover{box-shadow:0 12px 30px rgba(36,32,36,.1)}
 .pcard-rail{flex:0 0 164px;scroll-snap-align:start}
 .pcard-link{display:block}
-.pcard-media{position:relative;display:block;aspect-ratio:4/5;background:var(--cream);overflow:hidden}
+.pcard-media{position:relative;display:block;aspect-ratio:1/1;background:var(--cream);overflow:hidden}
 .pcard-media img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
 .pcard:hover .pcard-media img{transform:scale(1.04)}
 .tag-off{position:absolute;left:8px;top:8px;background:var(--rani);color:#fff;font-size:11px;font-weight:600;padding:3px 8px;border-radius:999px}
@@ -119,7 +119,7 @@ a{color:inherit;text-decoration:none}
 .heart svg{width:17px;height:17px;stroke-width:1.8}
 .heart.is-on{color:var(--rani)}
 .heart.is-on svg{fill:currentColor}
-.pfeat .pcard-media{aspect-ratio:4/5}
+.pfeat .pcard-media{aspect-ratio:1/1}
 .pfeat .pcard-body{padding:16px}
 .pfeat .pcard-name{font-family:"Playfair Display",serif;font-size:20px;font-weight:600}
 .pfeat .price{font-size:19px}
@@ -554,7 +554,7 @@ a{color:inherit;text-decoration:none}
    Helpers
    ========================================================= */
 const $=(s,r=document)=>r.querySelector(s);
-const PLACEHOLDER='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500"><rect width="400" height="500" fill="#F7F1E8"/><text x="200" y="260" font-family="Georgia,serif" font-size="30" fill="#B9AFA6" text-anchor="middle">Aavira</text></svg>');
+const PLACEHOLDER='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#F7F1E8"/><text x="200" y="210" font-family="Georgia,serif" font-size="30" fill="#B9AFA6" text-anchor="middle">Aavira</text></svg>');
 window.imgFallback=img=>{img.onerror=null;img.src=PLACEHOLDER};
 
 const escapeHtml=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
@@ -870,7 +870,7 @@ document.addEventListener('click',e=>{
    ========================================================= */
 window.loadSkeletons=()=>{
   $('#category-container').innerHTML=Array(5).fill('<div class="cat"><div class="cat-ring skel" style="border-color:transparent"></div><div class="skel" style="height:10px;width:52px;border-radius:5px"></div></div>').join('');
-  const card='<div class="pcard %C%"><div class="skel" style="aspect-ratio:4/5"></div><div style="padding:12px"><div class="skel" style="height:12px;width:75%;border-radius:6px;margin-bottom:10px"></div><div class="skel" style="height:12px;width:40%;border-radius:6px"></div></div></div>';
+  const card='<div class="pcard %C%"><div class="skel" style="aspect-ratio:1/1"></div><div style="padding:12px"><div class="skel" style="height:12px;width:75%;border-radius:6px;margin-bottom:10px"></div><div class="skel" style="height:12px;width:40%;border-radius:6px"></div></div></div>';
   $('#trending-container').innerHTML=Array(3).fill(card.replace('%C%','pcard-rail')).join('');
   $('#exclusive-container').innerHTML=Array(2).fill(card.replace('%C%','pfeat')).join('');
   $('#new-arrivals-container').innerHTML=Array(4).fill(card.replace('%C%','pcard-grid')).join('');
