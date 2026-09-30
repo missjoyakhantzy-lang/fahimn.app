@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Aavira - Luxury Ethnic Elegance</title>
 <meta name="description" content="Discover Aavira's luxury ethnic wear, handcrafted styles, exclusive collections, and new arrivals.">
 <meta name="theme-color" content="#ffffff">
@@ -12,269 +12,1076 @@
 <meta property="og:description" content="Discover luxury ethnic wear and handcrafted styles from Aavira.">
 <meta property="og:url" content="https://aavirafashion.shop/">
 <meta name="twitter:card" content="summary_large_image">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<!-- Tailwind CDN is fine for now; for production, compile Tailwind to a static CSS file for faster loads. -->
 <script src="https://cdn.tailwindcss.com"></script>
-<script>
-tailwind.config={theme:{extend:{colors:{'rani-pink':'#D81B60','rani-dark':'#B71550','ethnic-gold':'#D4AF37','luxury-bg':'#FDFBF7'},fontFamily:{serif:['"Playfair Display"','serif'],sans:['"Inter"','sans-serif'],script:['"Dancing Script"','cursive']},boxShadow:{lux:'0 8px 30px -6px rgba(36,32,36,.12)',card:'0 4px 20px -4px rgba(0,0,0,.06)'}}}}
-const AUTH_URL='https://aavira-fashion-backend.vercel.app';
-</script>
+<script>tailwind.config={theme:{extend:{colors:{'rani-pink':'#D81B60','ethnic-gold':'#D4AF37','luxury-bg':'#FDFBF7'},fontFamily:{serif:['"Playfair Display"','serif'],sans:['"Inter"','sans-serif']}}}}</script>
+
 <style>
-html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
-body{background:#FDFBF7;overflow-x:clip;overscroll-behavior-y:none}
-.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{scrollbar-width:none}
-@keyframes slideLeft{0%{transform:translateX(100vw)}100%{transform:translateX(-100%)}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.animate-float{animation:float 3s ease-in-out infinite}
-@keyframes pulse-ring{0%{transform:scale(.85);box-shadow:0 0 0 0 rgba(37,211,102,.6)}70%{transform:scale(1);box-shadow:0 0 0 14px rgba(37,211,102,0)}100%{transform:scale(.85);box-shadow:0 0 0 0 rgba(37,211,102,0)}}
-.animate-pulse-ring{animation:pulse-ring 2s infinite}
-.mini-spin{width:15px;height:15px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;display:inline-block;animation:aaviraRingSpin .55s linear infinite}
-@keyframes aaviraRingSpin{to{transform:rotate(360deg)}}
-.is-loading{position:relative!important;overflow:hidden!important;pointer-events:none}
-.card-loading-overlay{position:absolute;inset:0;z-index:20;pointer-events:none;background:linear-gradient(110deg,rgba(255,255,255,0) 20%,rgba(249,232,238,.7) 45%,rgba(255,255,255,.95) 50%,rgba(249,232,238,.7) 55%,rgba(255,255,255,0) 80%);background-size:200% 100%;animation:smokeSweep 1s linear infinite}
-@keyframes smokeSweep{0%{background-position:100% 0}100%{background-position:-100% 0}}
-.banner-dot{border-radius:999px;transition:all .35s ease;height:6px}
-#main-header{background:#fff;transition:transform .35s ease;z-index:40}
-#bottomNavContainer{position:fixed!important;left:0!important;right:0!important;bottom:0!important;z-index:9999!important;background:#fff!important;height:74px!important;box-sizing:border-box!important;padding-top:10px!important;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))!important;box-shadow:0 -8px 24px rgba(36,32,36,.07)!important;border-top:1px solid #EDE6DE!important;transition:none!important;transform:translateY(0)!important}
-@media(min-width:640px){#bottomNavContainer{left:50%!important;right:auto!important;width:420px!important;transform:translateX(-50%)!important;border-left:1px solid #eee;border-right:1px solid #eee}}
-#bottomNavContainer a{color:#756D73}#bottomNavContainer a.active{color:#D81B60}
-.fade-up{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
-.fade-up.visible{opacity:1;transform:none}
-#imageLightbox{backdrop-filter:blur(12px)}
-.star-btn{font-size:30px;line-height:1;cursor:pointer;color:#D4AF37}
-.product-card{transition:transform .3s ease,box-shadow .3s ease}
-.product-card:hover{transform:translateY(-2px)}
-.sec-title{font-family:"Playfair Display",serif;font-size:22px;color:#1a1a1a;font-weight:700}
-.sec-sub{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#D4AF37;font-weight:700}
-.gold-line{height:2px;width:42px;background:linear-gradient(90deg,#D81B60,#D4AF37);border-radius:99px;margin-top:6px}
-.hero-gradient{background:linear-gradient(to top,rgba(0,0,0,.62) 0%,rgba(0,0,0,.18) 45%,rgba(0,0,0,0) 75%)}
-.aavira-company-footer{background:#17151A;color:#fff;padding:38px 22px 28px;border-top:3px solid rgba(212,175,55,.4)}
-.aavira-footer-inner{max-width:1050px;margin:auto}
-@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
-</style>
-</head>
-<body class="font-sans text-gray-800 antialiased selection:bg-[#D81B60] selection:text-white">
+:root{
+  --rani:#D81B60; --rani-dark:#B71550; --gold:#D4AF37; --gold-text:#8A6D1D;
+  --ivory:#FDFBF7; --cream:#F7F1E8; --ink:#242024; --muted:#6B6369;
+  --line:#E7E0D9; --blush:#F9E8EE; --plum:#1B1719;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:"Inter",system-ui,sans-serif;background:var(--ivory);color:var(--ink);overflow-x:clip;overscroll-behavior-y:none;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:"Playfair Display",serif;margin:0}
+img{display:block}
+button{font-family:inherit;cursor:pointer}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--rani);outline-offset:2px}
+.no-scrollbar::-webkit-scrollbar{display:none}
+.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+.clamp1{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
-<div id="toast" class="fixed bottom-[92px] left-1/2 -translate-x-1/2 bg-[#111827] text-white px-5 py-2.5 rounded-full text-[12px] font-semibold shadow-xl whitespace-nowrap transition-all duration-300 translate-y-5 opacity-0 scale-95 z-[10060] pointer-events-none"><span id="toast-msg">Success</span></div>
+/* ---------- App column ---------- */
+.app{max-width:420px;margin:0 auto;min-height:100vh;background:var(--ivory);position:relative;padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+@media(min-width:640px){body{background:#EFE8DE}.app{box-shadow:0 0 60px rgba(36,32,36,.12)}}
 
-<!-- SEARCH -->
-<div id="searchOverlay" class="fixed inset-0 bg-white/98 backdrop-blur-xl z-[100] translate-y-full transition-transform duration-500 flex flex-col">
-<div class="h-16 flex items-center px-4 gap-3 border-b border-gray-100"><button onclick="closeSearch()" class="text-gray-500"><i data-lucide="arrow-left" class="w-6 h-6"></i></button><div class="flex-1 bg-gray-50 rounded-2xl flex items-center px-4 py-2.5 gap-2 border border-gray-200"><i data-lucide="search" class="w-4 h-4 text-gray-400"></i><input id="searchInput" oninput="handleSearch()" placeholder="Search kurtis, sarees, lehengas..." class="flex-1 bg-transparent outline-none text-sm font-medium"><button onclick="clearSearch()" class="text-gray-400"><i data-lucide="x" class="w-4 h-4"></i></button></div></div>
-<div id="searchResults" class="flex-1 overflow-y-auto p-4 space-y-3"></div></div>
+/* ---------- Header ---------- */
+.site-header{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.site-header-row{height:60px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 12px}
+.site-logo{height:38px;width:auto;object-fit:contain}
+.icon-btn{position:relative;width:42px;height:42px;border-radius:50%;border:0;background:transparent;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:background .2s}
+.icon-btn:hover{background:var(--blush);color:var(--rani)}
+.icon-btn svg{width:22px;height:22px;stroke-width:1.6}
+.header-actions{display:flex;justify-content:flex-end;gap:2px}
+.cart-badge{position:absolute;top:3px;right:2px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--rani);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
+.cart-badge[hidden]{display:none}
 
-<!-- SIDEBAR -->
-<div id="sidebarOverlay" class="fixed inset-0 bg-black/60 hidden opacity-0 transition-opacity duration-300 z-[9990]" onclick="closeSidebar()"></div>
-<aside id="sidebar" class="fixed top-0 left-0 w-[86%] max-w-[340px] h-full bg-white z-[10000] -translate-x-full transition-transform duration-500 shadow-2xl flex flex-col overflow-hidden">
-<div class="pt-8 pb-5 px-6 border-b border-pink-100 bg-gradient-to-b from-[#FFF5F7] to-white relative">
-<button onclick="closeSidebar()" class="absolute top-4 right-4 w-8 h-8 bg-white border rounded-full flex items-center justify-center text-gray-500"><i data-lucide="x" class="w-4 h-4"></i></button>
-<img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" onerror="this.src='https://placehold.co/120x120?text=A'" alt="Aavira" class="w-[72px] h-[72px] object-contain">
-<div id="guestProfileUI" class="pt-3"><h3 class="text-[20px] font-extrabold">Guest User</h3><p class="text-[12px] text-gray-500 mb-3">Guest Account</p><div class="flex gap-2"><button onclick="triggerDotAction('login',this)" class="bg-[#D81B60] text-white text-[12px] font-bold px-6 py-2.5 rounded-full"><span>Login</span></button><button onclick="triggerDotAction('/auth/verify',this)" class="bg-[#FFF0F5] border border-pink-100 text-[#D81B60] text-[12px] font-bold px-6 py-2.5 rounded-full"><span>Sign Up</span></button></div></div>
-<div id="vipProfileUI" class="hidden pt-3"><h3 id="vipName" class="font-bold text-[18px]">User</h3><p id="vipEmail" class="text-[11px] text-gray-500 truncate">Member</p><button onclick="handleLogout()" class="w-full mt-3 bg-[#FFF0F5] border border-pink-200 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-[#D81B60]">Sign Out</button></div>
-</div>
-<nav class="flex-1 overflow-y-auto p-3 space-y-1 pb-24">
-<a href="./" class="flex items-center px-3 py-3 hover:bg-gray-50 rounded-xl"><i data-lucide="home" class="w-5 h-5 mr-3 text-[#D81B60]"></i><span class="text-[14px] font-medium">Home</span></a>
-<a href="categories" class="flex items-center px-3 py-3 hover:bg-gray-50 rounded-xl"><i data-lucide="layout-grid" class="w-5 h-5 mr-3 text-[#D81B60]"></i><span class="text-[14px] font-medium">Collections</span></a>
-<a href="#" onclick="event.preventDefault();triggerDotAction('cart',this)" class="flex items-center px-3 py-3 hover:bg-gray-50 rounded-xl"><i data-lucide="shopping-bag" class="w-5 h-5 mr-3 text-[#D81B60]"></i><span class="text-[14px] font-medium">My Cart</span></a>
-<a href="orders" class="flex items-center px-3 py-3 hover:bg-gray-50 rounded-xl"><i data-lucide="package" class="w-5 h-5 mr-3 text-[#D81B60]"></i><span class="text-[14px] font-medium">My Orders</span></a>
-<a href="wishlist" class="flex items-center px-3 py-3 hover:bg-gray-50 rounded-xl"><i data-lucide="heart" class="w-5 h-5 mr-3 text-[#D81B60]"></i><span class="text-[14px] font-medium">Wishlist</span></a>
-<a href="#" onclick="event.preventDefault();openPromoModal()" class="flex items-center px-3 py-3 hover:bg-gray-50 rounded-xl"><i data-lucide="ticket" class="w-5 h-5 mr-3 text-[#D81B60]"></i><span class="text-[14px] font-medium">Promo Code</span></a>
-<a href="support" class="flex items-center px-3 py-3 hover:bg-gray-50 rounded-xl"><i data-lucide="headphones" class="w-5 h-5 mr-3 text-[#D81B60]"></i><span class="text-[14px] font-medium">Support</span></a>
-<p class="text-center text-[10px] text-gray-400 tracking-widest pt-6">AAVIRA FASHION v2.0</p>
-</nav>
-</aside>
+/* ---------- Hero ---------- */
+.hero{position:relative;height:clamp(420px,66vh,560px);overflow:hidden;background:linear-gradient(135deg,#6E0F36,#D81B60)}
+.hero-track{position:absolute;inset:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory}
+.hero-slide{position:relative;flex:0 0 100%;height:100%;scroll-snap-align:start;display:block}
+.hero-slide img{width:100%;height:100%;object-fit:cover}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(27,23,25,.78) 0%,rgba(27,23,25,.25) 45%,rgba(27,23,25,0) 70%);pointer-events:none}
+.hero-copy{position:absolute;left:20px;right:20px;bottom:54px;z-index:2;color:#fff;pointer-events:none}
+.hero-copy h1{font-size:34px;line-height:1.12;font-weight:600;letter-spacing:-.01em;max-width:320px}
+.hero-copy p{margin:10px 0 18px;font-size:14px;line-height:1.5;color:rgba(255,255,255,.88);max-width:300px}
+.btn-light{pointer-events:auto;display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--ink);font-weight:600;font-size:14px;padding:12px 22px;border-radius:999px;border:0;transition:background .2s,color .2s}
+.btn-light:hover{background:var(--rani);color:#fff}
+.hero-dots{position:absolute;left:20px;bottom:24px;z-index:2;display:flex;gap:6px}
+.hero-dot{height:4px;width:16px;border-radius:2px;background:rgba(255,255,255,.45);transition:width .3s var(--ease),background .3s}
+.hero-dot.is-active{width:30px;background:#fff}
+.hero-error{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:90px;color:#fff;text-align:center;font-size:14px}
+.hero-error button{margin-top:10px;background:none;border:0;color:#fff;text-decoration:underline;font-weight:600}
 
-<div class="max-w-[420px] mx-auto min-h-screen bg-[#FDFBF7] shadow-2xl relative overflow-x-clip flex flex-col">
-<div id="dynamic-action-banner" class="fixed bottom-[85px] left-1/2 -translate-x-1/2 w-[92%] max-w-[380px] bg-gray-900 text-white rounded-2xl shadow-2xl p-4 hidden z-[60] border border-white/10"></div>
+/* ---------- Sections ---------- */
+.sec{padding:40px 16px 0}
+.sec[hidden]{display:none}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px}
+.sec-head h2{font-size:24px;font-weight:600;letter-spacing:-.01em}
+.sec-link{background:none;border:0;padding:0;font-size:13px;font-weight:600;color:var(--rani)}
+.sec-link:hover{text-decoration:underline}
 
-<header id="main-header" class="sticky top-0 border-b border-gray-100 shadow-sm">
-<div class="px-4 h-16 flex items-center justify-between">
-<div class="flex items-center gap-3">
-<button onclick="openSidebar()" aria-label="Menu" class="w-10 h-10 border border-gray-200 rounded-full bg-white flex flex-col items-center justify-center gap-[4px]"><span class="w-[18px] h-[1.5px] bg-gray-800 rounded-full"></span><span class="w-[22px] h-[1.5px] bg-gray-800 rounded-full"></span><span class="w-[14px] h-[1.5px] bg-gray-800 rounded-full"></span></button>
-<div class="leading-none"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" onerror="this.style.display='none'" alt="Aavira" class="h-9 object-contain"><p class="text-[8px] tracking-[.28em] uppercase text-[#D4AF37] font-bold -mt-0.5">Ethnic Luxury</p></div>
-</div>
-<div class="flex items-center gap-2">
-<button onclick="openSearch()" aria-label="Search" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center"><i data-lucide="search" class="w-5 h-5"></i></button>
-<button onclick="triggerDotAction('cart',this)" aria-label="Cart" class="relative w-10 h-10 rounded-full bg-gray-900 text-white flex items-center justify-center"><i data-lucide="shopping-cart" class="w-5 h-5"></i><span id="cart-badge" class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-[#D81B60] text-white text-[10px] font-bold rounded-full hidden items-center justify-center border-2 border-white">0</span></button>
-</div>
-</div>
-</header>
+.cats{display:flex;gap:18px;overflow-x:auto;padding:2px 2px 6px}
+.cat{flex:0 0 auto;width:76px;display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:0;padding:0}
+.cat-ring{width:76px;height:76px;border-radius:50%;padding:3px;background:#fff;border:1.5px solid var(--gold);transition:border-color .2s,transform .2s}
+.cat:hover .cat-ring{border-color:var(--rani)}
+.cat-ring img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.cat span.cat-name{font-size:12px;font-weight:500;color:var(--ink);text-align:center;line-height:1.3}
 
-<main class="flex-1 w-full pb-6">
-<!-- HERO -->
-<div class="relative w-full h-[62vh] min-h-[440px] overflow-hidden fade-up visible" style="border-radius:0 0 32px 32px">
-<div id="bannerCarousel" class="w-full h-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar bg-[#EFE9E2]"></div>
-<div class="absolute inset-0 hero-gradient pointer-events-none"></div>
-<div class="absolute bottom-14 left-5 right-5 text-white pointer-events-none"><p class="text-[10px] tracking-[.3em] uppercase font-bold text-[#E7D39A] mb-1">New Season • Handcrafted</p><h1 class="font-serif text-[34px] leading-[1.05] font-bold">Luxury Ethnic<br><span class="italic font-medium">Elegance.</span></h1><button onclick="openSearch()" class="pointer-events-auto mt-3 bg-white text-gray-900 text-[12px] font-bold px-5 py-2.5 rounded-full inline-flex items-center gap-2">Shop Now <i data-lucide="arrow-right" class="w-4 h-4"></i></button></div>
-<div id="banner-dots" class="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-1.5 z-20"></div>
-</div>
+.rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;margin-right:-16px;padding-right:16px}
+.feat-list{display:flex;flex-direction:column;gap:20px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
-<section class="px-4 mt-7 mb-9 fade-up"><div class="flex items-end justify-between"><div><p class="sec-sub">Curated</p><h3 class="sec-title">Collections</h3><div class="gold-line"></div></div><a href="categories" class="text-[11px] font-bold text-[#D81B60] uppercase tracking-widest">View All</a></div><div id="category-container" class="flex gap-4 overflow-x-auto no-scrollbar pt-4 pb-1"></div></section>
+/* ---------- Product cards ---------- */
+.pcard{position:relative;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;transition:box-shadow .25s,transform .25s}
+.pcard:hover{box-shadow:0 12px 30px rgba(36,32,36,.1)}
+.pcard-rail{flex:0 0 164px;scroll-snap-align:start}
+.pcard-link{display:block}
+.pcard-media{position:relative;display:block;aspect-ratio:4/5;background:var(--cream);overflow:hidden}
+.pcard-media img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.pcard:hover .pcard-media img{transform:scale(1.04)}
+.tag-off{position:absolute;left:8px;top:8px;background:var(--rani);color:#fff;font-size:11px;font-weight:600;padding:3px 8px;border-radius:999px}
+.tag-best{position:absolute;left:8px;bottom:8px;background:rgba(27,23,25,.88);color:#fff;font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px}
+.pcard-body{display:block;padding:12px 12px 14px}
+.pcard-name{display:block;font-size:14px;font-weight:600;line-height:1.35;color:var(--ink)}
+.pcard-meta{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:12px;color:var(--muted)}
+.rating{display:inline-flex;align-items:center;gap:3px;font-weight:600;color:var(--ink)}
+.rating svg{width:12px;height:12px;fill:var(--gold);stroke:var(--gold)}
+.dots{display:inline-flex}
+.dots i{width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,.12);margin-left:-3px}
+.dots i:first-child{margin-left:0}
+.pcard-price{display:flex;align-items:baseline;gap:8px;margin-top:8px}
+.price{font-size:16px;font-weight:700}
+.mrp{font-size:12px;color:var(--muted);text-decoration:line-through}
+.low{display:block;margin-top:6px;font-size:12px;font-weight:600;color:#B45309}
+.heart{position:absolute;right:8px;top:8px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.12);transition:transform .15s,color .2s}
+.heart:active{transform:scale(.88)}
+.heart svg{width:17px;height:17px;stroke-width:1.8}
+.heart.is-on{color:var(--rani)}
+.heart.is-on svg{fill:currentColor}
+.pfeat .pcard-media{aspect-ratio:4/5}
+.pfeat .pcard-body{padding:16px}
+.pfeat .pcard-name{font-family:"Playfair Display",serif;font-size:20px;font-weight:600}
+.pfeat .price{font-size:19px}
+.heart-lg{width:40px;height:40px}
 
-<section class="px-4 mb-9 fade-up"><div class="flex items-end justify-between"><div><p class="sec-sub">Most Loved</p><h3 class="sec-title">Trending Now</h3><div class="gold-line"></div></div><button onclick="openSearch()" class="text-[11px] font-bold text-[#D81B60] bg-pink-50 border border-pink-100 px-3 py-1.5 rounded-full uppercase tracking-widest">Explore</button></div><div id="trending-container" class="flex gap-3 overflow-x-auto no-scrollbar snap-x pt-4 pb-2"></div></section>
+/* ---------- Reviews ---------- */
+.review{flex:0 0 86%;max-width:300px;scroll-snap-align:center;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.review-photo{display:block;width:100%;aspect-ratio:1/1;background:var(--cream);border:0;padding:0}
+.review-photo img{width:100%;height:100%;object-fit:cover}
+.review-body{padding:16px;display:flex;flex-direction:column;gap:6px}
+.stars{color:var(--gold);font-size:15px;letter-spacing:2px}
+.review-name{font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px;font-family:"Inter",sans-serif}
+.review-name svg{width:14px;height:14px;color:#16A34A}
+.review-text{font-size:13px;line-height:1.6;color:var(--muted);margin:0}
+.empty{width:100%;text-align:center;padding:30px 16px;background:#fff;border:1px solid var(--line);border-radius:10px;color:var(--muted);font-size:13px}
+.empty strong{display:block;color:var(--ink);font-size:14px;margin-bottom:2px}
+.btn-dark{width:100%;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--ink);color:#fff;border:0;border-radius:999px;font-weight:600;font-size:14px;padding:14px;transition:background .2s}
+.btn-dark:hover{background:#000}
+.btn-pink{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--rani);color:#fff;border:0;border-radius:999px;font-weight:600;font-size:14px;padding:14px;transition:background .2s}
+.btn-pink:hover{background:var(--rani-dark)}
+.btn-pink:disabled,.btn-dark:disabled{opacity:.65}
+.btn-wa{background:#25D366;color:#083D1A}
+.btn-wa:hover{background:#1EBE5A}
+.btn-sm{width:auto;padding:9px 20px;font-size:13px;margin:0}
 
-<section class="px-4 mb-9 fade-up"><p class="sec-sub">Handpicked Luxury</p><h3 class="sec-title">Exclusive Picks</h3><div class="gold-line mb-4"></div><div id="exclusive-container" class="flex flex-col gap-5"></div></section>
+/* ---------- Skeleton / loading ---------- */
+.skel{background:linear-gradient(90deg,#F1EBE3 25%,#F8F3EC 37%,#F1EBE3 63%);background-size:400% 100%;animation:shimmer 1.4s ease infinite}
+@keyframes shimmer{0%{background-position:100% 0}100%{background-position:0 0}}
+.is-loading{pointer-events:none;position:relative;opacity:.72}
+.spinner{width:16px;height:16px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;display:inline-block;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-<section class="px-4 mb-9 fade-up"><p class="sec-sub">Just Landed</p><h3 class="sec-title">New Arrivals</h3><div class="gold-line mb-4"></div><div id="new-arrivals-container" class="grid grid-cols-2 gap-3"></div></section>
+/* ---------- Footer ---------- */
+.footer{margin-top:48px;background:var(--plum);color:#fff;padding:36px 20px 28px;border-top:3px solid rgba(212,175,55,.4)}
+.footer-brand{font-family:"Playfair Display",serif;font-size:24px;font-weight:600}
+.footer-brand span{color:var(--rani)}
+.footer-tag{margin:6px 0 0;font-size:13px;line-height:1.6;color:#B5ADB2}
+.footer-news{margin:24px 0 4px}
+.footer-news label{display:block;font-size:14px;font-weight:600;margin-bottom:8px}
+.footer-news-row{display:flex;gap:8px}
+.footer-news input{flex:1;min-width:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:12px 16px;color:#fff;font-size:14px;outline:none}
+.footer-news input::placeholder{color:#9F979D}
+.footer-news input:focus{border-color:var(--rani)}
+.footer-news button{background:var(--rani);color:#fff;border:0;border-radius:999px;padding:0 20px;font-weight:600;font-size:14px}
+.footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px 18px;padding:26px 0;margin-top:22px;border-top:1px solid rgba(255,255,255,.1)}
+.footer h3{font-family:"Inter",sans-serif;font-size:14px;font-weight:600;margin-bottom:10px}
+.footer-grid a{display:block;font-size:13px;color:#B5ADB2;line-height:2}
+.footer-grid a:hover{color:#fff}
+.footer-copy{padding-top:18px;border-top:1px solid rgba(255,255,255,.1);font-size:12px;color:#8F878D}
 
-<!-- NEWSLETTER -->
-<section class="mx-4 mb-10 rounded-[24px] bg-[#17151A] text-white p-6 relative overflow-hidden fade-up">
-<div class="absolute -top-10 -right-10 w-40 h-40 bg-[#D81B60]/30 rounded-full blur-2xl"></div>
-<h3 class="font-serif text-[22px] font-bold">Get ₹200 OFF</h3><p class="text-[12px] text-white/60 mt-1 mb-4">Join Aavira Circle for drops & private offers.</p>
-<div class="flex gap-2"><input id="newsletterEmail" type="email" placeholder="Email address" class="flex-1 bg-white/10 border border-white/15 rounded-2xl px-4 py-3 text-[13px] outline-none placeholder:text-white/40 focus:border-[#D4AF37]"><button id="btnNewsletter" onclick="subscribeNewsletter()" class="bg-[#D81B60] px-4 rounded-2xl font-bold text-[13px]">Join</button></div>
-</section>
+/* ---------- Bottom nav ---------- */
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;margin:0 auto;width:100%;max-width:420px;z-index:9000;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:8px 4px calc(8px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 20px rgba(36,32,36,.05)}
+.nav-item{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 0;background:none;border:0;color:var(--muted);font-size:11px;font-weight:500;transition:color .2s}
+.nav-item svg{width:22px;height:22px;stroke-width:1.6}
+.nav-item:hover,.nav-item[aria-current="page"]{color:var(--rani)}
+.nav-item[aria-current="page"]{font-weight:600}
+.nav-item[aria-current="page"]::before{content:"";position:absolute;top:-9px;width:26px;height:3px;border-radius:0 0 3px 3px;background:var(--rani)}
 
-<section class="px-4 mb-12 fade-up"><div class="flex items-end justify-between mb-1"><div><p class="sec-sub">Verified Love</p><h3 class="sec-title">Customer Reviews</h3><div class="gold-line"></div></div></div><div id="experience-container" class="flex gap-3 overflow-x-auto no-scrollbar snap-x pt-4 pb-3"></div><button onclick="openExpModal()" class="w-full bg-gray-900 text-white font-bold text-[13px] tracking-widest uppercase py-4 rounded-2xl mt-2 flex items-center justify-center gap-2"><i data-lucide="pen-line" class="w-4 h-4"></i> Share your experience</button></section>
-</main>
+/* ---------- Floating buttons / toast / offer banner ---------- */
+.fab-col{position:fixed;z-index:60;right:max(16px,calc(50% - 210px + 16px));bottom:calc(92px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px}
+.fab{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(36,32,36,.18);border:1px solid var(--line);background:#fff;color:var(--rani)}
+.fab svg{width:21px;height:21px}
+.fab-wa{background:#25D366;color:#fff;border-color:#1DA851}
+.toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translate(-50%,16px);opacity:0;background:#111827;color:#fff;padding:10px 20px;border-radius:999px;font-size:13px;font-weight:500;box-shadow:0 10px 24px rgba(0,0,0,.22);z-index:10060;pointer-events:none;white-space:nowrap;max-width:92vw;transition:opacity .25s,transform .25s var(--ease)}
+.toast.is-on{opacity:1;transform:translate(-50%,0)}
+.toast[data-type="error"]{background:var(--rani-dark)}
+.offer{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(150%);width:92%;max-width:380px;z-index:9100;background:var(--ink);color:#fff;border-radius:14px;padding:12px 12px 12px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 14px 34px rgba(0,0,0,.3);transition:transform .45s var(--ease)}
+.offer[hidden]{display:none}
+.offer.is-on{transform:translateX(-50%) translateY(0)}
+.upload-add{display:flex;flex-direction:column;align-items:center;gap:6px}
+.upload-add[hidden]{display:none}
+.offer b{display:block;font-size:14px;color:var(--gold)}
+.offer small{font-size:12px;color:#CFC8CC}
+.offer .grow{flex:1}
+.offer .signin{background:#fff;color:var(--ink);border:0;border-radius:999px;padding:8px 16px;font-size:13px;font-weight:600}
+.offer .x{background:none;border:0;color:#CFC8CC;padding:4px;display:flex}
+.offer .x svg{width:16px;height:16px}
 
-<footer class="aavira-company-footer fade-up"><div class="aavira-footer-inner">
-<div class="flex justify-between items-start gap-4 pb-6 border-b border-white/10"><div class="font-serif text-[24px] font-semibold">Aavira <span style="color:#D81B60">Fashion</span></div><div class="text-[11px] text-white/50 text-right leading-relaxed">Luxury ethnic fashion<br>Designed for modern elegance.</div></div>
-<div class="grid grid-cols-2 sm:grid-cols-4 gap-6 py-6 text-[12px]"><div><h2 class="text-[11px] tracking-widest uppercase mb-3 font-bold">Explore</h2><a class="block text-white/55 py-1" href="/">Home</a><a class="block text-white/55 py-1" href="/categories">Collections</a><a class="block text-white/55 py-1" href="/wishlist">Wishlist</a></div><div><h2 class="text-[11px] tracking-widest uppercase mb-3 font-bold">Shopping</h2><a class="block text-white/55 py-1" href="/cart">Bag</a><a class="block text-white/55 py-1" href="/orders">Orders</a><a class="block text-white/55 py-1" href="/support">Support</a></div><div><h2 class="text-[11px] tracking-widest uppercase mb-3 font-bold">Info</h2><a class="block text-white/55 py-1" href="/terms">Terms</a><a class="block text-white/55 py-1" href="/privacy">Privacy</a></div><div><h2 class="text-[11px] tracking-widest uppercase mb-3 font-bold">Care</h2><p class="text-white/55 leading-relaxed">COD available • Easy 7-day exchange • Handcrafted quality</p></div></div>
-<div class="pt-4 border-t border-white/10 flex justify-between text-[10px] tracking-widest text-white/40"><span>© 2026 AAVIRA</span><span>LUXURY ETHNIC</span></div>
-</div></footer>
-
-<div class="fixed bottom-[104px] right-4 flex flex-col gap-3 z-[40]">
-<button onclick="openColorSheet()" aria-label="Shop by color" class="bg-white text-[#D81B60] border w-[50px] h-[50px] rounded-full shadow-xl flex items-center justify-center animate-float"><i data-lucide="palette" class="w-5 h-5"></i></button>
-<a href="https://wa.me/919608720622" target="_blank" aria-label="WhatsApp" class="w-[50px] h-[50px] bg-[#25D366] text-white rounded-full shadow-xl flex items-center justify-center border border-[#1DA851]"><i data-lucide="message-circle" class="w-5 h-5"></i></a>
-</div>
-
-<nav id="bottomNavContainer">
-<a href="./" class="active flex flex-col items-center gap-1 w-1/5"><i data-lucide="home" class="w-6 h-6"></i><span class="text-[10px] font-medium">Home</span></a>
-<a href="categories" class="flex flex-col items-center gap-1 w-1/5"><i data-lucide="layout-grid" class="w-6 h-6"></i><span class="text-[10px] font-medium">Collections</span></a>
-<a href="#" onclick="event.preventDefault();openSearch();" class="flex flex-col items-center gap-1 w-1/5"><span class="w-12 h-8 -mt-6 bg-[#D81B60] rounded-full flex items-center justify-center text-white shadow-lg"><i data-lucide="search" class="w-5 h-5"></i></span><span class="text-[10px] font-medium">Search</span></a>
-<a href="orders" class="flex flex-col items-center gap-1 w-1/5"><i data-lucide="package" class="w-6 h-6"></i><span class="text-[10px] font-medium">Orders</span></a>
-<a href="profile" class="flex flex-col items-center gap-1 w-1/5"><i data-lucide="user" class="w-6 h-6"></i><span class="text-[10px] font-medium">Profile</span></a>
-</nav>
-</div>
-
-<!-- MODALS (promo, color, review, lightbox) : same IDs as before, fixed flex logic -->
-<div id="promoModal" class="fixed inset-0 z-[10050] hidden items-center justify-center p-4"><div class="absolute inset-0 bg-black/60" onclick="closePromoModal()"></div><div id="promoModalContent" class="bg-white w-full max-w-[400px] rounded-[28px] p-7 relative translate-y-8 opacity-0 transition-all duration-300"><button onclick="closePromoModal()" class="absolute top-4 right-4 w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button><h2 class="font-serif text-2xl font-bold text-center">Promo Code</h2><p class="text-xs text-gray-500 text-center mb-4">Apply your voucher</p><input id="promoInput" placeholder="ENTER CODE" class="w-full bg-gray-50 border rounded-2xl px-5 py-4 text-center uppercase tracking-widest font-bold text-sm outline-none focus:border-[#D81B60]"><button id="btnApplyPromo" onclick="processPromoCode()" class="w-full mt-3 bg-[#D81B60] text-white font-bold text-sm py-4 rounded-2xl">Verify & Apply</button></div></div>
-
-<div id="premiumColorSheet" class="fixed inset-0 z-[110] hidden items-end justify-center"><div class="absolute inset-0 bg-black/50" onclick="closeColorSheet()"></div><div id="colorSheetContent" class="bg-white w-full max-w-[420px] rounded-t-[28px] p-6 relative translate-y-full transition-transform duration-400 border-t-[3px] border-[#D4AF37]/50"><div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-4"></div><h3 class="font-serif text-[24px] font-bold">Shop by Color</h3><div id="colorSwatchesContainer" class="grid grid-cols-5 gap-y-5 mt-4 max-h-[50vh] overflow-y-auto no-scrollbar"></div></div></div>
-
-<div id="colorResultsOverlay" class="fixed inset-0 bg-[#FDFBF7] z-[95] translate-x-full transition-transform duration-500 flex flex-col"><div class="h-16 bg-white border-b flex items-center px-4 gap-3"><button onclick="closeColorResults()"><i data-lucide="arrow-left" class="w-6 h-6"></i></button><div id="selectedColorBadge" class="w-6 h-6 rounded-full border"></div><h3 class="font-serif font-semibold">Color Match</h3></div><div class="flex-1 overflow-y-auto p-4"><p id="colorMatchText" class="text-[11px] text-gray-500 mb-3"></p><div id="colorResultsGrid" class="grid grid-cols-2 gap-3 pb-24"></div></div></div>
-
-<div id="expOverlay" class="fixed inset-0 bg-black/60 hidden z-[120]" onclick="closeExpModal()"></div>
-<div id="expModal" class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[420px] bg-white z-[130] translate-y-full transition-transform duration-500 rounded-t-[28px] p-6 flex flex-col gap-3">
-<div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto"></div>
-<h3 class="font-serif text-xl font-bold">Share your experience</h3>
-<div class="flex gap-1 justify-center" id="starSelector"><span class="star-btn" onclick="setRating(1)">★</span><span class="star-btn" onclick="setRating(2)">★</span><span class="star-btn" onclick="setRating(3)">★</span><span class="star-btn" onclick="setRating(4)">★</span><span class="star-btn" onclick="setRating(5)">★</span></div>
-<textarea id="expText" rows="3" placeholder="Share your experience..." class="w-full bg-gray-50 border rounded-2xl p-4 text-sm outline-none focus:border-[#D81B60] resize-none"></textarea>
-<div class="relative h-28 bg-gray-50 border-2 border-dashed rounded-2xl flex items-center justify-center overflow-hidden"><input type="file" id="expFile" accept="image/*" onchange="handleExpPhoto(event)" class="absolute inset-0 opacity-0 cursor-pointer z-20"><div id="expPhotoAddBox" class="text-gray-400 text-[11px] font-bold">+ ADD PHOTO</div><img id="expPhotoPreview" class="absolute inset-0 w-full h-full object-cover hidden"></div>
-<button id="btnSubmitExp" onclick="submitExperience()" class="w-full bg-gray-900 text-white font-bold text-sm uppercase tracking-widest py-4 rounded-2xl">Submit Review</button>
-</div>
-
-<div id="imageLightbox" class="fixed inset-0 z-[99999] bg-black/95 hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300">
-<button onclick="closeLightbox()" class="absolute top-5 right-5 text-white bg-white/10 p-2 rounded-full"><i data-lucide="x" class="w-6 h-6"></i></button>
-<div id="lightboxTouchArea" class="w-full flex-1 flex items-center justify-center overflow-hidden px-6"><img id="lbImg" class="max-w-full max-h-[68vh] object-contain rounded-xl"></div>
-<div class="pb-10 text-center px-8"><p id="lbName" class="text-white font-bold"></p><div id="lbStars" class="text-[#D4AF37] text-sm"></div><p id="lbText" class="text-white/70 text-sm italic line-clamp-2"></p></div>
-<button onclick="lbPrev(event)" class="absolute left-3 top-1/2 bg-white/10 text-white p-3 rounded-full"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
-<button onclick="lbNext(event)" class="absolute right-3 top-1/2 bg-white/10 text-white p-3 rounded-full"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
-</div>
-
-<script>
-/* ---------- utils ---------- */
-window.allProductsList=[];let toastTimeout,expRating=5,expFile=null,lStartX=0,lastScrollTop=0,scrollTicking=false;
-const $=id=>document.getElementById(id);
-const escapeHtml=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
-const safeUrl=v=>{v=String(v??'').trim();if(!v)return'';try{const u=new URL(v,location.origin);return['http:','https:','data:','blob:'].includes(u.protocol)?v:''}catch{return''}};
-const safeImageUrl=v=>safeUrl(v)||'https://placehold.co/600x700/f5f5f5/999?text=Aavira';
-const safeColor=v=>/^#[0-9a-f]{3,8}$/i.test(String(v))||/^[a-z]+$/i.test(String(v))?String(v):'#ddd';
-const safeJson=(k,f)=>{try{const v=JSON.parse(localStorage.getItem(k));return v??f}catch{return f}};
-const refreshIcons=()=>{try{if(window.lucide&&lucide.createIcons)lucide.createIcons()}catch{}};
-const lockScroll=()=>document.body.style.overflow='hidden';
-const unlockScroll=()=>document.body.style.overflow='';
-window.vibrateApp=(m=30)=>{try{if(navigator.vibrate)navigator.vibrate(m)}catch{}};
-function showToast(m){vibrateApp(40);const s=$('toast'),g=$('toast-msg');if(!s)return;clearTimeout(toastTimeout);g.textContent=m;s.classList.remove('opacity-0','translate-y-5','scale-95');clearTimeout(showToast._t);showToast._t=setTimeout(()=>s.classList.add('opacity-0','translate-y-5','scale-95'),2000)}
-window.showToast=showToast;
-
-/* local loading */
-window.startLocalLoad=el=>{if(!el||el.classList.contains('is-loading'))return;el.classList.add('is-loading');const o=document.createElement('span');o.className='card-loading-overlay';el.appendChild(o)};
-window.stopLocalLoad=el=>{if(!el)return;el.classList.remove('is-loading');el.querySelector(':scope > .card-loading-overlay')?.remove()};
-
-window.triggerDotAction=(url,el=null)=>{vibrateApp(20);if(el)startLocalLoad(el);if(url==='login')url='/auth/verify';if(!url||url==='#'){setTimeout(()=>{if(el)stopLocalLoad(el);showToast('Page not found')},400);return}setTimeout(()=>location.href=url,420)};
-window.goToProduct=(id,el)=>{let r=safeJson('aavira_recent',[]).filter(i=>String(i)!==String(id));r.unshift(String(id));localStorage.setItem('aavira_recent',JSON.stringify(r.slice(0,8)));triggerDotAction(`product?id=${encodeURIComponent(id)}`,el?el.closest('.product-card')||el:el)};
-window.viewProduct=(e,id)=>{if(e){e.preventDefault();e.stopPropagation()}const b=e?.currentTarget;if(!b||b.disabled)return;b.disabled=true;const o=b.innerHTML;b.innerHTML='<span class="mini-spin"></span>';window.goToProduct(id,null);setTimeout(()=>{b.innerHTML=o;b.disabled=false},2500)};
-
-window.getProductSignals=id=>{let h=0;const s=String(id);for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return{rating:(3.8+(h%12)/10).toFixed(1),stockLeft:2+(h%9),lowStock:(2+(h%9))<=4,bestseller:h%5===0}};
-
-/* header hide */
-const mainHeader=$('main-header');
-addEventListener('scroll',()=>{if(scrollTicking)return;scrollTicking=true;requestAnimationFrame(()=>{const s=scrollY;if(mainHeader)mainHeader.style.transform=(s>90&&s>lastScrollTop)?'translateY(-100%)':'translateY(0)';lastScrollTop=s;scrollTicking=false})},{passive:true});
-
-/* fade */
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.05});
-window.initFadeAnimations=()=>document.querySelectorAll('.fade-up:not(.visible)').forEach(el=>io.observe(el));
-
-/* dynamic banner */
-window.closeDynamicBanner=t=>{const b=$('dynamic-action-banner');if(!b)return;b.style.transform='translate(-50%,150px)';setTimeout(()=>{b.classList.add('hidden');if(t==='login')sessionStorage.setItem('loginBannerShown','true')},400)};
-window.checkDynamicBanner=()=>{const b=$('dynamic-action-banner');if(!b)return;if(localStorage.getItem('aavira_user_email')||sessionStorage.getItem('loginBannerShown')){b.classList.add('hidden');return}b.innerHTML='<div class="flex items-center gap-3"><div class="flex-1"><p class="text-[11px] font-bold text-[#E7D39A]">Flat 20% OFF</p><p class="text-[11px] text-white/70">Sign in to claim first-order gift.</p></div><button onclick="triggerDotAction(\'login\',this)" class="bg-white text-gray-900 px-4 py-2 rounded-xl text-[11px] font-bold">Sign In</button><button onclick="closeDynamicBanner(\'login\')" class="text-white/50 text-lg leading-none">×</button></div>';b.classList.remove('hidden');setTimeout(()=>closeDynamicBanner('login'),7000)};
-
-/* profile/cart */
-window.updateProfileUI=()=>{const n=localStorage.getItem('aavira_display_name');const g=$('guestProfileUI'),v=$('vipProfileUI');if(n&&n.toLowerCase()!=='guest user'){g?.classList.add('hidden');v?.classList.remove('hidden');if($('vipName'))$('vipName').textContent=n;if($('vipEmail'))$('vipEmail').textContent=localStorage.getItem('aavira_user_email')||'Aavira Member'}else{v?.classList.add('hidden');g?.classList.remove('hidden')}checkDynamicBanner()};
-window.handleLogout=()=>{localStorage.removeItem('aavira_display_name');localStorage.removeItem('aavira_user_email');sessionStorage.removeItem('loginBannerShown');updateProfileUI();closeSidebar();showToast('Logged out')};
-window.updateCartCount=()=>{const c=safeJson('aavira_cart',[]);const t=c.reduce((s,i)=>s+(Number(i.qty)||1),0);const b=$('cart-badge');if(!b)return;b.textContent=t;b.classList.toggle('hidden',t<=0);b.classList.toggle('flex',t>0)};
-window.toggleHeart=(e,btn,id)=>{if(e){e.preventDefault();e.stopPropagation()}vibrateApp(40);let w=safeJson('aavira_wishlist',[]).map(String);const on=w.includes(String(id));if(on){w=w.filter(x=>x!==String(id));btn.classList.remove('text-red-500');showToast('Removed from wishlist')}else{w.push(String(id));btn.classList.add('text-red-500');btn.querySelector('svg,i')?.setAttribute('fill','currentColor');showToast('Added to wishlist ❤️')}localStorage.setItem('aavira_wishlist',JSON.stringify(w));refreshIcons()};
+/* ---------- Layers (sidebar, sheets, pages, lightbox) ---------- */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9990;opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .3s}
+.scrim.is-open{opacity:1;visibility:visible;transition-delay:0s}
+.layer{position:fixed;z-index:10000;visibility:hidden;pointer-events:none;transition:transform .38s var(--ease),opacity .3s,visibility 0s .38s}
+.layer.is-open{visibility:visible;pointer-events:auto;transform:none;opacity:1;transition-delay:0s}
+.layer-page,.layer-sheet{left:0;right:0;margin:0 auto;width:100%;max-width:420px}
+.layer-page{top:0;bottom:0;background:var(--ivory);display:flex;flex-direction:column}
+.layer-sheet{bottom:0;background:#fff;border-radius:24px 24px 0 0;padding:12px 20px calc(24px + env(safe-area-inset-bottom,0px));max-height:88vh;overflow-y:auto;box-shadow:0 -20px 50px rgba(0,0,0,.18)}
+.from-bottom{transform:translateY(100%)}
+.from-right{transform:translateX(100%)}
+.from-left{transform:translateX(-100%)}
+.layer-fade{top:0;bottom:0;left:0;right:0;opacity:0;background:rgba(0,0,0,.95)}
+.grab{width:44px;height:4px;border-radius:2px;background:#D9D2CB;margin:0 auto 14px}
+.layer-top{flex:0 0 auto;height:60px;display:flex;align-items:center;gap:8px;padding:0 12px;background:#fff;border-bottom:1px solid var(--line)}
+.layer-top h2{font-size:20px;font-weight:600}
+.layer-body{flex:1;overflow-y:auto;padding:16px}
+.sheet-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.sheet-head h2{font-size:26px;font-weight:600;line-height:1.1}
+.sheet-head p{margin:6px 0 0;font-size:13px;color:var(--muted)}
+.field{width:100%;box-sizing:border-box;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:14px;color:var(--ink);outline:none;font-family:inherit}
+.field:focus{border-color:var(--rani);box-shadow:0 0 0 3px rgba(216,27,96,.1)}
 
 /* search */
-window.openSearch=()=>{const o=$('searchOverlay');o.classList.remove('translate-y-full');lockScroll();renderSearchEmpty();setTimeout(()=>$('searchInput')?.focus(),250)};
-window.closeSearch=()=>{$('searchOverlay').classList.add('translate-y-full');unlockScroll()};
-window.clearSearch=()=>{$('searchInput').value='';handleSearch()};
-function renderSearchEmpty(){$('searchResults').innerHTML='<div class="text-center text-gray-400 text-xs mt-16 italic">Discover timeless elegance...</div>'}
-window.handleSearch=()=>{const q=$('searchInput').value.toLowerCase().trim(),c=$('searchResults');if(!q){renderSearchEmpty();return}const f=allProductsList.filter(p=>String(p.name||'').toLowerCase().includes(q));if(!f.length){c.innerHTML='<p class="text-center text-sm text-gray-400 mt-10">No match found.</p>';return}c.innerHTML=f.slice(0,20).map(p=>{const pr=Number(p.price)||0;return `<button onclick="goToProduct('${escapeHtml(String(p.id)).replace(/'/g,'')}')" class="flex gap-3 w-full text-left bg-white p-3 rounded-2xl border shadow-sm"><img src="${escapeHtml(safeImageUrl(p.img))}" class="w-16 h-16 rounded-xl object-cover bg-gray-50"><span class="flex-1"><span class="block text-[13px] font-semibold line-clamp-2">${escapeHtml(p.name)}</span><span class="text-sm font-bold">₹${pr}</span></span></button>`}).join('')};
+.search-box{flex:1;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 14px;height:42px}
+.search-box:focus-within{border-color:var(--rani)}
+.search-box svg{width:17px;height:17px;color:var(--muted);flex:0 0 auto}
+.search-box input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:14px;font-family:inherit}
+.result{display:flex;gap:14px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:10px}
+.result img{width:72px;height:88px;object-fit:cover;border-radius:8px;background:var(--cream);flex:0 0 auto}
+.result-info{display:flex;flex-direction:column;justify-content:center;gap:6px;min-width:0}
+.result-info .n{font-size:14px;font-weight:600;line-height:1.35}
+.hint{text-align:center;color:var(--muted);font-size:14px;margin-top:64px}
 
-/* colors */
-const ethnicColors=[["Red","#E11D48"],["Maroon","#800000"],["Pink","#EC4899"],["Orange","#F97316"],["Gold","#D4AF37"],["Yellow","#EAB308"],["Green","#15803D"],["Olive","#808000"],["Blue","#2563EB"],["Navy","#1E3A8A"],["Sky Blue","#38BDF8"],["Purple","#7C3AED"],["Violet","#8B5CF6"],["Brown","#92400E"],["Black","#111111"],["White","#FFFFFF"],["Gray","#9CA3AF"],["Beige","#D6C7A8"],["Wine","#7A1E2E"],["Teal","#0D9488"]];
-window.openColorSheet=()=>{const s=$('premiumColorSheet'),c=$('colorSheetContent');$('colorSwatchesContainer').innerHTML=ethnicColors.map(([n,h])=>`<div class="flex flex-col items-center gap-1 cursor-pointer" onclick="selectColorAndSearch('${n}','${h}')"><span class="w-12 h-12 rounded-full border shadow" style="background:${h}"></span><span class="text-[10px] font-semibold text-gray-600">${n}</span></div>`).join('');s.classList.remove('hidden');s.classList.add('flex');lockScroll();requestAnimationFrame(()=>c.classList.remove('translate-y-full'))};
-window.closeColorSheet=()=>{const c=$('colorSheetContent');c.classList.add('translate-y-full');unlockScroll();setTimeout(()=>{ $('premiumColorSheet').classList.add('hidden');$('premiumColorSheet').classList.remove('flex')},350)};
-window.selectColorAndSearch=(n,h)=>{closeColorSheet();setTimeout(()=>{const o=$('colorResultsOverlay');$('selectedColorBadge').style.background=h;$('colorMatchText').textContent=`Curated collection in ${n}`;o.classList.remove('translate-x-full');lockScroll();const g=$('colorResultsGrid');g.innerHTML=Array(4).fill('<div class="relative aspect-[3/4] bg-gray-100 rounded-2xl overflow-hidden"><span class="card-loading-overlay"></span></div>').join('');setTimeout(()=>{const m=allProductsList.filter(p=>(p.colors||[]).some(c=>String(c).toLowerCase()===n.toLowerCase()));g.innerHTML=m.length?m.map(p=>generateProductCard(p,true)).join(''):`<div class="col-span-2 text-center py-20"><p class="font-serif text-xl font-bold">No match in ${escapeHtml(n)}</p><p class="text-sm text-gray-500">Try another shade.</p></div>`;refreshIcons()},600)},300)};
-window.closeColorResults=()=>{$('colorResultsOverlay').classList.add('translate-x-full');unlockScroll()};
+/* sidebar */
+#sidebar{top:0;bottom:0;left:max(0px,calc(50% - 210px));width:min(86vw,340px);background:#fff;display:flex;flex-direction:column;box-shadow:0 0 50px rgba(0,0,0,.25)}
+.side-top{display:flex;align-items:center;justify-content:space-between;padding:calc(10px + env(safe-area-inset-top,0px)) 12px 10px 16px}
+.side-top img{height:38px}
+.profile{margin:0 16px 8px;padding:16px;background:var(--blush);border-radius:16px}
+.profile-row{display:flex;align-items:center;gap:14px}
+.avatar{width:56px;height:56px;border-radius:50%;background:#fff;border:2px solid var(--rani);color:var(--rani);font-family:"Playfair Display",serif;font-size:26px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.profile h3{font-family:"Inter",sans-serif;font-size:17px;font-weight:700;margin:0}
+.profile p{margin:2px 0 0;font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.profile-actions{display:flex;gap:8px;margin-top:14px}
+.profile-actions .btn-pink,.profile-actions .btn-outline{flex:1;padding:11px;font-size:13px}
+.btn-outline{display:flex;align-items:center;justify-content:center;gap:8px;background:#fff;color:var(--rani);border:1px solid var(--rani);border-radius:999px;font-weight:600}
+.btn-outline:hover{background:var(--rani);color:#fff}
+.promo-badge{display:none;align-items:center;justify-content:space-between;gap:8px;margin:0 16px 4px;padding:10px 14px;border-radius:12px;background:#FFF8E1;border:1px dashed var(--gold);font-size:13px;font-weight:600;color:var(--gold-text)}
+.promo-badge.is-on{display:flex}
+.promo-badge button{background:none;border:0;color:var(--muted);font-size:12px;text-decoration:underline}
+.side-nav{flex:1;overflow-y:auto;padding:8px 10px 24px}
+.side-nav hr{border:0;border-top:1px solid var(--line);margin:8px 8px}
+.menu-item{width:100%;display:flex;align-items:center;gap:14px;padding:13px 10px;background:none;border:0;border-radius:12px;font-size:15px;font-weight:500;color:var(--ink);text-align:left}
+.menu-item:hover{background:var(--cream)}
+.menu-item>svg:first-child{width:20px;height:20px;color:var(--rani);stroke-width:1.6}
+.menu-item>svg:last-child{width:16px;height:16px;margin-left:auto;color:#A8A0A5}
+.side-ver{text-align:center;font-size:12px;color:#A8A0A5;margin:14px 0 0}
 
-/* sidebar/promo */
-window.openSidebar=()=>{updateProfileUI();$('sidebarOverlay').classList.remove('hidden');lockScroll();requestAnimationFrame(()=>{$('sidebarOverlay').classList.remove('opacity-0');$('sidebar').classList.remove('-translate-x-full')})};
-window.closeSidebar=()=>{$('sidebar').classList.add('-translate-x-full');$('sidebarOverlay').classList.add('opacity-0');unlockScroll();setTimeout(()=>$('sidebarOverlay').classList.add('hidden'),300)};
-window.openPromoModal=()=>{try{closeSidebar()}catch{};$('promoInput').value='';const m=$('promoModal');m.classList.remove('hidden');m.classList.add('flex');lockScroll();requestAnimationFrame(()=>$('promoModalContent').classList.remove('translate-y-8','opacity-0'))};
-window.closePromoModal=()=>{$('promoModalContent').classList.add('translate-y-8','opacity-0');unlockScroll();setTimeout(()=>{$('promoModal').classList.add('hidden');$('promoModal').classList.remove('flex')},300)};
-window.processPromoCode=async()=>{const code=$('promoInput').value.trim().toUpperCase();if(!code){showToast('Enter a promo code');return}const used=safeJson('aavira_used_promos',[]);if(used.includes(code)){showToast('Code already used');return}const b=$('btnApplyPromo');b.disabled=true;b.textContent='Checking...';try{const r=await fetch(`${AUTH_URL}/api/promocodes/${encodeURIComponent(code)}`);const j=await r.json();if(r.ok&&j.status==='success'){const d=Number(j.data.discountAmount||j.data.amount||0);localStorage.setItem('aavira_active_promo',JSON.stringify({code:j.data.id||code,discount:d}));used.push(code);localStorage.setItem('aavira_used_promos',JSON.stringify(used));showToast(`₹${d} OFF applied 🎉`);setTimeout(closePromoModal,900)}else showToast(j.message||'Invalid code')}catch{showToast('Network error')}b.disabled=false;b.textContent='Verify & Apply'};
+/* referral */
+.ref{display:flex;flex-direction:column;align-items:center;text-align:center}
+.ref-icon{width:76px;height:76px;border-radius:50%;background:var(--cream);color:var(--gold-text);display:flex;align-items:center;justify-content:center;margin:12px 0 18px}
+.ref-icon svg{width:36px;height:36px}
+.ref h3{font-size:28px;line-height:1.2;font-weight:700}
+.ref>p{font-size:13px;color:var(--muted);margin:10px 12px 24px;line-height:1.5}
+.ref-stats{width:100%;display:grid;grid-template-columns:1fr 1fr;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px}
+.ref-stats>div+div{border-left:1px solid var(--line)}
+.ref-stats small{display:block;font-size:12px;color:var(--muted)}
+.ref-stats b{font-family:"Playfair Display",serif;font-size:30px}
+.ref-link{width:100%;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:6px 6px 6px 14px;margin-bottom:16px}
+.ref-link input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:13px;color:var(--muted)}
+.ref-link button{width:42px;height:42px;border:0;border-radius:10px;background:var(--cream);display:flex;align-items:center;justify-content:center}
+.ref-link svg{width:18px;height:18px}
 
-/* skeletons + cards */
-window.loadSkeletons=()=>{const sk='<div class="w-[150px] shrink-0 bg-white rounded-2xl border p-2"><div class="aspect-[3/4] bg-gray-100 rounded-xl animate-pulse relative overflow-hidden"><span class="card-loading-overlay"></span></div><div class="h-2 bg-gray-100 rounded mt-3 animate-pulse"></div></div>';$('trending-container').innerHTML=sk+sk+sk;$('new-arrivals-container').innerHTML=sk+sk;$('exclusive-container').innerHTML='<div class="h-[420px] bg-gray-100 rounded-[24px] animate-pulse relative overflow-hidden"><span class="card-loading-overlay"></span></div>';$('category-container').innerHTML=Array(5).fill('<div class="w-[72px] shrink-0"><div class="w-[72px] h-[72px] rounded-full bg-gray-200 animate-pulse"></div></div>').join('')};
+/* colour sheet */
+.swatches{display:grid;grid-template-columns:repeat(5,1fr);gap:18px 6px;max-height:50vh;overflow-y:auto;padding:2px}
+.swatch{background:none;border:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.swatch i{width:46px;height:46px;border-radius:50%;border:1px solid rgba(0,0,0,.12);box-shadow:0 4px 12px rgba(0,0,0,.08);transition:transform .15s}
+.swatch:hover i{transform:scale(1.08)}
+.swatch span{font-size:11px;font-weight:500;color:var(--muted);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-window.generateProductCard=(p,full)=>{const pr=Number(p.price)||0,mr=Number(p.mrp)||pr,d=mr>pr?Math.round((mr-pr)/mr*100):0;const w=safeJson('aavira_wishlist',[]).map(String).includes(String(p.id));const sig=getProductSignals(p.id);return `<div class="product-card ${full?'w-full':'w-[150px] shrink-0 snap-start'} bg-white rounded-2xl border border-gray-100 shadow-card overflow-hidden flex flex-col"><div class="relative aspect-[3/4] bg-gray-50 cursor-pointer overflow-hidden" onclick="goToProduct('${escapeHtml(String(p.id))}')"><img loading="lazy" src="${escapeHtml(safeImageUrl(p.img))}" alt="${escapeHtml(p.name)}" class="absolute inset-0 w-full h-full object-cover" onerror="this.src='https://placehold.co/600x700?text=Aavira'">${d?`<span class="absolute top-2 left-2 bg-white text-[#D81B60] text-[9px] font-bold px-2 py-0.5 rounded-full shadow">${d}% OFF</span>`:''}<button aria-label="wishlist" onclick="toggleHeart(event,this,'${escapeHtml(String(p.id))}')" class="absolute top-2 right-2 w-7 h-7 bg-black/25 backdrop-blur rounded-full flex items-center justify-center ${w?'text-red-500':'text-white'}"><i data-lucide="heart" class="w-4 h-4" ${w?'fill="currentColor"':''}></i></button>${sig.bestseller?'<span class="absolute bottom-0 inset-x-0 bg-black/80 text-white text-[8px] font-bold tracking-widest text-center py-1">BESTSELLER</span>':''}</div><div class="p-2.5 flex-1 flex flex-col"><p class="text-[12px] font-semibold line-clamp-1" onclick="goToProduct('${escapeHtml(String(p.id))}')">${escapeHtml(p.name)}</p><div class="flex items-center gap-1 mt-1"><span class="bg-green-600 text-white text-[9px] font-bold px-1.5 py-[1px] rounded flex items-center gap-0.5">★ ${sig.rating}</span>${sig.lowStock?`<span class="text-[9px] font-bold text-orange-600">Only ${sig.stockLeft} left</span>`:''}</div><div class="flex items-center justify-between mt-auto pt-2"><span class="text-[14px] font-extrabold">₹${pr}</span><button aria-label="view" onclick="viewProduct(event,'${escapeHtml(String(p.id))}')" class="w-7 h-7 rounded-full bg-[#D81B60] text-white flex items-center justify-center"><i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></button></div></div></div>`};
-
-window.generateFeaturedCard=p=>{const pr=Number(p.price)||0,mr=Number(p.mrp)||pr,d=mr>pr?Math.round((mr-pr)/mr*100):0;const w=safeJson('aavira_wishlist',[]).map(String).includes(String(p.id));const sig=getProductSignals(p.id);return `<div class="product-card bg-white rounded-[24px] border overflow-hidden shadow-lux"><div class="relative aspect-[4/5] cursor-pointer overflow-hidden" onclick="goToProduct('${escapeHtml(String(p.id))}')"><img loading="lazy" src="${escapeHtml(safeImageUrl(p.img))}" class="absolute inset-0 w-full h-full object-cover" onerror="this.src='https://placehold.co/800x1000?text=Aavira'"><span class="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent"></span>${d?`<span class="absolute top-3 left-3 bg-white text-[#D81B60] text-[10px] font-bold px-3 py-1 rounded-full shadow">${d}% OFF</span>`:''}<button onclick="toggleHeart(event,this,'${escapeHtml(String(p.id))}')" class="absolute top-3 right-3 w-9 h-9 bg-black/25 backdrop-blur rounded-full flex items-center justify-center ${w?'text-red-500':'text-white'}"><i data-lucide="heart" class="w-5 h-5" ${w?'fill="currentColor"':''}></i></button><span class="absolute bottom-3 left-3 text-white"><span class="text-[10px] tracking-widest uppercase text-white/80">Premium Exclusive</span><span class="block font-serif text-[20px] font-bold leading-tight line-clamp-1">${escapeHtml(p.name)}</span></span></div><div class="p-4 flex items-center justify-between"><div><div class="flex items-center gap-2"><span class="text-[18px] font-extrabold">₹${pr}</span>${mr>pr?`<span class="text-[12px] text-gray-400 line-through">₹${mr}</span>`:''}<span class="bg-green-600 text-white text-[10px] font-bold px-1.5 rounded">★ ${sig.rating}</span></div></div><button onclick="viewProduct(event,'${escapeHtml(String(p.id))}')" class="h-11 px-5 rounded-full bg-gray-900 text-white text-[12px] font-bold tracking-widest uppercase flex items-center gap-2">View <i data-lucide="arrow-right" class="w-4 h-4"></i></button></div></div>`};
-
-/* data */
-window.fetchBanners=async()=>{const c=$('bannerCarousel'),dots=$('banner-dots');try{let d=typeof getBannersData==='function'?await getBannersData():[];if(!d?.length)throw 0;c.innerHTML=d.map(b=>{const img=escapeHtml(safeImageUrl(b.imageUrl||b.image));const link=safeUrl(b.link||'');return `<div class="snap-start shrink-0 w-full h-full relative cursor-pointer" onclick="${link?`triggerDotAction('${link}',this)`:''}"><img src="${img}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/800x1000?text=Aavira'"></div>`}).join('');dots.innerHTML=d.map((_,i)=>`<span class="banner-dot ${i===0?'w-5 bg-white':'w-2 bg-white/50'}"></span>`).join('');clearInterval(window._bi);window._bi=setInterval(()=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const max=c.scrollWidth-c.clientWidth;if(c.scrollLeft>=max-10)c.scrollTo({left:0,behavior:'smooth'});else c.scrollBy({left:c.clientWidth,behavior:'smooth'})},3800);c.onscroll=()=>{const ix=Math.round(c.scrollLeft/Math.max(1,c.clientWidth));dots.querySelectorAll('.banner-dot').forEach((el,i)=>el.className=`banner-dot ${i===ix?'w-5 bg-white':'w-2 bg-white/50'}`)};}catch{c.innerHTML='<div class="w-full h-full flex flex-col items-center justify-center text-center p-8"><p class="font-serif text-xl">New collection arriving soon</p><button onclick="fetchBanners()" class="mt-3 text-sm font-bold text-[#D81B60] underline">Try again</button></div>';dots.innerHTML=''}};
-
-window.fetchCategories=async()=>{const c=$('category-container');try{let a=typeof getCategoriesData==='function'?await getCategoriesData():[];if(!a?.length)throw 0;c.innerHTML=a.map(x=>`<button onclick="triggerDotAction('categories',this)" class="flex flex-col items-center gap-2 w-[74px] shrink-0"><span class="w-[72px] h-[72px] rounded-full p-[3px] bg-gradient-to-tr from-[#D81B60] via-[#D4AF37] to-[#D81B60]"><span class="block w-full h-full rounded-full overflow-hidden border-2 border-white bg-white"><img loading="lazy" src="${escapeHtml(safeImageUrl(x.image))}" class="w-full h-full object-cover"></span></span><span class="text-[10px] font-bold uppercase tracking-wide text-center line-clamp-1">${escapeHtml(x.name)}</span></button>`).join('')}catch{c.innerHTML='<div class="text-sm text-gray-500 py-4">Collections unavailable. <button onclick="fetchCategories()" class="text-[#D81B60] font-bold underline">Retry</button></div>'}};
-
-window.fetchProducts=async()=>{const t=$('trending-container'),e=$('exclusive-container'),n=$('new-arrivals-container');try{let d=typeof getVercelData==='function'?await getVercelData():[];if(!d?.length)throw 0;allProductsList=d.map(x=>({id:x.id,name:x.name,price:x.price,mrp:x.mrp,colors:Array.isArray(x.colors)?x.colors:[],img:x.imageMain||x.image||''}));t.innerHTML='';e.innerHTML='';n.innerHTML='';allProductsList.forEach((p,i)=>{if(i<6)t.innerHTML+=generateProductCard(p,false);else if(i<8)e.innerHTML+=generateFeaturedCard(p);else n.innerHTML+=generateProductCard(p,true)});if(!e.innerHTML)e.innerHTML=allProductsList.slice(0,2).map(generateFeaturedCard).join('');if(!n.innerHTML)n.innerHTML='<p class="col-span-2 text-center text-sm text-gray-400 py-6">More arrivals coming soon.</p>';initFadeAnimations();refreshIcons()}catch{const r='<div class="w-full text-center text-sm text-gray-500 py-8">Products unavailable. <button onclick="fetchProducts()" class="text-[#D81B60] font-bold underline">Retry</button></div>';t.innerHTML=r;e.innerHTML=r;n.innerHTML=r}};
-
-/* reviews */
-window.photoExps=[];window.lbIndex=0;
-window.setRating=v=>{expRating=Math.max(1,Math.min(5,v));document.querySelectorAll('#starSelector .star-btn').forEach((b,i)=>b.textContent=i<expRating?'★':'☆')};
-window.renderExperiences=()=>{const x=safeJson('aavira_experiences',[]);const c=$('experience-container');if(!x.length){c.innerHTML='<div class="w-full text-center bg-white border rounded-3xl py-8 px-4"><p class="font-bold text-[13px]">No reviews yet</p><p class="text-[11px] text-gray-500">Be the first to share your style!</p></div>';return}photoExps=x.filter(e=>safeUrl(e.photo));c.innerHTML=x.map(e=>{const pi=photoExps.indexOf(e);const r=Math.max(1,Math.min(5,Number(e.rating)||5));return `<div class="snap-start shrink-0 w-[270px] bg-white border rounded-3xl overflow-hidden shadow-card">${e.photo?`<div class="h-44 bg-gray-50 overflow-hidden cursor-pointer" onclick="openLightbox(${pi})"><img src="${escapeHtml(safeUrl(e.photo))}" class="w-full h-full object-cover"></div>`:''}<div class="p-4"><div class="text-[#D4AF37] tracking-widest">${'★'.repeat(r)}${'☆'.repeat(5-r)}</div><h4 class="text-[13px] font-bold mt-1">${escapeHtml(e.name||'Verified Buyer')} ✓</h4><p class="text-[12px] text-gray-600 mt-1 line-clamp-3">"${escapeHtml(e.text||'')}"</p></div></div>`}).join('');refreshIcons()};
-window.openExpModal=()=>{if(!localStorage.getItem('aavira_user_email')){showToast('Please login to review');setTimeout(()=>triggerDotAction('login'),800);return}$('expText').value='';expFile=null;setRating(5);$('expPhotoPreview').classList.add('hidden');$('expModal').classList.remove('translate-y-full');$('expOverlay').classList.remove('hidden');lockScroll()};
-window.closeExpModal=()=>{$('expModal').classList.add('translate-y-full');$('expOverlay').classList.add('hidden');unlockScroll()};
-window.handleExpPhoto=e=>{const f=e.target.files[0];if(!f)return;if(!f.type.startsWith('image/')||f.size>5*1024*1024){showToast('Image must be under 5MB');return}expFile=f;$('expPhotoPreview').src=URL.createObjectURL(f);$('expPhotoPreview').classList.remove('hidden');$('expPhotoAddBox').style.display='none'};
-window.submitExperience=async()=>{const t=$('expText').value.trim();if(!t&&!expFile){showToast('Add text or photo');return}const b=$('btnSubmitExp');b.disabled=true;b.textContent='Posting...';try{let url='';if(expFile){const fd=new FormData();fd.append('file',expFile);fd.append('upload_preset','hcfer3tk');const cr=await fetch('https://api.cloudinary.com/v1_1/lqbslpty/image/upload',{method:'POST',body:fd});const cd=await cr.json();url=cd.secure_url||''}const p={name:localStorage.getItem('aavira_display_name')||'User',text:t,photo:url,rating:expRating,date:new Date().toISOString()};let ok=false;if(typeof sendToVercelExperience==='function')ok=await sendToVercelExperience(p);else{const r=await fetch(`${AUTH_URL}/api/experience`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});ok=r.ok}if(!ok)throw 0;const x=safeJson('aavira_experiences',[]);x.unshift(p);localStorage.setItem('aavira_experiences',JSON.stringify(x));renderExperiences();showToast('Review submitted 🎉');closeExpModal()}catch{showToast('Could not submit review')}b.disabled=false;b.textContent='Submit Review'};
-window.fetchExperiences=async()=>{try{const d=typeof getVercelExperiences==='function'?await getVercelExperiences():[];if(d?.length)localStorage.setItem('aavira_experiences',JSON.stringify(d))}catch{}renderExperiences()};
+/* experience modal */
+.star-row{display:flex;justify-content:center;gap:6px;margin:6px 0 14px}
+.star-btn{background:none;border:0;font-size:32px;line-height:1;color:var(--gold);padding:2px;transition:transform .1s}
+.star-btn:active{transform:scale(.85)}
+.upload{position:relative;height:120px;margin:12px 0 4px;border:2px dashed #D4CCC4;border-radius:14px;background:var(--ivory);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--muted);font-size:13px;font-weight:500;overflow:hidden}
+.upload input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:2}
+.upload img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.upload img[hidden]{display:none}
+.upload svg{width:26px;height:26px}
 
 /* lightbox */
-window.openLightbox=i=>{if(!photoExps.length||i<0)return;lbIndex=i;updateLbUI();const lb=$('imageLightbox');lb.classList.remove('hidden');lb.classList.add('flex');requestAnimationFrame(()=>lb.classList.remove('opacity-0'));lockScroll()};
-window.closeLightbox=()=>{const lb=$('imageLightbox');lb.classList.add('opacity-0');setTimeout(()=>{lb.classList.add('hidden');lb.classList.remove('flex')},250);unlockScroll()};
-window.updateLbUI=()=>{if(lbIndex<0)lbIndex=photoExps.length-1;if(lbIndex>=photoExps.length)lbIndex=0;const e=photoExps[lbIndex];const r=Math.max(1,Math.min(5,Number(e.rating)||5));$('lbImg').src=safeUrl(e.photo);$('lbName').textContent=e.name||'User';$('lbStars').textContent='★'.repeat(r)+'☆'.repeat(5-r);$('lbText').textContent=e.text?`"${e.text}"`:'';refreshIcons()};
-window.lbNext=e=>{e?.stopPropagation();lbIndex++;updateLbUI()};
-window.lbPrev=e=>{e?.stopPropagation();lbIndex--;updateLbUI()};
-addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(!$('imageLightbox').classList.contains('hidden'))closeLightbox();else if(!$('searchOverlay').classList.contains('translate-y-full'))closeSearch();else if(!$('sidebarOverlay').classList.contains('hidden'))closeSidebar()});
-document.addEventListener('DOMContentLoaded',()=>{const lt=$('lightboxTouchArea');if(lt){lt.addEventListener('touchstart',e=>lStartX=e.changedTouches[0].screenX,{passive:true});lt.addEventListener('touchend',e=>{const d=lStartX-e.changedTouches[0].screenX;if(d>50)lbNext();else if(d<-50)lbPrev()},{passive:true})}});
+.lb-close,.lb-nav{position:absolute;z-index:3;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:#fff;display:flex;align-items:center;justify-content:center}
+.lb-close{top:calc(16px + env(safe-area-inset-top,0px));right:16px}
+.lb-nav{top:50%;transform:translateY(-50%)}
+.lb-prev{left:12px}.lb-next{right:12px}
+.lb-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 8px 150px}
+.lb-stage img{max-width:100%;max-height:100%;object-fit:contain}
+.lb-cap{position:absolute;left:0;right:0;bottom:0;padding:16px 24px calc(28px + env(safe-area-inset-bottom,0px));text-align:center;color:#fff}
+.lb-cap b{display:flex;align-items:center;justify-content:center;gap:6px;font-size:16px}
+.lb-cap .stars{margin:4px 0 6px}
+.lb-cap p{margin:0;font-size:13px;color:rgba(255,255,255,.75);font-style:italic}
 
-window.subscribeNewsletter=async()=>{const i=$('newsletterEmail'),em=i.value.trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){showToast('Enter valid email');return}const b=$('btnNewsletter');b.disabled=true;b.textContent='...';try{fetch(`${AUTH_URL}/api/subscribe`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em})}).catch(()=>{});showToast('Welcome to Aavira Circle 🎉');i.value=''}catch{showToast('Try again')}b.disabled=false;b.textContent='Join'};
+@media (prefers-reduced-motion:reduce){
+  *,::before,::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
 
-window.initializeAppEngine=()=>{updateProfileUI();loadSkeletons();updateCartCount();initFadeAnimations();renderExperiences();setRating(5);refreshIcons();setTimeout(async()=>{try{await Promise.all([fetchBanners(),fetchCategories(),fetchProducts(),fetchExperiences()])}finally{refreshIcons();initFadeAnimations()}},60)};
-document.addEventListener('DOMContentLoaded',()=>{initializeAppEngine();setTimeout(refreshIcons,800)});
+<body>
+<div id="toast" class="toast" role="status" aria-live="polite"><span id="toast-msg"></span></div>
+<div id="scrim" class="scrim" onclick="closeTopLayer()"></div>
+
+<!-- ================= SEARCH ================= -->
+<div id="searchOverlay" class="layer layer-page from-bottom" role="dialog" aria-modal="true" aria-label="Search products">
+  <div class="layer-top">
+    <button type="button" class="icon-btn" onclick="closeSearch()" aria-label="Close search"><i data-lucide="arrow-left"></i></button>
+    <label class="search-box">
+      <i data-lucide="search"></i>
+      <input type="search" id="searchInput" oninput="handleSearchDebounced()" placeholder="Search sarees, suits, lehengas" autocomplete="off">
+    </label>
+  </div>
+  <div id="searchResults" class="layer-body" aria-live="polite"></div>
+</div>
+
+<!-- ================= REFERRAL ================= -->
+<div id="referralCenter" class="layer layer-page from-right" role="dialog" aria-modal="true" aria-label="Refer and earn">
+  <div class="layer-top">
+    <button type="button" class="icon-btn" onclick="closeReferralCenter()" aria-label="Back"><i data-lucide="arrow-left"></i></button>
+    <h2>Refer &amp; Earn</h2>
+  </div>
+  <div class="layer-body">
+    <div class="ref">
+      <div class="ref-icon"><i data-lucide="gift"></i></div>
+      <h3>Invite friends,<br>earn rewards</h3>
+      <p>Share your link. When a friend signs up, you both get a flat ₹500 discount.</p>
+      <div class="ref-stats">
+        <div><small>Friends joined</small><b id="refCount">0</b></div>
+        <div><small>Earned</small><b id="refEarned" style="color:var(--gold-text)">₹0</b></div>
+      </div>
+      <div class="ref-link">
+        <input type="text" id="referralLinkInput" readonly value="Log in to generate your link" aria-label="Your referral link">
+        <button type="button" onclick="copyReferralLink()" aria-label="Copy link"><i data-lucide="copy"></i></button>
+      </div>
+      <button type="button" class="btn-pink btn-wa" onclick="shareReferralLink()"><i data-lucide="share-2" style="width:18px;height:18px"></i>Share on WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PROMO SHEET ================= -->
+<div id="promoModal" class="layer layer-sheet from-bottom" data-scrim="1" role="dialog" aria-modal="true" aria-labelledby="promoTitle">
+  <div class="grab"></div>
+  <div class="sheet-head">
+    <div><h2 id="promoTitle">Promo code</h2><p>Enter your voucher to apply the discount.</p></div>
+    <button type="button" class="icon-btn" onclick="closePromoModal()" aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
+  <input type="text" id="promoInput" class="field" style="text-align:center;text-transform:uppercase;letter-spacing:.12em;font-weight:600;margin-bottom:12px" placeholder="Enter code" autocomplete="off" aria-label="Promo code">
+  <button type="button" id="btnApplyPromo" class="btn-pink" onclick="processPromoCode()">Apply code</button>
+</div>
+
+<!-- ================= COLOUR SHEET ================= -->
+<div id="premiumColorSheet" class="layer layer-sheet from-bottom" data-scrim="1" role="dialog" aria-modal="true" aria-labelledby="colorTitle">
+  <div class="grab"></div>
+  <div class="sheet-head">
+    <div><h2 id="colorTitle">Shop by colour</h2><p>Pick a shade to see matching styles.</p></div>
+    <button type="button" class="icon-btn" onclick="closeColorSheet()" aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
+  <div id="colorSwatchesContainer" class="swatches no-scrollbar"></div>
+</div>
+
+<!-- ================= COLOUR RESULTS ================= -->
+<div id="colorResultsOverlay" class="layer layer-page from-right" role="dialog" aria-modal="true" aria-label="Colour results">
+  <div class="layer-top">
+    <button type="button" class="icon-btn" onclick="closeColorResults()" aria-label="Back"><i data-lucide="arrow-left"></i></button>
+    <span id="selectedColorBadge" style="width:22px;height:22px;border-radius:50%;border:1px solid rgba(0,0,0,.15)"></span>
+    <h2>Colour match</h2>
+  </div>
+  <div class="layer-body">
+    <p id="colorMatchText" style="font-size:13px;color:var(--muted);margin:0 0 14px"></p>
+    <div id="colorResultsGrid" class="grid2" style="padding-bottom:24px"></div>
+  </div>
+</div>
+
+<!-- ================= REVIEW SHEET ================= -->
+<div id="expModal" class="layer layer-sheet from-bottom" data-scrim="1" role="dialog" aria-modal="true" aria-labelledby="expTitle">
+  <div class="grab"></div>
+  <div class="sheet-head">
+    <div><h2 id="expTitle">Share your experience</h2><p>Tap a star to rate.</p></div>
+    <button type="button" class="icon-btn" onclick="closeExpModal()" aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
+  <div class="star-row" id="starSelector" role="group" aria-label="Rating">
+    <button type="button" class="star-btn" data-v="1" aria-label="1 star">★</button>
+    <button type="button" class="star-btn" data-v="2" aria-label="2 stars">★</button>
+    <button type="button" class="star-btn" data-v="3" aria-label="3 stars">★</button>
+    <button type="button" class="star-btn" data-v="4" aria-label="4 stars">★</button>
+    <button type="button" class="star-btn" data-v="5" aria-label="5 stars">★</button>
+  </div>
+  <textarea id="expText" rows="3" class="field" style="resize:none" placeholder="Tell us about the product and fit" aria-label="Your review"></textarea>
+  <div class="upload">
+    <input type="file" id="expFile" accept="image/*" onchange="handleExpPhoto(event)" aria-label="Add a photo">
+    <div id="expPhotoAddBox" class="upload-add"><i data-lucide="image-plus"></i><span>Add a photo</span></div>
+    <img id="expPhotoPreview" alt="Selected photo preview" hidden>
+  </div>
+  <button type="button" id="btnSubmitExp" class="btn-dark" onclick="submitExperience()">Submit review</button>
+</div>
+
+<!-- ================= LIGHTBOX ================= -->
+<div id="imageLightbox" class="layer layer-fade" role="dialog" aria-modal="true" aria-label="Review photo">
+  <button type="button" class="lb-close" onclick="closeLightbox()" aria-label="Close"><i data-lucide="x"></i></button>
+  <div class="lb-stage" id="lightboxTouchArea"><img id="lbImg" src="" alt="Customer review photo"></div>
+  <button type="button" class="lb-nav lb-prev" onclick="lbPrev(event)" aria-label="Previous photo"><i data-lucide="chevron-left"></i></button>
+  <button type="button" class="lb-nav lb-next" onclick="lbNext(event)" aria-label="Next photo"><i data-lucide="chevron-right"></i></button>
+  <div class="lb-cap"><b id="lbName"></b><div id="lbStars" class="stars"></div><p id="lbText"></p></div>
+</div>
+
+<!-- ================= SIDEBAR ================= -->
+<aside id="sidebar" class="layer from-left" data-scrim="1" aria-label="Menu">
+  <div class="side-top">
+    <img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira Fashion">
+    <button type="button" class="icon-btn" onclick="closeSidebar()" aria-label="Close menu"><i data-lucide="x"></i></button>
+  </div>
+
+  <div id="guestProfileUI" class="profile">
+    <div class="profile-row">
+      <div class="avatar">G</div>
+      <div style="min-width:0"><h3>Welcome</h3><p>Sign in for orders, wishlist and offers</p></div>
+    </div>
+    <div class="profile-actions">
+      <button type="button" class="btn-pink" onclick="triggerDotAction('login',this)">Log in</button>
+      <button type="button" class="btn-outline" onclick="triggerDotAction('/auth/verify',this)">Sign up</button>
+    </div>
+  </div>
+
+  <div id="vipProfileUI" class="profile" hidden>
+    <div class="profile-row">
+      <div class="avatar" id="profileInitial">M</div>
+      <div style="min-width:0"><h3 id="vipName">Member</h3><p id="vipEmail">Aavira member</p></div>
+    </div>
+    <div class="profile-actions">
+      <button type="button" class="btn-outline" onclick="handleLogout()"><i data-lucide="log-out" style="width:16px;height:16px"></i>Sign out</button>
+    </div>
+  </div>
+
+  <div id="activePromoBadge" class="promo-badge">
+    <span id="activePromoText"></span>
+    <button type="button" onclick="removePromoCode()">Remove</button>
+  </div>
+
+  <nav class="side-nav">
+    <a class="menu-item" href="./"><i data-lucide="home"></i>Home<i data-lucide="chevron-right"></i></a>
+    <a class="menu-item" href="categories"><i data-lucide="layout-grid"></i>Collections<i data-lucide="chevron-right"></i></a>
+    <button type="button" class="menu-item" onclick="triggerDotAction('cart',this)"><i data-lucide="shopping-bag"></i>My cart<i data-lucide="chevron-right"></i></button>
+    <a class="menu-item" href="orders"><i data-lucide="package"></i>My orders<i data-lucide="chevron-right"></i></a>
+    <a class="menu-item" href="wishlist"><i data-lucide="heart"></i>My wishlist<i data-lucide="chevron-right"></i></a>
+    <hr>
+    <button type="button" class="menu-item" onclick="openPromoModal()"><i data-lucide="ticket"></i>Apply promo code<i data-lucide="chevron-right"></i></button>
+    <button type="button" class="menu-item" onclick="openReferralCenter()"><i data-lucide="share-2"></i>Refer &amp; earn<i data-lucide="chevron-right"></i></button>
+    <hr>
+    <a class="menu-item" href="support"><i data-lucide="headphones"></i>Customer support<i data-lucide="chevron-right"></i></a>
+    <p class="side-ver">Aavira Fashion v1.1.0</p>
+  </nav>
+</aside>
+
+<!-- ================= PAGE ================= -->
+<div class="app">
+  <header class="site-header">
+    <div class="site-header-row">
+      <div><button type="button" class="icon-btn" onclick="openSidebar()" aria-label="Open menu"><i data-lucide="menu"></i></button></div>
+      <a href="./" aria-label="Aavira home"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" class="site-logo"></a>
+      <div class="header-actions">
+        <button type="button" class="icon-btn" onclick="openSearch()" aria-label="Search"><i data-lucide="search"></i></button>
+        <button type="button" class="icon-btn" onclick="triggerDotAction('cart',this)" aria-label="Shopping cart">
+          <i data-lucide="shopping-bag"></i><span id="cart-badge" class="cart-badge" hidden>0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-label="Featured">
+      <div id="bannerCarousel" class="hero-track no-scrollbar"></div>
+      <div class="hero-copy">
+        <h1>Luxury ethnic elegance</h1>
+        <p>Handcrafted styles, exclusive collections and new arrivals.</p>
+        <a class="btn-light" href="categories">Shop collections <i data-lucide="arrow-right" style="width:16px;height:16px"></i></a>
+      </div>
+      <div id="banner-dots" class="hero-dots"></div>
+    </section>
+
+    <section class="sec" aria-labelledby="h-coll">
+      <div class="sec-head"><h2 id="h-coll">Collections</h2><a class="sec-link" href="categories">View all</a></div>
+      <div id="category-container" class="cats no-scrollbar"></div>
+    </section>
+
+    <section class="sec" aria-labelledby="h-trend">
+      <div class="sec-head"><h2 id="h-trend">Trending</h2><button type="button" class="sec-link" onclick="openSearch()">Search all</button></div>
+      <div id="trending-container" class="rail no-scrollbar"></div>
+    </section>
+
+    <section class="sec" id="exclusive-section" aria-labelledby="h-excl">
+      <div class="sec-head"><h2 id="h-excl">Exclusive picks</h2></div>
+      <div id="exclusive-container" class="feat-list"></div>
+    </section>
+
+    <section class="sec" aria-labelledby="h-new">
+      <div class="sec-head"><h2 id="h-new">New arrivals</h2></div>
+      <div id="new-arrivals-container" class="grid2"></div>
+    </section>
+
+    <section class="sec" aria-labelledby="h-rev">
+      <div class="sec-head"><h2 id="h-rev">Customer reviews</h2></div>
+      <div id="experience-container" class="rail no-scrollbar" style="gap:14px"></div>
+      <button type="button" class="btn-dark" onclick="openExpModal()"><i data-lucide="pen" style="width:16px;height:16px"></i>Write a review</button>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-brand">Aavira <span>Fashion</span></div>
+    <p class="footer-tag">Luxury ethnic fashion, designed for modern elegance.</p>
+
+    <div class="footer-news">
+      <label for="newsletterEmail">Get new collections and offers by email</label>
+      <div class="footer-news-row">
+        <input type="email" id="newsletterEmail" placeholder="Your email address" autocomplete="email">
+        <button type="button" id="btnNewsletter" onclick="subscribeNewsletter()">Join</button>
+      </div>
+    </div>
+
+    <div class="footer-grid">
+      <div><h3>Explore</h3><a href="/">Home</a><a href="/categories">Collections</a><a href="/offer">Offers</a><a href="/wishlist">Wishlist</a></div>
+      <div><h3>Shopping</h3><a href="/cart">Shopping bag</a><a href="/orders">My orders</a><a href="/profile">My account</a><a href="/support">Support</a></div>
+      <div><h3>Information</h3><a href="/terms">Terms &amp; conditions</a><a href="/privacy">Privacy policy</a><a href="/support">Help center</a></div>
+      <div><h3>Contact</h3><a href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a></div>
+    </div>
+    <div class="footer-copy">© 2026 Aavira Fashion. All rights reserved.</div>
+  </footer>
+</div>
+
+<div id="dynamic-action-banner" class="offer" role="region" aria-label="Sign-in offer" hidden></div>
+
+<div class="fab-col">
+  <button type="button" class="fab" onclick="openColorSheet()" aria-label="Shop by colour"><i data-lucide="palette"></i></button>
+  <a class="fab fab-wa" href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"><i data-lucide="message-circle"></i></a>
+</div>
+
+<nav class="bottom-nav" id="bottomNavContainer" aria-label="Main">
+  <a href="./" class="nav-item" aria-current="page"><i data-lucide="home"></i><span>Home</span></a>
+  <a href="categories" class="nav-item"><i data-lucide="layout-grid"></i><span>Collections</span></a>
+  <button type="button" class="nav-item" onclick="openSearch()"><i data-lucide="search"></i><span>Search</span></button>
+  <a href="orders" class="nav-item"><i data-lucide="package"></i><span>Orders</span></a>
+  <a href="profile" class="nav-item"><i data-lucide="user"></i><span>Profile</span></a>
+</nav>
+
+<script>
+/* =========================================================
+   Helpers
+   ========================================================= */
+const $=(s,r=document)=>r.querySelector(s);
+const PLACEHOLDER='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500"><rect width="400" height="500" fill="#F7F1E8"/><text x="200" y="260" font-family="Georgia,serif" font-size="30" fill="#B9AFA6" text-anchor="middle">Aavira</text></svg>');
+window.imgFallback=img=>{img.onerror=null;img.src=PLACEHOLDER};
+
+const escapeHtml=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+const safeUrl=v=>{const r=String(v??'').trim();if(!r)return'';try{const u=new URL(r,location.origin);return['http:','https:'].includes(u.protocol)?u.href:''}catch{return''}};
+const safeImageUrl=v=>safeUrl(v)||PLACEHOLDER;
+const safeJson=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))||f}catch{return f}};
+const saveJson=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
+const store={get:k=>{try{return localStorage.getItem(k)}catch{return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch{}},del:k=>{try{localStorage.removeItem(k)}catch{}}};
+const icons=()=>{if(window.lucide)lucide.createIcons()};
+const fmt=n=>'₹'+Number(n).toLocaleString('en-IN');
+const starText=n=>'★'.repeat(n)+'☆'.repeat(5-n);
+const vibrate=(m=30)=>{if('vibrate' in navigator)navigator.vibrate(m)};
+window.allProductsList=[];
+
+const ethnicColors=[
+  {name:"Red",hex:"#FF0000"},{name:"Blue",hex:"#0000FF"},{name:"Green",hex:"#008000"},{name:"Yellow",hex:"#FFFF00"},
+  {name:"Orange",hex:"#FFA500"},{name:"Purple",hex:"#800080"},{name:"Pink",hex:"#FFC0CB"},{name:"Brown",hex:"#A52A2A"},
+  {name:"Black",hex:"#000000"},{name:"White",hex:"#FFFFFF"},{name:"Gray",hex:"#808080"},{name:"Sky Blue",hex:"#87CEEB"},
+  {name:"Lime",hex:"#00FF00"},{name:"Navy Blue",hex:"#000080"},{name:"Violet",hex:"#EE82EE"},{name:"Maroon",hex:"#800000"},
+  {name:"Gold",hex:"#FFD700"},{name:"Magenta",hex:"#FF00FF"},{name:"Olive",hex:"#808000"},{name:"Coral",hex:"#FF7F50"}
+];
+/* Product colour names like "Sky Blue" are not valid CSS, so look them up first. */
+const colorHex=n=>{
+  const f=ethnicColors.find(c=>c.name.toLowerCase()===String(n).toLowerCase());
+  if(f)return f.hex;
+  const s=String(n).trim();
+  return(window.CSS&&CSS.supports('color',s))?s:'#D1D5DB';
+};
+
+/* =========================================================
+   Layers (sidebar, sheets, pages, lightbox)
+   ========================================================= */
+const layerStack=[];
+const syncLayers=()=>{
+  document.body.style.overflow=layerStack.length?'hidden':'';
+  $('#scrim').classList.toggle('is-open',layerStack.some(id=>$('#'+id).dataset.scrim==='1'));
+};
+window.openLayer=(id,focusSel)=>{
+  const el=$('#'+id);if(!el||el.classList.contains('is-open'))return;
+  el._returnTo=document.activeElement;
+  el.classList.add('is-open');layerStack.push(id);syncLayers();
+  if(focusSel)setTimeout(()=>$(focusSel)?.focus(),350);
+};
+window.closeLayer=id=>{
+  const el=$('#'+id);if(!el)return;
+  el.classList.remove('is-open');
+  const i=layerStack.indexOf(id);if(i>-1)layerStack.splice(i,1);
+  syncLayers();
+  if(el._returnTo&&el._returnTo.focus)try{el._returnTo.focus({preventScroll:true})}catch{}
+};
+window.closeTopLayer=()=>{
+  for(let i=layerStack.length-1;i>=0;i--){
+    const el=$('#'+layerStack[i]);
+    if(el.dataset.scrim==='1'||i===layerStack.length-1){closeLayer(layerStack[i]);return}
+  }
+};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&layerStack.length)closeTopLayer()});
+
+/* =========================================================
+   Toast / navigation / loading
+   ========================================================= */
+let toastTimer;
+window.showToast=(m,t='success')=>{
+  vibrate(40);
+  const s=$('#toast');$('#toast-msg').textContent=m;s.dataset.type=t;
+  s.classList.add('is-on');clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>s.classList.remove('is-on'),2200);
+};
+window.startLocalLoad=el=>{if(el)el.classList.add('is-loading')};
+window.stopLocalLoad=el=>{if(el)el.classList.remove('is-loading')};
+window.go=(url,el)=>{
+  vibrate(30);
+  if(!url||url==='#')return;
+  startLocalLoad(el);
+  location.href=url;
+};
+window.triggerDotAction=(url,el)=>{
+  if(url==='login')url='/auth/verify';
+  if(url==='cart')url='cart';
+  go(url,el);
+};
+/* Back/forward cache can restore pages with loading state stuck on. */
+window.addEventListener('pageshow',()=>document.querySelectorAll('.is-loading').forEach(e=>e.classList.remove('is-loading')));
+
+const rememberRecent=id=>{
+  let r=safeJson('aavira_recent',[]).filter(i=>String(i)!==String(id));
+  r.unshift(String(id));saveJson('aavira_recent',r.slice(0,8));
+};
+
+/* =========================================================
+   Offer banner (shown to logged-out visitors)
+   ========================================================= */
+window.closeDynamicBanner=()=>{
+  const b=$('#dynamic-action-banner');b.classList.remove('is-on');
+  setTimeout(()=>{b.hidden=true},450);
+  try{sessionStorage.setItem('loginBannerShown','true')}catch{}
+};
+window.checkDynamicBanner=()=>{
+  const b=$('#dynamic-action-banner');
+  let shown=false;try{shown=!!sessionStorage.getItem('loginBannerShown')}catch{}
+  if(store.get('aavira_user_email')||shown){b.hidden=true;b.classList.remove('is-on');return}
+  if(!b.hidden)return;
+  b.innerHTML=`<div class="grow"><b>Flat 20% off</b><small>Sign in to claim your first order gift.</small></div>
+    <button type="button" class="signin" onclick="triggerDotAction('login',this)">Sign in</button>
+    <button type="button" class="x" onclick="closeDynamicBanner()" aria-label="Dismiss"><i data-lucide="x"></i></button>`;
+  b.hidden=false;icons();
+  requestAnimationFrame(()=>requestAnimationFrame(()=>b.classList.add('is-on')));
+  clearTimeout(window.bannerTimeout);
+  window.bannerTimeout=setTimeout(closeDynamicBanner,8000);
+};
+
+/* =========================================================
+   Profile, cart, sidebar
+   ========================================================= */
+window.updateProfileUI=()=>{
+  const name=store.get('aavira_display_name'),email=store.get('aavira_user_email');
+  const g=$('#guestProfileUI'),v=$('#vipProfileUI');
+  if(name&&name.toLowerCase()!=='guest user'){
+    g.hidden=true;v.hidden=false;
+    $('#vipName').textContent=name;
+    $('#vipEmail').textContent=email||'Aavira member';
+    $('#profileInitial').textContent=name.charAt(0).toUpperCase();
+  }else{v.hidden=true;g.hidden=false}
+  const a=safeJson('aavira_active_promo',null),badge=$('#activePromoBadge');
+  if(a){badge.classList.add('is-on');$('#activePromoText').textContent=`${a.code} (-₹${a.discount})`}
+  else badge.classList.remove('is-on');
+  checkDynamicBanner();
+};
+window.handleLogout=()=>{
+  store.del('aavira_display_name');store.del('aavira_user_email');
+  try{sessionStorage.removeItem('loginBannerShown')}catch{}
+  updateProfileUI();showToast('Logged out');closeSidebar();
+};
+window.updateCartCount=()=>{
+  const c=safeJson('aavira_cart',[]),b=$('#cart-badge');
+  const total=c.reduce((s,i)=>s+(Number(i.qty)||1),0);
+  b.textContent=total>99?'99+':total;b.hidden=total<=0;
+};
+window.openSidebar=()=>{vibrate(40);updateProfileUI();openLayer('sidebar')};
+window.closeSidebar=()=>{vibrate(30);closeLayer('sidebar')};
+
+/* =========================================================
+   Search
+   ========================================================= */
+const searchHint='<div class="hint">Search by product name.</div>';
+window.openSearch=()=>{$('#searchResults').innerHTML=searchHint;openLayer('searchOverlay','#searchInput')};
+window.closeSearch=()=>closeLayer('searchOverlay');
+window.handleSearch=()=>{
+  const q=$('#searchInput').value.toLowerCase().trim(),c=$('#searchResults');
+  if(!q){c.innerHTML=searchHint;return}
+  const f=allProductsList.filter(p=>String(p.name||'').toLowerCase().includes(q));
+  if(!f.length){c.innerHTML=`<div class="hint">No products match “${escapeHtml(q)}”. Try a different word.</div>`;return}
+  c.innerHTML=f.map(p=>{
+    const {pr,m}=priceInfo(p);
+    return `<a class="result" href="product?id=${encodeURIComponent(p.id)}" data-product="${escapeHtml(p.id)}">
+      <img src="${escapeHtml(safeImageUrl(p.img))}" alt="" loading="lazy" onerror="imgFallback(this)">
+      <span class="result-info"><span class="n clamp2">${escapeHtml(p.name)}</span>
+      <span class="pcard-price" style="margin:0"><span class="price">${fmt(pr)}</span>${m>pr?`<span class="mrp">${fmt(m)}</span>`:''}</span></span></a>`;
+  }).join('');
+};
+let searchTimer;
+window.handleSearchDebounced=()=>{clearTimeout(searchTimer);searchTimer=setTimeout(handleSearch,150)};
+
+/* =========================================================
+   Colour search
+   ========================================================= */
+window.openColorSheet=()=>{
+  vibrate(30);
+  $('#colorSwatchesContainer').innerHTML=ethnicColors.map(k=>
+    `<button type="button" class="swatch" data-color="${escapeHtml(k.name)}" data-hex="${k.hex}"><i style="background:${k.hex}"></i><span>${escapeHtml(k.name)}</span></button>`).join('');
+  openLayer('premiumColorSheet');
+};
+window.closeColorSheet=()=>closeLayer('premiumColorSheet');
+window.selectColorAndSearch=(n,h)=>{
+  closeColorSheet();
+  $('#selectedColorBadge').style.backgroundColor=h;
+  $('#colorMatchText').textContent=`Styles available in ${n}`;
+  const g=$('#colorResultsGrid');
+  if(!allProductsList.length){
+    g.innerHTML='<div class="hint" style="grid-column:1/-1">Products are still loading. Try again in a moment.</div>';
+  }else{
+    const m=allProductsList.filter(p=>p.colors.some(c=>String(c).toLowerCase()===String(n).toLowerCase()));
+    g.innerHTML=m.length?m.map(p=>generateProductCard(p,true)).join('')
+      :'<div class="hint" style="grid-column:1/-1;margin-top:60px"><b style="color:var(--ink)">No styles in this colour yet</b><br>Try another shade.</div>';
+  }
+  icons();
+  openLayer('colorResultsOverlay');
+};
+window.closeColorResults=()=>closeLayer('colorResultsOverlay');
+
+/* =========================================================
+   Promo & referral
+   ========================================================= */
+window.openPromoModal=()=>{closeLayer('sidebar');$('#promoInput').value='';openLayer('promoModal','#promoInput')};
+window.closePromoModal=()=>closeLayer('promoModal');
+window.processPromoCode=async()=>{
+  const c=$('#promoInput').value.trim().toUpperCase();
+  if(!c){showToast('Enter a promo code','error');return}
+  const used=safeJson('aavira_used_promos',[]);
+  if(used.includes(c)){showToast('This promo code was already used','error');return}
+  const b=$('#btnApplyPromo');b.innerHTML='<span class="spinner"></span> Checking';b.disabled=true;
+  const base=typeof AUTH_URL!=='undefined'?AUTH_URL:'https://aavira-fashion-backend.vercel.app';
+  try{
+    const r=await fetch(`${base}/api/promocodes/${encodeURIComponent(c)}`),res=await r.json();
+    if(r.ok&&res.status==='success'){
+      const d=Number(res.data.discountAmount)||Number(res.data.amount)||0;
+      showToast(`Flat ₹${d} off applied`);
+      saveJson('aavira_active_promo',{code:res.data.id||c,discount:d});
+      used.push(c);saveJson('aavira_used_promos',used);
+      updateProfileUI();setTimeout(closePromoModal,900);
+    }else showToast(res.message||'This code is not valid','error');
+  }catch{showToast('Network error. Check your connection.','error')}
+  b.textContent='Apply code';b.disabled=false;
+};
+window.removePromoCode=()=>{store.del('aavira_active_promo');updateProfileUI();showToast('Promo code removed')};
+
+window.openReferralCenter=()=>{
+  closeLayer('sidebar');
+  const e=store.get('aavira_user_email');
+  if(!e){showToast('Log in to get your referral link','error');setTimeout(()=>triggerDotAction('login'),1000);return}
+  let ref='';try{ref=btoa(e)}catch{ref=encodeURIComponent(e)}
+  $('#referralLinkInput').value=`${location.origin}${location.pathname}?ref=${ref}`;
+  openLayer('referralCenter');
+  if(typeof window.loadReferralStats==='function')window.loadReferralStats(e);
+};
+window.closeReferralCenter=()=>closeLayer('referralCenter');
+window.copyReferralLink=async()=>{
+  vibrate(30);
+  try{await navigator.clipboard.writeText($('#referralLinkInput').value);showToast('Link copied')}
+  catch{showToast('Copy is not available on this device','error')}
+};
+window.shareReferralLink=()=>{
+  const l=$('#referralLinkInput').value;
+  const m=`Discover Aavira! Use my link to sign up and get flat ₹500 off your first order.\n\n${l}`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(m)}`,'_blank','noopener');
+};
+
+window.subscribeNewsletter=async()=>{
+  const i=$('#newsletterEmail'),e=i.value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){showToast('Enter a valid email address','error');i.focus();return}
+  const b=$('#btnNewsletter');b.innerHTML='<span class="spinner"></span>';b.disabled=true;
+  try{
+    const r=await fetch('https://aavira-fashion-backend.vercel.app/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e})});
+    if(!r.ok)throw new Error('failed');
+    showToast('Thanks for joining');i.value='';
+  }catch{showToast('Could not subscribe. Please try again.','error')}
+  b.textContent='Join';b.disabled=false;
+};
+
+/* =========================================================
+   Product cards
+   ========================================================= */
+const priceInfo=p=>{const pr=Number(p.price)||0,m=Number(p.mrp)||pr;return{pr,m,off:m>pr?Math.round((m-pr)/m*100):0}};
+const isWished=id=>safeJson('aavira_wishlist',[]).map(String).includes(String(id));
+
+/* Rating, stock and bestseller badges only show when the backend sends real values. */
+const metaRow=(p,big)=>{
+  const bits=[];
+  const r=Number(p.rating);
+  if(r>0)bits.push(`<span class="rating"><i data-lucide="star"></i>${r.toFixed(1)}${Number(p.reviewCount)>0?` <span style="font-weight:400;color:var(--muted)">(${Number(p.reviewCount)})</span>`:''}</span>`);
+  const cols=p.colors;
+  if(cols.length){
+    bits.push(`<span class="dots">${cols.slice(0,4).map(c=>`<i style="background:${colorHex(c)}"></i>`).join('')}</span><span>${cols.length} ${cols.length>1?'colours':'colour'}</span>`);
+  }
+  return bits.length?`<span class="pcard-meta">${bits.join('')}</span>`:'';
+};
+const lowStock=p=>{const s=Number(p.stock);return(Number.isFinite(s)&&s>0&&s<=4)?`<span class="low">Only ${s} left</span>`:''};
+
+const cardHtml=(p,cls)=>{
+  const {pr,m,off}=priceInfo(p),id=escapeHtml(p.id),name=escapeHtml(p.name),featured=cls==='pfeat';
+  return `<article class="pcard ${cls}">
+    <a class="pcard-link" href="product?id=${encodeURIComponent(p.id)}" data-product="${id}">
+      <span class="pcard-media">
+        <img src="${escapeHtml(safeImageUrl(p.img))}" alt="" loading="lazy" onerror="imgFallback(this)">
+        ${off?`<span class="tag-off">${off}% off</span>`:''}
+        ${p.bestseller?'<span class="tag-best">Bestseller</span>':''}
+      </span>
+      <span class="pcard-body">
+        <span class="pcard-name ${featured?'':'clamp1'}">${name}</span>
+        ${metaRow(p)}
+        <span class="pcard-price"><span class="price">${fmt(pr)}</span>${m>pr?`<span class="mrp">${fmt(m)}</span>`:''}</span>
+        ${lowStock(p)}
+      </span>
+    </a>
+    <button type="button" class="heart ${featured?'heart-lg':''} ${isWished(p.id)?'is-on':''}" data-heart="${id}" aria-pressed="${isWished(p.id)}" aria-label="Save ${name} to wishlist"><i data-lucide="heart"></i></button>
+  </article>`;
+};
+window.generateProductCard=(p,grid)=>cardHtml(p,grid?'pcard-grid':'pcard-rail');
+window.generateFeaturedCard=p=>cardHtml(p,'pfeat');
+
+document.addEventListener('click',e=>{
+  const h=e.target.closest('[data-heart]');
+  if(h){
+    vibrate(40);
+    const id=String(h.dataset.heart);let w=safeJson('aavira_wishlist',[]).map(String);
+    const on=!h.classList.contains('is-on');
+    h.classList.toggle('is-on',on);h.setAttribute('aria-pressed',on);
+    w=on?(w.includes(id)?w:[...w,id]):w.filter(x=>x!==id);
+    saveJson('aavira_wishlist',w);
+    showToast(on?'Added to wishlist':'Removed from wishlist');
+    /* keep duplicate cards of the same product in sync */
+    document.querySelectorAll(`[data-heart="${CSS.escape(id)}"]`).forEach(b=>{b.classList.toggle('is-on',on);b.setAttribute('aria-pressed',on)});
+    return;
+  }
+  const a=e.target.closest('a[data-product]');
+  if(a){rememberRecent(a.dataset.product);(a.closest('.pcard')||a).classList.add('is-loading')}
+  const sw=e.target.closest('[data-color]');
+  if(sw)selectColorAndSearch(sw.dataset.color,sw.dataset.hex);
+});
+
+/* =========================================================
+   Data loading
+   ========================================================= */
+window.loadSkeletons=()=>{
+  $('#category-container').innerHTML=Array(5).fill('<div class="cat"><div class="cat-ring skel" style="border-color:transparent"></div><div class="skel" style="height:10px;width:52px;border-radius:5px"></div></div>').join('');
+  const card='<div class="pcard %C%"><div class="skel" style="aspect-ratio:4/5"></div><div style="padding:12px"><div class="skel" style="height:12px;width:75%;border-radius:6px;margin-bottom:10px"></div><div class="skel" style="height:12px;width:40%;border-radius:6px"></div></div></div>';
+  $('#trending-container').innerHTML=Array(3).fill(card.replace('%C%','pcard-rail')).join('');
+  $('#exclusive-container').innerHTML=Array(2).fill(card.replace('%C%','pfeat')).join('');
+  $('#new-arrivals-container').innerHTML=Array(4).fill(card.replace('%C%','pcard-grid')).join('');
+};
+
+window.fetchBanners=async()=>{
+  const c=$('#bannerCarousel'),dots=$('#banner-dots');
+  c.parentElement.querySelector('.hero-error')?.remove();
+  try{
+    const d=typeof window.getBannersData==='function'?await window.getBannersData():[];
+    if(!Array.isArray(d)||!d.length)throw new Error('No banners');
+    c.innerHTML=d.map(b=>{
+      const img=`<img src="${escapeHtml(safeImageUrl(b.imageUrl||b.image||b.url))}" alt="Featured collection" onerror="imgFallback(this)">`;
+      const link=b.link?safeUrl(b.link):'';
+      return link?`<a class="hero-slide" href="${escapeHtml(link)}">${img}</a>`:`<div class="hero-slide">${img}</div>`;
+    }).join('');
+    dots.innerHTML=d.map((_,i)=>`<span class="hero-dot ${i===0?'is-active':''}"></span>`).join('');
+    clearInterval(window.bannerInterval);
+    const hero=c.parentElement;let paused=false;
+    hero.addEventListener('touchstart',()=>paused=true,{passive:true});
+    hero.addEventListener('touchend',()=>setTimeout(()=>paused=false,4000),{passive:true});
+    hero.addEventListener('mouseenter',()=>paused=true);hero.addEventListener('mouseleave',()=>paused=false);
+    if(d.length>1&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+      window.bannerInterval=setInterval(()=>{
+        if(paused||document.hidden)return;
+        const max=c.scrollWidth-c.clientWidth;
+        c.scrollLeft>=max-10?c.scrollTo({left:0,behavior:'smooth'}):c.scrollBy({left:c.clientWidth,behavior:'smooth'});
+      },4500);
+    }
+    c.onscroll=()=>{
+      const ix=Math.round(c.scrollLeft/c.offsetWidth);
+      dots.querySelectorAll('.hero-dot').forEach((dt,i)=>dt.classList.toggle('is-active',i===ix));
+    };
+  }catch{
+    c.innerHTML='';dots.innerHTML='';
+    c.parentElement.insertAdjacentHTML('beforeend','<div class="hero-error"><p>New collections are arriving soon.</p><button type="button" onclick="fetchBanners()">Try again</button></div>');
+  }
+};
+
+window.fetchCategories=async()=>{
+  const c=$('#category-container');
+  try{
+    const a=typeof window.getCategoriesData==='function'?await window.getCategoriesData():[];
+    if(!Array.isArray(a)||!a.length)throw new Error('No categories');
+    c.innerHTML=a.map(d=>{
+      const name=escapeHtml(d.name),key=encodeURIComponent(d.id||d.name||'');
+      return `<a class="cat" href="categories${key?`?category=${key}`:''}" aria-label="Browse ${name}">
+        <span class="cat-ring"><img src="${escapeHtml(safeImageUrl(d.image||d.imageUrl||d.url))}" alt="" loading="lazy" onerror="imgFallback(this)"></span>
+        <span class="cat-name">${name}</span></a>`;
+    }).join('');
+  }catch{
+    c.innerHTML='<div class="empty" style="width:100%">Collections are unavailable. <button type="button" class="sec-link" onclick="fetchCategories()">Try again</button></div>';
+  }
+};
+
+window.fetchProducts=async()=>{
+  const trending=$('#trending-container'),excl=$('#exclusive-container'),arr=$('#new-arrivals-container'),exSec=$('#exclusive-section');
+  try{
+    const d=typeof window.getVercelData==='function'?await window.getVercelData():[];
+    if(!Array.isArray(d)||!d.length)throw new Error('No products');
+    window.allProductsList=d.map(x=>({
+      id:x.id,name:x.name,price:x.price,mrp:x.mrp,
+      colors:Array.isArray(x.colors)?x.colors:[],
+      img:x.imageMain||x.image||x.imageUrl||'',
+      rating:x.rating,reviewCount:x.reviewCount??x.reviews,stock:x.stock,bestseller:!!x.bestseller
+    }));
+    const L=allProductsList;
+    trending.innerHTML=L.slice(0,4).map(p=>generateProductCard(p,false)).join('');
+    const ex=L.slice(4,6);
+    exSec.hidden=!ex.length;
+    excl.innerHTML=ex.map(generateFeaturedCard).join('');
+    arr.innerHTML=L.length>6?L.slice(6).map(p=>generateProductCard(p,true)).join(''):'<p class="empty" style="grid-column:1/-1">More new arrivals are coming soon.</p>';
+    icons();
+  }catch{
+    const retry='<div class="empty" style="width:100%;grid-column:1/-1">Products are unavailable. <button type="button" class="sec-link" onclick="fetchProducts()">Try again</button></div>';
+    trending.innerHTML=retry;excl.innerHTML=retry;arr.innerHTML=retry;
+  }
+};
+
+/* =========================================================
+   Reviews
+   ========================================================= */
+let expFile=null,expRating=5;
+window.photoExps=[];window.lbIndex=0;
+window.renderExperiences=()=>{
+  const x=safeJson('aavira_experiences',[]),c=$('#experience-container');
+  if(!x.length){
+    c.innerHTML='<div class="empty"><strong>No reviews yet</strong>Be the first to share your style.</div>';
+    return;
+  }
+  photoExps=x.filter(e=>e.photo&&String(e.photo).trim());
+  c.innerHTML=x.map(e=>{
+    const pi=photoExps.indexOf(e),rating=Math.max(1,Math.min(5,Number(e.rating)||5));
+    const name=escapeHtml(e.name||'Customer'),text=escapeHtml(e.text||'');
+    return `<article class="review">
+      ${pi>-1?`<button type="button" class="review-photo" onclick="openLightbox(${pi})" aria-label="Open photo from ${name}"><img src="${escapeHtml(safeUrl(e.photo))}" alt="Photo from ${name}" loading="lazy" onerror="this.closest('button').style.display='none'"></button>`:''}
+      <div class="review-body">
+        <div class="stars" role="img" aria-label="${rating} out of 5 stars">${starText(rating)}</div>
+        <div class="review-name">${name}${e.verified?'<i data-lucide="circle-check"></i>':''}</div>
+        ${text?`<p class="review-text">${text}</p>`:''}
+      </div></article>`;
+  }).join('');
+  icons();
+};
+window.fetchExperiences=async()=>{
+  try{
+    const d=typeof window.getVercelExperiences==='function'?await window.getVercelExperiences():[];
+    if(d&&d.length)saveJson('aavira_experiences',d);else store.del('aavira_experiences');
+    renderExperiences();
+  }catch{}
+};
+window.setRating=v=>{
+  expRating=v;
+  document.querySelectorAll('.star-btn').forEach((b,i)=>{b.textContent=i<v?'★':'☆';b.setAttribute('aria-pressed',i<v)});
+  vibrate(20);
+};
+document.addEventListener('click',e=>{const s=e.target.closest('.star-btn');if(s)setRating(Number(s.dataset.v))});
+
+window.openExpModal=()=>{
+  if(!store.get('aavira_user_email')){showToast('Log in to write a review','error');setTimeout(()=>triggerDotAction('login'),1000);return}
+  $('#expText').value='';expFile=null;$('#expFile').value='';setRating(5);
+  const pv=$('#expPhotoPreview');pv.hidden=true;pv.removeAttribute('src');$('#expPhotoAddBox').hidden=false;
+  openLayer('expModal','#expText');
+};
+window.closeExpModal=()=>closeLayer('expModal');
+window.handleExpPhoto=e=>{
+  const f=e.target.files[0];if(!f)return;
+  if(!f.type.startsWith('image/')||f.size>5*1024*1024){showToast('Choose an image under 5 MB','error');e.target.value='';return}
+  expFile=f;
+  const pv=$('#expPhotoPreview');
+  if(pv.dataset.url)URL.revokeObjectURL(pv.dataset.url);
+  pv.dataset.url=URL.createObjectURL(f);pv.src=pv.dataset.url;pv.hidden=false;$('#expPhotoAddBox').hidden=true;
+};
+window.submitExperience=async()=>{
+  const t=$('#expText').value.trim();
+  if(!t&&!expFile){showToast('Add a review or a photo','error');return}
+  const b=$('#btnSubmitExp'),label=b.textContent;
+  b.innerHTML='<span class="spinner"></span> Posting';b.disabled=true;
+  try{
+    let photo='';
+    if(expFile){
+      const fd=new FormData();
+      fd.append('file',expFile);fd.append('upload_preset','hcfer3tk');fd.append('cloud_name','lqbslpty');
+      const cr=await fetch('https://api.cloudinary.com/v1_1/lqbslpty/image/upload',{method:'POST',body:fd});
+      const cd=await cr.json();
+      photo=cd.secure_url||'';
+      if(!photo)throw new Error('Photo upload failed');
+    }
+    const p={
+      name:store.get('aavira_display_name')||'Customer',email:store.get('aavira_user_email'),
+      text:t,photo:safeUrl(photo),rating:Math.max(1,Math.min(5,Number(expRating)||5)),date:new Date().toISOString()
+    };
+    let saved=false;
+    if(typeof window.sendToVercelExperience==='function')saved=await window.sendToVercelExperience(p);
+    else{
+      const r=await fetch('https://aavira-fashion-backend.vercel.app/api/experience',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});
+      saved=r.ok;
+    }
+    if(!saved)throw new Error('Review was not saved');
+    const x=safeJson('aavira_experiences',[]);x.unshift(p);saveJson('aavira_experiences',x);
+    renderExperiences();showToast('Review submitted');closeExpModal();
+  }catch{showToast('Could not post your review. Please try again.','error')}
+  finally{b.textContent=label;b.disabled=false}
+};
+
+/* Lightbox */
+window.openLightbox=i=>{if(!photoExps.length)return;lbIndex=i;updateLbUI();openLayer('imageLightbox')};
+window.closeLightbox=()=>closeLayer('imageLightbox');
+window.updateLbUI=()=>{
+  if(lbIndex<0)lbIndex=photoExps.length-1;
+  if(lbIndex>=photoExps.length)lbIndex=0;
+  const e=photoExps[lbIndex],rating=Math.max(1,Math.min(5,Number(e.rating)||5));
+  $('#lbImg').src=safeUrl(e.photo);
+  $('#lbName').innerHTML=`${escapeHtml(e.name||'Customer')}${e.verified?' <i data-lucide="circle-check" style="width:16px;height:16px;color:#22C55E"></i>':''}`;
+  $('#lbStars').textContent=starText(rating);
+  $('#lbText').textContent=e.text?`“${e.text}”`:'';
+  icons();
+};
+window.lbNext=e=>{if(e)e.stopPropagation();lbIndex++;updateLbUI()};
+window.lbPrev=e=>{if(e)e.stopPropagation();lbIndex--;updateLbUI()};
+
+/* =========================================================
+   Boot
+   ========================================================= */
+window.initializeAppEngine=()=>{
+  updateProfileUI();loadSkeletons();updateCartCount();renderExperiences();icons();
+
+  let lx=0;
+  const lt=$('#lightboxTouchArea');
+  lt.addEventListener('touchstart',e=>lx=e.changedTouches[0].screenX,{passive:true});
+  lt.addEventListener('touchend',e=>{const d=lx-e.changedTouches[0].screenX;if(d>50)lbNext();else if(d<-50)lbPrev()},{passive:true});
+
+  const sb=$('#sidebar');let sx=0;
+  sb.addEventListener('touchstart',e=>sx=e.changedTouches[0].screenX,{passive:true});
+  sb.addEventListener('touchend',e=>{if(sx-e.changedTouches[0].screenX>60)closeSidebar()},{passive:true});
+
+  setTimeout(async()=>{
+    const nm=store.get('aavira_display_name');
+    let dbP=Promise.resolve();
+    if(nm&&nm.toLowerCase()!=='guest user'&&typeof window.getWishlistFromDB==='function'){
+      dbP=window.getWishlistFromDB(nm).then(w=>{if(w&&w.length)saveJson('aavira_wishlist',w.map(String))}).catch(()=>{});
+    }
+    await dbP; /* wishlist first, so hearts render in the right state */
+    await Promise.all([
+      typeof window.fetchBanners==='function'?fetchBanners():0,
+      fetchCategories(),fetchProducts(),fetchExperiences()
+    ]);
+    icons();
+  },50);
+};
+document.addEventListener('DOMContentLoaded',initializeAppEngine);
 </script>
 <script src="/user_data.js"></script>
 </body>
