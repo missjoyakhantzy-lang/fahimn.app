@@ -93,38 +93,43 @@ a{color:inherit;text-decoration:none}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
 /* ---------- Product cards ---------- */
-.pcard{position:relative;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;transition:box-shadow .25s,transform .25s}
-.pcard:hover{box-shadow:0 12px 30px rgba(36,32,36,.1)}
-.pcard-rail{flex:0 0 164px;scroll-snap-align:start}
+.pcard{position:relative;transition:transform .25s var(--ease)}
+.pcard-rail{flex:0 0 168px;scroll-snap-align:start}
 .pcard-link{display:block}
-.pcard-media{position:relative;display:block;aspect-ratio:1/1;background:var(--cream);overflow:hidden}
+.pcard-media{position:relative;display:block;aspect-ratio:1/1;background:var(--cream);overflow:hidden;border-radius:14px}
 .pcard-media img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
-.pcard:hover .pcard-media img{transform:scale(1.04)}
-.tag-off{position:absolute;left:8px;top:8px;background:var(--rani);color:#fff;font-size:11px;font-weight:600;padding:3px 8px;border-radius:999px}
-.tag-best{position:absolute;left:8px;bottom:8px;background:rgba(27,23,25,.88);color:#fff;font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px}
-.pcard-body{display:block;padding:12px 12px 14px}
-.pcard-name{display:block;font-size:14px;font-weight:600;line-height:1.35;color:var(--ink)}
-.pcard-meta{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:12px;color:var(--muted)}
+.pcard:hover .pcard-media img{transform:scale(1.05)}
+.tags{position:absolute;left:8px;top:8px;display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.tag-off{background:var(--rani);color:#fff;font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:999px}
+.tag-best{background:rgba(27,23,25,.88);color:#fff;font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:999px}
+.rchip{position:absolute;left:8px;bottom:8px;display:inline-flex;align-items:center;gap:3px;background:rgba(255,255,255,.96);color:var(--ink);font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.rchip svg{width:11px;height:11px;fill:var(--gold);stroke:var(--gold)}
+.pcard-body{display:block;padding:10px 2px 0}
+.pcard-name{display:block;font-size:13.5px;font-weight:500;line-height:1.35;color:var(--ink)}
+.pcard-price{display:flex;align-items:baseline;gap:8px;margin-top:5px}
+.price{font-size:16px;font-weight:700}
+.mrp{font-size:12px;color:var(--muted);text-decoration:line-through}
+.pcard-meta{display:flex;align-items:center;gap:8px;margin-top:8px}
 .rating{display:inline-flex;align-items:center;gap:3px;font-weight:600;font-size:11px;color:#fff;background:#15803D;padding:2px 7px;border-radius:999px}
 .rating.mid{background:#B45309}.rating.low{background:#B91C1C}
 .rating svg{width:10px;height:10px;fill:currentColor;stroke:currentColor}
-.rcount{font-size:12px;color:var(--muted);font-weight:400}
-.dots{display:inline-flex}
-.dots i{width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,.12);margin-left:-3px}
+.dots{display:inline-flex;align-items:center}
+.dots i{width:14px;height:14px;border-radius:50%;margin-left:-4px;box-shadow:0 0 0 2px var(--ivory),inset 0 0 0 1px rgba(0,0,0,.14)}
 .dots i:first-child{margin-left:0}
-.pcard-price{display:flex;align-items:baseline;gap:8px;margin-top:8px}
-.price{font-size:16px;font-weight:700}
-.mrp{font-size:12px;color:var(--muted);text-decoration:line-through}
+.dots b{min-width:20px;height:20px;padding:0 5px;box-sizing:border-box;margin-left:7px;border-radius:10px;background:#fff;border:1px solid var(--line);font-size:10.5px;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;justify-content:center}
 .low{display:block;margin-top:6px;font-size:12px;font-weight:600;color:#B45309}
-.heart{position:absolute;right:8px;top:8px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.12);transition:transform .15s,color .2s}
+.buy{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:40px;margin-top:10px;background:var(--rani);color:#fff;border-radius:10px;font-size:13px;font-weight:600;transition:background .2s,transform .1s}
+.buy:hover{background:var(--rani-dark)}
+.buy:active{transform:scale(.98)}
+.heart{position:absolute;right:8px;top:8px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.95);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.12);transition:transform .15s,color .2s}
 .heart:active{transform:scale(.88)}
 .heart svg{width:17px;height:17px;stroke-width:1.8}
 .heart.is-on{color:var(--rani)}
 .heart.is-on svg{fill:currentColor}
-.pfeat .pcard-media{aspect-ratio:1/1}
-.pfeat .pcard-body{padding:16px}
+.pfeat .pcard-body{padding:14px 2px 0}
 .pfeat .pcard-name{font-family:"Playfair Display",serif;font-size:20px;font-weight:600}
 .pfeat .price{font-size:19px}
+.pfeat .buy{height:46px;font-size:14px}
 .heart-lg{width:40px;height:40px}
 
 /* ---------- Reviews ---------- */
@@ -529,7 +534,7 @@ a{color:inherit;text-decoration:none}
     </section>
 
     <section class="sec" aria-labelledby="h-rev">
-      <div class="sec-head"><h2 id="h-rev">Customer reviews</h2></div>
+      <div class="sec-head"><h2 id="h-rev">Customer reviews</h2><span id="reviewAvg"></span></div>
       <div id="experience-container" class="rail no-scrollbar" style="gap:14px"></div>
       <button type="button" class="btn-dark" onclick="openExpModal()"><i data-lucide="pen" style="width:16px;height:16px"></i>Write a review</button>
     </section>
@@ -754,7 +759,7 @@ window.handleSearch=()=>{
     const {pr,m}=priceInfo(p);
     return `<a class="result" href="product?id=${encodeURIComponent(p.id)}" data-product="${escapeHtml(p.id)}">
       <img src="${escapeHtml(safeImageUrl(p.img))}" alt="" loading="lazy" onerror="imgFallback(this)">
-      <span class="result-info"><span class="n clamp2">${escapeHtml(p.name)}</span>${metaRow(p)}
+      <span class="result-info"><span class="n clamp1">${escapeHtml(p.name)}</span>${metaRow(p)}
       <span class="pcard-price" style="margin:0"><span class="price">${fmt(pr)}</span>${m>pr?`<span class="mrp">${fmt(m)}</span>`:''}</span></span></a>`;
   }).join('');
   icons();
@@ -862,35 +867,36 @@ window.subscribeNewsletter=async()=>{
 const priceInfo=p=>{const pr=Number(p.price)||0,m=Number(p.mrp)||pr;return{pr,m,off:m>pr?Math.round((m-pr)/m*100):0}};
 const isWished=id=>safeJson('aavira_wishlist',[]).map(String).includes(String(id));
 
-/* Rating, stock and bestseller badges only show when the backend sends real values. */
-const metaRow=(p,big)=>{
-  const bits=[];
+const colorDots=p=>{
+  const c=p.colors;if(!c.length)return'';
+  return `<span class="pcard-meta"><span class="dots" role="img" aria-label="${c.length} ${c.length>1?'colours':'colour'} available">${c.slice(0,3).map(x=>`<i style="background:${colorHex(x)}"></i>`).join('')}${c.length>3?`<b>+${c.length-3}</b>`:''}</span></span>`;
+};
+/* Used in search results: rating pill + colour dots */
+const metaRow=p=>{
   const r=Number(p.rating);
-  if(r>0)bits.push(`<span class="rating ${r>=4?'':r>=3?'mid':'low'}">${r.toFixed(1)}<i data-lucide="star"></i></span>`);
-  const cols=p.colors;
-  if(cols.length){
-    bits.push(`<span class="dots">${cols.slice(0,4).map(c=>`<i style="background:${colorHex(c)}"></i>`).join('')}</span>${cols.length>4?`<span class="rcount">+${cols.length-4}</span>`:''}`);
-  }
-  return bits.length?`<span class="pcard-meta">${bits.filter((_,i)=>i===0).join('')}</span>`:'';
+  const pill=r>0?`<span class="rating ${r>=4?'':r>=3?'mid':'low'}">${r.toFixed(1)}<i data-lucide="star"></i></span>`:'';
+  const d=colorDots(p);
+  return(pill||d)?`<span class="pcard-meta" style="margin:0">${pill}${d.replace('<span class="pcard-meta">','').replace(/<\/span>$/,'')}</span>`:'';
 };
 const lowStock=p=>{const s=Number(p.stock);return(Number.isFinite(s)&&s>0&&s<=4)?`<span class="low">Only ${s} left</span>`:''};
 
 const cardHtml=(p,cls)=>{
   const {pr,m,off}=priceInfo(p),id=escapeHtml(p.id),name=escapeHtml(p.name),featured=cls==='pfeat';
+  const href=`product?id=${encodeURIComponent(p.id)}`,r=Number(p.rating);
   return `<article class="pcard ${cls}">
-    <a class="pcard-link" href="product?id=${encodeURIComponent(p.id)}" data-product="${id}">
+    <a class="pcard-link" href="${href}" data-product="${id}">
       <span class="pcard-media">
         <img src="${escapeHtml(safeImageUrl(p.img))}" alt="" loading="lazy" onerror="imgFallback(this)">
-        ${off?`<span class="tag-off">${off}% off</span>`:''}
-        ${p.bestseller?'<span class="tag-best">Bestseller</span>':''}
+        ${(off||p.bestseller)?`<span class="tags">${off?`<span class="tag-off">${off}% off</span>`:''}${p.bestseller?'<span class="tag-best">Bestseller</span>':''}</span>`:''}
+        ${r>0?`<span class="rchip"><i data-lucide="star"></i>${r.toFixed(1)}</span>`:''}
       </span>
       <span class="pcard-body">
-        <span class="pcard-name ${featured?'':'clamp1'}">${name}</span>
-        ${metaRow(p)}
+        <span class="pcard-name clamp1">${name}</span>
         <span class="pcard-price"><span class="price">${fmt(pr)}</span>${m>pr?`<span class="mrp">${fmt(m)}</span>`:''}</span>
-        ${lowStock(p)}
+        ${colorDots(p)}${lowStock(p)}
       </span>
     </a>
+    <a class="buy" href="${href}&buy=1" data-product="${id}">Buy now</a>
     <button type="button" class="heart ${featured?'heart-lg':''} ${isWished(p.id)?'is-on':''}" data-heart="${id}" aria-pressed="${isWished(p.id)}" aria-label="Save ${name} to wishlist"><i data-lucide="heart"></i></button>
   </article>`;
 };
@@ -991,8 +997,8 @@ window.renderProducts=()=>{
 window.applyReviewStats=()=>{
   const agg={};
   safeJson('aavira_experiences',[]).forEach(e=>{
-    if(e.productId==null)return;
-    const a=agg[String(e.productId)]=agg[String(e.productId)]||{s:0,n:0};
+    const pid=e.productId??e.product_id??e.pid;if(pid==null)return;
+    const a=agg[String(pid)]=agg[String(pid)]||{s:0,n:0};
     a.s+=Number(e.rating)||0;a.n++;
   });
   allProductsList.forEach(p=>{const a=agg[String(p.id)];if(a&&a.n&&!(Number(p.rating)>0)){p.rating=a.s/a.n;p.reviewCount=a.n}});
@@ -1014,7 +1020,7 @@ window.fetchProducts=async()=>{
       id:x.id,name:x.name,price:x.price,mrp:x.mrp,
       colors:Array.isArray(x.colors)?x.colors:[],
       img:x.imageMain||x.image||x.imageUrl||'',
-      rating:x.rating??x.averageRating??x.avgRating,reviewCount:x.reviewCount??x.reviews??x.numReviews,
+      rating:x.rating??x.averageRating??x.avgRating??x.ratingAvg??x.average_rating??x.avg_rating??x.stars,reviewCount:x.reviewCount??x.reviews??x.numReviews,
       stock:x.stock,bestseller:!!x.bestseller
     }));
     applyReviewStats();renderProducts();renderRecent();
@@ -1031,6 +1037,8 @@ let expFile=null,expRating=5;
 window.photoExps=[];window.lbIndex=0;
 window.renderExperiences=()=>{
   const x=safeJson('aavira_experiences',[]),c=$('#experience-container');
+  const avgEl=$('#reviewAvg');
+  if(avgEl)avgEl.innerHTML=x.length?`<span class="rating ${(()=>{const a=x.reduce((t,e)=>t+(Number(e.rating)||5),0)/x.length;return a>=4?'':a>=3?'mid':'low'})()}">${(x.reduce((t,e)=>t+(Number(e.rating)||5),0)/x.length).toFixed(1)}<i data-lucide="star"></i></span>`:'';
   if(!x.length){
     c.innerHTML='<div class="empty"><strong>No reviews yet</strong>Be the first to share your style.</div>';
     return;
