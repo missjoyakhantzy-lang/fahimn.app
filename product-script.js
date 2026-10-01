@@ -262,8 +262,9 @@ async function loadProductData() {
 
     if (!p) {
         try {
-            const BACKEND_URL = "https://aavira-fashion-backend.vercel.app";
-            const mainRes = await fetch(`${BACKEND_URL}/api/main_products`);
+            const mainRes = typeof window.getMainProductsData === 'function'
+                ? { ok: true, json: async () => ({ status: "success", data: await window.getMainProductsData() }) }
+                : null;
             if (mainRes.ok) {
                 const mainJson = await mainRes.json();
                 if (mainJson.status === "success" && mainJson.data) {
