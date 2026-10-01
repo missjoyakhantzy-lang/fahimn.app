@@ -424,7 +424,7 @@ a{color:inherit;text-decoration:none}
       <div><button type="button" class="icon-btn" onclick="openSidebar()" aria-label="Open menu"><i data-lucide="menu"></i></button></div>
       <a href="./" aria-label="Aavira home"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" class="site-logo"></a>
       <div class="header-actions">
-        <a class="icon-btn" href="/items/search.html" aria-label="Search"><i data-lucide="search"></i></a>
+        <a class="icon-btn" href="/items/search" aria-label="Search"><i data-lucide="search"></i></a>
         <a class="icon-btn" href="wishlist" aria-label="Wishlist"><i data-lucide="heart"></i><span id="wish-badge" class="cart-badge" hidden>0</span></a>
         <button type="button" class="icon-btn" onclick="triggerDotAction('cart',this)" aria-label="Shopping cart">
           <i data-lucide="shopping-bag"></i><span id="cart-badge" class="cart-badge" hidden>0</span>
@@ -450,7 +450,7 @@ a{color:inherit;text-decoration:none}
     </section>
 
     <section class="sec" aria-labelledby="h-trend">
-      <div class="sec-head"><h2 id="h-trend">Trending</h2><a class="sec-link" href="/items/search.html">Search all</a></div>
+      <div class="sec-head"><h2 id="h-trend">Trending</h2><a class="sec-link" href="/items/search">Search all</a></div>
       <div id="trending-container" class="rail no-scrollbar"></div>
     </section>
 
@@ -501,14 +501,14 @@ a{color:inherit;text-decoration:none}
 <div id="dynamic-action-banner" class="offer" role="region" aria-label="Sign-in offer" hidden></div>
 
 <div class="fab-col">
-  <a class="fab" href="/match/colours.html" aria-label="Shop by colour"><i data-lucide="palette"></i></a>
+  <a class="fab" href="/match/colours" aria-label="Shop by colour"><i data-lucide="palette"></i></a>
   <a class="fab fab-wa" href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"><i data-lucide="message-circle"></i></a>
 </div>
 
 <nav class="bottom-nav" id="bottomNavContainer" aria-label="Main">
   <a href="./" class="nav-item" aria-current="page"><i data-lucide="home"></i><span>Home</span></a>
   <a href="categories" class="nav-item"><i data-lucide="layout-grid"></i><span>Collections</span></a>
-  <a href="/items/search.html" class="nav-item"><i data-lucide="search"></i><span>Search</span></a>
+  <a href="/items/search" class="nav-item"><i data-lucide="search"></i><span>Search</span></a>
   <a href="orders" class="nav-item"><i data-lucide="package"></i><span>Orders</span></a>
   <a href="profile" class="nav-item"><i data-lucide="user"></i><span>Profile</span></a>
 </nav>
@@ -851,7 +851,7 @@ window.renderProducts=()=>{
   $('#new-arrivals-container').innerHTML=L.length>6?L.slice(6).map(p=>generateProductCard(p,true)).join(''):'<p class="empty" style="grid-column:1/-1">More new arrivals are coming soon.</p>';
   icons();
 };
-/* Average rating + count come from the backend (rating/reviewCount), or are calculated from real reviews that carry a productId. */
+/* Product rating comes from backend data or real product reviews. Review-count text is intentionally not rendered. */
 window.applyReviewStats=()=>{
   const agg={};
   safeJson('aavira_experiences',[]).forEach(e=>{
