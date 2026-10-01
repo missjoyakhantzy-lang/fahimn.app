@@ -684,8 +684,9 @@ window.processPromoCode=async()=>{
   const used=safeJson('aavira_used_promos',[]);
   if(used.includes(c)){showToast('This promo code was already used','error');return}
   const b=$('#btnApplyPromo');b.innerHTML='<span class="spinner"></span> Checking';b.disabled=true;
-  const base=typeof AUTH_URL!=='undefined'?AUTH_URL:'https://aavira-fashion-backend.vercel.app';
-  const url=`${base}/api/promocodes/${encodeURIComponent(c)}`;
+  const url=typeof window.checkPromoCode==='function'
+    ? await window.checkPromoCode(encodeURIComponent(c))
+    : null;
   try{
     const r=await fetch(url);
     let res=null;try{res=await r.json()}catch{}
