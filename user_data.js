@@ -5,7 +5,7 @@
 // 🔥 1. PRODUCTS, MAIN PRODUCTS & BANNERS KE LIYE URL 🔥
 const VERCEL_URL = "https://server-js-psi-five.vercel.app";
 
-// 🔥 2. OTP, LOGIN AUR ORDERS KE LIYE NAYA URL 🔥
+// 🔥 2. OTP, LOGIN, PROMO AUR ORDERS KE LIYE NAYA URL 🔥
 const AUTH_URL = "https://ssxpq15in.vercel.app";
 
 // ==========================================
@@ -56,12 +56,17 @@ window.getCategoriesData = async function() {
 // ==========================================
 // 1.1. SHARED PROMO CODE API
 // ==========================================
+// Promo codes live on the authentication/backend service.
+// Keep this endpoint centralized here so checkout pages do not contain backend URLs.
 window.checkPromoCode = async function(code) {
     const cleanCode = String(code || '').trim().toUpperCase();
     if (!cleanCode) return null;
     try {
-        const response = await fetch(`${VERCEL_URL}/api/promocodes/${encodeURIComponent(cleanCode)}`);
-        if (!response.ok) return null;
+        const response = await fetch(`${AUTH_URL}/api/promocodes/${encodeURIComponent(cleanCode)}`);
+        if (!response.ok) {
+            console.error(`Promo Code Fetch Error: ${response.status} ${response.url}`);
+            return null;
+        }
         return response;
     } catch (e) {
         console.error("Promo Code Fetch Error:", e);
@@ -83,52 +88,27 @@ window.getLocalAaviraOrders = function() {
 };
 
 // Keep ONLY the current account's orders in local storage.
-// This prevents orders from one account being displayed after another login.
 window.syncAaviraOrderLocally = function(orderPayload) {
     try {
         if (!orderPayload || !orderPayload.orderId) return false;
-
         const email = String(orderPayload.email || orderPayload.customerEmail || '').trim().toLowerCase();
-        const phone = String(orderPayload.phone || orderPayload.customerPhone || '')
-            .replace(/[^0-9]/g, '').slice(-10);
-
+        const phone = String(orderPayload.phone || orderPayload.customerPhone || '').replace(/[^0-9]/g, '').slice(-10);
         const currentEmail = String(localStorage.getItem('aavira_user_email') || '').trim().toLowerCase();
-        const currentPhone = String(localStorage.getItem('aavira_user_phone') || '')
-            .replace(/[^0-9]/g, '').slice(-10);
+        const currentPhone = String(localStorage.getItem('aavira_user_phone') || '').replace(/[^0-9]/g, '').slice(-10);
         const currentName = String(localStorage.getItem('aavira_display_name') || '').trim();
         const signedIn = !!(currentEmail && currentName && currentName.toLowerCase() !== 'guest user');
-
-        // A signed-in order must belong to the current signed-in identity.
         if (signedIn && email && email !== currentEmail && (!phone || phone !== currentPhone)) return false;
-
         const id = String(orderPayload.orderId).trim();
-        const normalized = {
-            ...orderPayload,
-            id: orderPayload.id || id,
-            orderId: id,
-            totalAmount: Number(orderPayload.totalAmount ?? orderPayload.total ?? orderPayload.amount ?? 0) || 0,
-            userId: orderPayload.userId || email || phone
-        };
-
-        // Replace the local cache with only the order set for this identity.
+        const normalized = { ...orderPayload, id: orderPayload.id || id, orderId: id, totalAmount: Number(orderPayload.totalAmount ?? orderPayload.total ?? orderPayload.amount ?? 0) || 0, userId: orderPayload.userId || email || phone };
         let orders = window.getLocalAaviraOrders().filter(order => {
             const oEmail = String(order?.email || order?.customerEmail || '').trim().toLowerCase();
-            const oPhone = String(order?.phone || order?.customerPhone || '')
-                .replace(/[^0-9]/g, '').slice(-10);
-
-            if (signedIn) {
-                return (!!currentEmail && oEmail === currentEmail) ||
-                       (!!currentPhone && oPhone === currentPhone);
-            }
+            const oPhone = String(order?.phone || order?.customerPhone || '').replace(/[^0-9]/g, '').slice(-10);
+            if (signedIn) return (!!currentEmail && oEmail === currentEmail) || (!!currentPhone && oPhone === currentPhone);
             return String(order?.orderId || order?.id || '').trim() === id;
         });
-
-        const index = orders.findIndex(order =>
-            String(order?.orderId || order?.id || '').trim() === id
-        );
+        const index = orders.findIndex(order => String(order?.orderId || order?.id || '').trim() === id);
         if (index >= 0) orders[index] = { ...orders[index], ...normalized };
         else orders.unshift(normalized);
-
         localStorage.setItem('aavira_orders', JSON.stringify(orders));
         localStorage.setItem('aavira_last_order_id', id);
         return true;
@@ -144,9 +124,7 @@ window.getAaviraOrdersForCurrentUser = async function() {
         const name = String(localStorage.getItem('aavira_display_name') || '').trim();
         const phone = String(localStorage.getItem('aavira_user_phone') || '').replace(/[^0-9]/g, '').slice(-10);
         const signedIn = !!(email && name && name.toLowerCase() !== 'guest user');
-
         if (!signedIn && !localStorage.getItem('aavira_guest_order_id')) return [];
-
         let url = `${VERCEL_URL}/api/orders?nocache=${Date.now()}`;
         if (signedIn) {
             if (email) url += `&email=${encodeURIComponent(email)}`;
@@ -154,22 +132,16 @@ window.getAaviraOrdersForCurrentUser = async function() {
         } else {
             url += `&orderId=${encodeURIComponent(localStorage.getItem('aavira_guest_order_id'))}`;
         }
-
         const response = await fetch(url);
         const result = await response.json();
         if (!response.ok || result.status !== 'success' || !Array.isArray(result.data)) return [];
-
         const filtered = result.data.filter(order => {
             const oEmail = String(order?.email || order?.customerEmail || '').trim().toLowerCase();
             const oPhone = String(order?.phone || order?.customerPhone || '').replace(/[^0-9]/g, '').slice(-10);
             const oId = String(order?.orderId || order?.id || '').trim();
-
-            if (signedIn) {
-                return (!!email && oEmail === email) || (!!phone && oPhone === phone);
-            }
+            if (signedIn) return (!!email && oEmail === email) || (!!phone && oPhone === phone);
             return oId === String(localStorage.getItem('aavira_guest_order_id') || '').trim();
         });
-
         localStorage.setItem('aavira_orders', JSON.stringify(filtered));
         return filtered;
     } catch (error) {
@@ -180,14 +152,9 @@ window.getAaviraOrdersForCurrentUser = async function() {
 
 window.sendOrderToVercel = async function(orderPayload) {
     try {
-        const response = await fetch(`${VERCEL_URL}/api/orders`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(orderPayload)
-        });
+        const response = await fetch(`${VERCEL_URL}/api/orders`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(orderPayload) });
         const result = await response.json();
         const saved = response.ok && result.status === "success";
-
         if (saved) window.syncAaviraOrderLocally(orderPayload);
         return saved;
     } catch (error) {
@@ -201,16 +168,10 @@ window.sendOrderToVercel = async function(orderPayload) {
 // ==========================================
 window.saveReviewToDatabase = async function(productId, reviewData) {
     try {
-        const response = await fetch(`${VERCEL_URL}/api/add-review`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ productId: productId, review: reviewData })
-        });
+        const response = await fetch(`${VERCEL_URL}/api/add-review`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ productId: productId, review: reviewData }) });
         const result = await response.json();
         return result.success;
-    } catch (error) {
-        return false;
-    }
+    } catch (error) { return false; }
 };
 
 window.getReviewsFromDatabase = async function(productId) {
@@ -218,21 +179,12 @@ window.getReviewsFromDatabase = async function(productId) {
         const response = await fetch(`${VERCEL_URL}/api/get-reviews?productId=${productId}`);
         const result = await response.json();
         return (response.ok && result.success) ? result.data : [];
-    } catch (error) {
-        return [];
-    }
+    } catch (error) { return []; }
 };
 
-// ==========================================
-// 🌟 3.1. GLOBAL EXPERIENCE 🌟
-// ==========================================
 window.sendToVercelExperience = async function(expData) {
     try {
-        const response = await fetch(`${VERCEL_URL}/api/experience`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(expData)
-        });
+        const response = await fetch(`${VERCEL_URL}/api/experience`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(expData) });
         const result = await response.json();
         return (response.ok && result.status === "success");
     } catch (error) {
@@ -258,66 +210,36 @@ window.getVercelExperiences = async function() {
 window.DeliveryBoy = {
     sendOTP: async function(email, name) {
         try {
-            const response = await fetch(`${AUTH_URL}/api/send-otp`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userEmail: email, userName: name })
-            });
+            const response = await fetch(`${AUTH_URL}/api/send-otp`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userEmail: email, userName: name }) });
             const data = await response.json();
             return { ok: response.ok, data: data };
-        } catch (error) {
-            return { ok: false, data: { success: false, message: 'Auth Server Error!' } };
-        }
+        } catch (error) { return { ok: false, data: { success: false, message: 'Auth Server Error!' } }; }
     },
-
     verifyOTP: async function(email, userOtp, name, pwd) {
         try {
-            const response = await fetch(`${AUTH_URL}/api/verify-otp`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userEmail: email, userOTP: userOtp, userName: name, userPassword: pwd })
-            });
+            const response = await fetch(`${AUTH_URL}/api/verify-otp`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userEmail: email, userOTP: userOtp, userName: name, userPassword: pwd }) });
             const data = await response.json();
             return { ok: response.ok, data: data };
-        } catch (error) {
-            return { ok: false, data: { success: false, message: 'Auth Server Error!' } };
-        }
+        } catch (error) { return { ok: false, data: { success: false, message: 'Auth Server Error!' } }; }
     },
-
     login: async function(email, pwd) {
         try {
-            const response = await fetch(`${AUTH_URL}/api/login`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userEmail: email, userPassword: pwd })
-            });
+            const response = await fetch(`${AUTH_URL}/api/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userEmail: email, userPassword: pwd }) });
             const data = await response.json();
             return { ok: response.ok, data: data };
-        } catch (error) {
-            return { ok: false, data: { success: false, message: 'Auth Server Error!' } };
-        }
+        } catch (error) { return { ok: false, data: { success: false, message: 'Auth Server Error!' } }; }
     },
-
     checkEmailExists: async function(email) {
         try {
-            const response = await fetch(`${AUTH_URL}/api/login`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userEmail: email, userPassword: "DUMMY_PASSWORD_CHECK_123" })
-            });
+            const response = await fetch(`${AUTH_URL}/api/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userEmail: email, userPassword: "DUMMY_PASSWORD_CHECK_123" }) });
             const data = await response.json();
-            if (data.message === "Incorrect Password!" || (data.message && data.message.includes("already registered"))) {
-                return { exists: true };
-            }
+            if (data.message === "Incorrect Password!" || (data.message && data.message.includes("already registered"))) return { exists: true };
             return { exists: false };
-        } catch (error) {
-            return { exists: false };
-        }
+        } catch (error) { return { exists: false }; }
     },
-
     googleLogin: async function(token) {
         try {
-            const response = await fetch(`${AUTH_URL}/api/google-login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ googleToken: token })
-            });
+            const response = await fetch(`${AUTH_URL}/api/google-login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ googleToken: token }) });
             const data = await response.json();
             return { ok: response.ok, data: data };
         } catch (error) {
