@@ -871,7 +871,7 @@ const metaRow=(p,big)=>{
   if(cols.length){
     bits.push(`<span class="dots">${cols.slice(0,4).map(c=>`<i style="background:${colorHex(c)}"></i>`).join('')}</span>${cols.length>4?`<span class="rcount">+${cols.length-4}</span>`:''}`);
   }
-  return bits.length?`<span class="pcard-meta">${bits.join('')}</span>`:'';
+  return bits.length?`<span class="pcard-meta">${bits.filter((_,i)=>i===0).join('')}</span>`:'';
 };
 const lowStock=p=>{const s=Number(p.stock);return(Number.isFinite(s)&&s>0&&s<=4)?`<span class="low">Only ${s} left</span>`:''};
 
