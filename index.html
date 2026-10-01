@@ -686,16 +686,26 @@ window.processPromoCode=async()=>{
   if(used.includes(c)){showToast('This promo code was already used','error');return}
   const b=$('#btnApplyPromo');b.innerHTML='<span class="spinner"></span> Checking';b.disabled=true;
   const base=typeof AUTH_URL!=='undefined'?AUTH_URL:'https://aavira-fashion-backend.vercel.app';
+  const url=`${base}/api/promocodes/${encodeURIComponent(c)}`;
   try{
-    const r=await fetch(`${base}/api/promocodes/${encodeURIComponent(c)}`),res=await r.json();
-    if(r.ok&&res.status==='success'){
+    const r=await fetch(url);
+    let res=null;try{res=await r.json()}catch{}
+    if(r.ok&&res&&res.status==='success'){
       const d=Number(res.data.discountAmount)||Number(res.data.amount)||0;
       showToast(`Flat ₹${d} off applied`);
       saveJson('aavira_active_promo',{code:res.data.id||c,discount:d});
       used.push(c);saveJson('aavira_used_promos',used);
       updateProfileUI();setTimeout(closePromoModal,900);
-    }else showToast(res.message||'This code is not valid','error');
-  }catch{showToast('Network error. Check your connection.','error')}
+    }else if(res&&res.message){
+      showToast(res.message,'error');
+    }else{
+      console.error('Promo check failed:',r.status,url);
+      showToast(r.status===404?'This code is not valid':`Server error (${r.status}). Please try again later.`,'error');
+    }
+  }catch(err){
+    console.error('Promo request could not reach the server:',url,err);
+    showToast('Could not reach the server. Please try again.','error');
+  }
   b.textContent='Apply code';b.disabled=false;
 };
 window.removePromoCode=()=>{store.del('aavira_active_promo');updateProfileUI();showToast('Promo code removed')};
@@ -725,11 +735,24 @@ window.subscribeNewsletter=async()=>{
   const i=$('#newsletterEmail'),e=i.value.trim();
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){showToast('Enter a valid email address','error');i.focus();return}
   const b=$('#btnNewsletter');b.innerHTML='<span class="spinner"></span>';b.disabled=true;
+  const backend=()=>fetch('https://aavira-fashion-backend.vercel.app/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e})});
+  let saved=false;
+  /* 1) Firestore first (same as before), using the Firebase app your user_data.js sets up */
   try{
-    const r=await fetch('https://aavira-fashion-backend.vercel.app/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e})});
-    if(!r.ok)throw new Error('failed');
-    showToast('Thanks for joining');i.value='';
-  }catch{showToast('Could not subscribe. Please try again.','error')}
+    const {getFirestore,doc,setDoc}=await import('https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js');
+    await setDoc(doc(getFirestore(),'newsletter_subscribers',e),{email:e,joinedAt:new Date(),status:'active'});
+    saved=true;
+    backend().catch(()=>{}); /* best-effort backup, never blocks success */
+  }catch(err){console.error('Newsletter: Firestore save failed:',err)}
+  /* 2) Fall back to the backend only if Firestore failed */
+  if(!saved){
+    try{
+      const r=await backend();
+      if(r.ok)saved=true;else console.error('Newsletter: backend returned',r.status);
+    }catch(err){console.error('Newsletter: backend unreachable:',err)}
+  }
+  if(saved){showToast('Thanks for joining');i.value=''}
+  else showToast('Could not subscribe. Please try again.','error');
   b.textContent='Join';b.disabled=false;
 };
 
