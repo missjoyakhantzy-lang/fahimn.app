@@ -385,8 +385,8 @@ window.verifyAndApplyCouponAPI = async () => {
     let isValid = false;
 
     try {
-        let response = await fetch(`https://ssxpq15in.vercel.app/api/promo_codes/${code}`);
-        if (!response.ok) response = await fetch(`https://ssxpq15in.vercel.app/api/promocodes/${code}`);
+        let response = await fetch(`${VERCEL_URL}/api/promo_codes/${code}`);
+        if (!response.ok) response = await fetch(`${VERCEL_URL}/api/promocodes/${code}`);
         
         if (response.ok) {
             let result = await response.json();
