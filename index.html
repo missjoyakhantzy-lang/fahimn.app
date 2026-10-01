@@ -105,8 +105,10 @@ a{color:inherit;text-decoration:none}
 .pcard-body{display:block;padding:12px 12px 14px}
 .pcard-name{display:block;font-size:14px;font-weight:600;line-height:1.35;color:var(--ink)}
 .pcard-meta{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:12px;color:var(--muted)}
-.rating{display:inline-flex;align-items:center;gap:3px;font-weight:600;color:var(--ink)}
-.rating svg{width:12px;height:12px;fill:var(--gold);stroke:var(--gold)}
+.rating{display:inline-flex;align-items:center;gap:3px;font-weight:600;font-size:11px;color:#fff;background:#15803D;padding:2px 7px;border-radius:999px}
+.rating.mid{background:#B45309}.rating.low{background:#B91C1C}
+.rating svg{width:10px;height:10px;fill:currentColor;stroke:currentColor}
+.rcount{font-size:12px;color:var(--muted);font-weight:400}
 .dots{display:inline-flex}
 .dots i{width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,.12);margin-left:-3px}
 .dots i:first-child{margin-left:0}
@@ -229,6 +231,12 @@ a{color:inherit;text-decoration:none}
 .result img{width:72px;height:88px;object-fit:cover;border-radius:8px;background:var(--cream);flex:0 0 auto}
 .result-info{display:flex;flex-direction:column;justify-content:center;gap:6px;min-width:0}
 .result-info .n{font-size:14px;font-weight:600;line-height:1.35}
+.filters{flex:0 0 auto;display:flex;gap:8px;align-items:center;overflow-x:auto;padding:10px 12px;background:#fff;border-bottom:1px solid var(--line)}
+.sort{flex:0 0 auto;border:1px solid var(--line);border-radius:999px;background:#fff;padding:8px 12px;font-size:13px;font-family:inherit;color:var(--ink)}
+.chip{flex:0 0 auto;border:1px solid var(--line);border-radius:999px;background:#fff;padding:8px 14px;font-size:13px;font-weight:500;color:var(--ink);transition:all .2s}
+.chip.is-on{background:var(--rani);border-color:var(--rani);color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.res-count{font-size:12px;color:var(--muted);margin:0 0 10px}
 .hint{text-align:center;color:var(--muted);font-size:14px;margin-top:64px}
 
 /* sidebar */
@@ -271,10 +279,11 @@ a{color:inherit;text-decoration:none}
 .ref-link svg{width:18px;height:18px}
 
 /* colour sheet */
-.swatches{display:grid;grid-template-columns:repeat(5,1fr);gap:18px 6px;max-height:50vh;overflow-y:auto;padding:2px}
+.swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 6px;max-height:50vh;overflow-y:auto;padding:2px}
 .swatch{background:none;border:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:6px}
-.swatch i{width:46px;height:46px;border-radius:50%;border:1px solid rgba(0,0,0,.12);box-shadow:0 4px 12px rgba(0,0,0,.08);transition:transform .15s}
-.swatch:hover i{transform:scale(1.08)}
+.swatch i{width:48px;height:48px;border-radius:50%;box-shadow:inset 0 0 0 3px #fff,0 0 0 1px rgba(0,0,0,.14);transition:transform .15s,box-shadow .15s}
+.swatch:hover i{transform:scale(1.06);box-shadow:inset 0 0 0 3px #fff,0 0 0 2px var(--rani)}
+.swatch small{font-size:10px;color:#9A9298;margin-top:-4px}
 .swatch span{font-size:11px;font-weight:500;color:var(--muted);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* experience modal */
@@ -317,6 +326,14 @@ a{color:inherit;text-decoration:none}
       <i data-lucide="search"></i>
       <input type="search" id="searchInput" oninput="handleSearchDebounced()" placeholder="Search sarees, suits, lehengas" autocomplete="off">
     </label>
+  </div>
+  <div class="filters">
+    <select id="sortSel" class="sort" onchange="handleSearch()" aria-label="Sort products">
+      <option value="rel">Sort: Relevance</option><option value="plh">Price: Low to high</option>
+      <option value="phl">Price: High to low</option><option value="disc">Biggest discount</option><option value="rate">Top rated</option>
+    </select>
+    <button type="button" class="chip" id="chipSale" aria-pressed="false" onclick="toggleChip(this)">On sale</button>
+    <button type="button" class="chip" id="chipRate" aria-pressed="false" onclick="toggleChip(this)">4★ &amp; above</button>
   </div>
   <div id="searchResults" class="layer-body" aria-live="polite"></div>
 </div>
@@ -467,6 +484,7 @@ a{color:inherit;text-decoration:none}
       <a href="./" aria-label="Aavira home"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" class="site-logo"></a>
       <div class="header-actions">
         <button type="button" class="icon-btn" onclick="openSearch()" aria-label="Search"><i data-lucide="search"></i></button>
+        <a class="icon-btn" href="wishlist" aria-label="Wishlist"><i data-lucide="heart"></i><span id="wish-badge" class="cart-badge" hidden>0</span></a>
         <button type="button" class="icon-btn" onclick="triggerDotAction('cart',this)" aria-label="Shopping cart">
           <i data-lucide="shopping-bag"></i><span id="cart-badge" class="cart-badge" hidden>0</span>
         </button>
@@ -503,6 +521,11 @@ a{color:inherit;text-decoration:none}
     <section class="sec" aria-labelledby="h-new">
       <div class="sec-head"><h2 id="h-new">New arrivals</h2></div>
       <div id="new-arrivals-container" class="grid2"></div>
+    </section>
+
+    <section class="sec" id="recent-section" aria-labelledby="h-recent" hidden>
+      <div class="sec-head"><h2 id="h-recent">Recently viewed</h2><button type="button" class="sec-link" onclick="clearRecent()">Clear</button></div>
+      <div id="recent-container" class="rail no-scrollbar"></div>
     </section>
 
     <section class="sec" aria-labelledby="h-rev">
@@ -570,11 +593,14 @@ const vibrate=(m=30)=>{if('vibrate' in navigator)navigator.vibrate(m)};
 window.allProductsList=[];
 
 const ethnicColors=[
-  {name:"Red",hex:"#FF0000"},{name:"Blue",hex:"#0000FF"},{name:"Green",hex:"#008000"},{name:"Yellow",hex:"#FFFF00"},
-  {name:"Orange",hex:"#FFA500"},{name:"Purple",hex:"#800080"},{name:"Pink",hex:"#FFC0CB"},{name:"Brown",hex:"#A52A2A"},
-  {name:"Black",hex:"#000000"},{name:"White",hex:"#FFFFFF"},{name:"Gray",hex:"#808080"},{name:"Sky Blue",hex:"#87CEEB"},
-  {name:"Lime",hex:"#00FF00"},{name:"Navy Blue",hex:"#000080"},{name:"Violet",hex:"#EE82EE"},{name:"Maroon",hex:"#800000"},
-  {name:"Gold",hex:"#FFD700"},{name:"Magenta",hex:"#FF00FF"},{name:"Olive",hex:"#808000"},{name:"Coral",hex:"#FF7F50"}
+  {name:"Red",hex:"#C8102E"},{name:"Maroon",hex:"#6D1230"},{name:"Wine",hex:"#5E1A2B"},{name:"Rani Pink",hex:"#D81B60"},
+  {name:"Pink",hex:"#F4A6C0"},{name:"Magenta",hex:"#C2185B"},{name:"Coral",hex:"#F08A6E"},{name:"Peach",hex:"#F6C1A5"},
+  {name:"Orange",hex:"#E2711D"},{name:"Rust",hex:"#B7410E"},{name:"Mustard",hex:"#D4A017"},{name:"Yellow",hex:"#E8B923"},
+  {name:"Gold",hex:"#C9A227"},{name:"Beige",hex:"#D9C3A0"},{name:"Ivory",hex:"#F5EFE0"},{name:"White",hex:"#FFFFFF"},
+  {name:"Green",hex:"#2E7D5B"},{name:"Emerald",hex:"#0F7B5A"},{name:"Olive",hex:"#6B7A2A"},{name:"Lime",hex:"#A4C639"},
+  {name:"Mint",hex:"#A8D5BA"},{name:"Teal",hex:"#0F766E"},{name:"Turquoise",hex:"#2BB5B8"},{name:"Sky Blue",hex:"#7FB7E0"},
+  {name:"Blue",hex:"#1F4E9C"},{name:"Navy Blue",hex:"#1B2A5C"},{name:"Lavender",hex:"#C7B8E6"},{name:"Violet",hex:"#9B6BC9"},
+  {name:"Purple",hex:"#6B3FA0"},{name:"Brown",hex:"#7B4B2A"},{name:"Gray",hex:"#8A8A8A"},{name:"Black",hex:"#1A1A1A"}
 ];
 /* Product colour names like "Sky Blue" are not valid CSS, so look them up first. */
 const colorHex=n=>{
@@ -688,6 +714,7 @@ window.handleLogout=()=>{
   try{sessionStorage.removeItem('loginBannerShown')}catch{}
   updateProfileUI();showToast('Logged out');closeSidebar();
 };
+window.updateWishCount=()=>{const n=safeJson('aavira_wishlist',[]).length,b=$('#wish-badge');b.textContent=n>99?'99+':n;b.hidden=n<=0};
 window.updateCartCount=()=>{
   const c=safeJson('aavira_cart',[]),b=$('#cart-badge');
   const total=c.reduce((s,i)=>s+(Number(i.qty)||1),0);
@@ -699,21 +726,38 @@ window.closeSidebar=()=>{vibrate(30);closeLayer('sidebar')};
 /* =========================================================
    Search
    ========================================================= */
-const searchHint='<div class="hint">Search by product name.</div>';
-window.openSearch=()=>{$('#searchResults').innerHTML=searchHint;openLayer('searchOverlay','#searchInput')};
+const recentSearches=()=>safeJson('aavira_searches',[]);
+window.saveRecentSearch=q=>{
+  q=String(q||'').trim();if(q.length<2)return;
+  saveJson('aavira_searches',[q,...recentSearches().filter(x=>x.toLowerCase()!==q.toLowerCase())].slice(0,6));
+};
+window.useRecent=q=>{$('#searchInput').value=q;handleSearch()};
+window.toggleChip=b=>{const on=!b.classList.contains('is-on');b.classList.toggle('is-on',on);b.setAttribute('aria-pressed',on);handleSearch()};
+const searchHome=()=>{
+  const r=recentSearches();
+  return r.length?`<p class="res-count">Recent searches</p><div class="chips">${r.map(q=>`<button type="button" class="chip" data-q="${escapeHtml(q)}" onclick="useRecent(this.dataset.q)">${escapeHtml(q)}</button>`).join('')}</div>`:'<div class="hint">Search by product name.</div>';
+};
+window.openSearch=()=>{$('#searchResults').innerHTML=searchHome();openLayer('searchOverlay','#searchInput')};
 window.closeSearch=()=>closeLayer('searchOverlay');
 window.handleSearch=()=>{
   const q=$('#searchInput').value.toLowerCase().trim(),c=$('#searchResults');
-  if(!q){c.innerHTML=searchHint;return}
-  const f=allProductsList.filter(p=>String(p.name||'').toLowerCase().includes(q));
-  if(!f.length){c.innerHTML=`<div class="hint">No products match “${escapeHtml(q)}”. Try a different word.</div>`;return}
-  c.innerHTML=f.map(p=>{
+  const sale=$('#chipSale').classList.contains('is-on'),rate=$('#chipRate').classList.contains('is-on'),sort=$('#sortSel').value;
+  if(!q&&!sale&&!rate&&sort==='rel'){c.innerHTML=searchHome();return}
+  let f=allProductsList.filter(p=>!q||String(p.name||'').toLowerCase().includes(q));
+  if(sale)f=f.filter(p=>priceInfo(p).off>0);
+  if(rate)f=f.filter(p=>Number(p.rating)>=4);
+  const by={plh:(a,b)=>priceInfo(a).pr-priceInfo(b).pr,phl:(a,b)=>priceInfo(b).pr-priceInfo(a).pr,
+            disc:(a,b)=>priceInfo(b).off-priceInfo(a).off,rate:(a,b)=>(Number(b.rating)||0)-(Number(a.rating)||0)}[sort];
+  if(by)f=[...f].sort(by);
+  if(!f.length){c.innerHTML='<div class="hint">No products match. Try different words or clear the filters.</div>';return}
+  c.innerHTML=`<p class="res-count">${f.length} ${f.length>1?'products':'product'}</p>`+f.map(p=>{
     const {pr,m}=priceInfo(p);
     return `<a class="result" href="product?id=${encodeURIComponent(p.id)}" data-product="${escapeHtml(p.id)}">
       <img src="${escapeHtml(safeImageUrl(p.img))}" alt="" loading="lazy" onerror="imgFallback(this)">
-      <span class="result-info"><span class="n clamp2">${escapeHtml(p.name)}</span>
+      <span class="result-info"><span class="n clamp2">${escapeHtml(p.name)}</span>${metaRow(p)}
       <span class="pcard-price" style="margin:0"><span class="price">${fmt(pr)}</span>${m>pr?`<span class="mrp">${fmt(m)}</span>`:''}</span></span></a>`;
   }).join('');
+  icons();
 };
 let searchTimer;
 window.handleSearchDebounced=()=>{clearTimeout(searchTimer);searchTimer=setTimeout(handleSearch,150)};
@@ -723,8 +767,16 @@ window.handleSearchDebounced=()=>{clearTimeout(searchTimer);searchTimer=setTimeo
    ========================================================= */
 window.openColorSheet=()=>{
   vibrate(30);
-  $('#colorSwatchesContainer').innerHTML=ethnicColors.map(k=>
-    `<button type="button" class="swatch" data-color="${escapeHtml(k.name)}" data-hex="${k.hex}"><i style="background:${k.hex}"></i><span>${escapeHtml(k.name)}</span></button>`).join('');
+  const counts=new Map();
+  allProductsList.forEach(p=>p.colors.forEach(c=>{
+    const name=String(c).trim(),k=name.toLowerCase();if(!k)return;
+    counts.set(k,{name,n:(counts.get(k)?.n||0)+1});
+  }));
+  const list=counts.size?[...counts.values()].sort((a,b)=>b.n-a.n):ethnicColors.map(c=>({name:c.name,n:0}));
+  $('#colorSwatchesContainer').innerHTML=list.map(k=>{
+    const hex=colorHex(k.name);
+    return `<button type="button" class="swatch" data-color="${escapeHtml(k.name)}" data-hex="${hex}"><i style="background:${hex}"></i><span>${escapeHtml(k.name)}</span>${k.n?`<small>${k.n} ${k.n>1?'styles':'style'}</small>`:''}</button>`;
+  }).join('');
   openLayer('premiumColorSheet');
 };
 window.closeColorSheet=()=>closeLayer('premiumColorSheet');
@@ -814,10 +866,10 @@ const isWished=id=>safeJson('aavira_wishlist',[]).map(String).includes(String(id
 const metaRow=(p,big)=>{
   const bits=[];
   const r=Number(p.rating);
-  if(r>0)bits.push(`<span class="rating"><i data-lucide="star"></i>${r.toFixed(1)}${Number(p.reviewCount)>0?` <span style="font-weight:400;color:var(--muted)">(${Number(p.reviewCount)})</span>`:''}</span>`);
+  if(r>0)bits.push(`<span class="rating ${r>=4?'':r>=3?'mid':'low'}">${r.toFixed(1)}<i data-lucide="star"></i></span>`);
   const cols=p.colors;
   if(cols.length){
-    bits.push(`<span class="dots">${cols.slice(0,4).map(c=>`<i style="background:${colorHex(c)}"></i>`).join('')}</span><span>${cols.length} ${cols.length>1?'colours':'colour'}</span>`);
+    bits.push(`<span class="dots">${cols.slice(0,4).map(c=>`<i style="background:${colorHex(c)}"></i>`).join('')}</span>${cols.length>4?`<span class="rcount">+${cols.length-4}</span>`:''}`);
   }
   return bits.length?`<span class="pcard-meta">${bits.join('')}</span>`:'';
 };
@@ -853,14 +905,14 @@ document.addEventListener('click',e=>{
     const on=!h.classList.contains('is-on');
     h.classList.toggle('is-on',on);h.setAttribute('aria-pressed',on);
     w=on?(w.includes(id)?w:[...w,id]):w.filter(x=>x!==id);
-    saveJson('aavira_wishlist',w);
+    saveJson('aavira_wishlist',w);updateWishCount();
     showToast(on?'Added to wishlist':'Removed from wishlist');
     /* keep duplicate cards of the same product in sync */
     document.querySelectorAll(`[data-heart="${CSS.escape(id)}"]`).forEach(b=>{b.classList.toggle('is-on',on);b.setAttribute('aria-pressed',on)});
     return;
   }
   const a=e.target.closest('a[data-product]');
-  if(a){rememberRecent(a.dataset.product);(a.closest('.pcard')||a).classList.add('is-loading')}
+  if(a){if(a.closest('#searchResults'))saveRecentSearch($('#searchInput').value);rememberRecent(a.dataset.product);(a.closest('.pcard')||a).classList.add('is-loading')}
   const sw=e.target.closest('[data-color]');
   if(sw)selectColorAndSearch(sw.dataset.color,sw.dataset.hex);
 });
@@ -926,8 +978,35 @@ window.fetchCategories=async()=>{
   }
 };
 
+window.renderProducts=()=>{
+  const L=allProductsList;if(!L.length)return;
+  $('#trending-container').innerHTML=L.slice(0,4).map(p=>generateProductCard(p,false)).join('');
+  const ex=L.slice(4,6);
+  $('#exclusive-section').hidden=!ex.length;
+  $('#exclusive-container').innerHTML=ex.map(generateFeaturedCard).join('');
+  $('#new-arrivals-container').innerHTML=L.length>6?L.slice(6).map(p=>generateProductCard(p,true)).join(''):'<p class="empty" style="grid-column:1/-1">More new arrivals are coming soon.</p>';
+  icons();
+};
+/* Average rating + count come from the backend (rating/reviewCount), or are calculated from real reviews that carry a productId. */
+window.applyReviewStats=()=>{
+  const agg={};
+  safeJson('aavira_experiences',[]).forEach(e=>{
+    if(e.productId==null)return;
+    const a=agg[String(e.productId)]=agg[String(e.productId)]||{s:0,n:0};
+    a.s+=Number(e.rating)||0;a.n++;
+  });
+  allProductsList.forEach(p=>{const a=agg[String(p.id)];if(a&&a.n&&!(Number(p.rating)>0)){p.rating=a.s/a.n;p.reviewCount=a.n}});
+};
+window.renderRecent=()=>{
+  const ids=safeJson('aavira_recent',[]).map(String),sec=$('#recent-section');
+  const items=ids.map(id=>allProductsList.find(p=>String(p.id)===id)).filter(Boolean);
+  sec.hidden=!items.length;
+  $('#recent-container').innerHTML=items.map(p=>generateProductCard(p,false)).join('');
+  icons();
+};
+window.clearRecent=()=>{store.del('aavira_recent');renderRecent()};
 window.fetchProducts=async()=>{
-  const trending=$('#trending-container'),excl=$('#exclusive-container'),arr=$('#new-arrivals-container'),exSec=$('#exclusive-section');
+  const trending=$('#trending-container'),excl=$('#exclusive-container'),arr=$('#new-arrivals-container');
   try{
     const d=typeof window.getVercelData==='function'?await window.getVercelData():[];
     if(!Array.isArray(d)||!d.length)throw new Error('No products');
@@ -935,15 +1014,10 @@ window.fetchProducts=async()=>{
       id:x.id,name:x.name,price:x.price,mrp:x.mrp,
       colors:Array.isArray(x.colors)?x.colors:[],
       img:x.imageMain||x.image||x.imageUrl||'',
-      rating:x.rating,reviewCount:x.reviewCount??x.reviews,stock:x.stock,bestseller:!!x.bestseller
+      rating:x.rating??x.averageRating??x.avgRating,reviewCount:x.reviewCount??x.reviews??x.numReviews,
+      stock:x.stock,bestseller:!!x.bestseller
     }));
-    const L=allProductsList;
-    trending.innerHTML=L.slice(0,4).map(p=>generateProductCard(p,false)).join('');
-    const ex=L.slice(4,6);
-    exSec.hidden=!ex.length;
-    excl.innerHTML=ex.map(generateFeaturedCard).join('');
-    arr.innerHTML=L.length>6?L.slice(6).map(p=>generateProductCard(p,true)).join(''):'<p class="empty" style="grid-column:1/-1">More new arrivals are coming soon.</p>';
-    icons();
+    applyReviewStats();renderProducts();renderRecent();
   }catch{
     const retry='<div class="empty" style="width:100%;grid-column:1/-1">Products are unavailable. <button type="button" class="sec-link" onclick="fetchProducts()">Try again</button></div>';
     trending.innerHTML=retry;excl.innerHTML=retry;arr.innerHTML=retry;
@@ -1056,7 +1130,7 @@ window.lbPrev=e=>{if(e)e.stopPropagation();lbIndex--;updateLbUI()};
    Boot
    ========================================================= */
 window.initializeAppEngine=()=>{
-  updateProfileUI();loadSkeletons();updateCartCount();renderExperiences();icons();
+  updateProfileUI();loadSkeletons();updateCartCount();updateWishCount();renderExperiences();icons();
 
   let lx=0;
   const lt=$('#lightboxTouchArea');
@@ -1078,7 +1152,7 @@ window.initializeAppEngine=()=>{
       typeof window.fetchBanners==='function'?fetchBanners():0,
       fetchCategories(),fetchProducts(),fetchExperiences()
     ]);
-    icons();
+    applyReviewStats();renderProducts();renderRecent();updateWishCount();icons();
   },50);
 };
 document.addEventListener('DOMContentLoaded',initializeAppEngine);
