@@ -104,8 +104,15 @@ a{color:inherit;text-decoration:none}
 .tag-best{background:rgba(27,23,25,.88);color:#fff;font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:999px}
 .rchip{position:absolute;left:8px;bottom:8px;display:inline-flex;align-items:center;gap:3px;background:rgba(255,255,255,.96);color:var(--ink);font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
 .rchip svg{width:11px;height:11px;fill:var(--gold);stroke:var(--gold)}
-.pcard-body{display:block;padding:10px 2px 0}
-.pcard-name{display:block;font-size:13.5px;font-weight:500;line-height:1.35;color:var(--ink)}
+.pcard-foot{display:flex;align-items:flex-end;gap:8px;padding:10px 2px 0}
+.pcard-text{display:block;flex:1;min-width:0}
+.pcard-name{display:block;font-size:13.5px;font-weight:500;line-height:1.35;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.go{flex:0 0 auto;width:36px;height:36px;border-radius:50%;background:var(--rani);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(216,27,96,.28);transition:background .2s,transform .1s}
+.go:hover{background:var(--rani-dark)}
+.go:active{transform:scale(.92)}
+.go svg{width:17px;height:17px}
+.pfeat .go{width:44px;height:44px}
+.pfeat .go svg{width:20px;height:20px}
 .pcard-price{display:flex;align-items:baseline;gap:8px;margin-top:5px}
 .price{font-size:16px;font-weight:700}
 .mrp{font-size:12px;color:var(--muted);text-decoration:line-through}
@@ -118,18 +125,14 @@ a{color:inherit;text-decoration:none}
 .dots i:first-child{margin-left:0}
 .dots b{min-width:20px;height:20px;padding:0 5px;box-sizing:border-box;margin-left:7px;border-radius:10px;background:#fff;border:1px solid var(--line);font-size:10.5px;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;justify-content:center}
 .low{display:block;margin-top:6px;font-size:12px;font-weight:600;color:#B45309}
-.buy{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:40px;margin-top:10px;background:var(--rani);color:#fff;border-radius:10px;font-size:13px;font-weight:600;transition:background .2s,transform .1s}
-.buy:hover{background:var(--rani-dark)}
-.buy:active{transform:scale(.98)}
 .heart{position:absolute;right:8px;top:8px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.95);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.12);transition:transform .15s,color .2s}
 .heart:active{transform:scale(.88)}
 .heart svg{width:17px;height:17px;stroke-width:1.8}
 .heart.is-on{color:var(--rani)}
 .heart.is-on svg{fill:currentColor}
-.pfeat .pcard-body{padding:14px 2px 0}
+.pfeat .pcard-foot{padding:14px 2px 0}
 .pfeat .pcard-name{font-family:"Playfair Display",serif;font-size:20px;font-weight:600}
 .pfeat .price{font-size:19px}
-.pfeat .buy{height:46px;font-size:14px}
 .heart-lg{width:40px;height:40px}
 
 /* ---------- Reviews ---------- */
@@ -227,22 +230,6 @@ a{color:inherit;text-decoration:none}
 .field{width:100%;box-sizing:border-box;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:14px;color:var(--ink);outline:none;font-family:inherit}
 .field:focus{border-color:var(--rani);box-shadow:0 0 0 3px rgba(216,27,96,.1)}
 
-/* search */
-.search-box{flex:1;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 14px;height:42px}
-.search-box:focus-within{border-color:var(--rani)}
-.search-box svg{width:17px;height:17px;color:var(--muted);flex:0 0 auto}
-.search-box input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:14px;font-family:inherit}
-.result{display:flex;gap:14px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:10px}
-.result img{width:72px;height:88px;object-fit:cover;border-radius:8px;background:var(--cream);flex:0 0 auto}
-.result-info{display:flex;flex-direction:column;justify-content:center;gap:6px;min-width:0}
-.result-info .n{font-size:14px;font-weight:600;line-height:1.35}
-.filters{flex:0 0 auto;display:flex;gap:8px;align-items:center;overflow-x:auto;padding:10px 12px;background:#fff;border-bottom:1px solid var(--line)}
-.sort{flex:0 0 auto;border:1px solid var(--line);border-radius:999px;background:#fff;padding:8px 12px;font-size:13px;font-family:inherit;color:var(--ink)}
-.chip{flex:0 0 auto;border:1px solid var(--line);border-radius:999px;background:#fff;padding:8px 14px;font-size:13px;font-weight:500;color:var(--ink);transition:all .2s}
-.chip.is-on{background:var(--rani);border-color:var(--rani);color:#fff}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.res-count{font-size:12px;color:var(--muted);margin:0 0 10px}
-.hint{text-align:center;color:var(--muted);font-size:14px;margin-top:64px}
 
 /* sidebar */
 #sidebar{top:0;bottom:0;left:max(0px,calc(50% - 210px));width:min(86vw,340px);background:#fff;display:flex;flex-direction:column;box-shadow:0 0 50px rgba(0,0,0,.25)}
@@ -283,14 +270,6 @@ a{color:inherit;text-decoration:none}
 .ref-link button{width:42px;height:42px;border:0;border-radius:10px;background:var(--cream);display:flex;align-items:center;justify-content:center}
 .ref-link svg{width:18px;height:18px}
 
-/* colour sheet */
-.swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 6px;max-height:50vh;overflow-y:auto;padding:2px}
-.swatch{background:none;border:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:6px}
-.swatch i{width:48px;height:48px;border-radius:50%;box-shadow:inset 0 0 0 3px #fff,0 0 0 1px rgba(0,0,0,.14);transition:transform .15s,box-shadow .15s}
-.swatch:hover i{transform:scale(1.06);box-shadow:inset 0 0 0 3px #fff,0 0 0 2px var(--rani)}
-.swatch small{font-size:10px;color:#9A9298;margin-top:-4px}
-.swatch span{font-size:11px;font-weight:500;color:var(--muted);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-
 /* experience modal */
 .star-row{display:flex;justify-content:center;gap:6px;margin:6px 0 14px}
 .star-btn{background:none;border:0;font-size:32px;line-height:1;color:var(--gold);padding:2px;transition:transform .1s}
@@ -322,26 +301,6 @@ a{color:inherit;text-decoration:none}
 <body>
 <div id="toast" class="toast" role="status" aria-live="polite"><span id="toast-msg"></span></div>
 <div id="scrim" class="scrim" onclick="closeTopLayer()"></div>
-
-<!-- ================= SEARCH ================= -->
-<div id="searchOverlay" class="layer layer-page from-bottom" role="dialog" aria-modal="true" aria-label="Search products">
-  <div class="layer-top">
-    <button type="button" class="icon-btn" onclick="closeSearch()" aria-label="Close search"><i data-lucide="arrow-left"></i></button>
-    <label class="search-box">
-      <i data-lucide="search"></i>
-      <input type="search" id="searchInput" oninput="handleSearchDebounced()" placeholder="Search sarees, suits, lehengas" autocomplete="off">
-    </label>
-  </div>
-  <div class="filters">
-    <select id="sortSel" class="sort" onchange="handleSearch()" aria-label="Sort products">
-      <option value="rel">Sort: Relevance</option><option value="plh">Price: Low to high</option>
-      <option value="phl">Price: High to low</option><option value="disc">Biggest discount</option><option value="rate">Top rated</option>
-    </select>
-    <button type="button" class="chip" id="chipSale" aria-pressed="false" onclick="toggleChip(this)">On sale</button>
-    <button type="button" class="chip" id="chipRate" aria-pressed="false" onclick="toggleChip(this)">4★ &amp; above</button>
-  </div>
-  <div id="searchResults" class="layer-body" aria-live="polite"></div>
-</div>
 
 <!-- ================= REFERRAL ================= -->
 <div id="referralCenter" class="layer layer-page from-right" role="dialog" aria-modal="true" aria-label="Refer and earn">
@@ -376,29 +335,6 @@ a{color:inherit;text-decoration:none}
   </div>
   <input type="text" id="promoInput" class="field" style="text-align:center;text-transform:uppercase;letter-spacing:.12em;font-weight:600;margin-bottom:12px" placeholder="Enter code" autocomplete="off" aria-label="Promo code">
   <button type="button" id="btnApplyPromo" class="btn-pink" onclick="processPromoCode()">Apply code</button>
-</div>
-
-<!-- ================= COLOUR SHEET ================= -->
-<div id="premiumColorSheet" class="layer layer-sheet from-bottom" data-scrim="1" role="dialog" aria-modal="true" aria-labelledby="colorTitle">
-  <div class="grab"></div>
-  <div class="sheet-head">
-    <div><h2 id="colorTitle">Shop by colour</h2><p>Pick a shade to see matching styles.</p></div>
-    <button type="button" class="icon-btn" onclick="closeColorSheet()" aria-label="Close"><i data-lucide="x"></i></button>
-  </div>
-  <div id="colorSwatchesContainer" class="swatches no-scrollbar"></div>
-</div>
-
-<!-- ================= COLOUR RESULTS ================= -->
-<div id="colorResultsOverlay" class="layer layer-page from-right" role="dialog" aria-modal="true" aria-label="Colour results">
-  <div class="layer-top">
-    <button type="button" class="icon-btn" onclick="closeColorResults()" aria-label="Back"><i data-lucide="arrow-left"></i></button>
-    <span id="selectedColorBadge" style="width:22px;height:22px;border-radius:50%;border:1px solid rgba(0,0,0,.15)"></span>
-    <h2>Colour match</h2>
-  </div>
-  <div class="layer-body">
-    <p id="colorMatchText" style="font-size:13px;color:var(--muted);margin:0 0 14px"></p>
-    <div id="colorResultsGrid" class="grid2" style="padding-bottom:24px"></div>
-  </div>
 </div>
 
 <!-- ================= REVIEW SHEET ================= -->
@@ -488,7 +424,7 @@ a{color:inherit;text-decoration:none}
       <div><button type="button" class="icon-btn" onclick="openSidebar()" aria-label="Open menu"><i data-lucide="menu"></i></button></div>
       <a href="./" aria-label="Aavira home"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" class="site-logo"></a>
       <div class="header-actions">
-        <button type="button" class="icon-btn" onclick="openSearch()" aria-label="Search"><i data-lucide="search"></i></button>
+        <a class="icon-btn" href="/items/search.html" aria-label="Search"><i data-lucide="search"></i></a>
         <a class="icon-btn" href="wishlist" aria-label="Wishlist"><i data-lucide="heart"></i><span id="wish-badge" class="cart-badge" hidden>0</span></a>
         <button type="button" class="icon-btn" onclick="triggerDotAction('cart',this)" aria-label="Shopping cart">
           <i data-lucide="shopping-bag"></i><span id="cart-badge" class="cart-badge" hidden>0</span>
@@ -514,7 +450,7 @@ a{color:inherit;text-decoration:none}
     </section>
 
     <section class="sec" aria-labelledby="h-trend">
-      <div class="sec-head"><h2 id="h-trend">Trending</h2><button type="button" class="sec-link" onclick="openSearch()">Search all</button></div>
+      <div class="sec-head"><h2 id="h-trend">Trending</h2><a class="sec-link" href="/items/search.html">Search all</a></div>
       <div id="trending-container" class="rail no-scrollbar"></div>
     </section>
 
@@ -565,14 +501,14 @@ a{color:inherit;text-decoration:none}
 <div id="dynamic-action-banner" class="offer" role="region" aria-label="Sign-in offer" hidden></div>
 
 <div class="fab-col">
-  <button type="button" class="fab" onclick="openColorSheet()" aria-label="Shop by colour"><i data-lucide="palette"></i></button>
+  <a class="fab" href="/match/colours.html" aria-label="Shop by colour"><i data-lucide="palette"></i></a>
   <a class="fab fab-wa" href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"><i data-lucide="message-circle"></i></a>
 </div>
 
 <nav class="bottom-nav" id="bottomNavContainer" aria-label="Main">
   <a href="./" class="nav-item" aria-current="page"><i data-lucide="home"></i><span>Home</span></a>
   <a href="categories" class="nav-item"><i data-lucide="layout-grid"></i><span>Collections</span></a>
-  <button type="button" class="nav-item" onclick="openSearch()"><i data-lucide="search"></i><span>Search</span></button>
+  <a href="/items/search.html" class="nav-item"><i data-lucide="search"></i><span>Search</span></a>
   <a href="orders" class="nav-item"><i data-lucide="package"></i><span>Orders</span></a>
   <a href="profile" class="nav-item"><i data-lucide="user"></i><span>Profile</span></a>
 </nav>
@@ -728,79 +664,7 @@ window.updateCartCount=()=>{
 window.openSidebar=()=>{vibrate(40);updateProfileUI();openLayer('sidebar')};
 window.closeSidebar=()=>{vibrate(30);closeLayer('sidebar')};
 
-/* =========================================================
-   Search
-   ========================================================= */
-const recentSearches=()=>safeJson('aavira_searches',[]);
-window.saveRecentSearch=q=>{
-  q=String(q||'').trim();if(q.length<2)return;
-  saveJson('aavira_searches',[q,...recentSearches().filter(x=>x.toLowerCase()!==q.toLowerCase())].slice(0,6));
-};
-window.useRecent=q=>{$('#searchInput').value=q;handleSearch()};
-window.toggleChip=b=>{const on=!b.classList.contains('is-on');b.classList.toggle('is-on',on);b.setAttribute('aria-pressed',on);handleSearch()};
-const searchHome=()=>{
-  const r=recentSearches();
-  return r.length?`<p class="res-count">Recent searches</p><div class="chips">${r.map(q=>`<button type="button" class="chip" data-q="${escapeHtml(q)}" onclick="useRecent(this.dataset.q)">${escapeHtml(q)}</button>`).join('')}</div>`:'<div class="hint">Search by product name.</div>';
-};
-window.openSearch=()=>{$('#searchResults').innerHTML=searchHome();openLayer('searchOverlay','#searchInput')};
-window.closeSearch=()=>closeLayer('searchOverlay');
-window.handleSearch=()=>{
-  const q=$('#searchInput').value.toLowerCase().trim(),c=$('#searchResults');
-  const sale=$('#chipSale').classList.contains('is-on'),rate=$('#chipRate').classList.contains('is-on'),sort=$('#sortSel').value;
-  if(!q&&!sale&&!rate&&sort==='rel'){c.innerHTML=searchHome();return}
-  let f=allProductsList.filter(p=>!q||String(p.name||'').toLowerCase().includes(q));
-  if(sale)f=f.filter(p=>priceInfo(p).off>0);
-  if(rate)f=f.filter(p=>Number(p.rating)>=4);
-  const by={plh:(a,b)=>priceInfo(a).pr-priceInfo(b).pr,phl:(a,b)=>priceInfo(b).pr-priceInfo(a).pr,
-            disc:(a,b)=>priceInfo(b).off-priceInfo(a).off,rate:(a,b)=>(Number(b.rating)||0)-(Number(a.rating)||0)}[sort];
-  if(by)f=[...f].sort(by);
-  if(!f.length){c.innerHTML='<div class="hint">No products match. Try different words or clear the filters.</div>';return}
-  c.innerHTML=`<p class="res-count">${f.length} ${f.length>1?'products':'product'}</p>`+f.map(p=>{
-    const {pr,m}=priceInfo(p);
-    return `<a class="result" href="product?id=${encodeURIComponent(p.id)}" data-product="${escapeHtml(p.id)}">
-      <img src="${escapeHtml(safeImageUrl(p.img))}" alt="" loading="lazy" onerror="imgFallback(this)">
-      <span class="result-info"><span class="n clamp1">${escapeHtml(p.name)}</span>${metaRow(p)}
-      <span class="pcard-price" style="margin:0"><span class="price">${fmt(pr)}</span>${m>pr?`<span class="mrp">${fmt(m)}</span>`:''}</span></span></a>`;
-  }).join('');
-  icons();
-};
-let searchTimer;
-window.handleSearchDebounced=()=>{clearTimeout(searchTimer);searchTimer=setTimeout(handleSearch,150)};
 
-/* =========================================================
-   Colour search
-   ========================================================= */
-window.openColorSheet=()=>{
-  vibrate(30);
-  const counts=new Map();
-  allProductsList.forEach(p=>p.colors.forEach(c=>{
-    const name=String(c).trim(),k=name.toLowerCase();if(!k)return;
-    counts.set(k,{name,n:(counts.get(k)?.n||0)+1});
-  }));
-  const list=counts.size?[...counts.values()].sort((a,b)=>b.n-a.n):ethnicColors.map(c=>({name:c.name,n:0}));
-  $('#colorSwatchesContainer').innerHTML=list.map(k=>{
-    const hex=colorHex(k.name);
-    return `<button type="button" class="swatch" data-color="${escapeHtml(k.name)}" data-hex="${hex}"><i style="background:${hex}"></i><span>${escapeHtml(k.name)}</span>${k.n?`<small>${k.n} ${k.n>1?'styles':'style'}</small>`:''}</button>`;
-  }).join('');
-  openLayer('premiumColorSheet');
-};
-window.closeColorSheet=()=>closeLayer('premiumColorSheet');
-window.selectColorAndSearch=(n,h)=>{
-  closeColorSheet();
-  $('#selectedColorBadge').style.backgroundColor=h;
-  $('#colorMatchText').textContent=`Styles available in ${n}`;
-  const g=$('#colorResultsGrid');
-  if(!allProductsList.length){
-    g.innerHTML='<div class="hint" style="grid-column:1/-1">Products are still loading. Try again in a moment.</div>';
-  }else{
-    const m=allProductsList.filter(p=>p.colors.some(c=>String(c).toLowerCase()===String(n).toLowerCase()));
-    g.innerHTML=m.length?m.map(p=>generateProductCard(p,true)).join('')
-      :'<div class="hint" style="grid-column:1/-1;margin-top:60px"><b style="color:var(--ink)">No styles in this colour yet</b><br>Try another shade.</div>';
-  }
-  icons();
-  openLayer('colorResultsOverlay');
-};
-window.closeColorResults=()=>closeLayer('colorResultsOverlay');
 
 /* =========================================================
    Promo & referral
@@ -872,31 +736,27 @@ const colorDots=p=>{
   return `<span class="pcard-meta"><span class="dots" role="img" aria-label="${c.length} ${c.length>1?'colours':'colour'} available">${c.slice(0,3).map(x=>`<i style="background:${colorHex(x)}"></i>`).join('')}${c.length>3?`<b>+${c.length-3}</b>`:''}</span></span>`;
 };
 /* Used in search results: rating pill + colour dots */
-const metaRow=p=>{
-  const r=Number(p.rating);
-  const pill=r>0?`<span class="rating ${r>=4?'':r>=3?'mid':'low'}">${r.toFixed(1)}<i data-lucide="star"></i></span>`:'';
-  const d=colorDots(p);
-  return(pill||d)?`<span class="pcard-meta" style="margin:0">${pill}${d.replace('<span class="pcard-meta">','').replace(/<\/span>$/,'')}</span>`:'';
-};
 const lowStock=p=>{const s=Number(p.stock);return(Number.isFinite(s)&&s>0&&s<=4)?`<span class="low">Only ${s} left</span>`:''};
 
 const cardHtml=(p,cls)=>{
   const {pr,m,off}=priceInfo(p),id=escapeHtml(p.id),name=escapeHtml(p.name),featured=cls==='pfeat';
   const href=`product?id=${encodeURIComponent(p.id)}`,r=Number(p.rating);
   return `<article class="pcard ${cls}">
-    <a class="pcard-link" href="${href}" data-product="${id}">
+    <a class="pcard-link" href="${href}" data-product="${id}" tabindex="-1" aria-hidden="true">
       <span class="pcard-media">
         <img src="${escapeHtml(safeImageUrl(p.img))}" alt="" loading="lazy" onerror="imgFallback(this)">
         ${(off||p.bestseller)?`<span class="tags">${off?`<span class="tag-off">${off}% off</span>`:''}${p.bestseller?'<span class="tag-best">Bestseller</span>':''}</span>`:''}
         ${r>0?`<span class="rchip"><i data-lucide="star"></i>${r.toFixed(1)}</span>`:''}
       </span>
-      <span class="pcard-body">
-        <span class="pcard-name clamp1">${name}</span>
+    </a>
+    <div class="pcard-foot">
+      <a class="pcard-text" href="${href}" data-product="${id}">
+        <span class="pcard-name">${name}</span>
         <span class="pcard-price"><span class="price">${fmt(pr)}</span>${m>pr?`<span class="mrp">${fmt(m)}</span>`:''}</span>
         ${colorDots(p)}${lowStock(p)}
-      </span>
-    </a>
-    <a class="buy" href="${href}&buy=1" data-product="${id}">Buy now</a>
+      </a>
+      <a class="go" href="${href}&buy=1" data-product="${id}" aria-label="Buy ${name}"><i data-lucide="arrow-up-right"></i></a>
+    </div>
     <button type="button" class="heart ${featured?'heart-lg':''} ${isWished(p.id)?'is-on':''}" data-heart="${id}" aria-pressed="${isWished(p.id)}" aria-label="Save ${name} to wishlist"><i data-lucide="heart"></i></button>
   </article>`;
 };
@@ -918,9 +778,7 @@ document.addEventListener('click',e=>{
     return;
   }
   const a=e.target.closest('a[data-product]');
-  if(a){if(a.closest('#searchResults'))saveRecentSearch($('#searchInput').value);rememberRecent(a.dataset.product);(a.closest('.pcard')||a).classList.add('is-loading')}
-  const sw=e.target.closest('[data-color]');
-  if(sw)selectColorAndSearch(sw.dataset.color,sw.dataset.hex);
+  if(a){rememberRecent(a.dataset.product);(a.closest('.pcard')||a).classList.add('is-loading')}
 });
 
 /* =========================================================
