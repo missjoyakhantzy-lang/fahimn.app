@@ -5,6 +5,21 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Aavira - Luxury Ethnic Elegance</title>
 <meta name="description" content="Discover Aavira's luxury ethnic wear, handcrafted styles, exclusive collections, and new arrivals.">
+<script>
+/* Desktop-site mode on a phone: lay the page out as a 420px mobile column and zoom it to fill the screen. */
+(function(){
+  var W=420,root=document.documentElement;
+  function fit(){
+    root.style.zoom='';
+    var vw=root.clientWidth||window.innerWidth;
+    var touch=(navigator.maxTouchPoints>0)||(window.matchMedia&&matchMedia('(pointer:coarse)').matches);
+    if(touch&&vw>W+60&&vw<=1100)root.style.zoom=(vw/W).toFixed(4);
+  }
+  fit();
+  window.addEventListener('resize',fit);
+  window.addEventListener('orientationchange',fit);
+})();
+</script>
 <meta name="theme-color" content="#ffffff">
 <link rel="canonical" href="https://aavirafashion.shop/">
 <meta property="og:type" content="website">
@@ -42,7 +57,7 @@ a{color:inherit;text-decoration:none}
 .clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
 /* ---------- App column ---------- */
-.app{max-width:420px;margin:0 auto;min-height:100vh;background:var(--ivory);position:relative;padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+.app{max-width:420px;margin:0 auto;background:var(--ivory);position:relative;padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
 @media(min-width:640px){body{background:#EFE8DE}.app{box-shadow:0 0 60px rgba(36,32,36,.12)}}
 
 /* ---------- Header ---------- */
@@ -57,21 +72,16 @@ a{color:inherit;text-decoration:none}
 .cart-badge[hidden]{display:none}
 
 /* ---------- Hero ---------- */
-.hero{position:relative;height:clamp(420px,66vh,560px);overflow:hidden;background:linear-gradient(135deg,#6E0F36,#D81B60)}
-.hero-track{position:absolute;inset:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory}
+.hero{position:relative}
+.hero-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;aspect-ratio:5/6;background:linear-gradient(135deg,#6E0F36,#D81B60)}
 .hero-slide{position:relative;flex:0 0 100%;height:100%;scroll-snap-align:start;display:block}
 .hero-slide img{width:100%;height:100%;object-fit:cover}
-.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(27,23,25,.78) 0%,rgba(27,23,25,.25) 45%,rgba(27,23,25,0) 70%);pointer-events:none}
-.hero-copy{position:absolute;left:20px;right:20px;bottom:54px;z-index:2;color:#fff;pointer-events:none}
-.hero-copy h1{font-size:34px;line-height:1.12;font-weight:600;letter-spacing:-.01em;max-width:320px}
-.hero-copy p{margin:10px 0 18px;font-size:14px;line-height:1.5;color:rgba(255,255,255,.88);max-width:300px}
-.btn-light{pointer-events:auto;display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--ink);font-weight:600;font-size:14px;padding:12px 22px;border-radius:999px;border:0;transition:background .2s,color .2s}
-.btn-light:hover{background:var(--rani);color:#fff}
-.hero-dots{position:absolute;left:20px;bottom:24px;z-index:2;display:flex;gap:6px}
-.hero-dot{height:4px;width:16px;border-radius:2px;background:rgba(255,255,255,.45);transition:width .3s var(--ease),background .3s}
-.hero-dot.is-active{width:30px;background:#fff}
-.hero-error{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:90px;color:#fff;text-align:center;font-size:14px}
+.hero-dots{display:flex;justify-content:center;gap:6px;padding:12px 0 0;min-height:16px}
+.hero-dot{height:4px;width:16px;border-radius:2px;background:#D9D2CB;transition:width .3s var(--ease),background .3s}
+.hero-dot.is-active{width:30px;background:var(--rani)}
+.hero-error{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center;font-size:14px;padding:24px}
 .hero-error button{margin-top:10px;background:none;border:0;color:#fff;text-decoration:underline;font-weight:600}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 
 /* ---------- Sections ---------- */
 .sec{padding:40px 16px 0}
@@ -94,7 +104,8 @@ a{color:inherit;text-decoration:none}
 
 /* ---------- Product cards ---------- */
 .pcard{position:relative;transition:transform .25s var(--ease)}
-.pcard-rail{flex:0 0 168px;scroll-snap-align:start}
+.pcard-rail{flex:0 0 168px;min-width:0;scroll-snap-align:start}
+.pcard{min-width:0}
 .pcard-link{display:block}
 .pcard-media{position:relative;display:block;aspect-ratio:1/1;background:var(--cream);overflow:hidden;border-radius:14px}
 .pcard-media img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
@@ -193,7 +204,7 @@ a{color:inherit;text-decoration:none}
 .fab{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(36,32,36,.18);border:1px solid var(--line);background:#fff;color:var(--rani)}
 .fab svg{width:21px;height:21px}
 .fab-wa{background:#25D366;color:#fff;border-color:#1DA851}
-.toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translate(-50%,16px);opacity:0;background:#111827;color:#fff;padding:10px 20px;border-radius:999px;font-size:13px;font-weight:500;box-shadow:0 10px 24px rgba(0,0,0,.22);z-index:10060;pointer-events:none;white-space:nowrap;max-width:92vw;transition:opacity .25s,transform .25s var(--ease)}
+.toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translate(-50%,16px);opacity:0;background:#111827;color:#fff;padding:10px 20px;border-radius:999px;font-size:13px;font-weight:500;box-shadow:0 10px 24px rgba(0,0,0,.22);z-index:10060;pointer-events:none;white-space:nowrap;max-width:92%;transition:opacity .25s,transform .25s var(--ease)}
 .toast.is-on{opacity:1;transform:translate(-50%,0)}
 .toast[data-type="error"]{background:var(--rani-dark)}
 .offer{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(150%);width:92%;max-width:380px;z-index:9100;background:var(--ink);color:#fff;border-radius:14px;padding:12px 12px 12px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 14px 34px rgba(0,0,0,.3);transition:transform .45s var(--ease)}
@@ -215,7 +226,7 @@ a{color:inherit;text-decoration:none}
 .layer.is-open{visibility:visible;pointer-events:auto;transform:none;opacity:1;transition-delay:0s}
 .layer-page,.layer-sheet{left:0;right:0;margin:0 auto;width:100%;max-width:420px}
 .layer-page{top:0;bottom:0;background:var(--ivory);display:flex;flex-direction:column}
-.layer-sheet{bottom:0;background:#fff;border-radius:24px 24px 0 0;padding:12px 20px calc(24px + env(safe-area-inset-bottom,0px));max-height:88vh;overflow-y:auto;box-shadow:0 -20px 50px rgba(0,0,0,.18)}
+.layer-sheet{bottom:0;background:#fff;border-radius:24px 24px 0 0;padding:12px 20px calc(24px + env(safe-area-inset-bottom,0px));max-height:calc(100% - 40px);overflow-y:auto;box-shadow:0 -20px 50px rgba(0,0,0,.18)}
 .from-bottom{transform:translateY(100%)}
 .from-right{transform:translateX(100%)}
 .from-left{transform:translateX(-100%)}
@@ -232,7 +243,7 @@ a{color:inherit;text-decoration:none}
 
 
 /* sidebar */
-#sidebar{top:0;bottom:0;left:max(0px,calc(50% - 210px));width:min(86vw,340px);background:#fff;display:flex;flex-direction:column;box-shadow:0 0 50px rgba(0,0,0,.25)}
+#sidebar{top:0;bottom:0;left:max(0px,calc(50% - 210px));width:86%;max-width:340px;background:#fff;display:flex;flex-direction:column;box-shadow:0 0 50px rgba(0,0,0,.25)}
 .side-top{display:flex;align-items:center;justify-content:space-between;padding:calc(10px + env(safe-area-inset-top,0px)) 12px 10px 16px}
 .side-top img{height:38px}
 .profile{margin:0 16px 8px;padding:16px;background:var(--blush);border-radius:16px}
@@ -424,7 +435,7 @@ a{color:inherit;text-decoration:none}
       <div><button type="button" class="icon-btn" onclick="openSidebar()" aria-label="Open menu"><i data-lucide="menu"></i></button></div>
       <a href="./" aria-label="Aavira home"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" class="site-logo"></a>
       <div class="header-actions">
-        <a class="icon-btn" href="/items/search" aria-label="Search"><i data-lucide="search"></i></a>
+        <a class="icon-btn" href="/items/search.html" aria-label="Search"><i data-lucide="search"></i></a>
         <a class="icon-btn" href="wishlist" aria-label="Wishlist"><i data-lucide="heart"></i><span id="wish-badge" class="cart-badge" hidden>0</span></a>
         <button type="button" class="icon-btn" onclick="triggerDotAction('cart',this)" aria-label="Shopping cart">
           <i data-lucide="shopping-bag"></i><span id="cart-badge" class="cart-badge" hidden>0</span>
@@ -436,11 +447,7 @@ a{color:inherit;text-decoration:none}
   <main>
     <section class="hero" aria-label="Featured">
       <div id="bannerCarousel" class="hero-track no-scrollbar"></div>
-      <div class="hero-copy">
-        <h1>Luxury ethnic elegance</h1>
-        <p>Handcrafted styles, exclusive collections and new arrivals.</p>
-        <a class="btn-light" href="categories">Shop collections <i data-lucide="arrow-right" style="width:16px;height:16px"></i></a>
-      </div>
+      <h1 class="sr-only">Luxury ethnic elegance</h1>
       <div id="banner-dots" class="hero-dots"></div>
     </section>
 
@@ -450,7 +457,7 @@ a{color:inherit;text-decoration:none}
     </section>
 
     <section class="sec" aria-labelledby="h-trend">
-      <div class="sec-head"><h2 id="h-trend">Trending</h2><a class="sec-link" href="/items/search">Search all</a></div>
+      <div class="sec-head"><h2 id="h-trend">Trending</h2><a class="sec-link" href="/items/search.html">Search all</a></div>
       <div id="trending-container" class="rail no-scrollbar"></div>
     </section>
 
@@ -501,14 +508,14 @@ a{color:inherit;text-decoration:none}
 <div id="dynamic-action-banner" class="offer" role="region" aria-label="Sign-in offer" hidden></div>
 
 <div class="fab-col">
-  <a class="fab" href="/match/colours" aria-label="Shop by colour"><i data-lucide="palette"></i></a>
+  <a class="fab" href="/match/colours.html" aria-label="Shop by colour"><i data-lucide="palette"></i></a>
   <a class="fab fab-wa" href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"><i data-lucide="message-circle"></i></a>
 </div>
 
 <nav class="bottom-nav" id="bottomNavContainer" aria-label="Main">
   <a href="./" class="nav-item" aria-current="page"><i data-lucide="home"></i><span>Home</span></a>
   <a href="categories" class="nav-item"><i data-lucide="layout-grid"></i><span>Collections</span></a>
-  <a href="/items/search" class="nav-item"><i data-lucide="search"></i><span>Search</span></a>
+  <a href="/items/search.html" class="nav-item"><i data-lucide="search"></i><span>Search</span></a>
   <a href="orders" class="nav-item"><i data-lucide="package"></i><span>Orders</span></a>
   <a href="profile" class="nav-item"><i data-lucide="user"></i><span>Profile</span></a>
 </nav>
@@ -794,7 +801,6 @@ window.loadSkeletons=()=>{
 
 window.fetchBanners=async()=>{
   const c=$('#bannerCarousel'),dots=$('#banner-dots');
-  c.parentElement.querySelector('.hero-error')?.remove();
   try{
     const d=typeof window.getBannersData==='function'?await window.getBannersData():[];
     if(!Array.isArray(d)||!d.length)throw new Error('No banners');
@@ -821,8 +827,8 @@ window.fetchBanners=async()=>{
       dots.querySelectorAll('.hero-dot').forEach((dt,i)=>dt.classList.toggle('is-active',i===ix));
     };
   }catch{
-    c.innerHTML='';dots.innerHTML='';
-    c.parentElement.insertAdjacentHTML('beforeend','<div class="hero-error"><p>New collections are arriving soon.</p><button type="button" onclick="fetchBanners()">Try again</button></div>');
+    dots.innerHTML='';
+    c.innerHTML='<div class="hero-error"><p>New collections are arriving soon.</p><button type="button" onclick="fetchBanners()">Try again</button></div>';
   }
 };
 
@@ -851,7 +857,7 @@ window.renderProducts=()=>{
   $('#new-arrivals-container').innerHTML=L.length>6?L.slice(6).map(p=>generateProductCard(p,true)).join(''):'<p class="empty" style="grid-column:1/-1">More new arrivals are coming soon.</p>';
   icons();
 };
-/* Product rating comes from backend data or real product reviews. Review-count text is intentionally not rendered. */
+/* Average rating + count come from the backend (rating/reviewCount), or are calculated from real reviews that carry a productId. */
 window.applyReviewStats=()=>{
   const agg={};
   safeJson('aavira_experiences',[]).forEach(e=>{
