@@ -54,6 +54,22 @@ window.getCategoriesData = async function() {
 };
 
 // ==========================================
+// 1.1. SHARED PROMO CODE API
+// ==========================================
+window.checkPromoCode = async function(code) {
+    const cleanCode = String(code || '').trim().toUpperCase();
+    if (!cleanCode) return null;
+    try {
+        const response = await fetch(`${VERCEL_URL}/api/promocodes/${encodeURIComponent(cleanCode)}`);
+        if (!response.ok) return null;
+        return response;
+    } catch (e) {
+        console.error("Promo Code Fetch Error:", e);
+        return null;
+    }
+};
+
+// ==========================================
  // 2. ORDERS LOGIC
  // ==========================================
 window.getLocalAaviraOrders = function() {
