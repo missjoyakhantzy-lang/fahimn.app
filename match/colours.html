@@ -79,11 +79,9 @@ main{padding:20px 16px calc(40px + env(safe-area-inset-bottom,0px))}
 .hint b{color:var(--ink)}
 
 /* product card */
-.pcard{position:relative;min-width:0;background:#fff;border:1px solid var(--line);border-radius:16px;transition:box-shadow .25s,transform .25s var(--ease)}
-.pcard:hover{box-shadow:0 14px 32px rgba(36,32,36,.10)}
-.pcard-top{position:relative}
+.pcard{position:relative;min-width:0}
 .pcard-link{display:block}
-.pcard-media{position:relative;display:block;aspect-ratio:1/1;background:var(--cream);overflow:hidden;border-radius:15px 15px 0 0}
+.pcard-media{position:relative;display:block;aspect-ratio:1/1;background:var(--cream);overflow:hidden;border-radius:14px}
 .pcard-media img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
 .pcard:hover .pcard-media img{transform:scale(1.05)}
 .tags{position:absolute;left:8px;top:8px;display:flex;flex-direction:column;align-items:flex-start;gap:4px}
@@ -91,9 +89,10 @@ main{padding:20px 16px calc(40px + env(safe-area-inset-bottom,0px))}
 .tag-best{background:rgba(27,23,25,.88);color:#fff;font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:999px}
 .rchip{position:absolute;left:8px;bottom:8px;display:inline-flex;align-items:center;gap:3px;background:rgba(255,255,255,.96);color:var(--ink);font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
 .rchip svg{width:11px;height:11px;fill:var(--gold);stroke:var(--gold)}
-.pcard-text{display:block;padding:24px 12px 14px}
+.pcard-foot{display:flex;align-items:flex-end;gap:8px;padding:10px 2px 0}
+.pcard-text{display:block;flex:1;min-width:0}
 .pcard-name{display:block;font-size:13.5px;font-weight:500;line-height:1.35;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.go{position:absolute;right:12px;bottom:-18px;z-index:2;width:38px;height:38px;border-radius:50%;background:var(--rani);color:#fff;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 6px 14px rgba(216,27,96,.3);transition:background .2s,transform .1s}
+.go{flex:0 0 auto;width:36px;height:36px;border-radius:50%;background:var(--rani);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(216,27,96,.28);transition:background .2s,transform .1s}
 .go:hover{background:var(--rani-dark)}
 .go:active{transform:scale(.92)}
 .go svg{width:17px;height:17px}
@@ -102,9 +101,9 @@ main{padding:20px 16px calc(40px + env(safe-area-inset-bottom,0px))}
 .pcard-price{display:flex;align-items:baseline;gap:8px;margin-top:5px}
 .price{font-size:16px;font-weight:700}
 .mrp{font-size:12px;color:var(--muted);text-decoration:line-through}
-.pcard-meta{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.pcard-meta{display:flex;align-items:center;gap:8px;margin-top:8px}
 .dots{display:inline-flex;align-items:center}
-.dots i{width:14px;height:14px;border-radius:50%;margin-left:-4px;box-shadow:0 0 0 2px #fff,inset 0 0 0 1px rgba(0,0,0,.14)}
+.dots i{width:14px;height:14px;border-radius:50%;margin-left:-4px;box-shadow:0 0 0 2px var(--ivory),inset 0 0 0 1px rgba(0,0,0,.14)}
 .dots i:first-child{margin-left:0}
 .dots b{min-width:20px;height:20px;padding:0 5px;margin-left:7px;border-radius:10px;background:#fff;border:1px solid var(--line);font-size:10.5px;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;justify-content:center}
 .low{display:block;margin-top:6px;font-size:12px;font-weight:600;color:#B45309}
@@ -218,22 +217,22 @@ const cardHtml=p=>{
   const {pr,m,off}=priceInfo(p),id=escapeHtml(p.id),name=escapeHtml(p.name);
   const href=`/product?id=${encodeURIComponent(p.id)}`,r=Number(p.rating);
   return `<article class="pcard">
-    <div class="pcard-top">
-      <a class="pcard-link" href="${href}" data-product="${id}" tabindex="-1" aria-hidden="true">
-        <span class="pcard-media">
-          <img src="${escapeHtml(safeImageUrl(p.img))}" alt="" loading="lazy" onerror="imgFallback(this)">
-          ${(off||p.bestseller)?`<span class="tags">${off?`<span class="tag-off">${off}% off</span>`:''}${p.bestseller?'<span class="tag-best">Bestseller</span>':''}</span>`:''}
-          ${r>0?`<span class="rchip"><i data-lucide="star"></i>${r.toFixed(1)}</span>`:''}
-        </span>
+    <a class="pcard-link" href="${href}" data-product="${id}" tabindex="-1" aria-hidden="true">
+      <span class="pcard-media">
+        <img src="${escapeHtml(safeImageUrl(p.img))}" alt="" loading="lazy" onerror="imgFallback(this)">
+        ${(off||p.bestseller)?`<span class="tags">${off?`<span class="tag-off">${off}% off</span>`:''}${p.bestseller?'<span class="tag-best">Bestseller</span>':''}</span>`:''}
+        ${r>0?`<span class="rchip"><i data-lucide="star"></i>${r.toFixed(1)}</span>`:''}
+      </span>
+    </a>
+    <div class="pcard-foot">
+      <a class="pcard-text" href="${href}" data-product="${id}">
+        <span class="pcard-name">${name}</span>
+        <span class="pcard-price"><span class="price">${fmt(pr)}</span>${m>pr?`<span class="mrp">${fmt(m)}</span>`:''}</span>
+        ${colorDots(p)}${lowStock(p)}
       </a>
       <a class="go" href="${href}&buy=1" data-product="${id}" aria-label="Buy ${name}"><i data-lucide="arrow-up-right"></i></a>
-      <button type="button" class="heart ${isWished(p.id)?'is-on':''}" data-heart="${id}" aria-pressed="${isWished(p.id)}" aria-label="Save ${name} to wishlist"><i data-lucide="heart"></i></button>
     </div>
-    <a class="pcard-text" href="${href}" data-product="${id}">
-      <span class="pcard-name">${name}</span>
-      <span class="pcard-price"><span class="price">${fmt(pr)}</span>${m>pr?`<span class="mrp">${fmt(m)}</span>`:''}</span>
-      ${colorDots(p)}${lowStock(p)}
-    </a>
+    <button type="button" class="heart ${isWished(p.id)?'is-on':''}" data-heart="${id}" aria-pressed="${isWished(p.id)}" aria-label="Save ${name} to wishlist"><i data-lucide="heart"></i></button>
   </article>`;
 };
 
