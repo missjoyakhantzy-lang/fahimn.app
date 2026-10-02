@@ -47,20 +47,18 @@ window.getCategoriesData = async function() {
 // 1.1. SHARED PROMO CODE API
 // ==========================================
 window.checkPromoCode = async function(code) {
-    const cleanCode = String(code || '').trim().toUpperCase();
+    // index.html expects this helper to return the API URL.
+    // The caller performs fetch() and reads the JSON response itself.
+    const rawCode = String(code || '').trim();
+    if (!rawCode) return null;
+
+    let cleanCode = rawCode;
+    try { cleanCode = decodeURIComponent(rawCode); } catch (e) {}
+    cleanCode = cleanCode.trim().toUpperCase();
     if (!cleanCode) return null;
-    try {
-        // Promo codes use the MAIN API backend, not the authentication server.
-        const response = await fetch(`${VERCEL_URL}/api/promocodes/${encodeURIComponent(cleanCode)}`);
-        if (!response.ok) {
-            console.error(`Promo Code Fetch Error: ${response.status} ${response.url}`);
-            return null;
-        }
-        return response;
-    } catch (e) {
-        console.error("Promo Code Fetch Error:", e);
-        return null;
-    }
+
+    // Promo codes use the MAIN API backend, not the authentication server.
+    return `${VERCEL_URL}/api/promocodes/${encodeURIComponent(cleanCode)}`;
 };
 
 // ==========================================
