@@ -12,7 +12,158 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Linked external CSS -->
-    <link rel="stylesheet" href="checkout-style.css">
+    <style id="checkout-inline-css">
+/* =========================================================
+    AAVIRA - LUXURY MINIMALIST COMPACT CHECKOUT 
+    ========================================================= */
+:root {
+    --primary: #D81B60; 
+    --primary-light: #fdf2f8; 
+    --text-dark: #0f172a;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --bg-body: #f8fafc;
+    --white: #ffffff;
+    --success: #059669;
+    --error: #ef4444;
+    --shadow-card: 0 4px 10px rgba(0,0,0,0.03);
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --whatsapp-green: #25D366;
+    --whatsapp-dark: #1da851;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
+html, body { width: 100%; height: 100%; background: var(--bg-body); overflow: hidden; display: flex; flex-direction: column; }
+
+.app-container { width: 100%; max-width: 500px; height: 100%; position: relative; display: flex; flex-direction: column; background: var(--bg-body); margin: 0 auto; overflow:hidden;}
+
+.pro-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(255, 255, 255, 0.98); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; flex-shrink: 0; }
+.header-icon-btn { width: 34px; height: 34px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); cursor: pointer; border: none; background: transparent; font-size: 18px;}
+.header-center { text-align: center; }
+.header-center .title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--text-dark); text-transform: uppercase;}
+
+.main-content { flex: 1; padding: 14px 14px 90px 14px; overflow-y: auto; scrollbar-width: none; }
+.main-content::-webkit-scrollbar { display: none; }
+
+.pro-card { background: var(--white); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 14px; box-shadow: var(--shadow-card); border: 1px solid var(--border); }
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.card-header h2 { font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--text-dark); }
+.item-count { background: var(--bg-body); color: var(--text-dark); padding: 3px 8px; border-radius: 12px; border: 1px solid var(--border); font-size: 10px; font-weight: 700; }
+
+.pro-form { display: flex; flex-direction: column; gap: 14px; }
+.form-row { display: flex; gap: 10px; }
+.pro-input-group { position: relative; width: 100%; }
+
+.pro-input { width: 100%; border: 1px solid var(--border); border-radius: var(--radius-md); height: 46px; padding: 0 14px; font-size: 13px; font-weight: 600; color: var(--text-dark); outline: none; background: transparent; transition: 0.2s ease-in-out; }
+.pro-input:focus { border-color: var(--text-dark); box-shadow: 0 0 0 1px var(--text-dark); }
+.pro-label { position: absolute; left: 12px; top: 15px; font-size: 12px; font-weight: 500; color: var(--text-muted); transition: 0.2s ease; background: var(--white); padding: 0 4px; pointer-events: none; }
+.pro-input:focus ~ .pro-label, .pro-input:not(:placeholder-shown) ~ .pro-label { top: -7px; left: 10px; font-size: 10px; font-weight: 700; color: var(--text-dark); }
+.pro-input-group.is-invalid .pro-input { border-color: var(--error); }
+.error-msg { position: absolute; left: 14px; bottom: -16px; font-size: 10px; font-weight: 600; color: var(--error); display: none; }
+.pro-input-group.is-invalid .error-msg { display: block; }
+
+.help-link-text { position: absolute; right: 0; bottom: -18px; font-size: 10px; font-weight: 700; color: var(--primary); cursor: pointer; text-decoration: underline; text-underline-offset: 2px;}
+
+.order-list { display: flex; flex-direction: column; gap: 14px; }
+.o-item { display: flex; gap: 14px; align-items: stretch; border-bottom: 1px dashed var(--border); padding-bottom: 14px; position: relative;}
+.o-item:last-child { border-bottom: none; padding-bottom: 0; }
+.o-img-box { width: 75px; min-width: 75px; aspect-ratio: 1/1; border-radius: 8px; overflow: hidden; background: var(--bg-body); flex-shrink: 0; border: 1px solid var(--border); }
+.o-img-box img { width: 100%; height: 100%; object-fit: cover; }
+
+.o-info { flex: 1; padding-right: 28px; display: flex; flex-direction: column; justify-content: space-between;} 
+.o-info h4 { font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;}
+.o-item-specs { font-size: 11px; font-weight: 500; color: var(--text-muted); line-height: 1.5; }
+.o-item-specs strong { font-weight: 700; color: var(--text-dark); }
+.o-info h3 { font-size: 15px; font-weight: 700; color: var(--primary); margin-top: auto;}
+
+.remove-btn { position: absolute; right: -5px; top: -5px; background: transparent; color: #94a3b8; border: none; font-size: 16px; width: 34px; height: 34px; cursor: pointer;}
+
+.suggest-section { padding: 18px 0 10px; border: 1px dashed #cbd5e1; background: transparent; display: none; margin: 0 14px 16px;}
+.suggest-title { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); padding: 0 16px 12px;}
+.suggest-scroll { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; padding: 0 16px 5px; }
+.s-card { width: 115px; min-width: 115px; background: var(--white); border-radius: var(--radius-md); padding: 8px; border: 1px solid var(--border); display: flex; flex-direction: column; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+.s-img-wrapper { width: 100%; aspect-ratio: 1/1; border-radius: 6px; overflow: hidden; margin-bottom: 8px; background:var(--bg-body); border:1px solid #f1f5f9; }
+.s-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+.s-title { font-size: 10px; font-weight: 600; color: var(--text-dark); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 6px; line-height:1.3;}
+.s-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: auto;}
+.s-price { font-size: 12px; font-weight: 700; color: var(--text-dark); }
+.btn-add-suggest { background: var(--white); color: var(--text-dark); border: 1px solid var(--text-muted); padding: 4px 12px; border-radius: 12px; font-size: 10px; font-weight: 700; cursor: pointer;}
+
+.speed-selector, .payment-selector { display: flex; flex-direction: column; gap: 10px; }
+.speed-option, .pay-option { display: flex; justify-content: space-between; align-items: center; border: 1.5px solid var(--border); padding: 14px 12px; border-radius: var(--radius-md); cursor: pointer; transition: 0.3s; background: var(--white); }
+.speed-option input { display: none; }
+.speed-option.selected, .pay-option.selected { border-color: var(--primary); background: var(--primary-light); }
+
+.pay-content, .speed-info { display: flex; align-items: center; gap: 14px; }
+.speed-icon { width: 34px; height: 34px; background: var(--bg-body); display: flex; justify-content:center; align-items: center; border-radius: 6px; border: 1px solid var(--border);}
+.speed-option .speed-icon i { color: var(--text-muted); font-size: 14px; }
+.speed-option.selected .speed-icon i { color: var(--primary); }
+.speed-info h4, .pay-content h4 { font-size: 12px; font-weight: 700; color: var(--text-dark); }
+.speed-info p, .pay-content p { font-size: 11px; font-weight: 500; color: var(--text-muted); margin-top: 3px;}
+.speed-price { font-size: 12px; font-weight: 700; color: var(--text-dark); background: var(--bg-body); padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border);}
+
+.custom-radio-mark { width: 20px; height: 20px; border: 1.5px solid var(--text-muted); border-radius: 50%; display: flex; justify-content: center; align-items: center; background: #fff; flex-shrink: 0;}
+.pay-option.selected .custom-radio-mark { border-color: var(--primary); }
+.custom-radio-dot { width: 10px; height: 10px; background: var(--primary); border-radius: 50%; transform: scale(0); transition: 0.25s cubic-bezier(0.2,0.8,0.2,1.2); }
+.pay-option.selected .custom-radio-dot { transform: scale(1); }
+
+.gift-toggle { display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 16px 4px 0;}
+.switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; inset: 0; background-color: var(--text-muted); border-radius: 26px; transition: .4s; }
+.slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; border-radius: 50%; transition: .4s; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+.switch input:checked + .slider { background-color: var(--primary); }
+.switch input:checked + .slider:before { transform: translateX(20px); }
+
+.promo-container { display: flex; gap: 8px; margin-bottom: 24px;}
+.promo-input { flex: 1; border: 1px dashed var(--text-muted); background: var(--bg-body); padding: 0 14px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; outline: none; height: 46px; text-transform: uppercase; color: var(--text-dark); transition:0.3s;}
+.promo-input:focus { border-color: var(--text-dark); border-style: solid; background: var(--white);}
+.promo-btn { background: var(--text-dark); color: #fff; border: none; padding: 0 20px; border-radius: var(--radius-md); font-size: 11px; font-weight: 700; cursor: pointer; letter-spacing: 0.5px;}
+
+.applied-promo-box { display: none; justify-content: space-between; align-items: center; background: #ecfdf5; padding: 14px 16px; border-radius: 8px; margin-bottom: 20px; border: 1px dashed #34d399; }
+.ap-details { font-size: 12px; font-weight: 700; color: #059669; }
+.ap-remove { border: none; background: transparent; color: var(--error); font-size: 15px; cursor: pointer; padding: 0; width: 26px; height: 26px; display:flex; justify-content:center; align-items:center; border-radius: 50%; background: #fff;}
+
+.bill-breakdown { display: flex; flex-direction: column; gap: 10px; }
+.b-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); font-weight: 500; align-items:center;}
+.b-divider { border-bottom: 1.5px dashed var(--border); margin: 6px 0; }
+.b-total { font-size: 16px; font-weight: 800; color: var(--text-dark); }
+.green-txt { color: var(--success); font-weight: 700; }
+
+.pro-bottom-bar { position: absolute; bottom: 0; width: 100%; background: rgba(255, 255, 255, 0.98); border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; z-index: 100; box-shadow: 0 -4px 20px rgba(0,0,0,0.03); padding: 14px 16px 20px;}
+.bar-price p { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 2px;}
+.bar-price h3 { font-size: 20px; font-weight: 800; color: var(--text-dark);}
+
+.btn-confirm { background: var(--text-dark); color: #fff; border: none; padding: 16px 24px; border-radius: var(--radius-md); font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.15); text-transform: uppercase; width: 220px; display: flex; justify-content:center; align-items: center; gap:8px;}
+.btn-confirm:active { background: var(--primary); box-shadow: none; transform: translateY(2px);}
+.btn-spinner { width: 16px; height: 16px; border: 2.5px solid rgba(255,255,255,0.3); border-top: 2.5px solid #fff; border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; }
+
+.toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 12px 18px; display: flex; align-items: center; gap: 10px; border-radius: 10px; font-size: 12px; font-weight: 600; width: 90%; max-width: 320px; transition: 0.4s cubic-bezier(0.1, 0.7, 0.1, 1); z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.15);}
+.toast.show { top: 20px; }
+
+.process-bg { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(5px); z-index: 9999; display: none; align-items: center; justify-content: center; animation: fade 0.3s;}
+.process-bg.active { display: flex; }
+.process-card { background: white; padding: 30px 24px; border-radius: 16px; width: 85%; max-width: 340px; text-align: center; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.15); animation: popScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
+.loader { width: 50px; height: 50px; border: 4px solid var(--primary-light); border-top-color: var(--primary); border-radius: 50%; animation: loadspin 0.9s infinite linear; margin: 0 auto 16px;}
+
+.popup-action-btns { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
+.btn-pro-action { width: 100%; padding: 15px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: 0.2s; border: none; letter-spacing: 0.3px;}
+.btn-pro-action.primary { background: var(--text-dark); color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+.btn-pro-action.primary:active { transform: scale(0.98); }
+.btn-pro-action.whatsapp { background: var(--whatsapp-green); color: white; box-shadow: 0 4px 12px rgba(37,211,102,0.25); }
+.btn-pro-action.whatsapp:active { background: var(--whatsapp-dark); transform: scale(0.98); }
+.btn-pro-action.outline { background: transparent; color: var(--text-dark); border: 1.5px solid var(--border); }
+.btn-pro-action.outline:active { background: var(--bg-body); }
+
+#dynamicModalIcon { transition: 0.3s ease; }
+
+@keyframes fade { from{opacity:0;} to{opacity:1;} }
+@keyframes popScale { from{transform:scale(0.8); opacity:0;} to{transform:scale(1); opacity:1;} }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes loadspin { to{transform:rotate(360deg);} }
+
+    </style>
 <style data-aavira-ui>
 /* Aavira Fashion — Global Corporate Design System
    Applied across inner pages without replacing page functionality. */
@@ -453,7 +604,676 @@ body.aavira-theme .card-loading-overlay{
     <!-- Linked external JS -->
     <script src="user_data.js"></script>
     <script type="module" src="checkout-firebase.js"></script>
-    <script src="checkout-script.js"></script>
+    <script id="checkout-inline-js">
+/* =========================================================
+   AAVIRA LUXE - CHECKOUT SCRIPT (checkout.script.js)
+   ========================================================= */
+
+let cartItems = [];
+let productDatabase = {};
+
+// Promo variables
+let appliedPromoCode = "";
+let promoDiscountAmount = 0;
+
+let selectedPaymentMode = 'cod';
+let giftWrapFee = 0;
+let deliveryFee = 0;
+let isBuyNowMode = false;
+
+window.pendingWhatsAppUrl = "";
+let whatsappTimerInterval;
+
+// Safe Toast Controller
+const ToastAlert = {
+    show(message, isSuccess = false) {
+        const toastEl = document.getElementById('alertToast');
+        const toastTxt = document.getElementById('toastMessage');
+        const toastIcn = document.getElementById('toastIcon');
+        
+        if (!toastEl || !toastTxt || !toastIcn) return;
+
+        if (navigator.vibrate) navigator.vibrate(isSuccess ? 40 : 60);
+        toastTxt.innerText = message;
+        toastIcn.innerHTML = isSuccess 
+            ? '<i class="fa-solid fa-circle-check" style="color:#10b981; font-size:22px;"></i>' 
+            : '<i class="fa-solid fa-circle-exclamation" style="color:#ef4444; font-size:22px;"></i>';
+        
+        toastEl.classList.add('show');
+        setTimeout(() => toastEl.classList.remove('show'), 3000);
+    }
+};
+
+const parseCurrencyNumber = (val) => parseInt(String(val).replace(/[^0-9]/g, '')) || 0;
+
+document.addEventListener('DOMContentLoaded', async () => {
+    restoreFormDraft();
+    bindInputValidationEvents();
+    await fetchProductsAndInitializeCart();
+});
+
+function bindInputValidationEvents() {
+    document.querySelectorAll('.pro-input').forEach(inputField => {
+        inputField.addEventListener('input', (event) => { 
+            if(event.target.id === 'ad_phone' || event.target.id === 'ad_pin') { 
+                event.target.value = event.target.value.replace(/\D/g, ''); 
+            }
+            validateInputField(event.target); 
+            saveFormDraft(); 
+        });
+        inputField.addEventListener('blur', (event) => validateInputField(event.target, true));
+    });
+}
+
+function validateInputField(inputElement, forceShowError = false) {
+    if(!inputElement) return true;
+    const inputGroup = inputElement.closest('.pro-input-group');
+    if(!inputGroup) return true;
+    
+    let val = inputElement.value.trim();
+    if(!inputElement.required && val === '') return true;
+
+    const checkRules = () => {
+        if(inputElement.id === 'ad_email') return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+        if(inputElement.id === 'ad_phone') return /^[6-9]\d{9}$/.test(val);
+        if(inputElement.id === 'ad_pin') return /^\d{6}$/.test(val);
+        if(inputElement.id === 'ad_map_link') return true; 
+        return val.length >= 2;
+    };
+
+    if(checkRules()) {
+        inputGroup.classList.remove('is-invalid'); 
+        return true;
+    } else {
+        if(forceShowError || val.length > 0) inputGroup.classList.add('is-invalid');
+        return false;
+    }
+}
+
+// Save & Restore Draft
+function saveFormDraft() { 
+    let formData = {}; 
+    document.querySelectorAll('.pro-input').forEach(input => formData[input.id] = input.value);
+    localStorage.setItem('checkoutAddressDraft', JSON.stringify(formData));
+}
+
+function restoreFormDraft() { 
+    try {
+        let draftDataString = localStorage.getItem('checkoutAddressDraft');
+        if (draftDataString) {
+            let formData = JSON.parse(draftDataString);
+            Object.keys(formData).forEach(key => { 
+                let inputEl = document.getElementById(key); 
+                if(inputEl && !inputEl.value && formData[key]){ 
+                    inputEl.value = formData[key]; 
+                    validateInputField(inputEl); 
+                } 
+            });
+        }
+    } catch(e) {}
+}
+
+async function fetchProductsAndInitializeCart() {
+    try { 
+        if (typeof window.getVercelData === 'function') {
+            let db1 = await window.getVercelData() || [];
+            db1.forEach(prod => { if (prod && prod.id) productDatabase[String(prod.id).trim()] = prod; });
+        } 
+    } catch(e) { }
+
+    try {
+        if (typeof window.getMainProductsData === 'function') {
+            let db2 = await window.getMainProductsData() || [];
+            db2.forEach(prod => { if (prod && prod.id) productDatabase[String(prod.id).trim()] = prod; });
+        }
+    } catch(e) { }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const buyNowProductId = urlParams.get('buy_now');
+
+    if(buyNowProductId) {
+        isBuyNowMode = true;
+        cartItems.push({
+            productId: decodeURIComponent(buyNowProductId).trim(),
+            size: urlParams.get('size') || 'Free Size',
+            color: urlParams.get('color') || 'Standard',
+            image: urlParams.get('image') || '',
+            qty: 1,
+            fallbackName: urlParams.get('name') || "Exclusive Item",
+            fallbackPrice: urlParams.get('price') || 0
+        });
+    } else {
+        cartItems = JSON.parse(localStorage.getItem('aavira_cart')) || [];
+    }
+
+    // Sync with DB
+    cartItems = cartItems.filter(item => {
+        let pId = String(item.productId).trim();
+        if (productDatabase[pId]) {
+            item.productId = pId;
+            return true;
+        } else if ((item.fallbackPrice || item.price) && (item.fallbackName || item.name)) {
+            productDatabase[pId] = { 
+                id: pId, 
+                name: item.fallbackName || item.name, 
+                price: item.fallbackPrice || item.price, 
+                image: item.image || "https://placehold.co/100" 
+            };
+            item.productId = pId;
+            return true;
+        }
+        return false;
+    });
+
+    if(cartItems.length === 0){
+        const mainScroll = document.getElementById('mainScroll');
+        const bottomBar = document.getElementById('bottomCheckoutBar');
+        const emptyView = document.getElementById('emptyCartView');
+        if (mainScroll) mainScroll.style.display = 'none'; 
+        if (bottomBar) bottomBar.style.display = 'none'; 
+        if (emptyView) emptyView.style.display = 'flex';
+        return;
+    }
+
+    // Restore promo code if saved
+    try {
+        let savedPromo = JSON.parse(localStorage.getItem('savedPromoCache'));
+        if(savedPromo && savedPromo.label && savedPromo.discount) {
+            appliedPromoCode = savedPromo.label;
+            promoDiscountAmount = Number(savedPromo.discount);
+            const pGroup = document.getElementById('promoInputGroup');
+            const apCode = document.getElementById('apCodeName');
+            const apBox = document.getElementById('appliedPromoBox');
+            if (pGroup) pGroup.style.display = 'none';
+            if (apCode) apCode.innerText = appliedPromoCode;
+            if (apBox) apBox.style.display = 'flex';
+        }
+    } catch(e) {}
+
+    const emptyView = document.getElementById('emptyCartView');
+    const mainScroll = document.getElementById('mainScroll');
+    const bottomBar = document.getElementById('bottomCheckoutBar');
+    if (emptyView) emptyView.style.display = 'none';
+    if (mainScroll) mainScroll.style.display = 'block';
+    if (bottomBar) bottomBar.style.display = 'flex';
+    
+    renderCartUI();
+}
+
+// ==========================================
+// WISHLIST / SUGGESTIONS LOGIC
+// ==========================================
+function renderWishlistSuggestions() {
+    try {
+        let suggestedProducts = [];
+        let currentCartIds = cartItems.map(item => String(item.productId).trim());
+        let wishlistIds = JSON.parse(localStorage.getItem('aavira_wishlist')) || [];
+        let allProductIds = Object.keys(productDatabase);
+        let combinedIds = [...new Set([...wishlistIds, ...allProductIds])]; 
+        
+        for(let id of combinedIds) {
+            let cleanId = String(id).trim();
+            if(!currentCartIds.includes(cleanId) && productDatabase[cleanId]) {
+                suggestedProducts.push(productDatabase[cleanId]);
+            }
+            if(suggestedProducts.length >= 6) break;
+        }
+
+        const suggSection = document.getElementById('cartSuggestionsSection');
+        const suggContainer = document.getElementById('suggestedItemsContainer');
+
+        if(suggestedProducts.length > 0 && suggSection && suggContainer) {
+            suggSection.style.display = 'block'; 
+            let htmlString = "";
+            suggestedProducts.forEach(prod => {
+                let imageUrl = prod.imageMain || prod.imageUrl || prod.image || 'https://placehold.co/150?text=Item';
+                htmlString += `
+                <div class="s-card">
+                    <div class="s-img-wrapper"><img src="${imageUrl}" onerror="this.src='https://placehold.co/150?text=IMG'"></div>
+                    <div class="s-title">${prod.name || 'Premium Collection'}</div>
+                    <div class="s-bottom">
+                        <span class="s-price">₹${parseCurrencyNumber(prod.price).toLocaleString()}</span>
+                        <button onclick="addSuggestedProduct('${prod.id}')" class="btn-add-suggest">+ ADD</button>
+                    </div>
+                </div>`; 
+            }); 
+            suggContainer.innerHTML = htmlString;
+        } else if (suggSection) {
+            suggSection.style.display = 'none'; 
+        }
+    } catch(e){ 
+        console.error("Suggestions Error:", e); 
+    }
+}
+
+window.addSuggestedProduct = function(productId){
+    if(navigator.vibrate) navigator.vibrate(30);
+    let product = productDatabase[String(productId).trim()]; 
+    if(product) { 
+        cartItems.push({
+            productId: product.id, 
+            size: 'Free Size', 
+            color: 'Standard', 
+            qty: 1, 
+            image: product.imageMain || product.image || product.imageUrl || 'https://placehold.co/150'
+        }); 
+        
+        if(!isBuyNowMode) {
+            localStorage.setItem('aavira_cart', JSON.stringify(cartItems));
+        }
+        
+        ToastAlert.show('Item added to your bag successfully.', true);
+        renderCartUI(); 
+    }
+};
+
+window.setUserDeliveryPreferencesCost = (deliveryType) => {
+    deliveryFee = (deliveryType === 'express') ? 99 : 0;
+    document.querySelectorAll('.speed-option').forEach(el=>el.classList.remove('selected'));
+    const targetOpt = document.getElementById((deliveryType==='express')?'opt_exp':'opt_std');
+    if (targetOpt) targetOpt.classList.add('selected');
+    renderCartUI();
+};
+
+window.updateCustomWrapPreferencesCosts = (checkboxEl) => { 
+    giftWrapFee = checkboxEl.checked ? 49 : 0; 
+    renderCartUI(); 
+};
+
+window.pickPaymentMode = (paymentType, domElement) => { 
+    selectedPaymentMode = paymentType; 
+    document.querySelectorAll('.pay-option').forEach(el=>el.classList.remove('selected')); 
+    domElement.classList.add('selected');
+};
+
+window.removeCartItem = (index) => { 
+    cartItems.splice(index, 1); 
+    
+    if(!isBuyNowMode) {
+        localStorage.setItem('aavira_cart', JSON.stringify(cartItems));
+    }
+
+    if(cartItems.length === 0){
+        const mainScroll = document.getElementById('mainScroll');
+        const bottomBar = document.getElementById('bottomCheckoutBar');
+        const emptyView = document.getElementById('emptyCartView');
+        if (mainScroll) mainScroll.style.display = 'none'; 
+        if (bottomBar) bottomBar.style.display = 'none'; 
+        if (emptyView) emptyView.style.display = 'flex';
+    } else { 
+        renderCartUI(); 
+    }
+};
+
+function renderCartUI(){
+    const orderContainer = document.getElementById('orderItemsContainer'); 
+    if(!orderContainer) return; 
+    orderContainer.innerHTML = '';
+    
+    const countBadge = document.getElementById('itemCountBadge');
+    if (countBadge) countBadge.innerText = `${cartItems.length} ITEMS`;
+
+    let totalMRP = 0; 
+    let totalCartValue = 0;
+
+    cartItems.forEach((item, index) => {
+        let product = productDatabase[item.productId]; 
+        if(!product) return;
+        let currentPrice = parseCurrencyNumber(product.price);
+        let originalMrp = product.mrp ? parseCurrencyNumber(product.mrp) : (currentPrice + 500);
+        
+        totalMRP += (originalMrp * item.qty);
+        totalCartValue += (currentPrice * item.qty);
+        let imageUrl = (item.image || product.imageMain || product.imageUrl || product.image || "https://placehold.co/100").toString().replace(/['"]/g,'');
+
+        orderContainer.innerHTML += `
+            <div class="o-item">
+                <div class="o-img-box"><img src="${imageUrl}" onerror="this.src='https://placehold.co/100?text=Item'"></div>
+                <div class="o-info">
+                    <h4>${product.name}</h4>
+                    <p class="o-item-specs">Size: <strong>${item.size || 'Free Size'}</strong> <br>Qty: <strong>${item.qty} Piece(s)</strong></p>
+                    <h3>₹ ${currentPrice.toLocaleString()}</h3>
+                </div>
+                <button class="remove-btn" onclick="removeCartItem(${index})"><i class="fa-solid fa-trash-can"></i></button>
+            </div>`;
+    });
+
+    const billMrp = document.getElementById('billMrp');
+    const billDisc = document.getElementById('billDiscount');
+    const promoRow = document.getElementById('billPromoRow');
+    const promoDisc = document.getElementById('billPromoDiscount');
+    const billDelivery = document.getElementById('billDelivery');
+    const rowGift = document.getElementById('row_gift');
+    const billTotal = document.getElementById('billTotal');
+    const bottomTotal = document.getElementById('bottomTotal');
+
+    if (billMrp) billMrp.innerText = `₹ ${totalMRP.toLocaleString()}`;
+    if (billDisc) billDisc.innerText = `- ₹ ${(totalMRP - totalCartValue).toLocaleString()}`;
+    
+    if (promoDiscountAmount && promoRow && promoDisc) { 
+        promoRow.style.display = 'flex'; 
+        promoDisc.innerText = `- ₹ ${promoDiscountAmount.toLocaleString()}`;
+    } else if (promoRow) {
+        promoRow.style.display = 'none';
+    }
+
+    if (billDelivery) {
+        if (deliveryFee) { 
+            billDelivery.innerText = `₹ 99`; 
+            billDelivery.className = ''; 
+        } else { 
+            billDelivery.innerText = `Free`; 
+            billDelivery.className = 'green-txt'; 
+        }
+    }
+    
+    if (rowGift) rowGift.style.display = giftWrapFee ? 'flex' : 'none';
+    let finalPayableAmount = Math.max(0, totalCartValue + deliveryFee + giftWrapFee - promoDiscountAmount);
+    
+    if (billTotal) billTotal.innerText = `₹ ${finalPayableAmount.toLocaleString()}`;
+    if (bottomTotal) bottomTotal.innerText = `₹ ${finalPayableAmount.toLocaleString()}`;
+
+    renderWishlistSuggestions();
+}
+
+// PROMO CODE LOGIC
+window.verifyAndApplyCouponAPI = async () => {
+    let inputField = document.getElementById('promoInput'); 
+    if(!inputField) return;
+    let code = inputField.value.trim().toUpperCase();
+    
+    if(code.length < 3) return ToastAlert.show("Please enter a valid coupon code.", false);
+    
+    const btn = document.getElementById('promoBtn'); 
+    const originalText = btn ? btn.innerHTML : '';
+    if (btn) { btn.innerHTML = '<div class="btn-spinner"></div>'; btn.disabled = true; }
+
+    let discountAmt = 0;
+    let isValid = false;
+
+    try {
+        let response = await fetch(`${VERCEL_URL}/api/promo_codes/${code}`);
+        if (!response.ok) response = await fetch(`${VERCEL_URL}/api/promocodes/${code}`);
+        
+        if (response.ok) {
+            let result = await response.json();
+            let promoData = result.data || result;
+            if (promoData && promoData.isActive !== false) {
+                discountAmt = Number(promoData.amount || promoData.discountAmount || promoData.discount || 0);
+                if(discountAmt > 0) isValid = true;
+            }
+        }
+    } catch(error) {}
+
+    // Fallbacks
+    if (!isValid) {
+        if(code === 'LUXURY500') { discountAmt = 500; isValid = true; }
+        else if(code === 'AAVIRA200') { discountAmt = 200; isValid = true; }
+    }
+
+    if(isValid) {
+        applyPromoUI(code, discountAmt);
+    } else {
+        ToastAlert.show('Invalid or Expired Coupon Code.', false);
+    }
+    
+    if (btn) { btn.innerHTML = originalText; btn.disabled = false; }
+};
+
+function applyPromoUI(code, discount) {
+    appliedPromoCode = code;
+    promoDiscountAmount = discount;
+    localStorage.setItem('savedPromoCache', JSON.stringify({label: code, discount: discount}));
+    
+    const pGroup = document.getElementById('promoInputGroup');
+    const apCode = document.getElementById('apCodeName');
+    const apBox = document.getElementById('appliedPromoBox');
+    
+    if (pGroup) pGroup.style.display = 'none'; 
+    if (apCode) apCode.innerText = code; 
+    if (apBox) apBox.style.display = 'flex';
+    
+    ToastAlert.show("Coupon applied successfully!", true); 
+    renderCartUI();
+}
+
+window.removeActiveCoupon = () => { 
+    appliedPromoCode = ""; 
+    promoDiscountAmount = 0; 
+    localStorage.removeItem('savedPromoCache'); 
+    
+    const pGroup = document.getElementById('promoInputGroup');
+    const pInput = document.getElementById('promoInput');
+    const apBox = document.getElementById('appliedPromoBox');
+
+    if (pGroup) pGroup.style.display = 'flex'; 
+    if (pInput) pInput.value = ''; 
+    if (apBox) apBox.style.display = 'none'; 
+    
+    renderCartUI(); 
+    ToastAlert.show("Coupon Removed", true);
+};
+
+window.forceWhatsAppRedirect = () => {
+    if (whatsappTimerInterval) clearInterval(whatsappTimerInterval);
+    if (window.pendingWhatsAppUrl) {
+        window.location.href = window.pendingWhatsAppUrl;
+    }
+};
+
+// ==========================================
+// 🔥 SUBMIT FINAL ORDER & SYNC STATE 🔥
+// ==========================================
+window.submitFinalOrder = async () => {
+    let isFormValid = true; 
+    let firstErrorField = null;
+    
+    ['ad_name', 'ad_phone', 'ad_pin', 'ad_city', 'ad_address', 'ad_email'].forEach(id => { 
+        let inputEl = document.getElementById(id); 
+        if(!validateInputField(inputEl, true)){ 
+            isFormValid = false; 
+            if (inputEl) inputEl.closest('.pro-input-group').classList.add('is-invalid'); 
+            if (!firstErrorField) firstErrorField = inputEl;
+        } 
+    });
+    
+    if(!isFormValid){ 
+        ToastAlert.show('Please fill all required address fields correctly.', false); 
+        if(firstErrorField) firstErrorField.scrollIntoView({behavior:'smooth'}); 
+        return; 
+    }
+
+    const processModal = document.getElementById('processModal');
+    const processText = document.getElementById('processText');
+    if (processModal) processModal.classList.add('active');
+    if (processText) processText.innerText = 'Creating Secure Invoice Request...';
+
+    let productsCost = 0;
+    let formattedItemsPayload = cartItems.map(item => {
+        let dbProduct = productDatabase[item.productId] || {}; 
+        let price = parseCurrencyNumber(dbProduct.price || 0); 
+        productsCost += (price * item.qty);
+        
+        return {
+            productId: item.productId,
+            name: dbProduct.name || "Exclusive Product",
+            qty: item.qty,
+            price: price,
+            color: item.color || "Standard",
+            size: item.size || "Free Size",
+            image: item.image || dbProduct.imageMain || dbProduct.imageUrl || dbProduct.image || ""
+        };
+    });
+
+    // Generate Standard AVF Order ID
+    const randomNum = Math.floor(100000 + Math.random() * 900000);
+    const finalOrderId = `AVF-${randomNum}`;
+    
+    const customerName = document.getElementById('ad_name').value.trim();
+    const customerPhone = document.getElementById('ad_phone').value.trim();
+    const customerEmail = document.getElementById('ad_email').value.trim();
+    const customerMapLink = document.getElementById('ad_map_link') ? document.getElementById('ad_map_link').value.trim() : "";
+    const customerAddress = `${document.getElementById('ad_address').value.trim()}, ${document.getElementById('ad_city').value.trim()} - Pincode: ${document.getElementById('ad_pin').value.trim()}`;
+    
+    const totalAmountToPay = Math.max(0, productsCost + deliveryFee + giftWrapFee - promoDiscountAmount);
+    const orderCurrentState = (selectedPaymentMode === 'online') ? 'Processing' : 'Processing';
+    
+    // Save to Vercel/Backend Database — only continue when the server confirms the order.
+    let orderSaved = false;
+    try {
+        if (typeof window.sendOrderToVercel !== 'function') {
+            throw new Error('Order service is unavailable.');
+        }
+
+        const payloadData = {
+            orderId: finalOrderId,
+            userId: customerEmail || customerPhone,
+            customerName: customerName,
+            email: customerEmail,
+            phone: customerPhone,
+            address: customerAddress,
+            mapLink: customerMapLink,
+            items: formattedItemsPayload,
+            totalAmount: totalAmountToPay,
+            paymentMethod: selectedPaymentMode,
+            paymentStatus: (selectedPaymentMode === 'online' ? 'Pending' : 'COD'),
+            orderStatus: orderCurrentState,
+            promoCodeUsed: appliedPromoCode || "",
+            promoDiscount: promoDiscountAmount || 0,
+            createdAt: new Date().toISOString()
+        };
+
+        orderSaved = await window.sendOrderToVercel(payloadData);
+        if (!orderSaved) throw new Error('Backend did not confirm the order.');
+    } catch(e) {
+        console.error("Database Save Failed", e);
+        if (processModal) processModal.classList.remove('active');
+        ToastAlert.show('Order could not be saved. Please try again.', false);
+        return;
+    }
+
+    // 🔥 1. CLEAR CART, PROMO & ADDRESS DRAFT MEMORY 🔥
+    if(!isBuyNowMode) { 
+        localStorage.removeItem('aavira_cart'); 
+    }
+    localStorage.removeItem('savedPromoCache');
+    localStorage.removeItem('checkoutAddressDraft'); // <--- Address draft cleared!
+
+    // 🔒 ORDER IDENTITY ISOLATION
+    // Checkout must NEVER turn a guest email into a logged-in session.
+    // Logged-in users keep their existing account session; guests get only
+    // the single order they just placed.
+    const savedEmail = (localStorage.getItem('aavira_user_email') || '').trim().toLowerCase();
+    const savedName = (localStorage.getItem('aavira_display_name') || '').trim();
+    const isSignedIn = !!(savedEmail && savedName && savedName.toLowerCase() !== 'guest user');
+
+    if (isSignedIn) {
+        localStorage.setItem('aavira_user_phone', customerPhone);
+        let previousOrders = [];
+        try {
+            previousOrders = JSON.parse(localStorage.getItem('aavira_placed_orders')) || [];
+            if (!Array.isArray(previousOrders)) previousOrders = [];
+        } catch(e) {
+            previousOrders = [];
+        }
+        if (!previousOrders.includes(finalOrderId)) previousOrders.push(finalOrderId);
+        localStorage.setItem('aavira_placed_orders', JSON.stringify(previousOrders));
+        localStorage.removeItem('aavira_guest_order_id');
+    } else {
+        // Guest mode: only this exact order can appear on Orders.
+        localStorage.removeItem('aavira_user_phone');
+        localStorage.removeItem('aavira_guest_order_ids');
+        localStorage.setItem('aavira_guest_order_id', finalOrderId);
+        localStorage.setItem('aavira_placed_orders', JSON.stringify([finalOrderId]));
+    }
+    
+    const displayOrderIdEl = document.getElementById('displayOrderId');
+    if (displayOrderIdEl) displayOrderIdEl.innerText = finalOrderId;
+
+    const gatewayBox = document.getElementById('gatewayBox');
+    const successBox = document.getElementById('successBox');
+    if (gatewayBox) gatewayBox.style.display = 'none'; 
+    if (successBox) successBox.style.display = 'block';
+
+    const dynamicIcon = document.getElementById('dynamicModalIcon');
+    const popupActions = document.getElementById('popupActionBtns');
+
+    if (selectedPaymentMode === 'online') {
+        if (dynamicIcon) {
+            dynamicIcon.style.background = '#f59e0b'; 
+            dynamicIcon.style.border = '4px solid #fef3c7';
+            dynamicIcon.style.boxShadow = '0 10px 20px rgba(245,158,11, 0.2)';
+            dynamicIcon.innerHTML = '<i class="fa-solid fa-hourglass-half"></i>';
+        }
+        
+        const titleEl = document.getElementById('successBoxTitle');
+        const descEl = document.getElementById('successBoxDesc');
+        if (titleEl) titleEl.innerText = 'Awaiting Payment ⏳';
+        if (descEl) descEl.innerText = 'Please complete the payment on WhatsApp to confirm your order.';
+        
+        let cleanWhatsAppMessage = `*AAVIRA - ONLINE PAYMENT REQUEST*\n\nHello Team Aavira! I would like to complete the online payment for my order.\n\n*ORDER ID:* #${finalOrderId}\n*NAME:* ${customerName}\n*MOBILE:* ${customerPhone}\n\n*ADDRESS:* \n${customerAddress}\n\n*TOTAL TO PAY: ₹ ${totalAmountToPay.toLocaleString()}*\n\n_Please share the UPI ID / Payment QR code. Thank you!_`;
+        
+        window.pendingWhatsAppUrl = `https://wa.me/919608720622?text=${encodeURIComponent(cleanWhatsAppMessage)}`;
+
+        if (popupActions) {
+            popupActions.innerHTML = `
+                <button class="btn-pro-action whatsapp" onclick="forceWhatsAppRedirect()">
+                    <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> 
+                    Open WhatsApp <span id="waTimerTxt" style="font-size:11px; margin-left:4px; background:rgba(0,0,0,0.15); padding:3px 8px; border-radius:12px;">(5s)</span>
+                </button>
+                <button class="btn-pro-action outline" onclick="window.location.href='/orders'">
+                    <i class="fa-solid fa-box"></i> View My Orders
+                </button>
+            `;
+        }
+
+        let countdown = 5;
+        whatsappTimerInterval = setInterval(() => {
+            countdown--;
+            let timerEl = document.getElementById('waTimerTxt');
+            if (timerEl) { timerEl.innerText = `(${countdown}s)`; }
+            if (countdown <= 0) {
+                clearInterval(whatsappTimerInterval);
+                forceWhatsAppRedirect();
+            }
+        }, 1000);
+
+    } else {
+        if (dynamicIcon) {
+            dynamicIcon.style.background = 'var(--success)';
+            dynamicIcon.style.border = '4px solid #D1FAE5';
+            dynamicIcon.style.boxShadow = '0 10px 20px rgba(5,150,105, 0.2)';
+            dynamicIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
+        }
+
+        const titleEl = document.getElementById('successBoxTitle');
+        const descEl = document.getElementById('successBoxDesc');
+        if (titleEl) titleEl.innerText = 'Order Placed Successfully! 🎉';
+        if (descEl) descEl.innerText = 'Your order details have been securely recorded. We will process it shortly.';
+
+        if (popupActions) {
+            popupActions.innerHTML = `
+                <button class="btn-pro-action primary" onclick="handleTrackOrder('${finalOrderId}')">
+                    <i class="fa-solid fa-location-arrow"></i> Track Order
+                </button>
+                <button class="btn-pro-action outline" onclick="window.location.href='./'">
+                    <i class="fa-solid fa-bag-shopping"></i> Continue Shopping
+                </button>
+            `;
+        }
+    }
+};
+
+window.handleTrackOrder = (orderId) => {
+    const cleanId = String(orderId || '').trim();
+    if (cleanId) {
+        localStorage.setItem('aavira_guest_order_id', cleanId);
+        localStorage.setItem('aavira_placed_orders', JSON.stringify([cleanId]));
+    }
+    window.location.href = '/orders';
+};
+
+    </script>
 <script data-aavira-ui>
 (function(){'use strict';
 function markTheme(){if(document.body)document.body.classList.add('aavira-theme');}
