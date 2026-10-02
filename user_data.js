@@ -1,12 +1,17 @@
 // ==========================================
 // user_data.js (DATA PROVIDER & DELIVERY BOY)
+// Saare backend URLs aur API calls sirf yahin hain. index.html mein koi URL nahi hai.
 // ==========================================
 
-// 🔥 1. PRODUCTS, MAIN PRODUCTS, BANNERS, CATEGORIES & PROMO KE LIYE URL 🔥
+// 🔥 1. PRODUCTS, MAIN PRODUCTS, BANNERS, CATEGORIES, PROMO, REVIEWS, NEWSLETTER KE LIYE URL 🔥
 const VERCEL_URL = "https://server-js-psi-five.vercel.app";
 
 // 🔥 2. OTP, LOGIN AUR AUTH KE LIYE NAYA URL 🔥
 const AUTH_URL = "https://ssxpq15in.vercel.app";
+
+// 🔥 3. REVIEW PHOTO UPLOAD (Cloudinary) 🔥
+const CLOUDINARY_CLOUD = "lqbslpty";
+const CLOUDINARY_PRESET = "hcfer3tk";
 
 // ==========================================
 // 1. DATA FETCHING (Products, Main Products, Banners, Categories)
@@ -59,6 +64,28 @@ window.checkPromoCode = async function(code) {
 
     // Promo codes use the MAIN API backend, not the authentication server.
     return `${VERCEL_URL}/api/promocodes/${encodeURIComponent(cleanCode)}`;
+};
+
+// ==========================================
+// 1.2. NEWSLETTER SUBSCRIBE
+// Returns { ok: boolean, message: string }
+// ==========================================
+window.subscribeNewsletterApi = async function(email) {
+    try {
+        const response = await fetch(`${VERCEL_URL}/api/subscribe`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
+        let result = null;
+        try { result = await response.json(); } catch (e) {}
+        if (response.ok && result && result.status === "success") return { ok: true, message: result.message || 'Subscribed' };
+        console.error("Newsletter Error:", response.status, result);
+        return { ok: false, message: (result && result.message) || 'Could not subscribe. Please try again.' };
+    } catch (error) {
+        console.error("Newsletter Error:", error);
+        return { ok: false, message: 'Could not reach the server. Please try again.' };
+    }
 };
 
 // ==========================================
@@ -142,14 +169,34 @@ window.getReviewsFromDatabase = async function(productId) {
     catch (error) { return []; }
 };
 
+// Review photo ko Cloudinary par upload karta hai. Success par photo ka https URL deta hai, warna ''.
+window.uploadExperiencePhoto = async function(file) {
+    try {
+        const fd = new FormData();
+        fd.append('file', file);
+        fd.append('upload_preset', CLOUDINARY_PRESET);
+        fd.append('cloud_name', CLOUDINARY_CLOUD);
+        const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: fd });
+        const result = await response.json();
+        return result.secure_url || '';
+    } catch (error) { console.error("Photo Upload Error:", error); return ''; }
+};
+
 window.sendToVercelExperience = async function(expData) {
     try { const response = await fetch(`${VERCEL_URL}/api/experience`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(expData) }); const result = await response.json(); return response.ok && result.status === "success"; }
     catch (error) { console.error("Experience Submit Error:", error); return false; }
 };
 
+// Safe version: server JSON ki jagah HTML/khaali response de to bhi page crash nahi hoga.
 window.getVercelExperiences = async function() {
-    try { const response = await fetch(`${VERCEL_URL}/api/experience`); const result = await response.json(); return (response.ok && result.status === "success" && result.data) ? result.data : []; }
-    catch (error) { console.error("Experience Fetch Error:", error); return []; }
+    try {
+        const response = await fetch(`${VERCEL_URL}/api/experience`);
+        const text = await response.text();
+        if (!response.ok) { console.error("Experience Fetch Error: HTTP", response.status); return []; }
+        if (!text.trim()) return [];
+        const result = JSON.parse(text);
+        return (result.status === "success" && Array.isArray(result.data)) ? result.data : [];
+    } catch (error) { console.error("Experience Fetch Error:", error.message); return []; }
 };
 
 // ==========================================
