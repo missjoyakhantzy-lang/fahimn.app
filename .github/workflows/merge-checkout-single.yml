@@ -1,0 +1,55 @@
+name: Merge Checkout Into Single HTML
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Merge checkout CSS and JS into checkout.html
+        shell: python
+        run: |
+          from pathlib import Path
+
+          html_path = Path('checkout.html')
+          css_path = Path('checkout-style.css')
+          js_path = Path('checkout-script.js')
+
+          html = html_path.read_text(encoding='utf-8')
+          css = css_path.read_text(encoding='utf-8')
+          js = js_path.read_text(encoding='utf-8')
+
+          css_link = '    <link rel="stylesheet" href="checkout-style.css">'
+          css_block = '    <style id="checkout-inline-css">\n' + css + '\n    </style>'
+          if css_link not in html:
+              raise SystemExit('checkout-style.css link not found')
+          html = html.replace(css_link, css_block, 1)
+
+          js_tag = '    <script src="checkout-script.js"></script>'
+          js_block = '    <script id="checkout-inline-js">\n' + js + '\n    </script>'
+          if js_tag not in html:
+              raise SystemExit('checkout-script.js script tag not found')
+          html = html.replace(js_tag, js_block, 1)
+
+          html_path.write_text(html, encoding='utf-8')
+          css_path.unlink()
+          js_path.unlink()
+
+      - name: Commit merged checkout
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add checkout.html
+          git rm -f checkout-style.css checkout-script.js
+          git rm -f .github/workflows/merge-checkout-single.yml
+          git commit -m "Merge checkout CSS and JS into single HTML"
+          git push
