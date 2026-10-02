@@ -378,16 +378,6 @@ body.aavira-theme .card-loading-overlay{
         </div>
     </div>
 
-    <div id="loginPromptModal" class="modal-overlay">
-        <div class="modal-box">
-            <i class="fa-solid fa-xmark modal-close" onclick="closeModal('loginPromptModal')" style="top:10px; right:10px;"></i>
-            <i class="fa-solid fa-lock" style="font-size:36px; color:var(--primary-color); margin-bottom:12px;"></i>
-            <h3 style="font-size:18px; font-weight:700; margin-bottom:6px;">Login Required</h3>
-            <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Log in to write a review.</p>
-            <button class="modal-btn" style="background: var(--primary-color);" onclick="closeModal('loginPromptModal'); openModal('loginModal'); toggleAuthView('signup');">Continue</button>
-        </div>
-    </div>
-
     <div id="reviewModal" class="modal-overlay">
         <div class="bottom-sheet-modal">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
@@ -407,44 +397,5 @@ body.aavira-theme .card-loading-overlay{
         </div>
     </div>
 
-    <div id="loginModal" class="modal-overlay">
-        <div class="bottom-sheet-modal">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 style="margin:0; font-size: 20px; font-weight:700; font-family:'Playfair Display', serif;" id="authTitle">Create Account</h3>
-                <i class="fa-solid fa-xmark modal-close" onclick="closeModal('loginModal')" style="top: 15px; right: 15px; position:absolute;"></i>
-            </div>
-            <div id="signupView">
-                <input type="text" id="signupName" class="modal-input" placeholder="Full Name">
-                <input type="email" id="signupEmail" class="modal-input" placeholder="Email Address">
-                <input type="password" id="signupPassword" class="modal-input" placeholder="Create Password">
-                <button id="btnSignupAction" onclick="processSignup()" class="modal-btn">Continue</button>
-                <p style="font-size: 12px; font-weight:500; text-align: center; margin-top: 15px; color: var(--text-muted);">Already a member? <span style="color: var(--primary-color); font-weight:600; cursor: pointer;" onclick="toggleAuthView('login')">Sign In</span></p>
-            </div>
-            <div id="loginView" style="display: none;">
-                <input type="email" id="loginEmail" class="modal-input" placeholder="Email Address">
-                <input type="password" id="loginPassword" class="modal-input" placeholder="Password">
-                <button id="btnLoginAction" onclick="processLogin()" class="modal-btn" style="background: var(--primary-color);">Secure Login</button>
-                <div style="margin: 20px 0; text-align: center; font-size: 11px; font-weight:600; color: #aaa; text-transform: uppercase;">Or</div>
-                <button onclick="performGoogleLogin()" style="width:100%; padding:14px; border-radius:12px; border:1px solid var(--border-color); background:var(--white); font-size:13px; font-weight:600; color:var(--text-dark); display:flex; justify-content:center; align-items:center; gap:8px; cursor:pointer;">
-                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="16"> Continue with Google
-                </button>
-                <p style="font-size: 12px; font-weight:500; text-align: center; margin-top: 15px; color: var(--text-muted);">New to Aavira? <span style="color: var(--primary-color); font-weight:600; cursor: pointer;" onclick="toggleAuthView('signup')">Create Account</span></p>
-            </div>
-            <div id="otpView" style="display: none;">
-                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;" id="otpSubText">Code sent to your email.</p>
-                <input type="text" id="otpInput" class="modal-input" placeholder="------" maxlength="6" style="text-align:center; font-size:24px; font-weight:700; letter-spacing:8px;">
-                <button id="btnOtpAction" onclick="verifySignupOTP()" class="modal-btn" style="background: var(--primary-color);">Verify</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- EXTERNAL JS -->
-    <script src="user_data.js"></script>
-    <!-- Your Firebase Setup if any -->
-    <script type="module" src="checkout-firebase.js"></script>
-    <script src="product-script.js"></script>
-<script data-aavira-ui>
-(function(){'use strict';function markTheme(){if(document.body)document.body.classList.add('aavira-theme');}function stopLongSpinners(){var seen=new WeakSet();function watch(root){var nodes=[];if(root&&root.nodeType===1)nodes.push(root);if(root&&root.querySelectorAll)nodes=nodes.concat(Array.prototype.slice.call(root.querySelectorAll('.mini-spin,.fa-spin')));for(var i=0;i<nodes.length;i++){var el=nodes[i];if(seen.has(el))continue;seen.add(el);setTimeout(function(target){return function(){if(target&&target.classList)target.classList.add('aavira-spinner-done');};}(el),4000);}}watch(document.body);new MutationObserver(function(ms){for(var i=0;i<ms.length;i++){var a=ms[i].addedNodes||[];for(var j=0;j<a.length;j++)watch(a[j]);}}).observe(document.body,{childList:true,subtree:true});}function init(){if(!document.body)return;markTheme();stopLongSpinners();}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();})();
-</script>
 </body>
 </html>
