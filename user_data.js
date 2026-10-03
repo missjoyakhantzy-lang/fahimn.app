@@ -209,3 +209,62 @@ window.DeliveryBoy = {
     checkEmailExists: async function(email) { try { const response=await fetch(`${AUTH_URL}/api/login`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userEmail:email,userPassword:"DUMMY_PASSWORD_CHECK_123"})}); const data=await response.json(); if(data.message==="Incorrect Password!"||(data.message&&data.message.includes("already registered"))) return {exists:true}; return {exists:false}; } catch(error){ return {exists:false}; } },
     googleLogin: async function(token) { try { const response=await fetch(`${AUTH_URL}/api/google-login`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({googleToken:token})}); const data=await response.json(); return {ok:response.ok,data}; } catch(error){ console.error("Google Login API Error:",error); return {ok:false,data:{success:false,message:'Google Auth Server Error!'}}; } }
 };
+
+// ==========================================
+// 5. HOME PREMIUM TEXT MOTION
+// ==========================================
+(function initAaviraPremiumTextMotion(){
+    const items = [
+        'PREMIUM ETHNIC WEAR',
+        'CRAFTED FOR ELEGANCE',
+        'NEW COLLECTION 2026',
+        'ELEGANCE IN EVERY DETAIL'
+    ];
+
+    function mount(){
+        if (!document.body || document.querySelector('.aavira-premium-text')) return;
+        const hero = document.querySelector('.hero');
+        if (!hero || !hero.parentNode) return;
+
+        const section = document.createElement('section');
+        section.className = 'aavira-premium-text';
+        section.setAttribute('aria-label','Aavira Fashion highlights');
+        section.innerHTML = items.map((text,index)=>
+            `<div class="aavira-premium-line ${index % 2 ? 'from-left' : 'from-right'}"><span>${text}</span></div>`
+        ).join('');
+
+        const style = document.createElement('style');
+        style.textContent = `
+.aavira-premium-text{margin:18px 16px 0;padding:4px 0 2px;overflow:hidden}
+.aavira-premium-line{height:38px;display:flex;align-items:center;overflow:hidden;white-space:nowrap;font-family:"Playfair Display",serif;font-size:14px;font-weight:600;letter-spacing:1.7px;color:#242024;text-transform:uppercase;opacity:0;will-change:transform,opacity}
+.aavira-premium-line span{display:inline-block;padding:0 2px}
+.aavira-premium-line.from-right{justify-content:flex-end;transform:translateX(105%)}
+.aavira-premium-line.from-left{justify-content:flex-start;transform:translateX(-105%)}
+.aavira-premium-line.is-visible{animation:aaviraTextSlide .75s cubic-bezier(.2,.8,.2,1) forwards}
+.aavira-premium-line.from-left.is-visible{animation-name:aaviraTextSlideLeft}
+@keyframes aaviraTextSlide{to{transform:translateX(0);opacity:1}}
+@keyframes aaviraTextSlideLeft{to{transform:translateX(0);opacity:1}}
+@media (prefers-reduced-motion:reduce){.aavira-premium-line{opacity:1!important;transform:none!important;animation:none!important}}
+`;
+        document.head.appendChild(style);
+        hero.parentNode.insertBefore(section,hero.nextSibling);
+
+        const lines = section.querySelectorAll('.aavira-premium-line');
+        if ('IntersectionObserver' in window){
+            const observer = new IntersectionObserver((entries,obs)=>{
+                entries.forEach(entry=>{
+                    if(entry.isIntersecting){
+                        lines.forEach((line,index)=>setTimeout(()=>line.classList.add('is-visible'),index*110));
+                        obs.disconnect();
+                    }
+                });
+            },{threshold:.18});
+            observer.observe(section);
+        } else {
+            lines.forEach((line,index)=>setTimeout(()=>line.classList.add('is-visible'),index*110));
+        }
+    }
+
+    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded',mount,{once:true});
+    else mount();
+})();
