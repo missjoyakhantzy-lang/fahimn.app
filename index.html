@@ -261,6 +261,29 @@ a{color:inherit;text-decoration:none}
 .field{width:100%;box-sizing:border-box;background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 16px;font-size:14px;color:var(--ink);outline:none;font-family:inherit;transition:all .2s}
 .field:focus{border-color:var(--rani);background:#fff;box-shadow:0 0 0 3px rgba(216,27,96,.1)}
 
+/* ---------- Marquee (alternating horizontal slide) ---------- */
+.aavira-marquee-wrap{position:relative;overflow:hidden;margin-top:52px;padding:0;background:linear-gradient(135deg,var(--ivory) 0%,#F9F7F3 100%);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.aavira-marquee-row{position:relative;overflow:hidden;white-space:nowrap;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 12%,#000 88%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,#000 12%,#000 88%,transparent 100%);padding:20px 0;transition:background .3s ease}
+.aavira-marquee-wrap:hover .aavira-marquee-row{background:rgba(212,175,55,.04)}
+.aavira-marquee-track{display:flex;width:max-content;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.aavira-marquee-row:nth-child(1) .aavira-marquee-track{animation:aavira-slide-smooth 32s linear infinite}
+.aavira-marquee-row:nth-child(2) .aavira-marquee-track{animation:aavira-slide-smooth-rev 28s linear infinite}
+.aavira-marquee-row:nth-child(3) .aavira-marquee-track{animation:aavira-slide-smooth 36s linear infinite}
+.aavira-marquee-wrap:hover .aavira-marquee-track{animation-play-state:paused;cursor:pointer}
+.aavira-marquee-set{display:flex;flex:0 0 auto}
+.aavira-marquee-copy{display:inline-flex;align-items:center;gap:32px;padding-right:32px;font-family:"Inter",sans-serif;font-size:18px;font-weight:500;letter-spacing:.08em;line-height:1.4;text-transform:capitalize;color:var(--ink);transition:all .3s ease;word-spacing:.2em}
+.aavira-marquee-copy::after{content:"";width:4px;height:4px;background:var(--rani);border-radius:50%;flex:0 0 auto;opacity:.6;transition:opacity .3s}
+.aavira-marquee-row:nth-child(2) .aavira-marquee-copy{color:var(--rani);font-weight:600;letter-spacing:.06em}
+.aavira-marquee-row:nth-child(2) .aavira-marquee-copy::after{background:var(--gold);opacity:.8}
+.aavira-marquee-row:nth-child(3) .aavira-marquee-copy{color:var(--muted);font-weight:500}
+.aavira-marquee-row:nth-child(3) .aavira-marquee-copy::after{background:var(--gold-text)}
+.aavira-marquee-wrap:hover .aavira-marquee-copy{color:var(--rani)}
+.aavira-marquee-wrap:hover .aavira-marquee-copy::after{opacity:1}
+@keyframes aavira-slide-smooth{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+@keyframes aavira-slide-smooth-rev{from{transform:translate3d(-50%,0,0)}to{transform:translate3d(0,0,0)}}
+@media(max-width:420px){.aavira-marquee-copy{font-size:15px;letter-spacing:.06em;gap:24px;padding-right:24px}.aavira-marquee-row{padding:16px 0}}
+@media (prefers-reduced-motion:reduce){.aavira-marquee-track{animation:none!important}}
+
 /* ---------- Sidebar ---------- */
 #sidebar{top:0;bottom:0;left:max(0px,calc(50% - 210px));width:86%;max-width:340px;background:#fff;display:flex;flex-direction:column;box-shadow:0 0 50px rgba(0,0,0,.25)}
 .side-top{display:flex;align-items:center;justify-content:space-between;padding:calc(10px + env(safe-area-inset-top,0px)) 12px 10px 16px}
@@ -503,6 +526,13 @@ a{color:inherit;text-decoration:none}
     </section>
 
     
+  
+    <!-- Alternating horizontal slide strip (bottom of page) -->
+    <section class="aavira-marquee-wrap" aria-label="Aavira Fashion highlights">
+      <div class="aavira-marquee-row"><div class="aavira-marquee-track"><div class="aavira-marquee-set"><span class="aavira-marquee-copy">Premium Ethnic Wear</span><span class="aavira-marquee-copy">Premium Ethnic Wear</span><span class="aavira-marquee-copy">Premium Ethnic Wear</span></div><div class="aavira-marquee-set" aria-hidden="true"><span class="aavira-marquee-copy">Premium Ethnic Wear</span><span class="aavira-marquee-copy">Premium Ethnic Wear</span><span class="aavira-marquee-copy">Premium Ethnic Wear</span></div></div></div>
+      <div class="aavira-marquee-row"><div class="aavira-marquee-track"><div class="aavira-marquee-set"><span class="aavira-marquee-copy">Crafted for Elegance</span><span class="aavira-marquee-copy">Crafted for Elegance</span><span class="aavira-marquee-copy">Crafted for Elegance</span></div><div class="aavira-marquee-set" aria-hidden="true"><span class="aavira-marquee-copy">Crafted for Elegance</span><span class="aavira-marquee-copy">Crafted for Elegance</span><span class="aavira-marquee-copy">Crafted for Elegance</span></div></div></div>
+      <div class="aavira-marquee-row"><div class="aavira-marquee-track"><div class="aavira-marquee-set"><span class="aavira-marquee-copy">New Collection 2026</span><span class="aavira-marquee-copy">New Collection 2026</span><span class="aavira-marquee-copy">New Collection 2026</span></div><div class="aavira-marquee-set" aria-hidden="true"><span class="aavira-marquee-copy">New Collection 2026</span><span class="aavira-marquee-copy">New Collection 2026</span><span class="aavira-marquee-copy">New Collection 2026</span></div></div></div>
+    </section>
   </main>
 
   <footer class="footer">
@@ -766,7 +796,7 @@ const lowStock=p=>{const s=Number(p.stock);return(Number.isFinite(s)&&s>0&&s<=4)
 
 const cardHtml=(p,cls)=>{
   const {pr,m,off}=priceInfo(p),id=escapeHtml(p.id),name=escapeHtml(p.name),featured=cls==='pfeat';
-  const href=`product?id=${encodeURIComponent(p.id)}`,r=Math.max(0,Math.min(5,Number(p.rating)||0));
+  const href=`product.html?id=${encodeURIComponent(p.id)}`,r=Math.max(0,Math.min(5,Number(p.rating)||0));
   return `<article class="pcard ${cls}">
     <a class="pcard-link" href="${href}" data-product="${id}" tabindex="-1" aria-hidden="true">
       <span class="pcard-media">
