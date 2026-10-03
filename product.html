@@ -1,1143 +1,666 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Aavira - Exclusive Product Details</title>
-    <meta name="theme-color" content="#ffffff">
-    <meta name="description" content="Explore handcrafted premium ethnic wear. Shop the latest sarees and lehengas directly from Aavira Fashion.">
-    
-    <!-- 🔥 PREMIUM LUXURY FONTS 🔥 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- 🔥 EXTERNAL CSS LINK 🔥 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Aavira Fashion</title>
+<meta name="theme-color" content="#ffffff">
+<meta name="description" content="Handcrafted premium ethnic wear from Aavira Fashion.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-/* =========================================================
-   ROOT VARIABLES & RESET
-   ========================================================= */
-:root {
-    --primary-color: #D81B60; 
-    --secondary-color: #f59e0b; 
-    --text-dark: #1a1a1a;
-    --text-muted: #6b7280;
-    --bg-light: #f9fafb;
-    --white: #ffffff;
-    --border-color: #e5e7eb;
-    --success-green: #10b981;
-    --danger: #ef4444;
-    --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
-    --shadow-md: 0 6px 15px rgba(0,0,0,0.1);
-    --primary-light: #fdf2f8;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
-
-html, body { height: 100%; width: 100%; overflow: hidden; background-color: var(--white); margin: 0; padding: 0;}
-
-.app-container { width: 100%; max-width: 100%; height: 100%; background-color: var(--white); position: relative; display: flex; flex-direction: column; overflow: hidden; }
-
-.main-content { flex: 1; overflow-y: auto; padding-bottom: 90px; scrollbar-width: none; background-color: var(--white);}
-.main-content::-webkit-scrollbar { display: none; }
-
-/* =========================================================
-   🔥 PREMIUM STICKY HEADER
-   ========================================================= */
-header { 
-    display: flex; justify-content: space-between; align-items: center; 
-    padding: 12px 16px; background: var(--white); position: sticky; 
-    top: 0; z-index: 50; border-bottom: 1px solid var(--border-color);
-    transition: box-shadow 0.3s ease;
-}
-
-.brand-logo { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 2px; }
-.brand-logo .title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--text-dark); letter-spacing: 1.5px; line-height: 1; }
-.brand-logo .subtitle { font-size: 8px; font-weight: 600; letter-spacing: 3.5px; color: var(--text-muted); margin-top: 4px; }
-
-.header-icon-btn { 
-    width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; 
-    color: var(--text-dark); text-decoration: none; font-size: 20px; 
-    cursor: pointer; transition: transform 0.2s; background: transparent; border: none; outline: none;
-}
-.header-icon-btn:active { transform: scale(0.85); }
-
-.header-right { display: flex; gap: 8px; align-items: center;}
-
-.cart-wrapper { position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center;}
-.cart-badge { position: absolute; top: -2px; right: -4px; background-color: var(--primary-color); color: var(--white); font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 2px solid var(--white); }
-
-/* =========================================================
-   🔥 MEDIA GALLERY
-   ========================================================= */
-.media-wrapper { 
-    position: relative; width: 100%; background-color: var(--bg-light); border-bottom: 1px solid var(--border-color); overflow: hidden; 
-}
-.media-carousel { 
-    display: flex; width: 100%; aspect-ratio: 1 / 1; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; scroll-behavior: smooth; background-color: var(--bg-light); -webkit-overflow-scrolling: touch;
-}
-.media-carousel::-webkit-scrollbar { display: none; } 
-
-.slide { 
-    min-width: 100%; width: 100%; height: 100%; flex-shrink: 0; scroll-snap-align: center; scroll-snap-stop: always; display: flex; justify-content: center; align-items: center; position: relative; 
-}
-
-.slide img { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; background-color: var(--bg-light); } 
-.slide video { width: 100%; height: 100%; object-fit: contain; object-position: center; background-color: #000000; display: block; padding: 0; outline: none; border: none; }
-
-.carousel-dots { position: absolute; bottom: 16px; left: 0; width: 100%; display: flex; justify-content: center; gap: 8px; z-index: 5; }
-.dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(0,0,0,0.1); transition: all 0.3s ease; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.15);}
-.dot.active { background: var(--primary-color); width: 22px; border-radius: 6px; border: none; }
-
-.media-loader { position: absolute; inset: 0; background: rgba(248, 250, 252, 0.8); z-index: 20; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
-.media-loader.show { opacity: 1; pointer-events: auto; }
-.media-loader i { font-size: 28px; color: var(--primary-color); }
-
-/* =========================================================
-   🔥 PROFESSIONAL PRODUCT TITLE & PRICE
-   ========================================================= */
-.product-details { padding: 24px 20px 20px; background: var(--white); }
-
-.product-title { 
-    font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px; line-height: 1.35; letter-spacing: 0.3px; text-transform: capitalize;
-}
-
-.price-row { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
-.current-price { font-size: 26px; font-weight: 800; color: var(--text-dark); letter-spacing: -0.5px;}
-.original-price { font-size: 15px; color: var(--text-muted); text-decoration: line-through; font-weight: 500; }
-.discount-tag { background-color: var(--primary-light); color: var(--primary-color); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px;}
-
-/* =========================================================
-   🔥 UPDATED COLORS SECTION
-   ========================================================= */
-.selection-title { font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; letter-spacing: 1px;}
-
-.color-options { 
-    display: flex; gap: 14px; margin-bottom: 4px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-bottom: 10px; padding-top: 5px; margin-left: -20px; margin-right: -20px; padding-left: 20px; padding-right: 20px;
-}
-.color-options::-webkit-scrollbar { display: none; }
-
-.color-swatch { 
-    width: 52px; height: 52px; flex-shrink: 0; border-radius: 50%; border: 2px solid var(--border-color); cursor: pointer; transition: 0.3s; position: relative; padding: 3px; background: var(--white); display: flex; justify-content: center; align-items: center; box-shadow: 0 1px 4px rgba(0,0,0,0.06); 
-}
-.color-swatch.active { border-color: var(--text-dark); transform: scale(1.08); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
-.color-swatch img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 50%; }
-
-.color-swatch i { 
-    display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto; width: calc(100% - 6px); height: calc(100% - 6px); background: rgba(0, 0, 0, 0.45); color: var(--white); font-size: 18px; border-radius: 50%; justify-content: center; align-items: center; z-index: 2; 
-}
-.color-swatch.active i { display: flex; animation: popInCenter 0.25s ease; }
-@keyframes popInCenter { 0% { transform: scale(0.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-
-/* =========================================================
-   SIZE SECTION
-   ========================================================= */
-.size-chart-link { color: var(--primary-color); font-size: 11px; font-weight: 600; text-decoration: underline; cursor: pointer; text-transform: none; letter-spacing: 0;}
-.size-options { display: flex; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
-.size-box { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--border-color); display: flex; justify-content: center; align-items: center; font-size: 13px; font-weight: 500; color: var(--text-dark); cursor: pointer; background-color: var(--white); transition: all 0.3s ease; }
-.size-box.active { background-color: var(--text-dark); border-color: var(--text-dark); color: var(--white); font-weight: 600; box-shadow: var(--shadow-md); }
-.custom-size-btn { width: auto; padding: 0 20px; border-radius: 24px; } 
-
-@keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
-.shake-error .size-box { border-color: var(--danger); color: var(--danger); background: #fef2f2; animation: shake 0.4s ease-in-out; }
-
-/* =========================================================
-   BLOCKS, WHATSAPP, ACCORDIONS
-   ========================================================= */
-.feature-block { padding: 24px 20px; background: var(--white); border-top: 8px solid var(--bg-light);}
-.block-title { font-size: 15px; font-weight: 700; color: var(--text-dark); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-
-.whatsapp-chat-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 16px; padding: 16px; display: flex; align-items: center; justify-content: space-between; }
-.wa-text { font-size: 13px; color: #166534; font-weight: 600; line-height: 1.4; }
-.wa-btn { background: #25D366; color: white; width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 22px; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); text-decoration: none; transition: 0.2s;}
-.wa-btn:active { transform: scale(0.95); }
-
-.accordion { border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden;}
-.acc-item { border-bottom: 1px solid var(--border-color); }
-.acc-item:last-child { border-bottom: none; }
-.acc-header { width: 100%; padding: 16px; display: flex; justify-content: space-between; align-items: center; background: white; border: none; font-size: 13px; font-weight: 600; color: var(--text-dark); cursor: pointer; outline: none; }
-.acc-header i { color: #9ca3af; transition: 0.3s; font-size: 12px;}
-.acc-body { padding: 0 16px; font-size: 13px; color: #4b5563; line-height: 1.6; max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-.acc-item.active .acc-body { padding: 10px 16px 20px; max-height: 1000px; }
-.acc-item.active .acc-header i { transform: rotate(180deg); color: var(--primary-color); }
-.acc-body li { margin-bottom: 6px; }
-
-.trust-badges { display: flex; gap: 12px; margin-top: 24px; }
-.badge { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; background: var(--bg-light); padding: 16px 8px; border-radius: 12px; border: 1px solid var(--border-color); }
-.badge i { font-size: 22px; color: var(--secondary-color); }
-.badge span { font-size: 10px; font-weight: 700; color: var(--text-dark); text-transform: uppercase; letter-spacing: 0.5px;}
-
-/* =========================================================
-   🔥 ADVANCED RATING & REVIEW SYSTEM
-   ========================================================= */
-.rating-summary-wrapper { background: var(--white); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 20px; box-shadow: var(--shadow-sm);}
-.rating-left { text-align: center; border-right: 1px solid var(--border-color); padding-right: 20px; }
-.rating-big-text { font-size: 40px; font-weight: 700; color: var(--text-dark); line-height: 1; display: inline-block; width: 75px; font-family: 'Playfair Display', serif;}
-.rating-stars-main { color: var(--secondary-color); font-size: 13px; margin: 8px 0; display: flex; justify-content: center; gap: 2px;}
-.rating-count { font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;}
-
-.rating-right { flex: 1; display: flex; flex-direction: column; gap: 8px; }
-.rating-bar-row { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; color: var(--text-muted); }
-.progress-track { flex: 1; height: 6px; background: #e5e7eb; border-radius: 4px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--primary-color); border-radius: 4px; transition: width 1s ease-in-out; }
-
-.reviews-scroll { display: flex; overflow-x: auto; gap: 16px; padding-bottom: 20px; scrollbar-width: none; margin-left: -20px; margin-right: -20px; padding-left: 20px; padding-right: 20px; }
-.reviews-scroll::-webkit-scrollbar { display: none; }
-
-.review-card { flex-shrink: 0; width: 300px; background: var(--white); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; box-shadow: var(--shadow-sm); }
-.review-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
-.reviewer-info { display: flex; gap: 12px; align-items: center; }
-.reviewer-initial { width: 40px; height: 40px; border-radius: 50%; background: var(--primary-light); color: var(--primary-color); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; text-transform: uppercase; }
-.reviewer-name { font-size: 14px; font-weight: 700; color: var(--text-dark); }
-.verified-badge { font-size: 10px; color: var(--success-green); font-weight: 600; display: flex; align-items: center; gap: 4px; margin-top: 2px;}
-.review-date { font-size: 11px; color: var(--text-muted); font-weight: 500; }
-
-.review-stars { color: var(--secondary-color); font-size: 12px; margin-bottom: 10px; display: flex; gap: 2px;}
-.review-title-text { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px; }
-.review-body-text { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
-
-/* =========================================================
-   BOTTOM ACTION BAR 
-   ========================================================= */
-.bottom-action-bar { position: absolute; bottom: 0; width: 100%; background: var(--white); display: flex; gap: 12px; padding: 12px 20px 20px; border-top: 1px solid var(--border-color); box-shadow: 0 -4px 20px rgba(0,0,0,0.05); z-index: 100; }
-.btn { flex: 1; padding: 16px 0; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; text-align: center; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; letter-spacing: 0.5px; text-transform: uppercase;}
-.btn:active { transform: scale(0.97); }
-.btn-outline { background-color: var(--white); color: var(--text-dark); border: 1px solid #d1d5db; }
-.btn-solid { position: relative; overflow: hidden; background: var(--primary-color); color: var(--white); border: none; box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3); }
-.btn-solid::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent); transform: skewX(-20deg); animation: shimmerSweep 2.5s infinite linear; }
-@keyframes shimmerSweep { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
-
-/* =========================================================
-   MODALS & BOTTOM SHEETS
-   ========================================================= */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; display: none; justify-content: center; align-items: center; opacity: 0; transition: 0.3s; backdrop-filter: blur(2px);}
-.modal-overlay.show { opacity: 1; display: flex; }
-.modal-box { background: var(--white); width: 85%; max-width: 320px; border-radius: 20px; padding: 24px; text-align: center; transform: scale(0.9); transition: 0.3s; position: relative; }
-.modal-overlay.show .modal-box { transform: scale(1); }
-
-.bottom-sheet-modal { position: absolute; bottom: 0; width: 100%; max-width: 100%; border-radius: 24px 24px 0 0; padding: 24px 20px; background: var(--white); transform: translateY(100%); transition: 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
-.modal-overlay.show .bottom-sheet-modal { transform: translateY(0); }
-
-.modal-btn { background: var(--text-dark); color: var(--white); border: none; width: 100%; padding: 14px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.2s;}
-.modal-btn:active { transform: scale(0.98); }
-.modal-close { position: absolute; top: 16px; right: 16px; font-size: 18px; color: var(--text-muted); cursor: pointer; background: var(--bg-light); border-radius: 50%; width: 32px; height: 32px; display: flex; justify-content: center; align-items: center;}
-
-.modal-input { width: 100%; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px 14px; font-size: 13px; font-weight: 500; margin-bottom: 12px; outline: none; background: var(--bg-light); transition: 0.3s;}
-.modal-input:focus { border-color: var(--primary-color); background: var(--white); }
-.star-select i { cursor: pointer; color: #e5e7eb; font-size: 32px; transition: 0.2s;}
-.star-select i.active { color: var(--secondary-color); }
-.skeleton { background: #f3f4f6; background-image: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%); background-size: 200px 100%; animation: shimmer 1.5s infinite linear; border-radius: 4px; color: transparent !important;}
-@keyframes shimmer { 0% { background-position: -200px 0; } 100% { background-position: 200px 0; } }
-
-
-/* Aavira Fashion — Global Corporate Design System (moved from product.html) */
-/* Aavira Fashion — Global Corporate Design System
-   Applied across inner pages without replacing page functionality. */
-:root{
-  --aavira-rani:#D81B60;
-  --aavira-rani-dark:#B71550;
-  --aavira-gold:#D4AF37;
-  --aavira-ivory:#FDFBF7;
-  --aavira-cream:#FCF9F4;
-  --aavira-white:#FFFFFF;
-  --aavira-charcoal:#242024;
-  --aavira-muted:#756D73;
-  --aavira-border:#E7E0D9;
-  --aavira-soft-pink:#F9E8EE;
-}
-
-body.aavira-theme{
-  --primary:#D81B60;
-  --primary-color:#D81B60;
-  --primary-light:rgba(216,27,96,.08);
-  --pink:#D81B60;
-  --pink-s:rgba(216,27,96,.12);
-  --pink-sh:rgba(216,27,96,.24);
-  --secondary:#D4AF37;
-  --ethnic-gold:#D4AF37;
-  --gold:#D4AF37;
-  --gold-soft:#E7D39A;
-  --text-dark:#242024;
-  --text-main:#242024;
-  --text-muted:#756D73;
-  --text-light:#9B9298;
-  --border:#E7E0D9;
-  --border-color:#E7E0D9;
-  --bg-body:#FDFBF7;
-  --bg-page:#FDFBF7;
-  --bg-main:#FDFBF7;
-  --bg-light:#FCF9F4;
-  --bg:#FDFBF7;
-  --card:#FFFFFF;
-  --white:#FFFFFF;
-  background:var(--aavira-ivory)!important;
-  color:var(--aavira-charcoal);
-}
-
-body.aavira-theme .app-container,
-body.aavira-theme .shell,
-body.aavira-theme .app{
-  background:var(--aavira-cream);
-}
-
-body.aavira-theme .pro-header,
-body.aavira-theme .hdr,
-body.aavira-theme .header{
-  background:rgba(255,255,255,.96)!important;
-  border-color:var(--aavira-border)!important;
-  box-shadow:0 4px 18px rgba(36,32,36,.045);
-  backdrop-filter:blur(14px);
-}
-
-body.aavira-theme .pro-header .title,
-body.aavira-theme .header h1,
-body.aavira-theme .hdr-center,
-body.aavira-theme .header-center .title{
-  color:var(--aavira-charcoal)!important;
-}
-
-body.aavira-theme .header-icon-btn,
-body.aavira-theme .header-btn,
-body.aavira-theme .close-search{
-  color:var(--aavira-charcoal)!important;
-}
-
-body.aavira-theme .main-content,
-body.aavira-theme .main-scroll,
-body.aavira-theme .scroll,
-body.aavira-theme .scrollable-content{
-  background:var(--aavira-ivory)!important;
-}
-
-body.aavira-theme .pro-card,
-body.aavira-theme .order-card,
-body.aavira-theme .menu-container,
-body.aavira-theme .stats-card,
-body.aavira-theme .s-card,
-body.aavira-theme .tracking-card,
-body.aavira-theme .dv-top-card,
-body.aavira-theme .rating-summary-wrapper,
-body.aavira-theme .pro-card,
-body.aavira-theme .suggest-section{
-  border-color:var(--aavira-border)!important;
-  box-shadow:0 8px 24px rgba(36,32,36,.055);
-}
-
-body.aavira-theme .tab.active,
-body.aavira-theme .size-chart-link,
-body.aavira-theme .help-link-text,
-body.aavira-theme .menu-left>i,
-body.aavira-theme .stat-item i,
-body.aavira-theme .nav-item.active,
-body.aavira-theme .nav-item.active i,
-body.aavira-theme .cart-badge,
-body.aavira-theme .discount-tag,
-body.aavira-theme .price-row .current-price + *{
-  color:var(--aavira-rani)!important;
-}
-
-body.aavira-theme .tab-indicator{
-  background:var(--aavira-rani)!important;
-}
-
-body.aavira-theme .menu-left>i{
-  background:var(--aavira-soft-pink)!important;
-}
-
-body.aavira-theme .bottom-nav,
-body.aavira-theme #bottomNavContainer{
-  background:rgba(255,255,255,.97)!important;
-  border-top-color:var(--aavira-border)!important;
-  box-shadow:0 -8px 24px rgba(36,32,36,.07);
-  backdrop-filter:blur(14px);
-}
-
-body.aavira-theme .btn-confirm,
-body.aavira-theme .promo-btn,
-body.aavira-theme .modal-btn,
-body.aavira-theme .modal-btn-primary{
-  background:linear-gradient(135deg,var(--aavira-rani),var(--aavira-rani-dark))!important;
-  color:#fff!important;
-  border-color:transparent!important;
-  box-shadow:0 10px 22px rgba(216,27,96,.18);
-}
-
-body.aavira-theme .pro-input:focus,
-body.aavira-theme .promo-input:focus,
-body.aavira-theme .search-input:focus{
-  border-color:var(--aavira-rani)!important;
-  box-shadow:0 0 0 3px rgba(216,27,96,.08)!important;
-}
-
-body.aavira-theme input,
-body.aavira-theme textarea,
-body.aavira-theme select{
-  color:var(--aavira-charcoal);
-}
-
-body.aavira-theme .speed-option.selected,
-body.aavira-theme .pay-option.selected{
-  border-color:var(--aavira-rani)!important;
-  background:var(--aavira-soft-pink)!important;
-}
-
-body.aavira-theme .color-swatch.active{
-  border-color:var(--aavira-rani)!important;
-  box-shadow:0 6px 16px rgba(216,27,96,.14);
-}
-
-body.aavira-theme .size-box.active{
-  background:var(--aavira-rani)!important;
-  border-color:var(--aavira-rani)!important;
-}
-
-body.aavira-theme .trust-badges .badge i,
-body.aavira-theme .rating-stars-main{
-  color:var(--aavira-gold)!important;
-}
-
-body.aavira-theme .dv-tc-head{
-  background:var(--aavira-soft-pink)!important;
-}
-
-body.aavira-theme .timeline-progress-line,
-body.aavira-theme .tl-icon.done,
-body.aavira-theme .tl-icon.current{
-  background:var(--aavira-rani)!important;
-}
-
-body.aavira-theme .status-badge.st-Confirmed{
-  background:var(--aavira-soft-pink)!important;
-  color:var(--aavira-rani)!important;
-}
-
-body.aavira-theme .product-title,
-body.aavira-theme .o-info h4,
-body.aavira-theme .current-price,
-body.aavira-theme .b-total{
-  color:var(--aavira-charcoal)!important;
-}
-
-body.aavira-theme .media-wrapper,
-body.aavira-theme .media-carousel,
-body.aavira-theme .slide img{
-  background:var(--aavira-cream)!important;
-  border-color:var(--aavira-border)!important;
-}
-
-body.aavira-theme .card-loading-overlay{
-  background:linear-gradient(120deg,rgba(255,255,255,0) 0%,rgba(249,232,238,.55) 45%,rgba(255,255,255,.92) 50%,rgba(249,232,238,.55) 55%,rgba(255,255,255,0) 100%)!important;
-}
-
-100%{background-position:-100% 0}}
-
-@media(max-width:420px){
-  body.aavira-theme .app-container,
-  body.aavira-theme .shell,
-  body.aavira-theme .app{max-width:420px}
-}
-
-.aavira-spinner-done{animation:none!important;transform:none!important;}
-
+:root{--rani:#D81B60;--rani-dark:#B71550;--gold:#D4AF37;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#242024;--muted:#6B6369;--line:#E7E0D9;--blush:#F9E8EE;--green:#15803D;--danger:#B91C1C}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:"Inter",system-ui,sans-serif;background:var(--ivory);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font-family:inherit;cursor:pointer}
+a{color:inherit;text-decoration:none}
+.app{max-width:420px;margin:0 auto;background:#fff;min-height:100vh;padding-bottom:calc(88px + env(safe-area-inset-bottom,0px));position:relative}
+@media(min-width:640px){body{background:#EFE8DE}.app{box-shadow:0 0 60px rgba(36,32,36,.12)}}
+
+/* Header */
+.hdr{position:sticky;top:0;z-index:40;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:60px;padding:env(safe-area-inset-top,0) 8px 0;background:#fff;border-bottom:1px solid var(--line)}
+.hdr img{height:36px;width:auto}
+.hdr-r{display:flex;justify-content:flex-end}
+.ib{position:relative;width:42px;height:42px;border:0;background:none;border-radius:50%;color:var(--ink);font-size:18px;display:inline-flex;align-items:center;justify-content:center;transition:.2s}
+.ib:hover{background:var(--blush);color:var(--rani)}
+.ib.on i{color:var(--rani)}
+.badge{position:absolute;top:3px;right:1px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--rani);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
+
+/* Gallery */
+.media{position:relative;background:var(--cream);border-bottom:1px solid var(--line)}
+.carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;aspect-ratio:1/1;scrollbar-width:none}
+.carousel::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;scroll-snap-align:center;scroll-snap-stop:always}
+.slide img,.slide video{width:100%;height:100%;object-fit:contain;display:block;background:var(--cream)}
+.slide video{background:#000}
+.dots{position:absolute;bottom:12px;left:0;right:0;display:flex;justify-content:center;gap:6px}
+.dot{width:7px;height:7px;border-radius:4px;background:rgba(255,255,255,.8);box-shadow:0 0 0 1px rgba(0,0,0,.12);transition:.3s;border:0;padding:0}
+.dot.on{width:20px;background:var(--rani);box-shadow:none}
+.skel{background:linear-gradient(90deg,#F1EBE3 25%,#F8F3EC 37%,#F1EBE3 63%);background-size:400% 100%;animation:sh 1.4s ease infinite;color:transparent!important;border-radius:6px}
+@keyframes sh{0%{background-position:100% 0}100%{background-position:0 0}}
+
+/* Info */
+.info{padding:22px 20px 8px}
+.title{font-family:"Playfair Display",serif;font-size:22px;font-weight:600;line-height:1.35;margin-bottom:10px}
+.prow{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+.price{font-size:26px;font-weight:700}
+.mrp{font-size:15px;color:var(--muted);text-decoration:line-through}
+.off{background:var(--rani);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;box-shadow:0 2px 6px rgba(216,27,96,.25)}
+.rate-chip{display:inline-flex;align-items:center;gap:4px;background:var(--green);color:#fff;font-size:12px;font-weight:600;padding:3px 9px;border-radius:6px;margin-bottom:18px}
+.rate-chip.mid{background:#B45309}.rate-chip.bad{background:#B91C1C}
+.rate-chip i{font-size:10px}
+.rate-chip small{font-weight:500;opacity:.9}
+.lbl{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:18px 0 12px}
+.lbl span{text-transform:none;letter-spacing:0;font-weight:600}
+.colors{display:flex;gap:12px;overflow-x:auto;padding:4px 20px 10px;margin:0 -20px;scrollbar-width:none}
+.colors::-webkit-scrollbar{display:none}
+.sw{position:relative;flex:0 0 auto;width:54px;height:54px;border-radius:50%;border:2px solid var(--line);padding:3px;background:#fff;transition:.25s}
+.sw img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:50%}
+.sw i{display:none;position:absolute;inset:3px;border-radius:50%;background:rgba(0,0,0,.4);color:#fff;font-size:16px;align-items:center;justify-content:center}
+.sw.on{border-color:var(--rani);transform:scale(1.06)}
+.sw.on i{display:flex}
+.sizes{display:flex;flex-wrap:wrap;gap:10px}
+.sz{min-width:48px;height:48px;padding:0 6px;border-radius:24px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:500;color:var(--ink);transition:.2s}
+.sz.custom{padding:0 18px}
+.sz.on{background:var(--rani);border-color:var(--rani);color:#fff;font-weight:600}
+.sizes.err .sz{border-color:var(--rani);color:var(--rani);background:var(--blush);animation:shake .4s}
+.sizes.err .sz.on{background:var(--rani);color:#fff}
+@keyframes shake{0%,100%{transform:translateX(0)}25%,75%{transform:translateX(-4px)}50%{transform:translateX(4px)}}
+.stock{margin-top:14px;font-size:12px;font-weight:600;color:#B45309}
+.stock.out{color:var(--danger)}
+
+/* Blocks */
+.blk{padding:22px 20px;border-top:8px solid var(--cream)}
+.blk h2{font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.wa{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:14px;padding:14px 16px;font-size:13px;font-weight:600;color:#166534;line-height:1.4}
+.wa a{flex:0 0 auto;width:42px;height:42px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:21px}
+.acc{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.acc-i+.acc-i{border-top:1px solid var(--line)}
+.acc-h{width:100%;display:flex;justify-content:space-between;align-items:center;padding:15px 16px;background:#fff;border:0;font-size:13px;font-weight:600;color:var(--ink)}
+.acc-h i{font-size:11px;color:#A8A0A5;transition:.3s}
+.acc-b{max-height:0;overflow:hidden;padding:0 16px;font-size:13px;line-height:1.65;color:#4B5563;transition:max-height .3s}
+.acc-i.on .acc-b{max-height:900px;padding:2px 16px 18px}
+.acc-i.on .acc-h i{transform:rotate(180deg);color:var(--rani)}
+.acc-b ul{padding-left:16px}.acc-b li{margin-bottom:6px}
+.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
+.trust div{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;background:var(--ivory);border:1px solid var(--line);border-radius:12px;padding:14px 6px;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase}
+.trust i{font-size:20px;color:var(--gold)}
+
+/* Reviews */
+.btn-sm{background:var(--ink);color:#fff;border:0;border-radius:8px;padding:8px 14px;font-size:11px;font-weight:600}
+.sum{display:flex;align-items:center;gap:18px;border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:18px}
+.sum-l{text-align:center;padding-right:18px;border-right:1px solid var(--line)}
+.sum.solo{justify-content:center}.sum.solo .sum-l{border:0;padding:0}
+.sum-big{font-family:"Playfair Display",serif;font-size:38px;font-weight:700;line-height:1}
+.stars{color:var(--gold);font-size:12px;display:flex;gap:2px;justify-content:center;margin:7px 0 5px}
+.sum-n{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase}
+.sum-r{flex:1;display:flex;flex-direction:column;gap:7px}
+.bar{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;color:var(--muted)}
+.bar b{width:22px;font-weight:600}.bar em{min-width:28px;text-align:right;font-style:normal}
+.track{flex:1;height:6px;border-radius:3px;background:#E5E7EB;overflow:hidden}
+.fill{height:100%;background:var(--rani);border-radius:3px}
+.rv-list{display:flex;gap:14px;overflow-x:auto;margin:0 -20px;padding:0 20px 10px;scrollbar-width:none}
+.rv-list::-webkit-scrollbar{display:none}
+.rv{flex:0 0 280px;border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 2px 8px rgba(36,32,36,.04)}
+.rv-h{display:flex;align-items:center;gap:11px;margin-bottom:12px}
+.rv-av{width:38px;height:38px;border-radius:50%;background:var(--blush);color:var(--rani);font-weight:700;display:flex;align-items:center;justify-content:center}
+.rv-n{font-size:14px;font-weight:700}
+.rv-d{font-size:11px;color:var(--muted)}
+.rv .stars{justify-content:flex-start;margin:0 0 8px}
+.rv-t{font-size:14px;font-weight:700;margin-bottom:4px}
+.rv-b{font-size:13px;line-height:1.55;color:var(--muted)}
+.empty{width:100%;text-align:center;padding:24px 16px;border:1px dashed var(--line);border-radius:12px;font-size:12px;color:var(--muted)}
+.empty b{display:block;font-size:14px;color:var(--ink);margin-bottom:3px}
+
+/* Bottom bar */
+.bar-bottom{position:fixed;left:0;right:0;bottom:0;margin:0 auto;max-width:420px;z-index:50;display:flex;gap:12px;padding:12px 20px calc(14px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 20px rgba(36,32,36,.05)}
+.btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:15px 0;border-radius:10px;font-size:13px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;transition:.2s}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-o{background:#fff;color:var(--ink);border:1.5px solid var(--ink)}
+.btn-p{background:var(--rani);color:#fff;border:0;box-shadow:0 6px 16px rgba(216,27,96,.25)}
+
+/* Modals */
+.ov{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center}
+.ov.on{display:flex}
+.sheet{width:100%;max-width:420px;background:#fff;border-radius:22px 22px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom,0px));position:relative;animation:up .3s ease}
+@keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.sheet h3{font-family:"Playfair Display",serif;font-size:22px;margin-bottom:6px}
+.sheet p{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.5}
+.x{position:absolute;top:14px;right:14px;width:32px;height:32px;border:0;border-radius:50%;background:var(--cream);color:var(--muted)}
+.fld{width:100%;border:1px solid var(--line);border-radius:10px;padding:13px 14px;font:inherit;font-size:14px;margin-bottom:10px;outline:none;background:#fff}
+.fld:focus{border-color:var(--rani);box-shadow:0 0 0 3px rgba(216,27,96,.1)}
+.row2{display:flex;gap:10px}
+.mbtn{width:100%;padding:14px;border:0;border-radius:10px;background:var(--rani);color:#fff;font-size:14px;font-weight:700}
+.mbtn:disabled{opacity:.6}
+.pick{display:flex;justify-content:center;gap:10px;margin:6px 0 18px}
+.pick i{font-size:32px;color:#E5E7EB;cursor:pointer;transition:.15s}
+.pick i.on{color:var(--gold)}
+.sheet{max-height:92vh;overflow-y:auto}
+.perks{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:14px}
+.perks li{display:flex;gap:12px;font-size:13px;line-height:1.5;color:#4B5563}
+.perks i{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--blush);color:var(--rani);display:flex;align-items:center;justify-content:center;font-size:13px}
+.perks b{color:var(--ink)}
+.termlink{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 14px;margin-bottom:8px;border:1px solid var(--line);border-radius:10px;background:var(--ivory);font-size:13px;font-weight:600}
+.termlink i:first-child{color:var(--rani);margin-right:6px}
+.termlink>i{color:#A8A0A5;font-size:11px}
+.agree{font-size:11px!important;line-height:1.5;margin:0 0 14px!important}
+.agree a{color:var(--rani);text-decoration:underline}
+.skip{width:100%;margin-top:10px;padding:13px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-size:13px;font-weight:600}
+.skip:hover{border-color:var(--ink)}
+.btn-write{width:100%;margin-top:16px;display:flex;align-items:center;justify-content:center;gap:10px;padding:17px;border:0;border-radius:12px;background:var(--ink);color:#fff;font-size:15px;font-weight:700;letter-spacing:.3px;transition:.2s}
+.btn-write:active{transform:scale(.98)}
+.btn-write i{width:24px;height:24px;border-radius:50%;background:#fff;color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:12px}
+/* suggestions (same card design as home) */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px 12px}
+.pcard{position:relative;min-width:0;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;padding:0 0 12px;box-shadow:0 2px 8px rgba(36,32,36,.04)}
+.pc-media{position:relative;display:block;aspect-ratio:1/1;background:linear-gradient(135deg,var(--cream),#F9F3EB);overflow:hidden}
+.pc-media img{width:100%;height:100%;object-fit:cover}
+.tags{position:absolute;left:8px;top:8px;display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.tag-off{background:var(--rani);color:#fff;font-size:10.5px;font-weight:600;padding:4px 10px;border-radius:6px}
+.tag-best{background:var(--ink);color:#fff;font-size:10.5px;font-weight:600;padding:4px 10px;border-radius:6px}
+.pc-foot{padding:12px 12px 0}
+.pc-name{display:block;font-size:13.5px;font-weight:500;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc-price{display:flex;align-items:baseline;gap:8px;margin-top:5px}
+.pc-price b{font-size:16px;font-weight:700;color:var(--rani)}
+.pc-price s{font-size:12px;color:var(--muted)}
+.pc-row{display:flex;align-items:center;gap:6px;margin-top:8px}
+.pc-meta{display:flex;align-items:center;gap:6px;min-width:0}
+.rating{display:inline-flex;align-items:center;gap:3px;font-weight:600;font-size:11px;color:#fff;background:var(--green);padding:2px 7px;border-radius:6px}
+.rating.mid{background:#B45309}.rating.bad{background:#B91C1C}.rating.none{background:#9A9298}
+.rating i{font-size:9px}
+.cdots{display:inline-flex;align-items:center}
+.cdots i{width:14px;height:14px;border-radius:50%;margin-left:-5px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.18);position:relative}
+.cdots i:first-child{margin-left:0}
+.cdots i:nth-child(1){z-index:3}.cdots i:nth-child(2){z-index:2}.cdots i:nth-child(3){z-index:1}
+.cdots b{min-width:18px;height:18px;padding:0 4px;margin-left:4px;border-radius:9px;background:var(--cream);border:1px solid var(--line);font-size:9px;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;justify-content:center}
+.go{margin-left:auto;flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:var(--rani);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(216,27,96,.25);border:0;transition:all .2s}
+.go:hover{background:var(--rani-dark);transform:scale(1.1);box-shadow:0 6px 16px rgba(216,27,96,.35)}
+.go:active{transform:scale(.92)}
+.go svg{width:14px;height:14px}
+.low{display:block;margin-top:6px;font-size:12px;font-weight:600;color:#B45309;background:rgba(180,67,9,.08);padding:3px 6px;border-radius:4px;width:fit-content}
+.heart{position:absolute;right:8px;top:8px;width:30px;height:30px;border-radius:50%;border:0;background:rgba(255,255,255,.95);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.15);font-size:14px}
+.heart.on{color:var(--rani);background:rgba(216,27,96,.12)}
+/* footer (same as home) */
+.app{padding-bottom:0}
+.footer{background:#1B1719;color:#fff;padding:36px 20px calc(100px + env(safe-area-inset-bottom,0px));border-top:3px solid rgba(212,175,55,.4)}
+.footer-brand{font-family:"Playfair Display",serif;font-size:24px;font-weight:600;background:linear-gradient(135deg,#fff,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.footer-tag{margin:6px 0 0;font-size:13px;line-height:1.6;color:#B5ADB2}
+.footer-news{margin:24px 0 4px}
+.footer-news label{display:block;font-size:14px;font-weight:600;margin-bottom:8px}
+.footer-news-row{display:flex;gap:8px}
+.footer-news input{flex:1;min-width:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:6px;padding:12px 16px;color:#fff;font-size:14px;outline:none}
+.footer-news input::placeholder{color:#9F979D}
+.footer-news input:focus{border-color:var(--rani)}
+.footer-news button{background:var(--rani);color:#fff;border:0;border-radius:6px;padding:0 20px;min-width:72px;font-weight:600;font-size:14px;display:flex;align-items:center;justify-content:center}
+.footer-news button:disabled{opacity:.8;cursor:not-allowed}
+.spinner{width:16px;height:16px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;display:inline-block;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px 18px;padding:26px 0;margin-top:22px;border-top:1px solid rgba(255,255,255,.1)}
+.footer h3{font-family:"Inter",sans-serif;font-size:14px;font-weight:600;margin-bottom:10px;color:var(--gold)}
+.footer-grid a{display:block;font-size:13px;color:#B5ADB2;line-height:2}
+.footer-grid a:hover{color:#fff}
+.footer-copy{padding-top:18px;border-top:1px solid rgba(255,255,255,.1);font-size:12px;color:#8F878D}
+
+/* Toast (rani theme) */
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translate(-50%,14px);opacity:0;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--rani),var(--rani-dark));color:#fff;font-size:13px;font-weight:600;letter-spacing:.2px;padding:13px 20px;border-radius:12px;border:1px solid rgba(255,255,255,.18);box-shadow:0 10px 28px rgba(216,27,96,.38);z-index:200;pointer-events:none;transition:.28s;max-width:92%;white-space:nowrap}
+.toast i{font-size:16px;flex:0 0 auto}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.toast.err{background:linear-gradient(135deg,var(--rani),var(--rani-dark))}
+.center{align-items:center;padding:20px}
+.center .sheet{border-radius:20px;text-align:center;max-width:340px}
 </style>
 </head>
 <body>
-
-    <div class="app-container">
-        <!-- 🔥 STICKY HEADER -->
-        <header id="mainHeader">
-            <button class="header-icon-btn" onclick="javascript:history.back()"><i class="fa-solid fa-chevron-left"></i></button>
-            <div class="brand-logo">
-                <div class="title">AAVIRA</div>
-                <div class="subtitle">FASHION</div>
-            </div>
-            <div class="header-right">
-                <button class="header-icon-btn" onclick="toggleHeart(this)"><i class="fa-regular fa-heart"></i></button>
-                <button class="header-icon-btn cart-wrapper" onclick="window.location.href='cart'">
-                    <i class="fa-solid fa-bag-shopping"></i>
-                    <span class="cart-badge" id="topCartBadge" style="display: none;">0</span>
-                </button>
-            </div>
-        </header>
-
-        <div class="main-content" id="mainScrollArea">
-            <!-- 🔥 MEDIA GALLERY -->
-            <div class="media-wrapper skeleton" id="mediaWrapper">
-                <div class="media-loader" id="mediaLoader"><i class="fa-solid fa-spinner fa-spin"></i></div>
-                <div class="media-carousel" id="mediaCarousel">
-                    <!-- Injected by JS -->
-                </div>
-                <div class="carousel-dots" id="carouselDots"></div>
-            </div>
-
-            <!-- PRODUCT INFO -->
-            <div class="product-details">
-                <div id="colorSectionWrapper" style="display: none; border-bottom: 1px dashed #e5e7eb; padding-bottom: 15px; margin-bottom: 20px;">
-                    <div class="selection-title">AVAILABLE COLORS <span id="colorCountInfo" style="font-size:10px; color:var(--text-muted); font-weight:600; text-transform:none;"></span></div>
-                    <div class="color-options" id="dynamicColorOptions"></div>
-                </div>
-
-                <h1 class="product-title skeleton" id="productTitle">Loading Product...</h1>
-                
-                <div class="price-row">
-                    <span class="current-price skeleton" id="currentPrice">₹----</span>
-                    <span class="original-price skeleton" id="oldPrice">₹----</span>
-                    <span class="discount-tag" id="discountTag" style="display:none;"></span>
-                </div>
-
-                <div class="selection-title"><span>Select Size</span> <span class="size-chart-link">Size Chart</span></div>
-                <div id="sizeOptionsContainer">
-                    <div class="size-options">
-                        <div class="size-box" onclick="selectSize(this)">32</div>
-                        <div class="size-box" onclick="selectSize(this)">34</div>
-                        <div class="size-box" onclick="selectSize(this)">36</div>
-                        <div class="size-box" onclick="selectSize(this)">38</div>
-                        <div class="size-box" onclick="selectSize(this)">40</div>
-                        <div class="size-box" onclick="selectSize(this)">42</div>
-                        <div class="size-box custom-size-btn" onclick="openModal('customSizeSheet')">Custom</div>
-                    </div>
-                </div>
-                <div class="stock-alert" style="font-size: 11px; font-weight:600; color:var(--primary-color); margin-top: 12px;"><i class="fa-solid fa-fire"></i> Hurry! Only a few items left in stock.</div>
-            </div>
-
-            <div class="feature-block">
-                <div class="whatsapp-chat-box">
-                    <div class="wa-text">Confused about size or fabric fitting?<br><b>Chat with our Stylist</b></div>
-                    <a href="https://wa.me/919608720622" target="_blank" class="wa-btn"><i class="fa-brands fa-whatsapp"></i></a>
-                </div>
-            </div>
-
-            <!-- ACCORDIONS -->
-            <div class="feature-block">
-                <div class="block-title"><i class="fa-solid fa-list-ul" style="color:var(--primary-color);"></i> Product Details</div>
-                <div class="accordion">
-                    <div class="acc-item active">
-                        <button class="acc-header" onclick="toggleAccordion(this)">Description <i class="fa-solid fa-chevron-down"></i></button>
-                        <div class="acc-body">
-                            <p id="productDescription" class="skeleton">Experience the perfect blend of tradition and modern elegance.</p>
-                            <span id="productSku" class="sku-text skeleton" style="display:block; margin-top:10px; font-weight:600; color:var(--text-dark);">AV-0000</span>
-                        </div>
-                    </div>
-                    <div class="acc-item">
-                        <button class="acc-header" onclick="toggleAccordion(this)">Style & Specifications <i class="fa-solid fa-chevron-down"></i></button>
-                        <div class="acc-body">
-                            <ul style="padding-left:15px; margin-bottom:10px;">
-                                <li id="fabricRow"><b>Fabric:</b> <span id="specFabric">Premium Raw Silk</span></li>
-                                <li id="workRow"><b>Work / Embroidery:</b> <span id="specWork">Heavy Zari Handwork</span></li>
-                                <li id="patternRow"><b>Pattern:</b> <span id="specPattern">Designer Wear</span></li>
-                                <li id="styleRow" style="display:none;"><b>Style:</b> <span id="specStyle"></span></li>
-                                <li><b>Wash Care:</b> Dry Clean Only recommended to maintain the fabric's luxury feel.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="acc-item">
-                        <button class="acc-header" onclick="toggleAccordion(this)">Shipping & Returns <i class="fa-solid fa-chevron-down"></i></button>
-                        <div class="acc-body">
-                            <ul style="padding-left:15px;">
-                                <li>Free Premium Delivery on all prepaid orders pan India.</li>
-                                <li>Strict 4-Hour Return Window from delivery time for any defect/exchange.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="trust-badges">
-                    <div class="badge"><i class="fa-solid fa-shield-halved"></i><span>100%<br>Original</span></div>
-                    <div class="badge"><i class="fa-solid fa-truck"></i><span>Premium<br>Shipping</span></div>
-                    <div class="badge"><i class="fa-solid fa-money-bill-transfer"></i><span>Cash On<br>Delivery</span></div>
-                </div>
-            </div>
-            
-            <div class="feature-block" style="padding-bottom: 20px;">
-                <div class="block-title" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                    <span><i class="fa-solid fa-star" style="color: var(--secondary-color);"></i> Ratings & Reviews</span>
-                    <button onclick="handleWriteReviewClick()" style="background: var(--text-dark); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.2s;">Write Review</button>
-                </div>
-                <div id="ratingSummaryBox"></div>
-                <div id="reviewsList" class="reviews-scroll">
-                    <div style="width: 100%; text-align: center; padding: 20px; background: var(--bg-light); border-radius: 12px; border: 1px dashed #d1d5db; flex-shrink: 0;">
-                        <i class="fa-solid fa-spinner fa-spin" style="font-size: 20px; color: #ccc; margin-bottom: 8px;"></i>
-                        <h4 style="font-size: 12px; color: var(--text-dark); font-weight: 600;">Loading reviews...</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="bottom-action-bar">
-            <button class="btn btn-outline" onclick="addToCart(event)"><i class="fa-solid fa-cart-plus"></i> ADD TO CART</button>
-            <button class="btn btn-solid" onclick="buyNow(event)"><i class="fa-solid fa-bolt"></i> BUY NOW</button>
-        </div>
+<div class="app">
+  <header class="hdr">
+    <div><button class="ib" onclick="history.length>1?history.back():location.href='./'" aria-label="Back"><i class="fa-solid fa-chevron-left"></i></button></div>
+    <a href="./" aria-label="Aavira home"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira"></a>
+    <div class="hdr-r">
+      <button class="ib" id="wishBtn" onclick="toggleWish()" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></button>
+      <button class="ib" onclick="location.href='cart'" aria-label="Cart"><i class="fa-solid fa-bag-shopping"></i><span class="badge" id="cartBadge" hidden>0</span></button>
     </div>
+  </header>
 
-    <!-- MODALS -->
-    <div class="modal-overlay" id="errorPopup">
-        <div class="modal-box">
-            <i class="fa-solid fa-box-open" style="font-size: 40px; color: var(--danger); margin-bottom: 12px;"></i>
-            <h3 style="font-size: 18px; font-weight:700; margin-bottom: 6px;">Product Not Found</h3>
-            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">This product is currently unavailable.</p>
-            <button class="modal-btn" onclick="window.location.href='./'">Back to Home</button>
-        </div>
+  <div class="media">
+    <div class="carousel skel" id="carousel"></div>
+    <div class="dots" id="dots"></div>
+  </div>
+
+  <section class="info">
+    <div id="colorWrap" hidden>
+      <div class="lbl">Colours <span id="colorInfo"></span></div>
+      <div class="colors" id="colors"></div>
     </div>
+    <h1 class="title skel" id="title">Loading product name</h1>
+    <div class="prow"><span class="price skel" id="price">₹0000</span><span class="mrp" id="mrp" hidden></span><span class="off" id="off" hidden></span></div>
+    <div id="rateChip" hidden></div>
+    <div class="lbl">Select size</div>
+    <div class="sizes" id="sizes"></div>
+    <div class="stock" id="stock" hidden></div>
+  </section>
 
-    <div id="customSizeSheet" class="modal-overlay">
-        <div class="bottom-sheet-modal">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 style="margin:0; font-size: 18px; font-weight:700; color:var(--text-dark);">Custom Size</h3>
-                <i class="fa-solid fa-xmark modal-close" onclick="closeModal('customSizeSheet')"></i>
-            </div>
-            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                <input type="number" id="csBust" placeholder="Bust (in)" class="modal-input" style="margin-bottom:0;">
-                <input type="number" id="csWaist" placeholder="Waist (in)" class="modal-input" style="margin-bottom:0;">
-            </div>
-            <input type="text" id="csExtra" placeholder="Any specific instructions?" class="modal-input">
-            <button onclick="saveCustomSize()" class="modal-btn" style="background: var(--primary-color);">Save Details</button>
-        </div>
+  <section class="blk">
+    <div class="wa"><span>Need help with size or fabric?<br><b>Chat with our stylist</b></span><a href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a></div>
+  </section>
+
+  <section class="blk">
+    <h2>Product details</h2>
+    <div class="acc">
+      <div class="acc-i on"><button class="acc-h" onclick="acc(this)">Description <i class="fa-solid fa-chevron-down"></i></button><div class="acc-b"><p id="desc"></p><p id="sku" style="margin-top:10px;font-weight:600;color:var(--ink)"></p></div></div>
+      <div class="acc-i" id="specItem" hidden><button class="acc-h" onclick="acc(this)">Style &amp; specifications <i class="fa-solid fa-chevron-down"></i></button><div class="acc-b"><ul id="specs"></ul></div></div>
+      <div class="acc-i"><button class="acc-h" onclick="acc(this)">Shipping &amp; returns <i class="fa-solid fa-chevron-down"></i></button><div class="acc-b"><ul><li>Free delivery on prepaid orders across India.</li><li>Return window of 4 hours from delivery for defects or exchange.</li></ul></div></div>
     </div>
-
-    <div id="reviewModal" class="modal-overlay">
-        <div class="bottom-sheet-modal">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <h3 style="margin:0; font-size: 18px; font-weight:700;">Rate & Review</h3>
-                <i class="fa-solid fa-xmark modal-close" onclick="closeModal('reviewModal')" style="top: 15px; right: 15px; position:absolute;"></i>
-            </div>
-            <div id="starSelector" class="star-select" style="display: flex; justify-content: center; gap: 12px; margin-bottom: 20px;">
-                <i class="fa-solid fa-star" data-val="1" onclick="setRating(1)"></i>
-                <i class="fa-solid fa-star" data-val="2" onclick="setRating(2)"></i>
-                <i class="fa-solid fa-star" data-val="3" onclick="setRating(3)"></i>
-                <i class="fa-solid fa-star" data-val="4" onclick="setRating(4)"></i>
-                <i class="fa-solid fa-star" data-val="5" onclick="setRating(5)"></i>
-            </div>
-            <input type="text" id="reviewTitleInput" class="modal-input" placeholder="Review Title (e.g. Amazing Quality!)">
-            <textarea id="reviewText" rows="3" class="modal-input" placeholder="Share your experience..."></textarea>
-            <button id="submitReviewBtn" class="modal-btn" onclick="submitReview()" style="background: var(--primary-color);">Post Review</button>
-        </div>
+    <div class="trust">
+      <div><i class="fa-solid fa-shield-halved"></i>100%<br>Original</div>
+      <div><i class="fa-solid fa-truck"></i>Premium<br>Shipping</div>
+      <div><i class="fa-solid fa-money-bill-transfer"></i>Cash on<br>Delivery</div>
     </div>
+  </section>
 
-    <!-- Centralized data/API provider -->
-    <script src="user_data.js"></script>
-    <!-- Product page logic -->
+  <section class="blk">
+    <h2>Ratings &amp; reviews</h2>
+    <div id="summary"></div>
+    <div class="rv-list" id="reviews"><div class="empty">Loading reviews…</div></div>
+    <button class="btn-write" onclick="writeReview()"><i class="fa-solid fa-plus"></i>Write a review</button>
+  </section>
+
+  <section class="blk" id="sugSec" hidden>
+    <h2>You may also like</h2>
+    <div class="grid2" id="sugGrid"></div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-brand">Aavira <span>Fashion</span></div>
+    <p class="footer-tag">Luxury ethnic fashion, designed for modern elegance.</p>
+    <div class="footer-news">
+      <label for="newsletterEmail">Get new collections and offers by email</label>
+      <div class="footer-news-row">
+        <input type="email" id="newsletterEmail" placeholder="Your email address" autocomplete="email">
+        <button type="button" id="btnNewsletter" onclick="subscribeNewsletter()">Join</button>
+      </div>
+    </div>
+    <div class="footer-grid">
+      <div><h3>Explore</h3><a href="/">Home</a><a href="/categories">Collections</a><a href="/offer">Offers</a><a href="/wishlist">Wishlist</a></div>
+      <div><h3>Shopping</h3><a href="/cart">Shopping bag</a><a href="/orders">My orders</a><a href="/profile">My account</a><a href="/support">Support</a></div>
+      <div><h3>Information</h3><a href="/terms">Terms &amp; conditions</a><a href="/privacy">Privacy policy</a><a href="/support">Help center</a></div>
+      <div><h3>Contact</h3><a href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a></div>
+    </div>
+    <div class="footer-copy">© 2026 Aavira Fashion. All rights reserved.</div>
+  </footer>
+</div>
+
+<div class="bar-bottom">
+  <button class="btn btn-o" id="btnCart" onclick="addToCart()"><i class="fa-solid fa-cart-plus"></i>Add to cart</button>
+  <button class="btn btn-p" id="btnBuy" onclick="buyNow()"><i class="fa-solid fa-bolt"></i>Buy now</button>
+</div>
+
+<!-- Login required -->
+<div class="ov" id="loginModal" onclick="if(event.target===this)closeM('loginModal')">
+  <div class="sheet">
+    <button class="x" onclick="closeM('loginModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    <h3>Sign in to continue</h3>
+    <p>Please log in or create an account to write a review.</p>
+    <button class="mbtn" onclick="location.href='/auth/verify'">Log in / Sign up</button>
+  </div>
+</div>
+
+<!-- Buy now: login prompt with skip -->
+<div class="ov" id="buyModal" onclick="if(event.target===this)closeM('buyModal')">
+  <div class="sheet">
+    <button class="x" onclick="closeM('buyModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    <h3>Log in to place your order</h3>
+    <p>Signing in takes less than a minute and gives you full control of your order.</p>
+    <ul class="perks">
+      <li><i class="fa-solid fa-location-dot"></i><span><b>Track your order.</b> Without logging in, you will not be able to track your order status or view your order history.</span></li>
+      <li><i class="fa-solid fa-bolt"></i><span><b>Faster checkout</b> with your details saved for next time.</span></li>
+      <li><i class="fa-solid fa-gift"></i><span><b>Offers &amp; rewards</b> including promo codes and referral benefits.</span></li>
+    </ul>
+    <a class="termlink" href="/terms"><span><i class="fa-solid fa-file-lines"></i> Terms &amp; policy conditions</span><i class="fa-solid fa-chevron-right"></i></a>
+    <p class="agree">By continuing you agree to our <a href="/terms">Terms &amp; Conditions</a> and <a href="/terms">Privacy Policy</a>.</p>
+    <button class="mbtn" onclick="location.href='/auth/verify'">Log in / Sign up</button>
+    <button class="skip" onclick="skipLogin()">Skip &amp; continue to checkout <i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<!-- Custom size -->
+<div class="ov" id="sizeModal" onclick="if(event.target===this)closeM('sizeModal')">
+  <div class="sheet">
+    <button class="x" onclick="closeM('sizeModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    <h3>Custom size</h3><p>Enter your measurements in inches.</p>
+    <div class="row2"><input class="fld" id="csBust" type="number" min="1" inputmode="decimal" placeholder="Bust (in)"><input class="fld" id="csWaist" type="number" min="1" inputmode="decimal" placeholder="Waist (in)"></div>
+    <input class="fld" id="csNote" type="text" placeholder="Any specific instructions? (optional)">
+    <button class="mbtn" onclick="saveCustom()">Save</button>
+  </div>
+</div>
+
+<!-- Review -->
+<div class="ov" id="reviewModal" onclick="if(event.target===this)closeM('reviewModal')">
+  <div class="sheet">
+    <button class="x" onclick="closeM('reviewModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    <h3>Rate &amp; review</h3><p>Tap a star to rate.</p>
+    <div class="pick" id="pick"></div>
+    <input class="fld" id="rvTitle" type="text" maxlength="80" placeholder="Title (optional)">
+    <textarea class="fld" id="rvText" rows="3" maxlength="600" placeholder="Share your experience" style="resize:none"></textarea>
+    <button class="mbtn" id="rvSubmit" onclick="submitReview()">Post review</button>
+  </div>
+</div>
+
+<!-- Not found -->
+<div class="ov center" id="errModal">
+  <div class="sheet"><h3>Product not found</h3><p>This product is currently unavailable.</p><button class="mbtn" onclick="location.href='./'">Back to home</button></div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script src="user_data.js"></script>
 <script>
-// ==========================================
-// GLOBALS & UTILITIES
-// ==========================================
-window.currentProductIdForReviews = null; 
-window.customMeasurementsText = null; 
-window.currentProduct = null;
-window.selectedProductImage = null; 
-window.selectedColorName = "Standard";
-window.isCartProcessing = false; 
-window.defaultCarouselHtml = ''; 
-window.defaultDotsHtml = '';
+const $=s=>document.querySelector(s);
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const safeUrl=v=>{const r=String(v??'').trim();if(!r)return'';try{const u=new URL(r,location.origin);return['http:','https:'].includes(u.protocol)?u.href:''}catch{return''}};
+const jget=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))||f}catch{return f}};
+const jset=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
+const fmt=n=>'₹'+Number(n).toLocaleString('en-IN');
+const IMG_FALLBACK='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#F7F1E8"/><text x="200" y="210" font-family="Georgia,serif" font-size="30" fill="#B9AFA6" text-anchor="middle">Aavira</text></svg>');
 
-let tempSignupData = { name: "", email: "", pwd: "" }; 
-let selectedRating = 0; 
+const S={p:null,id:'',size:null,custom:null,image:'',color:'',colors:[],mainHtml:'',mainDots:'',busy:false,rating:5};
 
-const scrollArea = document.getElementById('mainScrollArea'); 
-const header = document.getElementById('mainHeader');
-
-// Sticky Header Box-Shadow on Scroll
-if (scrollArea && header) {
-    scrollArea.addEventListener('scroll', () => { 
-        if(scrollArea.scrollTop > 10) header.style.boxShadow = 'var(--shadow-sm)'; 
-        else header.style.boxShadow = 'none'; 
-    });
+/* ---------- helpers ---------- */
+let tt;
+function toast(m,err){
+  const t=$('#toast');
+  t.innerHTML=`<i class="fa-solid ${err?'fa-circle-exclamation':'fa-circle-check'}"></i><span>${esc(m)}</span>`;
+  t.className='toast on'+(err?' err':'');
+  clearTimeout(tt);tt=setTimeout(()=>t.className='toast',2400);
+}
+const openM=id=>$('#'+id).classList.add('on');
+const closeM=id=>$('#'+id).classList.remove('on');
+function isLoggedIn(){
+  try{const e=localStorage.getItem('aavira_user_email'),n=localStorage.getItem('aavira_display_name');
+  return !!(e&&n&&n.trim()&&n.trim().toLowerCase()!=='guest user')}catch{return false}
+}
+function requireLogin(){if(isLoggedIn())return true;openM('loginModal');return false}
+function acc(btn){const it=btn.parentElement,was=it.classList.contains('on');document.querySelectorAll('.acc-i').forEach(e=>e.classList.remove('on'));if(!was)it.classList.add('on')}
+function cartBadge(){
+  const n=jget('aavira_cart',[]).reduce((s,i)=>s+(Number(i.qty)||1),0),b=$('#cartBadge');
+  b.textContent=n>99?'99+':n;b.hidden=n<=0;
+}
+function starsHtml(r){
+  let h='';for(let i=1;i<=5;i++)h+=`<i class="fa-${r>=i?'solid fa-star':(r>=i-.5?'solid fa-star-half-stroke':'regular fa-star')}"></i>`;return h;
 }
 
-document.addEventListener('DOMContentLoaded', () => { 
-    updateCartBadge(); 
-    loadProductData(); 
+/* ---------- wishlist (same key as home) ---------- */
+function wished(){return jget('aavira_wishlist',[]).map(String).includes(String(S.id))}
+function paintWish(){const b=$('#wishBtn'),on=wished();b.classList.toggle('on',on);b.querySelector('i').className=(on?'fa-solid':'fa-regular')+' fa-heart'}
+function toggleWish(){
+  let w=jget('aavira_wishlist',[]).map(String);const id=String(S.id);
+  w=w.includes(id)?w.filter(x=>x!==id):[...w,id];jset('aavira_wishlist',w);paintWish();
+  toast(w.includes(id)?'Added to wishlist':'Removed from wishlist');
+}
+
+/* ---------- sizes ---------- */
+function renderSizes(){
+  const list=Array.isArray(S.p.sizes)&&S.p.sizes.length?S.p.sizes:['32','34','36','38','40','42'];
+  $('#sizes').innerHTML=list.map(s=>`<button type="button" class="sz" data-size="${esc(s)}">${esc(s)}</button>`).join('')+'<button type="button" class="sz custom" data-custom="1">Custom</button>';
+}
+document.addEventListener('click',e=>{
+  const z=e.target.closest('.sz');
+  if(z){
+    if(z.dataset.custom){openM('sizeModal');return}
+    S.custom=null;S.size=z.dataset.size;
+    document.querySelectorAll('.sz').forEach(b=>b.classList.toggle('on',b===z));
+    $('#sizes').classList.remove('err');return;
+  }
+  const sw=e.target.closest('.sw');if(sw)pickColor(Number(sw.dataset.i));
+  const st=e.target.closest('#pick i');if(st)setStar(Number(st.dataset.v));
+});
+function saveCustom(){
+  const b=$('#csBust').value,w=$('#csWaist').value,n=$('#csNote').value.trim();
+  if(!(Number(b)>0)||!(Number(w)>0)){toast('Enter bust and waist','err');return}
+  S.custom=`Custom (B: ${b}", W: ${w}"${n?', '+n:''})`;S.size=S.custom;
+  document.querySelectorAll('.sz').forEach(x=>x.classList.toggle('on',!!x.dataset.custom));
+  $('#sizes').classList.remove('err');closeM('sizeModal');
+}
+function sizeOrError(){
+  if(S.size)return S.size;
+  const c=$('#sizes');c.classList.remove('err');void c.offsetWidth;c.classList.add('err');
+  if(navigator.vibrate)navigator.vibrate(150);
+  toast('Please select a size to continue','err');return null;
+}
+
+/* ---------- gallery & colours ---------- */
+function slidesHtml(p,main){
+  const imgs=[main,p.imageBack,p.imageSide].filter(Boolean).map(u=>`<div class="slide"><img src="${esc(safeUrl(u)||IMG_FALLBACK)}" alt="" onerror="this.onerror=null;this.src='${IMG_FALLBACK}'"></div>`);
+  if(p.videoUrl&&safeUrl(p.videoUrl))imgs.push(`<div class="slide"><video src="${esc(safeUrl(p.videoUrl))}" playsinline loop autoplay muted controlsList="nodownload"></video></div>`);
+  return imgs;
+}
+function showGallery(slides){
+  const c=$('#carousel');c.classList.remove('skel');c.innerHTML=slides.join('');c.scrollLeft=0;
+  $('#dots').innerHTML=slides.length>1?slides.map((_,i)=>`<button class="dot ${i?'':'on'}" data-i="${i}" aria-label="Photo ${i+1}"></button>`).join(''):'';
+}
+$('#dots').addEventListener('click',e=>{const d=e.target.closest('.dot');if(d){const c=$('#carousel');c.scrollTo({left:c.clientWidth*Number(d.dataset.i),behavior:'smooth'})}});
+$('#carousel').addEventListener('scroll',()=>{
+  const c=$('#carousel'),ix=Math.round(c.scrollLeft/(c.clientWidth||1));
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===ix));
+},{passive:true});
+
+function pickColor(i){
+  const o=S.colors[i];if(!o)return;
+  document.querySelectorAll('.sw').forEach((s,k)=>s.classList.toggle('on',k===i));
+  S.image=o.image;S.color=o.name;$('#colorInfo').textContent='· '+o.name;
+  if(o.main)showGallery(S.mainSlides);
+  else showGallery([`<div class="slide"><img src="${esc(safeUrl(o.image)||IMG_FALLBACK)}" alt="${esc(o.name)}"></div>`]);
+}
+
+/* ---------- ratings: same source & logic as home screen ---------- */
+function productRating(p){
+  const r=Number(p.rating??p.averageRating??p.avgRating??p.ratingAvg??p.average_rating??p.avg_rating??p.stars);
+  const c=Number(p.reviewCount??p.reviews??p.numReviews);
+  return{rating:r>0?r:0,count:c>0?c:0};
+}
+function pidOf(e){return e.productId??e.product_id??e.pid}
+async function loadReviews(){
+  let db=[],exp=[];
+  try{if(typeof getReviewsFromDatabase==='function')db=await getReviewsFromDatabase(S.id)||[]}catch{}
+  try{if(typeof getVercelExperiences==='function')exp=await getVercelExperiences()||[]}catch{}
+  if(!exp.length)exp=jget('aavira_experiences',[]);
+  exp=exp.filter(e=>pidOf(e)!=null&&String(pidOf(e))===String(S.id));
+  const seen=new Set(),all=[];
+  [...db,...exp].forEach(r=>{
+    const k=(r.email||r.name||'')+'|'+(r.date||'')+'|'+(r.text||r.body||'');
+    if(!seen.has(k)){seen.add(k);all.push(r)}
+  });
+  renderRatings(exp,all);
+}
+function renderRatings(exp,all){
+  /* Rating value: product fields, overridden by this product's experiences (identical to home) */
+  let {rating,count}=productRating(S.p);
+  const rated=exp.filter(e=>Number(e.rating)>0);
+  if(rated.length){rating=Math.round(rated.reduce((s,e)=>s+Number(e.rating),0)/rated.length*10)/10;count=rated.length}
+  if(!count&&all.length)count=all.length;
+
+  const chip=$('#rateChip');
+  if(rating>0){chip.hidden=false;chip.className='rate-chip'+(rating>=4?'':rating>=3?' mid':' bad');chip.innerHTML=`<i class="fa-solid fa-star"></i>${rating.toFixed(1)}`}
+  else chip.hidden=true;
+
+  const sum=$('#summary');
+  if(rating>0){
+    const dist=[5,4,3,2,1].map(s=>({s,n:all.filter(r=>Math.round(Number(r.rating||r.score))===s).length}));
+    const tot=dist.reduce((a,d)=>a+d.n,0);
+    sum.innerHTML=`<div class="sum${tot?'':' solo'}"><div class="sum-l"><div class="sum-big">${rating.toFixed(1)}</div><div class="stars">${starsHtml(rating)}</div></div>`+
+      (tot?`<div class="sum-r">${dist.map(d=>{const pc=Math.round(d.n/tot*100);return`<div class="bar"><b>${d.s}★</b><div class="track"><div class="fill" style="width:${pc}%"></div></div><em>${pc}%</em></div>`}).join('')}</div>`:'')+`</div>`;
+  }else sum.innerHTML='';
+
+  const box=$('#reviews');
+  if(!all.length){box.innerHTML='<div class="empty"><b>No reviews yet</b>Be the first to share your experience.</div>';return}
+  box.innerHTML=all.map(r=>{
+    const name=String(r.name||'Customer'),rt=Math.max(1,Math.min(5,Number(r.rating||r.score)||5));
+    const d=r.date&&!isNaN(new Date(r.date))?new Date(r.date).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}):'';
+    const body=r.text||r.body||'';
+    return`<article class="rv"><div class="rv-h"><div class="rv-av">${esc(name.charAt(0).toUpperCase())}</div><div><div class="rv-n">${esc(name)}</div>${d?`<div class="rv-d">${d}</div>`:''}</div></div>
+      <div class="stars">${starsHtml(rt)}</div>${r.title?`<div class="rv-t">${esc(r.title)}</div>`:''}${body?`<p class="rv-b">${esc(body)}</p>`:''}</article>`;
+  }).join('');
+}
+
+/* ---------- review form (login required) ---------- */
+function writeReview(){if(!requireLogin())return;$('#rvTitle').value='';$('#rvText').value='';setStar(5);openM('reviewModal')}
+function setStar(v){S.rating=v;document.querySelectorAll('#pick i').forEach((s,i)=>s.classList.toggle('on',i<v))}
+$('#pick').innerHTML=[1,2,3,4,5].map(v=>`<i class="fa-solid fa-star" data-v="${v}"></i>`).join('');
+async function submitReview(){
+  if(!requireLogin())return;
+  const text=$('#rvText').value.trim(),title=$('#rvTitle').value.trim();
+  if(!text&&!title){toast('Please write a few words','err');return}
+  const b=$('#rvSubmit');b.disabled=true;b.textContent='Posting…';
+  const review={name:localStorage.getItem('aavira_display_name')||'Customer',email:localStorage.getItem('aavira_user_email'),title,text,rating:S.rating,date:new Date().toISOString()};
+  let ok=false;
+  try{ok=typeof saveReviewToDatabase==='function'?!!(await saveReviewToDatabase(S.id,review)):false}catch{}
+  b.disabled=false;b.textContent='Post review';
+  if(!ok){toast('Could not post your review. Please try again.','err');return}
+  closeM('reviewModal');toast('Review submitted');loadReviews();
+}
+
+/* ---------- cart & buy (login required) ---------- */
+function addToCart(){
+  if(!S.p||S.busy)return;
+  const size=sizeOrError();if(!size)return;
+  const img=S.image,color=S.color||'Standard';
+  S.busy=true;setTimeout(()=>S.busy=false,600);
+  const cart=jget('aavira_cart',[]);
+  const i=cart.findIndex(x=>String(x.productId)===String(S.id)&&x.size===size&&x.image===img);
+  if(i>-1)cart[i].qty=(Number(cart[i].qty)||1)+1;
+  else cart.push({productId:S.id,name:S.p.name,price:Number(S.p.price)||0,size,color,image:img,qty:1});
+  jset('aavira_cart',cart);cartBadge();toast('Added to cart');
+}
+function buyUrl(size){
+  return `/checkout?buy_now=${encodeURIComponent(S.id)}&name=${encodeURIComponent(S.p.name||'')}&price=${encodeURIComponent(S.p.price||0)}&size=${encodeURIComponent(size)}&color=${encodeURIComponent(S.color||'Standard')}&image=${encodeURIComponent(S.image)}`;
+}
+function buyNow(){
+  if(!S.p||S.busy)return;
+  const size=sizeOrError();if(!size)return;
+  S.buyLink=buyUrl(size);
+  if(isLoggedIn()){location.href=S.buyLink;return}
+  openM('buyModal');            /* guest: explain login, allow skip */
+}
+function skipLogin(){if(S.buyLink)location.href=S.buyLink}
+
+/* ---------- load product ---------- */
+async function findProduct(id){
+  for(const fn of ['getVercelData','getMainProductsData']){
+    if(typeof window[fn]!=='function')continue;
+    try{
+      const list=await window[fn]();
+      const p=(list||[]).find(x=>String(x.id)===id||String(x._id)===id);
+      if(p)return p;
+    }catch{}
+  }
+  return null;
+}
+async function init(){
+  cartBadge();
+  const raw=new URLSearchParams(location.search).get('id');
+  S.id=raw?decodeURIComponent(raw).trim():'';
+  const p=S.id?await findProduct(S.id):null;
+  if(!p){openM('errModal');return}
+  S.p=p;
+
+  const name=String(p.name||p.title||'').replace(/_/g,' - ').replace(/\s+/g,' ').trim();
+  document.title=name?name+' - Aavira Fashion':'Aavira Fashion';
+  const t=$('#title');t.textContent=name;t.classList.remove('skel');
+
+  const price=Number(p.price)||0,mrp=Number(p.mrp)||Number(p.originalPrice)||0;
+  const pe=$('#price');pe.textContent=fmt(price);pe.classList.remove('skel');
+  if(mrp>price){$('#mrp').hidden=false;$('#mrp').textContent=fmt(mrp);$('#off').hidden=false;$('#off').textContent=Math.round((mrp-price)/mrp*100)+'% OFF'}
+
+  /* stock (real value only) */
+  const stock=Number(p.stock),st=$('#stock');
+  if(Number.isFinite(stock)&&stock<=0&&p.stock!==''&&p.stock!=null){st.hidden=false;st.className='stock out';st.textContent='Out of stock';$('#btnCart').disabled=true;$('#btnBuy').disabled=true}
+  else if(Number.isFinite(stock)&&stock>0&&stock<=4){st.hidden=false;st.textContent=`Only ${stock} left`}
+
+  /* description & specs (only fields that exist) */
+  $('#desc').innerHTML=p.description?esc(p.description).replace(/\*(.*?)\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>'):'';
+  $('#sku').textContent='SKU: AV-'+String(S.id).substring(0,5).toUpperCase();
+  const specs=[['Fabric',p.fabric],['Work / Embroidery',p.work],['Pattern',p.pattern],['Style',p.style]].filter(s=>s[1]);
+  if(specs.length){$('#specItem').hidden=false;$('#specs').innerHTML=specs.map(s=>`<li><b>${s[0]}:</b> ${esc(s[1])}</li>`).join('')+'<li><b>Wash care:</b> Dry clean recommended.</li>'}
+
+  /* gallery */
+  const main=p.imageMain||p.image||p.imageUrl||p.img||'';
+  S.image=main;S.color='';
+  S.mainSlides=slidesHtml(p,main);
+  showGallery(S.mainSlides.length?S.mainSlides:[`<div class="slide"><img src="${IMG_FALLBACK}" alt=""></div>`]);
+
+  /* colours */
+  const names=Array.isArray(p.colors)&&p.colors.length?p.colors:(p.colorsInfo?String(p.colorsInfo).split(','):[]);
+  S.colors=[{name:(names[0]||'Main').toString().trim(),image:main,main:true}];
+  (Array.isArray(p.colorImages)?p.colorImages:[]).forEach((u,i)=>{if(u&&u!==main)S.colors.push({name:(names[i+1]||`Colour ${i+2}`).toString().trim(),image:u,main:false})});
+  if(S.colors.length>1){
+    $('#colorWrap').hidden=false;
+    $('#colors').innerHTML=S.colors.map((c,i)=>`<button type="button" class="sw ${i?'':'on'}" data-i="${i}" title="${esc(c.name)}" aria-label="${esc(c.name)}"><img src="${esc(safeUrl(c.image)||IMG_FALLBACK)}" alt="" onerror="this.onerror=null;this.src='${IMG_FALLBACK}'"><i class="fa-solid fa-check"></i></button>`).join('');
+    S.color=S.colors[0].name;$('#colorInfo').textContent='· '+S.color;
+  }
+
+  renderSizes();paintWish();
+  /* show the home-screen rating immediately, then refine with live reviews */
+  renderRatings([],[]);
+  loadReviews();loadSuggestions();
+}
+
+/* ---------- suggestions (same card as home) ---------- */
+const COLOR_HEX={red:'#C8102E',maroon:'#6D1230',wine:'#5E1A2B','rani pink':'#D81B60',pink:'#F4A6C0',magenta:'#C2185B',coral:'#F08A6E',peach:'#F6C1A5',orange:'#E2711D',rust:'#B7410E',mustard:'#D4A017',yellow:'#E8B923',gold:'#C9A227',beige:'#D9C3A0',ivory:'#F5EFE0',white:'#FFFFFF',green:'#2E7D5B',emerald:'#0F7B5A',olive:'#6B7A2A',lime:'#A4C639',mint:'#A8D5BA',teal:'#0F766E',turquoise:'#2BB5B8','sky blue':'#7FB7E0',blue:'#1F4E9C','navy blue':'#1B2A5C',lavender:'#C7B8E6',violet:'#9B6BC9',purple:'#6B3FA0',brown:'#7B4B2A',gray:'#8A8A8A',black:'#1A1A1A'};
+const colorHex=n=>{const k=String(n).trim().toLowerCase();if(COLOR_HEX[k])return COLOR_HEX[k];return(window.CSS&&CSS.supports('color',k))?k:'#D1D5DB'};
+function sugCard(p){
+  const pr=Number(p.price)||0,m=Number(p.mrp)||pr,off=m>pr?Math.round((m-pr)/m*100):0;
+  const id=esc(p.id),name=esc(p.name),href='product.html?id='+encodeURIComponent(p.id),r=Math.max(0,Math.min(5,Number(p.rating)||0));
+  const cols=Array.isArray(p.colors)?p.colors:[];
+  const dots=cols.length?`<span class="cdots">${cols.slice(0,3).map(c=>`<i style="background:${colorHex(c)}"></i>`).join('')}${cols.length>3?`<b>+${cols.length-3}</b>`:''}</span>`:'';
+  const stock=Number(p.stock),low=(Number.isFinite(stock)&&stock>0&&stock<=4)?`<span class="low">Only ${stock} left</span>`:'';
+  const on=jget('aavira_wishlist',[]).map(String).includes(String(p.id));
+  return `<article class="pcard">
+    <a class="pc-media" href="${href}"><img src="${esc(safeUrl(p.img)||IMG_FALLBACK)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${IMG_FALLBACK}'">
+      ${(off||p.bestseller)?`<span class="tags">${off?`<span class="tag-off">${off}% off</span>`:''}${p.bestseller?'<span class="tag-best">Bestseller</span>':''}</span>`:''}</a>
+    <div class="pc-foot">
+      <a href="${href}"><span class="pc-name">${name}</span><span class="pc-price"><b>${fmt(pr)}</b>${m>pr?`<s>${fmt(m)}</s>`:''}</span></a>
+      <div class="pc-row"><a class="pc-meta" href="${href}"><span class="rating ${r>=4?'':r>=3?'mid':r>0?'bad':'none'}"><i class="fa-solid fa-star"></i>${r>0?r.toFixed(1):'0.0'}</span>${dots}</a>
+        <a class="go" href="${href}&buy=1" aria-label="Buy ${name}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></div>
+      ${low}
+    </div>
+    <button type="button" class="heart ${on?'on':''}" data-heart="${id}" aria-label="Save ${name} to wishlist"><i class="fa-${on?'solid':'regular'} fa-heart"></i></button>
+  </article>`;
+}
+async function loadSuggestions(){
+  let list=[],exp=[];
+  try{if(typeof getVercelData==='function')list=await getVercelData()||[]}catch{}
+  try{if(typeof getVercelExperiences==='function')exp=await getVercelExperiences()||[]}catch{}
+  const agg={};
+  exp.forEach(e=>{const pid=pidOf(e),r=Number(e.rating);if(pid==null||!(r>0))return;const a=agg[String(pid)]=agg[String(pid)]||{s:0,n:0};a.s+=r;a.n++});
+  const items=list.filter(x=>String(x.id)!==String(S.id)).slice(0,6).map(x=>{
+    const base=Number(x.rating??x.averageRating??x.avgRating??x.ratingAvg??x.average_rating??x.avg_rating??x.stars)||0,a=agg[String(x.id)];
+    return{id:x.id,name:x.name,price:x.price,mrp:x.mrp,colors:x.colors,img:x.imageMain||x.image||x.imageUrl||'',stock:x.stock,bestseller:!!x.bestseller,rating:(a&&a.n)?Math.round(a.s/a.n*10)/10:base};
+  });
+  if(!items.length)return;
+  $('#sugGrid').innerHTML=items.map(sugCard).join('');$('#sugSec').hidden=false;
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-heart]');if(!b)return;
+  const id=String(b.dataset.heart);let w=jget('aavira_wishlist',[]).map(String);
+  const on=!w.includes(id);w=on?[...w,id]:w.filter(x=>x!==id);jset('aavira_wishlist',w);
+  b.classList.toggle('on',on);b.querySelector('i').className='fa-'+(on?'solid':'regular')+' fa-heart';
+  toast(on?'Added to wishlist':'Removed from wishlist');
 });
 
-// Update Top Cart Badge
-function updateCartBadge() {
-    let cart = JSON.parse(localStorage.getItem('aavira_cart')) || []; 
-    let total = cart.reduce((sum, item) => sum + item.qty, 0);
-    const badge = document.getElementById('topCartBadge'); 
-    if(badge) { 
-        badge.innerText = total; 
-        badge.style.display = total > 0 ? 'flex' : 'none'; 
-    }
+/* ---------- newsletter ---------- */
+async function subscribeNewsletter(){
+  const i=$('#newsletterEmail'),e=i.value.trim().toLowerCase();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){toast('Enter a valid email address','err');return}
+  const b=$('#btnNewsletter');b.disabled=true;b.innerHTML='<span class="spinner"></span>';
+  let r={ok:false,message:'Could not subscribe. Please try again.'};
+  try{if(typeof subscribeNewsletterApi==='function')r=await subscribeNewsletterApi(e)}catch{}
+  if(r&&r.ok){toast('Thanks for joining');i.value=''}else toast((r&&r.message)||'Could not subscribe. Please try again.','err');
+  b.disabled=false;b.textContent='Join';
 }
-
-// Accordion Toggle
-window.toggleAccordion = function(btn) {
-    const item = btn.parentElement; 
-    const wasActive = item.classList.contains('active');
-    document.querySelectorAll('.acc-item').forEach(el => el.classList.remove('active'));
-    if(!wasActive) item.classList.add('active');
-};
-
-// Modal Toggle Handlers
-window.openModal = function(id) { 
-    const el = document.getElementById(id);
-    if (el) el.classList.add('show'); 
-};
-window.closeModal = function(id) { 
-    const el = document.getElementById(id);
-    if (el) el.classList.remove('show'); 
-};
-
-// Heart Wishlist Toggle
-window.toggleHeart = function(btn) {
-    const icon = btn.querySelector('i');
-    if (icon.classList.contains('fa-regular')) { 
-        icon.classList.replace('fa-regular', 'fa-solid'); 
-        icon.style.color = 'var(--primary-color)'; 
-    } else { 
-        icon.classList.replace('fa-solid', 'fa-regular'); 
-        icon.style.color = 'var(--text-dark)'; 
-    }
-};
-
-// ==========================================
-// SIZE SELECTION LOGIC
-// ==========================================
-window.saveCustomSize = function() {
-    const bust = document.getElementById('csBust').value; 
-    const waist = document.getElementById('csWaist').value;
-    
-    if(!bust || !waist) { alert("Enter measurements."); return; }
-    
-    window.customMeasurementsText = `Custom (B: ${bust}", W: ${waist}")`;
-    
-    document.querySelectorAll('.size-box').forEach(b => b.classList.remove('active'));
-    const customBtn = document.querySelector('.custom-size-btn');
-    if (customBtn) customBtn.classList.add('active');
-    
-    const sizeContainer = document.getElementById('sizeOptionsContainer');
-    if (sizeContainer) sizeContainer.classList.remove('shake-error'); 
-    
-    closeModal('customSizeSheet');
-};
-
-window.selectSize = function(element) {
-    window.customMeasurementsText = null; 
-    document.querySelectorAll('.size-box').forEach(box => box.classList.remove('active'));
-    element.classList.add('active'); 
-    const sizeContainer = document.getElementById('sizeOptionsContainer');
-    if (sizeContainer) sizeContainer.classList.remove('shake-error');
-};
-
-function getSelectedSize() {
-    const activeSize = document.querySelector('.size-box.active');
-    if(!activeSize) return null; 
-    if(activeSize.classList.contains('custom-size-btn')) return window.customMeasurementsText || "Custom";
-    return activeSize.innerText;
-}
-
-function triggerSizeError() {
-    const container = document.getElementById('sizeOptionsContainer');
-    if(container) { 
-        container.classList.remove('shake-error'); 
-        void container.offsetWidth; 
-        container.classList.add('shake-error'); 
-    }
-    if (navigator.vibrate) navigator.vibrate(200); 
-    alert("Please select a size first!");
-}
-
-// ==========================================
-// 🔥 FIXED COLOR SWATCH & CAROUSEL LOGIC 🔥
-// ==========================================
-window.selectColorSwatch = function(element, imageUrl, colorName, isMainColor) {
-    document.querySelectorAll('.color-swatch').forEach(el => el.classList.remove('active')); 
-    element.classList.add('active');
-    
-    // Save selected image and color name globally
-    window.selectedProductImage = imageUrl; 
-    window.selectedColorName = colorName || "As Shown";
-
-    const countInfo = document.getElementById('colorCountInfo');
-    if (countInfo) {
-        countInfo.innerText = `- Selected: ${window.selectedColorName}`;
-    }
-
-    const loader = document.getElementById('mediaLoader'); 
-    const carousel = document.getElementById('mediaCarousel'); 
-    const dots = document.getElementById('carouselDots');
-    
-    if (loader) loader.classList.add('show');
-    
-    setTimeout(() => {
-        if (isMainColor) {
-            carousel.innerHTML = window.defaultCarouselHtml; 
-            dots.innerHTML = window.defaultDotsHtml; 
-            dots.style.display = 'flex'; 
-            window.scrollToSlide(0);
-        } else {
-            // Replace carousel view with the selected variation image
-            carousel.innerHTML = `<div class="slide" style="width:100%; height:100%; display:flex; justify-content:center; align-items:center;"><img src="${imageUrl}" style="width:100%; height:100%; object-fit:cover;"></div>`; 
-            dots.innerHTML = ''; 
-            dots.style.display = 'none'; 
-            carousel.scrollTo({ left: 0 });
-        }
-        if (loader) loader.classList.remove('show');
-    }, 200); 
-};
-
-window.scrollToSlide = function(index) {
-    const carousel = document.getElementById('mediaCarousel'); 
-    if(carousel) carousel.scrollTo({ left: carousel.offsetWidth * index, behavior: 'smooth' });
-};
-
-document.getElementById('mediaWrapper')?.addEventListener('scroll', function(e) {
-    if(e.target.id === 'mediaCarousel') {
-        const carousel = e.target; 
-        const scrollIndex = Math.round(carousel.scrollLeft / carousel.offsetWidth);
-        document.querySelectorAll('.dot').forEach((dot, i) => { 
-            if(i === scrollIndex) dot.classList.add('active'); 
-            else dot.classList.remove('active'); 
-        });
-    }
-}, true);
-
-// ==========================================
-// 🔥 FIXED CART & BUY NOW LOGIC 🔥
-// ==========================================
-window.addToCart = function(event, isBuyNow = false) {
-    if (event) event.preventDefault();
-    if (!window.currentProduct) return;
-    if (window.isCartProcessing) return; 
-
-    const size = getSelectedSize(); 
-    if (!size) { triggerSizeError(); return; }
-    
-    window.isCartProcessing = true; 
-    
-    // Ensure selected color and image are used
-    let finalImage = window.selectedProductImage || window.currentProduct.imageMain || window.currentProduct.imageUrl || window.currentProduct.image;
-    let finalColor = window.selectedColorName || "Standard";
-
-    if (isBuyNow) {
-        // 🔥 CRITICAL FIX: Send both color name AND image url in Query Params!
-        const buyNowUrl = `/checkout?buy_now=${encodeURIComponent(window.currentProduct.id)}` +
-                          `&name=${encodeURIComponent(window.currentProduct.name || 'Exclusive Wear')}` +
-                          `&price=${encodeURIComponent(window.currentProduct.price || 0)}` +
-                          `&size=${encodeURIComponent(size)}` +
-                          `&color=${encodeURIComponent(finalColor)}` +
-                          `&image=${encodeURIComponent(finalImage)}`;
-                          
-        window.location.href = buyNowUrl;
-        setTimeout(() => window.isCartProcessing = false, 1000); 
-        return;
-    }
-
-    let cart = JSON.parse(localStorage.getItem('aavira_cart')) || [];
-    const exIdx = cart.findIndex(item => String(item.productId) === String(window.currentProduct.id) && item.size === size && item.image === finalImage);
-    
-    if (exIdx > -1) { 
-        cart[exIdx].qty += 1; 
-    } else { 
-        cart.push({ 
-            productId: window.currentProduct.id, 
-            name: window.currentProduct.name, 
-            price: Number(window.currentProduct.price), 
-            size: size, 
-            color: finalColor, // Stored properly in Cart!
-            image: finalImage, 
-            qty: 1 
-        }); 
-    }
-    
-    localStorage.setItem('aavira_cart', JSON.stringify(cart));
-    updateCartBadge(); 
-    alert("Added to bag successfully!");
-    
-    setTimeout(() => window.isCartProcessing = false, 500); 
-};
-
-window.buyNow = function(event) { 
-    window.addToCart(event, true); 
-};
-
-// ==========================================
-// MAIN PRODUCT DATA LOADING ENGINE
-// ==========================================
-async function loadProductData() {
-    const urlParams = new URLSearchParams(window.location.search);
-    let productId = urlParams.get('id');
-    if (!productId) { productId = "demo_av101"; } else { productId = decodeURIComponent(productId).trim(); }
-    window.currentProductIdForReviews = productId; 
-
-    let p = null;
-
-    if (typeof window.getVercelData === 'function') {
-        try { 
-            let allProducts = await window.getVercelData(); 
-            if (allProducts && allProducts.length > 0) { 
-                p = allProducts.find(item => String(item.id) === String(productId) || String(item._id) === String(productId)); 
-            } 
-        } catch(e) {}
-    }
-    
-    if (!p && typeof window.getMainProductsData === 'function') {
-        try { 
-            let mainProducts = await window.getMainProductsData(); 
-            if (mainProducts && mainProducts.length > 0) { 
-                p = mainProducts.find(item => String(item.id) === String(productId) || String(item._id) === String(productId)); 
-            } 
-        } catch(e) {}
-    }
-
-    if (!p) {
-        try {
-            const mainRes = typeof window.getMainProductsData === 'function'
-                ? { ok: true, json: async () => ({ status: "success", data: await window.getMainProductsData() }) }
-                : null;
-            if (mainRes.ok) {
-                const mainJson = await mainRes.json();
-                if (mainJson.status === "success" && mainJson.data) {
-                    p = mainJson.data.find(item => String(item.id) === String(productId) || String(item._id) === String(productId));
-                }
-            }
-        } catch(e) {}
-    }
-
-    if (!p) { 
-        document.getElementById('errorPopup')?.classList.add('show'); 
-        return; 
-    }
-
-    window.currentProduct = p;
-
-    // Basic Details
-    let rawTitle = p.name || p.title || "Exclusive Collection";
-    let cleanTitle = rawTitle.replace(/_/g, ' - ').replace(/\s+/g, ' ').trim(); 
-    
-    const titleEl = document.getElementById('productTitle');
-    if (titleEl) {
-        titleEl.innerText = cleanTitle; 
-        titleEl.classList.remove('skeleton'); 
-    }
-    
-    let price = Number(p.price) || 0; 
-    let mrp = Number(p.mrp) || Number(p.originalPrice) || (price + 500);
-    
-    const curPriceEl = document.getElementById('currentPrice');
-    const oldPriceEl = document.getElementById('oldPrice');
-    const discTagEl = document.getElementById('discountTag');
-
-    if (curPriceEl) { curPriceEl.innerText = "₹" + price.toLocaleString('en-IN'); curPriceEl.classList.remove('skeleton'); }
-    if (oldPriceEl) { oldPriceEl.innerText = "₹" + mrp.toLocaleString('en-IN'); oldPriceEl.classList.remove('skeleton'); }
-    
-    if(mrp > price && discTagEl) { 
-        const discount = Math.round(((mrp - price) / mrp) * 100); 
-        discTagEl.innerText = discount + "% OFF"; 
-        discTagEl.style.display = "inline-block"; 
-    }
-
-    // Specifications
-    if(p.fabric && document.getElementById('specFabric')) document.getElementById('specFabric').innerText = p.fabric; 
-    if(p.pattern && document.getElementById('specPattern')) document.getElementById('specPattern').innerText = p.pattern; 
-    if(p.work && document.getElementById('specWork')) { 
-        document.getElementById('specWork').innerText = p.work; 
-        document.getElementById('workRow').style.display = 'list-item'; 
-    }
-    if(p.style && document.getElementById('specStyle')) { 
-        document.getElementById('specStyle').innerText = p.style; 
-        document.getElementById('styleRow').style.display = 'list-item'; 
-    }
-
-    if(p.description && document.getElementById('productDescription')) { 
-        document.getElementById('productDescription').innerHTML = p.description.replace(/\*(.*?)\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>'); 
-        document.getElementById('productDescription').classList.remove('skeleton'); 
-    }
-    
-    const skuEl = document.getElementById('productSku');
-    if (skuEl) {
-        skuEl.innerText = "AV-" + String(window.currentProductIdForReviews).substring(0, 5).toUpperCase(); 
-        skuEl.classList.remove('skeleton');
-    }
-
-    // Media Carousel Setup
-    const carousel = document.getElementById('mediaCarousel'); 
-    const dotsContainer = document.getElementById('carouselDots'); 
-    document.getElementById('mediaWrapper')?.classList.remove('skeleton');
-    
-    let tempCarouselHtml = ''; 
-    let tempDotsHtml = ''; 
-    let slideCount = 0;
-    
-    let mainImage = p.imageMain || p.image || p.imageUrl || p.img || 'https://placehold.co/400x400?text=No+Image';
-    window.selectedProductImage = mainImage; 
-    window.selectedColorName = "Main Color";
-
-    if(mainImage) { 
-        tempCarouselHtml += `<div class="slide"><img src="${mainImage}"></div>`; 
-        tempDotsHtml += `<div class="dot active" onclick="window.scrollToSlide(${slideCount++})"></div>`; 
-    }
-    if(p.imageBack) { 
-        tempCarouselHtml += `<div class="slide"><img src="${p.imageBack}"></div>`; 
-        tempDotsHtml += `<div class="dot" onclick="window.scrollToSlide(${slideCount++})"></div>`; 
-    }
-    if(p.imageSide) { 
-        tempCarouselHtml += `<div class="slide"><img src="${p.imageSide}"></div>`; 
-        tempDotsHtml += `<div class="dot" onclick="window.scrollToSlide(${slideCount++})"></div>`; 
-    }
-    if(p.videoUrl) { 
-        tempCarouselHtml += `<div class="slide"><video src="${p.videoUrl}" playsinline loop autoplay muted controlsList="nodownload"></video></div>`; 
-        tempDotsHtml += `<div class="dot" onclick="window.scrollToSlide(${slideCount++})"></div>`; 
-    }
-
-    window.defaultCarouselHtml = tempCarouselHtml; 
-    window.defaultDotsHtml = tempDotsHtml; 
-    if (carousel) carousel.innerHTML = tempCarouselHtml; 
-    if (dotsContainer) dotsContainer.innerHTML = tempDotsHtml;
-
-    // 🔥 COLOR VARIATION RENDERER WITH NAMES 🔥
-    const colorNames = (p.colors && Array.isArray(p.colors) && p.colors.length > 0) 
-        ? p.colors 
-        : (p.colorsInfo ? p.colorsInfo.split(',') : []);
-
-    let colorOptionsList = [
-        { name: colorNames[0] ? colorNames[0].trim() : "Main Color", image: mainImage, isMain: true }
-    ];
-
-    if (p.colorImages && Array.isArray(p.colorImages) && p.colorImages.length > 0) { 
-        p.colorImages.forEach((imgUrl, idx) => {
-            if (imgUrl && imgUrl !== mainImage) {
-                let name = colorNames[idx + 1] ? colorNames[idx + 1].trim() : `Color ${idx + 2}`;
-                colorOptionsList.push({ name: name, image: imgUrl, isMain: false });
-            }
-        });
-    }
-
-    const colorSection = document.getElementById('colorSectionWrapper'); 
-    const colorOpts = document.getElementById('dynamicColorOptions');
-    
-    if (colorSection && colorOpts) { 
-        if (colorOptionsList.length > 1) {
-            colorSection.style.display = 'block'; 
-            colorOpts.innerHTML = ''; 
-            document.getElementById('colorCountInfo').innerText = `(${colorOptionsList.length} Options Available)`;
-            
-            colorOptionsList.forEach((opt, idx) => {
-                let activeCls = idx === 0 ? 'active' : ''; 
-                colorOpts.innerHTML += `
-                    <div class="color-swatch ${activeCls}" onclick="selectColorSwatch(this, '${opt.image}', '${opt.name}', ${opt.isMain})" title="${opt.name}">
-                        <img src="${opt.image}" onerror="this.src='https://placehold.co/100x100?text=Img'">
-                        <i class="fa-solid fa-check"></i>
-                    </div>`;
-            });
-        } else {
-            colorSection.style.display = 'none';
-        }
-    }
-
-    renderAdvancedRatingSystem(p.adminRating, p.adminReviewCount);
-}
-
-// ==========================================
-// RATING & REVIEW SYSTEM
-// ==========================================
-function animateValue(obj, start, end, duration, isFloat) {
-    let startTimestamp = null;
-    const step = (timestamp) => {
-        if (!startTimestamp) startTimestamp = timestamp; 
-        const progress = Math.min((timestamp - startTimestamp) / duration, 1); 
-        let current = progress * (end - start) + start;
-        if(obj) obj.innerHTML = isFloat ? current.toFixed(1) : Math.floor(current); 
-        if (progress < 1) { 
-            window.requestAnimationFrame(step); 
-        } else if(obj) { 
-            obj.innerHTML = isFloat ? end.toFixed(1) : end; 
-        }
-    }; 
-    window.requestAnimationFrame(step);
-}
-
-window.renderAdvancedRatingSystem = async function(adminRatingVal, adminReviewCount) {
-    const container = document.getElementById('ratingSummaryBox'); 
-    const reviewsContainer = document.getElementById('reviewsList');
-    if (!container || !reviewsContainer) return;
-    
-    let realReviews = [];
-    if(typeof window.getReviewsFromDatabase === 'function') {
-        try { realReviews = await window.getReviewsFromDatabase(window.currentProductIdForReviews); } catch(e){}
-    }
-    if(!realReviews || realReviews.length === 0) { 
-        realReviews = JSON.parse(localStorage.getItem(`reviews_${window.currentProductIdForReviews}`)) || []; 
-    }
-
-    let finalRating = parseFloat(adminRatingVal); 
-    let finalCount = parseInt(adminReviewCount);
-    
-    if (!finalRating || isNaN(finalRating)) { 
-        let hash = 0; let idStr = String(window.currentProductIdForReviews || 'fallback'); 
-        for(let i=0; i<idStr.length; i++){ hash += idStr.charCodeAt(i); } 
-        finalRating = 3.8 + (hash % 12) / 10; 
-        if(finalRating > 5.0) finalRating = 5.0; 
-    }
-    if (!finalCount || isNaN(finalCount)) { 
-        let hash = 0; let idStr = String(window.currentProductIdForReviews || 'fallback'); 
-        for(let i=0; i<idStr.length; i++){ hash += idStr.charCodeAt(i); } 
-        finalCount = 20 + (hash % 150); 
-    }
-
-    let totalSum = (finalRating * finalCount); 
-    realReviews.forEach(r => { totalSum += parseInt(r.rating || r.score || 5); finalCount += 1; });
-    finalRating = parseFloat((totalSum / finalCount).toFixed(1)); 
-    if(finalRating > 5.0) finalRating = 5.0;
-
-    let p5 = 0, p4 = 0, p3 = 0, p2 = 0, p1 = 0;
-    if(finalRating >= 4.5) { p5 = 80; p4 = 12; p3 = 5; p2 = 2; p1 = 1; } 
-    else if(finalRating >= 4.0) { p5 = 55; p4 = 30; p3 = 10; p2 = 3; p1 = 2; }
-    else if(finalRating >= 3.0) { p5 = 20; p4 = 30; p3 = 30; p2 = 10; p1 = 10; } 
-    else { p5 = 5; p4 = 15; p3 = 20; p2 = 30; p1 = 30; }
-    
-    const distribution = [ { star: 5, pct: p5 }, { star: 4, pct: p4 }, { star: 3, pct: p3 }, { star: 2, pct: p2 }, { star: 1, pct: p1 } ];
-
-    let html = `<div class="rating-summary-wrapper"><div class="rating-left"><div class="rating-big-text" id="animRatingVal">0.0</div><div class="rating-stars-main"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div><div class="rating-count"><span id="animReviewCount">0</span> Verified Reviews</div></div><div class="rating-right">`;
-    distribution.forEach(row => { html += `<div class="rating-bar-row"><span style="width:20px;">${row.star} <i class="fa-solid fa-star" style="font-size:9px;"></i></span><div class="progress-track"><div class="progress-fill" id="bar-${row.star}" style="width: 0%;"></div></div><span style="min-width:25px; text-align:right;">${row.pct}%</span></div>`; }); 
-    html += `</div></div>`;
-    
-    container.innerHTML = html;
-
-    const ratingSection = document.getElementById('ratingSummaryBox');
-    const observer = new IntersectionObserver((entries) => {
-        if(entries[0].isIntersecting) { 
-            animateValue(document.getElementById("animRatingVal"), 0.0, finalRating, 1000, true); 
-            animateValue(document.getElementById("animReviewCount"), 0, finalCount, 1500, false); 
-            setTimeout(() => { 
-                distribution.forEach(row => { 
-                    const bar = document.getElementById(`bar-${row.star}`); 
-                    if(bar) bar.style.width = `${row.pct}%`; 
-                }); 
-            }, 200); 
-            observer.disconnect(); 
-        }
-    }); 
-    if(ratingSection) observer.observe(ratingSection);
-
-    // Reviews List
-    if (realReviews.length === 0) { 
-        reviewsContainer.innerHTML = `<div style="width: 100%; text-align: center; padding: 25px 20px; background: var(--bg-light); border-radius: 12px; border: 1px dashed #d1d5db;"><h4 style="color: var(--text-dark); font-weight: 700; font-size:14px;">No reviews yet</h4><p style="font-size: 11px; color: var(--text-muted); margin-top:4px;">Be the first to share your experience!</p></div>`; 
-    } else { 
-        let rHtml = '';
-        realReviews.forEach(r => { 
-            let rateVal = r.rating || r.score || 5; 
-            let starsHtml = ''; 
-            for(let i=1; i<=5; i++) starsHtml += `<i class="fa-solid fa-star" style="color: ${i <= rateVal ? 'var(--secondary-color)' : '#e5e7eb'}; font-size: 12px;"></i>`;
-            
-            let titleHtml = r.title ? `<div class="review-title-text">${r.title}</div>` : ''; 
-            let bodyTxt = r.text || r.body || '';
-            
-            rHtml += `<div class="review-card"><div class="review-header"><div class="reviewer-info"><div class="reviewer-initial">${r.name.charAt(0).toUpperCase()}</div><div><div class="reviewer-name">${r.name}</div><div class="verified-badge"><i class="fa-solid fa-circle-check"></i> Verified Buyer</div></div></div><div class="review-date">${r.date || 'Recently'}</div></div><div class="review-stars">${starsHtml}</div>${titleHtml}<p class="review-body-text">${bodyTxt}</p></div>`;
-        }); 
-        reviewsContainer.innerHTML = rHtml;
-    }
-};
-
-window.handleWriteReviewClick = function() {
-    const savedName = localStorage.getItem('aavira_display_name');
-    if (!savedName || savedName.trim() === "") {
-        window.location.href = '/auth/verify.html';
-        return;
-    }
-    openModal('reviewModal');
-};
-
+window.addEventListener('pageshow',cartBadge);
+init();
 </script>
 </body>
 </html>
