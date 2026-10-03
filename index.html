@@ -312,6 +312,7 @@ a{color:inherit;text-decoration:none}
   *,::before,::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
 </style>
+<style data-aavira-marquee>.aavira-marquee-wrap{position:relative;overflow:hidden;width:100%;padding:10px 0 4px;background:linear-gradient(180deg,#fff 0%,#fdf8fa 100%)}.aavira-marquee-row{position:relative;overflow:hidden;white-space:nowrap;width:100%;margin:0;border-top:1px solid rgba(212,175,55,.22);border-bottom:1px solid rgba(212,175,55,.22)}.aavira-marquee-row:first-child{border-top:0}.aavira-marquee-track{display:flex;width:max-content;will-change:transform;padding:10px 0}.aavira-marquee-row:nth-child(1) .aavira-marquee-track,.aavira-marquee-row:nth-child(3) .aavira-marquee-track{animation:aavira-marquee-right 16s linear infinite}.aavira-marquee-row:nth-child(2) .aavira-marquee-track{animation:aavira-marquee-left 16s linear infinite}.aavira-marquee-copy{display:inline-flex;align-items:center;gap:28px;padding-right:28px;font-family:"Playfair Display",serif;font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#2d2529}.aavira-marquee-copy::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--gold);display:inline-block;flex:0 0 auto}.aavira-marquee-row:nth-child(2) .aavira-marquee-copy::after{background:var(--rani)}.aavira-marquee-row::before,.aavira-marquee-row::after{content:"";position:absolute;top:0;bottom:0;width:38px;z-index:2;pointer-events:none}.aavira-marquee-row::before{left:0;background:linear-gradient(90deg,#fff,rgba(255,255,255,0))}.aavira-marquee-row::after{right:0;background:linear-gradient(270deg,#fff,rgba(255,255,255,0))}@keyframes aavira-marquee-right{from{transform:translateX(-50%)}to{transform:translateX(0)}}@keyframes aavira-marquee-left{from{transform:translateX(0)}to{transform:translateX(-50%)}}@media(max-width:420px){.aavira-marquee-copy{font-size:11px;letter-spacing:.18em;gap:22px;padding-right:22px}.aavira-marquee-track{padding:9px 0}}</style>
 </head>
 
 <body>
@@ -449,7 +450,14 @@ a{color:inherit;text-decoration:none}
     </div>
   </header>
 
-  <main>
+  
+<!-- AAVIRA PREMIUM TEXT MARQUEE -->
+<section class="aavira-marquee-wrap" aria-label="Aavira Fashion highlights">
+<div class="aavira-marquee-row"><div class="aavira-marquee-track"><span class="aavira-marquee-copy">PREMIUM ETHNIC WEAR</span><span class="aavira-marquee-copy">PREMIUM ETHNIC WEAR</span></div></div>
+<div class="aavira-marquee-row"><div class="aavira-marquee-track"><span class="aavira-marquee-copy">CRAFTED FOR ELEGANCE</span><span class="aavira-marquee-copy">CRAFTED FOR ELEGANCE</span></div></div>
+<div class="aavira-marquee-row"><div class="aavira-marquee-track"><span class="aavira-marquee-copy">NEW COLLECTION 2026</span><span class="aavira-marquee-copy">NEW COLLECTION 2026</span></div></div>
+</section>
+<main>
     <section class="hero" aria-label="Featured">
       <div id="bannerCarousel" class="hero-track no-scrollbar"></div>
       <h1 class="sr-only">Luxury ethnic elegance</h1>
