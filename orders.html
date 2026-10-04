@@ -62,7 +62,6 @@ button{font-family:inherit;cursor:pointer}
 .foot{text-align:center;padding:14px 0 6px}
 .foot img{height:50px;max-width:65%;object-fit:contain;display:block;margin:0 auto 8px}
 .foot p{font-size:11px;color:var(--muted)}
-/* details */
 .dv{position:absolute;inset:0;z-index:30;background:var(--ivory);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .35s cubic-bezier(.25,.8,.25,1)}
 .dv.on{transform:none}
 .dv-body{flex:1;overflow-y:auto;padding:16px 16px calc(40px + env(safe-area-inset-bottom,0px))}
@@ -114,7 +113,7 @@ button{font-family:inherit;cursor:pointer}
     <button class="ib" id="refBtn" onclick="refresh()" aria-label="Refresh"><i class="fa-solid fa-rotate-right"></i></button>
   </header>
   <div class="top"><h2>My Orders</h2><p id="sub">Track all your orders here</p>
-    <div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="q" type="search" placeholder="Search order ID or product" oninput="draw()"></div>
+    <div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="q" type="search" placeholder="Search order ID or product" autocomplete="off" oninput="draw()"></div>
   </div>
   <div class="tabs" id="tabs"></div>
   <div class="scroll" id="list"></div>
@@ -133,13 +132,15 @@ button{font-family:inherit;cursor:pointer}
   </div>
   <div class="toast" id="toast"></div>
 </div>
+
+<script src="user_data.js"></script>
 <script>
 const $ = s => document.querySelector(s);
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const money = n => '₹' + Number(n || 0).toLocaleString('en-IN', { maximumFractionDigits: 2 });
 const BACKEND = 'https://server-js-psi-five.vercel.app';
 const WA = '919608720622';
-const LOGO = 'public/file_0000000015bc82119a5830b82bcd3a20.png';
+const LOGO = 'file_0000000015bc82119a5830b82bcd3a20.png';
 const LOGO2 = '/file_0000000015bc82119a5830b82bcd3a20.png';
 const logoErr = `onerror="if(!this.dataset.r){this.dataset.r=1;this.src='${LOGO2}'}else{this.style.display='none'}"`;
 const STEPS = ['Processing', 'Confirmed', 'Shipped', 'Out for Delivery', 'Delivered'];
@@ -165,14 +166,13 @@ const pdate = v => {
 };
 const fd = d => d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
 const fdt = d => d.toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
-const toast = m => { const t = $('#toast'); t.textContent = m; t.classList.add('on'); setTimeout(() => t.classList.remove('on'), 2000); };
+const toast = m => { const t = $('#toast'); t.textContent = m; t.classList.add('on'); setTimeout(() => t.classList.remove('on'), 2500); };
 const colorTxt = c => { const v = c || 'Standard'; return /^https?:|data:image|\//.test(v) ? 'As shown' : v; };
 const oid = o => { const v = String(o.orderId || o.id || o._id || ''); return v.startsWith('#') ? v : '#' + v; };
 const imgTag = (src, cls = '') => src
   ? `<img src="${esc(src)}" alt="" ${cls} onerror="this.outerHTML='<div class=\\'ph\\'><i class=\\'fa-solid fa-shirt\\'></i></div>'">`
   : `<div class="ph"><i class="fa-solid fa-shirt"></i></div>`;
 
-/* Admin-controlled delivery info: deliveryNote / expectedDelivery / statusHistory come from the admin panel */
 const etaText = o => {
   if (o.deliveryNote) return esc(o.deliveryNote);
   const v = o.expectedDelivery || o.estimatedDelivery || o.deliveryEta;
@@ -193,26 +193,62 @@ const stepNote = (o, step) => {
   return e && (e.note || e.message) ? esc(e.note || e.message) : '';
 };
 
-/* Identity: login session email only. Orders always come from the server. */
 const session = () => {
   const email = (localStorage.getItem('aavira_user_email') || '').trim().toLowerCase();
   const name = (localStorage.getItem('aavira_display_name') || '').trim();
   return email && name && name.toLowerCase() !== 'guest user' ? email : '';
 };
 
+window.aaviraSessionExpired = () => {
+  $('#list').innerHTML = `<div class="empty"><i class="fa-solid fa-lock big"></i><h3>Session Expired</h3><p>Please log in again to view your orders.</p><a href="login.html">Go to Login</a></div>`;
+  toast('Session expired. Dobara login karo.');
+  try { if(typeof window.clearAaviraSession === 'function') window.clearAaviraSession(); } catch(e) {}
+  setTimeout(() => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('aavira_token');
+    localStorage.removeItem('aavira_user_email');
+    localStorage.removeItem('aavira_display_name');
+    window.location.href = 'login.html';
+  }, 2500);
+};
+
 const fetchOrders = async () => {
   const email = session();
   const guestId = new URLSearchParams(location.search).get('id') || '';
   $('#list').innerHTML = '<div class="skel"></div><div class="skel"></div>';
-  if (!email && !guestId) { S.orders = []; $('#sub').textContent = 'Login to see all your orders'; return draw(); }
+  
+  if (!email && !guestId) { 
+    S.orders = []; 
+    $('#sub').textContent = 'Login to see all your orders'; 
+    return draw(); 
+  }
+  
   try {
     const url = `${BACKEND}/api/orders?nocache=${Date.now()}&` + (email ? `email=${encodeURIComponent(email)}` : `orderId=${encodeURIComponent(guestId)}`);
-    const res = await fetch(url);
+    
+    const headers = { 'Content-Type': 'application/json' };
+    const authToken = localStorage.getItem('authToken') || localStorage.getItem('aavira_token');
+    const orderToken = localStorage.getItem('aavira_order_token_' + guestId);
+    
+    if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
+    if (guestId && orderToken) headers['X-Order-Token'] = orderToken;
+
+    const res = await fetch(url, { headers });
+
+    if (res.status === 401 || res.status === 403) {
+      if (typeof window.aaviraSessionExpired === 'function') {
+        window.aaviraSessionExpired();
+      }
+      return;
+    }
+
     const json = await res.json();
     let rows = res.ok && json.status === 'success' && Array.isArray(json.data) ? json.data : [];
+    
     rows = email
       ? rows.filter(o => String(o.email || o.customerEmail || o.userEmail || '').trim().toLowerCase() === email)
       : rows.filter(o => cid(o.orderId || o.id || o._id) === cid(guestId)).slice(0, 1);
+      
     S.orders = rows.sort((a, b) => (pdate(b.createdAt) || 0) - (pdate(a.createdAt) || 0));
     $('#sub').textContent = email ? `Signed in as ${email}` : 'Tracking your order';
   } catch (e) {
@@ -221,6 +257,7 @@ const fetchOrders = async () => {
   }
   draw();
 };
+
 const refresh = async () => {
   const b = $('#refBtn');
   b.innerHTML = '<i class="fa-solid fa-rotate-right fa-spin"></i>';
