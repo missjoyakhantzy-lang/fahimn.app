@@ -517,13 +517,17 @@ const toast = message => {
 const loginEmail = () => {
   const email = (readValue('aavira_user_email') || '').trim().toLowerCase();
   const name = (readValue('aavira_display_name') || '').trim().toLowerCase();
-  return email && name && name !== 'guest user' ? email : '';
+  return email && name !== 'guest user' ? email : '';
 };
 const addrKey = () => 'aavira_addresses:' + (loginEmail() || 'guest');
 
 const loadAddresses = () => {
   let list = readJson(addrKey(), []);
   if (!Array.isArray(list)) list = [];
+  if (loginEmail() && !list.length) {
+    const guest = readJson('aavira_addresses:guest', []);
+    if (Array.isArray(guest) && guest.length) { list = guest; writeJson(addrKey(), list); }
+  }
   // legacy draft from old checkout form
   const legacy = readJson('checkoutAddressDraft', null);
   if (!list.length && legacy && legacy.ad_name && legacy.ad_address && legacy.ad_phone) {
@@ -537,6 +541,35 @@ const loadAddresses = () => {
 const persistAddresses = () => {
   writeJson(addrKey(), state.addresses);
   try { localStorage.setItem(addrKey() + ':sel', state.selectedId || ''); } catch {}
+  syncAddresses();
+};
+
+/* Best-effort server sync by email (needs /api/addresses on the backend) */
+const addrApi = () => (typeof VERCEL_URL !== 'undefined' ? `${VERCEL_URL}/api/addresses` : '');
+const syncAddresses = async () => {
+  const email = loginEmail();
+  if (!email || !addrApi()) return;
+  try {
+    await fetch(addrApi(), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, addresses: state.addresses }) });
+  } catch {}
+};
+const pullAddresses = async () => {
+  const email = loginEmail();
+  if (!email || !addrApi()) return;
+  try {
+    const res = await fetch(`${addrApi()}?email=${encodeURIComponent(email)}`);
+    if (!res.ok) return;
+    const json = await res.json();
+    const remote = json?.data?.addresses || json?.addresses || [];
+    if (!Array.isArray(remote) || !remote.length) return;
+    const have = new Set(state.addresses.map(a => a.id));
+    const merged = [...state.addresses, ...remote.filter(a => a && a.id && !have.has(a.id))];
+    if (merged.length === state.addresses.length) return;
+    state.addresses = merged;
+    if (!state.selectedId) state.selectedId = merged[0]?.id || '';
+    writeJson(addrKey(), merged);
+    renderAddresses();
+  } catch {}
 };
 const selectedAddress = () => state.addresses.find(a => a.id === state.selectedId);
 
@@ -1127,6 +1160,7 @@ const init = async () => {
   $('#copyYear').textContent = new Date().getFullYear();
   loadAddresses();
   renderAddresses();
+  pullAddresses();
   bindForm();
   await loadProducts();
   loadCart();
