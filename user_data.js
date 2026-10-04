@@ -7,12 +7,11 @@
 //   * Har request timeout ke saath, aur response safe tareeke se parse hota hai.
 // ==========================================
 
-const VERCEL_URL = "https://server-js-psi-five.vercel.app";   // products, orders, promo, reviews
-const AUTH_URL = "https://ssxpq15in.vercel.app";               // OTP, login, google
+const VERCEL_URL = "https://server-js-psi-five.vercel.app";   // products, orders, promo, reviews, addresses
+const AUTH_URL = "https://ssxpq15in.vercel.app";               // OTP, login, google, reset password
 const CLOUDINARY_CLOUD = "lqbslpty";
 const CLOUDINARY_PRESET = "hcfer3tk";
 
-// Saare helpers ek private function ke andar, taaki dusre scripts ke naamon se na takraye.
 (function () {
 'use strict';
 
@@ -26,7 +25,6 @@ const LS = {
     json(k, fallback) { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? fallback; } catch (e) { return fallback; } }
 };
 
-// fetch with timeout; never throws; always returns { ok, status, data }
 async function api(url, options = {}, timeoutMs = 15000) {
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), timeoutMs);
@@ -39,17 +37,19 @@ async function api(url, options = {}, timeoutMs = 15000) {
         return { ok: false, status: 0, data: null, error };
     } finally { clearTimeout(timer); }
 }
+
 const jsonPost = (url, body, headers) => api(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...(headers || {}) },
     body: JSON.stringify(body)
 });
+
 const isSuccess = r => !!(r && r.ok && r.data && (r.data.status === 'success' || r.data.success === true));
 const cleanStr = (v, max) => String(v ?? '').trim().slice(0, max);
 const EMAIL_RE = /^[^\s@\/]+@[^\s@\/]+\.[^\s@\/]+$/;
 
 // ==========================================
-// 0.1 SESSION TOKEN (signed by auth server)
+// 0.1 SESSION TOKEN & HEADERS
 // ==========================================
 function jwtExpired(token) {
     try {
@@ -58,55 +58,84 @@ function jwtExpired(token) {
         return !payload.exp || payload.exp * 1000 < Date.now() + 30000;
     } catch (e) { return true; }
 }
+
 window.aaviraSessionExpired = false;
+
 window.getAaviraToken = function () {
-    const token = LS.get('aavira_token');
+    const token = LS.get('aavira_token') || LS.get('authToken');
     if (!token) return '';
-    if (jwtExpired(token)) { LS.del('aavira_token'); window.aaviraSessionExpired = true; return ''; }
+    if (jwtExpired(token)) { 
+        LS.del('aavira_token'); 
+        LS.del('authToken'); 
+        window.aaviraSessionExpired = true; 
+        return ''; 
+    }
     return token;
 };
+
 window.authHeaders = function (extra) {
-    const headers = Object.assign({}, extra || {});
+    const headers = Object.assign({ 'Content-Type': 'application/json' }, extra || {});
     const token = window.getAaviraToken();
     if (token) headers['Authorization'] = 'Bearer ' + token;
     return headers;
 };
 
-const ORDER_TOKEN_PREFIX = 'aavira_order_token:';
+const ORDER_TOKEN_PREFIX = 'aavira_order_token_';
 function rememberOrderToken(orderId, token) {
+    if (!orderId || !token) return;
     LS.set(ORDER_TOKEN_PREFIX + orderId, token);
     const ids = LS.json('aavira_order_token_ids', []).filter(x => x !== orderId);
     ids.push(orderId);
-    while (ids.length > 20) LS.del(ORDER_TOKEN_PREFIX + ids.shift());   // sirf last 20 rakho
+    while (ids.length > 20) LS.del(ORDER_TOKEN_PREFIX + ids.shift());
     LS.set('aavira_order_token_ids', JSON.stringify(ids));
 }
+
 function clearCachedOrders() {
     ['aavira_orders', 'aavira_placed_orders', 'aavira_last_order_id', 'aavira_guest_order_id'].forEach(LS.del);
     LS.json('aavira_order_token_ids', []).forEach(id => LS.del(ORDER_TOKEN_PREFIX + id));
     LS.del('aavira_order_token_ids');
 }
-// Logout par ise call karo (token + cached orders + user info sab saaf)
+
 window.clearAaviraSession = function () {
-    ['aavira_token', 'aavira_user_email', 'aavira_display_name', 'aavira_user_phone'].forEach(LS.del);
+    ['authToken', 'aavira_token', 'aavira_user_email', 'aavira_display_name', 'aavira_user_phone'].forEach(LS.del);
     clearCachedOrders();
     window.aaviraSessionExpired = false;
+};
+
+// ==========================================
+// 0.2 SAFE UNIVERSAL API FETCH (for checkout & components)
+// ==========================================
+window.fetchAaviraApi = async function (path, options = {}) {
+    const url = path.startsWith('http') ? path : `${VERCEL_URL}${path}`;
+    const headers = window.authHeaders(options.headers || {});
+    
+    const r = await api(url, { ...options, headers });
+    
+    if (r.status === 401 || r.status === 403) {
+        if (typeof window.aaviraSessionExpired === 'function') window.aaviraSessionExpired();
+        return { success: false, message: 'Session expired' };
+    }
+    
+    const payloadData = r.data?.data || r.data;
+    return {
+        success: r.ok && (r.data?.status === 'success' || r.data?.success || r.status === 200),
+        data: payloadData,
+        message: r.data?.message || r.data?.error || ''
+    };
 };
 
 // ==========================================
 // 1. DATA FETCHING (public catalog)
 // ==========================================
 const listData = async path => {
-    const r = await api(`${VERCEL_URL}${path}`);
-    return (r.ok && r.data && r.data.status === 'success' && Array.isArray(r.data.data)) ? r.data.data : [];
+    const r = await window.fetchAaviraApi(path);
+    return (r.success && Array.isArray(r.data)) ? r.data : [];
 };
 window.getVercelData = () => listData('/api/products');
 window.getMainProductsData = () => listData('/api/main_products');
 window.getBannersData = () => listData('/api/banners');
 window.getCategoriesData = () => listData('/api/categories');
 
-// ==========================================
-// 1.1. PROMO CODE (returns API URL; caller does fetch)
-// ==========================================
 window.checkPromoCode = async function (code) {
     let clean = String(code || '').trim();
     try { clean = decodeURIComponent(clean); } catch (e) {}
@@ -115,20 +144,16 @@ window.checkPromoCode = async function (code) {
     return `${VERCEL_URL}/api/promocodes/${encodeURIComponent(clean)}`;
 };
 
-// ==========================================
-// 1.2. NEWSLETTER
-// ==========================================
 window.subscribeNewsletterApi = async function (email) {
     const clean = cleanStr(email, 120).toLowerCase();
     if (!EMAIL_RE.test(clean)) return { ok: false, message: 'Enter a valid email address.' };
     const r = await jsonPost(`${VERCEL_URL}/api/subscribe`, { email: clean });
     if (isSuccess(r)) return { ok: true, message: r.data.message || 'Subscribed' };
-    if (r.status === 0) return { ok: false, message: 'Could not reach the server. Please try again.' };
     return { ok: false, message: (r.data && r.data.message) || 'Could not subscribe. Please try again.' };
 };
 
 // ==========================================
-// 2. ORDERS LOGIC
+// 2. ORDERS LOGIC & CHECKOUT
 // ==========================================
 window.getLocalAaviraOrders = function () {
     const orders = LS.json('aavira_orders', []);
@@ -138,80 +163,103 @@ window.getLocalAaviraOrders = function () {
 window.syncAaviraOrderLocally = function (orderPayload) {
     try {
         if (!orderPayload || !orderPayload.orderId) return false;
-        const email = String(orderPayload.email || orderPayload.customerEmail || '').trim().toLowerCase();
-        const phone = String(orderPayload.phone || orderPayload.customerPhone || '').replace(/[^0-9]/g, '').slice(-10);
-        const currentEmail = String(LS.get('aavira_user_email') || '').trim().toLowerCase();
-        const currentPhone = String(LS.get('aavira_user_phone') || '').replace(/[^0-9]/g, '').slice(-10);
-        const currentName = String(LS.get('aavira_display_name') || '').trim();
-        const signedIn = !!(currentEmail && currentName && currentName.toLowerCase() !== 'guest user');
-        if (signedIn && email && email !== currentEmail && (!phone || phone !== currentPhone)) return false;
         const id = String(orderPayload.orderId).trim();
-        const normalized = { ...orderPayload, id: orderPayload.id || id, orderId: id, totalAmount: Number(orderPayload.totalAmount ?? orderPayload.total ?? orderPayload.amount ?? 0) || 0, userId: orderPayload.userId || email || phone };
-        let orders = window.getLocalAaviraOrders().filter(order => {
-            const oEmail = String(order?.email || order?.customerEmail || '').trim().toLowerCase();
-            const oPhone = String(order?.phone || order?.customerPhone || '').replace(/[^0-9]/g, '').slice(-10);
-            if (signedIn) return (!!currentEmail && oEmail === currentEmail) || (!!currentPhone && oPhone === currentPhone);
-            return String(order?.orderId || order?.id || '').trim() === id;
-        });
+        const normalized = { 
+            ...orderPayload, 
+            id: orderPayload.id || id, 
+            orderId: id, 
+            totalAmount: Number(orderPayload.totalAmount ?? orderPayload.total ?? orderPayload.amount ?? 0) || 0 
+        };
+        
+        let orders = window.getLocalAaviraOrders();
         const index = orders.findIndex(order => String(order?.orderId || order?.id || '').trim() === id);
-        if (index >= 0) orders[index] = { ...orders[index], ...normalized }; else orders.unshift(normalized);
+        
+        if (index >= 0) orders[index] = { ...orders[index], ...normalized }; 
+        else orders.unshift(normalized);
+        
         LS.set('aavira_orders', JSON.stringify(orders.slice(0, 50)));
         LS.set('aavira_last_order_id', id);
         return true;
-    } catch (e) { console.error('Local Order Sync Error'); return false; }
+    } catch (e) { return false; }
 };
 
 window.getAaviraOrdersForCurrentUser = async function () {
-    try {
-        const email = String(LS.get('aavira_user_email') || '').trim().toLowerCase();
-        const name = String(LS.get('aavira_display_name') || '').trim();
-        const signedIn = !!(email && name && name.toLowerCase() !== 'guest user');
-        const token = window.getAaviraToken();
-        const useJwt = signedIn && !!token;
-        const guestId = String(LS.get('aavira_guest_order_id') || '').trim();
+    const email = String(LS.get('aavira_user_email') || '').trim().toLowerCase();
+    const name = String(LS.get('aavira_display_name') || '').trim();
+    const signedIn = !!(email && name && name.toLowerCase() !== 'guest user');
+    const token = window.getAaviraToken();
+    const useJwt = signedIn && !!token;
+    const guestId = String(LS.get('aavira_guest_order_id') || '').trim();
 
-        if (!useJwt && !guestId) {
-            // signed-in but session token missing/expired: purana saved data dikhao, aur dobara login ka flag do
-            if (signedIn) { window.aaviraSessionExpired = true; return window.getLocalAaviraOrders(); }
-            return [];
-        }
+    if (!useJwt && !guestId) {
+        if (signedIn) { window.aaviraSessionExpired = true; return window.getLocalAaviraOrders(); }
+        return [];
+    }
 
-        const headers = window.authHeaders();
-        let url = `${VERCEL_URL}/api/orders?nocache=${Date.now()}`;
-        if (!useJwt) {
-            url += `&orderId=${encodeURIComponent(guestId)}`;
-            const orderToken = LS.get(ORDER_TOKEN_PREFIX + guestId);
-            if (orderToken) headers['X-Order-Token'] = orderToken;
+    const headers = window.authHeaders();
+    let url = `${VERCEL_URL}/api/orders?nocache=${Date.now()}`;
+    if (!useJwt) {
+        url += `&orderId=${encodeURIComponent(guestId)}`;
+        const orderToken = LS.get(ORDER_TOKEN_PREFIX + guestId);
+        if (orderToken) headers['X-Order-Token'] = orderToken;
+    }
+
+    const r = await api(url, { headers });
+    if (r.status === 401 || r.status === 403) {
+        if (useJwt) { 
+            LS.del('aavira_token'); 
+            LS.del('authToken');
+            window.aaviraSessionExpired = true; 
+            return window.getLocalAaviraOrders(); 
         }
-        const r = await api(url, { headers });
-        if (r.status === 401) {
-            if (useJwt) { LS.del('aavira_token'); window.aaviraSessionExpired = true; return window.getLocalAaviraOrders(); }
-            return [];
-        }
-        if (!(r.ok && r.data && r.data.status === 'success' && Array.isArray(r.data.data))) return [];
-        LS.set('aavira_orders', JSON.stringify(r.data.data));
-        return r.data.data;
-    } catch (error) { console.error('Current User Order Sync Error'); return []; }
+        return [];
+    }
+    
+    if (!(r.ok && r.data && r.data.status === 'success' && Array.isArray(r.data.data))) return [];
+    LS.set('aavira_orders', JSON.stringify(r.data.data));
+    return r.data.data;
 };
 
-// Server ko sirf items/address/fees choices jaate hain; price/total server banata hai.
-// Success par poora result milta hai ({orderId, orderToken, order}), warna null.
-window.lastOrderError = '';
-window.sendOrderToVercel = async function (orderPayload) {
-    window.lastOrderError = '';
-    const r = await jsonPost(`${VERCEL_URL}/api/orders`, orderPayload, window.authHeaders());
-    if (!isSuccess(r)) {
-        window.lastOrderError = (r.data && r.data.message) || '';
-        return null;
+// --- NEW CHECKOUT PLACEMENT SYSTEM ---
+window.placeAaviraOrder = async function (payload) {
+    const r = await jsonPost(`${VERCEL_URL}/api/orders`, payload, window.authHeaders());
+    
+    if (r.status === 401 || r.status === 403) {
+        if (typeof window.aaviraSessionExpired === 'function') window.aaviraSessionExpired();
+        return { success: false, message: 'Session expired. Please log in again.' };
     }
-    const result = r.data;
-    if (result.orderToken && result.orderId) rememberOrderToken(String(result.orderId), String(result.orderToken));
-    if (result.order) window.syncAaviraOrderLocally(result.order);
-    return result;
+
+    if (r.ok && (r.data?.orderId || r.data?.status === 'success' || r.data?.data?.orderId)) {
+        const responseData = r.data.data || r.data;
+        if (responseData.order) window.syncAaviraOrderLocally(responseData.order);
+        
+        return {
+            success: true,
+            orderId: responseData.orderId,
+            orderToken: responseData.orderToken
+        };
+    }
+    
+    return { success: false, message: r.data?.message || r.data?.error || 'Failed to place order' };
+};
+
+window.saveAaviraOrderToken = function (orderId, token) {
+    if (orderId && token) rememberOrderToken(String(orderId).trim(), String(token).trim());
+};
+
+// Legacy support
+window.sendOrderToVercel = async function (orderPayload) {
+    const result = await window.placeAaviraOrder(orderPayload);
+    if (result.success) {
+        if (result.orderToken) window.saveAaviraOrderToken(result.orderId, result.orderToken);
+        return { orderId: result.orderId, orderToken: result.orderToken, order: orderPayload };
+    }
+    window.lastOrderError = result.message;
+    return null;
 };
 
 // ==========================================
-// 3. PRODUCT REVIEWS LOGIC
+// 3. PRODUCT REVIEWS & EXPERIENCE LOGIC
 // ==========================================
 window.saveReviewToDatabase = async function (productId, reviewData) {
     const r = await jsonPost(`${VERCEL_URL}/api/add-review`, { productId: cleanStr(productId, 100), review: reviewData }, window.authHeaders());
@@ -219,11 +267,10 @@ window.saveReviewToDatabase = async function (productId, reviewData) {
 };
 
 window.getReviewsFromDatabase = async function (productId) {
-    const r = await api(`${VERCEL_URL}/api/get-reviews?productId=${encodeURIComponent(cleanStr(productId, 100))}`);
-    return (r.ok && r.data && r.data.success && Array.isArray(r.data.data)) ? r.data.data : [];
+    const r = await window.fetchAaviraApi(`/api/get-reviews?productId=${encodeURIComponent(cleanStr(productId, 100))}`);
+    return r.success && Array.isArray(r.data) ? r.data : [];
 };
 
-// Review photo Cloudinary par: sirf image, max 8 MB. Success par https URL, warna ''.
 const PHOTO_TYPES = /^image\/(jpeg|png|webp|heic|heif)$/i;
 window.uploadExperiencePhoto = async function (file) {
     if (!file || !PHOTO_TYPES.test(file.type || '') || file.size > 8 * 1024 * 1024) return '';
@@ -247,12 +294,12 @@ window.sendToVercelExperience = async function (expData) {
 };
 
 window.getVercelExperiences = async function () {
-    const r = await api(`${VERCEL_URL}/api/experience`);
-    return (r.ok && r.data && r.data.status === 'success' && Array.isArray(r.data.data)) ? r.data.data : [];
+    const r = await window.fetchAaviraApi('/api/experience');
+    return r.success && Array.isArray(r.data) ? r.data : [];
 };
 
 // ==========================================
-// 4. LOGIN & OTP DELIVERY BOY
+// 4. LOGIN & OTP DELIVERY BOY (Auth Server)
 // ==========================================
 window.DeliveryBoy = (function () {
     const post = async (path, body, errMsg) => {
@@ -260,16 +307,17 @@ window.DeliveryBoy = (function () {
         if (r.status === 0 || !r.data) return { ok: false, data: { success: false, message: errMsg || 'Auth Server Error!' } };
         const data = r.data;
         if (data.authToken) {
-            // alag user login kare to pichle user ka cached data saaf
             const prev = String(LS.get('aavira_user_email') || '').toLowerCase();
             const next = String(data.email || '').toLowerCase();
             if (prev && next && prev !== next) clearCachedOrders();
             LS.set('aavira_token', data.authToken);
+            LS.set('authToken', data.authToken);
             window.aaviraSessionExpired = false;
             delete data.authToken;
         }
         return { ok: r.ok, data };
     };
+    
     return Object.freeze({
         sendOTP: (email, name) => post('/api/send-otp', { userEmail: email, userName: name }),
         verifyOTP: (email, userOtp, name, pwd) => post('/api/verify-otp', { userEmail: email, userOTP: userOtp, userName: name, userPassword: pwd }),
