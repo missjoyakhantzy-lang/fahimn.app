@@ -1,1285 +1,1141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Aavira - Secure Checkout</title>
-    <meta name="theme-color" content="#ffffff">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Linked external CSS -->
-    <style id="checkout-inline-css">
-/* =========================================================
-    AAVIRA - LUXURY MINIMALIST COMPACT CHECKOUT 
-    ========================================================= */
-:root {
-    --primary: #D81B60; 
-    --primary-light: #fdf2f8; 
-    --text-dark: #0f172a;
-    --text-muted: #64748b;
-    --border: #e2e8f0;
-    --bg-body: #f8fafc;
-    --white: #ffffff;
-    --success: #059669;
-    --error: #ef4444;
-    --shadow-card: 0 4px 10px rgba(0,0,0,0.03);
-    --radius-md: 8px;
-    --radius-lg: 12px;
-    --whatsapp-green: #25D366;
-    --whatsapp-dark: #1da851;
-}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Secure Checkout - Aavira Fashion</title>
+<meta name="theme-color" content="#ffffff">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{--rani:#D81B60;--rani-dark:#B71550;--gold:#D4AF37;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#242024;--muted:#6B6369;--line:#E7E0D9;--blush:#F9E8EE;--green:#15803D;--danger:#B91C1C}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:Inter,system-ui,sans-serif;background:var(--ivory);color:var(--ink);-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--rani);outline-offset:2px}
+[hidden]{display:none!important}
+.app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--ivory);padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))}
+@media(min-width:640px){body{background:#EFE8DE}.app{box-shadow:0 0 60px rgba(36,32,36,.12)}}
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
-html, body { width: 100%; height: 100%; background: var(--bg-body); overflow: hidden; display: flex; flex-direction: column; }
+.is-busy{position:relative;pointer-events:none;color:transparent!important}
+.is-busy>*{opacity:0}
+.is-busy::after{content:"";position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border:2px solid var(--spin,var(--ink));border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite}
+:is(.btn-place,.btn-fill,.apply,.btn-save).is-busy{--spin:#fff}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-.app-container { width: 100%; max-width: 500px; height: 100%; position: relative; display: flex; flex-direction: column; background: var(--bg-body); margin: 0 auto; overflow:hidden;}
+.hdr{position:sticky;top:0;z-index:40;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:60px;padding:env(safe-area-inset-top,0) 8px 0;background:#fff;border-bottom:1px solid var(--line)}
+.hdr h1{font-family:"Playfair Display",serif;font-size:18px;font-weight:600;text-align:center}
+.ib{width:42px;height:42px;border:0;background:none;border-radius:50%;color:var(--rani);font-size:18px;display:inline-flex;align-items:center;justify-content:center}
+.ib:hover{background:var(--blush)}
+.secure{justify-self:end;padding-right:10px;font-size:11px;font-weight:600;color:var(--green);display:flex;align-items:center;gap:5px}
 
-.pro-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(255, 255, 255, 0.98); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; flex-shrink: 0; }
-.header-icon-btn { width: 34px; height: 34px; display: flex; justify-content: center; align-items: center; color: var(--text-dark); cursor: pointer; border: none; background: transparent; font-size: 18px;}
-.header-center { text-align: center; }
-.header-center .title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--text-dark); text-transform: uppercase;}
+.empty{min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+.empty i{font-size:52px;color:#CBBFC6;margin-bottom:18px}
+.empty h2{font-family:"Playfair Display",serif;font-size:22px;margin-bottom:6px}
+.empty p{font-size:13px;color:var(--muted)}
+.empty a{margin-top:22px;padding:13px 28px;border-radius:999px;background:var(--rani);color:#fff;font-size:13px;font-weight:700}
 
-.main-content { flex: 1; padding: 14px 14px 90px 14px; overflow-y: auto; scrollbar-width: none; }
-.main-content::-webkit-scrollbar { display: none; }
+main{padding:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 4px 14px rgba(36,32,36,.04)}
+.card h2{font-family:"Playfair Display",serif;font-size:18px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+.count{font-family:Inter,sans-serif;font-size:11px;font-weight:600;color:var(--muted);background:var(--cream);border-radius:999px;padding:4px 10px}
 
-.pro-card { background: var(--white); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 14px; box-shadow: var(--shadow-card); border: 1px solid var(--border); }
-.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.card-header h2 { font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--text-dark); }
-.item-count { background: var(--bg-body); color: var(--text-dark); padding: 3px 8px; border-radius: 12px; border: 1px solid var(--border); font-size: 10px; font-weight: 700; }
+/* fields */
+.form{display:flex;flex-direction:column;gap:18px}
+.row{display:flex;gap:10px}
+.grp{position:relative;width:100%}
+.fld{width:100%;height:50px;border:1px solid var(--line);border-radius:12px;padding:0 14px;font:inherit;font-size:14px;font-weight:500;color:var(--ink);background:#fff;outline:none;transition:border-color .2s,box-shadow .2s}
+.fld:focus{border-color:var(--rani);box-shadow:0 0 0 3px rgba(216,27,96,.1)}
+.grp label{position:absolute;left:12px;top:16px;padding:0 4px;background:#fff;font-size:13px;color:var(--muted);pointer-events:none;transition:all .18s}
+.fld:focus~label,.fld:not(:placeholder-shown)~label{top:-8px;font-size:11px;font-weight:600;color:var(--rani)}
+.grp.bad .fld{border-color:var(--danger)}
+.grp .err{display:none;position:absolute;left:14px;bottom:-15px;font-size:10.5px;font-weight:600;color:var(--danger)}
+.grp.bad .err{display:block}
+.hint{font-size:11px;color:var(--muted);margin-top:-8px}
 
-.pro-form { display: flex; flex-direction: column; gap: 14px; }
-.form-row { display: flex; gap: 10px; }
-.pro-input-group { position: relative; width: 100%; }
+/* saved addresses */
+.addr-list{display:flex;flex-direction:column;gap:10px}
+.addr{display:flex;gap:12px;border:1.5px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;background:#fff;transition:border-color .2s,background .2s}
+.addr.sel{border-color:var(--rani);background:var(--blush)}
+.addr .radio{margin-top:2px}
+.addr.sel .radio{border-color:var(--rani)}
+.addr.sel .radio::after{transform:scale(1)}
+.addr-body{flex:1;min-width:0;font-size:12.5px;line-height:1.5;color:var(--muted)}
+.addr-body b{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink);margin-bottom:2px}
+.addr-body .type{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:var(--cream);color:var(--muted);border-radius:999px;padding:2px 8px}
+.addr.sel .type{background:#fff;color:var(--rani)}
+.addr-act{display:flex;gap:14px;margin-top:8px}
+.addr-act button{border:0;background:none;font-size:12px;font-weight:700;color:var(--rani)}
+.addr-act button.del{color:var(--muted)}
+.add-addr{width:100%;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:10px;height:54px;border:1.5px dashed var(--rani);border-radius:14px;background:#fff;color:var(--rani);font-size:14px;font-weight:700}
+.add-addr:hover{background:var(--blush)}
+.noaddr{text-align:center;padding:8px 0 4px;color:var(--muted);font-size:13px}
+.noaddr i{display:block;font-size:30px;color:#CBBFC6;margin-bottom:8px}
+.loginline{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--muted);margin:-6px 0 14px}
+.loginline i{color:var(--green)}
 
-.pro-input { width: 100%; border: 1px solid var(--border); border-radius: var(--radius-md); height: 46px; padding: 0 14px; font-size: 13px; font-weight: 600; color: var(--text-dark); outline: none; background: transparent; transition: 0.2s ease-in-out; }
-.pro-input:focus { border-color: var(--text-dark); box-shadow: 0 0 0 1px var(--text-dark); }
-.pro-label { position: absolute; left: 12px; top: 15px; font-size: 12px; font-weight: 500; color: var(--text-muted); transition: 0.2s ease; background: var(--white); padding: 0 4px; pointer-events: none; }
-.pro-input:focus ~ .pro-label, .pro-input:not(:placeholder-shown) ~ .pro-label { top: -7px; left: 10px; font-size: 10px; font-weight: 700; color: var(--text-dark); }
-.pro-input-group.is-invalid .pro-input { border-color: var(--error); }
-.error-msg { position: absolute; left: 14px; bottom: -16px; font-size: 10px; font-weight: 600; color: var(--error); display: none; }
-.pro-input-group.is-invalid .error-msg { display: block; }
+/* full screen address page */
+.screen{position:fixed;inset:0;z-index:120;background:var(--ivory);display:none;flex-direction:column;max-width:480px;margin:0 auto}
+.screen.on{display:flex;animation:slide .28s ease}
+@keyframes slide{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.screen-body{flex:1;overflow-y:auto;padding:16px 14px 24px}
+.screen-foot{padding:12px 16px calc(14px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--line)}
+.btn-save{width:100%;padding:15px;border:0;border-radius:999px;background:var(--rani);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;box-shadow:0 6px 16px rgba(216,27,96,.25)}
+.sec-t{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:6px 2px 14px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:9px 16px;font-size:13px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:7px}
+.chip.on{border-color:var(--rani);background:var(--blush);color:var(--rani)}
+.chk{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;margin-top:4px}
+.chk input{width:18px;height:18px;accent-color:var(--rani)}
 
-.help-link-text { position: absolute; right: 0; bottom: -18px; font-size: 10px; font-weight: 700; color: var(--primary); cursor: pointer; text-decoration: underline; text-underline-offset: 2px;}
+/* bag items - bigger */
+.list{display:flex;flex-direction:column}
+.item{display:flex;gap:14px;padding:16px 0;border-bottom:1px dashed var(--line)}
+.item:first-child{padding-top:0}
+.item:last-child{border:0;padding-bottom:0}
+.item .pic{position:relative;flex:0 0 auto;border:0;background:none;padding:0;border-radius:14px}
+.item img{width:150px;height:200px;border-radius:14px;object-fit:cover;background:var(--cream);border:1px solid var(--line);display:block}
+.item .pic .zoom{position:absolute;right:6px;bottom:6px;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.92);color:var(--rani);font-size:11px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.item-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.item-info h3{font-size:16px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.item-info small{font-size:12.5px;color:var(--muted)}
+.item-price{margin-top:auto;font-size:17px;font-weight:700;color:var(--rani)}
+.item-price s{font-size:12px;font-weight:400;color:var(--muted);margin-left:6px}
+.info-btn{align-self:flex-start;width:34px;height:34px;border:0;border-radius:50%;background:var(--blush);color:var(--rani);font-size:15px}
 
-.order-list { display: flex; flex-direction: column; gap: 14px; }
-.o-item { display: flex; gap: 14px; align-items: stretch; border-bottom: 1px dashed var(--border); padding-bottom: 14px; position: relative;}
-.o-item:last-child { border-bottom: none; padding-bottom: 0; }
-.o-img-box { width: 75px; min-width: 75px; aspect-ratio: 1/1; border-radius: 8px; overflow: hidden; background: var(--bg-body); flex-shrink: 0; border: 1px solid var(--border); }
-.o-img-box img { width: 100%; height: 100%; object-fit: cover; }
+.rec{margin:0 0 14px}
+.rec h3{font-size:12px;font-weight:700;color:var(--muted);margin:0 4px 10px}
+.rec-row{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+.rec-row::-webkit-scrollbar{display:none}
+.rec-card{flex:0 0 118px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px}
+.rec-card img{width:100%;aspect-ratio:1;border-radius:8px;object-fit:cover;background:var(--cream)}
+.rec-card p{font-size:11px;font-weight:500;margin:6px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3;min-height:28px}
+.rec-foot{display:flex;align-items:center;justify-content:space-between}
+.rec-foot b{font-size:12px}
+.rec-foot button{border:1px solid var(--rani);background:#fff;color:var(--rani);border-radius:999px;padding:4px 10px;font-size:10.5px;font-weight:700}
 
-.o-info { flex: 1; padding-right: 28px; display: flex; flex-direction: column; justify-content: space-between;} 
-.o-info h4 { font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;}
-.o-item-specs { font-size: 11px; font-weight: 500; color: var(--text-muted); line-height: 1.5; }
-.o-item-specs strong { font-weight: 700; color: var(--text-dark); }
-.o-info h3 { font-size: 15px; font-weight: 700; color: var(--primary); margin-top: auto;}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;align-items:center;gap:12px;border:1.5px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;background:#fff;transition:border-color .2s,background .2s}
+.opt:has(input:checked){border-color:var(--rani);background:var(--blush)}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.opt:has(input:focus-visible){outline:2px solid var(--rani);outline-offset:2px}
+.radio{width:20px;height:20px;border-radius:50%;border:1.5px solid #A8A0A5;flex:0 0 auto;display:flex;align-items:center;justify-content:center;background:#fff}
+.radio::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--rani);transform:scale(0);transition:transform .2s}
+.opt:has(input:checked) .radio{border-color:var(--rani)}
+.opt:has(input:checked) .radio::after{transform:scale(1)}
+.opt-ico{width:38px;height:38px;border-radius:10px;background:var(--cream);color:var(--muted);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.opt:has(input:checked) .opt-ico{color:var(--rani);background:#fff}
+.opt-txt{flex:1;min-width:0}
+.opt-txt b{display:block;font-size:13px;font-weight:600}
+.opt-txt small{font-size:11.5px;color:var(--muted)}
+.tag{font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--cream)}
+.tag.free{background:#ECFDF5;color:var(--green)}
+.switch-row{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer}
+.switch-row b{display:block;font-size:13px;font-weight:600}
+.switch-row small{font-size:11.5px;color:var(--muted)}
+.switch{position:relative;width:46px;height:26px;flex:0 0 auto}
+.switch input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.switch span{position:absolute;inset:0;background:#CFC6CB;border-radius:999px;transition:background .25s;pointer-events:none}
+.switch span::before{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.3);transition:transform .25s}
+.switch input:checked+span{background:var(--rani)}
+.switch input:checked+span::before{transform:translateX(20px)}
 
-.remove-btn { position: absolute; right: -5px; top: -5px; background: transparent; color: #94a3b8; border: none; font-size: 16px; width: 34px; height: 34px; cursor: pointer;}
+.promo{display:flex;gap:8px;margin-bottom:16px}
+.promo .fld{text-transform:uppercase;letter-spacing:.08em;font-weight:600;border-style:dashed}
+.apply{border:0;border-radius:999px;background:var(--ink);color:#fff;padding:0 22px;font-size:12px;font-weight:700}
+.applied{display:none;align-items:center;justify-content:space-between;gap:10px;background:#ECFDF5;border:1px dashed #6EE7B7;border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:13px;font-weight:600;color:var(--green)}
+.applied button{width:28px;height:28px;border:0;border-radius:50%;background:#fff;color:var(--danger)}
+.bill{display:flex;flex-direction:column;gap:11px}
+.bill div{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+.bill .save{color:var(--green);font-weight:600}
+.bill hr{border:0;border-top:1px dashed var(--line);margin:3px 0}
+.bill .total{font-size:17px;font-weight:700;color:var(--ink)}
 
-.suggest-section { padding: 18px 0 10px; border: 1px dashed #cbd5e1; background: transparent; display: none; margin: 0 14px 16px;}
-.suggest-title { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); padding: 0 16px 12px;}
-.suggest-scroll { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; padding: 0 16px 5px; }
-.s-card { width: 115px; min-width: 115px; background: var(--white); border-radius: var(--radius-md); padding: 8px; border: 1px solid var(--border); display: flex; flex-direction: column; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-.s-img-wrapper { width: 100%; aspect-ratio: 1/1; border-radius: 6px; overflow: hidden; margin-bottom: 8px; background:var(--bg-body); border:1px solid #f1f5f9; }
-.s-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-.s-title { font-size: 10px; font-weight: 600; color: var(--text-dark); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 6px; line-height:1.3;}
-.s-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: auto;}
-.s-price { font-size: 12px; font-weight: 700; color: var(--text-dark); }
-.btn-add-suggest { background: var(--white); color: var(--text-dark); border: 1px solid var(--text-muted); padding: 4px 12px; border-radius: 12px; font-size: 10px; font-weight: 700; cursor: pointer;}
+.bar{position:fixed;left:0;right:0;bottom:0;margin:0 auto;max-width:480px;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 18px calc(14px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 20px rgba(36,32,36,.05)}
+.bar small{display:block;font-size:11px;color:var(--muted)}
+.bar b{font-size:20px}
+.btn-place{flex:0 0 auto;min-width:190px;padding:15px 24px;border:0;border-radius:999px;background:var(--rani);color:#fff;font-size:13px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 16px rgba(216,27,96,.25)}
+.btn-place:active{transform:scale(.97)}
 
-.speed-selector, .payment-selector { display: flex; flex-direction: column; gap: 10px; }
-.speed-option, .pay-option { display: flex; justify-content: space-between; align-items: center; border: 1.5px solid var(--border); padding: 14px 12px; border-radius: var(--radius-md); cursor: pointer; transition: 0.3s; background: var(--white); }
-.speed-option input { display: none; }
-.speed-option.selected, .pay-option.selected { border-color: var(--primary); background: var(--primary-light); }
+.overlay{position:fixed;inset:0;z-index:100;background:rgba(36,32,36,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px}
+.overlay.on{display:flex}
+.dialog{width:100%;max-width:340px;background:#fff;border-radius:22px;padding:30px 24px 24px;text-align:center;animation:pop .3s ease}
+@keyframes pop{from{transform:scale(.88);opacity:0}to{transform:none;opacity:1}}
+.dialog h2{font-family:"Playfair Display",serif;font-size:22px;margin-bottom:8px}
+.dialog p{font-size:13px;line-height:1.55;color:var(--muted)}
+.loader{width:48px;height:48px;border:4px solid var(--blush);border-top-color:var(--rani);border-radius:50%;animation:spin .9s linear infinite;margin:0 auto 16px}
+.badge-ico{width:66px;height:66px;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px}
+.oid{margin:16px 0;padding:9px;border-radius:10px;background:var(--cream);font-size:13px;font-weight:700;letter-spacing:.4px}
+.dialog .acts{display:flex;flex-direction:column;gap:10px;margin-top:22px}
+.btn-fill,.btn-line,.btn-wa{width:100%;padding:14px;border-radius:999px;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-fill{border:0;background:var(--rani);color:#fff}
+.btn-wa{border:0;background:#25D366;color:#fff}
+.btn-line{border:1.5px solid var(--line);background:#fff;color:var(--ink)}
+.btn-wa small{background:rgba(0,0,0,.15);border-radius:999px;padding:2px 8px;font-size:11px}
 
-.pay-content, .speed-info { display: flex; align-items: center; gap: 14px; }
-.speed-icon { width: 34px; height: 34px; background: var(--bg-body); display: flex; justify-content:center; align-items: center; border-radius: 6px; border: 1px solid var(--border);}
-.speed-option .speed-icon i { color: var(--text-muted); font-size: 14px; }
-.speed-option.selected .speed-icon i { color: var(--primary); }
-.speed-info h4, .pay-content h4 { font-size: 12px; font-weight: 700; color: var(--text-dark); }
-.speed-info p, .pay-content p { font-size: 11px; font-weight: 500; color: var(--text-muted); margin-top: 3px;}
-.speed-price { font-size: 12px; font-weight: 700; color: var(--text-dark); background: var(--bg-body); padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border);}
+/* product bottom sheet */
+.sheet-wrap{position:fixed;inset:0;z-index:110;background:rgba(36,32,36,.55);display:none;align-items:flex-end;justify-content:center}
+.sheet-wrap.on{display:flex}
+.sheet{width:100%;max-width:480px;max-height:92vh;overflow-y:auto;background:#fff;border-radius:24px 24px 0 0;padding:10px 18px calc(22px + env(safe-area-inset-bottom,0px));animation:slide .28s ease}
+.grab{width:42px;height:4px;border-radius:4px;background:var(--line);margin:0 auto 14px}
+.sheet .big{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;background:var(--cream);border:1px solid var(--line)}
+.sheet h3{font-family:"Playfair Display",serif;font-size:19px;margin:14px 0 4px;line-height:1.3}
+.sheet .price{font-size:20px;font-weight:700;color:var(--rani)}
+.sheet .price s{font-size:13px;font-weight:400;color:var(--muted);margin-left:8px}
+.sheet .lbl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:18px 0 10px}
+.qty{display:inline-flex;align-items:center;border:1.5px solid var(--line);border-radius:999px;overflow:hidden}
+.qty button{width:42px;height:40px;border:0;background:#fff;font-size:18px;color:var(--rani);font-weight:700}
+.qty span{min-width:36px;text-align:center;font-weight:700}
+.sheet-acts{display:flex;gap:10px;margin-top:22px}
+.sheet-acts button{flex:1;padding:13px 8px;border-radius:999px;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:7px}
+.sheet-acts .wish{border:1.5px solid var(--line);background:#fff;color:var(--ink)}
+.sheet-acts .rm{border:1.5px solid #FECACA;background:#FEF2F2;color:var(--danger)}
+.sheet .done{width:100%;margin-top:12px;padding:14px;border:0;border-radius:999px;background:var(--rani);color:#fff;font-size:14px;font-weight:700}
 
-.custom-radio-mark { width: 20px; height: 20px; border: 1.5px solid var(--text-muted); border-radius: 50%; display: flex; justify-content: center; align-items: center; background: #fff; flex-shrink: 0;}
-.pay-option.selected .custom-radio-mark { border-color: var(--primary); }
-.custom-radio-dot { width: 10px; height: 10px; background: var(--primary); border-radius: 50%; transform: scale(0); transition: 0.25s cubic-bezier(0.2,0.8,0.2,1.2); }
-.pay-option.selected .custom-radio-dot { transform: scale(1); }
-
-.gift-toggle { display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 16px 4px 0;}
-.switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
-.switch input { opacity: 0; width: 0; height: 0; }
-.slider { position: absolute; inset: 0; background-color: var(--text-muted); border-radius: 26px; transition: .4s; }
-.slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; border-radius: 50%; transition: .4s; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
-.switch input:checked + .slider { background-color: var(--primary); }
-.switch input:checked + .slider:before { transform: translateX(20px); }
-
-.promo-container { display: flex; gap: 8px; margin-bottom: 24px;}
-.promo-input { flex: 1; border: 1px dashed var(--text-muted); background: var(--bg-body); padding: 0 14px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; outline: none; height: 46px; text-transform: uppercase; color: var(--text-dark); transition:0.3s;}
-.promo-input:focus { border-color: var(--text-dark); border-style: solid; background: var(--white);}
-.promo-btn { background: var(--text-dark); color: #fff; border: none; padding: 0 20px; border-radius: var(--radius-md); font-size: 11px; font-weight: 700; cursor: pointer; letter-spacing: 0.5px;}
-
-.applied-promo-box { display: none; justify-content: space-between; align-items: center; background: #ecfdf5; padding: 14px 16px; border-radius: 8px; margin-bottom: 20px; border: 1px dashed #34d399; }
-.ap-details { font-size: 12px; font-weight: 700; color: #059669; }
-.ap-remove { border: none; background: transparent; color: var(--error); font-size: 15px; cursor: pointer; padding: 0; width: 26px; height: 26px; display:flex; justify-content:center; align-items:center; border-radius: 50%; background: #fff;}
-
-.bill-breakdown { display: flex; flex-direction: column; gap: 10px; }
-.b-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); font-weight: 500; align-items:center;}
-.b-divider { border-bottom: 1.5px dashed var(--border); margin: 6px 0; }
-.b-total { font-size: 16px; font-weight: 800; color: var(--text-dark); }
-.green-txt { color: var(--success); font-weight: 700; }
-
-.pro-bottom-bar { position: absolute; bottom: 0; width: 100%; background: rgba(255, 255, 255, 0.98); border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; z-index: 100; box-shadow: 0 -4px 20px rgba(0,0,0,0.03); padding: 14px 16px 20px;}
-.bar-price p { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 2px;}
-.bar-price h3 { font-size: 20px; font-weight: 800; color: var(--text-dark);}
-
-.btn-confirm { background: var(--text-dark); color: #fff; border: none; padding: 16px 24px; border-radius: var(--radius-md); font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.15); text-transform: uppercase; width: 220px; display: flex; justify-content:center; align-items: center; gap:8px;}
-.btn-confirm:active { background: var(--primary); box-shadow: none; transform: translateY(2px);}
-.btn-spinner { width: 16px; height: 16px; border: 2.5px solid rgba(255,255,255,0.3); border-top: 2.5px solid #fff; border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; }
-
-.toast { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 12px 18px; display: flex; align-items: center; gap: 10px; border-radius: 10px; font-size: 12px; font-weight: 600; width: 90%; max-width: 320px; transition: 0.4s cubic-bezier(0.1, 0.7, 0.1, 1); z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.15);}
-.toast.show { top: 20px; }
-
-.process-bg { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(5px); z-index: 9999; display: none; align-items: center; justify-content: center; animation: fade 0.3s;}
-.process-bg.active { display: flex; }
-.process-card { background: white; padding: 30px 24px; border-radius: 16px; width: 85%; max-width: 340px; text-align: center; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.15); animation: popScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
-.loader { width: 50px; height: 50px; border: 4px solid var(--primary-light); border-top-color: var(--primary); border-radius: 50%; animation: loadspin 0.9s infinite linear; margin: 0 auto 16px;}
-
-.popup-action-btns { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
-.btn-pro-action { width: 100%; padding: 15px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: 0.2s; border: none; letter-spacing: 0.3px;}
-.btn-pro-action.primary { background: var(--text-dark); color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-.btn-pro-action.primary:active { transform: scale(0.98); }
-.btn-pro-action.whatsapp { background: var(--whatsapp-green); color: white; box-shadow: 0 4px 12px rgba(37,211,102,0.25); }
-.btn-pro-action.whatsapp:active { background: var(--whatsapp-dark); transform: scale(0.98); }
-.btn-pro-action.outline { background: transparent; color: var(--text-dark); border: 1.5px solid var(--border); }
-.btn-pro-action.outline:active { background: var(--bg-body); }
-
-#dynamicModalIcon { transition: 0.3s ease; }
-
-@keyframes fade { from{opacity:0;} to{opacity:1;} }
-@keyframes popScale { from{transform:scale(0.8); opacity:0;} to{transform:scale(1); opacity:1;} }
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-@keyframes loadspin { to{transform:rotate(360deg);} }
-
-    </style>
-<style data-aavira-ui>
-/* Aavira Fashion — Global Corporate Design System
-   Applied across inner pages without replacing page functionality. */
-:root{
-  --aavira-rani:#D81B60;
-  --aavira-rani-dark:#B71550;
-  --aavira-gold:#D4AF37;
-  --aavira-ivory:#FDFBF7;
-  --aavira-cream:#FCF9F4;
-  --aavira-white:#FFFFFF;
-  --aavira-charcoal:#242024;
-  --aavira-muted:#756D73;
-  --aavira-border:#E7E0D9;
-  --aavira-soft-pink:#F9E8EE;
-}
-
-body.aavira-theme{
-  --primary:#D81B60;
-  --primary-color:#D81B60;
-  --primary-light:rgba(216,27,96,.08);
-  --pink:#D81B60;
-  --pink-s:rgba(216,27,96,.12);
-  --pink-sh:rgba(216,27,96,.24);
-  --secondary:#D4AF37;
-  --ethnic-gold:#D4AF37;
-  --gold:#D4AF37;
-  --gold-soft:#E7D39A;
-  --text-dark:#242024;
-  --text-main:#242024;
-  --text-muted:#756D73;
-  --text-light:#9B9298;
-  --border:#E7E0D9;
-  --border-color:#E7E0D9;
-  --bg-body:#FDFBF7;
-  --bg-page:#FDFBF7;
-  --bg-main:#FDFBF7;
-  --bg-light:#FCF9F4;
-  --bg:#FDFBF7;
-  --card:#FFFFFF;
-  --white:#FFFFFF;
-  background:var(--aavira-ivory)!important;
-  color:var(--aavira-charcoal);
-}
-
-body.aavira-theme .app-container,
-body.aavira-theme .shell,
-body.aavira-theme .app{
-  background:var(--aavira-cream);
-}
-
-body.aavira-theme .pro-header,
-body.aavira-theme .hdr,
-body.aavira-theme .header{
-  background:rgba(255,255,255,.96)!important;
-  border-color:var(--aavira-border)!important;
-  box-shadow:0 4px 18px rgba(36,32,36,.045);
-  backdrop-filter:blur(14px);
-}
-
-body.aavira-theme .pro-header .title,
-body.aavira-theme .header h1,
-body.aavira-theme .hdr-center,
-body.aavira-theme .header-center .title{
-  color:var(--aavira-charcoal)!important;
-}
-
-body.aavira-theme .header-icon-btn,
-body.aavira-theme .header-btn,
-body.aavira-theme .close-search{
-  color:var(--aavira-charcoal)!important;
-}
-
-body.aavira-theme .main-content,
-body.aavira-theme .main-scroll,
-body.aavira-theme .scroll,
-body.aavira-theme .scrollable-content{
-  background:var(--aavira-ivory)!important;
-}
-
-body.aavira-theme .pro-card,
-body.aavira-theme .order-card,
-body.aavira-theme .menu-container,
-body.aavira-theme .stats-card,
-body.aavira-theme .s-card,
-body.aavira-theme .tracking-card,
-body.aavira-theme .dv-top-card,
-body.aavira-theme .rating-summary-wrapper,
-body.aavira-theme .pro-card,
-body.aavira-theme .suggest-section{
-  border-color:var(--aavira-border)!important;
-  box-shadow:0 8px 24px rgba(36,32,36,.055);
-}
-
-body.aavira-theme .tab.active,
-body.aavira-theme .size-chart-link,
-body.aavira-theme .help-link-text,
-body.aavira-theme .menu-left>i,
-body.aavira-theme .stat-item i,
-body.aavira-theme .nav-item.active,
-body.aavira-theme .nav-item.active i,
-body.aavira-theme .cart-badge,
-body.aavira-theme .discount-tag,
-body.aavira-theme .price-row .current-price + *{
-  color:var(--aavira-rani)!important;
-}
-
-body.aavira-theme .tab-indicator{
-  background:var(--aavira-rani)!important;
-}
-
-body.aavira-theme .menu-left>i{
-  background:var(--aavira-soft-pink)!important;
-}
-
-body.aavira-theme .bottom-nav,
-body.aavira-theme #bottomNavContainer{
-  background:rgba(255,255,255,.97)!important;
-  border-top-color:var(--aavira-border)!important;
-  box-shadow:0 -8px 24px rgba(36,32,36,.07);
-  backdrop-filter:blur(14px);
-}
-
-body.aavira-theme .btn-confirm,
-body.aavira-theme .promo-btn,
-body.aavira-theme .modal-btn,
-body.aavira-theme .modal-btn-primary{
-  background:linear-gradient(135deg,var(--aavira-rani),var(--aavira-rani-dark))!important;
-  color:#fff!important;
-  border-color:transparent!important;
-  box-shadow:0 10px 22px rgba(216,27,96,.18);
-}
-
-body.aavira-theme .pro-input:focus,
-body.aavira-theme .promo-input:focus,
-body.aavira-theme .search-input:focus{
-  border-color:var(--aavira-rani)!important;
-  box-shadow:0 0 0 3px rgba(216,27,96,.08)!important;
-}
-
-body.aavira-theme input,
-body.aavira-theme textarea,
-body.aavira-theme select{
-  color:var(--aavira-charcoal);
-}
-
-body.aavira-theme .speed-option.selected,
-body.aavira-theme .pay-option.selected{
-  border-color:var(--aavira-rani)!important;
-  background:var(--aavira-soft-pink)!important;
-}
-
-body.aavira-theme .color-swatch.active{
-  border-color:var(--aavira-rani)!important;
-  box-shadow:0 6px 16px rgba(216,27,96,.14);
-}
-
-body.aavira-theme .size-box.active{
-  background:var(--aavira-rani)!important;
-  border-color:var(--aavira-rani)!important;
-}
-
-body.aavira-theme .trust-badges .badge i,
-body.aavira-theme .rating-stars-main{
-  color:var(--aavira-gold)!important;
-}
-
-body.aavira-theme .dv-tc-head{
-  background:var(--aavira-soft-pink)!important;
-}
-
-body.aavira-theme .timeline-progress-line,
-body.aavira-theme .tl-icon.done,
-body.aavira-theme .tl-icon.current{
-  background:var(--aavira-rani)!important;
-}
-
-body.aavira-theme .status-badge.st-Confirmed{
-  background:var(--aavira-soft-pink)!important;
-  color:var(--aavira-rani)!important;
-}
-
-body.aavira-theme .product-title,
-body.aavira-theme .o-info h4,
-body.aavira-theme .current-price,
-body.aavira-theme .b-total{
-  color:var(--aavira-charcoal)!important;
-}
-
-body.aavira-theme .media-wrapper,
-body.aavira-theme .media-carousel,
-body.aavira-theme .slide img{
-  background:var(--aavira-cream)!important;
-  border-color:var(--aavira-border)!important;
-}
-
-body.aavira-theme .card-loading-overlay{
-  background:linear-gradient(120deg,rgba(255,255,255,0) 0%,rgba(249,232,238,.55) 45%,rgba(255,255,255,.92) 50%,rgba(249,232,238,.55) 55%,rgba(255,255,255,0) 100%)!important;
-}
-
-100%{background-position:-100% 0}}
-
-@media(max-width:420px){
-  body.aavira-theme .app-container,
-  body.aavira-theme .shell,
-  body.aavira-theme .app{max-width:420px}
-}
-
-.aavira-spinner-done{animation:none!important;transform:none!important;}
+.fld.pick{cursor:pointer;padding-right:40px;text-overflow:ellipsis}
+.grp .caret{position:absolute;right:16px;top:19px;font-size:12px;color:var(--muted);pointer-events:none}
+.grp.flash .fld{animation:flash 1.1s ease}
+@keyframes flash{0%,60%{border-color:var(--green);box-shadow:0 0 0 4px rgba(21,128,61,.18)}100%{box-shadow:none}}
+.pin-status{font-size:11.5px;font-weight:600;color:var(--muted);margin-top:-10px;display:flex;align-items:center;gap:7px}
+.pin-status.ok{color:var(--green)}
+.pin-status.err{color:var(--danger)}
+.pin-status .mini{width:12px;height:12px;border:2px solid var(--rani);border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite}
+.dist-wrap{position:fixed;inset:0;z-index:130;background:rgba(36,32,36,.55);display:none;align-items:flex-end;justify-content:center}
+.dist-wrap.on{display:flex;animation:fade .2s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.dist{width:100%;max-width:480px;height:82vh;background:#fff;border-radius:24px 24px 0 0;padding:10px 18px 0;display:flex;flex-direction:column;animation:slide .3s cubic-bezier(.2,.8,.2,1)}
+.dist-top{display:flex;align-items:center;justify-content:space-between}
+.dist-top h3{font-family:"Playfair Display",serif;font-size:20px}
+.dist-sub{font-size:12px;color:var(--muted);margin:2px 0 14px;display:flex;align-items:center;gap:6px}
+.dist-sub i{color:var(--rani)}
+.dist-search{position:relative;margin-bottom:10px}
+.dist-search i{position:absolute;left:15px;top:16px;font-size:13px;color:var(--muted)}
+.dist-search input{width:100%;height:48px;border:1.5px solid var(--line);border-radius:14px;padding:0 14px 0 40px;font:inherit;font-size:14px;outline:none;background:var(--ivory);transition:border-color .2s,box-shadow .2s}
+.dist-search input:focus{border-color:var(--rani);box-shadow:0 0 0 3px rgba(216,27,96,.1);background:#fff}
+.dist-list{flex:1;overflow-y:auto;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}
+.d-item{width:100%;display:flex;align-items:center;gap:12px;padding:14px 8px;border:0;border-bottom:1px solid var(--line);background:none;text-align:left;font-size:14px;font-weight:500;color:var(--ink);opacity:0;animation:rise .35s ease forwards}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.d-item .ico{width:32px;height:32px;border-radius:50%;background:var(--cream);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:12px;flex:0 0 auto}
+.d-item .tick{margin-left:auto;color:var(--rani);display:none}
+.d-item.on{color:var(--rani);font-weight:700}
+.d-item.on .ico{background:var(--blush);color:var(--rani)}
+.d-item.on .tick{display:block}
+.d-item:active{background:var(--blush)}
+.d-item mark{background:#FDE68A;color:inherit;border-radius:3px;padding:0 1px}
+.d-empty{text-align:center;padding:40px 10px;color:var(--muted);font-size:13px}
+.d-empty i{display:block;font-size:30px;color:#CBBFC6;margin-bottom:10px}
+.grp.fx>label{position:static;display:block;padding:0;background:none;font-size:12px;font-weight:700;color:var(--ink);margin:0 0 7px 2px;pointer-events:auto}
+.fx-box{display:flex;align-items:center;gap:10px;height:54px;padding:0 6px 0 15px;background:var(--cream);border:2px solid transparent;border-radius:16px;transition:background .2s,border-color .2s,box-shadow .2s}
+.fx-box:focus-within{background:#fff;border-color:var(--rani);box-shadow:0 0 0 4px rgba(216,27,96,.08)}
+.fx .lead{color:var(--rani);font-size:14px;width:16px;text-align:center;flex:0 0 auto}
+.grp.fx .fld{flex:1;min-width:0;height:100%;border:0;background:transparent;box-shadow:none;padding:0;border-radius:0;font-size:15px}
+.grp.fx .fld:focus{box-shadow:none;border:0}
+.grp.fx.flash .fld{animation:none}
+.grp.fx.flash .fx-box{animation:flash 1.1s ease}
+.fx .caret2{font-size:12px;color:var(--muted);flex:0 0 auto}
+.fx-box[role=button],.fx-box[role=button] .fld{cursor:pointer}
+.fx-i{width:38px;height:38px;border:0;border-radius:50%;background:transparent;color:#9A8F96;font-size:17px;flex:0 0 auto;transition:background .2s,color .2s}
+.fx-i.on{color:var(--rani);background:var(--blush)}
+.fx-tip{display:none;margin-top:8px;padding:12px 14px;border-radius:12px;background:#FFF8E1;border:1px dashed #F5D77A;font-size:13px;line-height:1.65;color:#5C4A12}
+.fx-tip i{color:#D99A00;margin-right:4px}
+.fx-tip.on{display:block;animation:rise .28s ease}
+.grp.fx .err{position:static;display:none;margin:6px 0 0 4px;font-size:11px}
+.grp.fx.bad .err{display:block}
+.grp.fx.bad .fx-box{border-color:var(--danger);background:#FEF2F2}
+.sh-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.sh-head h3{margin:4px 0 6px;flex:1}
+.sh-x{width:34px;height:34px;border:0;border-radius:50%;background:var(--cream);color:var(--muted);flex:0 0 auto}
+.qty-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.qty-row .more{display:flex;align-items:center;gap:7px;padding:11px 18px;border:1.5px solid var(--rani);border-radius:999px;background:var(--blush);color:var(--rani);font-size:13px;font-weight:700}
+.line-total{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding:12px 14px;border-radius:12px;background:var(--cream);font-size:13px;color:var(--muted)}
+.line-total b{font-size:16px;color:var(--ink)}
+.sheet-acts .wish.on{border-color:var(--rani);background:var(--blush);color:var(--rani)}
+.toast{position:fixed;left:50%;bottom:calc(170px + env(safe-area-inset-bottom,0px));transform:translate(-50%,14px);opacity:0;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--rani),var(--rani-dark));color:#fff;font-size:13px;font-weight:600;padding:12px 20px;border-radius:999px;box-shadow:0 10px 28px rgba(216,27,96,.38);z-index:300;pointer-events:none;transition:opacity .28s,transform .28s;max-width:92%}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media(prefers-reduced-motion:reduce){*,::before,::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+/* underline style - no boxes; info icon only on active field */
+.fx-box,.fx-box:focus-within{background:transparent;border:0;border-bottom:2px solid var(--line);border-radius:0;box-shadow:none;padding:0 2px;height:48px;position:relative}
+.fx-box::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--rani);transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+.fx-box:focus-within::after,.fx.active .fx-box::after{transform:scaleX(1)}
+.fx .lead{display:none}
+.grp.fx>label{font-weight:600;color:var(--muted);transition:color .2s}
+.fx.active>label,.fx:focus-within>label{color:var(--rani)}
+.grp.fx .fld{font-size:16px;font-weight:500}
+.grp.fx .fld:focus-visible{outline:none}
+.grp.fx.bad .fx-box{background:transparent;border-bottom-color:var(--danger)}
+.grp.fx.flash .fx-box{animation:flashline 1.1s ease}
+@keyframes flashline{0%,60%{border-bottom-color:var(--green)}100%{border-bottom-color:var(--line)}}
+.fx-i{display:none;width:34px;height:34px;font-size:16px;align-items:center;justify-content:center}
+.fx.active .fx-i{display:inline-flex;animation:fade .25s ease}
+/* boxed inputs with visible placeholders */
+.fx-box,.fx-box:focus-within{border:1.5px solid #D9D0D6;border-radius:14px;background:#fff;padding:0 6px 0 14px;height:52px}
+.fx-box:focus-within{border-color:var(--rani);box-shadow:0 0 0 4px rgba(216,27,96,.1)}
+.fx-box::after{display:none}
+.grp.fx>label{color:var(--ink);font-weight:700}
+.fx.active>label,.fx:focus-within>label{color:var(--rani)}
+.grp.fx.bad .fx-box{border-color:var(--danger);background:#FEF2F2}
+.grp.fx.flash .fx-box{animation:flash 1.1s ease}
+.grp.fx .fld::placeholder{color:#A8A0A5;font-weight:400}
+/* coupon toggle, UPI logo, full screen viewer */
+.coupon-btn{width:100%;display:flex;align-items:center;justify-content:space-between;padding:13px 14px;margin-bottom:16px;border:1.5px dashed var(--rani);border-radius:12px;background:var(--blush);color:var(--rani);font-size:13px;font-weight:700}
+.coupon-btn span{display:flex;align-items:center;gap:9px}
+.coupon-btn .chev{font-size:12px;transition:transform .25s}
+.coupon-btn.open .chev{transform:rotate(180deg)}
+#promoForm{animation:rise .25s ease}
+.opt-ico.upi{width:58px;height:40px;padding:5px;background:#fff;border:1px solid var(--line);font-size:11px;font-weight:700;color:var(--ink)}
+.opt:has(input:checked) .opt-ico.upi{background:#fff}
+.opt-ico.upi img{width:100%;height:100%;object-fit:contain;display:block}
+.fs{position:fixed;inset:0;z-index:140;background:#000;display:none;flex-direction:column}
+.fs.on{display:flex;animation:fade .22s ease}
+.fs-x{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:14px;z-index:2;width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:18px;backdrop-filter:blur(6px)}
+.fs-stage{flex:1;display:flex;align-items:center;justify-content:center;overflow:auto;touch-action:pan-x pan-y pinch-zoom}
+.fs-stage img{max-width:100%;max-height:100%;object-fit:contain;transition:transform .3s ease;transform-origin:center;animation:pop .3s ease;cursor:zoom-in}
+.fs-stage img.zoom{transform:scale(2);cursor:zoom-out}
+.fs-cap{padding:14px 20px calc(18px + env(safe-area-inset-bottom,0px));color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.85));font-size:14px;font-weight:600;line-height:1.5}
+.fs-cap small{display:block;font-size:12px;font-weight:400;opacity:.8;margin-top:2px}
+.bar-coupon{display:flex;align-items:center;gap:6px;border:0;background:none;padding:3px 0 0;color:var(--rani);font-size:12px;font-weight:700;text-align:left}
+.bar-coupon.done{color:var(--green)}
+.bar-coupon.done i::before{content:"\f058"}
+/* coupon lives in the bottom bar */
+.bar{flex-direction:column;align-items:stretch;justify-content:flex-start;gap:10px}
+.bar-main{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.bar-coupon-area{display:flex;flex-direction:column;gap:8px}
+.bar-link{align-self:flex-end;display:flex;align-items:center;gap:7px;border:0;background:none;padding:2px 2px;color:var(--rani);font-size:12.5px;font-weight:700}
+.bar-link.open{color:var(--muted)}
+.bar .promo{margin:0;width:100%}
+.bar .promo .fld{height:44px;border-style:dashed}
+.bar .promo .apply{padding:0 24px}
+.bar .applied{margin:0;padding:8px 12px;font-size:12.5px}
+.foot{text-align:center;padding:10px 0 6px}
+.foot img{height:56px;width:auto;max-width:70%;object-fit:contain;display:block;margin:0 auto 10px}
+.foot-secure{font-size:11.5px;font-weight:600;color:var(--green);display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:6px}
+.foot-copy{font-size:11px;color:var(--muted);letter-spacing:.02em}
 </style>
 </head>
 <body>
+<div class="app">
+  <header class="hdr">
+    <div><button class="ib" onclick="goBack(this)" aria-label="Back"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <h1>Checkout</h1>
+    <span class="secure"><i class="fa-solid fa-lock"></i>Secure</span>
+  </header>
 
-    <div class="app-container">
-        
-        <header class="pro-header">
-            <button class="header-icon-btn" onclick="history.back()"><i class="fa-solid fa-arrow-left-long"></i></button>
-            <div class="header-center">
-                <div class="title">Secure Checkout</div>
-            </div>
-            <div style="width:34px;"></div>
-        </header>
+  <div class="empty" id="emptyView" hidden>
+    <i class="fa-solid fa-cart-shopping"></i>
+    <h2>Your cart is empty</h2>
+    <p>Explore our latest collections and add something you love.</p>
+    <a href="./">Shop new arrivals</a>
+  </div>
 
-        <!-- CART IS EMPTY MESSAGE -->
-        <div id="emptyCartView" style="display: none; flex: 1; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
-            <i class="fa-solid fa-basket-shopping" style="font-size:55px; color:#cbd5e1; margin-bottom: 20px;"></i>
-            <h2 style="font-size:18px; color:var(--text-dark); margin-bottom:8px; font-weight:700;">Cart is empty</h2>
-            <p style="font-size: 13px; color:var(--text-muted); font-weight:500;">Begin exploring elegance from our latest collections.</p>
-            <a href="./" style="margin-top:24px; padding:12px 28px; font-weight:700; text-decoration:none; color:var(--primary); background:var(--primary-light); border: 1px solid var(--primary); border-radius: 24px; font-size: 12px; text-transform: uppercase;">Shop New Arrivals</a> 
-        </div>
+  <main id="checkoutView" hidden>
+    <section class="card">
+      <h2>Delivery address</h2>
+      <div class="loginline" id="loginLine" hidden><i class="fa-solid fa-circle-user"></i><span id="loginText"></span></div>
+      <div id="addrBox"></div>
+      <button class="add-addr" type="button" onclick="openAddrScreen()"><i class="fa-solid fa-plus"></i>Add your address</button>
+    </section>
 
-        <main class="main-content" id="mainScroll" style="display:none;">
-            
-            <section class="pro-card">
-                <div class="card-header">
-                    <h2>Shipping Address</h2>
-                </div>
-                
-                <form id="checkoutForm" class="pro-form" autocomplete="off">
-                    <div class="pro-input-group">
-                        <input type="text" class="pro-input" id="ad_name" placeholder=" " required>
-                        <label class="pro-label">Full Name</label>
-                    </div>
+    <section class="card">
+      <h2>Your order <span class="count" id="itemCount">0 items</span></h2>
+      <div class="list" id="items"></div>
+    </section>
 
-                    <div class="form-row">
-                        <div class="pro-input-group">
-                            <input type="tel" class="pro-input" id="ad_phone" placeholder=" " maxlength="10" required>
-                            <label class="pro-label">Mobile Number</label>
-                            <span class="error-msg">Valid 10 Digits required</span>
-                        </div>
-                        <div class="pro-input-group">
-                            <input type="number" class="pro-input" id="ad_pin" placeholder=" " required>
-                            <label class="pro-label">Pincode</label>
-                        </div>
-                    </div>
-                    
-                    <div class="pro-input-group">
-                        <input type="email" class="pro-input" id="ad_email" placeholder=" " required>
-                        <label class="pro-label">Email ID</label>
-                    </div>
+    <section class="rec" id="recSection" hidden>
+      <h3>Recommended for you</h3>
+      <div class="rec-row" id="recRow"></div>
+    </section>
 
-                    <div class="form-row">
-                        <div class="pro-input-group">
-                            <input type="text" class="pro-input" id="ad_city" placeholder=" " required>
-                            <label class="pro-label">City, State</label>
-                        </div>
-                    </div>
-                    
-                    <div class="pro-input-group">
-                        <input type="text" class="pro-input" id="ad_address" placeholder=" " required>
-                        <label class="pro-label">Complete Address (House no, Street)</label>
-                    </div>
+    <section class="card">
+      <h2>Delivery</h2>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="delivery" value="0" checked><span class="radio"></span><span class="opt-ico"><i class="fa-solid fa-truck"></i></span><span class="opt-txt"><b>Standard shipping</b><small>4 to 6 business days</small></span><span class="tag free">Free</span></label>
+        <label class="opt"><input type="radio" name="delivery" value="99"><span class="radio"></span><span class="opt-ico"><i class="fa-solid fa-bolt"></i></span><span class="opt-txt"><b>Express priority</b><small>Faster dispatch</small></span><span class="tag">₹99</span></label>
+      </div>
+      <label class="switch-row">
+        <span><b>Premium gift wrap</b><small>Ribbon and seal, +₹49</small></span>
+        <span class="switch"><input type="checkbox" id="giftWrap"><span></span></span>
+      </label>
+    </section>
 
-                    <!-- Map Link Input Box -->
-                    <div class="pro-input-group" style="margin-top: 10px; margin-bottom: 8px;">
-                        <input type="url" class="pro-input" id="ad_map_link" placeholder=" ">
-                        <label class="pro-label"><i class="fa-solid fa-map-location-dot"></i> Google Maps Link (Optional)</label>
-                        <span class="help-link-text" onclick="document.getElementById('mapHelpModal').style.display='flex'">How to get link?</span>
-                    </div>
-                </form>
-            </section>
+    <section class="card">
+      <h2>Payment</h2>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="payment" value="cod" checked><span class="radio"></span><span class="opt-ico"><i class="fa-solid fa-hand-holding-dollar"></i></span><span class="opt-txt"><b>Cash on delivery</b><small>Pay when your order arrives</small></span></label>
+        <label class="opt"><input type="radio" name="payment" value="online"><span class="radio"></span><span class="opt-ico upi"><img src="upi-logo.png" alt="UPI" onerror="this.replaceWith(document.createTextNode('UPI'))"></span><span class="opt-txt"><b>Online payment</b><small>UPI or card, confirmed on WhatsApp</small></span></label>
+      </div>
+    </section>
 
-            <section class="pro-card">
-                <div class="card-header" style="margin-bottom:20px;">
-                    <h2>Items In Bag</h2>
-                    <span class="item-count" id="itemCountBadge">0 ITEMS</span>
-                </div>
-                <div class="order-list" id="orderItemsContainer"></div>
-            </section>
+    <section class="card">
+      <h2>Order summary</h2>
+      <div class="bill">
+        <div id="rowMrp"><span>Bag total</span><span id="billMrp"></span></div>
+        <div class="save" id="rowDiscount"><span>Product discount</span><span id="billDiscount"></span></div>
+        <div class="save" id="rowPromo"><span>Coupon discount</span><span id="billPromo"></span></div>
+        <div><span>Shipping</span><span id="billShip"></span></div>
+        <div id="rowGift"><span>Gift wrap</span><span>₹49</span></div>
+        <hr>
+        <div class="total"><span>Total payable</span><span id="billTotal"></span></div>
+      </div>
+    </section>
+    <footer class="foot">
+      <img src="public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira Fashion" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='/file_0000000015bc82119a5830b82bcd3a20.png'}else{this.style.display='none'}">
+      <p class="foot-secure"><i class="fa-solid fa-shield-halved"></i>100% secure checkout</p>
+      <p class="foot-copy">&copy; <span id="copyYear">2026</span> Aavira Fashion. All rights reserved.</p>
+    </footer>
+  </main>
 
-            <!-- EXTRA SUGGESTIONS (WISHLIST RECOMMENDATIONS)-->
-            <section class="suggest-section" id="cartSuggestionsSection">
-                <div class="suggest-title"><i class="fa-solid fa-gem" style="color:var(--secondary);"></i> Recommended For You</div>
-                <div class="suggest-scroll" id="suggestedItemsContainer"></div>
-            </section>
-
-            <section class="pro-card">
-                <div class="card-header"><h2>Delivery Method</h2></div>
-                <div class="speed-selector">
-                    <label class="speed-option selected" id="opt_std">
-                        <input type="radio" name="speed" value="standard" checked onchange="setUserDeliveryPreferencesCost('standard')">
-                        <div class="speed-info">
-                            <div class="speed-icon"><i class="fa-solid fa-truck"></i></div>
-                            <div><h4>Standard Shipping</h4><p>Delivery in 4 - 6 Business Days</p></div>
-                        </div>
-                        <span class="speed-price" style="background:#ECFDF5; color:#059669; border: 1px dashed #A7F3D0;">Free</span>
-                    </label>
-                    <label class="speed-option" id="opt_exp">
-                        <input type="radio" name="speed" value="express" onchange="setUserDeliveryPreferencesCost('express')">
-                        <div class="speed-info">
-                            <div class="speed-icon" style="background:var(--primary-light);"><i class="fa-solid fa-plane-departure" style="color:var(--primary);"></i></div>
-                            <div><h4>Express Priority</h4><p>Dispatched via flight carrier</p></div>
-                        </div>
-                        <span class="speed-price" style="color: var(--text-dark);">₹ 99</span>
-                    </label>
-                </div>
-                
-                <div style="border-top:1px dashed #cbd5e1; margin-top:20px;"></div>
-                
-                <label class="gift-toggle">
-                    <div>
-                        <h4 style="font-size:13px; font-weight:700; color:var(--text-dark);">Premium Gift Wrap</h4>
-                        <p style="font-size: 11px; font-weight:500; color: var(--text-muted);">Include ribbons & premium seal (+ ₹49)</p>
-                    </div>
-                    <div class="switch"><input type="checkbox" onchange="updateCustomWrapPreferencesCosts(this)"><span class="slider"></span></div>
-                </label>
-            </section>
-
-            <section class="pro-card">
-                <div class="card-header"><h2>Payment Method</h2></div>
-                <div class="payment-selector">
-                    <label class="pay-option selected" onclick="pickPaymentMode('cod', this)">
-                        <div class="custom-radio-mark"><div class="custom-radio-dot"></div></div>
-                        <div class="pay-content">
-                            <i class="fa-solid fa-boxes-packing" style="font-size: 24px; color:#64748b; margin:0 4px;"></i>
-                            <div><h4>Cash On Delivery (COD)</h4><p>Pay cash when package arrives</p></div>
-                        </div>
-                    </label>
-                    <label class="pay-option" onclick="pickPaymentMode('online', this)">
-                        <div class="custom-radio-mark"><div class="custom-radio-dot"></div></div>
-                        <div class="pay-content">
-                            <i class="fa-solid fa-money-check-dollar" style="font-size: 20px; color:var(--text-dark); background:var(--bg-body); padding:4px; border-radius:6px;"></i>
-                            <div>
-                                <h4>Online Payment (UPI/Card) <span style="background:var(--bg-body); border:1px solid var(--border); padding:2px 5px; border-radius:4px; font-size:9px; font-weight:600; color:var(--success); margin-left:4px;">FAST</span></h4>
-                                <p>Pay safely using GPay, PhonePe UPI</p>
-                            </div>
-                        </div>
-                    </label>
-                </div>
-            </section>
-
-            <section class="pro-card" style="margin-bottom:0;">
-                <div class="card-header"><h2>Order Summary</h2></div>
-                
-                <!-- 🔥 PROMO CODE SECTION 🔥 -->
-                <div class="promo-container" id="promoInputGroup">
-                    <input type="text" id="promoInput" class="promo-input" placeholder="Enter coupon code">
-                    <button class="promo-btn" id="promoBtn" onclick="verifyAndApplyCouponAPI()">APPLY</button>
-                </div>
-                
-                <div class="applied-promo-box" id="appliedPromoBox">
-                    <div class="ap-details"><i class="fa-solid fa-circle-check"></i> Applied: <strong id="apCodeName"></strong></div>
-                    <button class="ap-remove" onclick="removeActiveCoupon()">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-
-                <div class="bill-breakdown">
-                    <div class="b-row"><span>Cart Amount</span><span id="billMrp">₹ 0</span></div>
-                    <div class="b-row green-txt"><span>Product Discount</span><span id="billDiscount">- ₹ 0</span></div>
-                    <div class="b-row green-txt" id="billPromoRow" style="display:none;"><span>Coupon Discount</span><span id="billPromoDiscount">- ₹ 0</span></div>
-                    <div class="b-row"><span>Shipping Fees</span><span id="billDelivery" class="green-txt">Free</span></div>
-                    <div class="b-row" id="row_gift" style="display:none;"><span>Gift Wrapping</span><span>₹ 49</span></div>
-                    <div class="b-divider"></div>
-                    <div class="b-row b-total"><span>Total Payable</span><span id="billTotal">₹ 0</span></div>
-                </div>
-            </section>
-
-            <div class="trust-banner" style="display: flex; justify-content: center; width: 100%; margin: 15px 0 10px; font-size: 11px; font-weight:600; color: var(--text-muted);">
-                <i class="fa-solid fa-lock" style="color:var(--text-muted); margin-right:4px;"></i> Secured By Official Aavira Systems
-            </div>
-        </main>
-
-        <div class="pro-bottom-bar" id="bottomCheckoutBar" style="display:none;">
-            <div class="bar-price">
-                <p>Final Amount</p>
-                <h3 id="bottomTotal">₹ 0</h3>
-            </div>
-            <button class="btn-confirm" id="placeOrderBtn" onclick="submitFinalOrder()"><i class="fa-solid fa-lock"></i> Place Order</button>
-        </div>
-
-        <!-- HOW TO GET MAP LINK MODAL -->
-        <div class="process-bg" id="mapHelpModal" style="display:none; z-index:10000;">
-            <div class="process-card" style="position:relative; text-align:left; max-width:300px; padding:24px;">
-                <button style="position:absolute; top:12px; right:12px; background:none; border:none; font-size:18px; color:var(--text-muted); cursor:pointer;" onclick="document.getElementById('mapHelpModal').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
-                <h3 style="font-size: 16px; font-weight:700; margin-bottom:14px; color:var(--text-dark); border-bottom: 1px dashed var(--border); padding-bottom:10px;"><i class="fa-solid fa-map-location-dot" style="color:var(--primary);"></i> Map Link Demo</h3>
-                <ol style="font-size:13px; color:var(--text-muted); font-weight:500; padding-left:18px; line-height:1.8; margin-bottom: 20px;">
-                    <li>Open <strong>Google Maps</strong> on your phone.</li>
-                    <li>Tap on the <span style="color:#2563eb; font-weight:700;">Blue Dot</span> (Your location).</li>
-                    <li>Tap on <strong>Share</strong> option.</li>
-                    <li>Select <strong>Copy Link</strong>.</li>
-                    <li>Come back and paste it in the box.</li>
-                </ol>
-                <button class="btn-pro-action primary" style="padding:12px; font-size:12px;" onclick="document.getElementById('mapHelpModal').style.display='none'">I Understand</button>
-            </div>
-        </div>
-
-        <!-- PROCESS MODALS -->
-        <div class="process-bg" id="processModal">
-            <!-- Loading Status -->
-            <div class="process-card" id="gatewayBox">
-                <div class="loader"></div>
-                <h2 style="font-size:18px; margin-bottom:10px; font-weight:700; color:var(--text-dark); font-family: 'Playfair Display', serif;">Processing Order...</h2>
-                <p style="font-size:12px; color:var(--text-muted); font-weight:500;" id="processText">Please wait while we verify your details securely.</p>
-            </div>
-            
-            <!-- Result Confirm Message Panel -->
-            <div class="process-card" id="successBox" style="display:none; padding-bottom: 24px;">
-                <div id="dynamicModalIcon" style="width:65px; height:65px; border-radius:50%; color:white; font-size:30px; display:flex; justify-content:center; align-items:center; margin: 0 auto 16px;"></div>
-                
-                <h2 id="successBoxTitle" style="font-family:'Playfair Display', serif; font-size:22px; font-weight:700; color:var(--text-dark);">Order Placed Successfully!</h2>
-                
-                <div style="margin: 16px 0; font-size: 13px; font-weight:700; color: var(--success); background:#ECFDF5; padding:8px; border-radius:8px; border:1px dashed #6ee7b7; letter-spacing:0.5px;">
-                    ORDER ID: <span id="displayOrderId" style="color:var(--text-dark);">-----</span>
-                </div>
-                
-                <p id="successBoxDesc" style="font-size:13px; color:var(--text-muted); line-height: 1.5; font-weight:500;">Your order details have been securely recorded. We will process it shortly.</p>
-                
-                <div class="popup-action-btns" id="popupActionBtns"></div>
-            </div>
-        </div>
-
-        <div class="toast" id="alertToast">
-            <span id="toastIcon"></span>
-            <div id="toastMessage" style="flex:1;">Notification</div>
-        </div>
+  <div class="bar" id="payBar" hidden>
+    <div class="bar-coupon-area">
+      <button class="bar-link" id="couponToggle" type="button" onclick="toggleCoupon()" aria-expanded="false"><i class="fa-solid fa-ticket"></i>Have a coupon code?</button>
+      <div class="promo" id="promoForm" style="display:none">
+        <input class="fld" id="promoInput" placeholder="Enter coupon code" autocomplete="off" aria-label="Coupon code">
+        <button class="apply" id="promoBtn" type="button" onclick="applyPromo()">Apply</button>
+      </div>
+      <div class="applied" id="promoApplied"><span><i class="fa-solid fa-circle-check"></i> <b id="promoName"></b> applied</span><button type="button" onclick="removePromo()" aria-label="Remove coupon"><i class="fa-solid fa-xmark"></i></button></div>
     </div>
+    <div class="bar-main">
+      <div><small>Final amount</small><b id="barTotal">&#8377;0</b></div>
+      <button class="btn-place" id="placeBtn" type="button" onclick="placeOrder()"><i class="fa-solid fa-lock"></i>Place order</button>
+    </div>
+  </div>
+</div>
 
-    <!-- Linked external JS -->
-    <script src="user_data.js"></script>
-    <script type="module" src="checkout-firebase.js"></script>
-    <script id="checkout-inline-js">
-/* =========================================================
-   AAVIRA LUXE - CHECKOUT SCRIPT (checkout.script.js)
-   ========================================================= */
+<!-- Add address full screen -->
+<div class="screen" id="addrScreen" role="dialog" aria-label="Add address">
+  <header class="hdr">
+    <div><button class="ib" onclick="closeAddrScreen()" aria-label="Close"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <h1 id="addrTitle">Add address</h1>
+    <span></span>
+  </header>
+  <div class="screen-body">
+    <form class="form" id="addressForm" autocomplete="off" novalidate onsubmit="return false">
+      <p class="sec-t">Contact details</p>
+      <div class="grp fx"><label for="ad_name">Full name</label>
+        <div class="fx-box"><i class="fa-solid fa-user lead"></i><input class="fld" id="ad_name" placeholder="Enter your full name" autocomplete="name"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i class="fa-solid fa-circle-info"></i></button></div>
+        <div class="fx-tip"><i class="fa-solid fa-lightbulb"></i> यहाँ अपना पूरा नाम लिखें, जैसा आपके पहचान पत्र पर है। पार्सल इसी नाम से आएगा।<br><b>जैसे:</b> राहुल कुमार</div><span class="err">Enter your full name</span></div>
+      <div class="grp fx"><label for="ad_phone">Mobile number</label>
+        <div class="fx-box"><i class="fa-solid fa-phone lead"></i><input class="fld" id="ad_phone" placeholder="Enter your 10-digit mobile number" type="tel" inputmode="numeric" maxlength="10"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i class="fa-solid fa-circle-info"></i></button></div>
+        <div class="fx-tip"><i class="fa-solid fa-lightbulb"></i> अपना 10 अंकों का मोबाइल नंबर डालें। डिलीवरी वाला भैया इसी नंबर पर फोन करेगा। नंबर 6, 7, 8 या 9 से शुरू होना चाहिए।<br><b>जैसे:</b> 9876543210</div><span class="err">10-digit number required</span></div>
+      <div class="grp fx"><label for="ad_email">Email</label>
+        <div class="fx-box"><i class="fa-solid fa-envelope lead"></i><input class="fld" id="ad_email" placeholder="Enter your email address" type="email"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i class="fa-solid fa-circle-info"></i></button></div>
+        <div class="fx-tip"><i class="fa-solid fa-lightbulb"></i> अपनी ईमेल आईडी डालें। आपके ऑर्डर की जानकारी इसी पर आएगी।<br><b>जैसे:</b> rahul@gmail.com</div><span class="err">Enter a valid email</span></div>
 
-let cartItems = [];
-let productDatabase = {};
+      <p class="sec-t" style="margin-top:8px">Address details</p>
+      <div class="grp fx"><label for="ad_pin">Pincode</label>
+        <div class="fx-box"><i class="fa-solid fa-map-pin lead"></i><input class="fld" id="ad_pin" placeholder="Enter your 6-digit pincode" inputmode="numeric" maxlength="6"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i class="fa-solid fa-circle-info"></i></button></div>
+        <div class="fx-tip"><i class="fa-solid fa-lightbulb"></i> अपने इलाके का 6 अंकों का पिनकोड डालें। पिनकोड डालते ही आपका जिला अपने आप भर जाएगा।<br><b>जैसे:</b> 800001</div><span class="err">6-digit pincode</span></div>
+      <p class="pin-status" id="pinStatus" hidden></p>
+      <div class="grp fx"><label for="ad_city">District, State</label>
+        <div class="fx-box" role="button" tabindex="0" onclick="if(!event.target.closest('.fx-i'))openDistrict()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDistrict()}"><i class="fa-solid fa-city lead"></i><input class="fld" id="ad_city" placeholder="Tap to select your district" readonly><i class="fa-solid fa-chevron-down caret2"></i><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i class="fa-solid fa-circle-info"></i></button></div>
+        <div class="fx-tip"><i class="fa-solid fa-lightbulb"></i> इस बॉक्स पर टैप करें और लिस्ट में से अपना जिला चुनें। ऊपर सर्च करके भी ढूंढ सकते हैं। पिनकोड डालने पर यह अपने आप भर जाता है।</div><span class="err">Select your district</span></div>
+      <div class="grp fx"><label for="ad_address">House no, street, area</label>
+        <div class="fx-box"><i class="fa-solid fa-house lead"></i><input class="fld" id="ad_address" placeholder="Enter house no, street, area" ><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i class="fa-solid fa-circle-info"></i></button></div>
+        <div class="fx-tip"><i class="fa-solid fa-lightbulb"></i> अपना मकान नंबर, गली या मोहल्ले का नाम और पास की कोई पहचान लिखें, ताकि डिलीवरी वाले को घर ढूंढने में आसानी हो।<br><b>जैसे:</b> मकान नं. 12, गांधी नगर, स्कूल के पास</div><span class="err">Enter your full address</span></div>
+      <div class="grp fx"><label for="ad_map_link">Google Maps link (optional)</label>
+        <div class="fx-box"><i class="fa-solid fa-location-crosshairs lead"></i><input class="fld" id="ad_map_link" placeholder="Paste Google Maps link (optional)" type="url"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i class="fa-solid fa-circle-info"></i></button></div>
+        <div class="fx-tip"><i class="fa-solid fa-lightbulb"></i> यह जरूरी नहीं है। Google Maps खोलें, अपनी जगह पर टैप करें, फिर Share दबाएं और Copy link करें। उस लिंक को यहाँ पेस्ट कर दें। इससे डिलीवरी आसान हो जाती है।</div></div>
 
-// Promo variables
-let appliedPromoCode = "";
-let promoDiscountAmount = 0;
+      <p class="sec-t" style="margin-top:8px">Save address as</p>
+      <div class="chips" id="typeChips">
+        <button type="button" class="chip on" data-t="Home"><i class="fa-solid fa-house"></i>Home</button>
+        <button type="button" class="chip" data-t="Work"><i class="fa-solid fa-briefcase"></i>Work</button>
+        <button type="button" class="chip" data-t="Other"><i class="fa-solid fa-location-dot"></i>Other</button>
+      </div>
+    </form>
+  </div>
+  <div class="screen-foot"><button class="btn-save" id="saveAddrBtn" type="button" onclick="saveAddress()"><i class="fa-solid fa-check"></i>Save and deliver here</button></div>
+</div>
 
-let selectedPaymentMode = 'cod';
-let giftWrapFee = 0;
-let deliveryFee = 0;
-let isBuyNowMode = false;
+<!-- Product sheet -->
+<div class="sheet-wrap" id="sheetWrap" onclick="if(event.target===this)closeSheet()"><div class="sheet" id="sheet"></div></div>
 
-window.pendingWhatsAppUrl = "";
-let whatsappTimerInterval;
+<!-- Full screen product -->
+<div class="fs" id="fsView" role="dialog" aria-label="Product photo">
+  <button type="button" class="fs-x" onclick="closeFull()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+  <div class="fs-stage"><img id="fsImg" alt="" onclick="this.classList.toggle('zoom')"></div>
+  <div class="fs-cap" id="fsCap"></div>
+</div>
 
-// Safe Toast Controller
-const ToastAlert = {
-    show(message, isSuccess = false) {
-        const toastEl = document.getElementById('alertToast');
-        const toastTxt = document.getElementById('toastMessage');
-        const toastIcn = document.getElementById('toastIcon');
-        
-        if (!toastEl || !toastTxt || !toastIcn) return;
+<!-- District picker -->
+<div class="dist-wrap" id="distWrap" onclick="if(event.target===this)closeDistrict()">
+  <div class="dist" role="dialog" aria-label="Select district">
+    <div class="grab"></div>
+    <div class="dist-top"><h3>Select district</h3><button type="button" class="sh-x" onclick="closeDistrict()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+    <p class="dist-sub"><i class="fa-solid fa-location-dot"></i>Bihar · <span id="distCount">38</span> districts</p>
+    <div class="dist-search"><i class="fa-solid fa-magnifying-glass"></i><input id="distSearch" type="search" placeholder="Search district" autocomplete="off" aria-label="Search district"></div>
+    <div class="dist-list" id="distList"></div>
+  </div>
+</div>
 
-        if (navigator.vibrate) navigator.vibrate(isSuccess ? 40 : 60);
-        toastTxt.innerText = message;
-        toastIcn.innerHTML = isSuccess 
-            ? '<i class="fa-solid fa-circle-check" style="color:#10b981; font-size:22px;"></i>' 
-            : '<i class="fa-solid fa-circle-exclamation" style="color:#ef4444; font-size:22px;"></i>';
-        
-        toastEl.classList.add('show');
-        setTimeout(() => toastEl.classList.remove('show'), 3000);
-    }
+<div class="overlay" id="overlay"><div class="dialog" id="dialog"></div></div>
+<div class="toast" id="toast" role="status"></div>
+<audio id="successSound" src="success_music.mp3" preload="auto"></audio>
+
+<script src="user_data.js"></script>
+<script type="module" src="checkout-firebase.js"></script>
+<script>
+const $ = selector => document.querySelector(selector);
+const $$ = selector => [...document.querySelectorAll(selector)];
+const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+const money = amount => '₹' + Number(amount).toLocaleString('en-IN');
+const parsePrice = value => parseInt(String(value ?? '').replace(/[^0-9]/g, ''), 10) || 0;
+const readJson = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } };
+const writeJson = (key, value) => { try { localStorage.setItem(key, JSON.stringify(value)); } catch {} };
+const readValue = key => { try { return localStorage.getItem(key); } catch { return null; } };
+const removeValue = key => { try { localStorage.removeItem(key); } catch {} };
+
+const SPINNER_DELAY = 1500;
+const GIFT_FEE = 49;
+const WHATSAPP_NUMBER = '919608720622';
+const FALLBACK_IMG = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#F7F1E8"/><text x="200" y="210" font-family="Georgia,serif" font-size="30" fill="#B9AFA6" text-anchor="middle">Aavira</text></svg>');
+const IMG_ERROR = `onerror="this.onerror=null;this.src='${FALLBACK_IMG}'"`;
+
+const state = { cart: [], db: {}, buyNow: false, promo: { code: '', amount: 0 }, whatsappUrl: '', timer: null, addresses: [], selectedId: '', editId: '', addrType: 'Home', sheetIndex: -1 };
+
+const withSpinner = (el, action) => {
+  if (!el || el.classList.contains('is-busy')) return;
+  el.classList.add('is-busy');
+  setTimeout(() => { el.classList.remove('is-busy'); action(); }, SPINNER_DELAY);
+};
+const goBack = el => withSpinner(el, () => (history.length > 1 ? history.back() : (location.href = './')));
+const navigate = (url, el) => withSpinner(el, () => { location.href = url; });
+
+let toastTimer;
+const toast = message => {
+  const el = $('#toast');
+  el.textContent = message;
+  el.classList.add('on');
+  navigator.vibrate?.(40);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('on'), 2600);
 };
 
-const parseCurrencyNumber = (val) => parseInt(String(val).replace(/[^0-9]/g, '')) || 0;
+/* ---------- Saved addresses ---------- */
+const loginEmail = () => {
+  const email = (readValue('aavira_user_email') || '').trim().toLowerCase();
+  const name = (readValue('aavira_display_name') || '').trim().toLowerCase();
+  return email && name && name !== 'guest user' ? email : '';
+};
+const addrKey = () => 'aavira_addresses:' + (loginEmail() || 'guest');
 
-document.addEventListener('DOMContentLoaded', async () => {
-    restoreFormDraft();
-    bindInputValidationEvents();
-    await fetchProductsAndInitializeCart();
-});
+const loadAddresses = () => {
+  let list = readJson(addrKey(), []);
+  if (!Array.isArray(list)) list = [];
+  // legacy draft from old checkout form
+  const legacy = readJson('checkoutAddressDraft', null);
+  if (!list.length && legacy && legacy.ad_name && legacy.ad_address && legacy.ad_phone) {
+    list.push({ id: 'a' + Date.now(), type: 'Home', name: legacy.ad_name, phone: legacy.ad_phone, email: legacy.ad_email || loginEmail(), pin: legacy.ad_pin || '', city: legacy.ad_city || '', address: legacy.ad_address, map: legacy.ad_map_link || '' });
+    writeJson(addrKey(), list);
+  }
+  state.addresses = list;
+  state.selectedId = readValue(addrKey() + ':sel');
+  if (!list.find(a => a.id === state.selectedId)) state.selectedId = list[0]?.id || '';
+};
+const persistAddresses = () => {
+  writeJson(addrKey(), state.addresses);
+  try { localStorage.setItem(addrKey() + ':sel', state.selectedId || ''); } catch {}
+};
+const selectedAddress = () => state.addresses.find(a => a.id === state.selectedId);
 
-function bindInputValidationEvents() {
-    document.querySelectorAll('.pro-input').forEach(inputField => {
-        inputField.addEventListener('input', (event) => { 
-            if(event.target.id === 'ad_phone' || event.target.id === 'ad_pin') { 
-                event.target.value = event.target.value.replace(/\D/g, ''); 
-            }
-            validateInputField(event.target); 
-            saveFormDraft(); 
-        });
-        inputField.addEventListener('blur', (event) => validateInputField(event.target, true));
+const renderAddresses = () => {
+  const email = loginEmail();
+  $('#loginLine').hidden = !email;
+  $('#loginText').textContent = email ? `Saved addresses for ${email}` : '';
+  if (!state.addresses.length) {
+    $('#addrBox').innerHTML = `<div class="noaddr"><i class="fa-solid fa-location-dot"></i>No saved address found.<br>Add one to continue.</div>`;
+    return;
+  }
+  $('#addrBox').innerHTML = `<div class="addr-list">${state.addresses.map(a => `
+    <div class="addr ${a.id === state.selectedId ? 'sel' : ''}" onclick="selectAddress('${esc(a.id)}')">
+      <span class="radio"></span>
+      <div class="addr-body">
+        <b>${esc(a.name)} <span class="type">${esc(a.type || 'Home')}</span></b>
+        ${esc(a.address)}, ${esc(a.city)} - ${esc(a.pin)}<br>
+        <i class="fa-solid fa-phone" style="font-size:10px"></i> ${esc(a.phone)}
+        <div class="addr-act">
+          <button type="button" onclick="event.stopPropagation();openAddrScreen('${esc(a.id)}')">Edit</button>
+          <button type="button" class="del" onclick="event.stopPropagation();deleteAddress('${esc(a.id)}')">Remove</button>
+        </div>
+      </div>
+    </div>`).join('')}</div>`;
+};
+const selectAddress = id => { state.selectedId = id; persistAddresses(); renderAddresses(); };
+const deleteAddress = id => {
+  state.addresses = state.addresses.filter(a => a.id !== id);
+  if (state.selectedId === id) state.selectedId = state.addresses[0]?.id || '';
+  persistAddresses();
+  renderAddresses();
+  toast('Address removed');
+};
+
+/* ---------- Add / edit address screen ---------- */
+const FIELD_IDS = ['ad_name', 'ad_phone', 'ad_pin', 'ad_city', 'ad_address', 'ad_email'];
+const validators = {
+  ad_email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
+  ad_phone: v => /^[6-9]\d{9}$/.test(v),
+  ad_pin: v => /^\d{6}$/.test(v)
+};
+const validateField = (input, showError = false) => {
+  const group = input.closest('.grp');
+  const value = input.value.trim();
+  const valid = (validators[input.id] || (v => v.length >= 2))(value);
+  group.classList.toggle('bad', !valid && (showError || value.length > 0));
+  return valid;
+};
+const setType = t => {
+  state.addrType = t;
+  $$('#typeChips .chip').forEach(c => c.classList.toggle('on', c.dataset.t === t));
+};
+const openAddrScreen = id => {
+  state.editId = typeof id === 'string' ? id : '';
+  const a = state.addresses.find(x => x.id === state.editId);
+  $('#addrTitle').textContent = a ? 'Edit address' : 'Add address';
+  const map = { ad_name: 'name', ad_phone: 'phone', ad_pin: 'pin', ad_city: 'city', ad_address: 'address', ad_email: 'email', ad_map_link: 'map' };
+  Object.entries(map).forEach(([fid, k]) => {
+    const input = document.getElementById(fid);
+    const auto = { email: loginEmail(), name: loginEmail() ? (readValue('aavira_display_name') || '').trim() : '', phone: loginEmail() ? (readValue('aavira_user_phone') || '').trim() : '' };
+    input.value = a ? (a[k] || '') : (auto[k] || '');
+    input.closest('.grp').classList.remove('bad');
+  });
+  setType(a?.type || 'Home');
+  pinSeq++; pinStatus('', '');
+  $$('.fx-tip.on,.fx-i.on,.fx.active').forEach(e => e.classList.remove('on','active'));
+  $('#addrScreen').classList.add('on');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => (a ? null : $('#ad_name').focus()), 320);
+};
+const closeAddrScreen = () => { $('#addrScreen').classList.remove('on'); document.body.style.overflow = ''; };
+
+const saveAddress = () => {
+  const bad = FIELD_IDS.map(id => document.getElementById(id)).filter(i => !validateField(i, true));
+  if (bad.length) { toast('Please fill all required fields correctly'); bad[0].scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+  withSpinner($('#saveAddrBtn'), () => {
+    const v = id => document.getElementById(id).value.trim();
+    const addr = { id: state.editId || 'a' + Date.now(), type: state.addrType, name: v('ad_name'), phone: v('ad_phone'), email: v('ad_email').toLowerCase(), pin: v('ad_pin'), city: v('ad_city'), address: v('ad_address'), map: v('ad_map_link') };
+    const i = state.addresses.findIndex(a => a.id === addr.id);
+    if (i >= 0) state.addresses[i] = addr; else state.addresses.unshift(addr);
+    state.selectedId = addr.id;
+    persistAddresses();
+    renderAddresses();
+    closeAddrScreen();
+    toast('Address saved');
+  });
+};
+
+/* ---------- Bihar districts + pincode detect ---------- */
+const BIHAR = ['Araria','Arwal','Aurangabad','Banka','Begusarai','Bhagalpur','Bhojpur','Buxar','Darbhanga','East Champaran','Gaya','Gopalganj','Jamui','Jehanabad','Kaimur','Katihar','Khagaria','Kishanganj','Lakhisarai','Madhepura','Madhubani','Munger','Muzaffarpur','Nalanda','Nawada','West Champaran','Patna','Purnia','Rohtas','Saharsa','Samastipur','Saran','Sheikhpura','Sheohar','Sitamarhi','Siwan','Supaul','Vaishali'];
+const ALIAS = { purbachamparan: 'East Champaran', purbichamparan: 'East Champaran', purbachampara: 'East Champaran', eastchamparan: 'East Champaran', motihari: 'East Champaran', pashchimchamparan: 'West Champaran', paschimchamparan: 'West Champaran', westchamparan: 'West Champaran', bettiah: 'West Champaran', kaimurbhabua: 'Kaimur', bhabua: 'Kaimur', aurangabadbh: 'Aurangabad', sheikhpura: 'Sheikhpura', saranchapra: 'Saran', chapra: 'Saran', monghyr: 'Munger', purnea: 'Purnia', shaikhpura: 'Sheikhpura' };
+const norm = s => String(s || '').toLowerCase().replace(/[^a-z]/g, '');
+const matchDistrict = name => {
+  const n = norm(name);
+  if (ALIAS[n]) return ALIAS[n];
+  return BIHAR.find(d => norm(d) === n) || '';
+};
+const distHL = (name, q) => {
+  if (!q) return esc(name);
+  const i = name.toLowerCase().indexOf(q);
+  return i < 0 ? esc(name) : esc(name.slice(0, i)) + '<mark>' + esc(name.slice(i, i + q.length)) + '</mark>' + esc(name.slice(i + q.length));
+};
+const renderDistricts = () => {
+  const q = $('#distSearch').value.trim().toLowerCase();
+  const current = $('#ad_city').value.split(',')[0].trim();
+  const list = BIHAR.filter(d => d.toLowerCase().includes(q));
+  $('#distCount').textContent = list.length;
+  $('#distList').innerHTML = list.length
+    ? list.map((d, i) => `<button type="button" class="d-item ${d === current ? 'on' : ''}" style="animation-delay:${Math.min(i, 14) * 22}ms" onclick="pickDistrict('${esc(d)}')"><span class="ico"><i class="fa-solid fa-location-dot"></i></span><span>${distHL(d, q)}</span><i class="fa-solid fa-circle-check tick"></i></button>`).join('')
+    : `<div class="d-empty"><i class="fa-solid fa-magnifying-glass-location"></i>No district found for "${esc(q)}"</div>`;
+};
+const openDistrict = () => {
+  $('#distSearch').value = '';
+  renderDistricts();
+  $('#distWrap').classList.add('on');
+  setTimeout(() => { const on = $('#distList .d-item.on'); if (on) on.scrollIntoView({ block: 'center' }); }, 60);
+};
+const closeDistrict = () => $('#distWrap').classList.remove('on');
+const setDistrict = (name, state = 'Bihar', flash = true) => {
+  const input = $('#ad_city');
+  input.value = `${name}, ${state}`;
+  validateField(input);
+  if (flash) {
+    const g = input.closest('.grp');
+    g.classList.remove('flash'); void g.offsetWidth; g.classList.add('flash');
+  }
+};
+const pickDistrict = name => {
+  setDistrict(name, 'Bihar', false);
+  const s = $('#pinStatus');
+  closeDistrict();
+};
+
+let pinSeq = 0;
+const pinStatus = (type, html) => {
+  const el = $('#pinStatus');
+  el.hidden = !html;
+  el.className = 'pin-status ' + (type || '');
+  el.innerHTML = html || '';
+};
+const detectPin = async pin => {
+  const seq = ++pinSeq;
+  pinStatus('', '<span class="mini"></span>Detecting your district…');
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 6000);
+    const res = await fetch(`https://api.postalpincode.in/pincode/${pin}`, { signal: ctrl.signal });
+    clearTimeout(t);
+    const data = await res.json();
+    if (seq !== pinSeq) return;
+    const po = data?.[0]?.Status === 'Success' ? data[0].PostOffice?.[0] : null;
+    if (!po) { pinStatus('err', '<i class="fa-solid fa-circle-exclamation"></i>Pincode not found. Please select your district.'); return; }
+    const stateName = po.State || '';
+    const d = stateName.toLowerCase() === 'bihar' ? matchDistrict(po.District) : '';
+    if (d) {
+      setDistrict(d);
+      pinStatus('ok', `<i class="fa-solid fa-circle-check"></i>Detected: ${esc(d)}, Bihar`);
+    } else if (stateName) {
+      setDistrict(po.District || po.Name, stateName);
+      pinStatus('ok', `<i class="fa-solid fa-circle-check"></i>Detected: ${esc(po.District || po.Name)}, ${esc(stateName)}`);
+    }
+  } catch {
+    if (seq !== pinSeq) return;
+    pinStatus('', '<i class="fa-solid fa-circle-info"></i>Could not auto-detect. Please select your district.');
+  }
+};
+
+const openFull = index => {
+  const item = state.cart[index];
+  if (!item) return;
+  const p = state.db[item.productId];
+  const img = $('#fsImg');
+  img.classList.remove('zoom');
+  img.onerror = () => { img.onerror = null; img.src = FALLBACK_IMG; };
+  img.src = String(item.image || p.imageMain || p.imageUrl || p.image || FALLBACK_IMG).replace(/['"]/g, '');
+  $('#fsCap').innerHTML = `${esc(p.name)}<small>${money(parsePrice(p.price))} · Size: ${esc(item.size || 'Free Size')} · Qty: ${item.qty}</small>`;
+  $('#fsView').classList.add('on');
+  document.body.style.overflow = 'hidden';
+};
+const closeFull = () => { $('#fsView').classList.remove('on'); document.body.style.overflow = ''; };
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeFull(); });
+
+const toggleInfo = btn => {
+  const wrap = btn.closest('.fx');
+  const tip = wrap.querySelector('.fx-tip');
+  const open = !tip.classList.contains('on');
+  $$('.fx-tip.on').forEach(t => t.classList.remove('on'));
+  $$('.fx-i.on').forEach(b => b.classList.remove('on'));
+  if (open) { tip.classList.add('on'); btn.classList.add('on'); }
+};
+
+const bindForm = () => {
+  $('#distSearch').addEventListener('input', renderDistricts);
+  $('#addressForm').addEventListener('focusin', e => {
+    const w = e.target.closest('.fx');
+    $$('.fx.active').forEach(x => {
+      if (x === w) return;
+      x.classList.remove('active');
+      x.querySelector('.fx-tip')?.classList.remove('on');
+      x.querySelector('.fx-i')?.classList.remove('on');
     });
-}
+    if (w) w.classList.add('active');
+  });
+  $$('#addressForm .fld').forEach(input => {
+    input.addEventListener('input', () => {
+      if (input.id === 'ad_phone' || input.id === 'ad_pin') input.value = input.value.replace(/\D/g, '');
+      if (input.id !== 'ad_map_link') validateField(input);
+      if (input.id === 'ad_pin') { if (input.value.length === 6) detectPin(input.value); else { pinSeq++; pinStatus('', ''); } }
+    });
+    input.addEventListener('blur', () => { if (input.id !== 'ad_map_link') validateField(input, true); });
+  });
+  $$('#typeChips .chip').forEach(c => c.addEventListener('click', () => setType(c.dataset.t)));
+  $$('input[name="delivery"], input[name="payment"], #giftWrap').forEach(input => input.addEventListener('change', render));
+  $('#promoInput').addEventListener('keydown', event => { if (event.key === 'Enter') applyPromo(); });
+};
 
-function validateInputField(inputElement, forceShowError = false) {
-    if(!inputElement) return true;
-    const inputGroup = inputElement.closest('.pro-input-group');
-    if(!inputGroup) return true;
-    
-    let val = inputElement.value.trim();
-    if(!inputElement.required && val === '') return true;
+/* ---------- Cart ---------- */
+const saveCart = () => { if (!state.buyNow) writeJson('aavira_cart', state.cart); };
 
-    const checkRules = () => {
-        if(inputElement.id === 'ad_email') return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
-        if(inputElement.id === 'ad_phone') return /^[6-9]\d{9}$/.test(val);
-        if(inputElement.id === 'ad_pin') return /^\d{6}$/.test(val);
-        if(inputElement.id === 'ad_map_link') return true; 
-        return val.length >= 2;
+const loadProducts = async () => {
+  for (const loader of ['getVercelData', 'getMainProductsData']) {
+    if (typeof window[loader] !== 'function') continue;
+    try {
+      ((await window[loader]()) || []).forEach(p => { if (p?.id) state.db[String(p.id).trim()] = p; });
+    } catch {}
+  }
+};
+
+const loadCart = () => {
+  const params = new URLSearchParams(location.search);
+  const buyNowId = params.get('buy_now');
+  if (buyNowId) {
+    state.buyNow = true;
+    state.cart = [{
+      productId: decodeURIComponent(buyNowId).trim(),
+      size: params.get('size') || 'Free Size',
+      color: params.get('color') || 'Standard',
+      image: params.get('image') || '',
+      qty: 1,
+      name: params.get('name') || 'Exclusive item',
+      price: params.get('price') || 0
+    }];
+  } else {
+    state.cart = readJson('aavira_cart', []);
+  }
+  state.cart = state.cart.filter(item => {
+    const id = String(item.productId).trim();
+    item.productId = id;
+    item.qty = item.qty || 1;
+    if (state.db[id]) return true;
+    if (item.price && item.name) {
+      state.db[id] = { id, name: item.name, price: item.price, image: item.image };
+      return true;
+    }
+    return false;
+  });
+};
+
+const productImage = (item, product) => esc(String(item.image || product.imageMain || product.imageUrl || product.image || FALLBACK_IMG).replace(/['"]/g, ''));
+
+const pricing = () => {
+  let mrp = 0, subtotal = 0;
+  state.cart.forEach(item => {
+    const product = state.db[item.productId];
+    const price = parsePrice(product.price);
+    mrp += Math.max(parsePrice(product.mrp), price) * item.qty;
+    subtotal += price * item.qty;
+  });
+  const delivery = Number($('input[name="delivery"]:checked').value);
+  const gift = $('#giftWrap').checked ? GIFT_FEE : 0;
+  const coupon = Math.min(state.promo.amount, subtotal);
+  return { mrp, subtotal, delivery, gift, coupon, discount: mrp - subtotal, total: Math.max(0, subtotal + delivery + gift - coupon) };
+};
+
+const showView = hasItems => {
+  $('#emptyView').hidden = hasItems;
+  $('#checkoutView').hidden = !hasItems;
+  $('#payBar').hidden = !hasItems;
+};
+
+const render = () => {
+  if (!state.cart.length) return showView(false);
+  showView(true);
+
+  $('#itemCount').textContent = `${state.cart.length} ${state.cart.length === 1 ? 'item' : 'items'}`;
+  $('#items').innerHTML = state.cart.map((item, index) => {
+    const product = state.db[item.productId];
+    const price = parsePrice(product.price);
+    const mrp = parsePrice(product.mrp);
+    return `<div class="item">
+      <button class="pic" type="button" onclick="openFull(${index})" aria-label="View full screen">
+        <img src="${productImage(item, product)}" alt="" ${IMG_ERROR}><span class="zoom"><i class="fa-solid fa-expand"></i></span>
+      </button>
+      <div class="item-info">
+        <h3>${esc(product.name)}</h3>
+        <small>Size: ${esc(item.size || 'Free Size')} · Qty: ${item.qty}</small>
+        <div class="item-price">${money(price * item.qty)}${mrp > price ? `<s>${money(mrp * item.qty)}</s>` : ''}</div>
+      </div>
+      <button class="info-btn" type="button" onclick="openSheet(${index})" aria-label="Product info"><i class="fa-solid fa-circle-info"></i></button>
+    </div>`;
+  }).join('');
+
+  const bill = pricing();
+  $('#rowMrp').hidden = bill.discount <= 0;
+  $('#rowDiscount').hidden = bill.discount <= 0;
+  $('#billMrp').textContent = money(bill.mrp);
+  $('#billDiscount').textContent = '- ' + money(bill.discount);
+  $('#rowPromo').hidden = bill.coupon <= 0;
+  $('#billPromo').textContent = '- ' + money(bill.coupon);
+  $('#billShip').textContent = bill.delivery ? money(bill.delivery) : 'Free';
+  $('#rowGift').hidden = !bill.gift;
+  $('#billTotal').textContent = money(bill.total);
+  $('#barTotal').textContent = money(bill.total);
+  renderRecommendations();
+};
+
+/* ---------- Product sheet ---------- */
+const openSheet = index => {
+  const item = state.cart[index];
+  if (!item) return;
+  state.sheetIndex = index;
+  const p = state.db[item.productId];
+  const price = parsePrice(p.price), mrp = parsePrice(p.mrp);
+  const sizes = Array.isArray(p.sizes) && p.sizes.length ? p.sizes : [item.size || 'Free Size'];
+  const off = mrp > price ? Math.round((mrp - price) / mrp * 100) : 0;
+  const wished = readJson('aavira_wishlist', []).map(String).includes(item.productId);
+  $('#sheet').innerHTML = `<div class="grab"></div>
+    <div class="sh-head"><h3>${esc(p.name)}</h3><button type="button" class="sh-x" onclick="closeSheet()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="price">${money(price)}${mrp > price ? `<s>${money(mrp)}</s> <small style="color:var(--green);font-size:12px;font-weight:700">${off}% off</small>` : ''}</div>
+    <div class="lbl">Size</div>
+    <div class="chips">${sizes.map(s => `<button type="button" class="chip ${String(s) === String(item.size) ? 'on' : ''}" onclick="changeSize('${esc(s)}')">${esc(s)}</button>`).join('')}</div>
+    <div class="lbl">Color</div>
+    <div class="chips"><span class="chip on">${esc(item.color || 'Standard')}</span></div>
+    <div class="lbl">Quantity</div>
+    <div class="qty-row">
+      <div class="qty"><button type="button" onclick="changeQty(-1)" aria-label="Decrease">−</button><span>${item.qty}</span><button type="button" onclick="changeQty(1)" aria-label="Increase">+</button></div>
+      <button class="more" type="button" onclick="changeQty(1)"><i class="fa-solid fa-plus"></i>Add 1 more</button>
+    </div>
+    <div class="line-total"><span>Item total (${item.qty} × ${money(price)})</span><b>${money(price * item.qty)}</b></div>
+    <div class="sheet-acts">
+      <button class="wish ${wished ? 'on' : ''}" type="button" onclick="wishItem()"><i class="fa-${wished ? 'solid' : 'regular'} fa-heart"></i>${wished ? 'In wishlist' : 'Add to wishlist'}</button>
+      <button class="rm" type="button" onclick="removeItem(${index})"><i class="fa-solid fa-trash-can"></i>Remove</button>
+    </div>
+    <button class="done" type="button" onclick="closeSheet()">Done</button>`;
+  $('#sheetWrap').classList.add('on');
+  document.body.style.overflow = 'hidden';
+};
+const closeSheet = () => { $('#sheetWrap').classList.remove('on'); document.body.style.overflow = ''; };
+const changeSize = s => { state.cart[state.sheetIndex].size = s; saveCart(); render(); openSheet(state.sheetIndex); };
+const changeQty = d => {
+  const item = state.cart[state.sheetIndex];
+  item.qty = Math.min(10, Math.max(1, item.qty + d));
+  saveCart(); render(); openSheet(state.sheetIndex);
+};
+const wishItem = () => {
+  const id = state.cart[state.sheetIndex].productId;
+  let list = readJson('aavira_wishlist', []).map(String);
+  const had = list.includes(id);
+  list = had ? list.filter(x => x !== id) : [...list, id];
+  writeJson('aavira_wishlist', list);
+  toast(had ? 'Removed from wishlist' : 'Added to wishlist');
+  openSheet(state.sheetIndex);
+};
+
+const renderRecommendations = () => {
+  const inCart = new Set(state.cart.map(item => item.productId));
+  const wishlist = readJson('aavira_wishlist', []).map(String);
+  const ids = [...new Set([...wishlist, ...Object.keys(state.db)])].filter(id => state.db[id] && !inCart.has(id)).slice(0, 6);
+  $('#recSection').hidden = !ids.length;
+  $('#recRow').innerHTML = ids.map(id => {
+    const p = state.db[id];
+    const image = esc(p.imageMain || p.imageUrl || p.image || FALLBACK_IMG);
+    return `<div class="rec-card"><img src="${image}" alt="" ${IMG_ERROR}><p>${esc(p.name)}</p><div class="rec-foot"><b>${money(parsePrice(p.price))}</b><button type="button" onclick="addRecommended('${esc(id)}')">+ Add</button></div></div>`;
+  }).join('');
+};
+
+const addRecommended = id => {
+  const product = state.db[String(id).trim()];
+  if (!product) return;
+  state.cart.push({ productId: String(product.id).trim(), size: 'Free Size', color: 'Standard', qty: 1, image: product.imageMain || product.image || product.imageUrl || '' });
+  saveCart();
+  toast('Added to your bag');
+  render();
+};
+
+const removeItem = index => {
+  state.cart.splice(index, 1);
+  saveCart();
+  closeSheet();
+  render();
+};
+
+/* ---------- Promo ---------- */
+const setPromoView = code => {
+  $('#couponToggle').style.display = code ? 'none' : 'flex';
+  $('#promoForm').style.display = 'none';
+  $('#couponToggle').classList.remove('open');
+  $('#promoApplied').style.display = code ? 'flex' : 'none';
+  $('#promoName').textContent = code;
+};
+const toggleCoupon = () => {
+  const form = $('#promoForm');
+  const open = form.style.display !== 'flex';
+  form.style.display = open ? 'flex' : 'none';
+  $('#couponToggle').classList.toggle('open', open);
+  $('#couponToggle').setAttribute('aria-expanded', open);
+  if (open) $('#promoInput').focus();
+};
+const restorePromo = () => {
+  const saved = readJson('savedPromoCache', null);
+  if (!saved?.label || !saved?.discount) return;
+  state.promo = { code: saved.label, amount: Number(saved.discount) };
+  setPromoView(saved.label);
+};
+const applyPromo = () => {
+  const code = $('#promoInput').value.trim().toUpperCase();
+  if (code.length < 3) return toast('Enter a valid coupon code');
+  withSpinner($('#promoBtn'), async () => {
+    let amount = 0;
+    try {
+      let response = await fetch(`${VERCEL_URL}/api/promo_codes/${encodeURIComponent(code)}`);
+      if (!response.ok) response = await fetch(`${VERCEL_URL}/api/promocodes/${encodeURIComponent(code)}`);
+      if (response.ok) {
+        const result = await response.json();
+        const data = result.data || result;
+        if (data && data.isActive !== false) amount = Number(data.amount || data.discountAmount || data.discount || 0);
+      }
+    } catch {}
+    if (!(amount > 0)) return toast('Invalid or expired coupon code');
+    state.promo = { code, amount };
+    writeJson('savedPromoCache', { label: code, discount: amount });
+    setPromoView(code);
+    toast('Coupon applied');
+    render();
+  });
+};
+const removePromo = () => {
+  state.promo = { code: '', amount: 0 };
+  removeValue('savedPromoCache');
+  $('#promoInput').value = '';
+  setPromoView('');
+  render();
+  toast('Coupon removed');
+};
+
+/* ---------- Order ---------- */
+const openDialog = html => { $('#dialog').innerHTML = html; $('#overlay').classList.add('on'); };
+const showProcessing = text => openDialog(`<div class="loader"></div><h2>Processing order</h2><p>${esc(text)}</p>`);
+
+const openWhatsApp = () => {
+  clearInterval(state.timer);
+  if (state.whatsappUrl) location.href = state.whatsappUrl;
+};
+
+const trackOrder = orderId => {
+  localStorage.setItem('aavira_guest_order_id', orderId);
+  localStorage.setItem('aavira_placed_orders', JSON.stringify([orderId]));
+  location.href = '/orders';
+};
+
+const rememberOrder = (orderId, phone) => {
+  if (loginEmail()) {
+    localStorage.setItem('aavira_user_phone', phone);
+    const previous = readJson('aavira_placed_orders', []);
+    const orders = Array.isArray(previous) ? previous : [];
+    if (!orders.includes(orderId)) orders.push(orderId);
+    writeJson('aavira_placed_orders', orders);
+    removeValue('aavira_guest_order_id');
+    return;
+  }
+  removeValue('aavira_user_phone');
+  removeValue('aavira_guest_order_ids');
+  localStorage.setItem('aavira_guest_order_id', orderId);
+  writeJson('aavira_placed_orders', [orderId]);
+};
+
+const showOnlineResult = (orderId, order) => {
+  const message = `*AAVIRA - ONLINE PAYMENT REQUEST*\n\nHello Team Aavira! I would like to complete the online payment for my order.\n\n*ORDER ID:* #${orderId}\n*NAME:* ${order.customerName}\n*MOBILE:* ${order.phone}\n\n*ADDRESS:*\n${order.address}\n\n*TOTAL TO PAY: ${money(order.totalAmount)}*\n\n_Please share the UPI ID / Payment QR code. Thank you!_`;
+  state.whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  openDialog(`<div class="badge-ico" style="background:#F59E0B"><i class="fa-solid fa-hourglass-half"></i></div>
+    <h2>Awaiting payment</h2>
+    <div class="oid">ORDER ID: ${esc(orderId)}</div>
+    <p>Complete the payment on WhatsApp to confirm your order.</p>
+    <div class="acts">
+      <button class="btn-wa" type="button" onclick="openWhatsApp()"><i class="fa-brands fa-whatsapp"></i>Open WhatsApp <small id="waTimer">5s</small></button>
+      <button class="btn-line" type="button" onclick="navigate('/orders',this)"><i class="fa-solid fa-box"></i>View my orders</button>
+    </div>`);
+  let seconds = 5;
+  clearInterval(state.timer);
+  state.timer = setInterval(() => {
+    seconds--;
+    const label = $('#waTimer');
+    if (label) label.textContent = seconds + 's';
+    if (seconds <= 0) openWhatsApp();
+  }, 1000);
+};
+
+const showCodResult = orderId => openDialog(`<div class="badge-ico" style="background:var(--green)"><i class="fa-solid fa-check"></i></div>
+  <h2>Order placed</h2>
+  <div class="oid">ORDER ID: ${esc(orderId)}</div>
+  <p>Your order has been recorded. We will start processing it shortly.</p>
+  <div class="acts">
+    <button class="btn-fill" type="button" onclick="withSpinner(this,()=>trackOrder('${esc(orderId)}'))"><i class="fa-solid fa-location-arrow"></i>Track order</button>
+    <button class="btn-line" type="button" onclick="navigate('./',this)"><i class="fa-solid fa-bag-shopping"></i>Continue shopping</button>
+  </div>`);
+
+const buildOrder = orderId => {
+  const bill = pricing();
+  const a = selectedAddress();
+  const items = state.cart.map(item => {
+    const product = state.db[item.productId];
+    return {
+      productId: item.productId,
+      name: product.name || 'Exclusive product',
+      qty: item.qty,
+      price: parsePrice(product.price),
+      color: item.color || 'Standard',
+      size: item.size || 'Free Size',
+      image: item.image || product.imageMain || product.imageUrl || product.image || ''
     };
+  });
+  const payment = $('input[name="payment"]:checked').value;
+  return {
+    orderId,
+    userId: loginEmail() || a.email || a.phone,
+    customerName: a.name,
+    email: a.email,
+    phone: a.phone,
+    address: `${a.address}, ${a.city} - Pincode: ${a.pin}`,
+    mapLink: a.map || '',
+    items,
+    totalAmount: bill.total,
+    paymentMethod: payment,
+    paymentStatus: payment === 'online' ? 'Pending' : 'COD',
+    orderStatus: 'Processing',
+    promoCodeUsed: state.promo.code,
+    promoDiscount: bill.coupon,
+    createdAt: new Date().toISOString()
+  };
+};
 
-    if(checkRules()) {
-        inputGroup.classList.remove('is-invalid'); 
-        return true;
-    } else {
-        if(forceShowError || val.length > 0) inputGroup.classList.add('is-invalid');
-        return false;
-    }
-}
+const primeSound = () => {
+  const a = $('#successSound');
+  if (!a) return;
+  a.muted = true;
+  a.play().then(() => { a.pause(); a.currentTime = 0; a.muted = false; }).catch(() => { a.muted = false; });
+};
+const playSuccess = () => {
+  const a = $('#successSound');
+  if (!a) return;
+  try { a.pause(); a.currentTime = 0; a.volume = 0.85; a.muted = false; a.play().catch(() => {}); } catch {}
+  navigator.vibrate?.([60, 40, 60]);
+};
 
-// Save & Restore Draft
-function saveFormDraft() { 
-    let formData = {}; 
-    document.querySelectorAll('.pro-input').forEach(input => formData[input.id] = input.value);
-    localStorage.setItem('checkoutAddressDraft', JSON.stringify(formData));
-}
-
-function restoreFormDraft() { 
+const placeOrder = () => {
+  if (!selectedAddress()) {
+    toast('Please add a delivery address');
+    $('#addrBox').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  primeSound();
+  withSpinner($('#placeBtn'), async () => {
+    showProcessing('Please wait while we secure your order.');
+    const orderId = `AVF-${Math.floor(100000 + Math.random() * 900000)}`;
+    const order = buildOrder(orderId);
+    let saved = false;
     try {
-        let draftDataString = localStorage.getItem('checkoutAddressDraft');
-        if (draftDataString) {
-            let formData = JSON.parse(draftDataString);
-            Object.keys(formData).forEach(key => { 
-                let inputEl = document.getElementById(key); 
-                if(inputEl && !inputEl.value && formData[key]){ 
-                    inputEl.value = formData[key]; 
-                    validateInputField(inputEl); 
-                } 
-            });
-        }
-    } catch(e) {}
-}
-
-async function fetchProductsAndInitializeCart() {
-    try { 
-        if (typeof window.getVercelData === 'function') {
-            let db1 = await window.getVercelData() || [];
-            db1.forEach(prod => { if (prod && prod.id) productDatabase[String(prod.id).trim()] = prod; });
-        } 
-    } catch(e) { }
-
-    try {
-        if (typeof window.getMainProductsData === 'function') {
-            let db2 = await window.getMainProductsData() || [];
-            db2.forEach(prod => { if (prod && prod.id) productDatabase[String(prod.id).trim()] = prod; });
-        }
-    } catch(e) { }
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const buyNowProductId = urlParams.get('buy_now');
-
-    if(buyNowProductId) {
-        isBuyNowMode = true;
-        cartItems.push({
-            productId: decodeURIComponent(buyNowProductId).trim(),
-            size: urlParams.get('size') || 'Free Size',
-            color: urlParams.get('color') || 'Standard',
-            image: urlParams.get('image') || '',
-            qty: 1,
-            fallbackName: urlParams.get('name') || "Exclusive Item",
-            fallbackPrice: urlParams.get('price') || 0
-        });
-    } else {
-        cartItems = JSON.parse(localStorage.getItem('aavira_cart')) || [];
+      if (typeof window.sendOrderToVercel !== 'function') throw new Error('Order service is unavailable');
+      saved = await window.sendOrderToVercel(order);
+    } catch (error) {
+      console.error('Order save failed:', error);
     }
-
-    // Sync with DB
-    cartItems = cartItems.filter(item => {
-        let pId = String(item.productId).trim();
-        if (productDatabase[pId]) {
-            item.productId = pId;
-            return true;
-        } else if ((item.fallbackPrice || item.price) && (item.fallbackName || item.name)) {
-            productDatabase[pId] = { 
-                id: pId, 
-                name: item.fallbackName || item.name, 
-                price: item.fallbackPrice || item.price, 
-                image: item.image || "https://placehold.co/100" 
-            };
-            item.productId = pId;
-            return true;
-        }
-        return false;
-    });
-
-    if(cartItems.length === 0){
-        const mainScroll = document.getElementById('mainScroll');
-        const bottomBar = document.getElementById('bottomCheckoutBar');
-        const emptyView = document.getElementById('emptyCartView');
-        if (mainScroll) mainScroll.style.display = 'none'; 
-        if (bottomBar) bottomBar.style.display = 'none'; 
-        if (emptyView) emptyView.style.display = 'flex';
-        return;
+    if (!saved) {
+      $('#overlay').classList.remove('on');
+      return toast('Order could not be saved. Please try again');
     }
-
-    // Restore promo code if saved
-    try {
-        let savedPromo = JSON.parse(localStorage.getItem('savedPromoCache'));
-        if(savedPromo && savedPromo.label && savedPromo.discount) {
-            appliedPromoCode = savedPromo.label;
-            promoDiscountAmount = Number(savedPromo.discount);
-            const pGroup = document.getElementById('promoInputGroup');
-            const apCode = document.getElementById('apCodeName');
-            const apBox = document.getElementById('appliedPromoBox');
-            if (pGroup) pGroup.style.display = 'none';
-            if (apCode) apCode.innerText = appliedPromoCode;
-            if (apBox) apBox.style.display = 'flex';
-        }
-    } catch(e) {}
-
-    const emptyView = document.getElementById('emptyCartView');
-    const mainScroll = document.getElementById('mainScroll');
-    const bottomBar = document.getElementById('bottomCheckoutBar');
-    if (emptyView) emptyView.style.display = 'none';
-    if (mainScroll) mainScroll.style.display = 'block';
-    if (bottomBar) bottomBar.style.display = 'flex';
-    
-    renderCartUI();
-}
-
-// ==========================================
-// WISHLIST / SUGGESTIONS LOGIC
-// ==========================================
-function renderWishlistSuggestions() {
-    try {
-        let suggestedProducts = [];
-        let currentCartIds = cartItems.map(item => String(item.productId).trim());
-        let wishlistIds = JSON.parse(localStorage.getItem('aavira_wishlist')) || [];
-        let allProductIds = Object.keys(productDatabase);
-        let combinedIds = [...new Set([...wishlistIds, ...allProductIds])]; 
-        
-        for(let id of combinedIds) {
-            let cleanId = String(id).trim();
-            if(!currentCartIds.includes(cleanId) && productDatabase[cleanId]) {
-                suggestedProducts.push(productDatabase[cleanId]);
-            }
-            if(suggestedProducts.length >= 6) break;
-        }
-
-        const suggSection = document.getElementById('cartSuggestionsSection');
-        const suggContainer = document.getElementById('suggestedItemsContainer');
-
-        if(suggestedProducts.length > 0 && suggSection && suggContainer) {
-            suggSection.style.display = 'block'; 
-            let htmlString = "";
-            suggestedProducts.forEach(prod => {
-                let imageUrl = prod.imageMain || prod.imageUrl || prod.image || 'https://placehold.co/150?text=Item';
-                htmlString += `
-                <div class="s-card">
-                    <div class="s-img-wrapper"><img src="${imageUrl}" onerror="this.src='https://placehold.co/150?text=IMG'"></div>
-                    <div class="s-title">${prod.name || 'Premium Collection'}</div>
-                    <div class="s-bottom">
-                        <span class="s-price">₹${parseCurrencyNumber(prod.price).toLocaleString()}</span>
-                        <button onclick="addSuggestedProduct('${prod.id}')" class="btn-add-suggest">+ ADD</button>
-                    </div>
-                </div>`; 
-            }); 
-            suggContainer.innerHTML = htmlString;
-        } else if (suggSection) {
-            suggSection.style.display = 'none'; 
-        }
-    } catch(e){ 
-        console.error("Suggestions Error:", e); 
-    }
-}
-
-window.addSuggestedProduct = function(productId){
-    if(navigator.vibrate) navigator.vibrate(30);
-    let product = productDatabase[String(productId).trim()]; 
-    if(product) { 
-        cartItems.push({
-            productId: product.id, 
-            size: 'Free Size', 
-            color: 'Standard', 
-            qty: 1, 
-            image: product.imageMain || product.image || product.imageUrl || 'https://placehold.co/150'
-        }); 
-        
-        if(!isBuyNowMode) {
-            localStorage.setItem('aavira_cart', JSON.stringify(cartItems));
-        }
-        
-        ToastAlert.show('Item added to your bag successfully.', true);
-        renderCartUI(); 
-    }
+    if (!state.buyNow) removeValue('aavira_cart');
+    removeValue('savedPromoCache');
+    removeValue('checkoutAddressDraft');
+    rememberOrder(orderId, order.phone);
+    playSuccess();
+    if (order.paymentMethod === 'online') showOnlineResult(orderId, order);
+    else showCodResult(orderId);
+  });
 };
 
-window.setUserDeliveryPreferencesCost = (deliveryType) => {
-    deliveryFee = (deliveryType === 'express') ? 99 : 0;
-    document.querySelectorAll('.speed-option').forEach(el=>el.classList.remove('selected'));
-    const targetOpt = document.getElementById((deliveryType==='express')?'opt_exp':'opt_std');
-    if (targetOpt) targetOpt.classList.add('selected');
-    renderCartUI();
+const init = async () => {
+  $('#copyYear').textContent = new Date().getFullYear();
+  loadAddresses();
+  renderAddresses();
+  bindForm();
+  await loadProducts();
+  loadCart();
+  restorePromo();
+  render();
 };
 
-window.updateCustomWrapPreferencesCosts = (checkboxEl) => { 
-    giftWrapFee = checkboxEl.checked ? 49 : 0; 
-    renderCartUI(); 
-};
-
-window.pickPaymentMode = (paymentType, domElement) => { 
-    selectedPaymentMode = paymentType; 
-    document.querySelectorAll('.pay-option').forEach(el=>el.classList.remove('selected')); 
-    domElement.classList.add('selected');
-};
-
-window.removeCartItem = (index) => { 
-    cartItems.splice(index, 1); 
-    
-    if(!isBuyNowMode) {
-        localStorage.setItem('aavira_cart', JSON.stringify(cartItems));
-    }
-
-    if(cartItems.length === 0){
-        const mainScroll = document.getElementById('mainScroll');
-        const bottomBar = document.getElementById('bottomCheckoutBar');
-        const emptyView = document.getElementById('emptyCartView');
-        if (mainScroll) mainScroll.style.display = 'none'; 
-        if (bottomBar) bottomBar.style.display = 'none'; 
-        if (emptyView) emptyView.style.display = 'flex';
-    } else { 
-        renderCartUI(); 
-    }
-};
-
-function renderCartUI(){
-    const orderContainer = document.getElementById('orderItemsContainer'); 
-    if(!orderContainer) return; 
-    orderContainer.innerHTML = '';
-    
-    const countBadge = document.getElementById('itemCountBadge');
-    if (countBadge) countBadge.innerText = `${cartItems.length} ITEMS`;
-
-    let totalMRP = 0; 
-    let totalCartValue = 0;
-
-    cartItems.forEach((item, index) => {
-        let product = productDatabase[item.productId]; 
-        if(!product) return;
-        let currentPrice = parseCurrencyNumber(product.price);
-        let originalMrp = product.mrp ? parseCurrencyNumber(product.mrp) : (currentPrice + 500);
-        
-        totalMRP += (originalMrp * item.qty);
-        totalCartValue += (currentPrice * item.qty);
-        let imageUrl = (item.image || product.imageMain || product.imageUrl || product.image || "https://placehold.co/100").toString().replace(/['"]/g,'');
-
-        orderContainer.innerHTML += `
-            <div class="o-item">
-                <div class="o-img-box"><img src="${imageUrl}" onerror="this.src='https://placehold.co/100?text=Item'"></div>
-                <div class="o-info">
-                    <h4>${product.name}</h4>
-                    <p class="o-item-specs">Size: <strong>${item.size || 'Free Size'}</strong> <br>Qty: <strong>${item.qty} Piece(s)</strong></p>
-                    <h3>₹ ${currentPrice.toLocaleString()}</h3>
-                </div>
-                <button class="remove-btn" onclick="removeCartItem(${index})"><i class="fa-solid fa-trash-can"></i></button>
-            </div>`;
-    });
-
-    const billMrp = document.getElementById('billMrp');
-    const billDisc = document.getElementById('billDiscount');
-    const promoRow = document.getElementById('billPromoRow');
-    const promoDisc = document.getElementById('billPromoDiscount');
-    const billDelivery = document.getElementById('billDelivery');
-    const rowGift = document.getElementById('row_gift');
-    const billTotal = document.getElementById('billTotal');
-    const bottomTotal = document.getElementById('bottomTotal');
-
-    if (billMrp) billMrp.innerText = `₹ ${totalMRP.toLocaleString()}`;
-    if (billDisc) billDisc.innerText = `- ₹ ${(totalMRP - totalCartValue).toLocaleString()}`;
-    
-    if (promoDiscountAmount && promoRow && promoDisc) { 
-        promoRow.style.display = 'flex'; 
-        promoDisc.innerText = `- ₹ ${promoDiscountAmount.toLocaleString()}`;
-    } else if (promoRow) {
-        promoRow.style.display = 'none';
-    }
-
-    if (billDelivery) {
-        if (deliveryFee) { 
-            billDelivery.innerText = `₹ 99`; 
-            billDelivery.className = ''; 
-        } else { 
-            billDelivery.innerText = `Free`; 
-            billDelivery.className = 'green-txt'; 
-        }
-    }
-    
-    if (rowGift) rowGift.style.display = giftWrapFee ? 'flex' : 'none';
-    let finalPayableAmount = Math.max(0, totalCartValue + deliveryFee + giftWrapFee - promoDiscountAmount);
-    
-    if (billTotal) billTotal.innerText = `₹ ${finalPayableAmount.toLocaleString()}`;
-    if (bottomTotal) bottomTotal.innerText = `₹ ${finalPayableAmount.toLocaleString()}`;
-
-    renderWishlistSuggestions();
-}
-
-// PROMO CODE LOGIC
-window.verifyAndApplyCouponAPI = async () => {
-    let inputField = document.getElementById('promoInput'); 
-    if(!inputField) return;
-    let code = inputField.value.trim().toUpperCase();
-    
-    if(code.length < 3) return ToastAlert.show("Please enter a valid coupon code.", false);
-    
-    const btn = document.getElementById('promoBtn'); 
-    const originalText = btn ? btn.innerHTML : '';
-    if (btn) { btn.innerHTML = '<div class="btn-spinner"></div>'; btn.disabled = true; }
-
-    let discountAmt = 0;
-    let isValid = false;
-
-    try {
-        let response = await fetch(`${VERCEL_URL}/api/promo_codes/${code}`);
-        if (!response.ok) response = await fetch(`${VERCEL_URL}/api/promocodes/${code}`);
-        
-        if (response.ok) {
-            let result = await response.json();
-            let promoData = result.data || result;
-            if (promoData && promoData.isActive !== false) {
-                discountAmt = Number(promoData.amount || promoData.discountAmount || promoData.discount || 0);
-                if(discountAmt > 0) isValid = true;
-            }
-        }
-    } catch(error) {}
-
-    // Fallbacks
-    if (!isValid) {
-        if(code === 'LUXURY500') { discountAmt = 500; isValid = true; }
-        else if(code === 'AAVIRA200') { discountAmt = 200; isValid = true; }
-    }
-
-    if(isValid) {
-        applyPromoUI(code, discountAmt);
-    } else {
-        ToastAlert.show('Invalid or Expired Coupon Code.', false);
-    }
-    
-    if (btn) { btn.innerHTML = originalText; btn.disabled = false; }
-};
-
-function applyPromoUI(code, discount) {
-    appliedPromoCode = code;
-    promoDiscountAmount = discount;
-    localStorage.setItem('savedPromoCache', JSON.stringify({label: code, discount: discount}));
-    
-    const pGroup = document.getElementById('promoInputGroup');
-    const apCode = document.getElementById('apCodeName');
-    const apBox = document.getElementById('appliedPromoBox');
-    
-    if (pGroup) pGroup.style.display = 'none'; 
-    if (apCode) apCode.innerText = code; 
-    if (apBox) apBox.style.display = 'flex';
-    
-    ToastAlert.show("Coupon applied successfully!", true); 
-    renderCartUI();
-}
-
-window.removeActiveCoupon = () => { 
-    appliedPromoCode = ""; 
-    promoDiscountAmount = 0; 
-    localStorage.removeItem('savedPromoCache'); 
-    
-    const pGroup = document.getElementById('promoInputGroup');
-    const pInput = document.getElementById('promoInput');
-    const apBox = document.getElementById('appliedPromoBox');
-
-    if (pGroup) pGroup.style.display = 'flex'; 
-    if (pInput) pInput.value = ''; 
-    if (apBox) apBox.style.display = 'none'; 
-    
-    renderCartUI(); 
-    ToastAlert.show("Coupon Removed", true);
-};
-
-window.forceWhatsAppRedirect = () => {
-    if (whatsappTimerInterval) clearInterval(whatsappTimerInterval);
-    if (window.pendingWhatsAppUrl) {
-        window.location.href = window.pendingWhatsAppUrl;
-    }
-};
-
-// ==========================================
-// 🔥 SUBMIT FINAL ORDER & SYNC STATE 🔥
-// ==========================================
-window.submitFinalOrder = async () => {
-    let isFormValid = true; 
-    let firstErrorField = null;
-    
-    ['ad_name', 'ad_phone', 'ad_pin', 'ad_city', 'ad_address', 'ad_email'].forEach(id => { 
-        let inputEl = document.getElementById(id); 
-        if(!validateInputField(inputEl, true)){ 
-            isFormValid = false; 
-            if (inputEl) inputEl.closest('.pro-input-group').classList.add('is-invalid'); 
-            if (!firstErrorField) firstErrorField = inputEl;
-        } 
-    });
-    
-    if(!isFormValid){ 
-        ToastAlert.show('Please fill all required address fields correctly.', false); 
-        if(firstErrorField) firstErrorField.scrollIntoView({behavior:'smooth'}); 
-        return; 
-    }
-
-    const processModal = document.getElementById('processModal');
-    const processText = document.getElementById('processText');
-    if (processModal) processModal.classList.add('active');
-    if (processText) processText.innerText = 'Creating Secure Invoice Request...';
-
-    let productsCost = 0;
-    let formattedItemsPayload = cartItems.map(item => {
-        let dbProduct = productDatabase[item.productId] || {}; 
-        let price = parseCurrencyNumber(dbProduct.price || 0); 
-        productsCost += (price * item.qty);
-        
-        return {
-            productId: item.productId,
-            name: dbProduct.name || "Exclusive Product",
-            qty: item.qty,
-            price: price,
-            color: item.color || "Standard",
-            size: item.size || "Free Size",
-            image: item.image || dbProduct.imageMain || dbProduct.imageUrl || dbProduct.image || ""
-        };
-    });
-
-    // Generate Standard AVF Order ID
-    const randomNum = Math.floor(100000 + Math.random() * 900000);
-    const finalOrderId = `AVF-${randomNum}`;
-    
-    const customerName = document.getElementById('ad_name').value.trim();
-    const customerPhone = document.getElementById('ad_phone').value.trim();
-    const customerEmail = document.getElementById('ad_email').value.trim();
-    const customerMapLink = document.getElementById('ad_map_link') ? document.getElementById('ad_map_link').value.trim() : "";
-    const customerAddress = `${document.getElementById('ad_address').value.trim()}, ${document.getElementById('ad_city').value.trim()} - Pincode: ${document.getElementById('ad_pin').value.trim()}`;
-    
-    const totalAmountToPay = Math.max(0, productsCost + deliveryFee + giftWrapFee - promoDiscountAmount);
-    const orderCurrentState = (selectedPaymentMode === 'online') ? 'Processing' : 'Processing';
-    
-    // Save to Vercel/Backend Database — only continue when the server confirms the order.
-    let orderSaved = false;
-    try {
-        if (typeof window.sendOrderToVercel !== 'function') {
-            throw new Error('Order service is unavailable.');
-        }
-
-        const payloadData = {
-            orderId: finalOrderId,
-            userId: customerEmail || customerPhone,
-            customerName: customerName,
-            email: customerEmail,
-            phone: customerPhone,
-            address: customerAddress,
-            mapLink: customerMapLink,
-            items: formattedItemsPayload,
-            totalAmount: totalAmountToPay,
-            paymentMethod: selectedPaymentMode,
-            paymentStatus: (selectedPaymentMode === 'online' ? 'Pending' : 'COD'),
-            orderStatus: orderCurrentState,
-            promoCodeUsed: appliedPromoCode || "",
-            promoDiscount: promoDiscountAmount || 0,
-            createdAt: new Date().toISOString()
-        };
-
-        orderSaved = await window.sendOrderToVercel(payloadData);
-        if (!orderSaved) throw new Error('Backend did not confirm the order.');
-    } catch(e) {
-        console.error("Database Save Failed", e);
-        if (processModal) processModal.classList.remove('active');
-        ToastAlert.show('Order could not be saved. Please try again.', false);
-        return;
-    }
-
-    // 🔥 1. CLEAR CART, PROMO & ADDRESS DRAFT MEMORY 🔥
-    if(!isBuyNowMode) { 
-        localStorage.removeItem('aavira_cart'); 
-    }
-    localStorage.removeItem('savedPromoCache');
-    localStorage.removeItem('checkoutAddressDraft'); // <--- Address draft cleared!
-
-    // 🔒 ORDER IDENTITY ISOLATION
-    // Checkout must NEVER turn a guest email into a logged-in session.
-    // Logged-in users keep their existing account session; guests get only
-    // the single order they just placed.
-    const savedEmail = (localStorage.getItem('aavira_user_email') || '').trim().toLowerCase();
-    const savedName = (localStorage.getItem('aavira_display_name') || '').trim();
-    const isSignedIn = !!(savedEmail && savedName && savedName.toLowerCase() !== 'guest user');
-
-    if (isSignedIn) {
-        localStorage.setItem('aavira_user_phone', customerPhone);
-        let previousOrders = [];
-        try {
-            previousOrders = JSON.parse(localStorage.getItem('aavira_placed_orders')) || [];
-            if (!Array.isArray(previousOrders)) previousOrders = [];
-        } catch(e) {
-            previousOrders = [];
-        }
-        if (!previousOrders.includes(finalOrderId)) previousOrders.push(finalOrderId);
-        localStorage.setItem('aavira_placed_orders', JSON.stringify(previousOrders));
-        localStorage.removeItem('aavira_guest_order_id');
-    } else {
-        // Guest mode: only this exact order can appear on Orders.
-        localStorage.removeItem('aavira_user_phone');
-        localStorage.removeItem('aavira_guest_order_ids');
-        localStorage.setItem('aavira_guest_order_id', finalOrderId);
-        localStorage.setItem('aavira_placed_orders', JSON.stringify([finalOrderId]));
-    }
-    
-    const displayOrderIdEl = document.getElementById('displayOrderId');
-    if (displayOrderIdEl) displayOrderIdEl.innerText = finalOrderId;
-
-    const gatewayBox = document.getElementById('gatewayBox');
-    const successBox = document.getElementById('successBox');
-    if (gatewayBox) gatewayBox.style.display = 'none'; 
-    if (successBox) successBox.style.display = 'block';
-
-    const dynamicIcon = document.getElementById('dynamicModalIcon');
-    const popupActions = document.getElementById('popupActionBtns');
-
-    if (selectedPaymentMode === 'online') {
-        if (dynamicIcon) {
-            dynamicIcon.style.background = '#f59e0b'; 
-            dynamicIcon.style.border = '4px solid #fef3c7';
-            dynamicIcon.style.boxShadow = '0 10px 20px rgba(245,158,11, 0.2)';
-            dynamicIcon.innerHTML = '<i class="fa-solid fa-hourglass-half"></i>';
-        }
-        
-        const titleEl = document.getElementById('successBoxTitle');
-        const descEl = document.getElementById('successBoxDesc');
-        if (titleEl) titleEl.innerText = 'Awaiting Payment ⏳';
-        if (descEl) descEl.innerText = 'Please complete the payment on WhatsApp to confirm your order.';
-        
-        let cleanWhatsAppMessage = `*AAVIRA - ONLINE PAYMENT REQUEST*\n\nHello Team Aavira! I would like to complete the online payment for my order.\n\n*ORDER ID:* #${finalOrderId}\n*NAME:* ${customerName}\n*MOBILE:* ${customerPhone}\n\n*ADDRESS:* \n${customerAddress}\n\n*TOTAL TO PAY: ₹ ${totalAmountToPay.toLocaleString()}*\n\n_Please share the UPI ID / Payment QR code. Thank you!_`;
-        
-        window.pendingWhatsAppUrl = `https://wa.me/919608720622?text=${encodeURIComponent(cleanWhatsAppMessage)}`;
-
-        if (popupActions) {
-            popupActions.innerHTML = `
-                <button class="btn-pro-action whatsapp" onclick="forceWhatsAppRedirect()">
-                    <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> 
-                    Open WhatsApp <span id="waTimerTxt" style="font-size:11px; margin-left:4px; background:rgba(0,0,0,0.15); padding:3px 8px; border-radius:12px;">(5s)</span>
-                </button>
-                <button class="btn-pro-action outline" onclick="window.location.href='/orders'">
-                    <i class="fa-solid fa-box"></i> View My Orders
-                </button>
-            `;
-        }
-
-        let countdown = 5;
-        whatsappTimerInterval = setInterval(() => {
-            countdown--;
-            let timerEl = document.getElementById('waTimerTxt');
-            if (timerEl) { timerEl.innerText = `(${countdown}s)`; }
-            if (countdown <= 0) {
-                clearInterval(whatsappTimerInterval);
-                forceWhatsAppRedirect();
-            }
-        }, 1000);
-
-    } else {
-        if (dynamicIcon) {
-            dynamicIcon.style.background = 'var(--success)';
-            dynamicIcon.style.border = '4px solid #D1FAE5';
-            dynamicIcon.style.boxShadow = '0 10px 20px rgba(5,150,105, 0.2)';
-            dynamicIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
-        }
-
-        const titleEl = document.getElementById('successBoxTitle');
-        const descEl = document.getElementById('successBoxDesc');
-        if (titleEl) titleEl.innerText = 'Order Placed Successfully! 🎉';
-        if (descEl) descEl.innerText = 'Your order details have been securely recorded. We will process it shortly.';
-
-        if (popupActions) {
-            popupActions.innerHTML = `
-                <button class="btn-pro-action primary" onclick="handleTrackOrder('${finalOrderId}')">
-                    <i class="fa-solid fa-location-arrow"></i> Track Order
-                </button>
-                <button class="btn-pro-action outline" onclick="window.location.href='./'">
-                    <i class="fa-solid fa-bag-shopping"></i> Continue Shopping
-                </button>
-            `;
-        }
-    }
-};
-
-window.handleTrackOrder = (orderId) => {
-    const cleanId = String(orderId || '').trim();
-    if (cleanId) {
-        localStorage.setItem('aavira_guest_order_id', cleanId);
-        localStorage.setItem('aavira_placed_orders', JSON.stringify([cleanId]));
-    }
-    window.location.href = '/orders';
-};
-
-    </script>
-<script data-aavira-ui>
-(function(){'use strict';
-function markTheme(){if(document.body)document.body.classList.add('aavira-theme');}
-function stopLongSpinners(){var seen=new WeakSet();function watch(root){var nodes=[];if(root&&root.nodeType===1)nodes.push(root);if(root&&root.querySelectorAll)nodes=nodes.concat(Array.prototype.slice.call(root.querySelectorAll('.mini-spin,.fa-spin')));for(var i=0;i<nodes.length;i++){var el=nodes[i];if(seen.has(el))continue;seen.add(el);setTimeout(function(target){return function(){if(target&&target.classList)target.classList.add('aavira-spinner-done');};}(el),4000);}}watch(document.body);new MutationObserver(function(ms){for(var i=0;i<ms.length;i++){var a=ms[i].addedNodes||[];for(var j=0;j<a.length;j++)watch(a[j]);}}).observe(document.body,{childList:true,subtree:true});}
-function init(){if(!document.body)return;markTheme();stopLongSpinners();}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();})();
+addEventListener('pageshow', () => $$('.is-busy').forEach(el => el.classList.remove('is-busy')));
+document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>
