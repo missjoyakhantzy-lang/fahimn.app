@@ -254,7 +254,7 @@ a{color:inherit;text-decoration:none}
 .profile h3{font-family:Inter,sans-serif;font-size:17px;font-weight:700}
 .profile p{margin:2px 0 0;font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .profile-actions{display:flex;gap:8px;margin-top:14px}
-.profile-actions>button{flex:1;padding:11px;font-size:13px}
+.profile-actions>button{flex:1;padding:11px;font-size:13px;border-radius:999px}
 .promo-badge{display:none;align-items:center;justify-content:space-between;gap:8px;margin:0 16px 4px;padding:10px 14px;border-radius:12px;background:#FFF8E1;border:1px dashed var(--gold);font-size:13px;font-weight:600;color:var(--gold-text)}
 .promo-badge.is-on{display:flex}
 .promo-badge button{background:none;border:0;color:var(--muted);font-size:12px;text-decoration:underline}
@@ -310,8 +310,14 @@ a{color:inherit;text-decoration:none}
 
 .is-busy{position:relative;pointer-events:none;color:transparent!important}
 .is-busy>*{opacity:0}
-.is-busy::after{content:"";position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border:2px solid var(--spin,var(--rani));border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;z-index:6}
-:is(.btn-pink,.btn-dark,.signin,.footer-news button).is-busy{--spin:#fff}
+.is-busy::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border:2px solid var(--spin,var(--rani));border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;z-index:6}
+:is(.btn-pink,.btn-dark,.signin,.footer-news button,.go).is-busy{--spin:#fff}
+.btn-outline.is-busy,.btn-outline.is-busy:hover{background:#fff;border-color:var(--rani);--spin:var(--rani)}
+.btn-pink.is-busy,.btn-pink.is-busy:hover{background:var(--rani)}
+.btn-dark.is-busy,.btn-dark.is-busy:hover{background:var(--ink)}
+.go.is-busy,.go.is-busy:hover{background:var(--rani);transform:none}
+.go.is-busy::after{width:14px;height:14px}
+.pfeat .go.is-busy::after{width:16px;height:16px}
 .trust{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:20px 12px 0}
 .trust div{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:11px;font-weight:500;color:var(--muted);line-height:1.3}
 .trust svg{width:22px;height:22px;color:var(--gold-text);stroke-width:1.5}
@@ -433,7 +439,7 @@ a{color:inherit;text-decoration:none}
   <nav class="side-nav">
     <a class="menu-item" href="./"><i data-lucide="home"></i>Home<i data-lucide="chevron-right"></i></a>
     <a class="menu-item" href="categories"><i data-lucide="layout-grid"></i>Collections<i data-lucide="chevron-right"></i></a>
-    <button type="button" class="menu-item" onclick="triggerDotAction('cart',this)"><i data-lucide="shopping-bag"></i>My cart<i data-lucide="chevron-right"></i></button>
+    <button type="button" class="menu-item" onclick="triggerDotAction('cart',this)"><i data-lucide="shopping-cart"></i>My cart<i data-lucide="chevron-right"></i></button>
     <a class="menu-item" href="orders"><i data-lucide="package"></i>My orders<i data-lucide="chevron-right"></i></a>
     <a class="menu-item" href="wishlist"><i data-lucide="heart"></i>My wishlist<i data-lucide="chevron-right"></i></a>
     <hr>
@@ -461,9 +467,9 @@ a{color:inherit;text-decoration:none}
       <div><button type="button" class="icon-btn" onclick="openSidebar()" aria-label="Open menu"><i data-lucide="align-left"></i></button></div>
       <a href="./" aria-label="Aavira home"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" class="site-logo"></a>
       <div class="header-actions">
-        <a class="icon-btn" href="/items/search.html" aria-label="Search"><i data-lucide="search"></i></a>
+        <a class="icon-btn" href="/items/search" aria-label="Search"><i data-lucide="search"></i></a>
         <a class="icon-btn" href="wishlist" aria-label="Wishlist"><i data-lucide="heart"></i><span id="wish-badge" class="cart-badge" hidden>0</span></a>
-        <button type="button" class="icon-btn" onclick="triggerDotAction('cart',this)" aria-label="Shopping cart"><i data-lucide="shopping-bag"></i><span id="cart-badge" class="cart-badge" hidden>0</span></button>
+        <button type="button" class="icon-btn" onclick="triggerDotAction('cart',this)" aria-label="Shopping cart"><i data-lucide="shopping-cart"></i><span id="cart-badge" class="cart-badge" hidden>0</span></button>
       </div>
     </div>
   </header>
@@ -490,7 +496,7 @@ a{color:inherit;text-decoration:none}
     </section>
 
     <section class="sec" aria-labelledby="h-trend">
-      <div class="sec-head"><h2 id="h-trend">Trending</h2><a class="sec-link" href="/items/search.html">Search all</a></div>
+      <div class="sec-head"><h2 id="h-trend">Trending</h2><a class="sec-link" href="/items/search">Search all</a></div>
       <div id="trending-container" class="rail no-scrollbar"></div>
     </section>
 
@@ -553,14 +559,14 @@ a{color:inherit;text-decoration:none}
 
 <div class="fab-col">
   <button type="button" id="fabTop" class="fab fab-top" aria-label="Back to top"><i data-lucide="arrow-up"></i></button>
-  <a class="fab" href="/match/colours.html" aria-label="Shop by colour"><i data-lucide="palette"></i></a>
+  <a class="fab" href="/match/colours" aria-label="Shop by colour"><i data-lucide="palette"></i></a>
   <a class="fab fab-wa" href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"><i data-lucide="message-circle"></i></a>
 </div>
 
 <nav class="bottom-nav" aria-label="Main">
   <a href="./" class="nav-item" aria-current="page"><i data-lucide="home"></i><span>Home</span></a>
   <a href="categories" class="nav-item"><i data-lucide="layout-grid"></i><span>Collections</span></a>
-  <a href="/items/search.html" class="nav-item"><i data-lucide="search"></i><span>Search</span></a>
+  <a href="/items/search" class="nav-item"><i data-lucide="search"></i><span>Search</span></a>
   <a href="orders" class="nav-item"><i data-lucide="package"></i><span>Orders</span></a>
   <a href="profile" class="nav-item"><i data-lucide="user"></i><span>Profile</span></a>
 </nav>
@@ -709,9 +715,9 @@ window.showToast = (message, type = 'success') => {
   toastTimer = setTimeout(() => toast.classList.remove('is-on'), 2200);
 };
 
-const ACTION_DELAY = 3000;
+const ACTION_DELAY = 1500;
 const ACTION_SELECTOR = [
-  '.btn-pink', '.btn-dark', '.btn-outline', '.menu-item', '.signin', '.nav-item', '.icon-btn[href]',
+  '.btn-pink', '.btn-dark', '.btn-outline', '.go', '.menu-item', '.signin', '.icon-btn[href]',
   '.icon-btn[aria-label="Shopping cart"]', '.sec-link[onclick]', '.footer-news button',
   '.ref-link button', '.promo-badge button'
 ].join(',');
@@ -811,11 +817,28 @@ window.updateProfileUI = () => {
 };
 
 window.handleLogout = () => {
-  store.del('aavira_display_name');
-  store.del('aavira_user_email');
+  // 1. Poora session clear (user_data.js ka helper ho to wo bhi chalega)
+  if (typeof window.clearAaviraSession === 'function') {
+    try { window.clearAaviraSession(); } catch {}
+  }
+
+  // 2. Safety: saari keys explicitly bhi hatao
+  [
+    'authToken',
+    'aavira_token',
+    'aavira_user_email',
+    'aavira_display_name',
+    'aavira_user_phone',
+    'aavira_active_promo'
+  ].forEach(key => store.del(key));
+
   try { sessionStorage.removeItem('loginBannerShown'); } catch {}
+
+  // 3. UI refresh (reload ki zarurat nahi)
   updateProfileUI();
-  showToast('Logged out');
+  updateCartCount();
+  updateWishCount();
+  showToast('Signed out successfully');
   closeSidebar();
 };
 
@@ -989,7 +1012,7 @@ const cardHtml = (product, variant) => {
   const { price, mrp, off } = priceInfo(product);
   const id = escapeHtml(product.id);
   const name = escapeHtml(product.name);
-  const href = `product.html?id=${encodeURIComponent(product.id)}`;
+  const href = `product?id=${encodeURIComponent(product.id)}`;
   const rating = clamp(Number(product.rating) || 0, 0, 10);
   const wished = isWished(product.id);
   const tags = off || product.bestseller
@@ -1551,7 +1574,7 @@ window.openQuickView = id => {
       ${lowStockBadge(product)}
     </div>
     <div class="qv-actions">
-      <a class="btn-pink" href="product.html?id=${encodeURIComponent(product.id)}">View full details</a>
+      <a class="btn-pink" href="product?id=${encodeURIComponent(product.id)}">View full details</a>
       <button type="button" class="btn-outline" onclick="shareProduct('${escapeHtml(String(product.id))}')" aria-label="Share"><i data-lucide="share-2"></i></button>
     </div>`;
   refreshIcons();
@@ -1561,7 +1584,7 @@ window.closeQuickView = () => layers.close('quickView');
 
 window.shareProduct = async id => {
   const product = state.products.find(p => String(p.id) === String(id));
-  const url = new URL(`product.html?id=${encodeURIComponent(id)}`, location.href).href;
+  const url = new URL(`product?id=${encodeURIComponent(id)}`, location.href).href;
   if (navigator.share) {
     try {
       await navigator.share({ title: product?.name || 'Aavira Fashion', url });
