@@ -1,112 +1,148 @@
 // ==========================================
-// user_data.js (DATA PROVIDER & DELIVERY BOY)
-// Saare backend URLs aur API calls sirf yahin hain. index.html mein koi URL nahi hai.
+// user_data.js (DATA PROVIDER & DELIVERY BOY) - secured version
+// Saare backend URLs aur API calls sirf yahin hain.
+// Security rules:
+//   * Price/total kabhi client se trust nahi hota (server banata hai).
+//   * Login ke baad server ka signed token 'aavira_token' mein rehta hai.
+//   * Har request timeout ke saath, aur response safe tareeke se parse hota hai.
 // ==========================================
 
-// 🔥 1. PRODUCTS, MAIN PRODUCTS, BANNERS, CATEGORIES, PROMO, REVIEWS, NEWSLETTER KE LIYE URL 🔥
-const VERCEL_URL = "https://server-js-psi-five.vercel.app";
-
-// 🔥 2. OTP, LOGIN AUR AUTH KE LIYE NAYA URL 🔥
-const AUTH_URL = "https://ssxpq15in.vercel.app";
-
-// 🔥 3. REVIEW PHOTO UPLOAD (Cloudinary) 🔥
+const VERCEL_URL = "https://server-js-psi-five.vercel.app";   // products, orders, promo, reviews
+const AUTH_URL = "https://ssxpq15in.vercel.app";               // OTP, login, google
 const CLOUDINARY_CLOUD = "lqbslpty";
 const CLOUDINARY_PRESET = "hcfer3tk";
 
+// Saare helpers ek private function ke andar, taaki dusre scripts ke naamon se na takraye.
+(function () {
+'use strict';
+
 // ==========================================
-// 1. DATA FETCHING (Products, Main Products, Banners, Categories)
+// 0. SAFE HELPERS
 // ==========================================
-window.getVercelData = async function() {
-    try {
-        const res = await fetch(`${VERCEL_URL}/api/products`);
-        const data = await res.json();
-        return (res.ok && data.status === "success") ? data.data : [];
-    } catch (e) { console.error("Products Fetch Error:", e); return []; }
+const LS = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+    del(k) { try { localStorage.removeItem(k); } catch (e) {} },
+    json(k, fallback) { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? fallback; } catch (e) { return fallback; } }
 };
 
-window.getMainProductsData = async function() {
+// fetch with timeout; never throws; always returns { ok, status, data }
+async function api(url, options = {}, timeoutMs = 15000) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), timeoutMs);
     try {
-        const res = await fetch(`${VERCEL_URL}/api/main_products`);
-        const data = await res.json();
-        return (res.ok && data.status === "success") ? data.data : [];
-    } catch (e) { console.error("Main Products Fetch Error:", e); return []; }
-};
-
-window.getBannersData = async function() {
-    try {
-        const res = await fetch(`${VERCEL_URL}/api/banners`);
-        const data = await res.json();
-        return (res.ok && data.status === "success") ? data.data : [];
-    } catch (e) { return []; }
-};
-
-window.getCategoriesData = async function() {
-    try {
-        const res = await fetch(`${VERCEL_URL}/api/categories`);
-        const data = await res.json();
-        return (res.ok && data.status === "success") ? data.data : [];
-    } catch (e) { return []; }
-};
-
-// ==========================================
-// 1.1. SHARED PROMO CODE API
-// ==========================================
-window.checkPromoCode = async function(code) {
-    // index.html expects this helper to return the API URL.
-    // The caller performs fetch() and reads the JSON response itself.
-    const rawCode = String(code || '').trim();
-    if (!rawCode) return null;
-
-    let cleanCode = rawCode;
-    try { cleanCode = decodeURIComponent(rawCode); } catch (e) {}
-    cleanCode = cleanCode.trim().toUpperCase();
-    if (!cleanCode) return null;
-
-    // Promo codes use the MAIN API backend, not the authentication server.
-    return `${VERCEL_URL}/api/promocodes/${encodeURIComponent(cleanCode)}`;
-};
-
-// ==========================================
-// 1.2. NEWSLETTER SUBSCRIBE
-// Returns { ok: boolean, message: string }
-// ==========================================
-window.subscribeNewsletterApi = async function(email) {
-    try {
-        const response = await fetch(`${VERCEL_URL}/api/subscribe`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email })
-        });
-        let result = null;
-        try { result = await response.json(); } catch (e) {}
-        if (response.ok && result && result.status === "success") return { ok: true, message: result.message || 'Subscribed' };
-        console.error("Newsletter Error:", response.status, result);
-        return { ok: false, message: (result && result.message) || 'Could not subscribe. Please try again.' };
+        const response = await fetch(url, { ...options, signal: ctrl.signal });
+        let data = null;
+        try { data = await response.json(); } catch (e) {}
+        return { ok: response.ok, status: response.status, data };
     } catch (error) {
-        console.error("Newsletter Error:", error);
-        return { ok: false, message: 'Could not reach the server. Please try again.' };
-    }
+        return { ok: false, status: 0, data: null, error };
+    } finally { clearTimeout(timer); }
+}
+const jsonPost = (url, body, headers) => api(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...(headers || {}) },
+    body: JSON.stringify(body)
+});
+const isSuccess = r => !!(r && r.ok && r.data && (r.data.status === 'success' || r.data.success === true));
+const cleanStr = (v, max) => String(v ?? '').trim().slice(0, max);
+const EMAIL_RE = /^[^\s@\/]+@[^\s@\/]+\.[^\s@\/]+$/;
+
+// ==========================================
+// 0.1 SESSION TOKEN (signed by auth server)
+// ==========================================
+function jwtExpired(token) {
+    try {
+        const part = String(token).split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+        const payload = JSON.parse(atob(part));
+        return !payload.exp || payload.exp * 1000 < Date.now() + 30000;
+    } catch (e) { return true; }
+}
+window.aaviraSessionExpired = false;
+window.getAaviraToken = function () {
+    const token = LS.get('aavira_token');
+    if (!token) return '';
+    if (jwtExpired(token)) { LS.del('aavira_token'); window.aaviraSessionExpired = true; return ''; }
+    return token;
+};
+window.authHeaders = function (extra) {
+    const headers = Object.assign({}, extra || {});
+    const token = window.getAaviraToken();
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    return headers;
+};
+
+const ORDER_TOKEN_PREFIX = 'aavira_order_token:';
+function rememberOrderToken(orderId, token) {
+    LS.set(ORDER_TOKEN_PREFIX + orderId, token);
+    const ids = LS.json('aavira_order_token_ids', []).filter(x => x !== orderId);
+    ids.push(orderId);
+    while (ids.length > 20) LS.del(ORDER_TOKEN_PREFIX + ids.shift());   // sirf last 20 rakho
+    LS.set('aavira_order_token_ids', JSON.stringify(ids));
+}
+function clearCachedOrders() {
+    ['aavira_orders', 'aavira_placed_orders', 'aavira_last_order_id', 'aavira_guest_order_id'].forEach(LS.del);
+    LS.json('aavira_order_token_ids', []).forEach(id => LS.del(ORDER_TOKEN_PREFIX + id));
+    LS.del('aavira_order_token_ids');
+}
+// Logout par ise call karo (token + cached orders + user info sab saaf)
+window.clearAaviraSession = function () {
+    ['aavira_token', 'aavira_user_email', 'aavira_display_name', 'aavira_user_phone'].forEach(LS.del);
+    clearCachedOrders();
+    window.aaviraSessionExpired = false;
+};
+
+// ==========================================
+// 1. DATA FETCHING (public catalog)
+// ==========================================
+const listData = async path => {
+    const r = await api(`${VERCEL_URL}${path}`);
+    return (r.ok && r.data && r.data.status === 'success' && Array.isArray(r.data.data)) ? r.data.data : [];
+};
+window.getVercelData = () => listData('/api/products');
+window.getMainProductsData = () => listData('/api/main_products');
+window.getBannersData = () => listData('/api/banners');
+window.getCategoriesData = () => listData('/api/categories');
+
+// ==========================================
+// 1.1. PROMO CODE (returns API URL; caller does fetch)
+// ==========================================
+window.checkPromoCode = async function (code) {
+    let clean = String(code || '').trim();
+    try { clean = decodeURIComponent(clean); } catch (e) {}
+    clean = clean.trim().toUpperCase();
+    if (!/^[A-Z0-9_-]{3,40}$/.test(clean)) return null;
+    return `${VERCEL_URL}/api/promocodes/${encodeURIComponent(clean)}`;
+};
+
+// ==========================================
+// 1.2. NEWSLETTER
+// ==========================================
+window.subscribeNewsletterApi = async function (email) {
+    const clean = cleanStr(email, 120).toLowerCase();
+    if (!EMAIL_RE.test(clean)) return { ok: false, message: 'Enter a valid email address.' };
+    const r = await jsonPost(`${VERCEL_URL}/api/subscribe`, { email: clean });
+    if (isSuccess(r)) return { ok: true, message: r.data.message || 'Subscribed' };
+    if (r.status === 0) return { ok: false, message: 'Could not reach the server. Please try again.' };
+    return { ok: false, message: (r.data && r.data.message) || 'Could not subscribe. Please try again.' };
 };
 
 // ==========================================
 // 2. ORDERS LOGIC
 // ==========================================
-window.getLocalAaviraOrders = function() {
-    try {
-        const raw = localStorage.getItem('aavira_orders');
-        const orders = raw ? JSON.parse(raw) : [];
-        return Array.isArray(orders) ? orders : [];
-    } catch (e) { return []; }
+window.getLocalAaviraOrders = function () {
+    const orders = LS.json('aavira_orders', []);
+    return Array.isArray(orders) ? orders : [];
 };
 
-window.syncAaviraOrderLocally = function(orderPayload) {
+window.syncAaviraOrderLocally = function (orderPayload) {
     try {
         if (!orderPayload || !orderPayload.orderId) return false;
         const email = String(orderPayload.email || orderPayload.customerEmail || '').trim().toLowerCase();
         const phone = String(orderPayload.phone || orderPayload.customerPhone || '').replace(/[^0-9]/g, '').slice(-10);
-        const currentEmail = String(localStorage.getItem('aavira_user_email') || '').trim().toLowerCase();
-        const currentPhone = String(localStorage.getItem('aavira_user_phone') || '').replace(/[^0-9]/g, '').slice(-10);
-        const currentName = String(localStorage.getItem('aavira_display_name') || '').trim();
+        const currentEmail = String(LS.get('aavira_user_email') || '').trim().toLowerCase();
+        const currentPhone = String(LS.get('aavira_user_phone') || '').replace(/[^0-9]/g, '').slice(-10);
+        const currentName = String(LS.get('aavira_display_name') || '').trim();
         const signedIn = !!(currentEmail && currentName && currentName.toLowerCase() !== 'guest user');
         if (signedIn && email && email !== currentEmail && (!phone || phone !== currentPhone)) return false;
         const id = String(orderPayload.orderId).trim();
@@ -119,96 +155,136 @@ window.syncAaviraOrderLocally = function(orderPayload) {
         });
         const index = orders.findIndex(order => String(order?.orderId || order?.id || '').trim() === id);
         if (index >= 0) orders[index] = { ...orders[index], ...normalized }; else orders.unshift(normalized);
-        localStorage.setItem('aavira_orders', JSON.stringify(orders));
-        localStorage.setItem('aavira_last_order_id', id);
+        LS.set('aavira_orders', JSON.stringify(orders.slice(0, 50)));
+        LS.set('aavira_last_order_id', id);
         return true;
-    } catch (e) { console.error('Local Order Sync Error:', e); return false; }
+    } catch (e) { console.error('Local Order Sync Error'); return false; }
 };
 
-window.getAaviraOrdersForCurrentUser = async function() {
+window.getAaviraOrdersForCurrentUser = async function () {
     try {
-        const email = String(localStorage.getItem('aavira_user_email') || '').trim().toLowerCase();
-        const name = String(localStorage.getItem('aavira_display_name') || '').trim();
-        const phone = String(localStorage.getItem('aavira_user_phone') || '').replace(/[^0-9]/g, '').slice(-10);
+        const email = String(LS.get('aavira_user_email') || '').trim().toLowerCase();
+        const name = String(LS.get('aavira_display_name') || '').trim();
         const signedIn = !!(email && name && name.toLowerCase() !== 'guest user');
-        if (!signedIn && !localStorage.getItem('aavira_guest_order_id')) return [];
+        const token = window.getAaviraToken();
+        const useJwt = signedIn && !!token;
+        const guestId = String(LS.get('aavira_guest_order_id') || '').trim();
+
+        if (!useJwt && !guestId) {
+            // signed-in but session token missing/expired: purana saved data dikhao, aur dobara login ka flag do
+            if (signedIn) { window.aaviraSessionExpired = true; return window.getLocalAaviraOrders(); }
+            return [];
+        }
+
+        const headers = window.authHeaders();
         let url = `${VERCEL_URL}/api/orders?nocache=${Date.now()}`;
-        if (signedIn) { if (email) url += `&email=${encodeURIComponent(email)}`; else if (phone) url += `&phone=${encodeURIComponent(phone)}`; }
-        else url += `&orderId=${encodeURIComponent(localStorage.getItem('aavira_guest_order_id'))}`;
-        const response = await fetch(url); const result = await response.json();
-        if (!response.ok || result.status !== 'success' || !Array.isArray(result.data)) return [];
-        const filtered = result.data.filter(order => {
-            const oEmail = String(order?.email || order?.customerEmail || '').trim().toLowerCase();
-            const oPhone = String(order?.phone || order?.customerPhone || '').replace(/[^0-9]/g, '').slice(-10);
-            const oId = String(order?.orderId || order?.id || '').trim();
-            if (signedIn) return (!!email && oEmail === email) || (!!phone && oPhone === phone);
-            return oId === String(localStorage.getItem('aavira_guest_order_id') || '').trim();
-        });
-        localStorage.setItem('aavira_orders', JSON.stringify(filtered)); return filtered;
-    } catch (error) { console.error('Current User Order Sync Error:', error); return []; }
+        if (!useJwt) {
+            url += `&orderId=${encodeURIComponent(guestId)}`;
+            const orderToken = LS.get(ORDER_TOKEN_PREFIX + guestId);
+            if (orderToken) headers['X-Order-Token'] = orderToken;
+        }
+        const r = await api(url, { headers });
+        if (r.status === 401) {
+            if (useJwt) { LS.del('aavira_token'); window.aaviraSessionExpired = true; return window.getLocalAaviraOrders(); }
+            return [];
+        }
+        if (!(r.ok && r.data && r.data.status === 'success' && Array.isArray(r.data.data))) return [];
+        LS.set('aavira_orders', JSON.stringify(r.data.data));
+        return r.data.data;
+    } catch (error) { console.error('Current User Order Sync Error'); return []; }
 };
 
-window.sendOrderToVercel = async function(orderPayload) {
-    try {
-        const response = await fetch(`${VERCEL_URL}/api/orders`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(orderPayload) });
-        const result = await response.json(); const saved = response.ok && result.status === "success";
-        if (saved) window.syncAaviraOrderLocally(orderPayload); return saved;
-    } catch (error) { console.error("Order Save Error:", error); return false; }
+// Server ko sirf items/address/fees choices jaate hain; price/total server banata hai.
+// Success par poora result milta hai ({orderId, orderToken, order}), warna null.
+window.lastOrderError = '';
+window.sendOrderToVercel = async function (orderPayload) {
+    window.lastOrderError = '';
+    const r = await jsonPost(`${VERCEL_URL}/api/orders`, orderPayload, window.authHeaders());
+    if (!isSuccess(r)) {
+        window.lastOrderError = (r.data && r.data.message) || '';
+        return null;
+    }
+    const result = r.data;
+    if (result.orderToken && result.orderId) rememberOrderToken(String(result.orderId), String(result.orderToken));
+    if (result.order) window.syncAaviraOrderLocally(result.order);
+    return result;
 };
 
 // ==========================================
 // 3. PRODUCT REVIEWS LOGIC
 // ==========================================
-window.saveReviewToDatabase = async function(productId, reviewData) {
-    try { const response = await fetch(`${VERCEL_URL}/api/add-review`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ productId, review: reviewData }) }); const result = await response.json(); return result.success; }
-    catch (error) { return false; }
+window.saveReviewToDatabase = async function (productId, reviewData) {
+    const r = await jsonPost(`${VERCEL_URL}/api/add-review`, { productId: cleanStr(productId, 100), review: reviewData }, window.authHeaders());
+    return !!(r.data && r.data.success);
 };
 
-window.getReviewsFromDatabase = async function(productId) {
-    try { const response = await fetch(`${VERCEL_URL}/api/get-reviews?productId=${productId}`); const result = await response.json(); return (response.ok && result.success) ? result.data : []; }
-    catch (error) { return []; }
+window.getReviewsFromDatabase = async function (productId) {
+    const r = await api(`${VERCEL_URL}/api/get-reviews?productId=${encodeURIComponent(cleanStr(productId, 100))}`);
+    return (r.ok && r.data && r.data.success && Array.isArray(r.data.data)) ? r.data.data : [];
 };
 
-// Review photo ko Cloudinary par upload karta hai. Success par photo ka https URL deta hai, warna ''.
-window.uploadExperiencePhoto = async function(file) {
-    try {
-        const fd = new FormData();
-        fd.append('file', file);
-        fd.append('upload_preset', CLOUDINARY_PRESET);
-        fd.append('cloud_name', CLOUDINARY_CLOUD);
-        const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: fd });
-        const result = await response.json();
-        return result.secure_url || '';
-    } catch (error) { console.error("Photo Upload Error:", error); return ''; }
+// Review photo Cloudinary par: sirf image, max 8 MB. Success par https URL, warna ''.
+const PHOTO_TYPES = /^image\/(jpeg|png|webp|heic|heif)$/i;
+window.uploadExperiencePhoto = async function (file) {
+    if (!file || !PHOTO_TYPES.test(file.type || '') || file.size > 8 * 1024 * 1024) return '';
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('upload_preset', CLOUDINARY_PRESET);
+    fd.append('cloud_name', CLOUDINARY_CLOUD);
+    const r = await api(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: fd }, 60000);
+    const url = r.data && r.data.secure_url;
+    return (typeof url === 'string' && url.startsWith('https://res.cloudinary.com/')) ? url : '';
 };
 
-window.sendToVercelExperience = async function(expData) {
-    try { const response = await fetch(`${VERCEL_URL}/api/experience`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(expData) }); const result = await response.json(); return response.ok && result.status === "success"; }
-    catch (error) { console.error("Experience Submit Error:", error); return false; }
+window.sendToVercelExperience = async function (expData) {
+    const e = expData || {};
+    const r = await jsonPost(`${VERCEL_URL}/api/experience`, {
+        name: cleanStr(e.name, 60), email: cleanStr(e.email, 120).toLowerCase(),
+        text: cleanStr(e.text, 500), photo: cleanStr(e.photo, 500),
+        rating: Math.max(1, Math.min(5, Number(e.rating) || 5)), date: cleanStr(e.date, 40)
+    }, window.authHeaders());
+    return isSuccess(r);
 };
 
-// Safe version: server JSON ki jagah HTML/khaali response de to bhi page crash nahi hoga.
-window.getVercelExperiences = async function() {
-    try {
-        const response = await fetch(`${VERCEL_URL}/api/experience`);
-        const text = await response.text();
-        if (!response.ok) { console.error("Experience Fetch Error: HTTP", response.status); return []; }
-        if (!text.trim()) return [];
-        const result = JSON.parse(text);
-        return (result.status === "success" && Array.isArray(result.data)) ? result.data : [];
-    } catch (error) { console.error("Experience Fetch Error:", error.message); return []; }
+window.getVercelExperiences = async function () {
+    const r = await api(`${VERCEL_URL}/api/experience`);
+    return (r.ok && r.data && r.data.status === 'success' && Array.isArray(r.data.data)) ? r.data.data : [];
 };
 
 // ==========================================
 // 4. LOGIN & OTP DELIVERY BOY
 // ==========================================
-window.DeliveryBoy = {
-    sendOTP: async function(email, name) { try { const response = await fetch(`${AUTH_URL}/api/send-otp`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({userEmail:email,userName:name}) }); const data=await response.json(); return {ok:response.ok,data}; } catch(error){ return {ok:false,data:{success:false,message:'Auth Server Error!'}}; } },
-    verifyOTP: async function(email, userOtp, name, pwd) { try { const response=await fetch(`${AUTH_URL}/api/verify-otp`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userEmail:email,userOTP:userOtp,userName:name,userPassword:pwd})}); const data=await response.json(); return {ok:response.ok,data}; } catch(error){ return {ok:false,data:{success:false,message:'Auth Server Error!'}}; } },
-    login: async function(email,pwd) { try { const response=await fetch(`${AUTH_URL}/api/login`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userEmail:email,userPassword:pwd})}); const data=await response.json(); return {ok:response.ok,data}; } catch(error){ return {ok:false,data:{success:false,message:'Auth Server Error!'}}; } },
-    checkEmailExists: async function(email) { try { const response=await fetch(`${AUTH_URL}/api/login`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userEmail:email,userPassword:"DUMMY_PASSWORD_CHECK_123"})}); const data=await response.json(); if(data.message==="Incorrect Password!"||(data.message&&data.message.includes("already registered"))) return {exists:true}; return {exists:false}; } catch(error){ return {exists:false}; } },
-    googleLogin: async function(token) { try { const response=await fetch(`${AUTH_URL}/api/google-login`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({googleToken:token})}); const data=await response.json(); return {ok:response.ok,data}; } catch(error){ console.error("Google Login API Error:",error); return {ok:false,data:{success:false,message:'Google Auth Server Error!'}}; } }
-};
+window.DeliveryBoy = (function () {
+    const post = async (path, body, errMsg) => {
+        const r = await jsonPost(`${AUTH_URL}${path}`, body);
+        if (r.status === 0 || !r.data) return { ok: false, data: { success: false, message: errMsg || 'Auth Server Error!' } };
+        const data = r.data;
+        if (data.authToken) {
+            // alag user login kare to pichle user ka cached data saaf
+            const prev = String(LS.get('aavira_user_email') || '').toLowerCase();
+            const next = String(data.email || '').toLowerCase();
+            if (prev && next && prev !== next) clearCachedOrders();
+            LS.set('aavira_token', data.authToken);
+            window.aaviraSessionExpired = false;
+            delete data.authToken;
+        }
+        return { ok: r.ok, data };
+    };
+    return Object.freeze({
+        sendOTP: (email, name) => post('/api/send-otp', { userEmail: email, userName: name }),
+        verifyOTP: (email, userOtp, name, pwd) => post('/api/verify-otp', { userEmail: email, userOTP: userOtp, userName: name, userPassword: pwd }),
+        login: (email, pwd) => post('/api/login', { userEmail: email, userPassword: pwd }),
+        googleLogin: token => post('/api/google-login', { googleToken: token }, 'Google Auth Server Error!'),
+        sendPasswordResetOTP: email => post('/api/send-reset-otp', { userEmail: email }),
+        resetPassword: (email, otp, newPwd) => post('/api/update-password', { userEmail: email, userOTP: otp, newPassword: newPwd }),
+        checkEmailExists: async email => {
+            const r = await post('/api/email-exists', { userEmail: email });
+            return { exists: !!(r.data && r.data.exists) };
+        }
+    });
+})();
+
+})();
 
 // ==========================================
 // 5. HOME PREMIUM TEXT MOTION
