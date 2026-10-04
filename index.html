@@ -45,6 +45,7 @@ a{color:inherit;text-decoration:none}
 .no-scrollbar{scrollbar-width:none}
 .no-scrollbar::-webkit-scrollbar{display:none}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.aavira-premium-text,.aavira-premium-line{display:none!important}
 
 .app{max-width:420px;margin:0 auto;background:var(--ivory);padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
 @media(min-width:640px){body{background:#EFE8DE}.app{box-shadow:0 0 60px rgba(36,32,36,.12)}}
@@ -167,6 +168,19 @@ a{color:inherit;text-decoration:none}
 .btn-outline{background:#fff;color:var(--rani);border:1.5px solid var(--rani)}
 .btn-outline:hover{background:var(--rani);color:#fff}
 .btn-dark:disabled,.btn-pink:disabled{opacity:.65;cursor:not-allowed}
+
+.marquee{overflow:hidden;margin-top:52px;background:var(--ivory);border-block:1px solid var(--line)}
+.marquee-row{overflow:hidden;white-space:nowrap;padding:20px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.marquee-track{display:flex;width:max-content;animation:slide 32s linear infinite}
+.marquee-row:nth-child(2) .marquee-track{animation-direction:reverse;animation-duration:28s}
+.marquee-row:nth-child(3) .marquee-track{animation-duration:36s}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee-set{display:flex}
+.marquee-copy{display:inline-flex;align-items:center;gap:28px;padding-right:28px;font-size:16px;font-weight:500;letter-spacing:.07em}
+.marquee-copy::after{content:"";width:4px;height:4px;border-radius:50%;background:var(--rani);opacity:.6}
+.marquee-row:nth-child(2) .marquee-copy{color:var(--rani);font-weight:600}
+.marquee-row:nth-child(3) .marquee-copy{color:var(--muted)}
+@keyframes slide{to{transform:translateX(-50%)}}
 
 .footer{margin-top:48px;background:var(--plum);color:#fff;padding:36px 20px 28px;border-top:3px solid rgba(212,175,55,.4)}
 .footer-brand{font-family:"Playfair Display",serif;font-size:24px;font-weight:600;color:var(--gold)}
@@ -297,7 +311,7 @@ a{color:inherit;text-decoration:none}
 .is-busy{position:relative;pointer-events:none;color:transparent!important}
 .is-busy>*{opacity:0}
 .is-busy::after{content:"";position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border:2px solid var(--spin,var(--rani));border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;z-index:6}
-:is(.btn-pink,.btn-dark,.go,.signin,.footer-news button).is-busy{--spin:#fff}
+:is(.btn-pink,.btn-dark,.signin,.footer-news button).is-busy{--spin:#fff}
 .trust{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:20px 12px 0}
 .trust div{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:11px;font-weight:500;color:var(--muted);line-height:1.3}
 .trust svg{width:22px;height:22px;color:var(--gold-text);stroke-width:1.5}
@@ -315,18 +329,7 @@ a{color:inherit;text-decoration:none}
 @media(max-width:420px){.marquee-copy{font-size:15px;gap:24px;padding-right:24px}}
 @media(prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
-<style id="aavira-alternating-marquee">
-.aavira-marquee{overflow:hidden;background:linear-gradient(180deg,#fff,#fffafc);border-block:1px solid #eee6ea}
-.aavira-marquee-row{overflow:hidden;white-space:nowrap;position:relative;padding:12px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.aavira-marquee-track{display:flex;width:max-content;will-change:transform;animation:aaviraMarqueeRight 22s linear infinite}
-.aavira-marquee-row.reverse .aavira-marquee-track{animation-name:aaviraMarqueeLeft;animation-duration:20s}
-.aavira-marquee-copy{display:flex;align-items:center;gap:24px;padding-right:24px;color:#2a2528;font-family:Inter,system-ui,sans-serif;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
-.aavira-marquee-row:nth-child(2) .aavira-marquee-copy{color:#D81B60}
-.aavira-marquee-row:nth-child(3) .aavira-marquee-copy{color:#625a60}
-.aavira-marquee-copy::after{content:"";width:5px;height:5px;border-radius:50%;background:#D4AF37;flex:0 0 5px}
-@keyframes aaviraMarqueeRight{from{transform:translateX(-50%)}to{transform:translateX(0)}}
-@keyframes aaviraMarqueeLeft{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-</style></head>
+</head>
 <body>
 <div id="toast" class="toast" role="status" aria-live="polite"><span id="toast-msg"></span></div>
 <div id="scrim" class="scrim" onclick="closeTopLayer()"></div>
@@ -460,15 +463,14 @@ a{color:inherit;text-decoration:none}
       <div class="header-actions">
         <a class="icon-btn" href="/items/search.html" aria-label="Search"><i data-lucide="search"></i></a>
         <a class="icon-btn" href="wishlist" aria-label="Wishlist"><i data-lucide="heart"></i><span id="wish-badge" class="cart-badge" hidden>0</span></a>
-        <button type="button" class="icon-btn" onclick="triggerDotAction('cart',this)" aria-label="Shopping cart"><i data-lucide="shopping-cart"></i><span id="cart-badge" class="cart-badge" hidden>0</span></button>
+        <button type="button" class="icon-btn" onclick="triggerDotAction('cart',this)" aria-label="Shopping cart"><i data-lucide="shopping-bag"></i><span id="cart-badge" class="cart-badge" hidden>0</span></button>
       </div>
     </div>
   </header>
   <div id="netBar" class="net-bar" role="status" hidden>You are offline. Showing saved content.</div>
 
   <main>
-    <div class="aavira-marquee" aria-label="Aavira Fashion highlights"><div class="aavira-marquee-row "><div class="aavira-marquee-track"><div class="aavira-marquee-copy">PREMIUM ETHNIC WEAR</div><div class="aavira-marquee-copy">PREMIUM ETHNIC WEAR</div><div class="aavira-marquee-copy">PREMIUM ETHNIC WEAR</div><div class="aavira-marquee-copy">PREMIUM ETHNIC WEAR</div><div class="aavira-marquee-copy">PREMIUM ETHNIC WEAR</div><div class="aavira-marquee-copy">PREMIUM ETHNIC WEAR</div><div class="aavira-marquee-copy">PREMIUM ETHNIC WEAR</div><div class="aavira-marquee-copy">PREMIUM ETHNIC WEAR</div></div></div><div class="aavira-marquee-row reverse"><div class="aavira-marquee-track"><div class="aavira-marquee-copy">CRAFTED FOR ELEGANCE</div><div class="aavira-marquee-copy">CRAFTED FOR ELEGANCE</div><div class="aavira-marquee-copy">CRAFTED FOR ELEGANCE</div><div class="aavira-marquee-copy">CRAFTED FOR ELEGANCE</div><div class="aavira-marquee-copy">CRAFTED FOR ELEGANCE</div><div class="aavira-marquee-copy">CRAFTED FOR ELEGANCE</div><div class="aavira-marquee-copy">CRAFTED FOR ELEGANCE</div><div class="aavira-marquee-copy">CRAFTED FOR ELEGANCE</div></div></div><div class="aavira-marquee-row "><div class="aavira-marquee-track"><div class="aavira-marquee-copy">NEW COLLECTION 2026</div><div class="aavira-marquee-copy">NEW COLLECTION 2026</div><div class="aavira-marquee-copy">NEW COLLECTION 2026</div><div class="aavira-marquee-copy">NEW COLLECTION 2026</div><div class="aavira-marquee-copy">NEW COLLECTION 2026</div><div class="aavira-marquee-copy">NEW COLLECTION 2026</div><div class="aavira-marquee-copy">NEW COLLECTION 2026</div><div class="aavira-marquee-copy">NEW COLLECTION 2026</div></div></div></div>
-<section class="hero" aria-label="Featured">
+    <section class="hero" aria-label="Featured">
       <div id="bannerCarousel" class="hero-track no-scrollbar"></div>
       <h1 class="sr-only">Luxury ethnic elegance</h1>
       <div id="banner-dots" class="hero-dots"></div>
@@ -707,9 +709,9 @@ window.showToast = (message, type = 'success') => {
   toastTimer = setTimeout(() => toast.classList.remove('is-on'), 2200);
 };
 
-const ACTION_DELAY = 1500;
+const ACTION_DELAY = 3000;
 const ACTION_SELECTOR = [
-  '.btn-pink', '.btn-dark', '.btn-outline', '.menu-item', '.signin', '.go', '.nav-item', '.icon-btn[href]',
+  '.btn-pink', '.btn-dark', '.btn-outline', '.menu-item', '.signin', '.nav-item', '.icon-btn[href]',
   '.icon-btn[aria-label="Shopping cart"]', '.sec-link[onclick]', '.footer-news button',
   '.ref-link button', '.promo-badge button'
 ].join(',');
