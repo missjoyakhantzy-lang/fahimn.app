@@ -519,6 +519,12 @@ const loginEmail = () => {
   const name = (readValue('aavira_display_name') || '').trim().toLowerCase();
   return email && name !== 'guest user' ? email : '';
 };
+// Same rule as the Orders page: signed in only when email AND a real name exist
+const orderLoginEmail = () => {
+  const email = (readValue('aavira_user_email') || '').trim().toLowerCase();
+  const name = (readValue('aavira_display_name') || '').trim();
+  return email && name && name.toLowerCase() !== 'guest user' ? email : '';
+};
 const addrKey = () => 'aavira_addresses:' + (loginEmail() || 'guest');
 
 const loadAddresses = () => {
@@ -1027,11 +1033,11 @@ const openWhatsApp = () => {
 const trackOrder = orderId => {
   localStorage.setItem('aavira_guest_order_id', orderId);
   localStorage.setItem('aavira_placed_orders', JSON.stringify([orderId]));
-  location.href = '/orders';
+  location.href = '/orders?id=' + encodeURIComponent(orderId);
 };
 
 const rememberOrder = (orderId, phone) => {
-  if (loginEmail()) {
+  if (orderLoginEmail()) {
     localStorage.setItem('aavira_user_phone', phone);
     const previous = readJson('aavira_placed_orders', []);
     const orders = Array.isArray(previous) ? previous : [];
@@ -1055,7 +1061,7 @@ const showOnlineResult = (orderId, order) => {
     <p>Complete the payment on WhatsApp to confirm your order.</p>
     <div class="acts">
       <button class="btn-wa" type="button" onclick="openWhatsApp()"><i class="fa-brands fa-whatsapp"></i>Open WhatsApp <small id="waTimer">5s</small></button>
-      <button class="btn-line" type="button" onclick="navigate('/orders',this)"><i class="fa-solid fa-box"></i>View my orders</button>
+      <button class="btn-line" type="button" onclick="navigate('/orders?id=${encodeURIComponent(orderId)}',this)"><i class="fa-solid fa-box"></i>View my orders</button>
     </div>`);
   let seconds = 5;
   clearInterval(state.timer);
@@ -1094,13 +1100,16 @@ const buildOrder = orderId => {
   const payment = $('input[name="payment"]:checked').value;
   return {
     orderId,
-    userId: loginEmail() || a.email || a.phone,
+    userId: orderLoginEmail() || a.email || a.phone,
     customerName: a.name,
-    email: a.email,
+    email: orderLoginEmail() || a.email,
     phone: a.phone,
     address: `${a.address}, ${a.city} - Pincode: ${a.pin}`,
     mapLink: a.map || '',
     items,
+    subtotal: bill.subtotal,
+    deliveryFee: bill.delivery,
+    giftWrapFee: bill.gift,
     totalAmount: bill.total,
     paymentMethod: payment,
     paymentStatus: payment === 'online' ? 'Pending' : 'COD',
