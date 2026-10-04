@@ -10,7 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-/* ... (Aapki CSS bilkul same rakhi hai, koi change nahi) ... */
 :root{--rani:#D81B60;--rani-dark:#B71550;--gold:#D4AF37;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#242024;--muted:#6B6369;--line:#E7E0D9;--blush:#F9E8EE;--green:#15803D;--danger:#B91C1C}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{font-family:Inter,system-ui,sans-serif;background:var(--ivory);color:var(--ink);-webkit-font-smoothing:antialiased}
@@ -21,20 +20,24 @@ a{color:inherit;text-decoration:none}
 .app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--ivory);padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))}
 @media(min-width:640px){body{background:#EFE8DE}.app{box-shadow:0 0 60px rgba(36,32,36,.12)}}
 
+/* Busy / spinner state: centred, text hidden, background stays stable */
 .is-busy{position:relative;pointer-events:none;color:transparent!important}
 .is-busy>*{opacity:0}
-.is-busy::after{content:"";position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border:2px solid var(--spin,var(--ink));border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite}
-:is(.btn-place,.btn-fill,.apply,.btn-save).is-busy{--spin:#fff}
+.is-busy::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border:2px solid var(--spin,var(--ink));border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite}
+:is(.btn-place,.btn-fill,.btn-wa,.apply,.btn-save,.ib,.empty a).is-busy{--spin:#fff}
+.ib.is-busy,.ib.is-busy:hover{background:var(--rani)}
+.btn-line.is-busy,.btn-line.is-busy:hover{background:#fff}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-.hdr{position:sticky;top:0;z-index:40;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:60px;padding:env(safe-area-inset-top,0) 8px 0;background:#fff;border-bottom:1px solid var(--line)}
+.hdr{position:sticky;top:0;z-index:40;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:60px;padding:env(safe-area-inset-top,0) 10px 0;background:#fff;border-bottom:1px solid var(--line)}
 .hdr h1{font-family:"Playfair Display",serif;font-size:18px;font-weight:600;text-align:center}
-.ib{width:42px;height:42px;border:0;background:none;border-radius:50%;color:var(--rani);font-size:18px;display:inline-flex;align-items:center;justify-content:center}
-.ib:hover{background:var(--blush)}
-.secure{justify-self:end;padding-right:10px;font-size:11px;font-weight:600;color:var(--green);display:flex;align-items:center;gap:5px}
+.ib{width:40px;height:40px;border:0;background:var(--rani);border-radius:50%;color:#fff;font-size:16px;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(216,27,96,.28);transition:background .2s,transform .2s}
+@media(hover:hover){.ib:hover{background:var(--rani-dark)}}
+.ib:active{transform:scale(.93)}
+.secure{justify-self:end;padding:5px 11px;border-radius:999px;background:#ECFDF5;font-size:11px;font-weight:600;color:var(--green);display:flex;align-items:center;gap:5px}
 
 .empty{min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
-.empty i{font-size:52px;color:#CBBFC6;margin-bottom:18px}
+.empty-ico{width:96px;height:96px;border-radius:50%;background:var(--rani);color:#fff;display:flex;align-items:center;justify-content:center;font-size:38px;margin-bottom:22px;box-shadow:0 12px 28px rgba(216,27,96,.3)}
 .empty h2{font-family:"Playfair Display",serif;font-size:22px;margin-bottom:6px}
 .empty p{font-size:13px;color:var(--muted)}
 .empty a{margin-top:22px;padding:13px 28px;border-radius:999px;background:var(--rani);color:#fff;font-size:13px;font-weight:700}
@@ -81,6 +84,7 @@ main{padding:14px}
 .screen-body{flex:1;overflow-y:auto;padding:16px 14px 24px}
 .screen-foot{padding:12px 16px calc(14px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--line)}
 .btn-save{width:100%;padding:15px;border:0;border-radius:999px;background:var(--rani);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;box-shadow:0 6px 16px rgba(216,27,96,.25)}
+.btn-save.is-busy,.btn-save.is-busy:hover{background:var(--rani)}
 .sec-t{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:6px 2px 14px}
 .chips{display:flex;gap:8px;flex-wrap:wrap}
 .chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:9px 16px;font-size:13px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:7px}
@@ -140,6 +144,7 @@ main{padding:14px}
 .promo{display:flex;gap:8px;margin-bottom:16px}
 .promo .fld{text-transform:uppercase;letter-spacing:.08em;font-weight:600;border-style:dashed}
 .apply{border:0;border-radius:999px;background:var(--ink);color:#fff;padding:0 22px;font-size:12px;font-weight:700}
+.apply.is-busy,.apply.is-busy:hover{background:var(--ink)}
 .applied{display:none;align-items:center;justify-content:space-between;gap:10px;background:#ECFDF5;border:1px dashed #6EE7B7;border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:13px;font-weight:600;color:var(--green)}
 .applied button{width:28px;height:28px;border:0;border-radius:50%;background:#fff;color:var(--danger)}
 .bill{display:flex;flex-direction:column;gap:11px}
@@ -153,6 +158,7 @@ main{padding:14px}
 .bar b{font-size:20px}
 .btn-place{flex:0 0 auto;min-width:190px;padding:15px 24px;border:0;border-radius:999px;background:var(--rani);color:#fff;font-size:13px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 16px rgba(216,27,96,.25)}
 .btn-place:active{transform:scale(.97)}
+.btn-place.is-busy,.btn-place.is-busy:hover{background:var(--rani)}
 
 .overlay{position:fixed;inset:0;z-index:100;background:rgba(36,32,36,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px}
 .overlay.on{display:flex}
@@ -168,9 +174,9 @@ main{padding:14px}
 .btn-fill{border:0;background:var(--rani);color:#fff}
 .btn-wa{border:0;background:#25D366;color:#fff}
 .btn-line{border:1.5px solid var(--line);background:#fff;color:var(--ink)}
+.btn-fill.is-busy,.btn-fill.is-busy:hover{background:var(--rani)}
 .btn-wa small{background:rgba(0,0,0,.15);border-radius:999px;padding:2px 8px;font-size:11px}
 
-/* sheet / dist / fx css retained... */
 .sheet-wrap{position:fixed;inset:0;z-index:110;background:rgba(36,32,36,.55);display:none;align-items:flex-end;justify-content:center}
 .sheet-wrap.on{display:flex}
 .sheet{width:100%;max-width:480px;max-height:92vh;overflow-y:auto;background:#fff;border-radius:24px 24px 0 0;padding:10px 18px calc(22px + env(safe-area-inset-bottom,0px));animation:slide .28s ease}
@@ -293,30 +299,28 @@ main{padding:14px}
 <body>
 <div class="app">
   <header class="hdr">
-    <div><button class="ib" onclick="goBack(this)" aria-label="Back"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <div><button class="ib" type="button" onclick="goBack(this)" aria-label="Back"><i class="fa-solid fa-arrow-left"></i></button></div>
     <h1>Checkout</h1>
     <span class="secure"><i class="fa-solid fa-lock"></i>Secure</span>
   </header>
 
   <div class="empty" id="emptyView" hidden>
-    <i class="fa-solid fa-cart-shopping"></i>
+    <div class="empty-ico"><i class="fa-solid fa-cart-shopping"></i></div>
     <h2>Your cart is empty</h2>
     <p>Explore our latest collections and add something you love.</p>
-    <a href="./">Shop new arrivals</a>
+    <a href="./" onclick="event.preventDefault();navigate('./',this)">Shop new arrivals</a>
   </div>
 
   <main id="checkoutView" hidden>
     <section class="card">
       <h2>Delivery address</h2>
       <div class="loginline" id="loginLine" hidden><i class="fa-solid fa-circle-user"></i><span id="loginText"></span></div>
-      <!-- B4: Event delegation parent for addresses -->
       <div id="addrBox"></div>
       <button class="add-addr" type="button" onclick="openAddrScreen()"><i class="fa-solid fa-plus"></i>Add your address</button>
     </section>
 
     <section class="card">
       <h2>Your order <span class="count" id="itemCount">0 items</span></h2>
-      <!-- B4: Event delegation parent for cart items -->
       <div class="list" id="items"></div>
     </section>
 
@@ -383,7 +387,7 @@ main{padding:14px}
 <!-- Add address screen -->
 <div class="screen" id="addrScreen" role="dialog" aria-label="Add address">
   <header class="hdr">
-    <div><button class="ib" onclick="closeAddrScreen()" aria-label="Close"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <div><button class="ib" type="button" onclick="closeAddrScreen()" aria-label="Close"><i class="fa-solid fa-arrow-left"></i></button></div>
     <h1 id="addrTitle">Add address</h1>
     <span></span>
   </header>
@@ -450,7 +454,7 @@ main{padding:14px}
 <div class="overlay" id="overlay"><div class="dialog" id="dialog"></div></div>
 <div class="toast" id="toast" role="status"></div>
 
-<script src="user_data.js"></script>
+<script src="/user_data.js"></script>
 <script>
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
@@ -468,9 +472,8 @@ const WHATSAPP_NUMBER = '919608720622';
 const FALLBACK_IMG = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#F7F1E8"/><text x="200" y="210" font-family="Georgia,serif" font-size="30" fill="#B9AFA6" text-anchor="middle">Aavira</text></svg>');
 const IMG_ERROR = `onerror="this.onerror=null;this.src='${FALLBACK_IMG}'"`;
 
-// B6 & System State
-const state = { 
-  cart: [], db: {}, buyNow: false, promo: { code: '', amount: 0 }, 
+const state = {
+  cart: [], db: {}, buyNow: false, promo: { code: '', amount: 0 },
   whatsappUrl: '', timer: null, addresses: [], selectedId: '', editId: '', addrType: 'Home', sheetIndex: -1,
   idempotencyKey: crypto.randomUUID ? crypto.randomUUID() : 'idk_' + Date.now() + Math.random().toString(36).substr(2,9)
 };
@@ -493,7 +496,7 @@ const toast = message => {
   toastTimer = setTimeout(() => el.classList.remove('on'), 2600);
 };
 
-// B3: Safe Image Validations
+// Safe image validation
 const safeImg = url => {
   try {
     const u = new URL(url);
@@ -532,7 +535,7 @@ const persistAddresses = () => {
   try { localStorage.setItem(addrKey() + ':sel', state.selectedId || ''); } catch {}
 };
 
-// B5: Pull addresses with duplicate filtering
+// Pull remote addresses, skipping duplicates
 const pullAddresses = async () => {
   const email = loginEmail();
   if (!email || typeof window.fetchAaviraApi !== 'function') return;
@@ -541,11 +544,10 @@ const pullAddresses = async () => {
     if (!res || !res.success) return;
     const remote = res.data?.addresses || [];
     if (!Array.isArray(remote) || !remote.length) return;
-    
-    // Filter duplicates properly
+
     const have = new Set(state.addresses.map(a => a.id));
     const merged = [...state.addresses, ...remote.filter(a => a && a.id && !have.has(a.id))];
-    
+
     if (merged.length !== state.addresses.length) {
       state.addresses = merged;
       if (!state.selectedId) state.selectedId = merged[0]?.id || '';
@@ -556,7 +558,7 @@ const pullAddresses = async () => {
 };
 const selectedAddress = () => state.addresses.find(a => a.id === state.selectedId);
 
-// B4: Event Delegation for Address Box (Removed Inline OnClick)
+// Event delegation for the address list
 const renderAddresses = () => {
   const email = loginEmail();
   $('#loginLine').hidden = !email;
@@ -686,7 +688,7 @@ const detectPin = async pin => {
     if (!po) { pinStatus('err', '<i class="fa-solid fa-circle-exclamation"></i>Pincode not found. Please select your district.'); return; }
     const stateName = po.State || '';
     const d = stateName.toLowerCase() === 'bihar' ? matchDistrict(po.District) : '';
-    if (d) { setDistrict(d); pinStatus('ok', `<i class="fa-solid fa-circle-check"></i>Detected: ${esc(d)}, Bihar`); } 
+    if (d) { setDistrict(d); pinStatus('ok', `<i class="fa-solid fa-circle-check"></i>Detected: ${esc(d)}, Bihar`); }
     else if (stateName) { setDistrict(po.District || po.Name, stateName); pinStatus('ok', `<i class="fa-solid fa-circle-check"></i>Detected: ${esc(po.District || po.Name)}, ${esc(stateName)}`); }
   } catch {
     if (seq !== pinSeq) return; pinStatus('', '<i class="fa-solid fa-circle-info"></i>Could not auto-detect. Please select your district.');
@@ -732,7 +734,7 @@ const bindForm = () => {
 /* ---------- Cart ---------- */
 const saveCart = () => { if (!state.buyNow) writeJson('aavira_cart', state.cart); };
 
-// B1: loadProducts updated to make sure we fetch the buy_now product if not in DB
+// Fetch the buy-now product if it is not in the catalogue
 const loadProducts = async (buyNowId) => {
   if (typeof window.getVercelData === 'function') {
     try { ((await window.getVercelData()) || []).forEach(p => { if (p?.id) state.db[String(p.id).trim()] = p; }); } catch {}
@@ -745,7 +747,6 @@ const loadProducts = async (buyNowId) => {
   }
 };
 
-// B1: Secured loadCart
 const loadCart = async () => {
   const params = new URLSearchParams(location.search);
   const buyNowId = params.get('buy_now');
@@ -764,12 +765,12 @@ const loadCart = async () => {
     state.cart = readJson('aavira_cart', []);
   }
 
-  // Filter out tampered or missing items (Price spoofing check)
+  // Drop tampered or unknown items (price spoofing check)
   state.cart = state.cart.filter(item => {
     const id = String(item.productId).trim();
     item.productId = id;
     item.qty = item.qty || 1;
-    return !!state.db[id]; // Backend matched only
+    return !!state.db[id];
   });
 };
 
@@ -789,7 +790,6 @@ const pricing = () => {
 
 const showView = hasItems => { $('#emptyView').hidden = hasItems; $('#checkoutView').hidden = !hasItems; $('#payBar').hidden = !hasItems; };
 
-// B4: Event delegation for items
 const render = () => {
   if (!state.cart.length) return showView(false);
   showView(true);
@@ -953,22 +953,20 @@ const showOnlineResult = (orderId, order) => {
 const showCodResult = orderId => openDialog(`<div class="badge-ico" style="background:var(--green)"><i class="fa-solid fa-check"></i></div>
   <h2>Order placed</h2><div class="oid">ORDER ID: ${esc(orderId)}</div><p>Your order has been recorded. We will start processing it shortly.</p>
   <div class="acts">
-    <button class="btn-fill" type="button" onclick="withSpinner(this,()=>navigate('/orders?id=${encodeURIComponent(orderId)}'))"><i class="fa-solid fa-location-arrow"></i>Track order</button>
+    <button class="btn-fill" type="button" onclick="navigate('/orders?id=${encodeURIComponent(orderId)}',this)"><i class="fa-solid fa-location-arrow"></i>Track order</button>
     <button class="btn-line" type="button" onclick="navigate('./',this)"><i class="fa-solid fa-bag-shopping"></i>Continue shopping</button>
   </div>`);
 
 const primeSound = () => { const a = $('#successSound'); if (!a) return; a.muted = true; a.play().then(() => { a.pause(); a.currentTime = 0; a.muted = false; }).catch(() => { a.muted = false; }); };
 const playSuccess = () => { const a = $('#successSound'); if (!a) return; try { a.pause(); a.currentTime = 0; a.volume = 0.85; a.muted = false; a.play().catch(() => {}); } catch {} navigator.vibrate?.([60, 40, 60]); };
 
-// B2: Naya placeOrder jisme B6 (idempotency key) bhi use hui hai
 const placeOrder = () => {
   if (!selectedAddress()) { toast('Please add a delivery address'); $('#addrBox').scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
   primeSound();
   withSpinner($('#placeBtn'), async () => {
     showProcessing('Please wait while we secure your order.');
     const bill = pricing(); const a = selectedAddress();
-    
-    // Naya Format (B2 Payload)
+
     const payload = {
       items: state.cart.map(i => ({ productId: i.productId, qty: i.qty, size: i.size || 'Free Size', color: i.color || 'Standard' })),
       customerName: a.name,
@@ -980,15 +978,15 @@ const placeOrder = () => {
       giftWrap: $('#giftWrap').checked,
       paymentMethod: $('input[name="payment"]:checked').value,
       promoCode: state.promo.code || '',
-      idempotencyKey: state.idempotencyKey // B6
+      idempotencyKey: state.idempotencyKey
     };
 
     try {
       if (typeof window.placeAaviraOrder !== 'function') throw new Error('System updating. Please try again.');
-      
+
       const res = await window.placeAaviraOrder(payload);
       if (!res || !res.success) throw new Error(res?.message || 'Order could not be saved.');
-      
+
       const { orderId, orderToken } = res;
       if (orderToken && typeof window.saveAaviraOrderToken === 'function') {
          window.saveAaviraOrderToken(orderId, orderToken);
@@ -1000,7 +998,7 @@ const placeOrder = () => {
       removeValue('savedPromoCache'); removeValue('checkoutAddressDraft');
       rememberOrder(orderId, payload.phone);
       playSuccess();
-      
+
       const displayOrder = { ...payload, totalAmount: bill.total };
       if (payload.paymentMethod === 'online') showOnlineResult(orderId, displayOrder);
       else showCodResult(orderId);
@@ -1008,7 +1006,7 @@ const placeOrder = () => {
     } catch (err) {
       $('#overlay').classList.remove('on');
       toast(err.message || 'Error processing order');
-      // B6 Rotate Key
+      // Rotate the idempotency key after a failed attempt
       state.idempotencyKey = Date.now().toString(36) + Math.random().toString(36).substr(2);
     }
   });
