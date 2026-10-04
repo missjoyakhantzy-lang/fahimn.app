@@ -13,22 +13,29 @@
 <style>
 :root{--rani:#D81B60;--rani-dark:#B71550;--gold:#D4AF37;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#242024;--muted:#6B6369;--line:#E7E0D9;--blush:#F9E8EE;--green:#15803D;--danger:#B91C1C}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:"Inter",system-ui,sans-serif;background:var(--ivory);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{font-family:Inter,system-ui,sans-serif;background:var(--ivory);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 button{font-family:inherit;cursor:pointer}
 a{color:inherit;text-decoration:none}
-.app{max-width:420px;margin:0 auto;background:#fff;min-height:100vh;padding-bottom:calc(88px + env(safe-area-inset-bottom,0px));position:relative}
+:focus-visible{outline:2px solid var(--rani);outline-offset:2px}
+[hidden]{display:none!important}
+.app{max-width:420px;margin:0 auto;background:#fff;min-height:100vh;position:relative}
 @media(min-width:640px){body{background:#EFE8DE}.app{box-shadow:0 0 60px rgba(36,32,36,.12)}}
 
-/* Header */
+.is-busy{position:relative;pointer-events:none;color:transparent!important}
+.is-busy>*{opacity:0}
+.is-busy::after{content:"";position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border:2px solid var(--spin,var(--ink));border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite}
+:is(.btn-p,.mbtn,.btn-write,.go,.footer-news button).is-busy{--spin:#fff}
+@keyframes spin{to{transform:rotate(360deg)}}
+
 .hdr{position:sticky;top:0;z-index:40;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:60px;padding:env(safe-area-inset-top,0) 8px 0;background:#fff;border-bottom:1px solid var(--line)}
 .hdr img{height:36px;width:auto}
 .hdr-r{display:flex;justify-content:flex-end}
-.ib{position:relative;width:42px;height:42px;border:0;background:none;border-radius:50%;color:var(--ink);font-size:18px;display:inline-flex;align-items:center;justify-content:center;transition:.2s}
+.ib{position:relative;width:42px;height:42px;border:0;background:none;border-radius:50%;color:var(--ink);font-size:18px;display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s}
 .ib:hover{background:var(--blush);color:var(--rani)}
 .ib.on i{color:var(--rani)}
+.ib.back{color:var(--rani)}
 .badge{position:absolute;top:3px;right:1px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--rani);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
 
-/* Gallery */
 .media{position:relative;background:var(--cream);border-bottom:1px solid var(--line)}
 .carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;aspect-ratio:1/1;scrollbar-width:none}
 .carousel::-webkit-scrollbar{display:none}
@@ -36,33 +43,32 @@ a{color:inherit;text-decoration:none}
 .slide img,.slide video{width:100%;height:100%;object-fit:contain;display:block;background:var(--cream)}
 .slide video{background:#000}
 .dots{position:absolute;bottom:12px;left:0;right:0;display:flex;justify-content:center;gap:6px}
-.dot{width:7px;height:7px;border-radius:4px;background:rgba(255,255,255,.8);box-shadow:0 0 0 1px rgba(0,0,0,.12);transition:.3s;border:0;padding:0}
+.dot{width:7px;height:7px;border-radius:4px;background:rgba(255,255,255,.8);box-shadow:0 0 0 1px rgba(0,0,0,.12);transition:width .3s;border:0;padding:0}
 .dot.on{width:20px;background:var(--rani);box-shadow:none}
 .skel{background:linear-gradient(90deg,#F1EBE3 25%,#F8F3EC 37%,#F1EBE3 63%);background-size:400% 100%;animation:sh 1.4s ease infinite;color:transparent!important;border-radius:6px}
-@keyframes sh{0%{background-position:100% 0}100%{background-position:0 0}}
+@keyframes sh{to{background-position:0 0}}
 
-/* Info */
 .info{padding:22px 20px 8px}
 .title{font-family:"Playfair Display",serif;font-size:22px;font-weight:600;line-height:1.35;margin-bottom:10px}
 .prow{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px}
 .price{font-size:26px;font-weight:700}
 .mrp{font-size:15px;color:var(--muted);text-decoration:line-through}
-.off{background:var(--rani);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;box-shadow:0 2px 6px rgba(216,27,96,.25)}
+.off{background:var(--rani);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px}
 .rate-chip{display:inline-flex;align-items:center;gap:4px;background:var(--green);color:#fff;font-size:12px;font-weight:600;padding:3px 9px;border-radius:6px;margin-bottom:18px}
-.rate-chip.mid{background:#B45309}.rate-chip.bad{background:#B91C1C}
+.rate-chip.mid{background:#B45309}
+.rate-chip.bad{background:var(--danger)}
 .rate-chip i{font-size:10px}
-.rate-chip small{font-weight:500;opacity:.9}
 .lbl{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:18px 0 12px}
 .lbl span{text-transform:none;letter-spacing:0;font-weight:600}
 .colors{display:flex;gap:12px;overflow-x:auto;padding:4px 20px 10px;margin:0 -20px;scrollbar-width:none}
 .colors::-webkit-scrollbar{display:none}
-.sw{position:relative;flex:0 0 auto;width:54px;height:54px;border-radius:50%;border:2px solid var(--line);padding:3px;background:#fff;transition:.25s}
+.sw{position:relative;flex:0 0 auto;width:54px;height:54px;border-radius:50%;border:2px solid var(--line);padding:3px;background:#fff;transition:transform .25s,border-color .25s}
 .sw img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:50%}
 .sw i{display:none;position:absolute;inset:3px;border-radius:50%;background:rgba(0,0,0,.4);color:#fff;font-size:16px;align-items:center;justify-content:center}
 .sw.on{border-color:var(--rani);transform:scale(1.06)}
 .sw.on i{display:flex}
 .sizes{display:flex;flex-wrap:wrap;gap:10px}
-.sz{min-width:48px;height:48px;padding:0 6px;border-radius:24px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:500;color:var(--ink);transition:.2s}
+.sz{min-width:48px;height:48px;padding:0 6px;border-radius:24px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:500;color:var(--ink);transition:background .2s,color .2s}
 .sz.custom{padding:0 18px}
 .sz.on{background:var(--rani);border-color:var(--rani);color:#fff;font-weight:600}
 .sizes.err .sz{border-color:var(--rani);color:var(--rani);background:var(--blush);animation:shake .4s}
@@ -71,34 +77,33 @@ a{color:inherit;text-decoration:none}
 .stock{margin-top:14px;font-size:12px;font-weight:600;color:#B45309}
 .stock.out{color:var(--danger)}
 
-/* Blocks */
 .blk{padding:22px 20px;border-top:8px solid var(--cream)}
-.blk h2{font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.blk h2{font-size:15px;font-weight:700;margin-bottom:14px}
 .wa{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:14px;padding:14px 16px;font-size:13px;font-weight:600;color:#166534;line-height:1.4}
 .wa a{flex:0 0 auto;width:42px;height:42px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:21px}
 .acc{border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .acc-i+.acc-i{border-top:1px solid var(--line)}
 .acc-h{width:100%;display:flex;justify-content:space-between;align-items:center;padding:15px 16px;background:#fff;border:0;font-size:13px;font-weight:600;color:var(--ink)}
-.acc-h i{font-size:11px;color:#A8A0A5;transition:.3s}
+.acc-h i{font-size:11px;color:#A8A0A5;transition:transform .3s}
 .acc-b{max-height:0;overflow:hidden;padding:0 16px;font-size:13px;line-height:1.65;color:#4B5563;transition:max-height .3s}
 .acc-i.on .acc-b{max-height:900px;padding:2px 16px 18px}
 .acc-i.on .acc-h i{transform:rotate(180deg);color:var(--rani)}
-.acc-b ul{padding-left:16px}.acc-b li{margin-bottom:6px}
+.acc-b ul{padding-left:16px}
+.acc-b li{margin-bottom:6px}
 .trust{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
 .trust div{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;background:var(--ivory);border:1px solid var(--line);border-radius:12px;padding:14px 6px;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase}
 .trust i{font-size:20px;color:var(--gold)}
 
-/* Reviews */
-.btn-sm{background:var(--ink);color:#fff;border:0;border-radius:8px;padding:8px 14px;font-size:11px;font-weight:600}
 .sum{display:flex;align-items:center;gap:18px;border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:18px}
 .sum-l{text-align:center;padding-right:18px;border-right:1px solid var(--line)}
-.sum.solo{justify-content:center}.sum.solo .sum-l{border:0;padding:0}
+.sum.solo{justify-content:center}
+.sum.solo .sum-l{border:0;padding:0}
 .sum-big{font-family:"Playfair Display",serif;font-size:38px;font-weight:700;line-height:1}
 .stars{color:var(--gold);font-size:12px;display:flex;gap:2px;justify-content:center;margin:7px 0 5px}
-.sum-n{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase}
 .sum-r{flex:1;display:flex;flex-direction:column;gap:7px}
 .bar{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;color:var(--muted)}
-.bar b{width:22px;font-weight:600}.bar em{min-width:28px;text-align:right;font-style:normal}
+.bar b{width:22px;font-weight:600}
+.bar em{min-width:28px;text-align:right;font-style:normal}
 .track{flex:1;height:6px;border-radius:3px;background:#E5E7EB;overflow:hidden}
 .fill{height:100%;background:var(--rani);border-radius:3px}
 .rv-list{display:flex;gap:14px;overflow-x:auto;margin:0 -20px;padding:0 20px 10px;scrollbar-width:none}
@@ -113,19 +118,21 @@ a{color:inherit;text-decoration:none}
 .rv-b{font-size:13px;line-height:1.55;color:var(--muted)}
 .empty{width:100%;text-align:center;padding:24px 16px;border:1px dashed var(--line);border-radius:12px;font-size:12px;color:var(--muted)}
 .empty b{display:block;font-size:14px;color:var(--ink);margin-bottom:3px}
+.btn-write{width:100%;margin-top:16px;display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;border:0;border-radius:999px;background:var(--ink);color:#fff;font-size:15px;font-weight:700}
+.btn-write i{width:24px;height:24px;border-radius:50%;background:#fff;color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:12px}
 
-/* Bottom bar */
 .bar-bottom{position:fixed;left:0;right:0;bottom:0;margin:0 auto;max-width:420px;z-index:50;display:flex;gap:12px;padding:12px 20px calc(14px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 20px rgba(36,32,36,.05)}
-.btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:15px 0;border-radius:10px;font-size:13px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;transition:.2s}
+.btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:15px 0;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;transition:transform .2s,opacity .2s}
 .btn:active{transform:scale(.97)}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .btn-o{background:#fff;color:var(--ink);border:1.5px solid var(--ink)}
 .btn-p{background:var(--rani);color:#fff;border:0;box-shadow:0 6px 16px rgba(216,27,96,.25)}
 
-/* Modals */
 .ov{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center}
 .ov.on{display:flex}
-.sheet{width:100%;max-width:420px;background:#fff;border-radius:22px 22px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom,0px));position:relative;animation:up .3s ease}
+.ov.center{align-items:center;padding:20px}
+.sheet{width:100%;max-width:420px;max-height:92vh;overflow-y:auto;background:#fff;border-radius:22px 22px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom,0px));position:relative;animation:up .3s ease}
+.center .sheet{border-radius:20px;text-align:center;max-width:340px}
 @keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
 .sheet h3{font-family:"Playfair Display",serif;font-size:22px;margin-bottom:6px}
 .sheet p{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.5}
@@ -133,12 +140,13 @@ a{color:inherit;text-decoration:none}
 .fld{width:100%;border:1px solid var(--line);border-radius:10px;padding:13px 14px;font:inherit;font-size:14px;margin-bottom:10px;outline:none;background:#fff}
 .fld:focus{border-color:var(--rani);box-shadow:0 0 0 3px rgba(216,27,96,.1)}
 .row2{display:flex;gap:10px}
-.mbtn{width:100%;padding:14px;border:0;border-radius:10px;background:var(--rani);color:#fff;font-size:14px;font-weight:700}
+.mbtn{width:100%;padding:14px;border:0;border-radius:999px;background:var(--rani);color:#fff;font-size:14px;font-weight:700}
 .mbtn:disabled{opacity:.6}
+.skip{width:100%;margin-top:10px;padding:13px;border:1.5px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);font-size:13px;font-weight:600}
+.skip:hover{border-color:var(--ink)}
 .pick{display:flex;justify-content:center;gap:10px;margin:6px 0 18px}
-.pick i{font-size:32px;color:#E5E7EB;cursor:pointer;transition:.15s}
+.pick i{font-size:32px;color:#E5E7EB;cursor:pointer;transition:color .15s}
 .pick i.on{color:var(--gold)}
-.sheet{max-height:92vh;overflow-y:auto}
 .perks{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:14px}
 .perks li{display:flex;gap:12px;font-size:13px;line-height:1.5;color:#4B5563}
 .perks i{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--blush);color:var(--rani);display:flex;align-items:center;justify-content:center;font-size:13px}
@@ -146,21 +154,17 @@ a{color:inherit;text-decoration:none}
 .termlink{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 14px;margin-bottom:8px;border:1px solid var(--line);border-radius:10px;background:var(--ivory);font-size:13px;font-weight:600}
 .termlink i:first-child{color:var(--rani);margin-right:6px}
 .termlink>i{color:#A8A0A5;font-size:11px}
-.agree{font-size:11px!important;line-height:1.5;margin:0 0 14px!important}
+.sheet p.agree{font-size:11px;margin-bottom:14px}
 .agree a{color:var(--rani);text-decoration:underline}
-.skip{width:100%;margin-top:10px;padding:13px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-size:13px;font-weight:600}
-.skip:hover{border-color:var(--ink)}
-.btn-write{width:100%;margin-top:16px;display:flex;align-items:center;justify-content:center;gap:10px;padding:17px;border:0;border-radius:12px;background:var(--ink);color:#fff;font-size:15px;font-weight:700;letter-spacing:.3px;transition:.2s}
-.btn-write:active{transform:scale(.98)}
-.btn-write i{width:24px;height:24px;border-radius:50%;background:#fff;color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:12px}
-/* suggestions (same card design as home) */
+
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px 12px}
-.pcard{position:relative;min-width:0;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;padding:0 0 12px;box-shadow:0 2px 8px rgba(36,32,36,.04)}
-.pc-media{position:relative;display:block;aspect-ratio:1/1;background:linear-gradient(135deg,var(--cream),#F9F3EB);overflow:hidden}
+.pcard{position:relative;min-width:0;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;padding-bottom:12px;box-shadow:0 2px 8px rgba(36,32,36,.04)}
+.pc-media{position:relative;display:block;aspect-ratio:1/1;background:var(--cream);overflow:hidden}
 .pc-media img{width:100%;height:100%;object-fit:cover}
 .tags{position:absolute;left:8px;top:8px;display:flex;flex-direction:column;align-items:flex-start;gap:4px}
-.tag-off{background:var(--rani);color:#fff;font-size:10.5px;font-weight:600;padding:4px 10px;border-radius:6px}
-.tag-best{background:var(--ink);color:#fff;font-size:10.5px;font-weight:600;padding:4px 10px;border-radius:6px}
+.tag-off,.tag-best{color:#fff;font-size:10.5px;font-weight:600;padding:4px 10px;border-radius:6px}
+.tag-off{background:var(--rani)}
+.tag-best{background:var(--ink)}
 .pc-foot{padding:12px 12px 0}
 .pc-name{display:block;font-size:13.5px;font-weight:500;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pc-price{display:flex;align-items:baseline;gap:8px;margin-top:5px}
@@ -169,58 +173,52 @@ a{color:inherit;text-decoration:none}
 .pc-row{display:flex;align-items:center;gap:6px;margin-top:8px}
 .pc-meta{display:flex;align-items:center;gap:6px;min-width:0}
 .rating{display:inline-flex;align-items:center;gap:3px;font-weight:600;font-size:11px;color:#fff;background:var(--green);padding:2px 7px;border-radius:6px}
-.rating.mid{background:#B45309}.rating.bad{background:#B91C1C}.rating.none{background:#9A9298}
+.rating.mid{background:#B45309}
+.rating.bad{background:var(--danger)}
+.rating.none{background:#9A9298}
 .rating i{font-size:9px}
 .cdots{display:inline-flex;align-items:center}
-.cdots i{width:14px;height:14px;border-radius:50%;margin-left:-5px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.18);position:relative}
+.cdots i{width:14px;height:14px;border-radius:50%;margin-left:-5px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}
 .cdots i:first-child{margin-left:0}
-.cdots i:nth-child(1){z-index:3}.cdots i:nth-child(2){z-index:2}.cdots i:nth-child(3){z-index:1}
 .cdots b{min-width:18px;height:18px;padding:0 4px;margin-left:4px;border-radius:9px;background:var(--cream);border:1px solid var(--line);font-size:9px;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;justify-content:center}
-.go{margin-left:auto;flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:var(--rani);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(216,27,96,.25);border:0;transition:all .2s}
-.go:hover{background:var(--rani-dark);transform:scale(1.1);box-shadow:0 6px 16px rgba(216,27,96,.35)}
-.go:active{transform:scale(.92)}
+.go{margin-left:auto;flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:var(--rani);color:#fff;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s}
+.go:hover{background:var(--rani-dark);transform:scale(1.08)}
 .go svg{width:14px;height:14px}
-.low{display:block;margin-top:6px;font-size:12px;font-weight:600;color:#B45309;background:rgba(180,67,9,.08);padding:3px 6px;border-radius:4px;width:fit-content}
-.heart{position:absolute;right:8px;top:8px;width:30px;height:30px;border-radius:50%;border:0;background:rgba(255,255,255,.95);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.15);font-size:14px}
-.heart.on{color:var(--rani);background:rgba(216,27,96,.12)}
-/* footer (same as home) */
-.app{padding-bottom:0}
+.low{display:block;margin-top:6px;font-size:12px;font-weight:600;color:#B45309;background:rgba(180,83,9,.08);padding:3px 6px;border-radius:4px;width:fit-content}
+.heart{position:absolute;right:8px;top:8px;width:30px;height:30px;border-radius:50%;border:0;background:rgba(255,255,255,.95);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.14);font-size:14px}
+.heart.on{color:var(--rani);background:var(--blush)}
+
 .footer{background:#1B1719;color:#fff;padding:36px 20px calc(100px + env(safe-area-inset-bottom,0px));border-top:3px solid rgba(212,175,55,.4)}
-.footer-brand{font-family:"Playfair Display",serif;font-size:24px;font-weight:600;background:linear-gradient(135deg,#fff,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.footer-brand{font-family:"Playfair Display",serif;font-size:24px;font-weight:600;color:var(--gold)}
 .footer-tag{margin:6px 0 0;font-size:13px;line-height:1.6;color:#B5ADB2}
 .footer-news{margin:24px 0 4px}
 .footer-news label{display:block;font-size:14px;font-weight:600;margin-bottom:8px}
 .footer-news-row{display:flex;gap:8px}
-.footer-news input{flex:1;min-width:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:6px;padding:12px 16px;color:#fff;font-size:14px;outline:none}
+.footer-news input{flex:1;min-width:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:12px 18px;color:#fff;font-size:14px;outline:none}
 .footer-news input::placeholder{color:#9F979D}
 .footer-news input:focus{border-color:var(--rani)}
-.footer-news button{background:var(--rani);color:#fff;border:0;border-radius:6px;padding:0 20px;min-width:72px;font-weight:600;font-size:14px;display:flex;align-items:center;justify-content:center}
+.footer-news button{background:var(--rani);color:#fff;border:0;border-radius:999px;padding:0 22px;min-width:76px;font-weight:600;font-size:14px}
 .footer-news button:disabled{opacity:.8;cursor:not-allowed}
-.spinner{width:16px;height:16px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;display:inline-block;animation:spin .6s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
 .footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px 18px;padding:26px 0;margin-top:22px;border-top:1px solid rgba(255,255,255,.1)}
-.footer h3{font-family:"Inter",sans-serif;font-size:14px;font-weight:600;margin-bottom:10px;color:var(--gold)}
+.footer h3{font-family:Inter,sans-serif;font-size:14px;font-weight:600;margin-bottom:10px;color:var(--gold)}
 .footer-grid a{display:block;font-size:13px;color:#B5ADB2;line-height:2}
 .footer-grid a:hover{color:#fff}
 .footer-copy{padding-top:18px;border-top:1px solid rgba(255,255,255,.1);font-size:12px;color:#8F878D}
 
-/* Toast (rani theme) */
-.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translate(-50%,14px);opacity:0;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--rani),var(--rani-dark));color:#fff;font-size:13px;font-weight:600;letter-spacing:.2px;padding:13px 20px;border-radius:12px;border:1px solid rgba(255,255,255,.18);box-shadow:0 10px 28px rgba(216,27,96,.38);z-index:200;pointer-events:none;transition:.28s;max-width:92%;white-space:nowrap}
-.toast i{font-size:16px;flex:0 0 auto}
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translate(-50%,14px);opacity:0;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--rani),var(--rani-dark));color:#fff;font-size:13px;font-weight:600;padding:13px 20px;border-radius:999px;box-shadow:0 10px 28px rgba(216,27,96,.38);z-index:200;pointer-events:none;transition:opacity .28s,transform .28s;max-width:92%;white-space:nowrap}
+.toast i{font-size:16px}
 .toast.on{opacity:1;transform:translate(-50%,0)}
-.toast.err{background:linear-gradient(135deg,var(--rani),var(--rani-dark))}
-.center{align-items:center;padding:20px}
-.center .sheet{border-radius:20px;text-align:center;max-width:340px}
+@media(prefers-reduced-motion:reduce){*,::before,::after{transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
 <div class="app">
   <header class="hdr">
-    <div><button class="ib" onclick="history.length>1?history.back():location.href='./'" aria-label="Back"><i class="fa-solid fa-chevron-left"></i></button></div>
+    <div><button class="ib back" onclick="goBack(this)" aria-label="Back"><i class="fa-solid fa-arrow-left"></i></button></div>
     <a href="./" aria-label="Aavira home"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira"></a>
     <div class="hdr-r">
       <button class="ib" id="wishBtn" onclick="toggleWish()" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></button>
-      <button class="ib" onclick="location.href='cart'" aria-label="Cart"><i class="fa-solid fa-bag-shopping"></i><span class="badge" id="cartBadge" hidden>0</span></button>
+      <button class="ib" onclick="navigate('cart',this)" aria-label="Cart"><i class="fa-solid fa-cart-shopping"></i><span class="badge" id="cartBadge" hidden>0</span></button>
     </div>
   </header>
 
@@ -249,9 +247,9 @@ a{color:inherit;text-decoration:none}
   <section class="blk">
     <h2>Product details</h2>
     <div class="acc">
-      <div class="acc-i on"><button class="acc-h" onclick="acc(this)">Description <i class="fa-solid fa-chevron-down"></i></button><div class="acc-b"><p id="desc"></p><p id="sku" style="margin-top:10px;font-weight:600;color:var(--ink)"></p></div></div>
-      <div class="acc-i" id="specItem" hidden><button class="acc-h" onclick="acc(this)">Style &amp; specifications <i class="fa-solid fa-chevron-down"></i></button><div class="acc-b"><ul id="specs"></ul></div></div>
-      <div class="acc-i"><button class="acc-h" onclick="acc(this)">Shipping &amp; returns <i class="fa-solid fa-chevron-down"></i></button><div class="acc-b"><ul><li>Free delivery on prepaid orders across India.</li><li>Return window of 4 hours from delivery for defects or exchange.</li></ul></div></div>
+      <div class="acc-i on"><button class="acc-h" onclick="toggleAcc(this)">Description <i class="fa-solid fa-chevron-down"></i></button><div class="acc-b"><p id="desc"></p><p id="sku" style="margin-top:10px;font-weight:600;color:var(--ink)"></p></div></div>
+      <div class="acc-i" id="specItem" hidden><button class="acc-h" onclick="toggleAcc(this)">Style &amp; specifications <i class="fa-solid fa-chevron-down"></i></button><div class="acc-b"><ul id="specs"></ul></div></div>
+      <div class="acc-i"><button class="acc-h" onclick="toggleAcc(this)">Shipping &amp; returns <i class="fa-solid fa-chevron-down"></i></button><div class="acc-b"><ul><li>Free delivery on prepaid orders across India.</li><li>Return window of 4 hours from delivery for defects or exchange.</li></ul></div></div>
     </div>
     <div class="trust">
       <div><i class="fa-solid fa-shield-halved"></i>100%<br>Original</div>
@@ -264,7 +262,7 @@ a{color:inherit;text-decoration:none}
     <h2>Ratings &amp; reviews</h2>
     <div id="summary"></div>
     <div class="rv-list" id="reviews"><div class="empty">Loading reviews…</div></div>
-    <button class="btn-write" onclick="writeReview()"><i class="fa-solid fa-plus"></i>Write a review</button>
+    <button class="btn-write" id="btnWrite" onclick="writeReview()"><i class="fa-solid fa-plus"></i>Write a review</button>
   </section>
 
   <section class="blk" id="sugSec" hidden>
@@ -273,7 +271,7 @@ a{color:inherit;text-decoration:none}
   </section>
 
   <footer class="footer">
-    <div class="footer-brand">Aavira <span>Fashion</span></div>
+    <div class="footer-brand">Aavira Fashion</div>
     <p class="footer-tag">Luxury ethnic fashion, designed for modern elegance.</p>
     <div class="footer-news">
       <label for="newsletterEmail">Get new collections and offers by email</label>
@@ -297,20 +295,18 @@ a{color:inherit;text-decoration:none}
   <button class="btn btn-p" id="btnBuy" onclick="buyNow()"><i class="fa-solid fa-bolt"></i>Buy now</button>
 </div>
 
-<!-- Login required -->
-<div class="ov" id="loginModal" onclick="if(event.target===this)closeM('loginModal')">
+<div class="ov" id="loginModal" onclick="if(event.target===this)closeModal('loginModal')">
   <div class="sheet">
-    <button class="x" onclick="closeM('loginModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    <button class="x" onclick="closeModal('loginModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
     <h3>Sign in to continue</h3>
     <p>Please log in or create an account to write a review.</p>
-    <button class="mbtn" onclick="location.href='/auth/verify'">Log in / Sign up</button>
+    <button class="mbtn" onclick="navigate('/auth/verify',this)">Log in / Sign up</button>
   </div>
 </div>
 
-<!-- Buy now: login prompt with skip -->
-<div class="ov" id="buyModal" onclick="if(event.target===this)closeM('buyModal')">
+<div class="ov" id="buyModal" onclick="if(event.target===this)closeModal('buyModal')">
   <div class="sheet">
-    <button class="x" onclick="closeM('buyModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    <button class="x" onclick="closeModal('buyModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
     <h3>Log in to place your order</h3>
     <p>Signing in takes less than a minute and gives you full control of your order.</p>
     <ul class="perks">
@@ -320,26 +316,24 @@ a{color:inherit;text-decoration:none}
     </ul>
     <a class="termlink" href="/terms"><span><i class="fa-solid fa-file-lines"></i> Terms &amp; policy conditions</span><i class="fa-solid fa-chevron-right"></i></a>
     <p class="agree">By continuing you agree to our <a href="/terms">Terms &amp; Conditions</a> and <a href="/terms">Privacy Policy</a>.</p>
-    <button class="mbtn" onclick="location.href='/auth/verify'">Log in / Sign up</button>
-    <button class="skip" onclick="skipLogin()">Skip &amp; continue to checkout <i class="fa-solid fa-arrow-right"></i></button>
+    <button class="mbtn" onclick="navigate('/auth/verify',this)">Log in / Sign up</button>
+    <button class="skip" onclick="skipLogin(this)">Skip &amp; continue to checkout <i class="fa-solid fa-arrow-right"></i></button>
   </div>
 </div>
 
-<!-- Custom size -->
-<div class="ov" id="sizeModal" onclick="if(event.target===this)closeM('sizeModal')">
+<div class="ov" id="sizeModal" onclick="if(event.target===this)closeModal('sizeModal')">
   <div class="sheet">
-    <button class="x" onclick="closeM('sizeModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    <button class="x" onclick="closeModal('sizeModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
     <h3>Custom size</h3><p>Enter your measurements in inches.</p>
     <div class="row2"><input class="fld" id="csBust" type="number" min="1" inputmode="decimal" placeholder="Bust (in)"><input class="fld" id="csWaist" type="number" min="1" inputmode="decimal" placeholder="Waist (in)"></div>
     <input class="fld" id="csNote" type="text" placeholder="Any specific instructions? (optional)">
-    <button class="mbtn" onclick="saveCustom()">Save</button>
+    <button class="mbtn" onclick="saveCustom(this)">Save</button>
   </div>
 </div>
 
-<!-- Review -->
-<div class="ov" id="reviewModal" onclick="if(event.target===this)closeM('reviewModal')">
+<div class="ov" id="reviewModal" onclick="if(event.target===this)closeModal('reviewModal')">
   <div class="sheet">
-    <button class="x" onclick="closeM('reviewModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    <button class="x" onclick="closeModal('reviewModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
     <h3>Rate &amp; review</h3><p>Tap a star to rate.</p>
     <div class="pick" id="pick"></div>
     <input class="fld" id="rvTitle" type="text" maxlength="80" placeholder="Title (optional)">
@@ -348,318 +342,557 @@ a{color:inherit;text-decoration:none}
   </div>
 </div>
 
-<!-- Not found -->
 <div class="ov center" id="errModal">
-  <div class="sheet"><h3>Product not found</h3><p>This product is currently unavailable.</p><button class="mbtn" onclick="location.href='./'">Back to home</button></div>
+  <div class="sheet"><h3>Product not found</h3><p>This product is currently unavailable.</p><button class="mbtn" onclick="navigate('./',this)">Back to home</button></div>
 </div>
 
 <div class="toast" id="toast" role="status"></div>
 
 <script src="user_data.js"></script>
 <script>
-const $=s=>document.querySelector(s);
-const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const safeUrl=v=>{const r=String(v??'').trim();if(!r)return'';try{const u=new URL(r,location.origin);return['http:','https:'].includes(u.protocol)?u.href:''}catch{return''}};
-const jget=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))||f}catch{return f}};
-const jset=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
-const fmt=n=>'₹'+Number(n).toLocaleString('en-IN');
-const IMG_FALLBACK='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#F7F1E8"/><text x="200" y="210" font-family="Georgia,serif" font-size="30" fill="#B9AFA6" text-anchor="middle">Aavira</text></svg>');
+const $ = selector => document.querySelector(selector);
+const $$ = selector => [...document.querySelectorAll(selector)];
+const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+const formatPrice = amount => '₹' + Number(amount).toLocaleString('en-IN');
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const SPINNER_DELAY = 1500;
+const IMG_FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#F7F1E8"/><text x="200" y="210" font-family="Georgia,serif" font-size="30" fill="#B9AFA6" text-anchor="middle">Aavira</text></svg>');
+const FALLBACK_ATTR = `onerror="this.onerror=null;this.src='${IMG_FALLBACK}'"`;
 
-const S={p:null,id:'',size:null,custom:null,image:'',color:'',colors:[],mainHtml:'',mainDots:'',busy:false,rating:5};
-
-/* ---------- helpers ---------- */
-let tt;
-function toast(m,err){
-  const t=$('#toast');
-  t.innerHTML=`<i class="fa-solid ${err?'fa-circle-exclamation':'fa-circle-check'}"></i><span>${esc(m)}</span>`;
-  t.className='toast on'+(err?' err':'');
-  clearTimeout(tt);tt=setTimeout(()=>t.className='toast',2400);
-}
-const openM=id=>$('#'+id).classList.add('on');
-const closeM=id=>$('#'+id).classList.remove('on');
-function isLoggedIn(){
-  try{const e=localStorage.getItem('aavira_user_email'),n=localStorage.getItem('aavira_display_name');
-  return !!(e&&n&&n.trim()&&n.trim().toLowerCase()!=='guest user')}catch{return false}
-}
-function requireLogin(){if(isLoggedIn())return true;openM('loginModal');return false}
-function acc(btn){const it=btn.parentElement,was=it.classList.contains('on');document.querySelectorAll('.acc-i').forEach(e=>e.classList.remove('on'));if(!was)it.classList.add('on')}
-function cartBadge(){
-  const n=jget('aavira_cart',[]).reduce((s,i)=>s+(Number(i.qty)||1),0),b=$('#cartBadge');
-  b.textContent=n>99?'99+':n;b.hidden=n<=0;
-}
-function starsHtml(r){
-  let h='';for(let i=1;i<=5;i++)h+=`<i class="fa-${r>=i?'solid fa-star':(r>=i-.5?'solid fa-star-half-stroke':'regular fa-star')}"></i>`;return h;
-}
-
-/* ---------- wishlist (same key as home) ---------- */
-function wished(){return jget('aavira_wishlist',[]).map(String).includes(String(S.id))}
-function paintWish(){const b=$('#wishBtn'),on=wished();b.classList.toggle('on',on);b.querySelector('i').className=(on?'fa-solid':'fa-regular')+' fa-heart'}
-function toggleWish(){
-  let w=jget('aavira_wishlist',[]).map(String);const id=String(S.id);
-  w=w.includes(id)?w.filter(x=>x!==id):[...w,id];jset('aavira_wishlist',w);paintWish();
-  toast(w.includes(id)?'Added to wishlist':'Removed from wishlist');
-}
-
-/* ---------- sizes ---------- */
-function renderSizes(){
-  const list=Array.isArray(S.p.sizes)&&S.p.sizes.length?S.p.sizes:['32','34','36','38','40','42'];
-  $('#sizes').innerHTML=list.map(s=>`<button type="button" class="sz" data-size="${esc(s)}">${esc(s)}</button>`).join('')+'<button type="button" class="sz custom" data-custom="1">Custom</button>';
-}
-document.addEventListener('click',e=>{
-  const z=e.target.closest('.sz');
-  if(z){
-    if(z.dataset.custom){openM('sizeModal');return}
-    S.custom=null;S.size=z.dataset.size;
-    document.querySelectorAll('.sz').forEach(b=>b.classList.toggle('on',b===z));
-    $('#sizes').classList.remove('err');return;
+const safeUrl = value => {
+  const raw = String(value ?? '').trim();
+  if (!raw) return '';
+  try {
+    const url = new URL(raw, location.origin);
+    return ['http:', 'https:'].includes(url.protocol) ? url.href : '';
+  } catch {
+    return '';
   }
-  const sw=e.target.closest('.sw');if(sw)pickColor(Number(sw.dataset.i));
-  const st=e.target.closest('#pick i');if(st)setStar(Number(st.dataset.v));
-});
-function saveCustom(){
-  const b=$('#csBust').value,w=$('#csWaist').value,n=$('#csNote').value.trim();
-  if(!(Number(b)>0)||!(Number(w)>0)){toast('Enter bust and waist','err');return}
-  S.custom=`Custom (B: ${b}", W: ${w}"${n?', '+n:''})`;S.size=S.custom;
-  document.querySelectorAll('.sz').forEach(x=>x.classList.toggle('on',!!x.dataset.custom));
-  $('#sizes').classList.remove('err');closeM('sizeModal');
-}
-function sizeOrError(){
-  if(S.size)return S.size;
-  const c=$('#sizes');c.classList.remove('err');void c.offsetWidth;c.classList.add('err');
-  if(navigator.vibrate)navigator.vibrate(150);
-  toast('Please select a size to continue','err');return null;
-}
+};
 
-/* ---------- gallery & colours ---------- */
-function slidesHtml(p,main){
-  const imgs=[main,p.imageBack,p.imageSide].filter(Boolean).map(u=>`<div class="slide"><img src="${esc(safeUrl(u)||IMG_FALLBACK)}" alt="" onerror="this.onerror=null;this.src='${IMG_FALLBACK}'"></div>`);
-  if(p.videoUrl&&safeUrl(p.videoUrl))imgs.push(`<div class="slide"><video src="${esc(safeUrl(p.videoUrl))}" playsinline loop autoplay muted controlsList="nodownload"></video></div>`);
-  return imgs;
-}
-function showGallery(slides){
-  const c=$('#carousel');c.classList.remove('skel');c.innerHTML=slides.join('');c.scrollLeft=0;
-  $('#dots').innerHTML=slides.length>1?slides.map((_,i)=>`<button class="dot ${i?'':'on'}" data-i="${i}" aria-label="Photo ${i+1}"></button>`).join(''):'';
-}
-$('#dots').addEventListener('click',e=>{const d=e.target.closest('.dot');if(d){const c=$('#carousel');c.scrollTo({left:c.clientWidth*Number(d.dataset.i),behavior:'smooth'})}});
-$('#carousel').addEventListener('scroll',()=>{
-  const c=$('#carousel'),ix=Math.round(c.scrollLeft/(c.clientWidth||1));
-  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===ix));
-},{passive:true});
+const readJson = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; } };
+const writeJson = (key, value) => { try { localStorage.setItem(key, JSON.stringify(value)); } catch {} };
+const readValue = key => { try { return localStorage.getItem(key); } catch { return null; } };
 
-function pickColor(i){
-  const o=S.colors[i];if(!o)return;
-  document.querySelectorAll('.sw').forEach((s,k)=>s.classList.toggle('on',k===i));
-  S.image=o.image;S.color=o.name;$('#colorInfo').textContent='· '+o.name;
-  if(o.main)showGallery(S.mainSlides);
-  else showGallery([`<div class="slide"><img src="${esc(safeUrl(o.image)||IMG_FALLBACK)}" alt="${esc(o.name)}"></div>`]);
-}
+const state = { product: null, id: '', size: null, image: '', color: '', colors: [], mainSlides: [], rating: 5, buyLink: '' };
 
-/* ---------- ratings: same source & logic as home screen ---------- */
-function productRating(p){
-  const r=Number(p.rating??p.averageRating??p.avgRating??p.ratingAvg??p.average_rating??p.avg_rating??p.stars);
-  const c=Number(p.reviewCount??p.reviews??p.numReviews);
-  return{rating:r>0?r:0,count:c>0?c:0};
-}
-function pidOf(e){return e.productId??e.product_id??e.pid}
-async function loadReviews(){
-  let db=[],exp=[];
-  try{if(typeof getReviewsFromDatabase==='function')db=await getReviewsFromDatabase(S.id)||[]}catch{}
-  try{if(typeof getVercelExperiences==='function')exp=await getVercelExperiences()||[]}catch{}
-  if(!exp.length)exp=jget('aavira_experiences',[]);
-  exp=exp.filter(e=>pidOf(e)!=null&&String(pidOf(e))===String(S.id));
-  const seen=new Set(),all=[];
-  [...db,...exp].forEach(r=>{
-    const k=(r.email||r.name||'')+'|'+(r.date||'')+'|'+(r.text||r.body||'');
-    if(!seen.has(k)){seen.add(k);all.push(r)}
+const withSpinner = (el, action) => {
+  if (!el || el.classList.contains('is-busy')) return;
+  el.classList.add('is-busy');
+  setTimeout(() => {
+    el.classList.remove('is-busy');
+    action();
+  }, SPINNER_DELAY);
+};
+
+const navigate = (url, el) => withSpinner(el, () => { location.href = url; });
+const goBack = el => withSpinner(el, () => (history.length > 1 ? history.back() : (location.href = './')));
+const skipLogin = el => { if (state.buyLink) navigate(state.buyLink, el); };
+
+let toastTimer;
+const toast = (message, isError) => {
+  const el = $('#toast');
+  el.innerHTML = `<i class="fa-solid ${isError ? 'fa-circle-exclamation' : 'fa-circle-check'}"></i><span>${esc(message)}</span>`;
+  el.className = 'toast on';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.className = 'toast'; }, 2400);
+};
+
+const openModal = id => $('#' + id).classList.add('on');
+const closeModal = id => $('#' + id).classList.remove('on');
+
+const isLoggedIn = () => {
+  const email = readValue('aavira_user_email');
+  const name = (readValue('aavira_display_name') || '').trim();
+  return !!(email && name && name.toLowerCase() !== 'guest user');
+};
+
+const requireLogin = () => {
+  if (isLoggedIn()) return true;
+  openModal('loginModal');
+  return false;
+};
+
+const toggleAcc = button => {
+  const item = button.parentElement;
+  const wasOpen = item.classList.contains('on');
+  $$('.acc-i').forEach(el => el.classList.remove('on'));
+  if (!wasOpen) item.classList.add('on');
+};
+
+const updateCartBadge = () => {
+  const total = readJson('aavira_cart', []).reduce((sum, item) => sum + (Number(item.qty) || 1), 0);
+  const badge = $('#cartBadge');
+  badge.textContent = total > 99 ? '99+' : total;
+  badge.hidden = total <= 0;
+};
+
+const starsHtml = rating => [1, 2, 3, 4, 5].map(i => {
+  const icon = rating >= i ? 'solid fa-star' : rating >= i - .5 ? 'solid fa-star-half-stroke' : 'regular fa-star';
+  return `<i class="fa-${icon}"></i>`;
+}).join('');
+
+const isWished = () => readJson('aavira_wishlist', []).map(String).includes(String(state.id));
+
+const paintWish = () => {
+  const button = $('#wishBtn');
+  const active = isWished();
+  button.classList.toggle('on', active);
+  button.querySelector('i').className = `${active ? 'fa-solid' : 'fa-regular'} fa-heart`;
+};
+
+const toggleWish = () => {
+  const id = String(state.id);
+  const list = readJson('aavira_wishlist', []).map(String);
+  const next = list.includes(id) ? list.filter(item => item !== id) : [...list, id];
+  writeJson('aavira_wishlist', next);
+  paintWish();
+  toast(next.includes(id) ? 'Added to wishlist' : 'Removed from wishlist');
+};
+
+const renderSizes = () => {
+  const list = Array.isArray(state.product.sizes) && state.product.sizes.length ? state.product.sizes : ['32', '34', '36', '38', '40', '42'];
+  $('#sizes').innerHTML = list.map(size => `<button type="button" class="sz" data-size="${esc(size)}">${esc(size)}</button>`).join('') + '<button type="button" class="sz custom" data-custom="1">Custom</button>';
+};
+
+const saveCustom = button => {
+  const bust = $('#csBust').value;
+  const waist = $('#csWaist').value;
+  const note = $('#csNote').value.trim();
+  if (!(Number(bust) > 0) || !(Number(waist) > 0)) return toast('Enter bust and waist', true);
+  withSpinner(button, () => {
+    state.size = `Custom (B: ${bust}", W: ${waist}"${note ? ', ' + note : ''})`;
+    $$('.sz').forEach(el => el.classList.toggle('on', !!el.dataset.custom));
+    $('#sizes').classList.remove('err');
+    closeModal('sizeModal');
   });
-  renderRatings(exp,all);
-}
-function renderRatings(exp,all){
-  /* Rating value: product fields, overridden by this product's experiences (identical to home) */
-  let {rating,count}=productRating(S.p);
-  const rated=exp.filter(e=>Number(e.rating)>0);
-  if(rated.length){rating=Math.round(rated.reduce((s,e)=>s+Number(e.rating),0)/rated.length*10)/10;count=rated.length}
-  if(!count&&all.length)count=all.length;
+};
 
-  const chip=$('#rateChip');
-  if(rating>0){chip.hidden=false;chip.className='rate-chip'+(rating>=4?'':rating>=3?' mid':' bad');chip.innerHTML=`<i class="fa-solid fa-star"></i>${rating.toFixed(1)}`}
-  else chip.hidden=true;
+const requireSize = () => {
+  if (state.size) return state.size;
+  const box = $('#sizes');
+  box.classList.remove('err');
+  void box.offsetWidth;
+  box.classList.add('err');
+  navigator.vibrate?.(150);
+  toast('Please select a size to continue', true);
+  return null;
+};
 
-  const sum=$('#summary');
-  if(rating>0){
-    const dist=[5,4,3,2,1].map(s=>({s,n:all.filter(r=>Math.round(Number(r.rating||r.score))===s).length}));
-    const tot=dist.reduce((a,d)=>a+d.n,0);
-    sum.innerHTML=`<div class="sum${tot?'':' solo'}"><div class="sum-l"><div class="sum-big">${rating.toFixed(1)}</div><div class="stars">${starsHtml(rating)}</div></div>`+
-      (tot?`<div class="sum-r">${dist.map(d=>{const pc=Math.round(d.n/tot*100);return`<div class="bar"><b>${d.s}★</b><div class="track"><div class="fill" style="width:${pc}%"></div></div><em>${pc}%</em></div>`}).join('')}</div>`:'')+`</div>`;
-  }else sum.innerHTML='';
+const slidesHtml = (product, main) => {
+  const slides = [main, product.imageBack, product.imageSide].filter(Boolean)
+    .map(url => `<div class="slide"><img src="${esc(safeUrl(url) || IMG_FALLBACK)}" alt="" ${FALLBACK_ATTR}></div>`);
+  const video = safeUrl(product.videoUrl);
+  if (video) slides.push(`<div class="slide"><video src="${esc(video)}" playsinline loop autoplay muted controlsList="nodownload"></video></div>`);
+  return slides;
+};
 
-  const box=$('#reviews');
-  if(!all.length){box.innerHTML='<div class="empty"><b>No reviews yet</b>Be the first to share your experience.</div>';return}
-  box.innerHTML=all.map(r=>{
-    const name=String(r.name||'Customer'),rt=Math.max(1,Math.min(5,Number(r.rating||r.score)||5));
-    const d=r.date&&!isNaN(new Date(r.date))?new Date(r.date).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}):'';
-    const body=r.text||r.body||'';
-    return`<article class="rv"><div class="rv-h"><div class="rv-av">${esc(name.charAt(0).toUpperCase())}</div><div><div class="rv-n">${esc(name)}</div>${d?`<div class="rv-d">${d}</div>`:''}</div></div>
-      <div class="stars">${starsHtml(rt)}</div>${r.title?`<div class="rv-t">${esc(r.title)}</div>`:''}${body?`<p class="rv-b">${esc(body)}</p>`:''}</article>`;
+const showGallery = slides => {
+  const carousel = $('#carousel');
+  carousel.classList.remove('skel');
+  carousel.innerHTML = slides.join('');
+  carousel.scrollLeft = 0;
+  $('#dots').innerHTML = slides.length > 1
+    ? slides.map((_, i) => `<button class="dot ${i ? '' : 'on'}" data-i="${i}" aria-label="Photo ${i + 1}"></button>`).join('')
+    : '';
+};
+
+const pickColor = index => {
+  const option = state.colors[index];
+  if (!option) return;
+  $$('.sw').forEach((el, i) => el.classList.toggle('on', i === index));
+  state.image = option.image;
+  state.color = option.name;
+  $('#colorInfo').textContent = '· ' + option.name;
+  showGallery(option.main
+    ? state.mainSlides
+    : [`<div class="slide"><img src="${esc(safeUrl(option.image) || IMG_FALLBACK)}" alt="${esc(option.name)}"></div>`]);
+};
+
+const reviewProductId = entry => entry.productId ?? entry.product_id ?? entry.pid;
+
+const productRating = product => {
+  const rating = Number(product.rating ?? product.averageRating ?? product.avgRating ?? product.ratingAvg ?? product.average_rating ?? product.avg_rating ?? product.stars);
+  const count = Number(product.reviewCount ?? product.reviews ?? product.numReviews);
+  return { rating: rating > 0 ? rating : 0, count: count > 0 ? count : 0 };
+};
+
+const loadReviews = async () => {
+  let fromDb = [];
+  let experiences = [];
+  try { if (typeof getReviewsFromDatabase === 'function') fromDb = (await getReviewsFromDatabase(state.id)) || []; } catch {}
+  try { if (typeof getVercelExperiences === 'function') experiences = (await getVercelExperiences()) || []; } catch {}
+  if (!experiences.length) experiences = readJson('aavira_experiences', []);
+  experiences = experiences.filter(e => reviewProductId(e) != null && String(reviewProductId(e)) === String(state.id));
+
+  const seen = new Set();
+  const all = [...fromDb, ...experiences].filter(review => {
+    const key = [review.email || review.name || '', review.date || '', review.text || review.body || ''].join('|');
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  renderRatings(experiences, all);
+};
+
+const renderRatings = (experiences, all) => {
+  let { rating, count } = productRating(state.product);
+  const rated = experiences.filter(e => Number(e.rating) > 0);
+  if (rated.length) {
+    rating = Math.round(rated.reduce((sum, e) => sum + Number(e.rating), 0) / rated.length * 10) / 10;
+    count = rated.length;
+  }
+  if (!count && all.length) count = all.length;
+
+  const chip = $('#rateChip');
+  chip.hidden = !(rating > 0);
+  if (rating > 0) {
+    chip.className = 'rate-chip' + (rating >= 4 ? '' : rating >= 3 ? ' mid' : ' bad');
+    chip.innerHTML = `<i class="fa-solid fa-star"></i>${rating.toFixed(1)}`;
+  }
+
+  const summary = $('#summary');
+  if (rating > 0) {
+    const distribution = [5, 4, 3, 2, 1].map(stars => ({ stars, n: all.filter(r => Math.round(Number(r.rating || r.score)) === stars).length }));
+    const total = distribution.reduce((sum, d) => sum + d.n, 0);
+    const bars = distribution.map(d => {
+      const percent = Math.round(d.n / total * 100);
+      return `<div class="bar"><b>${d.stars}★</b><div class="track"><div class="fill" style="width:${percent}%"></div></div><em>${percent}%</em></div>`;
+    }).join('');
+    summary.innerHTML = `<div class="sum${total ? '' : ' solo'}"><div class="sum-l"><div class="sum-big">${rating.toFixed(1)}</div><div class="stars">${starsHtml(rating)}</div></div>${total ? `<div class="sum-r">${bars}</div>` : ''}</div>`;
+  } else {
+    summary.innerHTML = '';
+  }
+
+  const box = $('#reviews');
+  if (!all.length) {
+    box.innerHTML = '<div class="empty"><b>No reviews yet</b>Be the first to share your experience.</div>';
+    return;
+  }
+  box.innerHTML = all.map(review => {
+    const name = String(review.name || 'Customer');
+    const stars = clamp(Number(review.rating || review.score) || 5, 1, 5);
+    const date = review.date && !isNaN(new Date(review.date))
+      ? new Date(review.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+      : '';
+    const body = review.text || review.body || '';
+    return `<article class="rv">
+      <div class="rv-h"><div class="rv-av">${esc(name.charAt(0).toUpperCase())}</div><div><div class="rv-n">${esc(name)}</div>${date ? `<div class="rv-d">${date}</div>` : ''}</div></div>
+      <div class="stars">${starsHtml(stars)}</div>
+      ${review.title ? `<div class="rv-t">${esc(review.title)}</div>` : ''}
+      ${body ? `<p class="rv-b">${esc(body)}</p>` : ''}
+    </article>`;
   }).join('');
-}
+};
 
-/* ---------- review form (login required) ---------- */
-function writeReview(){if(!requireLogin())return;$('#rvTitle').value='';$('#rvText').value='';setStar(5);openM('reviewModal')}
-function setStar(v){S.rating=v;document.querySelectorAll('#pick i').forEach((s,i)=>s.classList.toggle('on',i<v))}
-$('#pick').innerHTML=[1,2,3,4,5].map(v=>`<i class="fa-solid fa-star" data-v="${v}"></i>`).join('');
-async function submitReview(){
-  if(!requireLogin())return;
-  const text=$('#rvText').value.trim(),title=$('#rvTitle').value.trim();
-  if(!text&&!title){toast('Please write a few words','err');return}
-  const b=$('#rvSubmit');b.disabled=true;b.textContent='Posting…';
-  const review={name:localStorage.getItem('aavira_display_name')||'Customer',email:localStorage.getItem('aavira_user_email'),title,text,rating:S.rating,date:new Date().toISOString()};
-  let ok=false;
-  try{ok=typeof saveReviewToDatabase==='function'?!!(await saveReviewToDatabase(S.id,review)):false}catch{}
-  b.disabled=false;b.textContent='Post review';
-  if(!ok){toast('Could not post your review. Please try again.','err');return}
-  closeM('reviewModal');toast('Review submitted');loadReviews();
-}
+const setStar = value => {
+  state.rating = value;
+  $$('#pick i').forEach((star, i) => star.classList.toggle('on', i < value));
+};
 
-/* ---------- cart & buy (login required) ---------- */
-function addToCart(){
-  if(!S.p||S.busy)return;
-  const size=sizeOrError();if(!size)return;
-  const img=S.image,color=S.color||'Standard';
-  S.busy=true;setTimeout(()=>S.busy=false,600);
-  const cart=jget('aavira_cart',[]);
-  const i=cart.findIndex(x=>String(x.productId)===String(S.id)&&x.size===size&&x.image===img);
-  if(i>-1)cart[i].qty=(Number(cart[i].qty)||1)+1;
-  else cart.push({productId:S.id,name:S.p.name,price:Number(S.p.price)||0,size,color,image:img,qty:1});
-  jset('aavira_cart',cart);cartBadge();toast('Added to cart');
-}
-function buyUrl(size){
-  return `/checkout?buy_now=${encodeURIComponent(S.id)}&name=${encodeURIComponent(S.p.name||'')}&price=${encodeURIComponent(S.p.price||0)}&size=${encodeURIComponent(size)}&color=${encodeURIComponent(S.color||'Standard')}&image=${encodeURIComponent(S.image)}`;
-}
-function buyNow(){
-  if(!S.p||S.busy)return;
-  const size=sizeOrError();if(!size)return;
-  S.buyLink=buyUrl(size);
-  if(isLoggedIn()){location.href=S.buyLink;return}
-  openM('buyModal');            /* guest: explain login, allow skip */
-}
-function skipLogin(){if(S.buyLink)location.href=S.buyLink}
+const writeReview = () => {
+  if (!requireLogin()) return;
+  $('#rvTitle').value = '';
+  $('#rvText').value = '';
+  setStar(5);
+  openModal('reviewModal');
+};
 
-/* ---------- load product ---------- */
-async function findProduct(id){
-  for(const fn of ['getVercelData','getMainProductsData']){
-    if(typeof window[fn]!=='function')continue;
-    try{
-      const list=await window[fn]();
-      const p=(list||[]).find(x=>String(x.id)===id||String(x._id)===id);
-      if(p)return p;
-    }catch{}
+const submitReview = () => {
+  if (!requireLogin()) return;
+  const text = $('#rvText').value.trim();
+  const title = $('#rvTitle').value.trim();
+  if (!text && !title) return toast('Please write a few words', true);
+
+  const button = $('#rvSubmit');
+  withSpinner(button, async () => {
+    button.disabled = true;
+    const review = {
+      name: readValue('aavira_display_name') || 'Customer',
+      email: readValue('aavira_user_email'),
+      title, text, rating: state.rating, date: new Date().toISOString()
+    };
+    let saved = false;
+    try { saved = typeof saveReviewToDatabase === 'function' && !!(await saveReviewToDatabase(state.id, review)); } catch {}
+    button.disabled = false;
+    if (!saved) return toast('Could not post your review. Please try again.', true);
+    closeModal('reviewModal');
+    toast('Review submitted');
+    loadReviews();
+  });
+};
+
+const addToCart = () => {
+  if (!state.product) return;
+  const size = requireSize();
+  if (!size) return;
+
+  withSpinner($('#btnCart'), () => {
+    const cart = readJson('aavira_cart', []);
+    const existing = cart.find(item => String(item.productId) === String(state.id) && item.size === size && item.image === state.image);
+    if (existing) existing.qty = (Number(existing.qty) || 1) + 1;
+    else cart.push({ productId: state.id, name: state.product.name, price: Number(state.product.price) || 0, size, color: state.color || 'Standard', image: state.image, qty: 1 });
+    writeJson('aavira_cart', cart);
+    updateCartBadge();
+    toast('Added to cart');
+  });
+};
+
+const buildCheckoutUrl = size => {
+  const params = new URLSearchParams({
+    buy_now: state.id,
+    name: state.product.name || '',
+    price: state.product.price || 0,
+    size,
+    color: state.color || 'Standard',
+    image: state.image
+  });
+  return `/checkout?${params}`;
+};
+
+const buyNow = () => {
+  if (!state.product) return;
+  const size = requireSize();
+  if (!size) return;
+  state.buyLink = buildCheckoutUrl(size);
+
+  withSpinner($('#btnBuy'), () => {
+    if (isLoggedIn()) location.href = state.buyLink;
+    else openModal('buyModal');
+  });
+};
+
+const findProduct = async id => {
+  for (const loader of ['getVercelData', 'getMainProductsData']) {
+    if (typeof window[loader] !== 'function') continue;
+    try {
+      const list = await window[loader]();
+      const found = (list || []).find(p => String(p.id) === id || String(p._id) === id);
+      if (found) return found;
+    } catch {}
   }
   return null;
-}
-async function init(){
-  cartBadge();
-  const raw=new URLSearchParams(location.search).get('id');
-  S.id=raw?decodeURIComponent(raw).trim():'';
-  const p=S.id?await findProduct(S.id):null;
-  if(!p){openM('errModal');return}
-  S.p=p;
+};
 
-  const name=String(p.name||p.title||'').replace(/_/g,' - ').replace(/\s+/g,' ').trim();
-  document.title=name?name+' - Aavira Fashion':'Aavira Fashion';
-  const t=$('#title');t.textContent=name;t.classList.remove('skel');
+const COLOR_HEX = { red: '#C8102E', maroon: '#6D1230', wine: '#5E1A2B', 'rani pink': '#D81B60', pink: '#F4A6C0', magenta: '#C2185B', coral: '#F08A6E', peach: '#F6C1A5', orange: '#E2711D', rust: '#B7410E', mustard: '#D4A017', yellow: '#E8B923', gold: '#C9A227', beige: '#D9C3A0', ivory: '#F5EFE0', white: '#FFFFFF', green: '#2E7D5B', emerald: '#0F7B5A', olive: '#6B7A2A', lime: '#A4C639', mint: '#A8D5BA', teal: '#0F766E', turquoise: '#2BB5B8', 'sky blue': '#7FB7E0', blue: '#1F4E9C', 'navy blue': '#1B2A5C', lavender: '#C7B8E6', violet: '#9B6BC9', purple: '#6B3FA0', brown: '#7B4B2A', gray: '#8A8A8A', black: '#1A1A1A' };
 
-  const price=Number(p.price)||0,mrp=Number(p.mrp)||Number(p.originalPrice)||0;
-  const pe=$('#price');pe.textContent=fmt(price);pe.classList.remove('skel');
-  if(mrp>price){$('#mrp').hidden=false;$('#mrp').textContent=fmt(mrp);$('#off').hidden=false;$('#off').textContent=Math.round((mrp-price)/mrp*100)+'% OFF'}
+const colorHex = name => {
+  const key = String(name).trim().toLowerCase();
+  return COLOR_HEX[key] || (CSS.supports('color', key) ? key : '#D1D5DB');
+};
 
-  /* stock (real value only) */
-  const stock=Number(p.stock),st=$('#stock');
-  if(Number.isFinite(stock)&&stock<=0&&p.stock!==''&&p.stock!=null){st.hidden=false;st.className='stock out';st.textContent='Out of stock';$('#btnCart').disabled=true;$('#btnBuy').disabled=true}
-  else if(Number.isFinite(stock)&&stock>0&&stock<=4){st.hidden=false;st.textContent=`Only ${stock} left`}
+const suggestionCard = product => {
+  const price = Number(product.price) || 0;
+  const mrp = Number(product.mrp) || price;
+  const off = mrp > price ? Math.round((mrp - price) / mrp * 100) : 0;
+  const id = esc(product.id);
+  const name = esc(product.name);
+  const href = 'product.html?id=' + encodeURIComponent(product.id);
+  const rating = clamp(Number(product.rating) || 0, 0, 5);
+  const colors = Array.isArray(product.colors) ? product.colors : [];
+  const stock = Number(product.stock);
+  const wished = readJson('aavira_wishlist', []).map(String).includes(String(product.id));
+  const dots = colors.length
+    ? `<span class="cdots">${colors.slice(0, 3).map(c => `<i style="background:${colorHex(c)}"></i>`).join('')}${colors.length > 3 ? `<b>+${colors.length - 3}</b>` : ''}</span>`
+    : '';
+  const tags = off || product.bestseller
+    ? `<span class="tags">${off ? `<span class="tag-off">${off}% off</span>` : ''}${product.bestseller ? '<span class="tag-best">Bestseller</span>' : ''}</span>`
+    : '';
 
-  /* description & specs (only fields that exist) */
-  $('#desc').innerHTML=p.description?esc(p.description).replace(/\*(.*?)\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>'):'';
-  $('#sku').textContent='SKU: AV-'+String(S.id).substring(0,5).toUpperCase();
-  const specs=[['Fabric',p.fabric],['Work / Embroidery',p.work],['Pattern',p.pattern],['Style',p.style]].filter(s=>s[1]);
-  if(specs.length){$('#specItem').hidden=false;$('#specs').innerHTML=specs.map(s=>`<li><b>${s[0]}:</b> ${esc(s[1])}</li>`).join('')+'<li><b>Wash care:</b> Dry clean recommended.</li>'}
+  return `<article class="pcard">
+    <a class="pc-media" href="${href}"><img src="${esc(safeUrl(product.img) || IMG_FALLBACK)}" alt="" loading="lazy" ${FALLBACK_ATTR}>${tags}</a>
+    <div class="pc-foot">
+      <a href="${href}"><span class="pc-name">${name}</span><span class="pc-price"><b>${formatPrice(price)}</b>${mrp > price ? `<s>${formatPrice(mrp)}</s>` : ''}</span></a>
+      <div class="pc-row">
+        <a class="pc-meta" href="${href}"><span class="rating ${rating >= 4 ? '' : rating >= 3 ? 'mid' : rating > 0 ? 'bad' : 'none'}"><i class="fa-solid fa-star"></i>${rating > 0 ? rating.toFixed(1) : '0.0'}</span>${dots}</a>
+        <a class="go" href="${href}&buy=1" aria-label="Buy ${name}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+      </div>
+      ${Number.isFinite(stock) && stock > 0 && stock <= 4 ? `<span class="low">Only ${stock} left</span>` : ''}
+    </div>
+    <button type="button" class="heart ${wished ? 'on' : ''}" data-heart="${id}" aria-label="Save ${name} to wishlist"><i class="fa-${wished ? 'solid' : 'regular'} fa-heart"></i></button>
+  </article>`;
+};
 
-  /* gallery */
-  const main=p.imageMain||p.image||p.imageUrl||p.img||'';
-  S.image=main;S.color='';
-  S.mainSlides=slidesHtml(p,main);
-  showGallery(S.mainSlides.length?S.mainSlides:[`<div class="slide"><img src="${IMG_FALLBACK}" alt=""></div>`]);
+const loadSuggestions = async () => {
+  let products = [];
+  let experiences = [];
+  try { if (typeof getVercelData === 'function') products = (await getVercelData()) || []; } catch {}
+  try { if (typeof getVercelExperiences === 'function') experiences = (await getVercelExperiences()) || []; } catch {}
 
-  /* colours */
-  const names=Array.isArray(p.colors)&&p.colors.length?p.colors:(p.colorsInfo?String(p.colorsInfo).split(','):[]);
-  S.colors=[{name:(names[0]||'Main').toString().trim(),image:main,main:true}];
-  (Array.isArray(p.colorImages)?p.colorImages:[]).forEach((u,i)=>{if(u&&u!==main)S.colors.push({name:(names[i+1]||`Colour ${i+2}`).toString().trim(),image:u,main:false})});
-  if(S.colors.length>1){
-    $('#colorWrap').hidden=false;
-    $('#colors').innerHTML=S.colors.map((c,i)=>`<button type="button" class="sw ${i?'':'on'}" data-i="${i}" title="${esc(c.name)}" aria-label="${esc(c.name)}"><img src="${esc(safeUrl(c.image)||IMG_FALLBACK)}" alt="" onerror="this.onerror=null;this.src='${IMG_FALLBACK}'"><i class="fa-solid fa-check"></i></button>`).join('');
-    S.color=S.colors[0].name;$('#colorInfo').textContent='· '+S.color;
+  const totals = {};
+  experiences.forEach(entry => {
+    const pid = reviewProductId(entry);
+    const value = Number(entry.rating);
+    if (pid == null || !(value > 0)) return;
+    const total = totals[String(pid)] ||= { sum: 0, count: 0 };
+    total.sum += value;
+    total.count++;
+  });
+
+  const items = products.filter(p => String(p.id) !== String(state.id)).slice(0, 6).map(p => {
+    const base = Number(p.rating ?? p.averageRating ?? p.avgRating ?? p.ratingAvg ?? p.average_rating ?? p.avg_rating ?? p.stars) || 0;
+    const total = totals[String(p.id)];
+    return {
+      id: p.id, name: p.name, price: p.price, mrp: p.mrp, colors: p.colors, stock: p.stock,
+      img: p.imageMain || p.image || p.imageUrl || '', bestseller: !!p.bestseller,
+      rating: total?.count ? Math.round(total.sum / total.count * 10) / 10 : base
+    };
+  });
+  if (!items.length) return;
+  $('#sugGrid').innerHTML = items.map(suggestionCard).join('');
+  $('#sugSec').hidden = false;
+};
+
+const subscribeNewsletter = () => {
+  const input = $('#newsletterEmail');
+  const email = input.value.trim().toLowerCase();
+  if (!EMAIL_PATTERN.test(email)) return toast('Enter a valid email address', true);
+
+  const button = $('#btnNewsletter');
+  withSpinner(button, async () => {
+    button.disabled = true;
+    let result = { ok: false, message: 'Could not subscribe. Please try again.' };
+    try { if (typeof subscribeNewsletterApi === 'function') result = await subscribeNewsletterApi(email); } catch {}
+    if (result?.ok) {
+      toast('Thanks for joining');
+      input.value = '';
+    } else {
+      toast(result?.message || 'Could not subscribe. Please try again.', true);
+    }
+    button.disabled = false;
+  });
+};
+
+document.addEventListener('click', event => {
+  const size = event.target.closest('.sz');
+  if (size) {
+    if (size.dataset.custom) return openModal('sizeModal');
+    state.size = size.dataset.size;
+    $$('.sz').forEach(el => el.classList.toggle('on', el === size));
+    $('#sizes').classList.remove('err');
+    return;
   }
 
-  renderSizes();paintWish();
-  /* show the home-screen rating immediately, then refine with live reviews */
-  renderRatings([],[]);
-  loadReviews();loadSuggestions();
-}
+  const swatch = event.target.closest('.sw');
+  if (swatch) return pickColor(Number(swatch.dataset.i));
 
-/* ---------- suggestions (same card as home) ---------- */
-const COLOR_HEX={red:'#C8102E',maroon:'#6D1230',wine:'#5E1A2B','rani pink':'#D81B60',pink:'#F4A6C0',magenta:'#C2185B',coral:'#F08A6E',peach:'#F6C1A5',orange:'#E2711D',rust:'#B7410E',mustard:'#D4A017',yellow:'#E8B923',gold:'#C9A227',beige:'#D9C3A0',ivory:'#F5EFE0',white:'#FFFFFF',green:'#2E7D5B',emerald:'#0F7B5A',olive:'#6B7A2A',lime:'#A4C639',mint:'#A8D5BA',teal:'#0F766E',turquoise:'#2BB5B8','sky blue':'#7FB7E0',blue:'#1F4E9C','navy blue':'#1B2A5C',lavender:'#C7B8E6',violet:'#9B6BC9',purple:'#6B3FA0',brown:'#7B4B2A',gray:'#8A8A8A',black:'#1A1A1A'};
-const colorHex=n=>{const k=String(n).trim().toLowerCase();if(COLOR_HEX[k])return COLOR_HEX[k];return(window.CSS&&CSS.supports('color',k))?k:'#D1D5DB'};
-function sugCard(p){
-  const pr=Number(p.price)||0,m=Number(p.mrp)||pr,off=m>pr?Math.round((m-pr)/m*100):0;
-  const id=esc(p.id),name=esc(p.name),href='product.html?id='+encodeURIComponent(p.id),r=Math.max(0,Math.min(5,Number(p.rating)||0));
-  const cols=Array.isArray(p.colors)?p.colors:[];
-  const dots=cols.length?`<span class="cdots">${cols.slice(0,3).map(c=>`<i style="background:${colorHex(c)}"></i>`).join('')}${cols.length>3?`<b>+${cols.length-3}</b>`:''}</span>`:'';
-  const stock=Number(p.stock),low=(Number.isFinite(stock)&&stock>0&&stock<=4)?`<span class="low">Only ${stock} left</span>`:'';
-  const on=jget('aavira_wishlist',[]).map(String).includes(String(p.id));
-  return `<article class="pcard">
-    <a class="pc-media" href="${href}"><img src="${esc(safeUrl(p.img)||IMG_FALLBACK)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${IMG_FALLBACK}'">
-      ${(off||p.bestseller)?`<span class="tags">${off?`<span class="tag-off">${off}% off</span>`:''}${p.bestseller?'<span class="tag-best">Bestseller</span>':''}</span>`:''}</a>
-    <div class="pc-foot">
-      <a href="${href}"><span class="pc-name">${name}</span><span class="pc-price"><b>${fmt(pr)}</b>${m>pr?`<s>${fmt(m)}</s>`:''}</span></a>
-      <div class="pc-row"><a class="pc-meta" href="${href}"><span class="rating ${r>=4?'':r>=3?'mid':r>0?'bad':'none'}"><i class="fa-solid fa-star"></i>${r>0?r.toFixed(1):'0.0'}</span>${dots}</a>
-        <a class="go" href="${href}&buy=1" aria-label="Buy ${name}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></div>
-      ${low}
-    </div>
-    <button type="button" class="heart ${on?'on':''}" data-heart="${id}" aria-label="Save ${name} to wishlist"><i class="fa-${on?'solid':'regular'} fa-heart"></i></button>
-  </article>`;
-}
-async function loadSuggestions(){
-  let list=[],exp=[];
-  try{if(typeof getVercelData==='function')list=await getVercelData()||[]}catch{}
-  try{if(typeof getVercelExperiences==='function')exp=await getVercelExperiences()||[]}catch{}
-  const agg={};
-  exp.forEach(e=>{const pid=pidOf(e),r=Number(e.rating);if(pid==null||!(r>0))return;const a=agg[String(pid)]=agg[String(pid)]||{s:0,n:0};a.s+=r;a.n++});
-  const items=list.filter(x=>String(x.id)!==String(S.id)).slice(0,6).map(x=>{
-    const base=Number(x.rating??x.averageRating??x.avgRating??x.ratingAvg??x.average_rating??x.avg_rating??x.stars)||0,a=agg[String(x.id)];
-    return{id:x.id,name:x.name,price:x.price,mrp:x.mrp,colors:x.colors,img:x.imageMain||x.image||x.imageUrl||'',stock:x.stock,bestseller:!!x.bestseller,rating:(a&&a.n)?Math.round(a.s/a.n*10)/10:base};
-  });
-  if(!items.length)return;
-  $('#sugGrid').innerHTML=items.map(sugCard).join('');$('#sugSec').hidden=false;
-}
-document.addEventListener('click',e=>{
-  const b=e.target.closest('[data-heart]');if(!b)return;
-  const id=String(b.dataset.heart);let w=jget('aavira_wishlist',[]).map(String);
-  const on=!w.includes(id);w=on?[...w,id]:w.filter(x=>x!==id);jset('aavira_wishlist',w);
-  b.classList.toggle('on',on);b.querySelector('i').className='fa-'+(on?'solid':'regular')+' fa-heart';
-  toast(on?'Added to wishlist':'Removed from wishlist');
+  const star = event.target.closest('#pick i');
+  if (star) return setStar(Number(star.dataset.v));
+
+  const dot = event.target.closest('.dot');
+  if (dot) {
+    const carousel = $('#carousel');
+    return carousel.scrollTo({ left: carousel.clientWidth * Number(dot.dataset.i), behavior: 'smooth' });
+  }
+
+  const buy = event.target.closest('.go');
+  if (buy) {
+    event.preventDefault();
+    return navigate(buy.href, buy);
+  }
+
+  const heart = event.target.closest('[data-heart]');
+  if (heart) {
+    const id = String(heart.dataset.heart);
+    const list = readJson('aavira_wishlist', []).map(String);
+    const active = !list.includes(id);
+    writeJson('aavira_wishlist', active ? [...list, id] : list.filter(item => item !== id));
+    heart.classList.toggle('on', active);
+    heart.querySelector('i').className = `fa-${active ? 'solid' : 'regular'} fa-heart`;
+    toast(active ? 'Added to wishlist' : 'Removed from wishlist');
+  }
 });
 
-/* ---------- newsletter ---------- */
-async function subscribeNewsletter(){
-  const i=$('#newsletterEmail'),e=i.value.trim().toLowerCase();
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){toast('Enter a valid email address','err');return}
-  const b=$('#btnNewsletter');b.disabled=true;b.innerHTML='<span class="spinner"></span>';
-  let r={ok:false,message:'Could not subscribe. Please try again.'};
-  try{if(typeof subscribeNewsletterApi==='function')r=await subscribeNewsletterApi(e)}catch{}
-  if(r&&r.ok){toast('Thanks for joining');i.value=''}else toast((r&&r.message)||'Could not subscribe. Please try again.','err');
-  b.disabled=false;b.textContent='Join';
-}
-window.addEventListener('pageshow',cartBadge);
+$('#carousel').addEventListener('scroll', () => {
+  const carousel = $('#carousel');
+  const index = Math.round(carousel.scrollLeft / (carousel.clientWidth || 1));
+  $$('.dot').forEach((dot, i) => dot.classList.toggle('on', i === index));
+}, { passive: true });
+
+$('#pick').innerHTML = [1, 2, 3, 4, 5].map(v => `<i class="fa-solid fa-star" data-v="${v}"></i>`).join('');
+
+[['#newsletterEmail', subscribeNewsletter], ['#csWaist', () => saveCustom($('#sizeModal .mbtn'))]].forEach(([selector, handler]) => {
+  $(selector).addEventListener('keydown', event => { if (event.key === 'Enter') handler(); });
+});
+
+const init = async () => {
+  updateCartBadge();
+  const raw = new URLSearchParams(location.search).get('id');
+  state.id = raw ? decodeURIComponent(raw).trim() : '';
+  const product = state.id ? await findProduct(state.id) : null;
+  if (!product) return openModal('errModal');
+  state.product = product;
+
+  const name = String(product.name || product.title || '').replace(/_/g, ' - ').replace(/\s+/g, ' ').trim();
+  document.title = name ? `${name} - Aavira Fashion` : 'Aavira Fashion';
+  $('#title').textContent = name;
+  $('#title').classList.remove('skel');
+
+  const price = Number(product.price) || 0;
+  const mrp = Number(product.mrp) || Number(product.originalPrice) || 0;
+  $('#price').textContent = formatPrice(price);
+  $('#price').classList.remove('skel');
+  if (mrp > price) {
+    $('#mrp').hidden = false;
+    $('#mrp').textContent = formatPrice(mrp);
+    $('#off').hidden = false;
+    $('#off').textContent = Math.round((mrp - price) / mrp * 100) + '% OFF';
+  }
+
+  const stock = Number(product.stock);
+  const stockEl = $('#stock');
+  if (Number.isFinite(stock) && stock <= 0 && product.stock !== '' && product.stock != null) {
+    stockEl.hidden = false;
+    stockEl.className = 'stock out';
+    stockEl.textContent = 'Out of stock';
+    $('#btnCart').disabled = true;
+    $('#btnBuy').disabled = true;
+  } else if (Number.isFinite(stock) && stock > 0 && stock <= 4) {
+    stockEl.hidden = false;
+    stockEl.textContent = `Only ${stock} left`;
+  }
+
+  $('#desc').innerHTML = product.description
+    ? esc(product.description).replace(/\*(.*?)\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>')
+    : '';
+  $('#sku').textContent = 'SKU: AV-' + String(state.id).substring(0, 5).toUpperCase();
+
+  const specs = [['Fabric', product.fabric], ['Work / Embroidery', product.work], ['Pattern', product.pattern], ['Style', product.style]].filter(([, value]) => value);
+  if (specs.length) {
+    $('#specItem').hidden = false;
+    $('#specs').innerHTML = specs.map(([label, value]) => `<li><b>${label}:</b> ${esc(value)}</li>`).join('') + '<li><b>Wash care:</b> Dry clean recommended.</li>';
+  }
+
+  const main = product.imageMain || product.image || product.imageUrl || product.img || '';
+  state.image = main;
+  state.mainSlides = slidesHtml(product, main);
+  showGallery(state.mainSlides.length ? state.mainSlides : [`<div class="slide"><img src="${IMG_FALLBACK}" alt=""></div>`]);
+
+  const names = Array.isArray(product.colors) && product.colors.length ? product.colors : (product.colorsInfo ? String(product.colorsInfo).split(',') : []);
+  state.colors = [{ name: String(names[0] || 'Main').trim(), image: main, main: true }];
+  (Array.isArray(product.colorImages) ? product.colorImages : []).forEach((url, i) => {
+    if (url && url !== main) state.colors.push({ name: String(names[i + 1] || `Colour ${i + 2}`).trim(), image: url, main: false });
+  });
+  if (state.colors.length > 1) {
+    $('#colorWrap').hidden = false;
+    $('#colors').innerHTML = state.colors.map((c, i) => `<button type="button" class="sw ${i ? '' : 'on'}" data-i="${i}" title="${esc(c.name)}" aria-label="${esc(c.name)}"><img src="${esc(safeUrl(c.image) || IMG_FALLBACK)}" alt="" ${FALLBACK_ATTR}><i class="fa-solid fa-check"></i></button>`).join('');
+    state.color = state.colors[0].name;
+    $('#colorInfo').textContent = '· ' + state.color;
+  }
+
+  renderSizes();
+  paintWish();
+  renderRatings([], []);
+  loadReviews();
+  loadSuggestions();
+};
+
+addEventListener('pageshow', () => {
+  updateCartBadge();
+  $$('.is-busy').forEach(el => el.classList.remove('is-busy'));
+});
+
 init();
 </script>
 </body>
