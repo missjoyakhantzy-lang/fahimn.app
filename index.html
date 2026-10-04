@@ -5,20 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Aavira - Luxury Ethnic Elegance</title>
 <meta name="description" content="Discover Aavira's luxury ethnic wear, handcrafted styles, exclusive collections, and new arrivals.">
-<script>
-(function(){
-  var W=420,root=document.documentElement;
-  function fit(){
-    root.style.zoom='';
-    var vw=root.clientWidth||window.innerWidth;
-    var touch=(navigator.maxTouchPoints>0)||(window.matchMedia&&matchMedia('(pointer:coarse)').matches);
-    if(touch&&vw>W+60&&vw<=1100)root.style.zoom=(vw/W).toFixed(4);
-  }
-  fit();
-  window.addEventListener('resize',fit);
-  window.addEventListener('orientationchange',fit);
-})();
-</script>
 <meta name="theme-color" content="#ffffff">
 <link rel="canonical" href="https://aavirafashion.shop/">
 <meta property="og:type" content="website">
@@ -26,220 +12,218 @@
 <meta property="og:description" content="Discover luxury ethnic wear and handcrafted styles from Aavira.">
 <meta property="og:url" content="https://aavirafashion.shop/">
 <meta name="twitter:card" content="summary_large_image">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
-<script src="https://cdn.tailwindcss.com"></script>
-<script>tailwind.config={theme:{extend:{colors:{'rani-pink':'#D81B60','ethnic-gold':'#D4AF37','luxury-bg':'#FDFBF7'},fontFamily:{serif:['"Playfair Display"','serif'],sans:['"Inter"','sans-serif']}}}}</script>
-
+<script>
+(() => {
+  const BASE_WIDTH = 420;
+  const root = document.documentElement;
+  const fit = () => {
+    root.style.zoom = '';
+    const vw = root.clientWidth || innerWidth;
+    const touch = navigator.maxTouchPoints > 0 || matchMedia('(pointer:coarse)').matches;
+    if (touch && vw > BASE_WIDTH + 60 && vw <= 1100) root.style.zoom = (vw / BASE_WIDTH).toFixed(4);
+  };
+  fit();
+  addEventListener('resize', fit);
+  addEventListener('orientationchange', fit);
+})();
+</script>
 <style>
-:root{
-  --rani:#D81B60; --rani-dark:#B71550; --gold:#D4AF37; --gold-text:#8A6D1D;
-  --ivory:#FDFBF7; --cream:#F7F1E8; --ink:#242024; --muted:#6B6369;
-  --line:#E7E0D9; --blush:#F9E8EE; --plum:#1B1719;
-  --ease:cubic-bezier(.2,.8,.2,1); --ease-out:cubic-bezier(.25,1,.5,1);
-}
-*{-webkit-tap-highlight-color:transparent}
+:root{--rani:#D81B60;--rani-dark:#B71550;--gold:#D4AF37;--gold-text:#8A6D1D;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#242024;--muted:#6B6369;--line:#E7E0D9;--blush:#F9E8EE;--plum:#1B1719;--ease:cubic-bezier(.2,.8,.2,1)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
-body{margin:0;font-family:"Inter",system-ui,sans-serif;background:var(--ivory);color:var(--ink);overflow-x:clip;overscroll-behavior-y:none;-webkit-font-smoothing:antialiased}
-h1,h2,h3,h4{font-family:"Playfair Display",serif;margin:0}
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--ivory);color:var(--ink);overflow-x:clip;overscroll-behavior-y:none;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Playfair Display",serif;margin:0}
 img{display:block}
 button{font-family:inherit;cursor:pointer}
 a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--rani);outline-offset:2px}
+[hidden]{display:none!important}
+.no-scrollbar{scrollbar-width:none}
 .no-scrollbar::-webkit-scrollbar{display:none}
-.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
-.clamp1{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
-.clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.aavira-premium-text,.aavira-premium-line{display:none!important}
 
-/* ---------- App column ---------- */
-.app{max-width:420px;margin:0 auto;background:var(--ivory);position:relative;padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+.app{max-width:420px;margin:0 auto;background:var(--ivory);padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
 @media(min-width:640px){body{background:#EFE8DE}.app{box-shadow:0 0 60px rgba(36,32,36,.12)}}
 
-/* ---------- Header ---------- */
-.site-header{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px);box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.site-header{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
 .site-header-row{height:60px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 12px}
 .site-logo{height:38px;width:auto;object-fit:contain}
-.icon-btn{position:relative;width:42px;height:42px;border-radius:50%;border:0;background:transparent;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:all .2s var(--ease-out)}
-.icon-btn:hover{background:var(--blush);color:var(--rani);transform:scale(1.05)}
-.icon-btn:active{transform:scale(.95)}
-.icon-btn svg{width:22px;height:22px;stroke-width:1.6}
 .header-actions{display:flex;justify-content:flex-end;gap:2px}
-.cart-badge{position:absolute;top:3px;right:2px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--rani);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff;box-shadow:0 2px 4px rgba(216,27,96,.3)}
-.cart-badge[hidden]{display:none}
+.icon-btn{position:relative;width:42px;height:42px;border-radius:50%;border:0;background:transparent;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s,transform .2s}
+.icon-btn:hover{background:var(--blush);color:var(--rani)}
+.icon-btn:active{transform:scale(.94)}
+.icon-btn svg{width:22px;height:22px;stroke-width:1.6}
+.cart-badge{position:absolute;top:3px;right:2px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--rani);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
 
-/* ---------- Hero ---------- */
-.hero{position:relative}
+.net-bar{position:sticky;top:60px;z-index:39;background:var(--ink);color:#fff;text-align:center;font-size:12px;font-weight:500;padding:7px 12px}
+
 .hero-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;aspect-ratio:5/6;background:linear-gradient(135deg,#6E0F36,#D81B60)}
-.hero-slide{position:relative;flex:0 0 100%;height:100%;scroll-snap-align:start;display:block;transition:opacity .3s}
+.hero-slide{position:relative;flex:0 0 100%;height:100%;scroll-snap-align:start;display:block}
 .hero-slide img{width:100%;height:100%;object-fit:cover}
 .hero-dots{display:flex;justify-content:center;gap:6px;padding:12px 0 0;min-height:16px}
-.hero-dot{height:4px;width:16px;border-radius:2px;background:#D9D2CB;transition:all .4s var(--ease);cursor:pointer}
-.hero-dot:hover{background:#CABDB5}
-.hero-dot.is-active{width:30px;background:var(--rani);box-shadow:0 2px 6px rgba(216,27,96,.3)}
+.hero-dot{height:4px;width:16px;border-radius:2px;background:#D9D2CB;transition:width .4s var(--ease),background .4s}
+.hero-dot.is-active{width:30px;background:var(--rani)}
 .hero-error{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center;font-size:14px;padding:24px}
 .hero-error button{margin-top:10px;background:none;border:0;color:#fff;text-decoration:underline;font-weight:600}
-.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 
-/* ---------- Sections ---------- */
 .sec{padding:40px 16px 0}
-.sec[hidden]{display:none}
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px}
-.sec-head h2{font-size:24px;font-weight:600;letter-spacing:-.01em;background:linear-gradient(135deg,var(--ink),var(--rani));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.sec-link{background:none;border:0;padding:0;font-size:13px;font-weight:600;color:var(--rani);transition:all .2s;cursor:pointer}
-.sec-link:hover{color:var(--rani-dark);text-decoration:underline;transform:translateX(2px)}
+.sec-head h2{font-size:24px;font-weight:600}
+.sec-link{background:none;border:0;padding:0;font-size:13px;font-weight:600;color:var(--rani)}
+.sec-link:hover{text-decoration:underline}
 
 .cats{display:flex;gap:18px;overflow-x:auto;padding:2px 2px 6px}
-.cat{flex:0 0 auto;width:76px;display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:0;padding:0;transition:transform .3s var(--ease-out)}
-.cat:hover{transform:translateY(-4px)}
-.cat-ring{width:76px;height:76px;border-radius:50%;padding:3px;background:#fff;border:1.5px solid var(--gold);transition:all .3s var(--ease-out);box-shadow:0 4px 12px rgba(212,175,55,.1)}
-.cat:hover .cat-ring{border-color:var(--rani);transform:scale(1.08);box-shadow:0 8px 20px rgba(216,27,96,.15)}
+.cat{flex:0 0 auto;width:76px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.cat-ring{width:76px;height:76px;border-radius:50%;padding:3px;background:#fff;border:1.5px solid var(--gold);transition:border-color .25s,transform .25s}
+.cat:hover .cat-ring{border-color:var(--rani);transform:scale(1.06)}
 .cat-ring img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.cat span.cat-name{font-size:12px;font-weight:500;color:var(--ink);text-align:center;line-height:1.3;transition:color .2s}
-.cat:hover .cat-name{color:var(--rani)}
+.cat-name{font-size:12px;font-weight:500;text-align:center;line-height:1.3}
+
+.chips{display:flex;gap:8px;overflow-x:auto;margin:-4px 0 14px;padding:2px 0}
+.chip{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:7px 14px;font-size:12.5px;font-weight:500;transition:background .2s,color .2s,border-color .2s}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
 
 .rail{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 16px 12px 2px;margin-right:-16px}
 .feat-list{display:flex;flex-direction:column;gap:24px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px 12px}
 
-/* ---------- Professional Product Cards ---------- */
-.pcard{position:relative;box-sizing:border-box;min-width:0;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;padding:0 0 12px;box-shadow:0 2px 8px rgba(36,32,36,.04);transition:all .3s var(--ease-out)!important}
-.pcard:hover{transform:translateY(-6px);box-shadow:0 12px 24px rgba(36,32,36,.12);border-color:rgba(212,175,55,.3)}
+.pcard{position:relative;min-width:0;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;padding-bottom:12px;box-shadow:0 2px 8px rgba(36,32,36,.04);transition:box-shadow .3s,border-color .3s}
+.pcard:hover{box-shadow:0 10px 22px rgba(36,32,36,.12);border-color:rgba(212,175,55,.35)}
 .pcard-rail{flex:0 0 176px;scroll-snap-align:start}
 .pcard-link{display:block}
-.pcard-media{position:relative;display:block;aspect-ratio:1/1;background:linear-gradient(135deg,var(--cream) 0%,#F9F3EB 100%);overflow:hidden;border-radius:0}
-.pcard-media img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease);backface-visibility:hidden}
-.pcard:hover .pcard-media img{transform:scale(1.08)}
+.pcard-media{position:relative;display:block;aspect-ratio:1/1;background:var(--cream);overflow:hidden}
+.pcard-media img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+.pcard:hover .pcard-media img{transform:scale(1.06)}
 .tags{position:absolute;left:8px;top:8px;display:flex;flex-direction:column;align-items:flex-start;gap:4px}
-.tag-off{background:var(--rani);color:#fff;font-size:10.5px;font-weight:600;padding:4px 10px;border-radius:6px;box-shadow:0 2px 6px rgba(216,27,96,.25)}
-.tag-best{background:var(--ink);color:#fff;font-size:10.5px;font-weight:600;padding:4px 10px;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.tag-off,.tag-best{color:#fff;font-size:10.5px;font-weight:600;padding:4px 10px;border-radius:6px}
+.tag-off{background:var(--rani)}
+.tag-best{background:var(--ink)}
 .pcard-foot{display:block;padding:12px 12px 0}
-.pcard-row{display:flex;align-items:center;gap:6px;margin-top:8px;min-width:0}
-.pcard-metalink{display:flex;align-items:center;gap:6px;min-width:0}
-.pcard-row .go{margin-left:auto}
-.pcard-text{display:block;flex:1;min-width:0;transition:color .2s}
-.pcard:hover .pcard-text{color:var(--rani)}
-.pcard-name{display:block;font-size:13.5px;font-weight:500;line-height:1.35;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.go{flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:var(--rani);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(216,27,96,.25);transition:all .2s;border:0;cursor:pointer}
-.go:hover{background:var(--rani-dark);transform:scale(1.1);box-shadow:0 6px 16px rgba(216,27,96,.35)}
-.go:active{transform:scale(.92)}
-.go svg{width:14px;height:14px}
-.pfeat .go{width:34px;height:34px}
-.pfeat .go svg{width:16px;height:16px}
+.pcard-text{display:block;min-width:0}
+.pcard-name{display:block;font-size:13.5px;font-weight:500;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pcard-price{display:flex;align-items:baseline;gap:8px;margin-top:5px}
 .price{font-size:16px;font-weight:700;color:var(--rani)}
 .mrp{font-size:12px;color:var(--muted);text-decoration:line-through}
-.pcard-meta{display:flex;align-items:center;gap:6px;margin-top:8px}
-.rating{display:inline-flex;align-items:center;gap:3px;font-weight:600;font-size:11px;color:#fff;background:#15803D;padding:2px 7px;border-radius:6px;box-shadow:0 2px 4px rgba(21,128,61,.2)}
-.rating.mid{background:#B45309}.rating.bad{background:#B91C1C}.rating.none{background:#9A9298}
+.pcard-row{display:flex;align-items:center;gap:6px;margin-top:8px;min-width:0}
+.pcard-metalink{display:flex;align-items:center;gap:6px;min-width:0}
+.go{margin-left:auto;flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:var(--rani);color:#fff;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s}
+.go:hover{background:var(--rani-dark);transform:scale(1.08)}
+.go svg{width:14px;height:14px}
+.rating{display:inline-flex;align-items:center;gap:3px;font-weight:600;font-size:11px;color:#fff;background:#15803D;padding:2px 7px;border-radius:6px}
+.rating.mid{background:#B45309}
+.rating.bad{background:#B91C1C}
+.rating.none{background:#9A9298}
 .rating svg{width:10px;height:10px;fill:currentColor}
-
-/* COLOUR DOTS - overlapping stack, no white ring */
 .dots{display:inline-flex;align-items:center}
-.dots i{width:14px;height:14px;border-radius:50%;margin-left:-5px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.18);flex-shrink:0;position:relative;transition:transform .2s;cursor:pointer}
+.dots i{width:14px;height:14px;border-radius:50%;margin-left:-5px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}
 .dots i:first-child{margin-left:0}
-.dots i:nth-child(1){z-index:3}
-.dots i:nth-child(2){z-index:2}
-.dots i:nth-child(3){z-index:1}
-.dots i:hover{transform:scale(1.15);z-index:5}
-.dots b{min-width:18px;height:18px;padding:0 4px;box-sizing:border-box;margin-left:4px;border-radius:9px;background:var(--cream);border:1px solid var(--line);font-size:9px;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
-
-.low{display:block;margin-top:6px;font-size:12px;font-weight:600;color:#B45309;background:rgba(180,67,9,.08);padding:3px 6px;border-radius:4px;width:fit-content}
-.heart{position:absolute;right:8px;top:8px;width:30px;height:30px;border-radius:50%;border:0;background:rgba(255,255,255,.95);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.15);transition:all .2s;cursor:pointer;backdrop-filter:blur(8px)}
-.heart:hover{transform:scale(1.1);box-shadow:0 6px 16px rgba(0,0,0,.2)}
+.dots b{min-width:18px;height:18px;padding:0 4px;margin-left:4px;border-radius:9px;background:var(--cream);border:1px solid var(--line);font-size:9px;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;justify-content:center}
+.low{display:block;margin-top:6px;font-size:12px;font-weight:600;color:#B45309;background:rgba(180,83,9,.08);padding:3px 6px;border-radius:4px;width:fit-content}
+.heart{position:absolute;right:8px;top:8px;width:30px;height:30px;border-radius:50%;border:0;background:rgba(255,255,255,.95);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.14);transition:transform .2s}
 .heart:active{transform:scale(.88)}
 .heart svg{width:15px;height:15px;stroke-width:1.8}
-.heart.is-on{color:var(--rani);background:rgba(216,27,96,.12)}
-.heart.is-on svg{fill:currentColor;stroke:currentColor}
+.heart.is-on{color:var(--rani);background:var(--blush)}
+.heart.is-on svg{fill:currentColor}
 .pfeat .pcard-foot{padding:14px 14px 0}
-.pfeat .pcard-name{font-family:"Playfair Display",serif;font-size:20px;font-weight:600;color:var(--ink);transition:color .2s}
-.pfeat:hover .pcard-name{color:var(--rani)}
+.pfeat .pcard-name{font-family:"Playfair Display",serif;font-size:20px;font-weight:600}
 .pfeat .price{font-size:19px}
-.heart-lg{width:34px;height:34px}
+.pfeat .go{width:34px;height:34px}
+.pfeat .go svg{width:16px;height:16px}
+.pfeat .heart{width:34px;height:34px}
 
-/* ---------- Reviews ---------- */
-.review{flex:0 0 86%;max-width:300px;scroll-snap-align:center;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;transition:all .3s var(--ease-out);box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.review:hover{transform:translateY(-4px);box-shadow:0 8px 16px rgba(0,0,0,.08)}
-.review-photo{display:block;width:100%;aspect-ratio:1/1;background:linear-gradient(135deg,var(--cream),#F9F3EB);border:0;padding:0;cursor:pointer;transition:transform .3s}
-.review-photo:hover{transform:scale(1.02)}
-.review-photo img{width:100%;height:100%;object-fit:cover}
-.review-body{padding:16px;display:flex;flex-direction:column;gap:6px}
-.stars{color:var(--gold);font-size:15px;letter-spacing:2px}
-.review-name{font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px;font-family:"Inter",sans-serif}
-.review-name svg{width:14px;height:14px;color:#16A34A}
-.review-text{font-size:13px;line-height:1.6;color:var(--muted);margin:0}
-.empty{width:100%;text-align:center;padding:30px 16px;background:#fff;border:1px solid var(--line);border-radius:10px;color:var(--muted);font-size:13px}
-.empty strong{display:block;color:var(--ink);font-size:14px;margin-bottom:2px}
-.btn-dark{width:100%;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--ink);color:#fff;border:0;border-radius:8px;font-weight:600;font-size:14px;padding:14px;transition:all .2s var(--ease-out);cursor:pointer}
-.btn-dark:hover{background:#000;transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.2)}
-.btn-dark:active{transform:translateY(0)}
-.btn-pink{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--rani);color:#fff;border:0;border-radius:8px;font-weight:600;font-size:14px;padding:14px;transition:all .2s var(--ease-out);cursor:pointer}
-.btn-pink:hover{background:var(--rani-dark);transform:translateY(-2px);box-shadow:0 6px 16px rgba(216,27,96,.25)}
-.btn-pink:active{transform:translateY(0)}
-.btn-pink:disabled,.btn-dark:disabled{opacity:.65;cursor:not-allowed}
-.btn-wa{background:#25D366;color:#083D1A}
-.btn-wa:hover{background:#1EBE5A}
-.btn-sm{width:auto;padding:9px 20px;font-size:13px;margin:0}
-
-/* ---------- Skeleton ---------- */
-.skel{background:linear-gradient(90deg,#F1EBE3 25%,#F8F3EC 37%,#F1EBE3 63%);background-size:400% 100%;animation:shimmer 1.4s ease infinite}
-@keyframes shimmer{0%{background-position:100% 0}100%{background-position:0 0}}
-.is-loading{pointer-events:none;position:relative;opacity:.72}
+.skel,.rating-skel{background:linear-gradient(90deg,#F1EBE3 25%,#F8F3EC 37%,#F1EBE3 63%);background-size:400% 100%;animation:shimmer 1.4s ease infinite}
+.rating-skel{width:42px;height:20px;padding:0}
+@keyframes shimmer{to{background-position:0 0}}
+.is-loading{pointer-events:none;opacity:.72}
 .spinner{width:16px;height:16px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;display:inline-block;animation:spin .6s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ---------- Footer ---------- */
+.review{flex:0 0 82%;max-width:290px;scroll-snap-align:start;position:relative;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 4px 14px rgba(36,32,36,.06)}
+.review-photo{display:block;width:100%;aspect-ratio:4/3;background:var(--cream);border:0;padding:0}
+.review-photo img{width:100%;height:100%;object-fit:cover}
+.review-body{position:relative;flex:1;padding:18px 16px;display:flex;flex-direction:column;gap:10px}
+.review-quote{position:absolute;top:6px;right:16px;font-family:"Playfair Display",serif;font-size:56px;line-height:1;color:var(--blush)}
+.review-head{display:flex;align-items:center;gap:10px;min-width:0}
+.review-av{flex:0 0 auto;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--rani),var(--rani-dark));color:#fff;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.review-meta small{display:block;margin-top:1px;font-size:11px;color:var(--muted)}
+.review-name{font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px}
+.review-name svg{width:14px;height:14px;color:#16A34A}
+.stars{color:var(--gold);font-size:15px;letter-spacing:2px}
+.review-text{font-size:13px;line-height:1.65;color:#4B5563;margin:0;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+.empty{width:100%;text-align:center;padding:30px 16px;background:#fff;border:1px solid var(--line);border-radius:10px;color:var(--muted);font-size:13px}
+.empty strong{display:block;color:var(--ink);font-size:14px;margin-bottom:2px}
+
+.btn-dark,.btn-pink,.btn-outline{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:8px;font-weight:600;font-size:14px;padding:14px;transition:background .2s,transform .2s}
+.btn-dark{margin-top:14px;background:var(--ink);color:#fff}
+.btn-dark:hover{background:#000}
+.btn-pink{background:var(--rani);color:#fff}
+.btn-pink:hover{background:var(--rani-dark)}
+.btn-wa{background:#25D366;color:#083D1A}
+.btn-wa:hover{background:#1EBE5A}
+.btn-outline{background:#fff;color:var(--rani);border:1.5px solid var(--rani)}
+.btn-outline:hover{background:var(--rani);color:#fff}
+.btn-dark:disabled,.btn-pink:disabled{opacity:.65;cursor:not-allowed}
+
+.marquee{overflow:hidden;margin-top:52px;background:var(--ivory);border-block:1px solid var(--line)}
+.marquee-row{overflow:hidden;white-space:nowrap;padding:20px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.marquee-track{display:flex;width:max-content;animation:slide 32s linear infinite}
+.marquee-row:nth-child(2) .marquee-track{animation-direction:reverse;animation-duration:28s}
+.marquee-row:nth-child(3) .marquee-track{animation-duration:36s}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee-set{display:flex}
+.marquee-copy{display:inline-flex;align-items:center;gap:28px;padding-right:28px;font-size:16px;font-weight:500;letter-spacing:.07em}
+.marquee-copy::after{content:"";width:4px;height:4px;border-radius:50%;background:var(--rani);opacity:.6}
+.marquee-row:nth-child(2) .marquee-copy{color:var(--rani);font-weight:600}
+.marquee-row:nth-child(3) .marquee-copy{color:var(--muted)}
+@keyframes slide{to{transform:translateX(-50%)}}
+
 .footer{margin-top:48px;background:var(--plum);color:#fff;padding:36px 20px 28px;border-top:3px solid rgba(212,175,55,.4)}
-.footer-brand{font-family:"Playfair Display",serif;font-size:24px;font-weight:600;background:linear-gradient(135deg,#fff,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.footer-brand{font-family:"Playfair Display",serif;font-size:24px;font-weight:600;color:var(--gold)}
 .footer-tag{margin:6px 0 0;font-size:13px;line-height:1.6;color:#B5ADB2}
 .footer-news{margin:24px 0 4px}
 .footer-news label{display:block;font-size:14px;font-weight:600;margin-bottom:8px}
 .footer-news-row{display:flex;gap:8px}
-.footer-news input{flex:1;min-width:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:6px;padding:12px 16px;color:#fff;font-size:14px;outline:none;transition:all .2s}
-.footer-news input::placeholder{color:#9F979D}
-.footer-news input:focus{border-color:var(--rani);background:rgba(255,255,255,.12);box-shadow:0 0 0 3px rgba(216,27,96,.1)}
-.footer-news button{background:var(--rani);color:#fff;border:0;border-radius:6px;padding:0 20px;font-weight:600;font-size:14px;transition:all .2s;cursor:pointer}
-.footer-news button:hover{background:var(--rani-dark);transform:translateY(-2px)}
+.footer-news input{flex:1;min-width:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:6px;padding:12px 16px;color:#fff;font-size:14px;outline:none}
+.footer-news input:focus{border-color:var(--rani)}
+.footer-news button{background:var(--rani);color:#fff;border:0;border-radius:6px;padding:0 20px;font-weight:600;font-size:14px}
 .footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px 18px;padding:26px 0;margin-top:22px;border-top:1px solid rgba(255,255,255,.1)}
-.footer h3{font-family:"Inter",sans-serif;font-size:14px;font-weight:600;margin-bottom:10px;color:var(--gold)}
-.footer-grid a{display:block;font-size:13px;color:#B5ADB2;line-height:2;transition:color .2s}
-.footer-grid a:hover{color:#fff;padding-left:4px}
+.footer h3{font-family:Inter,sans-serif;font-size:14px;font-weight:600;margin-bottom:10px;color:var(--gold)}
+.footer-grid a{display:block;font-size:13px;color:#B5ADB2;line-height:2}
+.footer-grid a:hover{color:#fff}
 .footer-copy{padding-top:18px;border-top:1px solid rgba(255,255,255,.1);font-size:12px;color:#8F878D}
 
-/* ---------- Bottom nav ---------- */
-.bottom-nav{position:fixed;left:0;right:0;bottom:0;margin:0 auto;width:100%;max-width:420px;z-index:9000;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:8px 4px calc(8px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 20px rgba(36,32,36,.05)}
-.nav-item{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 0;background:none;border:0;color:var(--muted);font-size:11px;font-weight:500;transition:all .2s var(--ease-out);cursor:pointer}
-.nav-item svg{width:22px;height:22px;stroke-width:1.6;transition:transform .2s}
-.nav-item:hover{color:var(--rani);transform:scale(1.1)}
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;margin:0 auto;width:100%;max-width:420px;z-index:9000;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:8px 4px calc(8px + env(safe-area-inset-bottom,0px))}
+.nav-item{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 0;color:var(--muted);font-size:11px;font-weight:500}
+.nav-item svg{width:22px;height:22px;stroke-width:1.6}
 .nav-item[aria-current="page"]{color:var(--rani);font-weight:600}
-.nav-item[aria-current="page"] svg{transform:scale(1.15)}
 .nav-item[aria-current="page"]::before{content:"";position:absolute;top:-9px;width:26px;height:3px;border-radius:0 0 3px 3px;background:var(--rani)}
 
-/* ---------- FAB & Toast ---------- */
-.fab-col{position:fixed;z-index:60;right:max(16px,calc(50% - 210px + 16px));bottom:calc(92px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px}
-.fab{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(36,32,36,.18);border:0;background:#fff;color:var(--rani);cursor:pointer;transition:all .2s var(--ease-out)}
-.fab:hover{transform:scale(1.12);box-shadow:0 12px 28px rgba(36,32,36,.25)}
-.fab:active{transform:scale(.95)}
+.fab-col{position:fixed;z-index:60;right:max(16px,calc(50% - 194px));bottom:calc(92px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px}
+.fab{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(36,32,36,.18);border:0;background:#fff;color:var(--rani);transition:transform .2s,opacity .25s}
+.fab:hover{transform:scale(1.08)}
 .fab svg{width:21px;height:21px}
-.fab-wa{background:#25D366;color:#fff;border:0}
-.fab-wa:hover{background:#1EBE5A}
-.toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translate(-50%,16px);opacity:0;background:#111827;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;box-shadow:0 10px 24px rgba(0,0,0,.22);z-index:10060;pointer-events:none;white-space:nowrap;max-width:92%;transition:opacity .25s,transform .25s var(--ease)}
+.fab-wa{background:#25D366;color:#fff}
+.fab-top{opacity:0;pointer-events:none}
+.fab-top.is-on{opacity:1;pointer-events:auto}
+
+.toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translate(-50%,16px);opacity:0;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--rani),var(--rani-dark));color:#fff;padding:12px 24px 12px 14px;border-radius:999px;font-size:13px;font-weight:600;box-shadow:0 10px 28px rgba(216,27,96,.38);z-index:10060;pointer-events:none;white-space:nowrap;max-width:92%;transition:opacity .25s,transform .25s var(--ease)}
+.toast::before{content:"\2713";width:22px;height:22px;border-radius:50%;background:#fff;color:var(--rani);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+.toast[data-type="error"]::before{content:"!"}
 .toast.is-on{opacity:1;transform:translate(-50%,0)}
-.toast[data-type="error"]{background:var(--rani-dark)}
-.offer{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(150%);width:92%;max-width:380px;z-index:9100;background:var(--ink);color:#fff;border-radius:12px;padding:12px 12px 12px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 14px 34px rgba(0,0,0,.3);transition:transform .45s var(--ease)}
-.offer[hidden]{display:none}
-.offer.is-on{transform:translateX(-50%) translateY(0)}
-.offer b{display:block;font-size:14px;color:var(--gold)}
-.offer small{font-size:12px;color:#CFC8CC}
+.offer{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(150%);width:92%;max-width:380px;z-index:9100;background:linear-gradient(135deg,var(--rani),var(--rani-dark));color:#fff;border-radius:999px;padding:10px 12px 10px 22px;display:flex;align-items:center;gap:12px;box-shadow:0 14px 34px rgba(216,27,96,.38);transition:transform .45s var(--ease)}
+.offer.is-on{transform:translateX(-50%)}
+.offer b{display:block;font-size:14px}
+.offer small{font-size:12px;opacity:.88}
 .offer .grow{flex:1}
-.offer .signin{background:#fff;color:var(--ink);border:0;border-radius:6px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
-.offer .signin:hover{background:#F0F0F0}
-.offer .x{background:none;border:0;color:#CFC8CC;padding:4px;display:flex;cursor:pointer}
+.offer .signin{background:#fff;color:var(--rani);border:0;border-radius:999px;padding:9px 18px;font-size:13px;font-weight:700}
+.offer .x{background:none;border:0;color:#fff;padding:4px;display:flex}
 .offer .x svg{width:16px;height:16px}
 
-/* ---------- Layers ---------- */
 .scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9990;opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .3s}
 .scrim.is-open{opacity:1;visibility:visible;transition-delay:0s}
 .layer{position:fixed;z-index:10000;visibility:hidden;pointer-events:none;transition:transform .38s var(--ease),opacity .3s,visibility 0s .38s}
@@ -250,117 +234,106 @@ a{color:inherit;text-decoration:none}
 .from-bottom{transform:translateY(100%)}
 .from-right{transform:translateX(100%)}
 .from-left{transform:translateX(-100%)}
-.layer-fade{top:0;bottom:0;left:0;right:0;opacity:0;background:rgba(0,0,0,.95)}
+.layer-fade{inset:0;opacity:0;background:rgba(0,0,0,.95)}
 .grab{width:44px;height:4px;border-radius:2px;background:#D9D2CB;margin:0 auto 14px}
 .layer-top{flex:0 0 auto;height:60px;display:flex;align-items:center;gap:8px;padding:0 12px;background:#fff;border-bottom:1px solid var(--line)}
 .layer-top h2{font-size:20px;font-weight:600}
 .layer-body{flex:1;overflow-y:auto;padding:16px}
 .sheet-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
-.sheet-head h2{font-size:26px;font-weight:600;line-height:1.1;background:linear-gradient(135deg,var(--ink),var(--rani));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sheet-head h2{font-size:26px;font-weight:600;line-height:1.1}
 .sheet-head p{margin:6px 0 0;font-size:13px;color:var(--muted)}
-.field{width:100%;box-sizing:border-box;background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 16px;font-size:14px;color:var(--ink);outline:none;font-family:inherit;transition:all .2s}
-.field:focus{border-color:var(--rani);background:#fff;box-shadow:0 0 0 3px rgba(216,27,96,.1)}
+.field{width:100%;background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 16px;font-size:14px;color:var(--ink);outline:none;font-family:inherit}
+.field:focus{border-color:var(--rani);box-shadow:0 0 0 3px rgba(216,27,96,.1)}
 
-/* ---------- Marquee (alternating horizontal slide) ---------- */
-.aavira-marquee-wrap{position:relative;overflow:hidden;margin-top:52px;padding:0;background:linear-gradient(135deg,var(--ivory) 0%,#F9F7F3 100%);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.aavira-marquee-row{position:relative;overflow:hidden;white-space:nowrap;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 12%,#000 88%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,#000 12%,#000 88%,transparent 100%);padding:20px 0;transition:background .3s ease}
-.aavira-marquee-wrap:hover .aavira-marquee-row{background:rgba(212,175,55,.04)}
-.aavira-marquee-track{display:flex;width:max-content;backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.aavira-marquee-row:nth-child(1) .aavira-marquee-track{animation:aavira-slide-smooth 32s linear infinite}
-.aavira-marquee-row:nth-child(2) .aavira-marquee-track{animation:aavira-slide-smooth-rev 28s linear infinite}
-.aavira-marquee-row:nth-child(3) .aavira-marquee-track{animation:aavira-slide-smooth 36s linear infinite}
-.aavira-marquee-wrap:hover .aavira-marquee-track{animation-play-state:paused;cursor:pointer}
-.aavira-marquee-set{display:flex;flex:0 0 auto}
-.aavira-marquee-copy{display:inline-flex;align-items:center;gap:32px;padding-right:32px;font-family:"Inter",sans-serif;font-size:18px;font-weight:500;letter-spacing:.08em;line-height:1.4;text-transform:capitalize;color:var(--ink);transition:all .3s ease;word-spacing:.2em}
-.aavira-marquee-copy::after{content:"";width:4px;height:4px;background:var(--rani);border-radius:50%;flex:0 0 auto;opacity:.6;transition:opacity .3s}
-.aavira-marquee-row:nth-child(2) .aavira-marquee-copy{color:var(--rani);font-weight:600;letter-spacing:.06em}
-.aavira-marquee-row:nth-child(2) .aavira-marquee-copy::after{background:var(--gold);opacity:.8}
-.aavira-marquee-row:nth-child(3) .aavira-marquee-copy{color:var(--muted);font-weight:500}
-.aavira-marquee-row:nth-child(3) .aavira-marquee-copy::after{background:var(--gold-text)}
-.aavira-marquee-wrap:hover .aavira-marquee-copy{color:var(--rani)}
-.aavira-marquee-wrap:hover .aavira-marquee-copy::after{opacity:1}
-@keyframes aavira-slide-smooth{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
-@keyframes aavira-slide-smooth-rev{from{transform:translate3d(-50%,0,0)}to{transform:translate3d(0,0,0)}}
-@media(max-width:420px){.aavira-marquee-copy{font-size:15px;letter-spacing:.06em;gap:24px;padding-right:24px}.aavira-marquee-row{padding:16px 0}}
-@media (prefers-reduced-motion:reduce){.aavira-marquee-track{animation:none!important}}
-
-/* ---------- Sidebar ---------- */
 #sidebar{top:0;bottom:0;left:max(0px,calc(50% - 210px));width:86%;max-width:340px;background:#fff;display:flex;flex-direction:column;box-shadow:0 0 50px rgba(0,0,0,.25)}
 .side-top{display:flex;align-items:center;justify-content:space-between;padding:calc(10px + env(safe-area-inset-top,0px)) 12px 10px 16px}
 .side-top img{height:38px}
 .profile{margin:0 16px 8px;padding:16px;background:linear-gradient(135deg,var(--blush),#FDE4ED);border-radius:16px;border:1px solid rgba(216,27,96,.1)}
 .profile-row{display:flex;align-items:center;gap:14px}
-.avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--rani),var(--rani-dark));border:2px solid #fff;color:#fff;font-family:"Playfair Display",serif;font-size:26px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:0 0 auto;box-shadow:0 4px 12px rgba(216,27,96,.2)}
-.profile h3{font-family:"Inter",sans-serif;font-size:17px;font-weight:700;margin:0;background:linear-gradient(135deg,var(--ink),var(--rani));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--rani),var(--rani-dark));border:2px solid #fff;color:#fff;font-family:"Playfair Display",serif;font-size:26px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.profile h3{font-family:Inter,sans-serif;font-size:17px;font-weight:700}
 .profile p{margin:2px 0 0;font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .profile-actions{display:flex;gap:8px;margin-top:14px}
-.profile-actions .btn-pink,.profile-actions .btn-outline{flex:1;padding:11px;font-size:13px}
-.btn-outline{display:flex;align-items:center;justify-content:center;gap:8px;background:#fff;color:var(--rani);border:1.5px solid var(--rani);border-radius:6px;font-weight:600;transition:all .2s;cursor:pointer}
-.btn-outline:hover{background:var(--rani);color:#fff}
+.profile-actions>button{flex:1;padding:11px;font-size:13px}
 .promo-badge{display:none;align-items:center;justify-content:space-between;gap:8px;margin:0 16px 4px;padding:10px 14px;border-radius:12px;background:#FFF8E1;border:1px dashed var(--gold);font-size:13px;font-weight:600;color:var(--gold-text)}
 .promo-badge.is-on{display:flex}
-.promo-badge button{background:none;border:0;color:var(--muted);font-size:12px;text-decoration:underline;cursor:pointer}
+.promo-badge button{background:none;border:0;color:var(--muted);font-size:12px;text-decoration:underline}
 .side-nav{flex:1;overflow-y:auto;padding:8px 10px 24px}
-.side-nav hr{border:0;border-top:1px solid var(--line);margin:8px 8px}
-.menu-item{width:100%;display:flex;align-items:center;gap:14px;padding:13px 10px;background:none;border:0;border-radius:12px;font-size:15px;font-weight:500;color:var(--ink);text-align:left;cursor:pointer;transition:all .2s;text-decoration:none}
-.menu-item:hover{background:var(--cream);transform:translateX(4px)}
+.side-nav hr{border:0;border-top:1px solid var(--line);margin:8px}
+.menu-item{width:100%;display:flex;align-items:center;gap:14px;padding:13px 10px;background:none;border:0;border-radius:12px;font-size:15px;font-weight:500;color:var(--ink);text-align:left;transition:background .2s}
+.menu-item:hover{background:var(--cream)}
 .menu-item>svg:first-child{width:20px;height:20px;color:var(--rani);stroke-width:1.6}
 .menu-item>svg:last-child{width:16px;height:16px;margin-left:auto;color:#A8A0A5}
+.side-foot{margin-top:10px;padding:16px 6px 6px;border-top:1px solid var(--line)}
+.side-follow{margin:0 0 10px;text-align:center;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted)}
+.side-social{display:flex;justify-content:center;gap:12px}
+.soc{width:42px;height:42px;border-radius:50%;border:1.5px solid var(--line);background:#fff;color:var(--rani);display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s}
+.soc:hover{background:var(--rani);border-color:var(--rani);color:#fff}
+.soc svg{width:19px;height:19px;stroke-width:1.8}
 .side-ver{text-align:center;font-size:12px;color:#A8A0A5;margin:14px 0 0}
+.side-brand{display:flex;justify-content:flex-end;margin:6px -10px -24px}
+.side-brand img{width:auto;max-width:100%;height:240px;object-fit:contain}
 
-/* ---------- Referral ---------- */
 .ref{display:flex;flex-direction:column;align-items:center;text-align:center}
-.ref-icon{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--cream),#F9F3EB);color:var(--gold-text);display:flex;align-items:center;justify-content:center;margin:12px 0 18px;box-shadow:0 4px 12px rgba(212,175,55,.1)}
+.ref-icon{width:76px;height:76px;border-radius:50%;background:var(--cream);color:var(--gold-text);display:flex;align-items:center;justify-content:center;margin:12px 0 18px}
 .ref-icon svg{width:36px;height:36px}
-.ref h3{font-size:28px;line-height:1.2;font-weight:700;background:linear-gradient(135deg,var(--ink),var(--rani));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ref h3{font-size:28px;line-height:1.2;font-weight:700}
 .ref>p{font-size:13px;color:var(--muted);margin:10px 12px 24px;line-height:1.5}
-.ref-stats{width:100%;display:grid;grid-template-columns:1fr 1fr;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.ref-stats{width:100%;display:grid;grid-template-columns:1fr 1fr;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px}
 .ref-stats>div+div{border-left:1px solid var(--line)}
 .ref-stats small{display:block;font-size:12px;color:var(--muted)}
-.ref-stats b{font-family:"Playfair Display",serif;font-size:30px;background:linear-gradient(135deg,var(--rani),var(--gold-text));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.ref-link{width:100%;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 6px 6px 14px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.ref-stats b{font-family:"Playfair Display",serif;font-size:30px;color:var(--rani)}
+.ref-link{width:100%;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 6px 6px 14px;margin-bottom:16px}
 .ref-link input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:13px;color:var(--muted);font-weight:500}
-.ref-link button{width:42px;height:42px;border:0;border-radius:10px;background:var(--cream);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
-.ref-link button:hover{background:var(--blush);transform:scale(1.05)}
+.ref-link button{width:42px;height:42px;border:0;border-radius:10px;background:var(--cream);display:flex;align-items:center;justify-content:center}
 .ref-link svg{width:18px;height:18px;color:var(--rani)}
 
-/* Experience modal */
 .star-row{display:flex;justify-content:center;gap:6px;margin:6px 0 14px}
-.star-btn{background:none;border:0;font-size:32px;line-height:1;color:var(--gold);padding:2px;transition:all .1s;cursor:pointer}
-.star-btn:hover{transform:scale(1.15)}
-.star-btn:active{transform:scale(.85)}
-.upload{position:relative;height:120px;margin:12px 0 4px;border:2px dashed var(--line);border-radius:12px;background:linear-gradient(135deg,var(--ivory),#F9F7F3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--muted);font-size:13px;font-weight:500;overflow:hidden;transition:all .2s;cursor:pointer}
-.upload:hover{border-color:var(--rani);background:rgba(216,27,96,.02)}
+.star-btn{background:none;border:0;font-size:32px;line-height:1;color:var(--gold);padding:2px}
+.upload{position:relative;height:120px;margin:12px 0 4px;border:2px dashed var(--line);border-radius:12px;background:#F9F7F3;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;font-weight:500;overflow:hidden}
+.upload-add{display:flex;flex-direction:column;align-items:center;gap:6px}
 .upload input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:2}
 .upload img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
-.upload img[hidden]{display:none}
 .upload svg{width:26px;height:26px;color:var(--gold-text)}
 
-/* Lightbox */
-.lb-close,.lb-nav{position:absolute;z-index:3;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;backdrop-filter:blur(8px)}
-.lb-close:hover,.lb-nav:hover{background:rgba(255,255,255,.2);transform:scale(1.1)}
+.lb-close,.lb-nav{position:absolute;z-index:3;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;display:flex;align-items:center;justify-content:center}
 .lb-close{top:calc(16px + env(safe-area-inset-top,0px));right:16px}
 .lb-nav{top:50%;transform:translateY(-50%)}
-.lb-prev{left:12px}.lb-next{right:12px}
+.lb-prev{left:12px}
+.lb-next{right:12px}
 .lb-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 8px 150px}
-.lb-stage img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.3)}
-.lb-cap{position:absolute;left:0;right:0;bottom:0;padding:16px 24px calc(28px + env(safe-area-inset-bottom,0px));text-align:center;color:#fff;background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.7) 100%);border-radius:0 0 8px 8px}
+.lb-stage img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px}
+.lb-cap{position:absolute;left:0;right:0;bottom:0;padding:16px 24px calc(28px + env(safe-area-inset-bottom,0px));text-align:center;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.7))}
 .lb-cap b{display:flex;align-items:center;justify-content:center;gap:6px;font-size:16px}
 .lb-cap .stars{margin:4px 0 6px}
 .lb-cap p{margin:0;font-size:13px;color:rgba(255,255,255,.85);font-style:italic}
 
-@media (prefers-reduced-motion:reduce){
-  *,::before,::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
-}
-.aavira-premium-text,.aavira-premium-line{display:none!important;height:0!important;margin:0!important;padding:0!important}
+.is-busy{position:relative;pointer-events:none;color:transparent!important}
+.is-busy>*{opacity:0}
+.is-busy::after{content:"";position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border:2px solid var(--spin,var(--rani));border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;z-index:6}
+:is(.btn-pink,.btn-dark,.go,.signin,.footer-news button).is-busy{--spin:#fff}
+.trust{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:20px 12px 0}
+.trust div{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:11px;font-weight:500;color:var(--muted);line-height:1.3}
+.trust svg{width:22px;height:22px;color:var(--gold-text);stroke-width:1.5}
+.qv{position:absolute;right:8px;top:46px;width:30px;height:30px;border-radius:50%;border:0;background:rgba(255,255,255,.95);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.14)}
+.qv svg{width:15px;height:15px;stroke-width:1.8}
+.pfeat .qv{top:50px;width:34px;height:34px}
+.qv-img{width:100%;aspect-ratio:1/1;max-height:42vh;object-fit:cover;border-radius:12px;background:var(--cream)}
+.qv-info{margin:14px 0}
+.qv-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.qv-colors{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.qv-colors span{display:inline-flex;align-items:center;gap:6px;font-size:12px;border:1px solid var(--line);border-radius:999px;padding:4px 10px 4px 6px}
+.qv-colors i{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}
+.qv-actions{display:grid;grid-template-columns:1fr auto;gap:8px}
+.qv-actions .btn-outline{width:auto;padding:14px 18px}
+@media(max-width:420px){.marquee-copy{font-size:15px;gap:24px;padding-right:24px}}
+@media(prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
 </head>
-
 <body>
 <div id="toast" class="toast" role="status" aria-live="polite"><span id="toast-msg"></span></div>
 <div id="scrim" class="scrim" onclick="closeTopLayer()"></div>
 
-<!-- REFERRAL CENTER -->
 <div id="referralCenter" class="layer layer-page from-right" role="dialog" aria-modal="true" aria-label="Refer and earn">
   <div class="layer-top">
     <button type="button" class="icon-btn" onclick="closeReferralCenter()" aria-label="Back"><i data-lucide="arrow-left"></i></button>
@@ -379,7 +352,7 @@ a{color:inherit;text-decoration:none}
         <input type="text" id="referralLinkInput" readonly value="Log in to generate your link" aria-label="Your referral link">
         <button type="button" onclick="copyReferralLink()" aria-label="Copy link"><i data-lucide="copy"></i></button>
       </div>
-      <button type="button" class="btn-pink btn-wa" onclick="shareReferralLink()"><i data-lucide="share-2" style="width:18px;height:18px"></i>Share on WhatsApp</button>
+      <button type="button" class="btn-pink btn-wa" onclick="shareReferralLink()"><i data-lucide="share-2" style="width:18px;height:18px"></i>Share your link</button>
     </div>
   </div>
 </div>
@@ -424,12 +397,16 @@ a{color:inherit;text-decoration:none}
   <div class="lb-cap"><b id="lbName"></b><div id="lbStars" class="stars"></div><p id="lbText"></p></div>
 </div>
 
+<div id="quickView" class="layer layer-sheet from-bottom" data-scrim="1" role="dialog" aria-modal="true" aria-label="Quick view">
+  <div class="grab"></div>
+  <div id="quickViewBody"></div>
+</div>
+
 <aside id="sidebar" class="layer from-left" data-scrim="1" aria-label="Menu">
   <div class="side-top">
     <img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira Fashion">
     <button type="button" class="icon-btn" onclick="closeSidebar()" aria-label="Close menu"><i data-lucide="x"></i></button>
   </div>
-
   <div id="guestProfileUI" class="profile">
     <div class="profile-row">
       <div class="avatar">G</div>
@@ -440,7 +417,6 @@ a{color:inherit;text-decoration:none}
       <button type="button" class="btn-outline" onclick="triggerDotAction('/auth/verify',this)">Sign up</button>
     </div>
   </div>
-
   <div id="vipProfileUI" class="profile" hidden>
     <div class="profile-row">
       <div class="avatar" id="profileInitial">M</div>
@@ -450,12 +426,10 @@ a{color:inherit;text-decoration:none}
       <button type="button" class="btn-outline" onclick="handleLogout()"><i data-lucide="log-out" style="width:16px;height:16px"></i>Sign out</button>
     </div>
   </div>
-
   <div id="activePromoBadge" class="promo-badge">
     <span id="activePromoText"></span>
     <button type="button" onclick="removePromoCode()">Remove</button>
   </div>
-
   <nav class="side-nav">
     <a class="menu-item" href="./"><i data-lucide="home"></i>Home<i data-lucide="chevron-right"></i></a>
     <a class="menu-item" href="categories"><i data-lucide="layout-grid"></i>Collections<i data-lucide="chevron-right"></i></a>
@@ -467,11 +441,20 @@ a{color:inherit;text-decoration:none}
     <button type="button" class="menu-item" onclick="openReferralCenter()"><i data-lucide="share-2"></i>Refer &amp; earn<i data-lucide="chevron-right"></i></button>
     <hr>
     <a class="menu-item" href="support"><i data-lucide="headphones"></i>Customer support<i data-lucide="chevron-right"></i></a>
-    <p class="side-ver">Aavira Fashion v2.1.0</p>
+    <div class="side-foot">
+      <p class="side-follow">Follow us</p>
+      <div class="side-social">
+        <a class="soc" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+        <a class="soc" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+        <a class="soc" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i data-lucide="youtube"></i></a>
+        <a class="soc" href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i data-lucide="message-circle"></i></a>
+      </div>
+    </div>
+    <p class="side-ver">Aavira Fashion v2.3.1</p>
+    <div class="side-brand"><img src="/public/file_xx234.png" alt="Aavira Fashion" loading="lazy"></div>
   </nav>
 </aside>
 
-<!-- PAGE -->
 <div class="app">
   <header class="site-header">
     <div class="site-header-row">
@@ -480,12 +463,11 @@ a{color:inherit;text-decoration:none}
       <div class="header-actions">
         <a class="icon-btn" href="/items/search.html" aria-label="Search"><i data-lucide="search"></i></a>
         <a class="icon-btn" href="wishlist" aria-label="Wishlist"><i data-lucide="heart"></i><span id="wish-badge" class="cart-badge" hidden>0</span></a>
-        <button type="button" class="icon-btn" onclick="triggerDotAction('cart',this)" aria-label="Shopping cart">
-          <i data-lucide="shopping-bag"></i><span id="cart-badge" class="cart-badge" hidden>0</span>
-        </button>
+        <button type="button" class="icon-btn" onclick="triggerDotAction('cart',this)" aria-label="Shopping cart"><i data-lucide="shopping-bag"></i><span id="cart-badge" class="cart-badge" hidden>0</span></button>
       </div>
     </div>
   </header>
+  <div id="netBar" class="net-bar" role="status" hidden>You are offline. Showing saved content.</div>
 
   <main>
     <section class="hero" aria-label="Featured">
@@ -493,6 +475,14 @@ a{color:inherit;text-decoration:none}
       <h1 class="sr-only">Luxury ethnic elegance</h1>
       <div id="banner-dots" class="hero-dots"></div>
     </section>
+
+    <div class="trust" aria-label="Our promises">
+      <div><i data-lucide="truck"></i>Free shipping</div>
+      <div><i data-lucide="rotate-ccw"></i>Easy returns</div>
+      <div><i data-lucide="shield-check"></i>Secure payment</div>
+      <div><i data-lucide="sparkles"></i>Handcrafted</div>
+    </div>
+
 
     <section class="sec" aria-labelledby="h-coll">
       <div class="sec-head"><h2 id="h-coll">Collections</h2><a class="sec-link" href="categories">View all</a></div>
@@ -511,6 +501,13 @@ a{color:inherit;text-decoration:none}
 
     <section class="sec" aria-labelledby="h-new">
       <div class="sec-head"><h2 id="h-new">New arrivals</h2></div>
+      <div id="sort-chips" class="chips no-scrollbar" role="group" aria-label="Sort new arrivals">
+        <button type="button" class="chip" data-sort="latest" aria-pressed="true">Latest</button>
+        <button type="button" class="chip" data-sort="price-asc" aria-pressed="false">Price: low to high</button>
+        <button type="button" class="chip" data-sort="price-desc" aria-pressed="false">Price: high to low</button>
+        <button type="button" class="chip" data-sort="rating" aria-pressed="false">Top rated</button>
+        <button type="button" class="chip" data-sort="discount" aria-pressed="false">Biggest discount</button>
+      </div>
       <div id="new-arrivals-container" class="grid2"></div>
     </section>
 
@@ -520,25 +517,21 @@ a{color:inherit;text-decoration:none}
     </section>
 
     <section class="sec" aria-labelledby="h-rev">
-      <div class="sec-head"><h2 id="h-rev">Customer reviews</h2><span id="reviewAvg"></span></div>
-      <div id="experience-container" class="rail no-scrollbar" style="gap:14px"></div>
+      <div class="sec-head"><h2 id="h-rev">Customer reviews</h2></div>
+      <div id="experience-container" class="rail no-scrollbar"></div>
       <button type="button" class="btn-dark" onclick="openExpModal()"><i data-lucide="pen" style="width:16px;height:16px"></i>Write a review</button>
     </section>
 
-    
-  
-    <!-- Alternating horizontal slide strip (bottom of page) -->
-    <section class="aavira-marquee-wrap" aria-label="Aavira Fashion highlights">
-      <div class="aavira-marquee-row"><div class="aavira-marquee-track"><div class="aavira-marquee-set"><span class="aavira-marquee-copy">Premium Ethnic Wear</span><span class="aavira-marquee-copy">Premium Ethnic Wear</span><span class="aavira-marquee-copy">Premium Ethnic Wear</span></div><div class="aavira-marquee-set" aria-hidden="true"><span class="aavira-marquee-copy">Premium Ethnic Wear</span><span class="aavira-marquee-copy">Premium Ethnic Wear</span><span class="aavira-marquee-copy">Premium Ethnic Wear</span></div></div></div>
-      <div class="aavira-marquee-row"><div class="aavira-marquee-track"><div class="aavira-marquee-set"><span class="aavira-marquee-copy">Crafted for Elegance</span><span class="aavira-marquee-copy">Crafted for Elegance</span><span class="aavira-marquee-copy">Crafted for Elegance</span></div><div class="aavira-marquee-set" aria-hidden="true"><span class="aavira-marquee-copy">Crafted for Elegance</span><span class="aavira-marquee-copy">Crafted for Elegance</span><span class="aavira-marquee-copy">Crafted for Elegance</span></div></div></div>
-      <div class="aavira-marquee-row"><div class="aavira-marquee-track"><div class="aavira-marquee-set"><span class="aavira-marquee-copy">New Collection 2026</span><span class="aavira-marquee-copy">New Collection 2026</span><span class="aavira-marquee-copy">New Collection 2026</span></div><div class="aavira-marquee-set" aria-hidden="true"><span class="aavira-marquee-copy">New Collection 2026</span><span class="aavira-marquee-copy">New Collection 2026</span><span class="aavira-marquee-copy">New Collection 2026</span></div></div></div>
+    <section class="marquee" aria-label="Aavira Fashion highlights">
+      <div class="marquee-row"><div class="marquee-track"><div class="marquee-set"><span class="marquee-copy">Premium Ethnic Wear</span><span class="marquee-copy">Premium Ethnic Wear</span><span class="marquee-copy">Premium Ethnic Wear</span></div><div class="marquee-set" aria-hidden="true"><span class="marquee-copy">Premium Ethnic Wear</span><span class="marquee-copy">Premium Ethnic Wear</span><span class="marquee-copy">Premium Ethnic Wear</span></div></div></div>
+      <div class="marquee-row"><div class="marquee-track"><div class="marquee-set"><span class="marquee-copy">Crafted for Elegance</span><span class="marquee-copy">Crafted for Elegance</span><span class="marquee-copy">Crafted for Elegance</span></div><div class="marquee-set" aria-hidden="true"><span class="marquee-copy">Crafted for Elegance</span><span class="marquee-copy">Crafted for Elegance</span><span class="marquee-copy">Crafted for Elegance</span></div></div></div>
+      <div class="marquee-row"><div class="marquee-track"><div class="marquee-set"><span class="marquee-copy">New Collection 2026</span><span class="marquee-copy">New Collection 2026</span><span class="marquee-copy">New Collection 2026</span></div><div class="marquee-set" aria-hidden="true"><span class="marquee-copy">New Collection 2026</span><span class="marquee-copy">New Collection 2026</span><span class="marquee-copy">New Collection 2026</span></div></div></div>
     </section>
   </main>
 
   <footer class="footer">
-    <div class="footer-brand">Aavira <span>Fashion</span></div>
+    <div class="footer-brand">Aavira Fashion</div>
     <p class="footer-tag">Luxury ethnic fashion, designed for modern elegance.</p>
-
     <div class="footer-news">
       <label for="newsletterEmail">Get new collections and offers by email</label>
       <div class="footer-news-row">
@@ -546,7 +539,6 @@ a{color:inherit;text-decoration:none}
         <button type="button" id="btnNewsletter" onclick="subscribeNewsletter()">Join</button>
       </div>
     </div>
-
     <div class="footer-grid">
       <div><h3>Explore</h3><a href="/">Home</a><a href="/categories">Collections</a><a href="/offer">Offers</a><a href="/wishlist">Wishlist</a></div>
       <div><h3>Shopping</h3><a href="/cart">Shopping bag</a><a href="/orders">My orders</a><a href="/profile">My account</a><a href="/support">Support</a></div>
@@ -560,11 +552,12 @@ a{color:inherit;text-decoration:none}
 <div id="dynamic-action-banner" class="offer" role="region" aria-label="Sign-in offer" hidden></div>
 
 <div class="fab-col">
+  <button type="button" id="fabTop" class="fab fab-top" aria-label="Back to top"><i data-lucide="arrow-up"></i></button>
   <a class="fab" href="/match/colours.html" aria-label="Shop by colour"><i data-lucide="palette"></i></a>
   <a class="fab fab-wa" href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"><i data-lucide="message-circle"></i></a>
 </div>
 
-<nav class="bottom-nav" id="bottomNavContainer" aria-label="Main">
+<nav class="bottom-nav" aria-label="Main">
   <a href="./" class="nav-item" aria-current="page"><i data-lucide="home"></i><span>Home</span></a>
   <a href="categories" class="nav-item"><i data-lucide="layout-grid"></i><span>Collections</span></a>
   <a href="/items/search.html" class="nav-item"><i data-lucide="search"></i><span>Search</span></a>
@@ -573,552 +566,1088 @@ a{color:inherit;text-decoration:none}
 </nav>
 
 <script>
-const $=(s,r=document)=>r.querySelector(s);
-const PLACEHOLDER='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#F7F1E8"/><text x="200" y="210" font-family="Georgia,serif" font-size="30" fill="#B9AFA6" text-anchor="middle">Aavira</text></svg>');
-window.imgFallback=img=>{img.onerror=null;img.src=PLACEHOLDER};
-const escapeHtml=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
-const safeUrl=v=>{const r=String(v??'').trim();if(!r)return'';try{const u=new URL(r,location.origin);return['http:','https:'].includes(u.protocol)?u.href:''}catch{return''}};
-const safeImageUrl=v=>safeUrl(v)||PLACEHOLDER;
-const safeJson=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))||f}catch{return f}};
-const saveJson=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
-const store={get:k=>{try{return localStorage.getItem(k)}catch{return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch{}},del:k=>{try{localStorage.removeItem(k)}catch{}}};
-const icons=()=>{if(window.lucide)lucide.createIcons()};
-const fmt=n=>'₹'+Number(n).toLocaleString('en-IN');
-const starText=n=>'★'.repeat(n)+'☆'.repeat(5-n);
-const vibrate=(m=30)=>{if('vibrate' in navigator)navigator.vibrate(m)};
-window.allProductsList=[];
+const $ = (selector, root = document) => root.querySelector(selector);
+const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-const ethnicColors=[
-  {name:"Red",hex:"#C8102E"},{name:"Maroon",hex:"#6D1230"},{name:"Wine",hex:"#5E1A2B"},{name:"Rani Pink",hex:"#D81B60"},
-  {name:"Pink",hex:"#F4A6C0"},{name:"Magenta",hex:"#C2185B"},{name:"Coral",hex:"#F08A6E"},{name:"Peach",hex:"#F6C1A5"},
-  {name:"Orange",hex:"#E2711D"},{name:"Rust",hex:"#B7410E"},{name:"Mustard",hex:"#D4A017"},{name:"Yellow",hex:"#E8B923"},
-  {name:"Gold",hex:"#C9A227"},{name:"Beige",hex:"#D9C3A0"},{name:"Ivory",hex:"#F5EFE0"},{name:"White",hex:"#FFFFFF"},
-  {name:"Green",hex:"#2E7D5B"},{name:"Emerald",hex:"#0F7B5A"},{name:"Olive",hex:"#6B7A2A"},{name:"Lime",hex:"#A4C639"},
-  {name:"Mint",hex:"#A8D5BA"},{name:"Teal",hex:"#0F766E"},{name:"Turquoise",hex:"#2BB5B8"},{name:"Sky Blue",hex:"#7FB7E0"},
-  {name:"Blue",hex:"#1F4E9C"},{name:"Navy Blue",hex:"#1B2A5C"},{name:"Lavender",hex:"#C7B8E6"},{name:"Violet",hex:"#9B6BC9"},
-  {name:"Purple",hex:"#6B3FA0"},{name:"Brown",hex:"#7B4B2A"},{name:"Gray",hex:"#8A8A8A"},{name:"Black",hex:"#1A1A1A"}
-];
-const colorHex=n=>{
-  const f=ethnicColors.find(c=>c.name.toLowerCase()===String(n).toLowerCase());
-  if(f)return f.hex;
-  const s=String(n).trim();
-  return(window.CSS&&CSS.supports('color',s))?s:'#D1D5DB';
+const PLACEHOLDER = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#F7F1E8"/><text x="200" y="210" font-family="Georgia,serif" font-size="30" fill="#B9AFA6" text-anchor="middle">Aavira</text></svg>');
+const BASE_WEIGHT = 10;
+const BANNER_DELAY = 4500;
+const REVIEW_DELAY = 3500;
+const RECENT_LIMIT = 8;
+const CACHE_TTL = 10 * 60 * 1000;
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const ethnicColors = [
+  ['Red', '#C8102E'], ['Maroon', '#6D1230'], ['Wine', '#5E1A2B'], ['Rani Pink', '#D81B60'],
+  ['Pink', '#F4A6C0'], ['Magenta', '#C2185B'], ['Coral', '#F08A6E'], ['Peach', '#F6C1A5'],
+  ['Orange', '#E2711D'], ['Rust', '#B7410E'], ['Mustard', '#D4A017'], ['Yellow', '#E8B923'],
+  ['Gold', '#C9A227'], ['Beige', '#D9C3A0'], ['Ivory', '#F5EFE0'], ['White', '#FFFFFF'],
+  ['Green', '#2E7D5B'], ['Emerald', '#0F7B5A'], ['Olive', '#6B7A2A'], ['Lime', '#A4C639'],
+  ['Mint', '#A8D5BA'], ['Teal', '#0F766E'], ['Turquoise', '#2BB5B8'], ['Sky Blue', '#7FB7E0'],
+  ['Blue', '#1F4E9C'], ['Navy Blue', '#1B2A5C'], ['Lavender', '#C7B8E6'], ['Violet', '#9B6BC9'],
+  ['Purple', '#6B3FA0'], ['Brown', '#7B4B2A'], ['Gray', '#8A8A8A'], ['Black', '#1A1A1A']
+].map(([name, hex]) => ({ name, hex }));
+
+const state = {
+  products: [],
+  sort: 'latest',
+  expRating: 5,
+  expFile: null,
+  photoReviews: [],
+  lightboxIndex: 0,
+  dbReviews: {}
 };
 
-/* Layer Stack Management */
-const layerStack=[];
-const syncLayers=()=>{
-  document.body.style.overflow=layerStack.length?'hidden':'';
-  $('#scrim').classList.toggle('is-open',layerStack.some(id=>$('#'+id).dataset.scrim==='1'));
-};
-window.openLayer=(id,focusSel)=>{
-  const el=$('#'+id);if(!el||el.classList.contains('is-open'))return;
-  el._returnTo=document.activeElement;
-  el.classList.add('is-open');layerStack.push(id);syncLayers();
-  if(focusSel)setTimeout(()=>$(focusSel)?.focus(),350);
-};
-window.closeLayer=id=>{
-  const el=$('#'+id);if(!el)return;
-  el.classList.remove('is-open');
-  const i=layerStack.indexOf(id);if(i>-1)layerStack.splice(i,1);
-  syncLayers();
-  if(el._returnTo&&el._returnTo.focus)try{el._returnTo.focus({preventScroll:true})}catch{}
-};
-window.closeTopLayer=()=>{
-  for(let i=layerStack.length-1;i>=0;i--){
-    const el=$('#'+layerStack[i]);
-    if(el.dataset.scrim==='1'||i===layerStack.length-1){closeLayer(layerStack[i]);return}
+const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[ch]));
+
+const safeUrl = value => {
+  const raw = String(value ?? '').trim();
+  if (!raw) return '';
+  try {
+    const url = new URL(raw, location.origin);
+    return ['http:', 'https:'].includes(url.protocol) ? url.href : '';
+  } catch {
+    return '';
   }
 };
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&layerStack.length)closeTopLayer()});
 
-/* Toast */
+const safeImageUrl = value => safeUrl(value) || PLACEHOLDER;
+const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+const formatPrice = amount => '₹' + Number(amount).toLocaleString('en-IN');
+const starText = count => '★'.repeat(count) + '☆'.repeat(5 - count);
+const vibrate = (ms = 30) => navigator.vibrate?.(ms);
+const refreshIcons = () => window.lucide?.createIcons();
+const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const store = {
+  get(key) { try { return localStorage.getItem(key); } catch { return null; } },
+  set(key, value) { try { localStorage.setItem(key, value); } catch {} },
+  del(key) { try { localStorage.removeItem(key); } catch {} },
+  json(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; } },
+  save(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch {} }
+};
+
+const cache = {
+  read(key) {
+    const entry = store.json('aavira_cache_' + key, null);
+    return entry && Date.now() - entry.time < CACHE_TTL ? entry.data : null;
+  },
+  write(key, data) {
+    store.save('aavira_cache_' + key, { time: Date.now(), data });
+  }
+};
+
+const withCache = async (key, loader) => {
+  try {
+    const data = await loader();
+    if (Array.isArray(data) && data.length) cache.write(key, data);
+    return data;
+  } catch (error) {
+    const stored = cache.read(key);
+    if (stored) return stored;
+    throw error;
+  }
+};
+
+const colorHex = name => {
+  const found = ethnicColors.find(c => c.name.toLowerCase() === String(name).toLowerCase());
+  if (found) return found.hex;
+  const value = String(name).trim();
+  return CSS.supports('color', value) ? value : '#D1D5DB';
+};
+
+window.imgFallback = img => {
+  img.onerror = null;
+  img.src = PLACEHOLDER;
+};
+
+const layers = {
+  stack: [],
+  sync() {
+    document.body.style.overflow = this.stack.length ? 'hidden' : '';
+    $('#scrim').classList.toggle('is-open', this.stack.some(id => $('#' + id).dataset.scrim === '1'));
+  },
+  open(id, focusSelector) {
+    const el = $('#' + id);
+    if (!el || el.classList.contains('is-open')) return;
+    el._returnTo = document.activeElement;
+    el.classList.add('is-open');
+    this.stack.push(id);
+    this.sync();
+    if (focusSelector) setTimeout(() => $(focusSelector)?.focus(), 350);
+  },
+  close(id) {
+    const el = $('#' + id);
+    if (!el) return;
+    el.classList.remove('is-open');
+    this.stack = this.stack.filter(item => item !== id);
+    this.sync();
+    try { el._returnTo?.focus({ preventScroll: true }); } catch {}
+  },
+  closeTop() {
+    const top = this.stack.at(-1);
+    if (top) this.close(top);
+  }
+};
+
+window.openLayer = (id, focusSelector) => layers.open(id, focusSelector);
+window.closeLayer = id => layers.close(id);
+window.closeTopLayer = () => layers.closeTop();
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') layers.closeTop();
+});
+
 let toastTimer;
-window.showToast=(m,t='success')=>{
+window.showToast = (message, type = 'success') => {
   vibrate(40);
-  const s=$('#toast');$('#toast-msg').textContent=m;s.dataset.type=t;
-  s.classList.add('is-on');clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>s.classList.remove('is-on'),2200);
+  const toast = $('#toast');
+  $('#toast-msg').textContent = message;
+  toast.dataset.type = type;
+  toast.classList.add('is-on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('is-on'), 2200);
 };
-window.startLocalLoad=el=>{if(el)el.classList.add('is-loading')};
-window.stopLocalLoad=el=>{if(el)el.classList.remove('is-loading')};
-window.go=(url,el)=>{
-  vibrate(30);
-  if(!url||url==='#')return;
+
+const ACTION_DELAY = 3000;
+const ACTION_SELECTOR = [
+  '.btn-pink', '.btn-dark', '.btn-outline', '.menu-item', '.signin', '.go', '.nav-item', '.icon-btn[href]',
+  '.icon-btn[aria-label="Shopping cart"]', '.sec-link[onclick]', '.footer-news button',
+  '.ref-link button', '.promo-badge button'
+].join(',');
+const ACTION_SKIP = '[aria-current="page"]';
+const pendingActions = new WeakSet();
+const releasedActions = new WeakSet();
+
+document.addEventListener('click', event => {
+  const el = event.target.closest(ACTION_SELECTOR);
+  if (!el || el.matches(ACTION_SKIP)) return;
+  if (releasedActions.delete(el)) return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  if (pendingActions.has(el)) return;
+
+  pendingActions.add(el);
+  el.classList.add('is-busy');
+
+  setTimeout(() => {
+    el.classList.remove('is-busy');
+    pendingActions.delete(el);
+    releasedActions.add(el);
+    el.click();
+  }, ACTION_DELAY);
+}, true);
+
+window.startLocalLoad = el => el?.classList.add('is-loading');
+
+window.go = (url, el) => {
+  vibrate();
+  if (!url || url === '#') return;
   startLocalLoad(el);
-  location.href=url;
-};
-window.triggerDotAction=(url,el)=>{
-  if(url==='login')url='/auth/verify';
-  if(url==='cart')url='cart';
-  go(url,el);
-};
-window.addEventListener('pageshow',()=>document.querySelectorAll('.is-loading').forEach(e=>e.classList.remove('is-loading')));
-
-const rememberRecent=id=>{
-  let r=safeJson('aavira_recent',[]).filter(i=>String(i)!==String(id));
-  r.unshift(String(id));saveJson('aavira_recent',r.slice(0,8));
+  location.href = url;
 };
 
-/* Offer Banner */
-window.closeDynamicBanner=()=>{
-  const b=$('#dynamic-action-banner');b.classList.remove('is-on');
-  setTimeout(()=>{b.hidden=true},450);
-  try{sessionStorage.setItem('loginBannerShown','true')}catch{}
+window.triggerDotAction = (target, el) => {
+  const routes = { login: '/auth/verify', cart: 'cart' };
+  go(routes[target] || target, el);
 };
-window.checkDynamicBanner=()=>{
-  const b=$('#dynamic-action-banner');
-  let shown=false;try{shown=!!sessionStorage.getItem('loginBannerShown')}catch{}
-  if(store.get('aavira_user_email')||shown){b.hidden=true;b.classList.remove('is-on');return}
-  if(!b.hidden)return;
-  b.innerHTML=`<div class="grow"><b>Flat 20% off</b><small>Sign in to claim your first order gift.</small></div>
+
+addEventListener('pageshow', () => $$('.is-loading, .is-busy').forEach(el => el.classList.remove('is-loading', 'is-busy')));
+
+const updateNetworkBar = () => {
+  $('#netBar').hidden = navigator.onLine;
+};
+addEventListener('online', () => { updateNetworkBar(); showToast('Back online'); });
+addEventListener('offline', updateNetworkBar);
+
+const rememberRecent = id => {
+  const list = store.json('aavira_recent', []).filter(item => String(item) !== String(id));
+  list.unshift(String(id));
+  store.save('aavira_recent', list.slice(0, RECENT_LIMIT));
+};
+
+window.closeDynamicBanner = () => {
+  const banner = $('#dynamic-action-banner');
+  banner.classList.remove('is-on');
+  setTimeout(() => { banner.hidden = true; }, 450);
+  try { sessionStorage.setItem('loginBannerShown', 'true'); } catch {}
+};
+
+window.checkDynamicBanner = () => {
+  const banner = $('#dynamic-action-banner');
+  let shown = false;
+  try { shown = !!sessionStorage.getItem('loginBannerShown'); } catch {}
+  if (store.get('aavira_user_email') || shown) {
+    banner.hidden = true;
+    banner.classList.remove('is-on');
+    return;
+  }
+  if (!banner.hidden) return;
+  banner.innerHTML = `<div class="grow"><b>Flat 20% off</b><small>Sign in to claim your first order gift.</small></div>
     <button type="button" class="signin" onclick="triggerDotAction('login',this)">Sign in</button>
     <button type="button" class="x" onclick="closeDynamicBanner()" aria-label="Dismiss"><i data-lucide="x"></i></button>`;
-  b.hidden=false;icons();
-  requestAnimationFrame(()=>requestAnimationFrame(()=>b.classList.add('is-on')));
+  banner.hidden = false;
+  refreshIcons();
+  requestAnimationFrame(() => requestAnimationFrame(() => banner.classList.add('is-on')));
   clearTimeout(window.bannerTimeout);
-  window.bannerTimeout=setTimeout(closeDynamicBanner,8000);
+  window.bannerTimeout = setTimeout(closeDynamicBanner, 8000);
 };
 
-/* Profile UI */
-window.updateProfileUI=()=>{
-  const name=store.get('aavira_display_name'),email=store.get('aavira_user_email');
-  const g=$('#guestProfileUI'),v=$('#vipProfileUI');
-  if(name&&name.toLowerCase()!=='guest user'){
-    g.hidden=true;v.hidden=false;
-    $('#vipName').textContent=name;
-    $('#vipEmail').textContent=email||'Aavira member';
-    $('#profileInitial').textContent=name.charAt(0).toUpperCase();
-  }else{v.hidden=true;g.hidden=false}
-  const a=safeJson('aavira_active_promo',null),badge=$('#activePromoBadge');
-  if(a){badge.classList.add('is-on');$('#activePromoText').textContent=`${a.code} (-₹${a.discount})`}
-  else badge.classList.remove('is-on');
+window.updateProfileUI = () => {
+  const name = store.get('aavira_display_name');
+  const email = store.get('aavira_user_email');
+  const loggedIn = name && name.toLowerCase() !== 'guest user';
+  $('#guestProfileUI').hidden = loggedIn;
+  $('#vipProfileUI').hidden = !loggedIn;
+  if (loggedIn) {
+    $('#vipName').textContent = name;
+    $('#vipEmail').textContent = email || 'Aavira member';
+    $('#profileInitial').textContent = name.charAt(0).toUpperCase();
+  }
+  const promo = store.json('aavira_active_promo', null);
+  $('#activePromoBadge').classList.toggle('is-on', !!promo);
+  if (promo) $('#activePromoText').textContent = `${promo.code} (-₹${promo.discount})`;
   checkDynamicBanner();
 };
-window.handleLogout=()=>{
-  store.del('aavira_display_name');store.del('aavira_user_email');
-  try{sessionStorage.removeItem('loginBannerShown')}catch{}
-  updateProfileUI();showToast('Logged out');closeSidebar();
-};
-window.updateWishCount=()=>{const n=safeJson('aavira_wishlist',[]).length,b=$('#wish-badge');b.textContent=n>99?'99+':n;b.hidden=n<=0};
-window.updateCartCount=()=>{
-  const c=safeJson('aavira_cart',[]),b=$('#cart-badge');
-  const total=c.reduce((s,i)=>s+(Number(i.qty)||1),0);
-  b.textContent=total>99?'99+':total;b.hidden=total<=0;
-};
-window.openSidebar=()=>{vibrate(40);updateProfileUI();openLayer('sidebar')};
-window.closeSidebar=()=>{vibrate(30);closeLayer('sidebar')};
 
-/* Promo & Referral */
-window.openPromoModal=()=>{closeLayer('sidebar');$('#promoInput').value='';openLayer('promoModal','#promoInput')};
-window.closePromoModal=()=>closeLayer('promoModal');
-window.processPromoCode=async()=>{
-  const c=$('#promoInput').value.trim().toUpperCase();
-  if(!c){showToast('Enter a promo code','error');return}
-  const used=safeJson('aavira_used_promos',[]);
-  if(used.includes(c)){showToast('This promo code was already used','error');return}
-  const b=$('#btnApplyPromo');b.innerHTML='<span class="spinner"></span> Checking';b.disabled=true;
-  const url=typeof window.checkPromoCode==='function'
-    ? await window.checkPromoCode(encodeURIComponent(c))
-    : null;
-  try{
-    const r=await fetch(url);
-    let res=null;try{res=await r.json()}catch{}
-    if(r.ok&&res&&res.status==='success'){
-      const d=Number(res.data.discountAmount)||Number(res.data.amount)||0;
-      showToast(`Flat ₹${d} off applied`);
-      saveJson('aavira_active_promo',{code:res.data.id||c,discount:d});
-      used.push(c);saveJson('aavira_used_promos',used);
-      updateProfileUI();setTimeout(closePromoModal,900);
-    }else if(res&&res.message){
-      showToast(res.message,'error');
-    }else{
-      console.error('Promo check failed:',r.status,url);
-      showToast(r.status===404?'This code is not valid':`Server error (${r.status}). Please try again later.`,'error');
+window.handleLogout = () => {
+  store.del('aavira_display_name');
+  store.del('aavira_user_email');
+  try { sessionStorage.removeItem('loginBannerShown'); } catch {}
+  updateProfileUI();
+  showToast('Logged out');
+  closeSidebar();
+};
+
+window.updateWishCount = () => {
+  const count = store.json('aavira_wishlist', []).length;
+  const badge = $('#wish-badge');
+  badge.textContent = count > 99 ? '99+' : count;
+  badge.hidden = count <= 0;
+};
+
+window.updateCartCount = () => {
+  const total = store.json('aavira_cart', []).reduce((sum, item) => sum + (Number(item.qty) || 1), 0);
+  const badge = $('#cart-badge');
+  badge.textContent = total > 99 ? '99+' : total;
+  badge.hidden = total <= 0;
+};
+
+window.openSidebar = () => { vibrate(40); updateProfileUI(); layers.open('sidebar'); };
+window.closeSidebar = () => { vibrate(); layers.close('sidebar'); };
+
+window.openPromoModal = () => {
+  layers.close('sidebar');
+  $('#promoInput').value = '';
+  layers.open('promoModal', '#promoInput');
+};
+window.closePromoModal = () => layers.close('promoModal');
+
+window.processPromoCode = async () => {
+  const code = $('#promoInput').value.trim().toUpperCase();
+  if (!code) return showToast('Enter a promo code', 'error');
+  const used = store.json('aavira_used_promos', []);
+  if (used.includes(code)) return showToast('This promo code was already used', 'error');
+
+  const button = $('#btnApplyPromo');
+  button.innerHTML = '<span class="spinner"></span> Checking';
+  button.disabled = true;
+
+  try {
+    if (typeof window.checkPromoCode !== 'function') throw new Error('Promo service unavailable');
+    const url = await window.checkPromoCode(encodeURIComponent(code));
+    const response = await fetch(url);
+    const result = await response.json().catch(() => null);
+
+    if (response.ok && result?.status === 'success') {
+      const discount = Number(result.data.discountAmount) || Number(result.data.amount) || 0;
+      store.save('aavira_active_promo', { code: result.data.id || code, discount });
+      store.save('aavira_used_promos', [...used, code]);
+      showToast(`Flat ₹${discount} off applied`);
+      updateProfileUI();
+      setTimeout(closePromoModal, 900);
+    } else if (result?.message) {
+      showToast(result.message, 'error');
+    } else {
+      showToast(response.status === 404 ? 'This code is not valid' : `Server error (${response.status}). Please try again later.`, 'error');
     }
-  }catch(err){
-    console.error('Promo request could not reach the server:',url,err);
-    showToast('Could not reach the server. Please try again.','error');
+  } catch (error) {
+    console.error('Promo request failed:', error);
+    showToast('Could not reach the server. Please try again.', 'error');
+  } finally {
+    button.textContent = 'Apply code';
+    button.disabled = false;
   }
-  b.textContent='Apply code';b.disabled=false;
-};
-window.removePromoCode=()=>{store.del('aavira_active_promo');updateProfileUI();showToast('Promo code removed')};
-
-window.openReferralCenter=()=>{
-  closeLayer('sidebar');
-  const e=store.get('aavira_user_email');
-  if(!e){showToast('Log in to get your referral link','error');setTimeout(()=>triggerDotAction('login'),1000);return}
-  let ref='';try{ref=btoa(e)}catch{ref=encodeURIComponent(e)}
-  $('#referralLinkInput').value=`${location.origin}${location.pathname}?ref=${ref}`;
-  openLayer('referralCenter');
-  if(typeof window.loadReferralStats==='function')window.loadReferralStats(e);
-};
-window.closeReferralCenter=()=>closeLayer('referralCenter');
-window.copyReferralLink=async()=>{
-  vibrate(30);
-  try{await navigator.clipboard.writeText($('#referralLinkInput').value);showToast('Link copied')}
-  catch{showToast('Copy is not available on this device','error')}
-};
-window.shareReferralLink=()=>{
-  const l=$('#referralLinkInput').value;
-  const m=`Discover Aavira! Use my link to sign up and get flat ₹500 off your first order.\n\n${l}`;
-  window.open(`https://wa.me/?text=${encodeURIComponent(m)}`,'_blank','noopener');
 };
 
-/* Newsletter - shows the real reason if it fails */
-window.subscribeNewsletter=async()=>{
-  const i=$('#newsletterEmail'),e=i.value.trim().toLowerCase();
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){showToast('Enter a valid email address','error');i.focus();return}
-  const b=$('#btnNewsletter');b.innerHTML='<span class="spinner"></span>';b.disabled=true;
-  let r={ok:false,message:'Could not subscribe. Please try again.'};
-  try{
-    if(typeof window.subscribeNewsletterApi==='function')r=await window.subscribeNewsletterApi(e);
-    else r={ok:false,message:'Subscribe service is not loaded. Please refresh the page.'};
-  }catch(err){
-    console.error('Newsletter error:',err);
-    r={ok:false,message:'Could not reach the server. Please try again.'};
+window.removePromoCode = () => {
+  store.del('aavira_active_promo');
+  updateProfileUI();
+  showToast('Promo code removed');
+};
+
+window.openReferralCenter = () => {
+  layers.close('sidebar');
+  const email = store.get('aavira_user_email');
+  if (!email) {
+    showToast('Log in to get your referral link', 'error');
+    setTimeout(() => triggerDotAction('login'), 1000);
+    return;
   }
-  if(r&&r.ok){showToast(r.message&&r.message!=='Subscribed'?r.message:'Thanks for joining');i.value=''}
-  else showToast((r&&r.message)||'Could not subscribe. Please try again.','error');
-  b.textContent='Join';b.disabled=false;
+  let token;
+  try { token = btoa(email); } catch { token = encodeURIComponent(email); }
+  $('#referralLinkInput').value = `${location.origin}${location.pathname}?ref=${token}`;
+  layers.open('referralCenter');
+  window.loadReferralStats?.(email);
+};
+window.closeReferralCenter = () => layers.close('referralCenter');
+
+window.copyReferralLink = async () => {
+  vibrate();
+  try {
+    await navigator.clipboard.writeText($('#referralLinkInput').value);
+    showToast('Link copied');
+  } catch {
+    showToast('Copy is not available on this device', 'error');
+  }
 };
 
-/* Product Cards */
-const priceInfo=p=>{const pr=Number(p.price)||0,m=Number(p.mrp)||pr;return{pr,m,off:m>pr?Math.round((m-pr)/m*100):0}};
-const isWished=id=>safeJson('aavira_wishlist',[]).map(String).includes(String(id));
-
-const colorDots=p=>{
-  const c=p.colors;if(!c.length)return'';
-  return `<span class="dots" role="img" aria-label="${c.length} ${c.length>1?'colours':'colour'} available">${c.slice(0,3).map(x=>`<i style="background:${colorHex(x)}"></i>`).join('')}${c.length>3?`<b>+${c.length-3}</b>`:''}</span>`;
+window.shareReferralLink = async () => {
+  const link = $('#referralLinkInput').value;
+  const text = 'Discover Aavira! Use my link to sign up and get flat ₹500 off your first order.';
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: 'Aavira Fashion', text, url: link });
+      return;
+    } catch (error) {
+      if (error.name === 'AbortError') return;
+    }
+  }
+  open(`https://wa.me/?text=${encodeURIComponent(`${text}\n\n${link}`)}`, '_blank', 'noopener');
 };
-const ratingRow=r=>`<span class="rating ${r>=4?'':r>=3?'mid':r>0?'bad':'none'}" role="img" aria-label="Rating ${r>0?r.toFixed(1):'not rated yet'}"><i data-lucide="star"></i>${r>0?r.toFixed(1):'0.0'}</span>`;
-const lowStock=p=>{const s=Number(p.stock);return(Number.isFinite(s)&&s>0&&s<=4)?`<span class="low">Only ${s} left</span>`:''};
 
-const cardHtml=(p,cls)=>{
-  const {pr,m,off}=priceInfo(p),id=escapeHtml(p.id),name=escapeHtml(p.name),featured=cls==='pfeat';
-  const href=`product.html?id=${encodeURIComponent(p.id)}`,r=Math.max(0,Math.min(5,Number(p.rating)||0));
-  return `<article class="pcard ${cls}">
+window.subscribeNewsletter = async () => {
+  const input = $('#newsletterEmail');
+  const email = input.value.trim().toLowerCase();
+  if (!EMAIL_PATTERN.test(email)) {
+    showToast('Enter a valid email address', 'error');
+    input.focus();
+    return;
+  }
+  const button = $('#btnNewsletter');
+  button.innerHTML = '<span class="spinner"></span>';
+  button.disabled = true;
+
+  let result;
+  try {
+    result = typeof window.subscribeNewsletterApi === 'function'
+      ? await window.subscribeNewsletterApi(email)
+      : { ok: false, message: 'Subscribe service is not loaded. Please refresh the page.' };
+  } catch (error) {
+    console.error('Newsletter error:', error);
+    result = { ok: false, message: 'Could not reach the server. Please try again.' };
+  }
+
+  if (result?.ok) {
+    showToast(result.message && result.message !== 'Subscribed' ? result.message : 'Thanks for joining');
+    input.value = '';
+  } else {
+    showToast(result?.message || 'Could not subscribe. Please try again.', 'error');
+  }
+  button.textContent = 'Join';
+  button.disabled = false;
+};
+
+const priceInfo = product => {
+  const price = Number(product.price) || 0;
+  const mrp = Number(product.mrp) || price;
+  return { price, mrp, off: mrp > price ? Math.round((mrp - price) / mrp * 100) : 0 };
+};
+
+const isWished = id => store.json('aavira_wishlist', []).map(String).includes(String(id));
+
+const colorDots = product => {
+  const colors = product.colors;
+  if (!colors.length) return '';
+  const swatches = colors.slice(0, 3).map(c => `<i style="background:${colorHex(c)}"></i>`).join('');
+  const extra = colors.length > 3 ? `<b>+${colors.length - 3}</b>` : '';
+  return `<span class="dots" role="img" aria-label="${colors.length} ${colors.length > 1 ? 'colours' : 'colour'} available">${swatches}${extra}</span>`;
+};
+
+const ratingBadge = value => {
+  if (!window.ratingsReady) return '<span class="rating rating-skel" aria-hidden="true"></span>';
+  const tone = value >= 4 ? '' : value >= 3 ? 'mid' : value > 0 ? 'bad' : 'none';
+  return `<span class="rating ${tone}" role="img" aria-label="Rating ${value > 0 ? value.toFixed(1) : 'not rated yet'}"><i data-lucide="star"></i>${value > 0 ? value.toFixed(1) : '0.0'}</span>`;
+};
+
+const lowStockBadge = product => {
+  const stock = Number(product.stock);
+  return Number.isFinite(stock) && stock > 0 && stock <= 4 ? `<span class="low">Only ${stock} left</span>` : '';
+};
+
+const cardHtml = (product, variant) => {
+  const { price, mrp, off } = priceInfo(product);
+  const id = escapeHtml(product.id);
+  const name = escapeHtml(product.name);
+  const href = `product.html?id=${encodeURIComponent(product.id)}`;
+  const rating = clamp(Number(product.rating) || 0, 0, 10);
+  const wished = isWished(product.id);
+  const tags = off || product.bestseller
+    ? `<span class="tags">${off ? `<span class="tag-off">${off}% off</span>` : ''}${product.bestseller ? '<span class="tag-best">Bestseller</span>' : ''}</span>`
+    : '';
+
+  return `<article class="pcard ${variant}">
     <a class="pcard-link" href="${href}" data-product="${id}" tabindex="-1" aria-hidden="true">
-      <span class="pcard-media">
-        <img src="${escapeHtml(safeImageUrl(p.img))}" alt="" loading="lazy" onerror="imgFallback(this)">
-        ${(off||p.bestseller)?`<span class="tags">${off?`<span class="tag-off">${off}% off</span>`:''}${p.bestseller?'<span class="tag-best">Bestseller</span>':''}</span>`:''}
-      </span>
+      <span class="pcard-media"><img src="${escapeHtml(safeImageUrl(product.img))}" alt="" loading="lazy" onerror="imgFallback(this)">${tags}</span>
     </a>
     <div class="pcard-foot">
       <a class="pcard-text" href="${href}" data-product="${id}">
         <span class="pcard-name">${name}</span>
-        <span class="pcard-price"><span class="price">${fmt(pr)}</span>${m>pr?`<span class="mrp">${fmt(m)}</span>`:''}</span>
+        <span class="pcard-price"><span class="price">${formatPrice(price)}</span>${mrp > price ? `<span class="mrp">${formatPrice(mrp)}</span>` : ''}</span>
       </a>
       <div class="pcard-row">
-        <a class="pcard-metalink" href="${href}" data-product="${id}">${ratingRow(r)}${colorDots(p)}</a>
+        <a class="pcard-metalink" href="${href}" data-product="${id}">${ratingBadge(rating)}${colorDots(product)}</a>
         <a class="go" href="${href}&buy=1" data-product="${id}" aria-label="Buy ${name}"><i data-lucide="arrow-up-right"></i></a>
       </div>
-      ${lowStock(p)}
+      ${lowStockBadge(product)}
     </div>
-    <button type="button" class="heart ${featured?'heart-lg':''} ${isWished(p.id)?'is-on':''}" data-heart="${id}" aria-pressed="${isWished(p.id)}" aria-label="Save ${name} to wishlist"><i data-lucide="heart"></i></button>
+    <button type="button" class="heart ${wished ? 'is-on' : ''}" data-heart="${id}" aria-pressed="${wished}" aria-label="Save ${name} to wishlist"><i data-lucide="heart"></i></button>
+    <button type="button" class="qv" data-qv="${id}" aria-label="Quick view ${name}"><i data-lucide="eye"></i></button>
   </article>`;
 };
-window.generateProductCard=(p,grid)=>cardHtml(p,grid?'pcard-grid':'pcard-rail');
-window.generateFeaturedCard=p=>cardHtml(p,'pfeat');
 
-document.addEventListener('click',e=>{
-  const h=e.target.closest('[data-heart]');
-  if(h){
-    vibrate(40);
-    const id=String(h.dataset.heart);let w=safeJson('aavira_wishlist',[]).map(String);
-    const on=!h.classList.contains('is-on');
-    h.classList.toggle('is-on',on);h.setAttribute('aria-pressed',on);
-    w=on?(w.includes(id)?w:[...w,id]):w.filter(x=>x!==id);
-    saveJson('aavira_wishlist',w);updateWishCount();
-    showToast(on?'Added to wishlist':'Removed from wishlist');
-    document.querySelectorAll(`[data-heart="${CSS.escape(id)}"]`).forEach(b=>{b.classList.toggle('is-on',on);b.setAttribute('aria-pressed',on)});
-    return;
-  }
-  const a=e.target.closest('a[data-product]');
-  if(a){rememberRecent(a.dataset.product);(a.closest('.pcard')||a).classList.add('is-loading')}
-});
+window.generateProductCard = (product, grid) => cardHtml(product, grid ? 'pcard-grid' : 'pcard-rail');
+window.generateFeaturedCard = product => cardHtml(product, 'pfeat');
 
-/* Data Loading */
-window.loadSkeletons=()=>{
-  $('#category-container').innerHTML=Array(5).fill('<div class="cat"><div class="cat-ring skel" style="border-color:transparent"></div><div class="skel" style="height:10px;width:52px;border-radius:5px"></div></div>').join('');
-  const card='<div class="pcard %C%"><div class="skel" style="aspect-ratio:1/1"></div><div style="padding:12px 4px 0"><div class="skel" style="height:12px;width:75%;border-radius:6px;margin-bottom:10px"></div><div class="skel" style="height:12px;width:40%;border-radius:6px"></div></div></div>';
-  $('#trending-container').innerHTML=Array(3).fill(card.replace('%C%','pcard-rail')).join('');
-  $('#exclusive-container').innerHTML=Array(2).fill(card.replace('%C%','pfeat')).join('');
-  $('#new-arrivals-container').innerHTML=Array(4).fill(card.replace('%C%','pcard-grid')).join('');
+const toggleWishlist = button => {
+  vibrate(40);
+  const id = String(button.dataset.heart);
+  const active = !button.classList.contains('is-on');
+  const list = store.json('aavira_wishlist', []).map(String);
+  store.save('aavira_wishlist', active ? [...new Set([...list, id])] : list.filter(item => item !== id));
+  $$(`[data-heart="${CSS.escape(id)}"]`).forEach(el => {
+    el.classList.toggle('is-on', active);
+    el.setAttribute('aria-pressed', active);
+  });
+  updateWishCount();
+  showToast(active ? 'Added to wishlist' : 'Removed from wishlist');
 };
 
-window.fetchBanners=async()=>{
-  const c=$('#bannerCarousel'),dots=$('#banner-dots');
-  try{
-    const d=typeof window.getBannersData==='function'?await window.getBannersData():[];
-    if(!Array.isArray(d)||!d.length)throw new Error('No banners');
-    const n=d.length,loop=n>1;
-    const slide=(b,clone)=>{
-      const img=`<img src="${escapeHtml(safeImageUrl(b.imageUrl||b.image||b.url))}" alt="${clone?'':'Featured collection'}" onerror="imgFallback(this)">`;
-      const link=b.link?safeUrl(b.link):'';
-      const extra=clone?' aria-hidden="true"':'';
-      return link?`<a class="hero-slide" href="${escapeHtml(link)}"${extra}${clone?' tabindex="-1"':''}>${img}</a>`:`<div class="hero-slide"${extra}>${img}</div>`;
-    };
-    /* [clone of last] + real slides + [clone of first] = endless loop, no rewind */
-    c.innerHTML=(loop?[slide(d[n-1],true)]:[]).concat(d.map(b=>slide(b,false)),loop?[slide(d[0],true)]:[]).join('');
-    dots.innerHTML=d.map((_,i)=>`<span class="hero-dot ${i===0?'is-active':''}" data-i="${i}"></span>`).join('');
+document.addEventListener('click', event => {
+  const heart = event.target.closest('[data-heart]');
+  if (heart) return toggleWishlist(heart);
 
-    const W=()=>c.clientWidth||1;
-    const jump=i=>{c.style.scrollSnapType='none';c.scrollLeft=i*W();requestAnimationFrame(()=>{c.style.scrollSnapType=''})};
-    const goTo=i=>c.scrollTo({left:i*W(),behavior:'smooth'});
-    const cur=()=>Math.round(c.scrollLeft/W());
-    if(loop)jump(1);
+  const link = event.target.closest('a[data-product]');
+  if (link) {
+    rememberRecent(link.dataset.product);
+    (link.closest('.pcard') || link).classList.add('is-loading');
+    return;
+  }
 
-    let touching=false,paused=false,t;
-    const settle=()=>{
-      if(!loop||touching)return;
-      const ix=cur();
-      if(ix<=0)jump(n);else if(ix>=n+1)jump(1);
-    };
-    c.onscroll=()=>{
-      const ix=cur(),real=loop?(((ix-1)%n)+n)%n:0;
-      dots.querySelectorAll('.hero-dot').forEach((dt,i)=>dt.classList.toggle('is-active',i===real));
-      clearTimeout(t);t=setTimeout(settle,90);
-    };
-    dots.onclick=ev=>{
-      const dt=ev.target.closest('.hero-dot');if(!dt)return;
-      goTo(loop?Number(dt.dataset.i)+1:0);
+  const quick = event.target.closest('.qv');
+  if (quick) return openQuickView(quick.dataset.qv);
+
+  const chip = event.target.closest('.chip');
+  if (chip) {
+    state.sort = chip.dataset.sort;
+    $$('.chip').forEach(el => el.setAttribute('aria-pressed', el === chip));
+    renderNewArrivals();
+    refreshIcons();
+    return;
+  }
+
+  const star = event.target.closest('.star-btn');
+  if (star) setRating(Number(star.dataset.v));
+});
+
+const sorters = {
+  latest: () => 0,
+  'price-asc': (a, b) => priceInfo(a).price - priceInfo(b).price,
+  'price-desc': (a, b) => priceInfo(b).price - priceInfo(a).price,
+  rating: (a, b) => (Number(b.rating) || 0) - (Number(a.rating) || 0),
+  discount: (a, b) => priceInfo(b).off - priceInfo(a).off
+};
+
+const renderNewArrivals = () => {
+  const items = state.products.slice(6).sort(sorters[state.sort]);
+  $('#new-arrivals-container').innerHTML = items.length
+    ? items.map(p => generateProductCard(p, true)).join('')
+    : '<p class="empty" style="grid-column:1/-1">More new arrivals are coming soon.</p>';
+};
+
+window.renderProducts = () => {
+  const list = state.products;
+  if (!list.length) return;
+  const exclusive = list.slice(4, 6);
+  $('#trending-container').innerHTML = list.slice(0, 4).map(p => generateProductCard(p, false)).join('');
+  $('#exclusive-section').hidden = !exclusive.length;
+  $('#exclusive-container').innerHTML = exclusive.map(generateFeaturedCard).join('');
+  renderNewArrivals();
+  refreshIcons();
+};
+
+window.loadSkeletons = () => {
+  const card = variant => `<div class="pcard ${variant}"><div class="skel" style="aspect-ratio:1/1"></div><div style="padding:12px 12px 0"><div class="skel" style="height:12px;width:75%;border-radius:6px;margin-bottom:10px"></div><div class="skel" style="height:12px;width:40%;border-radius:6px"></div></div></div>`;
+  const repeat = (html, times) => Array(times).fill(html).join('');
+  $('#category-container').innerHTML = repeat('<div class="cat"><div class="cat-ring skel" style="border-color:transparent"></div><div class="skel" style="height:10px;width:52px;border-radius:5px"></div></div>', 5);
+  $('#trending-container').innerHTML = repeat(card('pcard-rail'), 3);
+  $('#exclusive-container').innerHTML = repeat(card('pfeat'), 2);
+  $('#new-arrivals-container').innerHTML = repeat(card('pcard-grid'), 4);
+};
+
+window.fetchBanners = async () => {
+  const track = $('#bannerCarousel');
+  const dots = $('#banner-dots');
+  try {
+    const banners = typeof window.getBannersData === 'function' ? await withCache('banners', window.getBannersData) : [];
+    if (!Array.isArray(banners) || !banners.length) throw new Error('No banners');
+
+    const count = banners.length;
+    const loop = count > 1;
+    const slide = (banner, clone) => {
+      const img = `<img src="${escapeHtml(safeImageUrl(banner.imageUrl || banner.image || banner.url))}" alt="${clone ? '' : 'Featured collection'}" onerror="imgFallback(this)">`;
+      const link = banner.link ? safeUrl(banner.link) : '';
+      const hidden = clone ? ' aria-hidden="true"' : '';
+      return link
+        ? `<a class="hero-slide" href="${escapeHtml(link)}"${hidden}${clone ? ' tabindex="-1"' : ''}>${img}</a>`
+        : `<div class="hero-slide"${hidden}>${img}</div>`;
     };
 
-    const hero=c.parentElement;
-    hero.ontouchstart=()=>{touching=true;paused=true};
-    hero.ontouchend=()=>{touching=false;setTimeout(settle,160);setTimeout(()=>{paused=false},4000)};
-    hero.ontouchcancel=hero.ontouchend;
-    hero.onmouseenter=()=>{paused=true};
-    hero.onmouseleave=()=>{paused=false};
+    track.innerHTML = [loop ? slide(banners[count - 1], true) : '', ...banners.map(b => slide(b, false)), loop ? slide(banners[0], true) : ''].join('');
+    dots.innerHTML = banners.map((_, i) => `<span class="hero-dot ${i === 0 ? 'is-active' : ''}" data-i="${i}"></span>`).join('');
 
-    if(!window._heroResizeBound){
-      window._heroResizeBound=true;
-      window.addEventListener('resize',()=>{
-        const cc=$('#bannerCarousel');if(!cc||!cc.children.length)return;
-        const ix=Math.round(cc.scrollLeft/(cc.clientWidth||1));
-        cc.style.scrollSnapType='none';cc.scrollLeft=ix*cc.clientWidth;
-        requestAnimationFrame(()=>{cc.style.scrollSnapType=''});
+    const width = () => track.clientWidth || 1;
+    const current = () => Math.round(track.scrollLeft / width());
+    const jump = index => {
+      track.style.scrollSnapType = 'none';
+      track.scrollLeft = index * width();
+      requestAnimationFrame(() => { track.style.scrollSnapType = ''; });
+    };
+    const slideTo = index => track.scrollTo({ left: index * width(), behavior: 'smooth' });
+
+    let touching = false;
+    let paused = false;
+    let settleTimer;
+
+    const settle = () => {
+      if (!loop || touching) return;
+      const index = current();
+      if (index <= 0) jump(count);
+      else if (index >= count + 1) jump(1);
+    };
+
+    if (loop) jump(1);
+
+    track.onscroll = () => {
+      const index = current();
+      const real = loop ? ((index - 1) % count + count) % count : 0;
+      $$('.hero-dot', dots).forEach((dot, i) => dot.classList.toggle('is-active', i === real));
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(settle, 90);
+    };
+
+    dots.onclick = event => {
+      const dot = event.target.closest('.hero-dot');
+      if (dot) slideTo(loop ? Number(dot.dataset.i) + 1 : 0);
+    };
+
+    const hero = track.parentElement;
+    hero.ontouchstart = () => { touching = true; paused = true; };
+    hero.ontouchend = hero.ontouchcancel = () => {
+      touching = false;
+      setTimeout(settle, 160);
+      setTimeout(() => { paused = false; }, 4000);
+    };
+    hero.onmouseenter = () => { paused = true; };
+    hero.onmouseleave = () => { paused = false; };
+
+    if (!window.heroResizeBound) {
+      window.heroResizeBound = true;
+      addEventListener('resize', () => {
+        const el = $('#bannerCarousel');
+        if (!el?.children.length) return;
+        const index = Math.round(el.scrollLeft / (el.clientWidth || 1));
+        el.style.scrollSnapType = 'none';
+        el.scrollLeft = index * el.clientWidth;
+        requestAnimationFrame(() => { el.style.scrollSnapType = ''; });
       });
     }
 
     clearInterval(window.bannerInterval);
-    if(loop&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
-      window.bannerInterval=setInterval(()=>{
-        if(paused||touching||document.hidden)return;
-        let ix=cur();
-        if(ix>=n+1){jump(1);ix=1}   /* safety: never stay on the clone */
-        goTo(ix+1);                  /* always moves forward */
-      },4500);
+    if (loop && !reducedMotion()) {
+      window.bannerInterval = setInterval(() => {
+        if (paused || touching || document.hidden) return;
+        let index = current();
+        if (index >= count + 1) { jump(1); index = 1; }
+        slideTo(index + 1);
+      }, BANNER_DELAY);
     }
-  }catch{
-    dots.innerHTML='';
-    c.innerHTML='<div class="hero-error"><p>New collections are arriving soon.</p><button type="button" onclick="fetchBanners()">Try again</button></div>';
+  } catch {
+    dots.innerHTML = '';
+    track.innerHTML = '<div class="hero-error"><p>New collections are arriving soon.</p><button type="button" onclick="fetchBanners()">Try again</button></div>';
   }
 };
 
-window.fetchCategories=async()=>{
-  const c=$('#category-container');
-  try{
-    const a=typeof window.getCategoriesData==='function'?await window.getCategoriesData():[];
-    if(!Array.isArray(a)||!a.length)throw new Error('No categories');
-    c.innerHTML=a.map(d=>{
-      const name=escapeHtml(d.name),key=encodeURIComponent(d.id||d.name||'');
-      return `<a class="cat" href="categories${key?`?category=${key}`:''}" aria-label="Browse ${name}">
-        <span class="cat-ring"><img src="${escapeHtml(safeImageUrl(d.image||d.imageUrl||d.url))}" alt="" loading="lazy" onerror="imgFallback(this)"></span>
+window.fetchCategories = async () => {
+  const container = $('#category-container');
+  try {
+    const categories = typeof window.getCategoriesData === 'function' ? await withCache('categories', window.getCategoriesData) : [];
+    if (!Array.isArray(categories) || !categories.length) throw new Error('No categories');
+    container.innerHTML = categories.map(category => {
+      const name = escapeHtml(category.name);
+      const key = encodeURIComponent(category.id || category.name || '');
+      return `<a class="cat" href="categories${key ? `?category=${key}` : ''}" aria-label="Browse ${name}">
+        <span class="cat-ring"><img src="${escapeHtml(safeImageUrl(category.image || category.imageUrl || category.url))}" alt="" loading="lazy" onerror="imgFallback(this)"></span>
         <span class="cat-name">${name}</span></a>`;
     }).join('');
-  }catch{
-    c.innerHTML='<div class="empty" style="width:100%">Collections are unavailable. <button type="button" class="sec-link" onclick="fetchCategories()">Try again</button></div>';
+  } catch {
+    container.innerHTML = '<div class="empty">Collections are unavailable. <button type="button" class="sec-link" onclick="fetchCategories()">Try again</button></div>';
   }
 };
 
-window.renderProducts=()=>{
-  const L=allProductsList;if(!L.length)return;
-  $('#trending-container').innerHTML=L.slice(0,4).map(p=>generateProductCard(p,false)).join('');
-  const ex=L.slice(4,6);
-  $('#exclusive-section').hidden=!ex.length;
-  $('#exclusive-container').innerHTML=ex.map(generateFeaturedCard).join('');
-  $('#new-arrivals-container').innerHTML=L.length>6?L.slice(6).map(p=>generateProductCard(p,true)).join(''):'<p class="empty" style="grid-column:1/-1">More new arrivals are coming soon.</p>';
-  icons();
-};
+window.ratingsReady = false;
 
-window.applyReviewStats=()=>{
-  const agg={};
-  safeJson('aavira_experiences',[]).forEach(e=>{
-    const pid=e.productId??e.product_id??e.pid;if(pid==null)return;
-    const r=Number(e.rating);if(!(r>0))return;
-    const a=agg[String(pid)]=agg[String(pid)]||{s:0,n:0};
-    a.s+=r;a.n++;
-  });
-  allProductsList.forEach(p=>{
-    const a=agg[String(p.id)];
-    if(a&&a.n){p.rating=Math.round(a.s/a.n*10)/10;p.reviewCount=a.n}
-  });
-  renderProducts();renderRecent();
-};
-
-window.renderRecent=()=>{
-  const ids=safeJson('aavira_recent',[]).map(String),sec=$('#recent-section');
-  const items=ids.map(id=>allProductsList.find(p=>String(p.id)===id)).filter(Boolean);
-  sec.hidden=!items.length;
-  $('#recent-container').innerHTML=items.map(p=>generateProductCard(p,false)).join('');
-  icons();
-};
-window.clearRecent=()=>{store.del('aavira_recent');renderRecent()};
-
-window.fetchProducts=async()=>{
-  const trending=$('#trending-container'),excl=$('#exclusive-container'),arr=$('#new-arrivals-container');
-  try{
-    const d=typeof window.getVercelData==='function'?await window.getVercelData():[];
-    if(!Array.isArray(d)||!d.length)throw new Error('No products');
-    window.allProductsList=d.map(x=>({
-      id:x.id,name:x.name,price:x.price,mrp:x.mrp,
-      colors:Array.isArray(x.colors)?x.colors:[],
-      img:x.imageMain||x.image||x.imageUrl||'',
-      rating:x.rating??x.averageRating??x.avgRating??x.ratingAvg??x.average_rating??x.avg_rating??x.stars,reviewCount:x.reviewCount??x.reviews??x.numReviews,
-      stock:x.stock,bestseller:!!x.bestseller
+window.loadDbReviews = async () => {
+  if (typeof window.getReviewsFromDatabase === 'function') {
+    await Promise.all(state.products.map(async product => {
+      try {
+        state.dbReviews[String(product.id)] = (await window.getReviewsFromDatabase(product.id)) || [];
+      } catch {
+        state.dbReviews[String(product.id)] ||= [];
+      }
     }));
+  }
+  window.ratingsReady = true;
+  applyReviewStats();
+};
+
+window.applyReviewStats = () => {
+  const totals = {};
+  const seen = new Set();
+
+  const collect = (productId, review) => {
+    const pid = String(productId);
+    const key = [pid, review.email || review.name || '', review.date || '', review.text || review.body || ''].join('|');
+    if (seen.has(key)) return;
+    seen.add(key);
+    const value = Math.min(5, Number(review.rating || review.score));
+    if (!(value > 0)) return;
+    const entry = totals[pid] ||= { sum: 0, count: 0 };
+    entry.sum += value;
+    entry.count++;
+  };
+
+  store.json('aavira_experiences', []).forEach(exp => {
+    const pid = exp.productId ?? exp.product_id ?? exp.pid;
+    if (pid != null) collect(pid, exp);
+  });
+  Object.entries(state.dbReviews).forEach(([pid, reviews]) => (reviews || []).forEach(r => collect(pid, r)));
+
+  state.products.forEach(product => {
+    if (product.baseRating === undefined) {
+      product.baseRating = Math.min(10, Number(product.rating) || 0);
+      product.baseCount = Number(product.reviewCount) || 0;
+    }
+    const entry = totals[String(product.id)];
+    if (!entry?.count) return;
+    const weight = product.baseCount > 0 ? product.baseCount : BASE_WEIGHT;
+    const average = product.baseRating > 0
+      ? (product.baseRating * weight + entry.sum) / (weight + entry.count)
+      : entry.sum / entry.count;
+    product.rating = Math.min(10, Math.round(average * 10) / 10);
+    product.reviewCount = (product.baseRating > 0 ? weight : 0) + entry.count;
+  });
+
+  renderProducts();
+  renderRecent();
+};
+
+window.renderRecent = () => {
+  const ids = store.json('aavira_recent', []).map(String);
+  const items = ids.map(id => state.products.find(p => String(p.id) === id)).filter(Boolean);
+  $('#recent-section').hidden = !items.length;
+  $('#recent-container').innerHTML = items.map(p => generateProductCard(p, false)).join('');
+  refreshIcons();
+};
+
+window.clearRecent = () => {
+  store.del('aavira_recent');
+  renderRecent();
+};
+
+const normalizeProduct = raw => ({
+  id: raw.id,
+  name: raw.name,
+  price: raw.price,
+  mrp: raw.mrp,
+  colors: Array.isArray(raw.colors) ? raw.colors : [],
+  img: raw.imageMain || raw.image || raw.imageUrl || '',
+  rating: raw.rating ?? raw.averageRating ?? raw.avgRating ?? raw.ratingAvg ?? raw.average_rating ?? raw.avg_rating ?? raw.stars,
+  reviewCount: raw.reviewCount ?? raw.reviews ?? raw.numReviews,
+  stock: raw.stock,
+  bestseller: !!raw.bestseller
+});
+
+window.fetchProducts = async () => {
+  try {
+    const data = typeof window.getVercelData === 'function' ? await withCache('products', window.getVercelData) : [];
+    if (!Array.isArray(data) || !data.length) throw new Error('No products');
+    state.products = data.map(normalizeProduct);
     applyReviewStats();
-  }catch{
-    const retry='<div class="empty" style="width:100%;grid-column:1/-1">Products are unavailable. <button type="button" class="sec-link" onclick="fetchProducts()">Try again</button></div>';
-    trending.innerHTML=retry;excl.innerHTML=retry;arr.innerHTML=retry;
+    loadDbReviews();
+    setTimeout(() => {
+      if (!window.ratingsReady) {
+        window.ratingsReady = true;
+        applyReviewStats();
+      }
+    }, 8000);
+  } catch {
+    const retry = '<div class="empty" style="grid-column:1/-1">Products are unavailable. <button type="button" class="sec-link" onclick="fetchProducts()">Try again</button></div>';
+    ['#trending-container', '#exclusive-container', '#new-arrivals-container'].forEach(sel => { $(sel).innerHTML = retry; });
   }
 };
 
-/* Reviews */
-let expFile=null,expRating=5;
-window.photoExps=[];window.lbIndex=0;
-
-window.renderExperiences=()=>{
-  const x=safeJson('aavira_experiences',[]),c=$('#experience-container');
-  const avgEl=$('#reviewAvg');
-  if(avgEl)avgEl.innerHTML=x.length?`<span class="rating ${(()=>{const a=x.reduce((t,e)=>t+(Number(e.rating)||5),0)/x.length;return a>=4?'':a>=3?'mid':'bad'})()}">${(x.reduce((t,e)=>t+(Number(e.rating)||5),0)/x.length).toFixed(1)}<i data-lucide="star"></i></span>`:'';
-  if(!x.length){
-    c.innerHTML='<div class="empty"><strong>No reviews yet</strong>Be the first to share your style.</div>';
+window.renderExperiences = () => {
+  const reviews = store.json('aavira_experiences', []);
+  const container = $('#experience-container');
+  if (!reviews.length) {
+    clearInterval(window.reviewTimer);
+    container.innerHTML = '<div class="empty"><strong>No reviews yet</strong>Be the first to share your style.</div>';
     return;
   }
-  photoExps=x.filter(e=>e.photo&&String(e.photo).trim());
-  c.innerHTML=x.map(e=>{
-    const pi=photoExps.indexOf(e),rating=Math.max(1,Math.min(5,Number(e.rating)||5));
-    const name=escapeHtml(e.name||'Customer'),text=escapeHtml(e.text||'');
-    return `<article class="review">
-      ${pi>-1?`<button type="button" class="review-photo" onclick="openLightbox(${pi})" aria-label="Open photo from ${name}"><img src="${escapeHtml(safeUrl(e.photo))}" alt="Photo from ${name}" loading="lazy" onerror="this.closest('button').style.display='none'"></button>`:''}
+
+  state.photoReviews = reviews.filter(r => r.photo && String(r.photo).trim());
+  container.innerHTML = reviews.map(review => {
+    const photoIndex = state.photoReviews.indexOf(review);
+    const rating = clamp(Number(review.rating) || 5, 1, 5);
+    const rawName = String(review.name || 'Customer');
+    const name = escapeHtml(rawName);
+    const text = escapeHtml(review.text || '');
+    const date = review.date && !isNaN(new Date(review.date))
+      ? new Date(review.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+      : '';
+    const photo = photoIndex > -1
+      ? `<button type="button" class="review-photo" onclick="openLightbox(${photoIndex})" aria-label="Open photo from ${name}"><img src="${escapeHtml(safeUrl(review.photo))}" alt="Photo from ${name}" loading="lazy" onerror="this.closest('button').style.display='none'"></button>`
+      : '';
+
+    return `<article class="review">${photo}
       <div class="review-body">
+        <span class="review-quote" aria-hidden="true">&ldquo;</span>
+        <div class="review-head">
+          <div class="review-av" aria-hidden="true">${escapeHtml(rawName.charAt(0).toUpperCase())}</div>
+          <div class="review-meta">
+            <div class="review-name">${name}${review.verified ? '<i data-lucide="circle-check"></i>' : ''}</div>
+            ${date ? `<small>${date}</small>` : ''}
+          </div>
+        </div>
         <div class="stars" role="img" aria-label="${rating} out of 5 stars">${starText(rating)}</div>
-        <div class="review-name">${name}${e.verified?'<i data-lucide="circle-check"></i>':''}</div>
-        ${text?`<p class="review-text">${text}</p>`:''}
+        ${text ? `<p class="review-text">${text}</p>` : ''}
       </div></article>`;
   }).join('');
-  icons();
+
+  refreshIcons();
+  startReviewSlider();
 };
 
-window.fetchExperiences=async()=>{
-  try{
-    const d=typeof window.getVercelExperiences==='function'?await window.getVercelExperiences():[];
-    if(d&&d.length)saveJson('aavira_experiences',d);else store.del('aavira_experiences');
+window.startReviewSlider = () => {
+  clearInterval(window.reviewTimer);
+  const container = $('#experience-container');
+  const cards = $$('.review', container);
+  if (cards.length < 2) return;
+
+  let paused = false;
+  let busy = false;
+  let cancelled = false;
+
+  const pause = () => {
+    paused = true;
+    cancelled = true;
+    clearTimeout(window.reviewResume);
+  };
+  const resume = () => {
+    clearTimeout(window.reviewResume);
+    window.reviewResume = setTimeout(() => { paused = false; }, 4000);
+  };
+
+  container.ontouchstart = pause;
+  container.ontouchend = container.ontouchcancel = resume;
+  if (matchMedia('(hover:hover)').matches) {
+    container.onmouseenter = pause;
+    container.onmouseleave = resume;
+  }
+
+  const ease = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+  const animateTo = target => {
+    const from = container.scrollLeft;
+    const distance = target - from;
+    if (Math.abs(distance) < 1) return;
+    if (reducedMotion()) {
+      container.scrollLeft = target;
+      return;
+    }
+    busy = true;
+    cancelled = false;
+    container.style.scrollSnapType = 'none';
+    const start = performance.now();
+    const duration = 650;
+    const frame = now => {
+      if (cancelled) {
+        container.style.scrollSnapType = '';
+        busy = false;
+        return;
+      }
+      const progress = Math.min(1, (now - start) / duration);
+      container.scrollLeft = from + distance * ease(progress);
+      if (progress < 1) requestAnimationFrame(frame);
+      else {
+        container.style.scrollSnapType = '';
+        busy = false;
+      }
+    };
+    requestAnimationFrame(frame);
+  };
+
+  window.reviewTimer = setInterval(() => {
+    if (paused || busy || document.hidden) return;
+    const step = cards[0].offsetWidth + 14;
+    const max = container.scrollWidth - container.clientWidth;
+    animateTo(container.scrollLeft >= max - 4 ? 0 : Math.min(max, container.scrollLeft + step));
+  }, REVIEW_DELAY);
+};
+
+window.fetchExperiences = async () => {
+  try {
+    const data = typeof window.getVercelExperiences === 'function' ? await window.getVercelExperiences() : [];
+    if (data?.length) store.save('aavira_experiences', data);
+    else store.del('aavira_experiences');
     renderExperiences();
-  }catch{}
+  } catch {}
 };
 
-window.setRating=v=>{
-  expRating=v;
-  document.querySelectorAll('.star-btn').forEach((b,i)=>{b.textContent=i<v?'★':'☆';b.setAttribute('aria-pressed',i<v)});
+window.setRating = value => {
+  state.expRating = value;
+  $$('.star-btn').forEach((button, i) => {
+    button.textContent = i < value ? '★' : '☆';
+    button.setAttribute('aria-pressed', i < value);
+  });
   vibrate(20);
 };
-document.addEventListener('click',e=>{const s=e.target.closest('.star-btn');if(s)setRating(Number(s.dataset.v))});
 
-window.openExpModal=()=>{
-  if(!store.get('aavira_user_email')){showToast('Log in to write a review','error');setTimeout(()=>triggerDotAction('login'),1000);return}
-  $('#expText').value='';expFile=null;$('#expFile').value='';setRating(5);
-  const pv=$('#expPhotoPreview');pv.hidden=true;pv.removeAttribute('src');$('#expPhotoAddBox').hidden=false;
-  openLayer('expModal','#expText');
+window.openExpModal = () => {
+  if (!store.get('aavira_user_email')) {
+    showToast('Log in to write a review', 'error');
+    setTimeout(() => triggerDotAction('login'), 1000);
+    return;
+  }
+  $('#expText').value = '';
+  $('#expFile').value = '';
+  state.expFile = null;
+  setRating(5);
+  const preview = $('#expPhotoPreview');
+  preview.hidden = true;
+  preview.removeAttribute('src');
+  $('#expPhotoAddBox').hidden = false;
+  layers.open('expModal', '#expText');
 };
-window.closeExpModal=()=>closeLayer('expModal');
-window.handleExpPhoto=e=>{
-  const f=e.target.files[0];if(!f)return;
-  if(!f.type.startsWith('image/')||f.size>5*1024*1024){showToast('Choose an image under 5 MB','error');e.target.value='';return}
-  expFile=f;
-  const pv=$('#expPhotoPreview');
-  if(pv.dataset.url)URL.revokeObjectURL(pv.dataset.url);
-  pv.dataset.url=URL.createObjectURL(f);pv.src=pv.dataset.url;pv.hidden=false;$('#expPhotoAddBox').hidden=true;
+window.closeExpModal = () => layers.close('expModal');
+
+window.handleExpPhoto = event => {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (!file.type.startsWith('image/') || file.size > 5 * 1024 * 1024) {
+    showToast('Choose an image under 5 MB', 'error');
+    event.target.value = '';
+    return;
+  }
+  state.expFile = file;
+  const preview = $('#expPhotoPreview');
+  if (preview.dataset.url) URL.revokeObjectURL(preview.dataset.url);
+  preview.dataset.url = URL.createObjectURL(file);
+  preview.src = preview.dataset.url;
+  preview.hidden = false;
+  $('#expPhotoAddBox').hidden = true;
 };
-window.submitExperience=async()=>{
-  const t=$('#expText').value.trim();
-  if(!t&&!expFile){showToast('Add a review or a photo','error');return}
-  const b=$('#btnSubmitExp'),label=b.textContent;
-  b.innerHTML='<span class="spinner"></span> Posting';b.disabled=true;
-  try{
-    let photo='';
-    if(expFile){
-      if(typeof window.uploadExperiencePhoto!=='function')throw new Error('Photo upload is not available');
-      photo=await window.uploadExperiencePhoto(expFile);
-      if(!photo)throw new Error('Photo upload failed');
+
+window.submitExperience = async () => {
+  const text = $('#expText').value.trim();
+  if (!text && !state.expFile) return showToast('Add a review or a photo', 'error');
+
+  const button = $('#btnSubmitExp');
+  const label = button.textContent;
+  button.innerHTML = '<span class="spinner"></span> Posting';
+  button.disabled = true;
+
+  try {
+    let photo = '';
+    if (state.expFile) {
+      if (typeof window.uploadExperiencePhoto !== 'function') throw new Error('Photo upload is not available');
+      photo = await window.uploadExperiencePhoto(state.expFile);
+      if (!photo) throw new Error('Photo upload failed');
     }
-    const p={
-      name:store.get('aavira_display_name')||'Customer',email:store.get('aavira_user_email'),
-      text:t,photo:safeUrl(photo),rating:Math.max(1,Math.min(5,Number(expRating)||5)),date:new Date().toISOString()
+    const review = {
+      name: store.get('aavira_display_name') || 'Customer',
+      email: store.get('aavira_user_email'),
+      text,
+      photo: safeUrl(photo),
+      rating: clamp(Number(state.expRating) || 5, 1, 5),
+      date: new Date().toISOString()
     };
-    const saved=typeof window.sendToVercelExperience==='function'?await window.sendToVercelExperience(p):false;
-    if(!saved)throw new Error('Review was not saved');
-    const x=safeJson('aavira_experiences',[]);x.unshift(p);saveJson('aavira_experiences',x);
-    renderExperiences();showToast('Review submitted');closeExpModal();
-  }catch{showToast('Could not post your review. Please try again.','error')}
-  finally{b.textContent=label;b.disabled=false}
+    const saved = typeof window.sendToVercelExperience === 'function' ? await window.sendToVercelExperience(review) : false;
+    if (!saved) throw new Error('Review was not saved');
+    store.save('aavira_experiences', [review, ...store.json('aavira_experiences', [])]);
+    renderExperiences();
+    showToast('Review submitted');
+    closeExpModal();
+  } catch {
+    showToast('Could not post your review. Please try again.', 'error');
+  } finally {
+    button.textContent = label;
+    button.disabled = false;
+  }
 };
 
-window.openLightbox=i=>{if(!photoExps.length)return;lbIndex=i;updateLbUI();openLayer('imageLightbox')};
-window.closeLightbox=()=>closeLayer('imageLightbox');
-window.updateLbUI=()=>{
-  if(lbIndex<0)lbIndex=photoExps.length-1;
-  if(lbIndex>=photoExps.length)lbIndex=0;
-  const e=photoExps[lbIndex],rating=Math.max(1,Math.min(5,Number(e.rating)||5));
-  $('#lbImg').src=safeUrl(e.photo);
-  $('#lbName').innerHTML=`${escapeHtml(e.name||'Customer')}${e.verified?' <i data-lucide="circle-check" style="width:16px;height:16px;color:#22C55E"></i>':''}`;
-  $('#lbStars').textContent=starText(rating);
-  $('#lbText').textContent=e.text?`"${e.text}"`:'';
-  icons();
+window.openLightbox = index => {
+  if (!state.photoReviews.length) return;
+  state.lightboxIndex = index;
+  updateLbUI();
+  layers.open('imageLightbox');
 };
-window.lbNext=e=>{if(e)e.stopPropagation();lbIndex++;updateLbUI()};
-window.lbPrev=e=>{if(e)e.stopPropagation();lbIndex--;updateLbUI()};
+window.closeLightbox = () => layers.close('imageLightbox');
 
-/* Boot */
-window.initializeAppEngine=()=>{
-  updateProfileUI();loadSkeletons();updateCartCount();updateWishCount();renderExperiences();icons();
+window.updateLbUI = () => {
+  const total = state.photoReviews.length;
+  state.lightboxIndex = (state.lightboxIndex + total) % total;
+  const review = state.photoReviews[state.lightboxIndex];
+  $('#lbImg').src = safeUrl(review.photo);
+  $('#lbName').innerHTML = `${escapeHtml(review.name || 'Customer')}${review.verified ? ' <i data-lucide="circle-check" style="width:16px;height:16px;color:#22C55E"></i>' : ''}`;
+  $('#lbStars').textContent = starText(clamp(Number(review.rating) || 5, 1, 5));
+  $('#lbText').textContent = review.text ? `"${review.text}"` : '';
+  refreshIcons();
+};
 
-  let lx=0;
-  const lt=$('#lightboxTouchArea');
-  lt.addEventListener('touchstart',e=>lx=e.changedTouches[0].screenX,{passive:true});
-  lt.addEventListener('touchend',e=>{const d=lx-e.changedTouches[0].screenX;if(d>50)lbNext();else if(d<-50)lbPrev()},{passive:true});
+window.lbNext = event => { event?.stopPropagation(); state.lightboxIndex++; updateLbUI(); };
+window.lbPrev = event => { event?.stopPropagation(); state.lightboxIndex--; updateLbUI(); };
 
-  const sb=$('#sidebar');let sx=0;
-  sb.addEventListener('touchstart',e=>sx=e.changedTouches[0].screenX,{passive:true});
-  sb.addEventListener('touchend',e=>{if(sx-e.changedTouches[0].screenX>60)closeSidebar()},{passive:true});
+window.openQuickView = id => {
+  const product = state.products.find(p => String(p.id) === String(id));
+  if (!product) return;
+  const { price, mrp, off } = priceInfo(product);
+  const name = escapeHtml(product.name);
+  const colors = product.colors.map(c => `<span><i style="background:${colorHex(c)}"></i>${escapeHtml(c)}</span>`).join('');
+  $('#quickViewBody').innerHTML = `
+    <div class="sheet-head">
+      <div><h2>${name}</h2></div>
+      <button type="button" class="icon-btn" onclick="closeQuickView()" aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+    <img class="qv-img" src="${escapeHtml(safeImageUrl(product.img))}" alt="${name}" onerror="imgFallback(this)">
+    <div class="qv-info">
+      <div class="qv-meta">
+        <span class="price">${formatPrice(price)}</span>
+        ${mrp > price ? `<span class="mrp">${formatPrice(mrp)}</span><span class="tag-off">${off}% off</span>` : ''}
+        ${ratingBadge(clamp(Number(product.rating) || 0, 0, 10))}
+      </div>
+      ${colors ? `<div class="qv-colors">${colors}</div>` : ''}
+      ${lowStockBadge(product)}
+    </div>
+    <div class="qv-actions">
+      <a class="btn-pink" href="product.html?id=${encodeURIComponent(product.id)}">View full details</a>
+      <button type="button" class="btn-outline" onclick="shareProduct('${escapeHtml(String(product.id))}')" aria-label="Share"><i data-lucide="share-2"></i></button>
+    </div>`;
+  refreshIcons();
+  layers.open('quickView');
+};
+window.closeQuickView = () => layers.close('quickView');
 
-  setTimeout(async()=>{
-    const nm=store.get('aavira_display_name');
-    let dbP=Promise.resolve();
-    if(nm&&nm.toLowerCase()!=='guest user'&&typeof window.getWishlistFromDB==='function'){
-      dbP=window.getWishlistFromDB(nm).then(w=>{if(w&&w.length)saveJson('aavira_wishlist',w.map(String))}).catch(()=>{});
+window.shareProduct = async id => {
+  const product = state.products.find(p => String(p.id) === String(id));
+  const url = new URL(`product.html?id=${encodeURIComponent(id)}`, location.href).href;
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: product?.name || 'Aavira Fashion', url });
+      return;
+    } catch (error) {
+      if (error.name === 'AbortError') return;
     }
-    await dbP;
-    await Promise.all([
-      typeof window.fetchBanners==='function'?fetchBanners():0,
-      fetchCategories(),fetchProducts(),fetchExperiences()
-    ]);
-    applyReviewStats();updateWishCount();icons();
-  },50);
+  }
+  try {
+    await navigator.clipboard.writeText(url);
+    showToast('Link copied');
+  } catch {
+    showToast('Copy is not available on this device', 'error');
+  }
 };
 
-document.addEventListener('DOMContentLoaded',initializeAppEngine);
-</script>
-<script>
-/* Hard-remove the old "PREMIUM ETHNIC WEAR..." strip even if an old user_data.js is cached */
-(function(){
-  var kill=function(){document.querySelectorAll('.aavira-premium-text').forEach(function(n){n.remove()})};
-  kill();
-  new MutationObserver(kill).observe(document.documentElement,{childList:true,subtree:true});
-})();
+const bindEnterKey = () => {
+  [['#newsletterEmail', '#btnNewsletter'], ['#promoInput', '#btnApplyPromo']].forEach(([input, button]) => {
+    $(input).addEventListener('keydown', event => {
+      if (event.key === 'Enter') $(button).click();
+    });
+  });
+};
+
+const bindSwipe = (el, onLeft, onRight, threshold) => {
+  let startX = 0;
+  el.addEventListener('touchstart', e => { startX = e.changedTouches[0].screenX; }, { passive: true });
+  el.addEventListener('touchend', e => {
+    const delta = startX - e.changedTouches[0].screenX;
+    if (delta > threshold) onLeft();
+    else if (delta < -threshold) onRight?.();
+  }, { passive: true });
+};
+
+const bindBackToTop = () => {
+  const button = $('#fabTop');
+  let ticking = false;
+  addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      button.classList.toggle('is-on', scrollY > 700);
+      ticking = false;
+    });
+  }, { passive: true });
+  button.addEventListener('click', () => scrollTo({ top: 0, behavior: reducedMotion() ? 'auto' : 'smooth' }));
+};
+
+const loadWishlistFromAccount = async () => {
+  const name = store.get('aavira_display_name');
+  if (!name || name.toLowerCase() === 'guest user' || typeof window.getWishlistFromDB !== 'function') return;
+  try {
+    const list = await window.getWishlistFromDB(name);
+    if (list?.length) store.save('aavira_wishlist', list.map(String));
+  } catch {}
+};
+
+window.initializeAppEngine = () => {
+  updateProfileUI();
+  loadSkeletons();
+  updateCartCount();
+  updateWishCount();
+  updateNetworkBar();
+  renderExperiences();
+  refreshIcons();
+
+  bindSwipe($('#lightboxTouchArea'), () => lbNext(), () => lbPrev(), 50);
+  bindSwipe($('#sidebar'), closeSidebar, null, 60);
+  bindBackToTop();
+  bindEnterKey();
+
+  setTimeout(async () => {
+    await loadWishlistFromAccount();
+    await Promise.all([
+      typeof window.getBannersData === 'function' ? fetchBanners() : 0,
+      fetchCategories(),
+      fetchProducts(),
+      fetchExperiences()
+    ]);
+    applyReviewStats();
+    updateWishCount();
+    refreshIcons();
+  }, 50);
+};
+
+document.addEventListener('DOMContentLoaded', initializeAppEngine);
 </script>
 <script src="/user_data.js"></script>
 </body>
