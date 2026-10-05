@@ -21,20 +21,29 @@ a{color:inherit;text-decoration:none}
 .app{max-width:420px;margin:0 auto;background:#fff;min-height:100vh;position:relative}
 @media(min-width:640px){body{background:#EFE8DE}.app{box-shadow:0 0 60px rgba(36,32,36,.12)}}
 
+/* Busy / spinner state: centred, text hidden, background stays stable */
 .is-busy{position:relative;pointer-events:none;color:transparent!important}
 .is-busy>*{opacity:0}
-.is-busy::after{content:"";position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border:2px solid var(--spin,var(--ink));border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite}
-:is(.btn-p,.mbtn,.btn-write,.go,.footer-news button).is-busy{--spin:#fff}
+.is-busy::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border:2px solid var(--spin,var(--ink));border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite}
+:is(.btn-p,.mbtn,.btn-write,.go,.ib.rani,.footer-news button).is-busy{--spin:#fff}
+.ib.rani.is-busy,.ib.rani.is-busy:hover{background:var(--rani)}
+.btn-p.is-busy,.btn-p.is-busy:hover,.mbtn.is-busy,.mbtn.is-busy:hover{background:var(--rani)}
+.btn-o.is-busy,.btn-o.is-busy:hover,.skip.is-busy,.skip.is-busy:hover{background:#fff}
+.btn-write.is-busy{background:var(--ink)}
+.go.is-busy,.go.is-busy:hover{background:var(--rani);transform:none}
+.go.is-busy::after{width:14px;height:14px}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-.hdr{position:sticky;top:0;z-index:40;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:60px;padding:env(safe-area-inset-top,0) 8px 0;background:#fff;border-bottom:1px solid var(--line)}
+.hdr{position:sticky;top:0;z-index:40;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:60px;padding:env(safe-area-inset-top,0) 10px 0;background:#fff;border-bottom:1px solid var(--line)}
 .hdr img{height:36px;width:auto}
-.hdr-r{display:flex;justify-content:flex-end}
-.ib{position:relative;width:42px;height:42px;border:0;background:none;border-radius:50%;color:var(--ink);font-size:18px;display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s}
-.ib:hover{background:var(--blush);color:var(--rani)}
+.hdr-r{display:flex;justify-content:flex-end;align-items:center;gap:8px}
+.ib{position:relative;width:40px;height:40px;border:0;background:none;border-radius:50%;color:var(--ink);font-size:17px;display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s,transform .2s}
+@media(hover:hover){.ib:hover{background:var(--blush);color:var(--rani)}}
+.ib:active{transform:scale(.93)}
 .ib.on i{color:var(--rani)}
-.ib.back{color:var(--rani)}
-.badge{position:absolute;top:3px;right:1px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--rani);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
+.ib.rani{background:var(--rani);color:#fff;font-size:16px;box-shadow:0 4px 12px rgba(216,27,96,.28)}
+@media(hover:hover){.ib.rani:hover{background:var(--rani-dark);color:#fff}}
+.badge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:#fff;color:var(--rani);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--rani)}
 
 .media{position:relative;background:var(--cream);border-bottom:1px solid var(--line)}
 .carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;aspect-ratio:1/1;scrollbar-width:none}
@@ -182,7 +191,7 @@ a{color:inherit;text-decoration:none}
 .cdots i:first-child{margin-left:0}
 .cdots b{min-width:18px;height:18px;padding:0 4px;margin-left:4px;border-radius:9px;background:var(--cream);border:1px solid var(--line);font-size:9px;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;justify-content:center}
 .go{margin-left:auto;flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:var(--rani);color:#fff;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s}
-.go:hover{background:var(--rani-dark);transform:scale(1.08)}
+@media(hover:hover){.go:hover{background:var(--rani-dark);transform:scale(1.08)}}
 .go svg{width:14px;height:14px}
 .low{display:block;margin-top:6px;font-size:12px;font-weight:600;color:#B45309;background:rgba(180,83,9,.08);padding:3px 6px;border-radius:4px;width:fit-content}
 .heart{position:absolute;right:8px;top:8px;width:30px;height:30px;border-radius:50%;border:0;background:rgba(255,255,255,.95);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.14);font-size:14px}
@@ -199,6 +208,7 @@ a{color:inherit;text-decoration:none}
 .footer-news input:focus{border-color:var(--rani)}
 .footer-news button{background:var(--rani);color:#fff;border:0;border-radius:999px;padding:0 22px;min-width:76px;font-weight:600;font-size:14px}
 .footer-news button:disabled{opacity:.8;cursor:not-allowed}
+.footer-news button.is-busy{background:var(--rani)}
 .footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px 18px;padding:26px 0;margin-top:22px;border-top:1px solid rgba(255,255,255,.1)}
 .footer h3{font-family:Inter,sans-serif;font-size:14px;font-weight:600;margin-bottom:10px;color:var(--gold)}
 .footer-grid a{display:block;font-size:13px;color:#B5ADB2;line-height:2}
@@ -214,11 +224,11 @@ a{color:inherit;text-decoration:none}
 <body>
 <div class="app">
   <header class="hdr">
-    <div><button class="ib back" onclick="goBack(this)" aria-label="Back"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <div><button class="ib rani" type="button" onclick="goBack(this)" aria-label="Back"><i class="fa-solid fa-arrow-left"></i></button></div>
     <a href="./" aria-label="Aavira home"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira"></a>
     <div class="hdr-r">
-      <button class="ib" id="wishBtn" onclick="toggleWish()" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></button>
-      <button class="ib" onclick="navigate('cart',this)" aria-label="Cart"><i class="fa-solid fa-cart-shopping"></i><span class="badge" id="cartBadge" hidden>0</span></button>
+      <button class="ib" type="button" id="wishBtn" onclick="toggleWish()" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></button>
+      <button class="ib rani" type="button" onclick="navigate('/cart',this)" aria-label="Cart"><i class="fa-solid fa-cart-shopping"></i><span class="badge" id="cartBadge" hidden>0</span></button>
     </div>
   </header>
 
@@ -247,9 +257,9 @@ a{color:inherit;text-decoration:none}
   <section class="blk">
     <h2>Product details</h2>
     <div class="acc">
-      <div class="acc-i on"><button class="acc-h" onclick="toggleAcc(this)">Description <i class="fa-solid fa-chevron-down"></i></button><div class="acc-b"><p id="desc"></p><p id="sku" style="margin-top:10px;font-weight:600;color:var(--ink)"></p></div></div>
-      <div class="acc-i" id="specItem" hidden><button class="acc-h" onclick="toggleAcc(this)">Style &amp; specifications <i class="fa-solid fa-chevron-down"></i></button><div class="acc-b"><ul id="specs"></ul></div></div>
-      <div class="acc-i"><button class="acc-h" onclick="toggleAcc(this)">Shipping &amp; returns <i class="fa-solid fa-chevron-down"></i></button><div class="acc-b"><ul><li>Free delivery on prepaid orders across India.</li><li>Return window of 4 hours from delivery for defects or exchange.</li></ul></div></div>
+      <div class="acc-i on"><button class="acc-h" type="button" onclick="toggleAcc(this)">Description <i class="fa-solid fa-chevron-down"></i></button><div class="acc-b"><p id="desc"></p><p id="sku" style="margin-top:10px;font-weight:600;color:var(--ink)"></p></div></div>
+      <div class="acc-i" id="specItem" hidden><button class="acc-h" type="button" onclick="toggleAcc(this)">Style &amp; specifications <i class="fa-solid fa-chevron-down"></i></button><div class="acc-b"><ul id="specs"></ul></div></div>
+      <div class="acc-i"><button class="acc-h" type="button" onclick="toggleAcc(this)">Shipping &amp; returns <i class="fa-solid fa-chevron-down"></i></button><div class="acc-b"><ul><li>Free delivery on prepaid orders across India.</li><li>Return window of 4 hours from delivery for defects or exchange.</li></ul></div></div>
     </div>
     <div class="trust">
       <div><i class="fa-solid fa-shield-halved"></i>100%<br>Original</div>
@@ -262,7 +272,7 @@ a{color:inherit;text-decoration:none}
     <h2>Ratings &amp; reviews</h2>
     <div id="summary"></div>
     <div class="rv-list" id="reviews"><div class="empty">Loading reviews…</div></div>
-    <button class="btn-write" id="btnWrite" onclick="writeReview()"><i class="fa-solid fa-plus"></i>Write a review</button>
+    <button class="btn-write" type="button" id="btnWrite" onclick="writeReview()"><i class="fa-solid fa-plus"></i>Write a review</button>
   </section>
 
   <section class="blk" id="sugSec" hidden>
@@ -282,7 +292,7 @@ a{color:inherit;text-decoration:none}
     </div>
     <div class="footer-grid">
       <div><h3>Explore</h3><a href="/">Home</a><a href="/categories">Collections</a><a href="/offer">Offers</a><a href="/wishlist">Wishlist</a></div>
-      <div><h3>Shopping</h3><a href="/cart">Shopping bag</a><a href="/orders">My orders</a><a href="/profile">My account</a><a href="/support">Support</a></div>
+      <div><h3>Shopping</h3><a href="/cart">Shopping cart</a><a href="/orders">My orders</a><a href="/profile">My account</a><a href="/support">Support</a></div>
       <div><h3>Information</h3><a href="/terms">Terms &amp; conditions</a><a href="/privacy">Privacy policy</a><a href="/support">Help center</a></div>
       <div><h3>Contact</h3><a href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a></div>
     </div>
@@ -291,22 +301,22 @@ a{color:inherit;text-decoration:none}
 </div>
 
 <div class="bar-bottom">
-  <button class="btn btn-o" id="btnCart" onclick="addToCart()"><i class="fa-solid fa-cart-plus"></i>Add to cart</button>
-  <button class="btn btn-p" id="btnBuy" onclick="buyNow()"><i class="fa-solid fa-bolt"></i>Buy now</button>
+  <button class="btn btn-o" type="button" id="btnCart" onclick="addToCart()"><i class="fa-solid fa-cart-plus"></i>Add to cart</button>
+  <button class="btn btn-p" type="button" id="btnBuy" onclick="buyNow()"><i class="fa-solid fa-bolt"></i>Buy now</button>
 </div>
 
 <div class="ov" id="loginModal" onclick="if(event.target===this)closeModal('loginModal')">
   <div class="sheet">
-    <button class="x" onclick="closeModal('loginModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    <button class="x" type="button" onclick="closeModal('loginModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
     <h3>Sign in to continue</h3>
     <p>Please log in or create an account to write a review.</p>
-    <button class="mbtn" onclick="navigate('/auth/verify',this)">Log in / Sign up</button>
+    <button class="mbtn" type="button" onclick="navigate('/auth/verify',this)">Log in / Sign up</button>
   </div>
 </div>
 
 <div class="ov" id="buyModal" onclick="if(event.target===this)closeModal('buyModal')">
   <div class="sheet">
-    <button class="x" onclick="closeModal('buyModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    <button class="x" type="button" onclick="closeModal('buyModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
     <h3>Log in to place your order</h3>
     <p>Signing in takes less than a minute and gives you full control of your order.</p>
     <ul class="perks">
@@ -316,39 +326,39 @@ a{color:inherit;text-decoration:none}
     </ul>
     <a class="termlink" href="/terms"><span><i class="fa-solid fa-file-lines"></i> Terms &amp; policy conditions</span><i class="fa-solid fa-chevron-right"></i></a>
     <p class="agree">By continuing you agree to our <a href="/terms">Terms &amp; Conditions</a> and <a href="/terms">Privacy Policy</a>.</p>
-    <button class="mbtn" onclick="navigate('/auth/verify',this)">Log in / Sign up</button>
-    <button class="skip" onclick="skipLogin(this)">Skip &amp; continue to checkout <i class="fa-solid fa-arrow-right"></i></button>
+    <button class="mbtn" type="button" onclick="navigate('/auth/verify',this)">Log in / Sign up</button>
+    <button class="skip" type="button" onclick="skipLogin(this)">Skip &amp; continue to checkout <i class="fa-solid fa-arrow-right"></i></button>
   </div>
 </div>
 
 <div class="ov" id="sizeModal" onclick="if(event.target===this)closeModal('sizeModal')">
   <div class="sheet">
-    <button class="x" onclick="closeModal('sizeModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    <button class="x" type="button" onclick="closeModal('sizeModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
     <h3>Custom size</h3><p>Enter your measurements in inches.</p>
     <div class="row2"><input class="fld" id="csBust" type="number" min="1" inputmode="decimal" placeholder="Bust (in)"><input class="fld" id="csWaist" type="number" min="1" inputmode="decimal" placeholder="Waist (in)"></div>
     <input class="fld" id="csNote" type="text" placeholder="Any specific instructions? (optional)">
-    <button class="mbtn" onclick="saveCustom(this)">Save</button>
+    <button class="mbtn" type="button" onclick="saveCustom(this)">Save</button>
   </div>
 </div>
 
 <div class="ov" id="reviewModal" onclick="if(event.target===this)closeModal('reviewModal')">
   <div class="sheet">
-    <button class="x" onclick="closeModal('reviewModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    <button class="x" type="button" onclick="closeModal('reviewModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
     <h3>Rate &amp; review</h3><p>Tap a star to rate.</p>
     <div class="pick" id="pick"></div>
     <input class="fld" id="rvTitle" type="text" maxlength="80" placeholder="Title (optional)">
     <textarea class="fld" id="rvText" rows="3" maxlength="600" placeholder="Share your experience" style="resize:none"></textarea>
-    <button class="mbtn" id="rvSubmit" onclick="submitReview()">Post review</button>
+    <button class="mbtn" type="button" id="rvSubmit" onclick="submitReview()">Post review</button>
   </div>
 </div>
 
 <div class="ov center" id="errModal">
-  <div class="sheet"><h3>Product not found</h3><p>This product is currently unavailable.</p><button class="mbtn" onclick="navigate('./',this)">Back to home</button></div>
+  <div class="sheet"><h3>Product not found</h3><p>This product is currently unavailable.</p><button class="mbtn" type="button" onclick="navigate('./',this)">Back to home</button></div>
 </div>
 
 <div class="toast" id="toast" role="status"></div>
 
-<script src="user_data.js"></script>
+<script src="/user_data.js"></script>
 <script>
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
@@ -688,7 +698,7 @@ const suggestionCard = product => {
   const off = mrp > price ? Math.round((mrp - price) / mrp * 100) : 0;
   const id = esc(product.id);
   const name = esc(product.name);
-  const href = 'product.html?id=' + encodeURIComponent(product.id);
+  const href = '/product?id=' + encodeURIComponent(product.id);
   const rating = clamp(Number(product.rating) || 0, 0, 5);
   const colors = Array.isArray(product.colors) ? product.colors : [];
   const stock = Number(product.stock);
