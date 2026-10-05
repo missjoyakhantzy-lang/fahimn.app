@@ -43,7 +43,9 @@ a{color:inherit;text-decoration:none}
 .ib.on i{color:var(--rani)}
 .ib.rani{background:var(--rani);color:#fff;font-size:16px;box-shadow:0 4px 12px rgba(216,27,96,.28)}
 @media(hover:hover){.ib.rani:hover{background:var(--rani-dark);color:#fff}}
-.badge{position:absolute;top:3px;right:2px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--rani);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
+
+/* PROFESSIONAL BADGE - Large, prominent, clean */
+.badge{position:absolute;top:-10px;right:-10px;width:32px;height:32px;border-radius:50%;background:var(--rani);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2.5px solid #fff;box-shadow:0 4px 14px rgba(216,27,96,.38);z-index:10}
 
 .media{position:relative;background:var(--cream);border-bottom:1px solid var(--line)}
 .carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;aspect-ratio:1/1;scrollbar-width:none}
@@ -227,7 +229,7 @@ a{color:inherit;text-decoration:none}
     <div><button class="ib" type="button" onclick="goBack(this)" aria-label="Back"><i class="fa-solid fa-arrow-left"></i></button></div>
     <a href="./" aria-label="Aavira home"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira"></a>
     <div class="hdr-r">
-      <button class="ib" type="button" id="wishBtn" onclick="toggleWish()" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></button>
+      <button class="ib" type="button" id="wishBtn" onclick="toggleWish()" aria-label="Wishlist"><i class="fa-regular fa-heart"></i><span class="badge" id="wishBadge" hidden>0</span></button>
       <button class="ib" type="button" onclick="navigate('/cart',this)" aria-label="Cart"><i class="fa-solid fa-cart-shopping"></i><span class="badge" id="cartBadge" hidden>0</span></button>
     </div>
   </header>
@@ -305,6 +307,7 @@ a{color:inherit;text-decoration:none}
   <button class="btn btn-p" type="button" id="btnBuy" onclick="buyNow()"><i class="fa-solid fa-bolt"></i>Buy now</button>
 </div>
 
+<!-- MODALS (same as before) -->
 <div class="ov" id="loginModal" onclick="if(event.target===this)closeModal('loginModal')">
   <div class="sheet">
     <button class="x" type="button" onclick="closeModal('loginModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
@@ -438,6 +441,13 @@ const updateCartBadge = () => {
   badge.hidden = total <= 0;
 };
 
+const updateWishBadge = () => {
+  const total = readJson('aavira_wishlist', []).length;
+  const badge = $('#wishBadge');
+  badge.textContent = total > 99 ? '99+' : total;
+  badge.hidden = total <= 0;
+};
+
 const starsHtml = rating => [1, 2, 3, 4, 5].map(i => {
   const icon = rating >= i ? 'solid fa-star' : rating >= i - .5 ? 'solid fa-star-half-stroke' : 'regular fa-star';
   return `<i class="fa-${icon}"></i>`;
@@ -450,6 +460,7 @@ const paintWish = () => {
   const active = isWished();
   button.classList.toggle('on', active);
   button.querySelector('i').className = `${active ? 'fa-solid' : 'fa-regular'} fa-heart`;
+  updateWishBadge();
 };
 
 const toggleWish = () => {
@@ -692,68 +703,6 @@ const colorHex = name => {
   return COLOR_HEX[key] || (CSS.supports('color', key) ? key : '#D1D5DB');
 };
 
-const suggestionCard = product => {
-  const price = Number(product.price) || 0;
-  const mrp = Number(product.mrp) || price;
-  const off = mrp > price ? Math.round((mrp - price) / mrp * 100) : 0;
-  const id = esc(product.id);
-  const name = esc(product.name);
-  const href = '/product?id=' + encodeURIComponent(product.id);
-  const rating = clamp(Number(product.rating) || 0, 0, 5);
-  const colors = Array.isArray(product.colors) ? product.colors : [];
-  const stock = Number(product.stock);
-  const wished = readJson('aavira_wishlist', []).map(String).includes(String(product.id));
-  const dots = colors.length
-    ? `<span class="cdots">${colors.slice(0, 3).map(c => `<i style="background:${colorHex(c)}"></i>`).join('')}${colors.length > 3 ? `<b>+${colors.length - 3}</b>` : ''}</span>`
-    : '';
-  const tags = off || product.bestseller
-    ? `<span class="tags">${off ? `<span class="tag-off">${off}% off</span>` : ''}${product.bestseller ? '<span class="tag-best">Bestseller</span>' : ''}</span>`
-    : '';
-
-  return `<article class="pcard">
-    <a class="pc-media" href="${href}"><img src="${esc(safeUrl(product.img) || IMG_FALLBACK)}" alt="" loading="lazy" ${FALLBACK_ATTR}>${tags}</a>
-    <div class="pc-foot">
-      <a href="${href}"><span class="pc-name">${name}</span><span class="pc-price"><b>${formatPrice(price)}</b>${mrp > price ? `<s>${formatPrice(mrp)}</s>` : ''}</span></a>
-      <div class="pc-row">
-        <a class="pc-meta" href="${href}"><span class="rating ${rating >= 4 ? '' : rating >= 3 ? 'mid' : rating > 0 ? 'bad' : 'none'}"><i class="fa-solid fa-star"></i>${rating > 0 ? rating.toFixed(1) : '0.0'}</span>${dots}</a>
-        <a class="go" href="${href}&buy=1" aria-label="Buy ${name}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-      </div>
-      ${Number.isFinite(stock) && stock > 0 && stock <= 4 ? `<span class="low">Only ${stock} left</span>` : ''}
-    </div>
-    <button type="button" class="heart ${wished ? 'on' : ''}" data-heart="${id}" aria-label="Save ${name} to wishlist"><i class="fa-${wished ? 'solid' : 'regular'} fa-heart"></i></button>
-  </article>`;
-};
-
-const loadSuggestions = async () => {
-  let products = [];
-  let experiences = [];
-  try { if (typeof getVercelData === 'function') products = (await getVercelData()) || []; } catch {}
-  try { if (typeof getVercelExperiences === 'function') experiences = (await getVercelExperiences()) || []; } catch {}
-
-  const totals = {};
-  experiences.forEach(entry => {
-    const pid = reviewProductId(entry);
-    const value = Number(entry.rating);
-    if (pid == null || !(value > 0)) return;
-    const total = totals[String(pid)] ||= { sum: 0, count: 0 };
-    total.sum += value;
-    total.count++;
-  });
-
-  const items = products.filter(p => String(p.id) !== String(state.id)).slice(0, 6).map(p => {
-    const base = Number(p.rating ?? p.averageRating ?? p.avgRating ?? p.ratingAvg ?? p.average_rating ?? p.avg_rating ?? p.stars) || 0;
-    const total = totals[String(p.id)];
-    return {
-      id: p.id, name: p.name, price: p.price, mrp: p.mrp, colors: p.colors, stock: p.stock,
-      img: p.imageMain || p.image || p.imageUrl || '', bestseller: !!p.bestseller,
-      rating: total?.count ? Math.round(total.sum / total.count * 10) / 10 : base
-    };
-  });
-  if (!items.length) return;
-  $('#sugGrid').innerHTML = items.map(suggestionCard).join('');
-  $('#sugSec').hidden = false;
-};
-
 const subscribeNewsletter = () => {
   const input = $('#newsletterEmail');
   const email = input.value.trim().toLowerCase();
@@ -795,23 +744,6 @@ document.addEventListener('click', event => {
     const carousel = $('#carousel');
     return carousel.scrollTo({ left: carousel.clientWidth * Number(dot.dataset.i), behavior: 'smooth' });
   }
-
-  const buy = event.target.closest('.go');
-  if (buy) {
-    event.preventDefault();
-    return navigate(buy.href, buy);
-  }
-
-  const heart = event.target.closest('[data-heart]');
-  if (heart) {
-    const id = String(heart.dataset.heart);
-    const list = readJson('aavira_wishlist', []).map(String);
-    const active = !list.includes(id);
-    writeJson('aavira_wishlist', active ? [...list, id] : list.filter(item => item !== id));
-    heart.classList.toggle('on', active);
-    heart.querySelector('i').className = `fa-${active ? 'solid' : 'regular'} fa-heart`;
-    toast(active ? 'Added to wishlist' : 'Removed from wishlist');
-  }
 });
 
 $('#carousel').addEventListener('scroll', () => {
@@ -828,6 +760,7 @@ $('#pick').innerHTML = [1, 2, 3, 4, 5].map(v => `<i class="fa-solid fa-star" dat
 
 const init = async () => {
   updateCartBadge();
+  updateWishBadge();
   const raw = new URLSearchParams(location.search).get('id');
   state.id = raw ? decodeURIComponent(raw).trim() : '';
   const product = state.id ? await findProduct(state.id) : null;
@@ -895,11 +828,11 @@ const init = async () => {
   paintWish();
   renderRatings([], []);
   loadReviews();
-  loadSuggestions();
 };
 
 addEventListener('pageshow', () => {
   updateCartBadge();
+  updateWishBadge();
   $$('.is-busy').forEach(el => el.classList.remove('is-busy'));
 });
 
