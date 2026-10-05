@@ -1,0 +1,51 @@
+name: Fix product header
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Match product header to home
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('product.html')
+          s = p.read_text(encoding='utf-8')
+
+          old_badge = '.badge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:#fff;color:var(--rani);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--rani)}'
+          new_badge = '.badge{position:absolute;top:3px;right:2px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--rani);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}'
+          if old_badge not in s:
+              raise SystemExit('Expected product badge CSS not found')
+          s = s.replace(old_badge, new_badge, 1)
+
+          old_header = '<button class="ib" type="button" id="wishBtn" onclick="toggleWish()" aria-label="Wishlist"><i class="fa-regular fa-heart"></i></button>\n<button class="ib" type="button" onclick="navigate(\'/cart\',this)" aria-label="Cart"><i class="fa-solid fa-cart-shopping"></i><span class="badge" id="cartBadge" hidden>0</span></button>'
+          new_header = '<button class="ib" type="button" id="wishBtn" onclick="toggleWish()" aria-label="Wishlist"><i class="fa-regular fa-heart"></i><span class="badge" id="wishBadge" hidden>0</span></button>\n<button class="ib" type="button" onclick="navigate(\'/cart\',this)" aria-label="Cart"><i class="fa-solid fa-cart-shopping"></i><span class="badge" id="cartBadge" hidden>0</span></button>'
+          if old_header not in s:
+              raise SystemExit('Expected product header markup not found')
+          s = s.replace(old_header, new_header, 1)
+
+          marker = "const paintWish = () => {"
+          inject = """const updateWishBadge = () => {\n  const b = document.getElementById('wishBadge');\n  if (!b) return;\n  let total = 0;\n  try { total = (JSON.parse(localStorage.getItem('aavira_wishlist')) || []).length; } catch {}\n  b.textContent = total;\n  b.hidden = total === 0;\n};\n\n"""
+          if marker not in s:
+              raise SystemExit('Expected wishlist function marker not found')
+          s = s.replace(marker, inject + marker, 1)
+          s = s.replace("const paintWish = () => {\n  const button = $('#wishBtn');", "const paintWish = () => {\n  updateWishBadge();\n  const button = $('#wishBtn');", 1)
+
+          p.write_text(s, encoding='utf-8')
+      - name: Commit product header fix and remove temporary workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add product.html .github/workflows/fix-product-header.yml
+          git rm .github/workflows/fix-product-header.yml
+          git commit -m "Match product header with home screen"
+          git push
