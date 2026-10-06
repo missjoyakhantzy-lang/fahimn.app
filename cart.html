@@ -65,8 +65,8 @@
         @keyframes shimmer { to { background-position:-300% 0; } }
         .sk-bill { background:var(--white); border-radius:18px; padding:20px; margin-top:4px; display:flex; flex-direction:column; gap:14px; }
 
-        .empty { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:70vh; text-align:center; padding:30px; animation:fadeIn .4s ease; }
-        .empty-icon { width:88px; height:88px; border-radius:50%; background:var(--pink-s); display:flex; align-items:center; justify-content:center; margin-bottom:22px; }
+        .empty { width:100%; margin:auto; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:60vh; min-height:60dvh; text-align:center; padding:30px; animation:fadeIn .4s ease; }
+        .empty-icon { width:88px; height:88px; border-radius:50%; background:var(--pink-s); color:var(--pink); display:flex; align-items:center; justify-content:center; margin-bottom:22px; }
         .empty-icon i { font-size:36px; color:var(--pink); }
         .empty h2 { font-family:var(--serif); font-size:22px; color:var(--dark); margin-bottom:10px; }
         .empty p  { font-size:13px; color:var(--muted); line-height:1.6; max-width:240px; margin-bottom:28px; }
@@ -207,26 +207,28 @@
             margin-top:10px;
             font-size:10px; color:var(--muted); font-weight:500; line-height:1.4;
         }
-        .cf-version {
-            font-size:9px; color:var(--muted); font-weight:600; opacity:.7;
-            letter-spacing:.4px; text-transform:uppercase;
-        }
         .cf-right {
             flex:0 0 auto;
-            width:152px;
-            display:flex; flex-direction:column; align-items:flex-end; gap:10px;
+            width:164px;
+            display:flex; justify-content:flex-end; align-items:flex-end;
         }
         .cf-art {
-            width:100%; height:auto; max-height:150px;
+            width:100%; height:auto; max-height:170px;
             object-fit:contain; object-position:bottom right;
             display:block;
-            filter:drop-shadow(0 8px 16px rgba(216,27,96,.14));
             -webkit-user-drag:none; user-select:none; pointer-events:none;
+            /* the artwork file is cropped on its right and bottom edges, so fade those edges softly instead of showing a hard cut */
+            -webkit-mask-image:linear-gradient(to right,#000 80%,transparent 100%),linear-gradient(to bottom,#000 82%,transparent 100%);
+            -webkit-mask-composite:source-in;
+            mask-image:linear-gradient(to right,#000 80%,transparent 100%),linear-gradient(to bottom,#000 82%,transparent 100%);
+            mask-composite:intersect;
         }
         .cf-logo {
-            height:30px; max-width:112px;
-            object-fit:contain; object-position:right center;
-            display:block; opacity:.9;
+            height:52px; max-width:170px;
+            object-fit:contain; object-position:left center;
+            display:block;
+            margin-bottom:6px;
+            filter:brightness(0);
         }
 
         .bottom-bar {
@@ -358,6 +360,12 @@
             font-weight:500;
             line-height:1.3;
         }
+
+        .tick-up   { animation:tickUp .5s cubic-bezier(.2,.8,.2,1); }
+        .tick-down { animation:tickDown .5s cubic-bezier(.2,.8,.2,1); }
+        @keyframes tickUp   { 0%{transform:translateY(7px);opacity:.35} 100%{transform:none;opacity:1} }
+        @keyframes tickDown { 0%{transform:translateY(-7px);opacity:.35} 100%{transform:none;opacity:1} }
+        @media (prefers-reduced-motion:reduce){ .tick-up,.tick-down{animation:none} }
 
         @keyframes fadeIn { from{opacity:0} to{opacity:1} }
         @keyframes popIn  { from{transform:scale(.88);opacity:0} to{transform:scale(1);opacity:1} }
@@ -571,9 +579,9 @@ body.aavira-theme .card-loading-overlay{
 }
 
 @media(max-width:380px){
-  .cf-right{ width:126px; }
+  .cf-right{ width:132px; }
   .cf-thanks{ font-size:16px; }
-  .cf-logo{ height:26px; max-width:96px; }
+  .cf-logo{ height:44px; max-width:140px; }
   .toast{ bottom:96px; padding:12px 16px 12px 12px; }
   .toast-icon-wrap{ width:34px; height:34px; }
 }
@@ -645,7 +653,7 @@ body.aavira-theme .card-loading-overlay{
 
     <div id="emptyView" style="display:none;flex:1;">
         <div class="empty">
-            <div class="empty-icon"><i class="fa-solid fa-bag-shopping"></i></div>
+            <div class="empty-icon"><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l1.2 12.2a1.5 1.5 0 0 1-1.5 1.6H6.3a1.5 1.5 0 0 1-1.5-1.6L6 7z"/><path d="M9 10V6.5a3 3 0 0 1 6 0V10"/></svg></div>
             <h2>Your Bag is Empty</h2>
             <p>Add something beautiful from our collection to get started.</p>
             <a href="./">Explore Collection</a>
@@ -694,14 +702,13 @@ body.aavira-theme .card-loading-overlay{
 
         <footer class="cart-footer">
             <div class="cf-left">
+                <img src="public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" class="cf-logo">
                 <p class="cf-thanks">Thank you for<br>shopping with us</p>
                 <p class="cf-sub">Luxury ethnic fashion, designed for modern elegance.</p>
                 <p class="cf-copy">© 2026 Aavira Fashion, Inc.</p>
-                <span class="cf-version">Version 1.0.0</span>
             </div>
             <div class="cf-right">
                 <img src="public/file_xx234.png" alt="Fashion Feels Better With You" class="cf-art">
-                <img src="public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" class="cf-logo">
             </div>
         </footer>
 
@@ -794,6 +801,31 @@ body.aavira-theme .card-loading-overlay{
         };
     }
 
+    const fmtINR = n => `₹${Math.round(n).toLocaleString('en-IN')}`;
+
+    /* Counts a number smoothly from its previous value to the new one, so changing quantity visibly "calculates". */
+    function animateTo(el, to, format){
+        if(!el) return;
+        to = Number(to) || 0;
+        const from = Number(el.dataset.val || 0);
+        el.dataset.val = to;
+        if(el._raf) cancelAnimationFrame(el._raf);
+        const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if(from === to || reduce){ el.textContent = format(to); return; }
+        el.classList.remove('tick-up','tick-down');
+        void el.offsetWidth;
+        el.classList.add(to > from ? 'tick-up' : 'tick-down');
+        const dur = 560, t0 = performance.now();
+        const step = now => {
+            const p = Math.min(1, (now - t0) / dur);
+            const e = 1 - Math.pow(1 - p, 3);
+            el.textContent = format(from + (to - from) * e);
+            if(p < 1) el._raf = requestAnimationFrame(step);
+            else el.textContent = format(to);
+        };
+        el._raf = requestAnimationFrame(step);
+    }
+
     function toNum(v){ return parseInt(String(v).replace(/[^0-9]/g,''),10)||0; }
 
     function esc(v){
@@ -860,8 +892,8 @@ body.aavira-theme .card-loading-overlay{
                 </div>
                 <div class="c-bottom">
                     <div class="c-prices">
-                        <span class="c-price" id="cprice_${esc(item.cartId)}">₹${total.toLocaleString('en-IN')}</span>
-                        ${op>cp?`<span class="c-mrp">₹${(op*item.qty).toLocaleString('en-IN')}</span>`:''}
+                        <span class="c-price" id="cprice_${esc(item.cartId)}" data-val="${total}">₹${total.toLocaleString('en-IN')}</span>
+                        ${op>cp?`<span class="c-mrp" data-val="${op*item.qty}">₹${(op*item.qty).toLocaleString('en-IN')}</span>`:''}
                     </div>
                     <div class="qty">
                         <button class="qty-btn" onclick="changeQty('${esc(item.cartId)}',-1,this)">
@@ -900,14 +932,9 @@ body.aavira-theme .card-loading-overlay{
         const qtyValEl = card.querySelector('.qty-val');
         if(qtyValEl) qtyValEl.textContent = item.qty;
 
-        const priceEl = document.getElementById(`cprice_${item.cartId}`);
-        if(priceEl){
-            priceEl.textContent = `₹${total.toLocaleString('en-IN')}`;
-            priceEl.classList.add('pop');
-            setTimeout(()=>priceEl.classList.remove('pop'), 300);
-        }
+        animateTo(document.getElementById(`cprice_${item.cartId}`), total, fmtINR);
         const mrpEl = card.querySelector('.c-mrp');
-        if(mrpEl && op>cp) mrpEl.textContent = `₹${(op*item.qty).toLocaleString('en-IN')}`;
+        if(mrpEl && op>cp) animateTo(mrpEl, op*item.qty, fmtINR);
 
         const badgeEl = card.querySelector('.c-badge');
         if(badgeEl){
@@ -926,18 +953,21 @@ body.aavira-theme .card-loading-overlay{
         });
         const disc = mrpTotal - subTotal;
 
-        document.getElementById('billMrp').innerText      = `₹${mrpTotal.toLocaleString('en-IN')}`;
-        document.getElementById('billDiscount').innerText = `–₹${disc.toLocaleString('en-IN')}`;
-        document.getElementById('billTotal').innerText    = `₹${subTotal.toLocaleString('en-IN')}`;
-        document.getElementById('bottomTotal').innerText  = `₹${subTotal.toLocaleString('en-IN')}`;
+        animateTo(document.getElementById('billMrp'),      mrpTotal, fmtINR);
+        animateTo(document.getElementById('billDiscount'), disc,     n => `–${fmtINR(n)}`);
+        animateTo(document.getElementById('billTotal'),    subTotal, fmtINR);
+        animateTo(document.getElementById('bottomTotal'),  subTotal, fmtINR);
 
         const pill  = document.getElementById('savingsPill');
         const bsave = document.getElementById('bottomSaving');
         if(disc>0){
+            if(!document.getElementById('savingsAmt')){
+                pill.innerHTML = `🎉 You're saving <strong id="savingsAmt">₹0</strong> on this order!`;
+            }
             pill.style.display = 'block';
-            pill.innerHTML = `🎉 You're saving <strong>₹${disc.toLocaleString('en-IN')}</strong> on this order!`;
+            animateTo(document.getElementById('savingsAmt'), disc, fmtINR);
             bsave.style.display = 'block';
-            bsave.innerText = `Saving ₹${disc.toLocaleString('en-IN')}`;
+            animateTo(bsave, disc, n => `Saving ${fmtINR(n)}`);
         } else {
             pill.style.display = 'none';
             bsave.style.display = 'none';
@@ -1081,7 +1111,7 @@ body.aavira-theme .card-loading-overlay{
             icon.replaceWith(spinner);
         }
         setTimeout(()=>{
-            window.location.href = 'make_order';
+            window.location.href = 'checkout';
         }, PROCEED_LOAD_MS);
     };
 
