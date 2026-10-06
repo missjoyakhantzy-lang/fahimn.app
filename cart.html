@@ -176,28 +176,29 @@
             display:flex;
             align-items:flex-end;
             justify-content:space-between;
-            gap:10px;
-            padding:10px 0 2px;
-            margin-top:6px;
+            gap:16px;
+            padding:16px 0 8px;
+            margin-top:8px;
             position:relative;
-            min-height:140px;
+            min-height:150px;
         }
         .cart-footer-left {
             display:flex;
             flex-direction:column;
             align-items:flex-start;
             justify-content:flex-end;
-            gap:5px;
-            flex:0 0 auto;
-            max-width:52%;
-            padding-bottom:6px;
+            gap:6px;
+            flex:1;
+            min-width:0;
+            padding-bottom:8px;
+            padding-left:4px;
         }
         .cart-footer-logo {
-            height:24px;
-            max-width:100px;
+            height:26px;
+            max-width:110px;
             object-fit:contain;
             object-position:left bottom;
-            opacity:.7;
+            opacity:.75;
             display:block;
         }
         .cart-footer-left p {
@@ -216,14 +217,14 @@
         }
         .cart-footer-right {
             flex:0 0 auto;
-            width:150px;
-            height:140px;
+            width:132px;
+            height:132px;
             display:flex;
             align-items:flex-end;
             justify-content:flex-end;
             position:relative;
             align-self:flex-end;
-            margin-bottom:-2px;
+            margin-bottom:0;
             padding-right:2px;
         }
         .cart-footer-fashion {
@@ -579,9 +580,9 @@ body.aavira-theme .card-loading-overlay{
 }
 
 @media(max-width:380px){
-  .cart-footer{ min-height:118px; }
-  .cart-footer-right{ width:120px; height:118px; }
-  .cart-footer-logo{ height:20px; max-width:90px; }
+  .cart-footer{ min-height:130px; }
+  .cart-footer-right{ width:114px; height:114px; }
+  .cart-footer-logo{ height:22px; max-width:90px; }
   .toast{ bottom:96px; padding:12px 16px 12px 12px; }
   .toast-icon-wrap{ width:34px; height:34px; }
 }
