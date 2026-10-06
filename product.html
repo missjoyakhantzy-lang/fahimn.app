@@ -26,8 +26,9 @@ a{color:inherit;text-decoration:none}
 .is-busy{position:relative;pointer-events:none;color:transparent!important}
 .is-busy>*{opacity:0}
 .is-busy::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border:2px solid var(--spin,var(--ink));border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite}
-:is(.btn-p,.mbtn,.btn-write,.go,.ib.rani,.footer-news button).is-busy{--spin:#fff}
+:is(.btn-p,.mbtn,.btn-write,.go,.ib.rani,.ib.back-fab,.footer-news button).is-busy{--spin:#fff}
 .ib.rani.is-busy,.ib.rani.is-busy:hover{background:var(--rani)}
+.ib.back-fab.is-busy,.ib.back-fab.is-busy:hover{background:var(--rani)}
 .btn-p.is-busy,.btn-p.is-busy:hover,.mbtn.is-busy,.mbtn.is-busy:hover{background:var(--rani)}
 .btn-o.is-busy,.btn-o.is-busy:hover,.skip.is-busy,.skip.is-busy:hover{background:#fff}
 .btn-write.is-busy{background:var(--ink)}
@@ -43,7 +44,7 @@ a{color:inherit;text-decoration:none}
 .ib:active{transform:scale(.94)}
 .ib svg{width:22px;height:22px;stroke-width:1.6}
 .ib.on svg{color:var(--rani);fill:currentColor}
-.ib.back-fab{width:46px;height:46px;background:var(--rani);color:#fff;font-size:17px;box-shadow:0 6px 18px rgba(216,27,96,.45),0 2px 30px rgba(216,27,96,.3)}
+.ib.back-fab{width:46px;height:46px;background:var(--rani);color:#fff;font-size:17px}
 @media(hover:hover){.ib.back-fab:hover{background:var(--rani-dark);color:#fff}}
 .ib.rani{background:var(--rani);color:#fff;font-size:16px;box-shadow:0 4px 12px rgba(216,27,96,.28)}
 @media(hover:hover){.ib.rani:hover{background:var(--rani-dark);color:#fff}}
