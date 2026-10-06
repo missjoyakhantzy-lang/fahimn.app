@@ -46,7 +46,7 @@
         .hdr-center p  { font-size:10px; color:var(--pink); font-weight:600; letter-spacing:.5px; margin-top:1px; }
 
         /* wishlist button — transparent round icon button, matches product page header icon style */
-        .hdr-wish { width:44px; height:44px; display:flex; align-items:center; justify-content:center; border:0; border-radius:50%; background:transparent; color:var(--dark); font-size:16px; cursor:pointer; transition:background .15s,color .15s,transform .15s; }
+        .hdr-wish { width:44px; height:44px; display:flex; align-items:center; justify-content:center; border:0; border-radius:50%; background:transparent; color:var(--pink); font-size:16px; cursor:pointer; transition:background .15s,color .15s,transform .15s; }
         .hdr-wish:hover { background:var(--pink-s); color:var(--pink); }
         .hdr-wish:active { transform:scale(.92); background:var(--pink-s); }
 
@@ -146,13 +146,13 @@
 
         /* qty stepper */
         .qty { display:flex; align-items:center; background:var(--stone); border-radius:10px; border:1.5px solid var(--border); overflow:hidden; }
-        .qty-btn { width:32px; height:32px; background:transparent; border:none; display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--dark); cursor:pointer; transition:.15s; }
+        .qty-btn { width:32px; height:32px; background:transparent; border:none; display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--pink); cursor:pointer; transition:.15s; }
         .qty-btn:active { background:#e0deda; }
         .qty-btn:disabled { opacity:.65; cursor:default; }
         .qty-val { width:28px; text-align:center; font-size:13px; font-weight:800; color:var(--dark); border-left:1.5px solid var(--border); border-right:1.5px solid var(--border); }
 
         /* info / more-options btn (replaces the old delete btn) */
-        .c-info-btn { position:absolute; top:10px; right:10px; width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,0.92); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:12px; color:var(--mid); cursor:pointer; transition:.18s; box-shadow:0 2px 6px rgba(0,0,0,0.08); z-index:7; }
+        .c-info-btn { position:absolute; top:10px; right:10px; width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,0.92); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:12px; color:var(--pink); cursor:pointer; transition:.18s; box-shadow:0 2px 6px rgba(0,0,0,0.08); z-index:7; }
         .c-info-btn:active { background:var(--stone); transform:scale(.88); }
 
         /* ── DELIVERY STRIP ── */
@@ -166,7 +166,7 @@
             gap:12px;
             margin-bottom:14px;
         }
-        .delivery-strip i { color:var(--gold); font-size:18px; flex-shrink:0; }
+        .delivery-strip i { color:var(--pink); font-size:18px; flex-shrink:0; }
         .delivery-strip p { font-size:12px; color:#7a5c1e; font-weight:600; line-height:1.4; }
         .delivery-strip span { color:var(--gold); font-weight:800; }
 
@@ -267,9 +267,9 @@
         .sheet-actions { display:flex; flex-direction:column; gap:2px; }
         .sheet-action { display:flex; align-items:center; gap:12px; width:100%; background:none; border:none; padding:12px 4px; font-size:13.5px; font-weight:600; color:var(--dark); text-align:left; cursor:pointer; border-radius:10px; transition:.15s; }
         .sheet-action:active { background:var(--stone); }
-        .sheet-ico { width:30px; height:30px; border-radius:50%; background:var(--stone); display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--dark); flex-shrink:0; }
-        .sheet-action.danger { color:var(--error); }
-        .sheet-action.danger .sheet-ico { background:#fff0f0; color:var(--error); }
+        .sheet-ico { width:30px; height:30px; border-radius:50%; background:var(--pink-s); display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--pink); flex-shrink:0; }
+        .sheet-action.danger { color:var(--pink); }
+        .sheet-action.danger .sheet-ico { background:var(--pink-s); color:var(--pink); }
         .sheet-cancel { width:100%; margin-top:10px; padding:13px; border-radius:14px; background:var(--stone); border:none; font-weight:700; font-size:13px; color:var(--dark); cursor:pointer; }
 
         /* ── TOAST (pop-in, matches the homepage style) ── */
@@ -748,8 +748,8 @@ body.aavira-theme .card-loading-overlay{
         const el = document.getElementById('toast');
         document.getElementById('toastIcon').innerHTML =
             type==='ok'
-            ? '<i class="fa-solid fa-circle-check" style="color:#12B76A;"></i>'
-            : '<i class="fa-solid fa-circle-xmark" style="color:#EF4444;"></i>';
+            ? '<i class="fa-solid fa-circle-check" style="color:var(--pink);"></i>'
+            : '<i class="fa-solid fa-circle-xmark" style="color:var(--pink);"></i>';
         document.getElementById('toastTitle').innerText = title;
         document.getElementById('toastMsg').innerText   = msg;
         clearTimeout(toastTmr);
