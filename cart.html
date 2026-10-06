@@ -10,6 +10,7 @@
     <style>
         :root {
             --pink:    #D81B60;
+            --pink-dark: #B71550;
             --pink-s:  rgba(216,27,96,0.12);
             --pink-sh: rgba(216,27,96,0.28);
             --gold:    #C9A84C;
@@ -33,13 +34,21 @@
 
         /* ── HEADER ── */
         .hdr { flex-shrink:0; background:var(--white); display:flex; align-items:center; justify-content:space-between; padding:0 18px; height:60px; border-bottom:1px solid var(--border); position:relative; z-index:10; }
-        .hdr-back { width:38px; height:38px; display:flex; align-items:center; justify-content:center; border:1.5px solid var(--border); border-radius:50%; background:var(--white); color:var(--dark); font-size:15px; cursor:pointer; transition:.15s; }
-        .hdr-back:active { transform:scale(.88); background:var(--stone); }
+
+        /* back button — pink filled circle, white icon (matches product page design) */
+        .hdr-back { width:44px; height:44px; display:flex; align-items:center; justify-content:center; border:0; border-radius:50%; background:var(--pink); color:#fff; font-size:16px; cursor:pointer; transition:background .15s,transform .15s; }
+        .hdr-back:active { transform:scale(.92); background:var(--pink-dark); }
+        .hdr-back.is-busy { pointer-events:none; color:transparent!important; position:relative; }
+        .hdr-back.is-busy::after { content:""; position:absolute; inset:0; margin:auto; width:16px; height:16px; border:2px solid #fff; border-top-color:transparent; border-radius:50%; animation:ringspin .6s linear infinite; }
+
         .hdr-center { text-align:center; }
         .hdr-center h1 { font-family:var(--serif); font-size:16px; font-weight:700; color:var(--dark); letter-spacing:.3px; }
         .hdr-center p  { font-size:10px; color:var(--pink); font-weight:600; letter-spacing:.5px; margin-top:1px; }
-        .hdr-wish { width:38px; height:38px; display:flex; align-items:center; justify-content:center; border:1.5px solid var(--border); border-radius:50%; background:var(--white); color:var(--dark); font-size:15px; cursor:pointer; transition:.15s; }
-        .hdr-wish:active { transform:scale(.88); background:var(--stone); }
+
+        /* wishlist button — transparent round icon button, matches product page header icon style */
+        .hdr-wish { width:44px; height:44px; display:flex; align-items:center; justify-content:center; border:0; border-radius:50%; background:transparent; color:var(--dark); font-size:16px; cursor:pointer; transition:background .15s,color .15s,transform .15s; }
+        .hdr-wish:hover { background:var(--pink-s); color:var(--pink); }
+        .hdr-wish:active { transform:scale(.92); background:var(--pink-s); }
 
         /* ── SCROLL ── */
         .scroll { flex:1; overflow-y:auto; scrollbar-width:none; padding:16px 14px 130px; }
@@ -503,7 +512,7 @@ body.aavira-theme .card-loading-overlay{
 
     <!-- HEADER -->
     <header class="hdr">
-        <button class="hdr-back" onclick="window.location.href='./'" aria-label="Back">
+        <button class="hdr-back" onclick="goBack(this)" aria-label="Back">
             <i class="fa-solid fa-arrow-left"></i>
         </button>
         <div class="hdr-center">
@@ -691,6 +700,7 @@ body.aavira-theme .card-loading-overlay{
     const TOAST_MS        = 3200;
     const QTY_LOAD_MS     = 420;   // smoke overlay duration on +/- tap
     const PROCEED_LOAD_MS = 750;   // spinner duration on Proceed tap
+    const BACK_LOAD_MS    = 300;   // back button spinner duration
 
     let cart            = [];
     let toastTmr         = null;
@@ -1018,6 +1028,14 @@ body.aavira-theme .card-loading-overlay{
         setTimeout(()=>{
             window.location.href = 'make_order';
         }, PROCEED_LOAD_MS);
+    };
+
+    /* ── back button (pink circle) shows a brief white spinner before navigating ── */
+    window.goBack = function(btn){
+        if(!btn || btn.classList.contains('is-busy')) return;
+        haptic(20);
+        btn.classList.add('is-busy');
+        setTimeout(()=>{ window.location.href = './'; }, BACK_LOAD_MS);
     };
 
     /* ── boot ── */
