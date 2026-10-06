@@ -330,13 +330,14 @@ const fetchOrders = async (silent = false) => {
   if (loading) return;
   loading = true;
   const email = session();
-  const guestId = new URLSearchParams(location.search).get('id') || '';
+  const guestId = ''; // guest orders are tracked on /track/order, never here
   if (!silent) $('#list').innerHTML = '<div class="skel"></div><div class="skel"></div>';
-  if (!email && !guestId) {
+  if (!email) {
     S.orders = [];
     $('#sub').textContent = 'Login to see all your orders';
+    $('#list').innerHTML = `<div class="empty"><div class="ico"><i class="fa-solid fa-lock"></i></div><h3>Login to see your orders</h3><p>Orders placed while logged in appear here.<br>Placed an order without login? Use the tracking link you received.</p><a href="login.html">Login</a></div>` + footer();
     loading = false;
-    return draw();
+    return;
   }
   try {
     const url = `${BACKEND}/api/orders?nocache=${Date.now()}&` + (email ? `email=${encodeURIComponent(email)}` : `orderId=${encodeURIComponent(guestId)}`);
@@ -350,7 +351,7 @@ const fetchOrders = async (silent = false) => {
     const json = await res.json();
     let rows = res.ok && json.status === 'success' && Array.isArray(json.data) ? json.data : [];
     rows = email
-      ? rows.filter(o => String(o.email || o.customerEmail || o.userEmail || '').trim().toLowerCase() === email)
+      ? rows.filter(o => o.guest !== true && String(o.email || o.customerEmail || o.userEmail || '').trim().toLowerCase() === email)
       : rows.filter(o => cid(rawId(o)) === cid(guestId)).slice(0, 1);
     S.orders = rows;
     $('#sub').textContent = email ? `Signed in as ${email}` : 'Tracking your order';
@@ -373,7 +374,7 @@ const refresh = async () => {
   icons.forEach(i => i.classList.remove('fa-spin'));
   toast('Orders refreshed');
 };
-setInterval(() => { if (!document.hidden && (session() || new URLSearchParams(location.search).get('id'))) fetchOrders(true); }, REFRESH_MS);
+setInterval(() => { if (!document.hidden && session()) fetchOrders(true); }, REFRESH_MS);
 document.addEventListener('visibilitychange', () => { if (!document.hidden && Date.now() - S.synced > 30000) fetchOrders(true); });
 
 /* search / sort */
