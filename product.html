@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
 <style>
 :root{--rani:#D81B60;--rani-dark:#B71550;--gold:#D4AF37;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#242024;--muted:#6B6369;--line:#E7E0D9;--blush:#F9E8EE;--green:#15803D;--danger:#B91C1C}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -39,13 +40,15 @@ a{color:inherit;text-decoration:none}
 .hdr-r{display:flex;justify-content:flex-end;align-items:center;gap:8px}
 .ib{position:relative;width:42px;height:42px;border:0;background:transparent;border-radius:50%;color:var(--ink);font-size:17px;display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s,transform .2s}
 @media(hover:hover){.ib:hover{background:var(--blush);color:var(--rani)}}
-.ib:active{transform:scale(.93)}
-.ib.on i{color:var(--rani)}
+.ib:active{transform:scale(.94)}
+.ib svg{width:22px;height:22px;stroke-width:1.6}
+.ib.on svg{color:var(--rani);fill:currentColor}
+.ib.back-fab{width:46px;height:46px;background:var(--rani);color:#fff;font-size:17px;box-shadow:0 6px 18px rgba(216,27,96,.45),0 2px 30px rgba(216,27,96,.3)}
+@media(hover:hover){.ib.back-fab:hover{background:var(--rani-dark);color:#fff}}
 .ib.rani{background:var(--rani);color:#fff;font-size:16px;box-shadow:0 4px 12px rgba(216,27,96,.28)}
 @media(hover:hover){.ib.rani:hover{background:var(--rani-dark);color:#fff}}
 
-/* PROFESSIONAL BADGE - Large, prominent, clean */
-.badge{position:absolute;top:-10px;right:-10px;width:32px;height:32px;border-radius:50%;background:var(--rani);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2.5px solid #fff;box-shadow:0 4px 14px rgba(216,27,96,.38);z-index:10}
+.badge{position:absolute;top:3px;right:2px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--rani);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
 
 .media{position:relative;background:var(--cream);border-bottom:1px solid var(--line)}
 .carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;aspect-ratio:1/1;scrollbar-width:none}
@@ -226,11 +229,11 @@ a{color:inherit;text-decoration:none}
 <body>
 <div class="app">
   <header class="hdr">
-    <div><button class="ib" type="button" onclick="goBack(this)" aria-label="Back"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <div><button class="ib back-fab" type="button" onclick="goBack(this)" aria-label="Back"><i class="fa-solid fa-arrow-left"></i></button></div>
     <a href="./" aria-label="Aavira home"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira"></a>
     <div class="hdr-r">
-      <button class="ib" type="button" id="wishBtn" onclick="toggleWish()" aria-label="Wishlist"><i class="fa-regular fa-heart"></i><span class="badge" id="wishBadge" hidden>0</span></button>
-      <button class="ib" type="button" onclick="navigate('/cart',this)" aria-label="Cart"><i class="fa-solid fa-cart-shopping"></i><span class="badge" id="cartBadge" hidden>0</span></button>
+      <button class="ib" type="button" id="wishBtn" onclick="toggleWish()" aria-label="Wishlist"><i data-lucide="heart"></i><span class="badge" id="wishBadge" hidden>0</span></button>
+      <button class="ib" type="button" onclick="navigate('/cart',this)" aria-label="Cart"><i data-lucide="shopping-cart"></i><span class="badge" id="cartBadge" hidden>0</span></button>
     </div>
   </header>
 
@@ -459,7 +462,6 @@ const paintWish = () => {
   const button = $('#wishBtn');
   const active = isWished();
   button.classList.toggle('on', active);
-  button.querySelector('i').className = `${active ? 'fa-solid' : 'fa-regular'} fa-heart`;
   updateWishBadge();
 };
 
@@ -497,7 +499,7 @@ const requireSize = () => {
   void box.offsetWidth;
   box.classList.add('err');
   navigator.vibrate?.(150);
-  toast('Please select A size to continue', true);
+  toast('Please select a size to continue', true);
   return null;
 };
 
@@ -703,6 +705,68 @@ const colorHex = name => {
   return COLOR_HEX[key] || (CSS.supports('color', key) ? key : '#D1D5DB');
 };
 
+const suggestionCard = product => {
+  const price = Number(product.price) || 0;
+  const mrp = Number(product.mrp) || price;
+  const off = mrp > price ? Math.round((mrp - price) / mrp * 100) : 0;
+  const id = esc(product.id);
+  const name = esc(product.name);
+  const href = '/product?id=' + encodeURIComponent(product.id);
+  const rating = clamp(Number(product.rating) || 0, 0, 5);
+  const colors = Array.isArray(product.colors) ? product.colors : [];
+  const stock = Number(product.stock);
+  const wished = readJson('aavira_wishlist', []).map(String).includes(String(product.id));
+  const dots = colors.length
+    ? `<span class="cdots">${colors.slice(0, 3).map(c => `<i style="background:${colorHex(c)}"></i>`).join('')}${colors.length > 3 ? `<b>+${colors.length - 3}</b>` : ''}</span>`
+    : '';
+  const tags = off || product.bestseller
+    ? `<span class="tags">${off ? `<span class="tag-off">${off}% off</span>` : ''}${product.bestseller ? '<span class="tag-best">Bestseller</span>' : ''}</span>`
+    : '';
+
+  return `<article class="pcard">
+    <a class="pc-media" href="${href}"><img src="${esc(safeUrl(product.img) || IMG_FALLBACK)}" alt="" loading="lazy" ${FALLBACK_ATTR}>${tags}</a>
+    <div class="pc-foot">
+      <a href="${href}"><span class="pc-name">${name}</span><span class="pc-price"><b>${formatPrice(price)}</b>${mrp > price ? `<s>${formatPrice(mrp)}</s>` : ''}</span></a>
+      <div class="pc-row">
+        <a class="pc-meta" href="${href}"><span class="rating ${rating >= 4 ? '' : rating >= 3 ? 'mid' : rating > 0 ? 'bad' : 'none'}"><i class="fa-solid fa-star"></i>${rating > 0 ? rating.toFixed(1) : '0.0'}</span>${dots}</a>
+        <a class="go" href="${href}&buy=1" aria-label="Buy ${name}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+      </div>
+      ${Number.isFinite(stock) && stock > 0 && stock <= 4 ? `<span class="low">Only ${stock} left</span>` : ''}
+    </div>
+    <button type="button" class="heart ${wished ? 'on' : ''}" data-heart="${id}" aria-label="Save ${name} to wishlist"><i class="fa-${wished ? 'solid' : 'regular'} fa-heart"></i></button>
+  </article>`;
+};
+
+const loadSuggestions = async () => {
+  let products = [];
+  let experiences = [];
+  try { if (typeof getVercelData === 'function') products = (await getVercelData()) || []; } catch {}
+  try { if (typeof getVercelExperiences === 'function') experiences = (await getVercelExperiences()) || []; } catch {}
+
+  const totals = {};
+  experiences.forEach(entry => {
+    const pid = reviewProductId(entry);
+    const value = Number(entry.rating);
+    if (pid == null || !(value > 0)) return;
+    const total = totals[String(pid)] ||= { sum: 0, count: 0 };
+    total.sum += value;
+    total.count++;
+  });
+
+  const items = products.filter(p => String(p.id) !== String(state.id)).slice(0, 6).map(p => {
+    const base = Number(p.rating ?? p.averageRating ?? p.avgRating ?? p.ratingAvg ?? p.average_rating ?? p.avg_rating ?? p.stars) || 0;
+    const total = totals[String(p.id)];
+    return {
+      id: p.id, name: p.name, price: p.price, mrp: p.mrp, colors: p.colors, stock: p.stock,
+      img: p.imageMain || p.image || p.imageUrl || '', bestseller: !!p.bestseller,
+      rating: total?.count ? Math.round(total.sum / total.count * 10) / 10 : base
+    };
+  });
+  if (!items.length) return;
+  $('#sugGrid').innerHTML = items.map(suggestionCard).join('');
+  $('#sugSec').hidden = false;
+};
+
 const subscribeNewsletter = () => {
   const input = $('#newsletterEmail');
   const email = input.value.trim().toLowerCase();
@@ -743,6 +807,24 @@ document.addEventListener('click', event => {
   if (dot) {
     const carousel = $('#carousel');
     return carousel.scrollTo({ left: carousel.clientWidth * Number(dot.dataset.i), behavior: 'smooth' });
+  }
+
+  const buy = event.target.closest('.go');
+  if (buy) {
+    event.preventDefault();
+    return navigate(buy.href, buy);
+  }
+
+  const heart = event.target.closest('[data-heart]');
+  if (heart) {
+    const id = String(heart.dataset.heart);
+    const list = readJson('aavira_wishlist', []).map(String);
+    const active = !list.includes(id);
+    writeJson('aavira_wishlist', active ? [...list, id] : list.filter(item => item !== id));
+    heart.classList.toggle('on', active);
+    heart.querySelector('i').className = `fa-${active ? 'solid' : 'regular'} fa-heart`;
+    toast(active ? 'Added to wishlist' : 'Removed from wishlist');
+    updateWishBadge();
   }
 });
 
@@ -828,6 +910,7 @@ const init = async () => {
   paintWish();
   renderRatings([], []);
   loadReviews();
+  loadSuggestions();
 };
 
 addEventListener('pageshow', () => {
@@ -836,7 +919,8 @@ addEventListener('pageshow', () => {
   $$('.is-busy').forEach(el => el.classList.remove('is-busy'));
 });
 
-init();
+window.lucide?.createIcons();
+init().then(() => window.lucide?.createIcons());
 </script>
 </body>
 </html>
