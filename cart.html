@@ -1038,6 +1038,29 @@ body.aavira-theme .card-loading-overlay{
         setTimeout(()=>{ window.location.href = './'; }, BACK_LOAD_MS);
     };
 
+    /* ── self-heal watchdog ──
+       Some pages get a stray DOM write (extension, injected script, a
+       re-paint from the "aavira-theme" observer, etc.) that empties
+       #cartItemsContainer after it was already rendered. If that ever
+       happens while we still have items in memory, just redraw them —
+       the user should never see an empty bag when their items are
+       still there. */
+    let healing = false;
+    function watchCartContainer(){
+        const container = document.getElementById('cartItemsContainer');
+        if(!container) return;
+        new MutationObserver(()=>{
+            if(healing) return;
+            if(cart.length > 0 && container.children.length === 0){
+                healing = true;
+                requestAnimationFrame(()=>{
+                    render();
+                    healing = false;
+                });
+            }
+        }).observe(container, { childList:true });
+    }
+
     /* ── boot ── */
     document.addEventListener('DOMContentLoaded',()=>{
         show('skeletonView');
@@ -1049,8 +1072,17 @@ body.aavira-theme .card-loading-overlay{
         const wait = Math.max(0, SKELETON_MS-(Date.now()-t0));
         setTimeout(()=>{
             if(cart.length===0) show('emptyView');
-            else { show('mainView'); render(); }
+            else { show('mainView'); render(); watchCartContainer(); }
         }, wait);
+    });
+
+    /* extra safety: if the tab was backgrounded/restored (common on
+       mobile browsers) and the container is somehow empty, redraw. */
+    addEventListener('pageshow', ()=>{
+        const container = document.getElementById('cartItemsContainer');
+        if(container && cart.length > 0 && container.children.length === 0){
+            render();
+        }
     });
 })();
 </script>
