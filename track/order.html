@@ -328,7 +328,7 @@ window.aaviraSessionExpired = () => {
 };
 
 let loading = false;
-const G = (() => { const q = new URLSearchParams(location.search); return { id: (q.get('id') || '').trim(), t: q.get('t') || '', c: '' }; })();
+const G = (() => { const q = new URLSearchParams(location.search); return { id: (q.get('id') || '').trim(), t: q.get('t') || '', c: '', err: '' }; })();
 const sameContact = (o, c) => {
   const x = String(c || '').trim().toLowerCase();
   if (x.includes('@')) return String(o.email || o.customerEmail || '').trim().toLowerCase() === x;
@@ -339,17 +339,22 @@ const fetchOrders = async (silent = false) => {
   if (loading) return;
   if (!G.id || (!G.t && !G.c)) { if (!silent) { S.orders = []; showTrack(); } return; }
   loading = true;
+  G.err = '';
   if (!silent) $('#dvBody').innerHTML = '<div class="skel"></div>';
   try {
-    const url = `${BACKEND}/api/orders?nocache=${Date.now()}&orderId=${encodeURIComponent(G.id)}` + (G.t ? `&t=${encodeURIComponent(G.t)}` : `&contact=${encodeURIComponent(G.c)}`);
+    const url = `${BACKEND}/api/track?orderId=${encodeURIComponent(G.id)}` + (G.t ? `&token=${encodeURIComponent(G.t)}` : `&contact=${encodeURIComponent(G.c)}`);
     const res = await fetch(url);
+    if (res.status === 429) G.err = 'Too many attempts. Please wait a few minutes and try again.';
+    else if (!res.ok && res.status !== 404) G.err = `The tracking service replied with error ${res.status}. Please contact support on WhatsApp.`;
     const json = res.ok ? await res.json() : {};
     const rows = json.status === 'success' && Array.isArray(json.data) ? json.data : [];
-    S.orders = rows.filter(o => cid(rawId(o)) === cid(G.id) && (G.t || sameContact(o, G.c))).slice(0, 1);
+    console.log('[track] status', res.status, 'orders returned:', rows.length);
+    S.orders = rows.filter(o => cid(rawId(o)) === cid(G.id)).slice(0, 1);
     S.synced = Date.now();
   } catch (e) {
     if (!silent) S.orders = [];
-    toast('Could not load. Check your connection.', 'err');
+    G.err = (e instanceof SyntaxError ? 'The server sent an unexpected reply.' : 'Could not reach the server. Please check your internet connection and try again.') + ' [' + (e && e.message ? e.message : 'error') + ']';
+    console.error('[track] fetch failed', e);
   }
   loading = false;
   showTrack(silent);
@@ -596,7 +601,7 @@ const showTrack = keep => {
     if (f) f.insertAdjacentHTML('beforebegin', '<button class="btn l" onclick="showForm()"><i class="fa-solid fa-magnifying-glass"></i>Track another order</button>');
     return;
   }
-  showForm(G.id && (G.t || G.c) ? 'We could not find an order with these details. Please check your Order ID and email or phone number.' : '', G.id, G.c);
+  showForm(G.err || (G.id && (G.t || G.c) ? 'We could not find an order with these details. Please check your Order ID and email or phone number.' : ''), G.id, G.c);
 };
 window.aaviraSessionExpired = () => { S.orders = []; showTrack(); };
 fetchOrders();
