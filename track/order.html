@@ -190,6 +190,10 @@ a{color:inherit}
 @media print{.app>*:not(.mo){display:none!important}.mo{position:static;background:none;display:block}.sheet{max-height:none}.sheet button{display:none}}
 .app>.hdr,.searchbar,.head,.tabs,#list{display:none!important}
 .dv{position:relative;flex:1;min-height:0;transform:none;visibility:visible}
+.tl{display:block;font-size:12px;font-weight:700;margin:16px 0 6px}
+.tf{width:100%;height:50px;border:1.5px solid var(--line);border-radius:14px;padding:0 14px;font:inherit;font-size:16px;outline:none;background:#fff;transition:border-color .2s,box-shadow .2s}
+.tf:focus{border-color:var(--rani);box-shadow:0 0 0 3px rgba(216,27,96,.1)}
+.terr{margin-top:14px;font-size:12.5px;font-weight:600;line-height:1.5;color:var(--danger);background:#FEF2F2;border-radius:12px;padding:10px 12px}
 </style>
 </head>
 <body>
@@ -324,44 +328,31 @@ window.aaviraSessionExpired = () => {
 };
 
 let loading = false;
+const G = (() => { const q = new URLSearchParams(location.search); return { id: (q.get('id') || '').trim(), t: q.get('t') || '', c: '' }; })();
+const sameContact = (o, c) => {
+  const x = String(c || '').trim().toLowerCase();
+  if (x.includes('@')) return String(o.email || o.customerEmail || '').trim().toLowerCase() === x;
+  const d = x.replace(/\D/g, '').slice(-10);
+  return d.length === 10 && String(o.phone || o.customerPhone || '').replace(/\D/g, '').slice(-10) === d;
+};
 const fetchOrders = async (silent = false) => {
   if (loading) return;
+  if (!G.id || (!G.t && !G.c)) { if (!silent) { S.orders = []; showTrack(); } return; }
   loading = true;
-  const email = session();
-  const guestId = new URLSearchParams(location.search).get('id') || '';
-  if (!silent) $('#list').innerHTML = '<div class="skel"></div><div class="skel"></div>';
-  if (!guestId) {
-    S.orders = [];
-    loading = false;
-    return showTrack();
-  }
+  if (!silent) $('#dvBody').innerHTML = '<div class="skel"></div>';
   try {
-    const url = `${BACKEND}/api/orders?nocache=${Date.now()}&` + (email ? `email=${encodeURIComponent(email)}` : `orderId=${encodeURIComponent(guestId)}&t=${encodeURIComponent(new URLSearchParams(location.search).get('t') || '')}`);
-    const headers = { 'Content-Type': 'application/json' };
-    const authToken = localStorage.getItem('authToken') || localStorage.getItem('aavira_token');
-    const orderToken = localStorage.getItem('aavira_order_token_' + guestId);
-    if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
-    if (guestId && orderToken) headers['X-Order-Token'] = orderToken;
-    const res = await fetch(url, { headers });
-    if (res.status === 401 || res.status === 403) { loading = false; window.aaviraSessionExpired(); return; }
-    const json = await res.json();
-    let rows = res.ok && json.status === 'success' && Array.isArray(json.data) ? json.data : [];
-    rows = email
-      ? rows.filter(o => String(o.email || o.customerEmail || o.userEmail || '').trim().toLowerCase() === email)
-      : rows.filter(o => cid(rawId(o)) === cid(guestId)).slice(0, 1);
-    S.orders = rows;
-    $('#sub').textContent = email ? `Signed in as ${email}` : 'Tracking your order';
+    const url = `${BACKEND}/api/orders?nocache=${Date.now()}&orderId=${encodeURIComponent(G.id)}` + (G.t ? `&t=${encodeURIComponent(G.t)}` : `&contact=${encodeURIComponent(G.c)}`);
+    const res = await fetch(url);
+    const json = res.ok ? await res.json() : {};
+    const rows = json.status === 'success' && Array.isArray(json.data) ? json.data : [];
+    S.orders = rows.filter(o => cid(rawId(o)) === cid(G.id) && (G.t || sameContact(o, G.c))).slice(0, 1);
     S.synced = Date.now();
   } catch (e) {
     if (!silent) S.orders = [];
-    toast('Could not load orders. Check your connection.', 'err');
+    toast('Could not load. Check your connection.', 'err');
   }
   loading = false;
-  showTrack();
-  if (false) {
-    const fresh = S.orders.find(x => cid(rawId(x)) === cid(rawId(S.cur)));
-    if (fresh) renderDv(fresh, true);
-  }
+  showTrack(silent);
 };
 const refresh = async () => {
   const icons = document.querySelectorAll('#refBtn i, #refBtn2 i');
@@ -370,7 +361,7 @@ const refresh = async () => {
   icons.forEach(i => i.classList.remove('fa-spin'));
   toast('Orders refreshed');
 };
-setInterval(() => { if (!document.hidden && (session() || new URLSearchParams(location.search).get('id'))) fetchOrders(true); }, REFRESH_MS);
+setInterval(() => { if (!document.hidden && S.orders[0]) fetchOrders(true); }, REFRESH_MS);
 document.addEventListener('visibilitychange', () => { if (!document.hidden && Date.now() - S.synced > 30000) fetchOrders(true); });
 
 /* search / sort */
@@ -579,10 +570,33 @@ window.addEventListener('pageshow', () => document.querySelectorAll('.is-busy').
 document.querySelectorAll('[data-brand]').forEach(el => { el.innerHTML = brandHtml(); });
 $('#dv').classList.add('on');
 $('#dvBody').innerHTML = '<div class="skel"></div>';
-const showTrack = () => {
+const showForm = (err, id = G.id, c = G.c) => {
+  $('#dvBody').innerHTML = `<div class="card"><h3 class="h3">Track your order</h3>
+    <p class="meta" style="line-height:1.55">Enter your Order ID and the email or phone number you used while ordering.</p>
+    <label class="tl" for="tfId">Order ID</label>
+    <input class="tf" id="tfId" value="${esc(id)}" placeholder="e.g. AVF-123456" autocomplete="off" autocapitalize="characters" onkeydown="if(event.key==='Enter')submitTrack()">
+    <label class="tl" for="tfC">Email or phone number</label>
+    <input class="tf" id="tfC" value="${esc(c)}" placeholder="Email or 10-digit mobile number" autocomplete="off" autocapitalize="none" onkeydown="if(event.key==='Enter')submitTrack()">
+    ${err ? `<div class="terr">${esc(err)}</div>` : ''}
+    <button class="btn p" onclick="submitTrack()"><i class="fa-solid fa-location-crosshairs"></i>Track order</button></div>` + footer();
+};
+const submitTrack = () => {
+  const id = $('#tfId').value.trim().replace(/^#/, '').toUpperCase();
+  const c = $('#tfC').value.trim();
+  const okC = c.includes('@') ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c) : c.replace(/\D/g, '').length >= 10;
+  if (id.length < 4 || !okC) return showForm('Enter your Order ID and a valid email or 10-digit mobile number.', id, c);
+  G.id = id; G.c = c; G.t = ''; loading = false;
+  fetchOrders();
+};
+const showTrack = keep => {
   const o = S.orders[0];
-  if (o) return renderDv(o, true);
-  $('#dvBody').innerHTML = `<div class="empty"><div class="ico"><i class="fa-solid fa-magnifying-glass"></i></div><h3>Order not found</h3><p>We could not find this order.<br>Please check your tracking link.</p><a href="/">Go to home</a></div>` + footer();
+  if (o) {
+    renderDv(o, !!keep);
+    const f = $('#dvBody').querySelector('.foot');
+    if (f) f.insertAdjacentHTML('beforebegin', '<button class="btn l" onclick="showForm()"><i class="fa-solid fa-magnifying-glass"></i>Track another order</button>');
+    return;
+  }
+  showForm(G.id && (G.t || G.c) ? 'We could not find an order with these details. Please check your Order ID and email or phone number.' : '', G.id, G.c);
 };
 window.aaviraSessionExpired = () => { S.orders = []; showTrack(); };
 fetchOrders();
