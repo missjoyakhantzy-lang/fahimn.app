@@ -1,9 +1,11 @@
 // ==========================================
-// user_data.js (DATA PROVIDER & DELIVERY BOY) - secured version
+// user_data.js (DATA PROVIDER & DELIVERY BOY) - secured version v2
 // Saare backend URLs aur API calls sirf yahin hain.
 // Security rules:
 //   * Price/total kabhi client se trust nahi hota (server banata hai).
 //   * Login ke baad server ka signed token 'aavira_token' mein rehta hai.
+//   * Login wale customer ke orders: sirf token se (email URL mein kabhi nahi).
+//   * Bina login wale customer: sirf Order ID + (email ya phone) se tracking (/api/track).
 //   * Har request timeout ke saath, aur response safe tareeke se parse hota hai.
 // ==========================================
 
@@ -47,6 +49,7 @@ const jsonPost = (url, body, headers) => api(url, {
 const isSuccess = r => !!(r && r.ok && r.data && (r.data.status === 'success' || r.data.success === true));
 const cleanStr = (v, max) => String(v ?? '').trim().slice(0, max);
 const EMAIL_RE = /^[^\s@\/]+@[^\s@\/]+\.[^\s@\/]+$/;
+const randomKey = () => Array.from(crypto.getRandomValues(new Uint8Array(16)), b => b.toString(16).padStart(2, '0')).join('');
 
 // ==========================================
 // 0.1 SESSION TOKEN & HEADERS
@@ -59,16 +62,21 @@ function jwtExpired(token) {
     } catch (e) { return true; }
 }
 
-window.aaviraSessionExpired = false;
+// A page may define window.aaviraSessionExpired = () => {...}. Never overwrite that function with a boolean.
+if (typeof window.aaviraSessionExpired !== 'function') window.aaviraSessionExpired = false;
+function markSessionExpired() {
+    if (typeof window.aaviraSessionExpired === 'function') window.aaviraSessionExpired();
+    else window.aaviraSessionExpired = true;
+}
 
 window.getAaviraToken = function () {
     const token = LS.get('aavira_token') || LS.get('authToken');
     if (!token) return '';
-    if (jwtExpired(token)) { 
-        LS.del('aavira_token'); 
-        LS.del('authToken'); 
-        window.aaviraSessionExpired = true; 
-        return ''; 
+    if (jwtExpired(token)) {
+        LS.del('aavira_token');
+        LS.del('authToken');
+        markSessionExpired();
+        return '';
     }
     return token;
 };
@@ -99,7 +107,7 @@ function clearCachedOrders() {
 window.clearAaviraSession = function () {
     ['authToken', 'aavira_token', 'aavira_user_email', 'aavira_display_name', 'aavira_user_phone'].forEach(LS.del);
     clearCachedOrders();
-    window.aaviraSessionExpired = false;
+    if (typeof window.aaviraSessionExpired !== 'function') window.aaviraSessionExpired = false;
 };
 
 // ==========================================
@@ -108,14 +116,14 @@ window.clearAaviraSession = function () {
 window.fetchAaviraApi = async function (path, options = {}) {
     const url = path.startsWith('http') ? path : `${VERCEL_URL}${path}`;
     const headers = window.authHeaders(options.headers || {});
-    
+
     const r = await api(url, { ...options, headers });
-    
+
     if (r.status === 401 || r.status === 403) {
-        if (typeof window.aaviraSessionExpired === 'function') window.aaviraSessionExpired();
+        markSessionExpired();
         return { success: false, message: 'Session expired' };
     }
-    
+
     const payloadData = r.data?.data || r.data;
     return {
         success: r.ok && (r.data?.status === 'success' || r.data?.success || r.status === 200),
@@ -153,7 +161,7 @@ window.subscribeNewsletterApi = async function (email) {
 };
 
 // ==========================================
-// 2. ORDERS LOGIC & CHECKOUT
+// 2. ORDERS: LOGGED-IN CUSTOMERS
 // ==========================================
 window.getLocalAaviraOrders = function () {
     const orders = LS.json('aavira_orders', []);
@@ -164,98 +172,128 @@ window.syncAaviraOrderLocally = function (orderPayload) {
     try {
         if (!orderPayload || !orderPayload.orderId) return false;
         const id = String(orderPayload.orderId).trim();
-        const normalized = { 
-            ...orderPayload, 
-            id: orderPayload.id || id, 
-            orderId: id, 
-            totalAmount: Number(orderPayload.totalAmount ?? orderPayload.total ?? orderPayload.amount ?? 0) || 0 
+        const normalized = {
+            ...orderPayload,
+            id: orderPayload.id || id,
+            orderId: id,
+            totalAmount: Number(orderPayload.totalAmount ?? orderPayload.total ?? orderPayload.amount ?? 0) || 0
         };
-        
+
         let orders = window.getLocalAaviraOrders();
         const index = orders.findIndex(order => String(order?.orderId || order?.id || '').trim() === id);
-        
-        if (index >= 0) orders[index] = { ...orders[index], ...normalized }; 
+
+        if (index >= 0) orders[index] = { ...orders[index], ...normalized };
         else orders.unshift(normalized);
-        
+
         LS.set('aavira_orders', JSON.stringify(orders.slice(0, 50)));
         LS.set('aavira_last_order_id', id);
         return true;
     } catch (e) { return false; }
 };
 
+// My Orders: ONLY for a logged-in customer. The server reads the email from the signed token.
+// Guests never appear here - they use trackAaviraOrder() / the /track/order page.
 window.getAaviraOrdersForCurrentUser = async function () {
     const email = String(LS.get('aavira_user_email') || '').trim().toLowerCase();
     const name = String(LS.get('aavira_display_name') || '').trim();
     const signedIn = !!(email && name && name.toLowerCase() !== 'guest user');
+    if (!signedIn) return [];
+
     const token = window.getAaviraToken();
-    const useJwt = signedIn && !!token;
-    const guestId = String(LS.get('aavira_guest_order_id') || '').trim();
+    if (!token) { markSessionExpired(); return window.getLocalAaviraOrders(); }
 
-    if (!useJwt && !guestId) {
-        if (signedIn) { window.aaviraSessionExpired = true; return window.getLocalAaviraOrders(); }
-        return [];
-    }
-
-    const headers = window.authHeaders();
-    let url = `${VERCEL_URL}/api/orders?nocache=${Date.now()}`;
-    if (!useJwt) {
-        url += `&orderId=${encodeURIComponent(guestId)}`;
-        const orderToken = LS.get(ORDER_TOKEN_PREFIX + guestId);
-        if (orderToken) headers['X-Order-Token'] = orderToken;
-    }
-
-    const r = await api(url, { headers });
+    const r = await api(`${VERCEL_URL}/api/orders?nocache=${Date.now()}`, { headers: window.authHeaders() });
     if (r.status === 401 || r.status === 403) {
-        if (useJwt) { 
-            LS.del('aavira_token'); 
-            LS.del('authToken');
-            window.aaviraSessionExpired = true; 
-            return window.getLocalAaviraOrders(); 
-        }
-        return [];
+        LS.del('aavira_token');
+        LS.del('authToken');
+        markSessionExpired();
+        return window.getLocalAaviraOrders();
     }
-    
+
     if (!(r.ok && r.data && r.data.status === 'success' && Array.isArray(r.data.data))) return [];
-    LS.set('aavira_orders', JSON.stringify(r.data.data));
-    return r.data.data;
+    const mine = r.data.data.filter(o => o && o.guest !== true && o.verifiedUser !== false);
+    LS.set('aavira_orders', JSON.stringify(mine));
+    return mine;
 };
 
-// --- NEW CHECKOUT PLACEMENT SYSTEM ---
+// ==========================================
+// 2.1 PLACE ORDER (checkout)
+// ==========================================
 window.placeAaviraOrder = async function (payload) {
-    const r = await jsonPost(`${VERCEL_URL}/api/orders`, payload, window.authHeaders());
-    
+    const body = { ...(payload || {}) };
+    if (!body.idempotencyKey) body.idempotencyKey = randomKey(); // a double tap can never create two orders
+    const r = await jsonPost(`${VERCEL_URL}/api/orders`, body, window.authHeaders());
+
     if (r.status === 401 || r.status === 403) {
-        if (typeof window.aaviraSessionExpired === 'function') window.aaviraSessionExpired();
+        markSessionExpired();
         return { success: false, message: 'Session expired. Please log in again.' };
     }
 
-    if (r.ok && (r.data?.orderId || r.data?.status === 'success' || r.data?.data?.orderId)) {
-        const responseData = r.data.data || r.data;
-        if (responseData.order) window.syncAaviraOrderLocally(responseData.order);
-        
+    const d = r.data || {};
+    if (r.ok && d.status === 'success' && d.orderId) {
+        const order = d.order || {};
+        // only a logged-in customer's order is cached on the device; a guest order is never stored locally
+        if (d.verified && order.orderId) window.syncAaviraOrderLocally(order);
         return {
             success: true,
-            orderId: responseData.orderId,
-            orderToken: responseData.orderToken
+            orderId: d.orderId,
+            orderToken: d.orderToken || '',   // secret code for the guest tracking link
+            verified: !!d.verified,           // true = linked to the logged-in account
+            order,
+            totalAmount: Number(order.totalAmount) || 0
         };
     }
-    
-    return { success: false, message: r.data?.message || r.data?.error || 'Failed to place order' };
+    if (r.status === 0) return { success: false, message: 'Could not reach the server. Please check your internet connection.' };
+    return { success: false, message: d.message || d.error || 'Failed to place order' };
+};
+
+// Link the customer should open after ordering
+window.getOrderPageUrl = function (result) {
+    if (result && result.verified) return '/orders';
+    const id = encodeURIComponent((result && result.orderId) || '');
+    const t = encodeURIComponent((result && result.orderToken) || '');
+    return `/track/order?id=${id}` + (t ? `&t=${t}` : '');
 };
 
 window.saveAaviraOrderToken = function (orderId, token) {
     if (orderId && token) rememberOrderToken(String(orderId).trim(), String(token).trim());
 };
 
-// Legacy support
+// Legacy support (old pages)
 window.sendOrderToVercel = async function (orderPayload) {
     const result = await window.placeAaviraOrder(orderPayload);
     if (result.success) {
-        if (result.orderToken) window.saveAaviraOrderToken(result.orderId, result.orderToken);
-        return { orderId: result.orderId, orderToken: result.orderToken, order: orderPayload };
+        return { orderId: result.orderId, orderToken: result.orderToken, verified: result.verified, order: result.order };
     }
     window.lastOrderError = result.message;
     return null;
+};
+
+// ==========================================
+// 2.2 ORDER TRACKING FOR CUSTOMERS WITHOUT LOGIN
+//     Order ID + (email OR phone)  ->  or Order ID + secret link code
+// ==========================================
+window.trackAaviraOrder = async function (orderId, contact, linkToken) {
+    const id = cleanStr(orderId, 40).toUpperCase().replace(/^#/, '');
+    const c = cleanStr(contact, 120);
+    const t = cleanStr(linkToken, 100);
+    if (!/^AVF-[A-Z0-9]{4,12}$/.test(id)) return { success: false, status: 400, message: 'Enter a valid Order ID (example: AVF-AB12CD34).' };
+    if (!t) {
+        const okContact = c.includes('@') ? EMAIL_RE.test(c) : c.replace(/\D/g, '').length >= 10;
+        if (!okContact) return { success: false, status: 400, message: 'Enter the email or 10-digit phone number used for this order.' };
+    }
+
+    // public on purpose: no login header is sent, the server checks Order ID + email/phone itself
+    const url = `${VERCEL_URL}/api/track?orderId=${encodeURIComponent(id)}` + (t ? `&token=${encodeURIComponent(t)}` : `&contact=${encodeURIComponent(c)}`);
+    const r = await api(url);
+
+    if (r.status === 0) return { success: false, status: 0, message: 'Could not reach the server. Please check your internet connection.' };
+    if (r.status === 429) return { success: false, status: 429, message: 'Too many attempts. Please wait a few minutes and try again.' };
+    if (r.status === 404) return { success: false, status: 404, message: 'We could not find an order with these details. Please check your Order ID and email or phone number.' };
+
+    const list = r.data && r.data.data;
+    if (r.ok && Array.isArray(list) && list[0]) return { success: true, order: list[0] };
+    return { success: false, status: r.status, message: (r.data && r.data.message) || 'Could not track the order right now.' };
 };
 
 // ==========================================
@@ -312,12 +350,12 @@ window.DeliveryBoy = (function () {
             if (prev && next && prev !== next) clearCachedOrders();
             LS.set('aavira_token', data.authToken);
             LS.set('authToken', data.authToken);
-            window.aaviraSessionExpired = false;
+            if (typeof window.aaviraSessionExpired !== 'function') window.aaviraSessionExpired = false;
             delete data.authToken;
         }
         return { ok: r.ok, data };
     };
-    
+
     return Object.freeze({
         sendOTP: (email, name) => post('/api/send-otp', { userEmail: email, userName: name }),
         verifyOTP: (email, userOtp, name, pwd) => post('/api/verify-otp', { userEmail: email, userOTP: userOtp, userName: name, userPassword: pwd }),
