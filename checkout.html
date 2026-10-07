@@ -17,7 +17,7 @@ button{font-family:inherit;cursor:pointer}
 a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--rani);outline-offset:2px}
 [hidden]{display:none!important}
-.app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--ivory);padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))}
+.app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--ivory);padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}
 @media(min-width:640px){body{background:#EFE8DE}.app{box-shadow:0 0 60px rgba(36,32,36,.12)}}
 
 .is-busy{position:relative;pointer-events:none;color:transparent!important}
@@ -253,7 +253,7 @@ main{padding:14px}
 .line-total{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding:12px 14px;border-radius:12px;background:var(--cream);font-size:13px;color:var(--muted)}
 .line-total b{font-size:16px;color:var(--ink)}
 .sheet-acts .wish.on{border-color:var(--rani);background:var(--blush);color:var(--rani)}
-.toast{position:fixed;left:50%;bottom:calc(170px + env(safe-area-inset-bottom,0px));transform:translate(-50%,14px);opacity:0;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--rani),var(--rani-dark));color:#fff;font-size:13px;font-weight:600;padding:12px 20px;border-radius:999px;box-shadow:0 10px 28px rgba(216,27,96,.38);z-index:300;pointer-events:none;transition:opacity .28s,transform .28s;max-width:92%}
+.toast{position:fixed;left:50%;bottom:calc(110px + env(safe-area-inset-bottom,0px));transform:translate(-50%,14px);opacity:0;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--rani),var(--rani-dark));color:#fff;font-size:13px;font-weight:600;padding:12px 20px;border-radius:999px;box-shadow:0 10px 28px rgba(216,27,96,.38);z-index:300;pointer-events:none;transition:opacity .28s,transform .28s;max-width:92%}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 @media(prefers-reduced-motion:reduce){*,::before,::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
 /* underline style - no boxes; info icon only on active field */
@@ -313,6 +313,35 @@ main{padding:14px}
 .foot img{height:56px;width:auto;max-width:70%;object-fit:contain;display:block;margin:0 auto 10px}
 .foot-secure{font-size:11.5px;font-weight:600;color:var(--green);display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:6px}
 .foot-copy{font-size:11px;color:var(--muted);letter-spacing:.02em}
+/* coupon card + skeleton */
+.coupon h2{margin-bottom:14px}
+.cp-toggle{width:100%;display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px dashed var(--rani);border-radius:14px;background:linear-gradient(135deg,#FFF6F9,var(--blush));text-align:left;color:var(--ink)}
+.cp-ic{width:40px;height:40px;border-radius:12px;background:#fff;color:var(--rani);display:flex;align-items:center;justify-content:center;font-size:17px;flex:0 0 auto;box-shadow:0 4px 10px rgba(216,27,96,.12)}
+.cp-tx{flex:1;min-width:0}
+.cp-tx b{display:block;font-size:13.5px;font-weight:700}
+.cp-tx small{font-size:11.5px;color:var(--muted)}
+.cp-toggle .chev{font-size:12px;color:var(--rani);transition:transform .25s}
+.cp-toggle.open .chev{transform:rotate(180deg)}
+.coupon .promo{margin:14px 0 0;animation:rise .25s ease}
+.coupon .promo .fld{height:48px;border-style:dashed}
+.fld.bad{border-color:var(--danger)!important;box-shadow:0 0 0 3px rgba(185,28,28,.08)}
+.cp-err{margin-top:10px;font-size:12px;font-weight:600;color:var(--danger);display:flex;align-items:center;gap:6px}
+.coupon .applied{margin:0;padding:12px 14px}
+.applied .ap-l{display:flex;align-items:center;gap:12px}
+.applied .ap-l>i{font-size:20px}
+.applied small{display:block;font-weight:500;font-size:11.5px;margin-top:1px}
+.sk{background:linear-gradient(90deg,#F1EBE3 25%,#FAF6F0 37%,#F1EBE3 63%);background-size:400% 100%;animation:shimmer 1.4s ease infinite;border-radius:12px}
+@keyframes shimmer{0%{background-position:100% 0}100%{background-position:0 0}}
+.sk-t{height:18px;width:42%;margin-bottom:18px}
+.sk-row{height:48px;margin-bottom:12px}
+.sk-btn{height:54px;border-radius:14px}
+.sk-opt{height:62px;border-radius:14px;margin-bottom:10px}
+.sk-item{display:flex;gap:14px}
+.sk-img{width:150px;height:200px;border-radius:14px;flex:0 0 auto}
+.sk-col{flex:1;display:flex;flex-direction:column;gap:10px;padding-top:4px}
+.sk-l1{height:16px;width:90%}.sk-l2{height:16px;width:65%}.sk-l3{height:12px;width:50%}.sk-l4{height:20px;width:40%;margin-top:auto}
+.sk-amt{height:40px;width:110px}
+.sk-pbtn{height:48px;flex:0 0 190px;border-radius:999px}
 </style>
 </head>
 <body>
@@ -322,6 +351,15 @@ main{padding:14px}
     <h1>Checkout</h1>
     <span class="secure"><i class="fa-solid fa-lock"></i>Secure</span>
   </header>
+
+  <main id="skelView" aria-hidden="true">
+    <section class="card"><div class="sk sk-t"></div><div class="sk sk-row"></div><div class="sk sk-btn"></div></section>
+    <section class="card"><div class="sk sk-t"></div>
+      <div class="sk-item"><div class="sk sk-img"></div><div class="sk-col"><div class="sk sk-l1"></div><div class="sk sk-l2"></div><div class="sk sk-l3"></div><div class="sk sk-l4"></div></div></div></section>
+    <section class="card"><div class="sk sk-t"></div><div class="sk sk-opt"></div><div class="sk sk-opt"></div></section>
+    <section class="card"><div class="sk sk-t"></div><div class="sk sk-opt"></div><div class="sk sk-opt"></div></section>
+  </main>
+  <div class="bar" id="skelBar" aria-hidden="true"><div class="bar-main"><div class="sk sk-amt"></div><div class="sk sk-pbtn"></div></div></div>
 
   <div class="empty" id="emptyView" hidden>
     <i class="fa-solid fa-cart-shopping"></i>
@@ -368,6 +406,24 @@ main{padding:14px}
       </div>
     </section>
 
+    <section class="card coupon">
+      <h2>Offers &amp; coupons</h2>
+      <button class="cp-toggle" id="couponToggle" type="button" onclick="toggleCoupon()" aria-expanded="false">
+        <span class="cp-ic"><i class="fa-solid fa-ticket"></i></span>
+        <span class="cp-tx"><b>Have a coupon code?</b><small>Tap to enter your code</small></span>
+        <i class="fa-solid fa-chevron-down chev"></i>
+      </button>
+      <div class="promo" id="promoForm" style="display:none">
+        <input class="fld" id="promoInput" placeholder="Enter coupon code" autocomplete="off" autocapitalize="characters" aria-label="Coupon code">
+        <button class="apply" id="promoBtn" type="button" onclick="applyPromo()">Apply</button>
+      </div>
+      <p class="cp-err" id="promoErr" role="alert" hidden></p>
+      <div class="applied" id="promoApplied">
+        <span class="ap-l"><i class="fa-solid fa-circle-check"></i><span><b id="promoName"></b> applied<small>You saved <b id="promoSave"></b></small></span></span>
+        <button type="button" onclick="removePromo()" aria-label="Remove coupon"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </section>
+
     <section class="card">
       <h2>Order summary</h2>
       <div class="bill">
@@ -388,14 +444,6 @@ main{padding:14px}
   </main>
 
   <div class="bar" id="payBar" hidden>
-    <div class="bar-coupon-area">
-      <button class="bar-link" id="couponToggle" type="button" onclick="toggleCoupon()" aria-expanded="false"><i class="fa-solid fa-ticket"></i>Have a coupon code?</button>
-      <div class="promo" id="promoForm" style="display:none">
-        <input class="fld" id="promoInput" placeholder="Enter coupon code" autocomplete="off" aria-label="Coupon code">
-        <button class="apply" id="promoBtn" type="button" onclick="applyPromo()">Apply</button>
-      </div>
-      <div class="applied" id="promoApplied"><span><i class="fa-solid fa-circle-check"></i> <b id="promoName"></b> applied</span><button type="button" onclick="removePromo()" aria-label="Remove coupon"><i class="fa-solid fa-xmark"></i></button></div>
-    </div>
     <div class="bar-main">
       <div><small>Final amount</small><b id="barTotal">&#8377;0</b></div>
       <button class="btn-place" id="placeBtn" type="button" onclick="placeOrder()"><i class="fa-solid fa-lock"></i>Place order</button>
@@ -803,6 +851,7 @@ const bindForm = () => {
   $$('#typeChips .chip').forEach(c => c.addEventListener('click', () => setType(c.dataset.t)));
   $$('input[name="delivery"], input[name="payment"], #giftWrap').forEach(input => input.addEventListener('change', render));
   $('#promoInput').addEventListener('keydown', event => { if (event.key === 'Enter') applyPromo(); });
+  $('#promoInput').addEventListener('input', () => setPromoErr(''));
 };
 
 /* ---------- Cart ---------- */
@@ -864,6 +913,8 @@ const pricing = () => {
 };
 
 const showView = hasItems => {
+  $('#skelView').hidden = true;
+  $('#skelBar').hidden = true;
   $('#emptyView').hidden = hasItems;
   $('#checkoutView').hidden = !hasItems;
   $('#payBar').hidden = !hasItems;
@@ -898,6 +949,7 @@ const render = () => {
   $('#billDiscount').textContent = '- ' + money(bill.discount);
   $('#rowPromo').hidden = bill.coupon <= 0;
   $('#billPromo').textContent = '- ' + money(bill.coupon);
+  $('#promoSave').textContent = money(bill.coupon);
   $('#billShip').textContent = bill.delivery ? money(bill.delivery) : 'Free';
   $('#rowGift').hidden = !bill.gift;
   $('#billTotal').textContent = money(bill.total);
@@ -989,6 +1041,12 @@ const setPromoView = code => {
   $('#promoApplied').style.display = code ? 'flex' : 'none';
   $('#promoName').textContent = code;
 };
+const setPromoErr = m => {
+  const e = $('#promoErr');
+  e.textContent = m || '';
+  e.hidden = !m;
+  $('#promoInput').classList.toggle('bad', !!m);
+};
 const toggleCoupon = () => {
   const form = $('#promoForm');
   const open = form.style.display !== 'flex';
@@ -1005,7 +1063,8 @@ const restorePromo = () => {
 };
 const applyPromo = () => {
   const code = $('#promoInput').value.trim().toUpperCase();
-  if (code.length < 3) return toast('Enter a valid coupon code');
+  if (code.length < 3) return setPromoErr('Enter a valid coupon code');
+  setPromoErr('');
   withSpinner($('#promoBtn'), async () => {
     let amount = 0;
     try {
@@ -1017,7 +1076,7 @@ const applyPromo = () => {
         if (data && data.isActive !== false) amount = Number(data.amount || data.discountAmount || data.discount || 0);
       }
     } catch {}
-    if (!(amount > 0)) return toast('Invalid or expired coupon code');
+    if (!(amount > 0)) return setPromoErr('This coupon code is invalid or has expired.');
     state.promo = { code, amount };
     writeJson('savedPromoCache', { label: code, discount: amount });
     setPromoView(code);
@@ -1044,7 +1103,7 @@ const openWhatsApp = () => {
 };
 
 // Logged-in customers go to My Orders; guests go to their own tracking page
-const orderPageUrl = id => orderLoginEmail() ? '/orders' : '/track/order?id=' + encodeURIComponent(id) + '&t=' + encodeURIComponent(state.track);
+const orderPageUrl = id => state.verified ? '/orders' : '/track/order?id=' + encodeURIComponent(id) + '&t=' + encodeURIComponent(state.track);
 const trackOrder = orderId => { location.href = orderPageUrl(orderId); };
 
 const rememberOrder = (orderId, phone) => {
@@ -1072,7 +1131,7 @@ const showOnlineResult = (orderId, order) => {
     <p>Complete the payment on WhatsApp to confirm your order.</p>
     <div class="acts">
       <button class="btn-wa" type="button" onclick="openWhatsApp()"><i class="fa-brands fa-whatsapp"></i>Open WhatsApp <small id="waTimer">5s</small></button>
-      <button class="btn-line" type="button" onclick="navigate('${esc(orderPageUrl(orderId))}',this)"><i class="fa-solid fa-box"></i>${orderLoginEmail() ? 'View my orders' : 'Track my order'}</button>
+      <button class="btn-line" type="button" onclick="navigate('${esc(orderPageUrl(orderId))}',this)"><i class="fa-solid fa-box"></i>${state.verified ? 'View my orders' : 'Track my order'}</button>
     </div>`);
   let seconds = 5;
   clearInterval(state.timer);
@@ -1118,8 +1177,7 @@ const buildOrder = orderId => {
     address: `${a.address}, ${a.city} - Pincode: ${a.pin}`,
     mapLink: a.map || '',
     items,
-    guest: !orderLoginEmail(),
-    trackToken: newTrackToken(),
+    idempotencyKey: newTrackToken(),
     subtotal: bill.subtotal,
     deliveryFee: bill.delivery,
     giftWrapFee: bill.gift,
@@ -1146,6 +1204,17 @@ const playSuccess = () => {
   navigator.vibrate?.([60, 40, 60]);
 };
 
+const postOrder = async order => {
+  const base = typeof VERCEL_URL !== 'undefined' ? VERCEL_URL : 'https://server-js-psi-five.vercel.app';
+  const tk = readValue('authToken') || readValue('aavira_token');
+  const headers = { 'Content-Type': 'application/json' };
+  if (tk) headers.Authorization = 'Bearer ' + tk;
+  const res = await fetch(`${base}/api/orders`, { method: 'POST', headers, body: JSON.stringify(order) });
+  let json = {};
+  try { json = await res.json(); } catch (e) {}
+  return { ok: res.ok && json.status === 'success' && !!json.orderId, json };
+};
+
 const placeOrder = () => {
   if (!selectedAddress()) {
     toast('Please add a delivery address');
@@ -1155,20 +1224,19 @@ const placeOrder = () => {
   primeSound();
   withSpinner($('#placeBtn'), async () => {
     showProcessing('Please wait while we secure your order.');
-    const orderId = `AVF-${Math.floor(100000 + Math.random() * 900000)}`;
-    const order = buildOrder(orderId);
-    state.track = order.trackToken;
-    let saved = false;
-    try {
-      if (typeof window.sendOrderToVercel !== 'function') throw new Error('Order service is unavailable');
-      saved = await window.sendOrderToVercel(order);
-    } catch (error) {
-      console.error('Order save failed:', error);
-    }
-    if (!saved) {
+    const order = buildOrder('');
+    let result = { ok: false, json: {} };
+    try { result = await postOrder(order); } catch (error) { console.error('Order save failed:', error); }
+    if (!result.ok) {
       $('#overlay').classList.remove('on');
-      return toast('Order could not be saved. Please try again');
+      return toast(result.json.message || 'Order could not be saved. Please try again');
     }
+    // the SERVER creates the Order ID and the final amount
+    const orderId = result.json.orderId;
+    order.orderId = orderId;
+    order.totalAmount = Number((result.json.order || {}).totalAmount ?? order.totalAmount);
+    state.track = result.json.orderToken || '';
+    state.verified = !!result.json.verified;
     if (!state.buyNow) removeValue('aavira_cart');
     removeValue('savedPromoCache');
     removeValue('checkoutAddressDraft');
@@ -1185,9 +1253,11 @@ const init = async () => {
   renderAddresses();
   pullAddresses();
   bindForm();
+  const t0 = Date.now();
   await loadProducts();
   loadCart();
   restorePromo();
+  await new Promise(r => setTimeout(r, Math.max(0, 600 - (Date.now() - t0))));
   render();
 };
 
