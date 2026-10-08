@@ -58,7 +58,8 @@ function jwtExpired(token) {
     try {
         const part = String(token).split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
         const payload = JSON.parse(atob(part));
-        return !payload.exp || payload.exp * 1000 < Date.now() + 30000;
+        // no 'exp' claim = no expiry written in the token; let the server decide
+        return payload.exp ? payload.exp * 1000 < Date.now() + 30000 : false;
     } catch (e) { return true; }
 }
 
@@ -119,7 +120,7 @@ window.fetchAaviraApi = async function (path, options = {}) {
 
     const r = await api(url, { ...options, headers });
 
-    if (r.status === 401 || r.status === 403) {
+    if (r.status === 401) {
         markSessionExpired();
         return { success: false, message: 'Session expired' };
     }
@@ -203,7 +204,7 @@ window.getAaviraOrdersForCurrentUser = async function () {
     if (!token) { markSessionExpired(); return window.getLocalAaviraOrders(); }
 
     const r = await api(`${VERCEL_URL}/api/orders?nocache=${Date.now()}`, { headers: window.authHeaders() });
-    if (r.status === 401 || r.status === 403) {
+    if (r.status === 401) {
         LS.del('aavira_token');
         LS.del('authToken');
         markSessionExpired();
@@ -224,7 +225,7 @@ window.placeAaviraOrder = async function (payload) {
     if (!body.idempotencyKey) body.idempotencyKey = randomKey(); // a double tap can never create two orders
     const r = await jsonPost(`${VERCEL_URL}/api/orders`, body, window.authHeaders());
 
-    if (r.status === 401 || r.status === 403) {
+    if (r.status === 401) {
         markSessionExpired();
         return { success: false, message: 'Session expired. Please log in again.' };
     }
