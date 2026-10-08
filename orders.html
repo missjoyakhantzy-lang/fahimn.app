@@ -347,7 +347,9 @@ const fetchOrders = async (silent = false) => {
     if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
     if (guestId && orderToken) headers['X-Order-Token'] = orderToken;
     const res = await fetch(url, { headers });
-    if (res.status === 401 || res.status === 403) { loading = false; window.aaviraSessionExpired(); return; }
+    // log out ONLY when the server says the login token is invalid (401); server/config errors must not log anyone out
+    if (res.status === 401) { loading = false; window.aaviraSessionExpired(); return; }
+    if (!res.ok) throw new Error('server error ' + res.status);
     const json = await res.json();
     let rows = res.ok && json.status === 'success' && Array.isArray(json.data) ? json.data : [];
     rows = email
@@ -358,7 +360,7 @@ const fetchOrders = async (silent = false) => {
     S.synced = Date.now();
   } catch (e) {
     if (!silent) S.orders = [];
-    toast('Could not load orders. Check your connection.', 'err');
+    toast('Could not load orders (' + ((e && e.message) || 'error') + ')', 'err');
   }
   loading = false;
   drawTabs(); draw();
