@@ -1205,6 +1205,10 @@ const playSuccess = () => {
 };
 
 const postOrder = async order => {
+  if (typeof window.placeAaviraOrder === 'function') {
+    const r = await window.placeAaviraOrder(order);
+    return { ok: !!r.success, json: { orderId: r.orderId, orderToken: r.orderToken, verified: r.verified, order: r.order, message: r.message } };
+  }
   const base = typeof VERCEL_URL !== 'undefined' ? VERCEL_URL : 'https://server-js-psi-five.vercel.app';
   const tk = readValue('authToken') || readValue('aavira_token');
   const headers = { 'Content-Type': 'application/json' };
