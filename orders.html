@@ -188,15 +188,55 @@ a{color:inherit}
 @media (prefers-reduced-motion:reduce){.is-busy::after{animation-duration:.8s!important;animation-iteration-count:infinite!important}}
 @media (prefers-reduced-motion:reduce){*,::before,::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 @media print{.app>*:not(.mo){display:none!important}.mo{position:static;background:none;display:block}.sheet{max-height:none}.sheet button{display:none}}
+/* big rounded product photos */
+.thumb img,.thumb .ph{width:112px;height:140px;border-radius:20px}
+.it .pic{position:relative;flex:0 0 auto;display:block;border-radius:22px;overflow:hidden;box-shadow:0 10px 24px rgba(36,32,36,.14);text-decoration:none;-webkit-tap-highlight-color:transparent}
+.it .pic img,.it .pic .ph{width:152px;height:192px;border-radius:22px;border:0;display:block;object-fit:cover;transition:transform .35s ease}
+.it a.pic:active img{transform:scale(1.04)}
+.it .pic .view{position:absolute;left:8px;right:8px;bottom:8px;display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 8px;border-radius:999px;background:rgba(255,255,255,.95);color:var(--ink);font-size:11px;font-weight:700;box-shadow:0 4px 10px rgba(0,0,0,.12)}
+.it .pic .view i{color:var(--rani);font-size:11px}
+.it .pic.nolink{box-shadow:0 6px 16px rgba(36,32,36,.1)}
+.it-info{padding-top:2px}
+/* full page skeleton shimmer */
+.pskel{display:none;flex:1;overflow:hidden;padding:14px 16px}
+.app.is-loading .pskel{display:block}
+.app.is-loading .searchbar,.app.is-loading .head,.app.is-loading .tabs,.app.is-loading #list{display:none}
+.sk{background:linear-gradient(90deg,#F1EBE3 25%,#FAF6F0 37%,#F1EBE3 63%);background-size:400% 100%;animation:sh 1.4s ease infinite;border-radius:12px}
+.sk-search{height:48px;border-radius:16px;margin-bottom:18px}
+.sk-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:16px}
+.sk-h1{height:26px;width:150px;margin-bottom:8px}.sk-h2{height:12px;width:190px}
+.sk-sort{height:34px;width:88px;border-radius:999px}
+.sk-tabs{display:flex;gap:8px;margin-bottom:16px;overflow:hidden}
+.sk-tab{height:34px;width:84px;border-radius:999px;flex:0 0 auto}
+.sk-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:14px}
+.sk-chead{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sk-pill{height:26px;width:84px;border-radius:999px}
+.sk-cbody{display:flex;gap:14px}
+.sk-thumb{width:112px;height:140px;border-radius:20px;flex:0 0 auto}
+.sk-col{flex:1;display:flex;flex-direction:column;gap:10px;padding-top:2px}
+.sk-l{height:13px}.sk-w30{width:30%}.sk-w40{width:40%}.sk-w50{width:50%}.sk-w60{width:60%}.sk-w90{width:90%}
+.sk-price{height:22px;width:45%;margin-top:auto}
+.sk-track{height:6px;border-radius:6px;margin-top:16px}
 </style>
 </head>
 <body>
-<div class="app">
+<div class="app is-loading">
   <header class="hdr">
     <button class="ib back" onclick="location.href='/'" aria-label="Back to home"><i class="fa-solid fa-arrow-left"></i></button>
     <div class="brand" data-brand></div>
     <button class="ib" id="refBtn" onclick="refresh()" aria-label="Refresh orders"><i class="fa-solid fa-rotate-right"></i></button>
   </header>
+  <div class="pskel" id="pageSkel" aria-hidden="true">
+    <div class="sk sk-search"></div>
+    <div class="sk-head"><div><div class="sk sk-h1"></div><div class="sk sk-h2"></div></div><div class="sk sk-sort"></div></div>
+    <div class="sk-tabs"><div class="sk sk-tab"></div><div class="sk sk-tab"></div><div class="sk sk-tab"></div><div class="sk sk-tab"></div></div>
+    <div class="sk-card"><div class="sk-chead"><div><div class="sk sk-l sk-w30"></div><div class="sk sk-l sk-w50"></div></div><div class="sk sk-pill"></div></div>
+      <div class="sk-cbody"><div class="sk sk-thumb"></div><div class="sk-col"><div class="sk sk-l sk-w90"></div><div class="sk sk-l sk-w60"></div><div class="sk sk-l sk-w40"></div><div class="sk sk-price"></div></div></div>
+      <div class="sk sk-track"></div><div class="sk sk-l sk-w50" style="margin-top:14px"></div></div>
+    <div class="sk-card"><div class="sk-chead"><div><div class="sk sk-l sk-w30"></div><div class="sk sk-l sk-w50"></div></div><div class="sk sk-pill"></div></div>
+      <div class="sk-cbody"><div class="sk sk-thumb"></div><div class="sk-col"><div class="sk sk-l sk-w90"></div><div class="sk sk-l sk-w60"></div><div class="sk sk-l sk-w40"></div><div class="sk sk-price"></div></div></div>
+      <div class="sk sk-track"></div><div class="sk sk-l sk-w50" style="margin-top:14px"></div></div>
+  </div>
   <div class="searchbar">
     <div class="search"><i class="fa-solid fa-magnifying-glass s"></i><input id="q" type="search" placeholder="Search by order ID or product name" autocomplete="off" aria-label="Search orders" oninput="onSearch()"><button class="clr" id="clr" hidden onclick="clearQ()" aria-label="Clear search"><i class="fa-solid fa-xmark"></i></button></div>
   </div>
@@ -409,7 +449,7 @@ const footer = () => `<div class="foot"><div class="brand">${brandHtml()}</div>
   <h4 class="ty">Thank you for shopping with us</h4>
   <p>Luxury ethnic fashion,<br>designed for modern elegance.</p>
   <div class="links"><button onclick="wa('Hi Aavira Support,\\n\\nI need help with my order.')">WhatsApp support</button><a href="/">Continue shopping</a></div>
-  <p class="copy">&copy; ${new Date().getFullYear()} Aavira Fashion, Inc.</p></div>`;
+  <p class="copy">&copy; ${new Date().getFullYear()} Aavira Fashion. All rights reserved.</p></div>`;
 
 const miniTrack = st => {
   if (st === 'Cancelled') return `<div class="mt bad"><div class="mt-line"><i style="width:100%"></i></div><div class="mt-lbl"><span>Order cancelled</span></div></div>`;
@@ -457,6 +497,14 @@ const HERO = {
   'Out for Delivery': ['Out for delivery', 'Your order is with the delivery partner.'],
   'Delivered': ['Delivered', 'Your order has been delivered. We hope you love it.'],
   'Cancelled': ['Order cancelled', 'This order has been cancelled.']
+};
+/* Product photo opens the product details page.
+   If your product page is at another address, change PRODUCT_PAGE (it gets the product id at the end). */
+const PRODUCT_PAGE = '/product?id=';
+const itemPic = i => {
+  const pid = String(i.productId || '').trim();
+  if (!pid) return `<div class="pic nolink">${imgTag(i.image)}</div>`;
+  return `<a class="pic" href="${PRODUCT_PAGE}${encodeURIComponent(pid)}" aria-label="View ${esc(i.name || 'product')}">${imgTag(i.image)}<span class="view"><i class="fa-regular fa-eye"></i>View product</span></a>`;
 };
 const stepper = st => {
   if (st === 'Cancelled') return '';
@@ -506,7 +554,7 @@ const renderDv = (o, keepScroll) => {
     ${heroHtml}
     <div class="qa"><button onclick="openInv()"><i class="fa-solid fa-file-invoice"></i>Invoice</button><button onclick="supportWA()"><i class="fa-brands fa-whatsapp" style="color:#25D366"></i>Support</button><button onclick="shareOrder()"><i class="fa-solid fa-share-nodes"></i>Share</button></div>
     ${courierHtml}
-    <div class="card"><h3 class="h3">Your order</h3>${(items.length ? items : [{ name: 'Item', qty: 1, price: total }]).map(i => `<div class="it">${imgTag(i.image)}<div class="it-info"><h4>${esc(i.name || 'Item')}</h4><small>Size: ${esc(i.size || 'Free Size')}</small><small>Color: ${esc(colorTxt(i.color))}</small><small>Qty: ${i.qty || 1}</small><div class="ip">${money(Number(i.price || 0) * (i.qty || 1))}</div></div></div>`).join('')}</div>
+    <div class="card"><h3 class="h3">Your order</h3>${(items.length ? items : [{ name: 'Item', qty: 1, price: total }]).map(i => `<div class="it">${itemPic(i)}<div class="it-info"><h4>${esc(i.name || 'Item')}</h4><small>Size: ${esc(i.size || 'Free Size')}</small><small>Color: ${esc(colorTxt(i.color))}</small><small>Qty: ${i.qty || 1}</small><div class="ip">${money(Number(i.price || 0) * (i.qty || 1))}</div></div></div>`).join('')}</div>
     <div class="card addr"><h3 class="h3">Delivery address</h3><b>${esc(o.customerName || o.name || 'Customer')}</b><p>${esc(o.address || 'Address not provided')}</p><p><i class="fa-solid fa-phone" style="font-size:10px"></i> ${esc(o.phone || o.customerPhone || '-')}</p><button class="cpy" data-copy="${esc(addrFull)}" onclick="copyTxt(this.dataset.copy,'Address copied')"><i class="fa-regular fa-copy"></i> Copy address</button></div>
     <div class="card"><h3 class="h3">Payment summary</h3>${bill}
       <div class="pay"><div class="kv"><span>Method</span><b style="color:var(--ink);text-transform:uppercase">${esc(o.paymentMethod || '-')}</b></div><div class="kv" style="margin:0"><span>Status</span><b style="color:${color}">${label}</b></div>${payAct}</div></div>
@@ -583,8 +631,10 @@ document.addEventListener('click', e => {
 window.addEventListener('pageshow', () => document.querySelectorAll('.is-busy').forEach(el => el.classList.remove('is-busy')));
 
 document.querySelectorAll('[data-brand]').forEach(el => { el.innerHTML = brandHtml(); });
+const ready = () => $('.app').classList.remove('is-loading');
+// keep the skeleton on screen for at least 0.7s so it never flashes
+Promise.all([fetchOrders(), new Promise(r => setTimeout(r, 700))]).then(ready, ready);
 drawTabs();
-fetchOrders();
 </script>
 </body>
 </html>
