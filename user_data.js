@@ -1,314 +1,441 @@
 // ==========================================
-// 1. API ENDPOINTS & CONFIGURATION
+// user_data.js (DATA PROVIDER & DELIVERY BOY) - secured version v2
+// Saare backend URLs aur API calls sirf yahin hain.
+// Security rules:
+//   * Price/total kabhi client se trust nahi hota (server banata hai).
+//   * Login ke baad server ka signed token 'aavira_token' mein rehta hai.
+//   * Login wale customer ke orders: sirf token se (email URL mein kabhi nahi).
+//   * Bina login wale customer: sirf Order ID + (email ya phone) se tracking (/api/track).
+//   * Har request timeout ke saath, aur response safe tareeke se parse hota hai.
 // ==========================================
-const MAIN_BACKEND_URL = "https://server-js-psi-five.vercel.app";
-const AUTH_BACKEND_URL = "https://ssxpq15in.vercel.app";
-const NEWSLETTER_BACKEND_URL = "https://wwwfahimapp.vercel.app";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-let tempSignupData = {};
+const VERCEL_URL = "https://server-js-psi-five.vercel.app";   // products, orders, promo, reviews, addresses
+const AUTH_URL = "https://ssxpq15in.vercel.app";               // OTP, login, google, reset password
+const CLOUDINARY_CLOUD = "lqbslpty";
+const CLOUDINARY_PRESET = "hcfer3tk";
+
+(function () {
+'use strict';
 
 // ==========================================
-// 2. UTILITY FUNCTIONS
+// 0. SAFE HELPERS
 // ==========================================
-function cleanStr(str, limit) {
-    return str ? String(str).trim().substring(0, limit) : '';
+const LS = {
+get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+del(k) { try { localStorage.removeItem(k); } catch (e) {} },
+json(k, fallback) { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? fallback; } catch (e) { return fallback; } }
+};
+
+async function api(url, options = {}, timeoutMs = 15000) {
+const ctrl = new AbortController();
+const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+try {
+const response = await fetch(url, { ...options, signal: ctrl.signal });
+let data = null;
+try { data = await response.json(); } catch (e) {}
+return { ok: response.ok, status: response.status, data };
+} catch (error) {
+return { ok: false, status: 0, data: null, error };
+} finally { clearTimeout(timer); }
 }
 
-function isSuccess(res) {
-    return res && res.ok === true;
-}
+const jsonPost = (url, body, headers) => api(url, {
+method: 'POST',
+headers: { 'Content-Type': 'application/json', ...(headers || {}) },
+body: JSON.stringify(body)
+});
 
-async function jsonPost(url, data) {
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        const json = await response.json();
-        return { ok: response.ok, data: json };
-    } catch (error) {
-        console.error("Fetch Error:", error);
-        return { ok: false, data: { message: "Network error. Please try again." } };
-    }
-}
-
-function animateValue(obj, start, end, duration, isFloat = false) {
-    if(!obj) return;
-    let startTimestamp = null;
-    const step = (timestamp) => {
-        if (!startTimestamp) startTimestamp = timestamp;
-        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        const current = progress * (end - start) + start;
-        obj.innerHTML = isFloat ? current.toFixed(1) : Math.floor(current);
-        if (progress < 1) window.requestAnimationFrame(step);
-    };
-    window.requestAnimationFrame(step);
-}
+const isSuccess = r => !!(r && r.ok && r.data && (r.data.status === 'success' || r.data.success === true));
+const cleanStr = (v, max) => String(v ?? '').trim().slice(0, max);
+const EMAIL_RE = /^[^\s@/]+@[^\s@/]+.[^\s@/]+$/;
+const randomKey = () => Array.from(crypto.getRandomValues(new Uint8Array(16)), b => b.toString(16).padStart(2, '0')).join('');
 
 // ==========================================
-// 3. NEWSLETTER SYSTEM
+// 0.1 SESSION TOKEN & HEADERS
 // ==========================================
-window.subscribeNewsletterApi = async function (email) {
-    const cleanEmail = cleanStr(email, 120).toLowerCase();
-    
-    if (!EMAIL_RE.test(cleanEmail)) {
-        return { ok: false, message: 'Please enter a valid email address.' };
-    }
-    
-    // Yahan NEWSLETTER_BACKEND_URL use ho raha hai
-    const r = await jsonPost(`${NEWSLETTER_BACKEND_URL}/api/subscribe`, { email: cleanEmail });
-    
-    if (isSuccess(r)) {
-        return { ok: true, message: r.data.message || 'Subscribed successfully!' };
-    }
-    return { ok: false, message: (r.data && r.data.message) || 'Could not subscribe. Please try again.' };
+function jwtExpired(token) {
+try {
+const part = String(token).split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+const payload = JSON.parse(atob(part));
+// no 'exp' claim = no expiry written in the token; let the server decide
+return payload.exp ? payload.exp * 1000 < Date.now() + 30000 : false;
+} catch (e) { return true; }
+}
+
+// A page may define window.aaviraSessionExpired = () => {...}. Never overwrite that function with a boolean.
+if (typeof window.aaviraSessionExpired !== 'function') window.aaviraSessionExpired = false;
+function markSessionExpired() {
+if (typeof window.aaviraSessionExpired === 'function') window.aaviraSessionExpired();
+else window.aaviraSessionExpired = true;
+}
+
+window.getAaviraToken = function () {
+const token = LS.get('aavira_token') || LS.get('authToken');
+if (!token) return '';
+if (jwtExpired(token)) {
+LS.del('aavira_token');
+LS.del('authToken');
+markSessionExpired();
+return '';
+}
+return token;
+};
+
+window.authHeaders = function (extra) {
+const headers = Object.assign({ 'Content-Type': 'application/json' }, extra || {});
+const token = window.getAaviraToken();
+if (token) headers['Authorization'] = 'Bearer ' + token;
+return headers;
+};
+
+const ORDER_TOKEN_PREFIX = 'aavira_order_token_';
+function rememberOrderToken(orderId, token) {
+if (!orderId || !token) return;
+LS.set(ORDER_TOKEN_PREFIX + orderId, token);
+const ids = LS.json('aavira_order_token_ids', []).filter(x => x !== orderId);
+ids.push(orderId);
+while (ids.length > 20) LS.del(ORDER_TOKEN_PREFIX + ids.shift());
+LS.set('aavira_order_token_ids', JSON.stringify(ids));
+}
+
+function clearCachedOrders() {
+['aavira_orders', 'aavira_placed_orders', 'aavira_last_order_id', 'aavira_guest_order_id'].forEach(LS.del);
+LS.json('aavira_order_token_ids', []).forEach(id => LS.del(ORDER_TOKEN_PREFIX + id));
+LS.del('aavira_order_token_ids');
+}
+
+window.clearAaviraSession = function () {
+['authToken', 'aavira_token', 'aavira_user_email', 'aavira_display_name', 'aavira_user_phone'].forEach(LS.del);
+clearCachedOrders();
+if (typeof window.aaviraSessionExpired !== 'function') window.aaviraSessionExpired = false;
 };
 
 // ==========================================
-// 4. REVIEWS & RATINGS SYSTEM (UI DATA)
+// 0.2 SAFE UNIVERSAL API FETCH (for checkout & components)
+// ==========================================
+window.fetchAaviraApi = async function (path, options = {}) {
+const url = path.startsWith('http') ? path : ${VERCEL_URL}${path};
+const headers = window.authHeaders(options.headers || {});
+
+const r = await api(url, { ...options, headers });  
+
+if (r.status === 401) {  
+    markSessionExpired();  
+    return { success: false, message: 'Session expired' };  
+}  
+
+const payloadData = r.data?.data || r.data;  
+return {  
+    success: r.ok && (r.data?.status === 'success' || r.data?.success || r.status === 200),  
+    data: payloadData,  
+    message: r.data?.message || r.data?.error || ''  
+};
+
+};
+
+// ==========================================
+// 1. DATA FETCHING (public catalog)
+// ==========================================
+const listData = async path => {
+const r = await window.fetchAaviraApi(path);
+return (r.success && Array.isArray(r.data)) ? r.data : [];
+};
+window.getVercelData = () => listData('/api/products');
+window.getMainProductsData = () => listData('/api/main_products');
+window.getBannersData = () => listData('/api/banners');
+window.getCategoriesData = () => listData('/api/categories');
+
+window.checkPromoCode = async function (code) {
+let clean = String(code || '').trim();
+try { clean = decodeURIComponent(clean); } catch (e) {}
+clean = clean.trim().toUpperCase();
+if (!/^[A-Z0-9_-]{3,40}$/.test(clean)) return null;
+return ${VERCEL_URL}/api/promocodes/${encodeURIComponent(clean)};
+};
+
+window.subscribeNewsletterApi = async function (email) {
+const clean = cleanStr(email, 120).toLowerCase();
+if (!EMAIL_RE.test(clean)) return { ok: false, message: 'Enter a valid email address.' };
+const r = await jsonPost("https://aavirafashion.shop/api/subscribe", { email: clean });
+if (isSuccess(r)) return { ok: true, message: r.data.message || 'Subscribed' };
+return { ok: false, message: (r.data && r.data.message) || 'Could not subscribe. Please try again.' };
+};
+
+// ==========================================
+// 2. ORDERS: LOGGED-IN CUSTOMERS
+// ==========================================
+window.getLocalAaviraOrders = function () {
+const orders = LS.json('aavira_orders', []);
+return Array.isArray(orders) ? orders : [];
+};
+
+window.syncAaviraOrderLocally = function (orderPayload) {
+try {
+if (!orderPayload || !orderPayload.orderId) return false;
+const id = String(orderPayload.orderId).trim();
+const normalized = {
+...orderPayload,
+id: orderPayload.id || id,
+orderId: id,
+totalAmount: Number(orderPayload.totalAmount ?? orderPayload.total ?? orderPayload.amount ?? 0) || 0
+};
+
+let orders = window.getLocalAaviraOrders();  
+    const index = orders.findIndex(order => String(order?.orderId || order?.id || '').trim() === id);  
+
+    if (index >= 0) orders[index] = { ...orders[index], ...normalized };  
+    else orders.unshift(normalized);  
+
+    LS.set('aavira_orders', JSON.stringify(orders.slice(0, 50)));  
+    LS.set('aavira_last_order_id', id);  
+    return true;  
+} catch (e) { return false; }
+
+};
+
+// My Orders: ONLY for a logged-in customer. The server reads the email from the signed token.
+// Guests never appear here - they use trackAaviraOrder() / the /track/order page.
+window.getAaviraOrdersForCurrentUser = async function () {
+const email = String(LS.get('aavira_user_email') || '').trim().toLowerCase();
+const name = String(LS.get('aavira_display_name') || '').trim();
+const signedIn = !!(email && name && name.toLowerCase() !== 'guest user');
+if (!signedIn) return [];
+
+const token = window.getAaviraToken();  
+if (!token) { markSessionExpired(); return window.getLocalAaviraOrders(); }  
+
+const r = await api(`${VERCEL_URL}/api/orders?nocache=${Date.now()}`, { headers: window.authHeaders() });  
+if (r.status === 401) {  
+    LS.del('aavira_token');  
+    LS.del('authToken');  
+    markSessionExpired();  
+    return window.getLocalAaviraOrders();  
+}  
+
+if (!(r.ok && r.data && r.data.status === 'success' && Array.isArray(r.data.data))) return [];  
+const mine = r.data.data.filter(o => o && o.guest !== true && o.verifiedUser !== false);  
+LS.set('aavira_orders', JSON.stringify(mine));  
+return mine;
+
+};
+
+// ==========================================
+// 2.1 PLACE ORDER (checkout)
+// ==========================================
+window.placeAaviraOrder = async function (payload) {
+const body = { ...(payload || {}) };
+if (!body.idempotencyKey) body.idempotencyKey = randomKey(); // a double tap can never create two orders
+const r = await jsonPost(${VERCEL_URL}/api/orders, body, window.authHeaders());
+
+if (r.status === 401) {  
+    markSessionExpired();  
+    return { success: false, message: 'Session expired. Please log in again.' };  
+}  
+
+const d = r.data || {};  
+if (r.ok && d.status === 'success' && d.orderId) {  
+    const order = d.order || {};  
+    // only a logged-in customer's order is cached on the device; a guest order is never stored locally  
+    if (d.verified && order.orderId) window.syncAaviraOrderLocally(order);  
+    return {  
+        success: true,  
+        orderId: d.orderId,  
+        orderToken: d.orderToken || '',   // secret code for the guest tracking link  
+        verified: !!d.verified,           // true = linked to the logged-in account  
+        order,  
+        totalAmount: Number(order.totalAmount) || 0  
+    };  
+}  
+if (r.status === 0) return { success: false, message: 'Could not reach the server. Please check your internet connection.' };  
+return { success: false, message: d.message || d.error || 'Failed to place order' };
+
+};
+
+// Link the customer should open after ordering
+window.getOrderPageUrl = function (result) {
+if (result && result.verified) return '/orders';
+const id = encodeURIComponent((result && result.orderId) || '');
+const t = encodeURIComponent((result && result.orderToken) || '');
+return /track/order?id=${id} + (t ? &t=${t} : '');
+};
+
+window.saveAaviraOrderToken = function (orderId, token) {
+if (orderId && token) rememberOrderToken(String(orderId).trim(), String(token).trim());
+};
+
+// Legacy support (old pages)
+window.sendOrderToVercel = async function (orderPayload) {
+const result = await window.placeAaviraOrder(orderPayload);
+if (result.success) {
+return { orderId: result.orderId, orderToken: result.orderToken, verified: result.verified, order: result.order };
+}
+window.lastOrderError = result.message;
+return null;
+};
+
+// ==========================================
+// 2.2 ORDER TRACKING FOR CUSTOMERS WITHOUT LOGIN
+//     Order ID + (email OR phone)  ->  or Order ID + secret link code
+// ==========================================
+window.trackAaviraOrder = async function (orderId, contact, linkToken) {
+const id = cleanStr(orderId, 40).toUpperCase().replace(/^#/, '');
+const c = cleanStr(contact, 120);
+const t = cleanStr(linkToken, 100);
+if (!/^AVF-[A-Z0-9]{4,12}$/.test(id)) return { success: false, status: 400, message: 'Enter a valid Order ID (example: AVF-AB12CD34).' };
+if (!t) {
+const okContact = c.includes('@') ? EMAIL_RE.test(c) : c.replace(/\D/g, '').length >= 10;
+if (!okContact) return { success: false, status: 400, message: 'Enter the email or 10-digit phone number used for this order.' };
+}
+
+// public on purpose: no login header is sent, the server checks Order ID + email/phone itself  
+const url = `${VERCEL_URL}/api/track?orderId=${encodeURIComponent(id)}` + (t ? `&token=${encodeURIComponent(t)}` : `&contact=${encodeURIComponent(c)}`);  
+const r = await api(url);  
+
+if (r.status === 0) return { success: false, status: 0, message: 'Could not reach the server. Please check your internet connection.' };  
+if (r.status === 429) return { success: false, status: 429, message: 'Too many attempts. Please wait a few minutes and try again.' };  
+if (r.status === 404) return { success: false, status: 404, message: 'We could not find an order with these details. Please check your Order ID and email or phone number.' };  
+
+const list = r.data && r.data.data;  
+if (r.ok && Array.isArray(list) && list[0]) return { success: true, order: list[0] };  
+return { success: false, status: r.status, message: (r.data && r.data.message) || 'Could not track the order right now.' };
+
+};
+
+// ==========================================
+// 3. PRODUCT REVIEWS & EXPERIENCE LOGIC
 // ==========================================
 window.saveReviewToDatabase = async function (productId, reviewData) {
-    return await jsonPost(`${MAIN_BACKEND_URL}/api/reviews`, { productId, reviewData });
+const r = await jsonPost(${VERCEL_URL}/api/add-review, { productId: cleanStr(productId, 100), review: reviewData }, window.authHeaders());
+return !!(r.data && r.data.success);
 };
 
-window.renderAdvancedRatingSystem = function(adminRatingVal, adminReviewCount) {
-    const container = document.getElementById('ratingSummaryBox');
-    const reviewsContainer = document.getElementById('reviewsList');
-    if(!container || !reviewsContainer) return;
-
-    let realReviews = JSON.parse(localStorage.getItem(`reviews_${window.currentProductIdForReviews}`)) || []; 
-
-    let finalRating = parseFloat(adminRatingVal); 
-    let finalCount = parseInt(adminReviewCount); 
-    if (!finalRating || isNaN(finalRating)) { 
-        let hash = 0; let idStr = String(window.currentProductIdForReviews || 'fallback'); 
-        for(let i=0; i<idStr.length; i++){ hash += idStr.charCodeAt(i); } 
-        finalRating = 3.8 + (hash % 12) / 10; 
-        if(finalRating > 5.0) finalRating = 5.0; 
-    } 
-    if (!finalCount || isNaN(finalCount)) { 
-        let hash = 0; let idStr = String(window.currentProductIdForReviews || 'fallback'); 
-        for(let i=0; i<idStr.length; i++){ hash += idStr.charCodeAt(i); } 
-        finalCount = 20 + (hash % 150); 
-    } 
-
-    let totalSum = (finalRating * finalCount); 
-    realReviews.forEach(r => { totalSum += parseInt(r.rating || r.score || 5); finalCount += 1; }); 
-    finalRating = parseFloat((totalSum / finalCount).toFixed(1)); 
-    if(finalRating > 5.0) finalRating = 5.0; 
-
-    let p5 = 0, p4 = 0, p3 = 0, p2 = 0, p1 = 0; 
-    if(finalRating >= 4.5) { p5 = 80; p4 = 12; p3 = 5; p2 = 2; p1 = 1; } 
-    else if(finalRating >= 4.0) { p5 = 55; p4 = 30; p3 = 10; p2 = 3; p1 = 2; } 
-    else if(finalRating >= 3.0) { p5 = 20; p4 = 30; p3 = 30; p2 = 10; p1 = 10; } 
-    else { p5 = 5; p4 = 15; p3 = 20; p2 = 30; p1 = 30; } 
-    
-    const distribution = [ { star: 5, pct: p5 }, { star: 4, pct: p4 }, { star: 3, pct: p3 }, { star: 2, pct: p2 }, { star: 1, pct: p1 } ]; 
-
-    let html = `<div class="rating-summary-wrapper"><div class="rating-left"><div class="rating-big-text" id="animRatingVal">0.0</div><div class="rating-stars-main"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div><div class="rating-count"><span id="animReviewCount">0</span> Verified Reviews</div></div><div class="rating-right">`; 
-    distribution.forEach(row => { 
-        html += `<div class="rating-bar-row"><span style="width:20px;">${row.star} <i class="fa-solid fa-star" style="font-size:9px;"></i></span><div class="progress-track"><div class="progress-fill" id="bar-${row.star}" style="width: 0%;"></div></div><span style="min-width:25px; text-align:right;">${row.pct}%</span></div>`; 
-    }); 
-    html += `</div></div>`; 
-    container.innerHTML = html; 
-
-    const ratingSection = document.getElementById('ratingSummaryBox'); 
-    const observer = new IntersectionObserver((entries) => { 
-        if(entries[0].isIntersecting) { 
-            animateValue(document.getElementById("animRatingVal"), 0.0, finalRating, 1000, true); 
-            animateValue(document.getElementById("animReviewCount"), 0, finalCount, 1500, false); 
-            setTimeout(() => { 
-                distribution.forEach(row => { 
-                    const bar = document.getElementById(`bar-${row.star}`); 
-                    if(bar) bar.style.width = `${row.pct}%`; 
-                }); 
-            }, 200); 
-            observer.disconnect(); 
-        } 
-    }); 
-    if(ratingSection) observer.observe(ratingSection); 
-
-    if (realReviews.length === 0) { 
-        reviewsContainer.innerHTML = `<div style="width: 100%; text-align: center; padding: 25px 20px; background: var(--bg-light); border-radius: 12px; border: 1px dashed #d1d5db;"><h4 style="color: var(--text-dark); font-weight: 700; font-size:14px;">No reviews yet</h4><p style="font-size: 11px; color: var(--text-muted); margin-top:4px;">Be the first to share your experience!</p></div>`; 
-    } else { 
-        let rHtml = ''; 
-        realReviews.forEach(r => { 
-            let rateVal = r.rating || r.score || 5; 
-            let starsHtml = ''; 
-            for(let i=1; i<=5; i++) starsHtml += `<i class="fa-solid fa-star" style="color: ${i <= rateVal ? 'var(--secondary-color)' : '#e5e7eb'}; font-size: 12px;"></i>`; 
-            let titleHtml = r.title ? `<div class="review-title-text">${r.title}</div>` : ''; 
-            let bodyTxt = r.text || r.body || ''; 
-            rHtml += `<div class="review-card"><div class="review-header"><div class="reviewer-info"><div class="reviewer-initial">${r.name.charAt(0).toUpperCase()}</div><div><div class="reviewer-name">${r.name}</div><div class="verified-badge"><i class="fa-solid fa-circle-check"></i> Verified Buyer</div></div></div><div class="review-date">${r.date || 'Recently'}</div></div><div class="review-stars">${starsHtml}</div>${titleHtml}<p class="review-body-text">${bodyTxt}</p></div>`; 
-        }); 
-        reviewsContainer.innerHTML = rHtml; 
-    } 
+window.getReviewsFromDatabase = async function (productId) {
+const r = await window.fetchAaviraApi(/api/get-reviews?productId=${encodeURIComponent(cleanStr(productId, 100))});
+return r.success && Array.isArray(r.data) ? r.data : [];
 };
 
-let selectedRating = 0;
-
-window.handleWriteReviewClick = function() { 
-    const savedName = localStorage.getItem('aavira_display_name'); 
-    if (!savedName || savedName.trim() === "") { openModal('loginPromptModal'); } 
-    else { openModal('reviewModal'); } 
+const PHOTO_TYPES = /^image/(jpeg|png|webp|heic|heif)$/i;
+window.uploadExperiencePhoto = async function (file) {
+if (!file || !PHOTO_TYPES.test(file.type || '') || file.size > 8 * 1024 * 1024) return '';
+const fd = new FormData();
+fd.append('file', file);
+fd.append('upload_preset', CLOUDINARY_PRESET);
+fd.append('cloud_name', CLOUDINARY_CLOUD);
+const r = await api(https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload, { method: 'POST', body: fd }, 60000);
+const url = r.data && r.data.secure_url;
+return (typeof url === 'string' && url.startsWith('https://res.cloudinary.com/')) ? url : '';
 };
 
-window.setRating = function(val) { 
-    selectedRating = parseInt(val); 
-    document.querySelectorAll('#starSelector i').forEach(star => { 
-        if(parseInt(star.getAttribute('data-val')) <= val) star.classList.add('active'); 
-        else star.classList.remove('active'); 
-    }); 
+window.sendToVercelExperience = async function (expData) {
+const e = expData || {};
+const r = await jsonPost(${VERCEL_URL}/api/experience, {
+name: cleanStr(e.name, 60), email: cleanStr(e.email, 120).toLowerCase(),
+text: cleanStr(e.text, 500), photo: cleanStr(e.photo, 500),
+rating: Math.max(1, Math.min(5, Number(e.rating) || 5)), date: cleanStr(e.date, 40)
+}, window.authHeaders());
+return isSuccess(r);
 };
 
-window.submitReview = async function() { 
-    if (selectedRating === 0) { alert("Please select a star rating!"); return; } 
-    const titleEl = document.getElementById('reviewTitleInput'); 
-    const textEl = document.getElementById('reviewText'); 
-    if (!textEl.value.trim()) { alert("Please write your experience!"); return; } 
-    
-    const newReview = { name: localStorage.getItem('aavira_display_name') || "User", rating: selectedRating, title: titleEl.value.trim() || 'Amazing Product', text: textEl.value.trim(), date: new Date().toLocaleDateString('en-GB') }; 
-    const btn = document.getElementById('submitReviewBtn'); 
-    const ogText = btn.innerHTML; 
-    btn.innerHTML = 'Saving...'; btn.disabled = true; 
-    
-    try { 
-        if (typeof window.saveReviewToDatabase === 'function') { 
-            await window.saveReviewToDatabase(window.currentProductIdForReviews, newReview); 
-        } 
-    } catch(e) {} 
-    
-    let productReviews = JSON.parse(localStorage.getItem(`reviews_${window.currentProductIdForReviews}`)) || []; 
-    productReviews.unshift(newReview); 
-    localStorage.setItem(`reviews_${window.currentProductIdForReviews}`, JSON.stringify(productReviews)); 
-    
-    alert("Review Posted Successfully!"); 
-    if (typeof closeModal === 'function') closeModal('reviewModal'); 
-    setRating(0); 
-    textEl.value = ''; titleEl.value = ''; 
-    if (window.currentProduct) { renderAdvancedRatingSystem(window.currentProduct.adminRating, window.currentProduct.adminReviewCount); } 
-    btn.innerHTML = ogText; btn.disabled = false; 
+window.getVercelExperiences = async function () {
+const r = await window.fetchAaviraApi('/api/experience');
+return r.success && Array.isArray(r.data) ? r.data : [];
 };
 
 // ==========================================
-// 5. AUTHENTICATION (LOGIN / SIGNUP / OTP)
+// 4. LOGIN & OTP DELIVERY BOY (Auth Server)
 // ==========================================
-window.DeliveryBoy = window.DeliveryBoy || {};
-
-window.DeliveryBoy.login = async function (email, password) {
-    return await jsonPost(`${AUTH_BACKEND_URL}/api/login`, { email, password });
+window.DeliveryBoy = (function () {
+const post = async (path, body, errMsg) => {
+const r = await jsonPost(${AUTH_URL}${path}, body);
+if (r.status === 0 || !r.data) return { ok: false, data: { success: false, message: errMsg || 'Auth Server Error!' } };
+const data = r.data;
+if (data.authToken) {
+const prev = String(LS.get('aavira_user_email') || '').toLowerCase();
+const next = String(data.email || '').toLowerCase();
+if (prev && next && prev !== next) clearCachedOrders();
+LS.set('aavira_token', data.authToken);
+LS.set('authToken', data.authToken);
+if (typeof window.aaviraSessionExpired !== 'function') window.aaviraSessionExpired = false;
+delete data.authToken;
+}
+return { ok: r.ok, data };
 };
 
-window.DeliveryBoy.sendOTP = async function (email, name) {
-    return await jsonPost(`${AUTH_BACKEND_URL}/api/send-otp`, { email, name });
-};
+return Object.freeze({  
+    sendOTP: (email, name) => post('/api/send-otp', { userEmail: email, userName: name }),  
+    verifyOTP: (email, userOtp, name, pwd) => post('/api/verify-otp', { userEmail: email, userOTP: userOtp, userName: name, userPassword: pwd }),  
+    login: (email, pwd) => post('/api/login', { userEmail: email, userPassword: pwd }),  
+    googleLogin: token => post('/api/google-login', { googleToken: token }, 'Google Auth Server Error!'),  
+    sendPasswordResetOTP: email => post('/api/send-reset-otp', { userEmail: email }),  
+    resetPassword: (email, otp, newPwd) => post('/api/update-password', { userEmail: email, userOTP: otp, newPassword: newPwd }),  
+    checkEmailExists: async email => {  
+        const r = await post('/api/email-exists', { userEmail: email });  
+        return { exists: !!(r.data && r.data.exists) };  
+    }  
+});
 
-window.DeliveryBoy.verifyOTP = async function (email, otp, name, password) {
-    return await jsonPost(`${AUTH_BACKEND_URL}/api/verify-otp`, { email, otp, name, password });
-};
+})();
 
-window.DeliveryBoy.checkEmailExists = async function (email) {
-    const r = await jsonPost(`${AUTH_BACKEND_URL}/api/check-email`, { email });
-    return r.data || r; 
-};
+})();
 
-window.DeliveryBoy.googleLogin = async function () {
-    return await jsonPost(`${AUTH_BACKEND_URL}/api/google-login`, {}); 
-};
+// ==========================================
+// 5. HOME PREMIUM TEXT MOTION
+// ==========================================
+(function initAaviraPremiumTextMotion(){
+const items = [
+'PREMIUM ETHNIC WEAR',
+'CRAFTED FOR ELEGANCE',
+'NEW COLLECTION 2026',
+'ELEGANCE IN EVERY DETAIL'
+];
 
-window.toggleAuthView = function(viewMode) { 
-    document.getElementById('loginView').style.display = 'none'; 
-    document.getElementById('signupView').style.display = 'none'; 
-    document.getElementById('otpView').style.display = 'none'; 
-    document.getElementById(viewMode + 'View').style.display = 'block'; 
-    document.getElementById('authTitle').innerText = viewMode === 'signup' ? 'Create Account' : viewMode === 'login' ? 'Welcome Back' : 'Verify OTP'; 
-};
+function mount(){  
+    if (!document.body || document.querySelector('.aavira-premium-text')) return;  
+    const hero = document.querySelector('.hero');  
+    if (!hero || !hero.parentNode) return;  
 
-window.processSignup = async function() { 
-    const name = document.getElementById('signupName').value.trim(); 
-    const email = document.getElementById('signupEmail').value.trim(); 
-    const pwd = document.getElementById('signupPassword').value.trim(); 
-    
-    if(!name || !email || !pwd) { alert("Please fill all fields!"); return; } 
-    const btn = document.getElementById('btnSignupAction'); 
-    btn.innerText = 'Checking...'; btn.disabled = true; 
-    
-    if(typeof window.DeliveryBoy !== 'undefined') { 
-        const existsRes = await window.DeliveryBoy.checkEmailExists(email); 
-        if(existsRes && existsRes.exists) { 
-            alert("Email already registered. Please Sign In."); 
-            btn.innerText = 'Continue'; btn.disabled = false; toggleAuthView('login'); return; 
-        } 
-        btn.innerText = 'Sending OTP...'; 
-        const otpRes = await window.DeliveryBoy.sendOTP(email, name); 
-        if(otpRes && otpRes.ok && otpRes.data && otpRes.data.success) { 
-            tempSignupData = { name, email, pwd }; toggleAuthView('otp'); 
-            document.getElementById('otpSubText').innerText = `Code sent to ${email}`; 
-        } else { 
-            alert((otpRes && otpRes.data && otpRes.data.message) || "Failed to send OTP."); 
-        } 
-    } else { alert("Auth system unavailable currently."); } 
-    
-    btn.innerText = 'Continue'; btn.disabled = false; 
-};
+    const section = document.createElement('section');  
+    section.className = 'aavira-premium-text';  
+    section.setAttribute('aria-label','Aavira Fashion highlights');  
+    section.innerHTML = items.map((text,index)=>  
+        `<div class="aavira-premium-line ${index % 2 ? 'from-left' : 'from-right'}"><span>${text}</span></div>`  
+    ).join('');  
 
-window.verifySignupOTP = async function() { 
-    const otp = document.getElementById('otpInput').value.trim(); 
-    if(otp.length !== 6) { alert("Please enter a valid 6-digit OTP"); return; } 
-    const btn = document.getElementById('btnOtpAction'); 
-    btn.innerText = 'Verifying...'; btn.disabled = true; 
-    
-    if(typeof window.DeliveryBoy !== 'undefined') { 
-        const res = await window.DeliveryBoy.verifyOTP(tempSignupData.email, otp, tempSignupData.name, tempSignupData.pwd); 
-        if(res && res.ok && res.data && res.data.success) { 
-            localStorage.setItem('aavira_display_name', tempSignupData.name); 
-            localStorage.setItem('aavira_user_email', tempSignupData.email); 
-            alert("Welcome to Aavira! Account verified."); 
-            if (typeof closeModal === 'function') closeModal('loginModal'); 
-            setTimeout(() => window.handleWriteReviewClick(), 500); 
-        } else { 
-            alert((res && res.data && res.data.message) || "Invalid OTP!"); 
-        } 
-    } 
-    btn.innerText = 'Verify'; btn.disabled = false; 
-};
+    const style = document.createElement('style');  
+    style.textContent = `
 
-window.processLogin = async function() { 
-    const email = document.getElementById('loginEmail').value.trim(); 
-    const pwd = document.getElementById('loginPassword').value.trim(); 
-    if(!email || !pwd) { alert("Fields required!"); return; } 
-    
-    const btn = document.getElementById('btnLoginAction'); 
-    btn.innerText = 'Logging in...'; btn.disabled = true; 
-    
-    if(typeof window.DeliveryBoy !== 'undefined') { 
-        const res = await window.DeliveryBoy.login(email, pwd); 
-        if(res && res.ok && res.data && res.data.success) { 
-            localStorage.setItem('aavira_display_name', res.data.userName || email.split('@')[0]); 
-            localStorage.setItem('aavira_user_email', email); 
-            alert("Login Successful!"); 
-            if (typeof closeModal === 'function') closeModal('loginModal'); 
-            setTimeout(() => window.handleWriteReviewClick(), 500); 
-        } else { 
-            alert((res && res.data && res.data.message) || "Login Failed. Check credentials."); 
-        } 
-    } else { alert("Auth system unavailable currently."); } 
-    
-    btn.innerText = 'Secure Login'; btn.disabled = false; 
-};
+.aavira-premium-text{margin:18px 16px 0;padding:4px 0 2px;overflow:hidden}
+.aavira-premium-line{height:38px;display:flex;align-items:center;overflow:hidden;white-space:nowrap;font-family:"Playfair Display",serif;font-size:14px;font-weight:600;letter-spacing:1.7px;color:#242024;text-transform:uppercase;opacity:0;will-change:transform,opacity}
+.aavira-premium-line span{display:inline-block;padding:0 2px}
+.aavira-premium-line.from-right{justify-content:flex-end;transform:translateX(105%)}
+.aavira-premium-line.from-left{justify-content:flex-start;transform:translateX(-105%)}
+.aavira-premium-line.is-visible{animation:aaviraTextSlide .75s cubic-bezier(.2,.8,.2,1) forwards}
+.aavira-premium-line.from-left.is-visible{animation-name:aaviraTextSlideLeft}
+@keyframes aaviraTextSlide{to{transform:translateX(0);opacity:1}}
+@keyframes aaviraTextSlideLeft{to{transform:translateX(0);opacity:1}}
+@media (prefers-reduced-motion:reduce){.aavira-premium-line{opacity:1!important;transform:none!important;animation:none!important}}
+`;
+document.head.appendChild(style);
+hero.parentNode.insertBefore(section,hero.nextSibling);
 
-window.performGoogleLogin = async function() { 
-    try { 
-        if(typeof window.DeliveryBoy !== 'undefined') { 
-            const res = await window.DeliveryBoy.googleLogin(); 
-            if(res && res.success) { 
-                localStorage.setItem('aavira_display_name', res.userName); 
-                localStorage.setItem('aavira_user_email', res.email); 
-                alert(`Welcome, ${res.userName}!`); 
-                if (typeof closeModal === 'function') closeModal('loginModal'); 
-                setTimeout(() => window.handleWriteReviewClick(), 500); 
-            } 
-        } 
-    } catch (error) { alert("Google Sign in unavailable."); } 
-};
+const lines = section.querySelectorAll('.aavira-premium-line');  
+    if ('IntersectionObserver' in window){  
+        const observer = new IntersectionObserver((entries,obs)=>{  
+            entries.forEach(entry=>{  
+                if(entry.isIntersecting){  
+                    lines.forEach((line,index)=>setTimeout(()=>line.classList.add('is-visible'),index*110));  
+                    obs.disconnect();  
+                }  
+            });  
+        },{threshold:.18});  
+        observer.observe(section);  
+    } else {  
+        lines.forEach((line,index)=>setTimeout(()=>line.classList.add('is-visible'),index*110));  
+    }  
+}  
+
+if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded',mount,{once:true});  
+else mount();
+
+})();
