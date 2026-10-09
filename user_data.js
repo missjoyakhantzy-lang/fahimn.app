@@ -13,6 +13,7 @@ const VERCEL_URL = "https://server-js-psi-five.vercel.app";   // products, order
 const AUTH_URL = "https://ssxpq15in.vercel.app";               // OTP, login, google, reset password
 const CLOUDINARY_CLOUD = "lqbslpty";
 const CLOUDINARY_PRESET = "hcfer3tk";
+const ORDER_UPDATE_URL = "https://wwwfahimapp.vercel.app/api/update-order"; // order status emails
 
 (function () {
 'use strict';
@@ -58,12 +59,10 @@ function jwtExpired(token) {
     try {
         const part = String(token).split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
         const payload = JSON.parse(atob(part));
-        // no 'exp' claim = no expiry written in the token; let the server decide
         return payload.exp ? payload.exp * 1000 < Date.now() + 30000 : false;
     } catch (e) { return true; }
 }
 
-// A page may define window.aaviraSessionExpired = () => {...}. Never overwrite that function with a boolean.
 if (typeof window.aaviraSessionExpired !== 'function') window.aaviraSessionExpired = false;
 function markSessionExpired() {
     if (typeof window.aaviraSessionExpired === 'function') window.aaviraSessionExpired();
@@ -134,6 +133,31 @@ window.fetchAaviraApi = async function (path, options = {}) {
 };
 
 // ==========================================
+// 0.3 ORDER STATUS EMAIL NOTIFIER
+// ==========================================
+window.notifyOrderPlaced = function (orderId) {
+    if (!orderId) return;
+    try {
+        fetch(ORDER_UPDATE_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderId: String(orderId).trim(), newStatus: 'Placed' })
+        }).catch(function () {});
+    } catch (e) {}
+};
+
+window.notifyOrderStatus = function (orderId, status) {
+    if (!orderId || !status) return;
+    try {
+        fetch(ORDER_UPDATE_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderId: String(orderId).trim(), newStatus: String(status).trim() })
+        }).catch(function () {});
+    } catch (e) {}
+};
+
+// ==========================================
 // 1. DATA FETCHING (public catalog)
 // ==========================================
 const listData = async path => {
@@ -192,8 +216,6 @@ window.syncAaviraOrderLocally = function (orderPayload) {
     } catch (e) { return false; }
 };
 
-// My Orders: ONLY for a logged-in customer. The server reads the email from the signed token.
-// Guests never appear here - they use trackAaviraOrder() / the /track/order page.
 window.getAaviraOrdersForCurrentUser = async function () {
     const email = String(LS.get('aavira_user_email') || '').trim().toLowerCase();
     const name = String(LS.get('aavira_display_name') || '').trim();
@@ -222,7 +244,7 @@ window.getAaviraOrdersForCurrentUser = async function () {
 // ==========================================
 window.placeAaviraOrder = async function (payload) {
     const body = { ...(payload || {}) };
-    if (!body.idempotencyKey) body.idempotencyKey = randomKey(); // a double tap can never create two orders
+    if (!body.idempotencyKey) body.idempotencyKey = randomKey();
     const r = await jsonPost(`${VERCEL_URL}/api/orders`, body, window.authHeaders());
 
     if (r.status === 401) {
@@ -233,13 +255,12 @@ window.placeAaviraOrder = async function (payload) {
     const d = r.data || {};
     if (r.ok && d.status === 'success' && d.orderId) {
         const order = d.order || {};
-        // only a logged-in customer's order is cached on the device; a guest order is never stored locally
         if (d.verified && order.orderId) window.syncAaviraOrderLocally(order);
         return {
             success: true,
             orderId: d.orderId,
-            orderToken: d.orderToken || '',   // secret code for the guest tracking link
-            verified: !!d.verified,           // true = linked to the logged-in account
+            orderToken: d.orderToken || '',
+            verified: !!d.verified,
             order,
             totalAmount: Number(order.totalAmount) || 0
         };
@@ -248,7 +269,6 @@ window.placeAaviraOrder = async function (payload) {
     return { success: false, message: d.message || d.error || 'Failed to place order' };
 };
 
-// Link the customer should open after ordering
 window.getOrderPageUrl = function (result) {
     if (result && result.verified) return '/orders';
     const id = encodeURIComponent((result && result.orderId) || '');
@@ -260,7 +280,6 @@ window.saveAaviraOrderToken = function (orderId, token) {
     if (orderId && token) rememberOrderToken(String(orderId).trim(), String(token).trim());
 };
 
-// Legacy support (old pages)
 window.sendOrderToVercel = async function (orderPayload) {
     const result = await window.placeAaviraOrder(orderPayload);
     if (result.success) {
@@ -272,7 +291,6 @@ window.sendOrderToVercel = async function (orderPayload) {
 
 // ==========================================
 // 2.2 ORDER TRACKING FOR CUSTOMERS WITHOUT LOGIN
-//     Order ID + (email OR phone)  ->  or Order ID + secret link code
 // ==========================================
 window.trackAaviraOrder = async function (orderId, contact, linkToken) {
     const id = cleanStr(orderId, 40).toUpperCase().replace(/^#/, '');
@@ -284,7 +302,6 @@ window.trackAaviraOrder = async function (orderId, contact, linkToken) {
         if (!okContact) return { success: false, status: 400, message: 'Enter the email or 10-digit phone number used for this order.' };
     }
 
-    // public on purpose: no login header is sent, the server checks Order ID + email/phone itself
     const url = `${VERCEL_URL}/api/track?orderId=${encodeURIComponent(id)}` + (t ? `&token=${encodeURIComponent(t)}` : `&contact=${encodeURIComponent(c)}`);
     const r = await api(url);
 
