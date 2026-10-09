@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Track Order - Aavira Fashion</title>
 <meta name="theme-color" content="#ffffff">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex,nofollow">
 <meta name="color-scheme" content="light">
 <meta name="format-detection" content="telephone=no">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
@@ -194,6 +196,15 @@ a{color:inherit}
 .tf{width:100%;height:50px;border:1.5px solid var(--line);border-radius:14px;padding:0 14px;font:inherit;font-size:16px;outline:none;background:#fff;transition:border-color .2s,box-shadow .2s}
 .tf:focus{border-color:var(--rani);box-shadow:0 0 0 3px rgba(216,27,96,.1)}
 .terr{margin-top:14px;font-size:12.5px;font-weight:600;line-height:1.5;color:var(--danger);background:#FEF2F2;border-radius:12px;padding:10px 12px}
+/* big rounded product photos */
+.thumb img,.thumb .ph{width:112px;height:140px;border-radius:20px}
+.it .pic{position:relative;flex:0 0 auto;display:block;border-radius:22px;overflow:hidden;box-shadow:0 10px 24px rgba(36,32,36,.14);text-decoration:none;-webkit-tap-highlight-color:transparent}
+.it .pic img,.it .pic .ph{width:152px;height:192px;border-radius:22px;border:0;display:block;object-fit:cover;transition:transform .35s ease}
+.it a.pic:active img{transform:scale(1.04)}
+.it .pic .view{position:absolute;left:8px;right:8px;bottom:8px;display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 8px;border-radius:999px;background:rgba(255,255,255,.95);color:var(--ink);font-size:11px;font-weight:700;box-shadow:0 4px 10px rgba(0,0,0,.12)}
+.it .pic .view i{color:var(--rani);font-size:11px}
+.it .pic.nolink{box-shadow:0 6px 16px rgba(36,32,36,.1)}
+.it-info{padding-top:2px}
 </style>
 </head>
 <body>
@@ -342,14 +353,9 @@ const fetchOrders = async (silent = false) => {
   G.err = '';
   if (!silent) $('#dvBody').innerHTML = '<div class="skel"></div>';
   try {
-    const url = `${BACKEND}/api/track?orderId=${encodeURIComponent(G.id)}` + (G.t ? `&token=${encodeURIComponent(G.t)}` : `&contact=${encodeURIComponent(G.c)}`);
-    const res = await fetch(url);
-    if (res.status === 429) G.err = 'Too many attempts. Please wait a few minutes and try again.';
-    else if (!res.ok && res.status !== 404) G.err = `The tracking service replied with error ${res.status}. Please contact support on WhatsApp.`;
-    const json = res.ok ? await res.json() : {};
-    const rows = json.status === 'success' && Array.isArray(json.data) ? json.data : [];
-    console.log('[track] status', res.status, 'orders returned:', rows.length);
-    S.orders = rows.filter(o => cid(rawId(o)) === cid(G.id)).slice(0, 1);
+    const r = await window.trackAaviraOrder(G.id, G.c, G.t);
+    if (r.success) S.orders = [r.order];
+    else { S.orders = []; if (r.status !== 404) G.err = r.message; }
     S.synced = Date.now();
   } catch (e) {
     if (!silent) S.orders = [];
@@ -448,6 +454,14 @@ const HERO = {
   'Delivered': ['Delivered', 'Your order has been delivered. We hope you love it.'],
   'Cancelled': ['Order cancelled', 'This order has been cancelled.']
 };
+/* Product photo opens the product details page.
+   If your product page is at another address, change PRODUCT_PAGE (it gets the product id at the end). */
+const PRODUCT_PAGE = '/product?id=';
+const itemPic = i => {
+  const pid = String(i.productId || '').trim();
+  if (!pid) return `<div class="pic nolink">${imgTag(i.image)}</div>`;
+  return `<a class="pic" href="${PRODUCT_PAGE}${encodeURIComponent(pid)}" aria-label="View ${esc(i.name || 'product')}">${imgTag(i.image)}<span class="view"><i class="fa-regular fa-eye"></i>View product</span></a>`;
+};
 const stepper = st => {
   if (st === 'Cancelled') return '';
   const idx = STEPS.indexOf(st), pct = idx / (STEPS.length - 1) * 100;
@@ -496,7 +510,7 @@ const renderDv = (o, keepScroll) => {
     ${heroHtml}
     <div class="qa"><button onclick="openInv()"><i class="fa-solid fa-file-invoice"></i>Invoice</button><button onclick="supportWA()"><i class="fa-brands fa-whatsapp" style="color:#25D366"></i>Support</button><button onclick="shareOrder()"><i class="fa-solid fa-share-nodes"></i>Share</button></div>
     ${courierHtml}
-    <div class="card"><h3 class="h3">Your order</h3>${(items.length ? items : [{ name: 'Item', qty: 1, price: total }]).map(i => `<div class="it">${imgTag(i.image)}<div class="it-info"><h4>${esc(i.name || 'Item')}</h4><small>Size: ${esc(i.size || 'Free Size')}</small><small>Color: ${esc(colorTxt(i.color))}</small><small>Qty: ${i.qty || 1}</small><div class="ip">${money(Number(i.price || 0) * (i.qty || 1))}</div></div></div>`).join('')}</div>
+    <div class="card"><h3 class="h3">Your order</h3>${(items.length ? items : [{ name: 'Item', qty: 1, price: total }]).map(i => `<div class="it">${itemPic(i)}<div class="it-info"><h4>${esc(i.name || 'Item')}</h4><small>Size: ${esc(i.size || 'Free Size')}</small><small>Color: ${esc(colorTxt(i.color))}</small><small>Qty: ${i.qty || 1}</small><div class="ip">${money(Number(i.price || 0) * (i.qty || 1))}</div></div></div>`).join('')}</div>
     <div class="card addr"><h3 class="h3">Delivery address</h3><b>${esc(o.customerName || o.name || 'Customer')}</b><p>${esc(o.address || 'Address not provided')}</p><p><i class="fa-solid fa-phone" style="font-size:10px"></i> ${esc(o.phone || o.customerPhone || '-')}</p><button class="cpy" data-copy="${esc(addrFull)}" onclick="copyTxt(this.dataset.copy,'Address copied')"><i class="fa-regular fa-copy"></i> Copy address</button></div>
     <div class="card"><h3 class="h3">Payment summary</h3>${bill}
       <div class="pay"><div class="kv"><span>Method</span><b style="color:var(--ink);text-transform:uppercase">${esc(o.paymentMethod || '-')}</b></div><div class="kv" style="margin:0"><span>Status</span><b style="color:${color}">${label}</b></div>${payAct}</div></div>
@@ -598,7 +612,10 @@ const showTrack = keep => {
   if (o) {
     renderDv(o, !!keep);
     const f = $('#dvBody').querySelector('.foot');
-    if (f) f.insertAdjacentHTML('beforebegin', '<button class="btn l" onclick="showForm()"><i class="fa-solid fa-magnifying-glass"></i>Track another order</button>');
+    const privacy = o.masked ? '<div class="card" style="border-color:#F5D77A;background:#FFF8E1"><b style="font-size:14px"><i class="fa-solid fa-shield-halved" style="color:#D99A00"></i> Personal details are hidden</b><p class="meta" style="margin:6px 0 0;line-height:1.55">For your privacy, name, phone and address are hidden on this link. Enter the email or phone number used for this order to see everything.</p><button class="btn p" onclick="showForm(\'\', G.id, \'\')"><i class="fa-solid fa-unlock"></i>View full details</button></div>' : '';
+    if (f) f.insertAdjacentHTML('beforebegin', privacy + '<button class="btn l" onclick="showForm()"><i class="fa-solid fa-magnifying-glass"></i>Track another order</button>');
+    // remove the secret code from the address bar so it is not kept in history or shared by mistake
+    try { if (G.t && location.search.includes('t=')) history.replaceState(null, '', location.pathname + '?id=' + encodeURIComponent(G.id)); } catch (e) {}
     return;
   }
   showForm(G.err || (G.id && (G.t || G.c) ? 'We could not find an order with these details. Please check your Order ID and email or phone number.' : ''), G.id, G.c);
