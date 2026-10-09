@@ -156,7 +156,7 @@ window.checkPromoCode = async function (code) {
 window.subscribeNewsletterApi = async function (email) {
     const clean = cleanStr(email, 120).toLowerCase();
     if (!EMAIL_RE.test(clean)) return { ok: false, message: 'Enter a valid email address.' };
-    const r = await jsonPost("https://www.fahim.app/api/subscribe", { email: clean });
+    const r = await jsonPost("https://aavirafashion.shop/api/subscribe", { email: clean });
     if (isSuccess(r)) return { ok: true, message: r.data.message || 'Subscribed' };
     return { ok: false, message: (r.data && r.data.message) || 'Could not subscribe. Please try again.' };
 };
