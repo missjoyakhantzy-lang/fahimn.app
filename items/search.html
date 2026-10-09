@@ -6,7 +6,6 @@
 <title>Search - Aavira</title>
 <meta name="robots" content="noindex">
 <script>
-/* Desktop-site mode on a phone: lay the page out as a 420px mobile column and zoom it to fill the screen. */
 (function(){
   var W=420,root=document.documentElement;
   function fit(){
@@ -26,90 +25,86 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
 <style>
-:root{--rani:#D81B60;--rani-dark:#B71550;--gold:#D4AF37;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#242024;--muted:#6B6369;--line:#E7E0D9;--ease:cubic-bezier(.2,.8,.2,1)}
+:root{--rani:#D81B60;--rani-dark:#B71550;--rani-tint:#FCE8EF;--gold:#D4AF37;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#242024;--muted:#6B6369;--line:#E7E0D9;--ease:cubic-bezier(.2,.8,.2,1)}
 *{-webkit-tap-highlight-color:transparent;box-sizing:border-box}
 body{margin:0;font-family:"Inter",system-ui,sans-serif;background:var(--ivory);color:var(--ink);-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 button,select,input{font-family:inherit}
 :focus-visible{outline:2px solid var(--rani);outline-offset:2px}
-.clamp1{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-.app{max-width:420px;margin:0 auto;background:var(--ivory);display:flex;flex-direction:column}
+.clamp1{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.app{max-width:420px;margin:0 auto;background:var(--ivory);display:flex;flex-direction:column;position:relative}
 @media(min-width:640px){body{background:#EFE8DE}.app{box-shadow:0 0 60px rgba(36,32,36,.12)}}
 
-/* ---------- top bar ---------- */
 .top{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
-.top-row{height:60px;display:flex;align-items:center;gap:8px;padding:0 12px}
-.icon-btn{width:42px;height:42px;border-radius:50%;border:0;background:transparent;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;transition:background .2s,color .2s}
-.icon-btn:hover{background:#F9E8EE;color:var(--rani)}
+.top-row{height:60px;display:flex;align-items:center;gap:8px;padding:0 10px}
+.icon-btn{width:42px;height:42px;border-radius:50%;border:0;background:transparent;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;position:relative;transition:background .15s}
+.icon-btn:hover{background:var(--rani-tint);color:var(--rani)}
+.icon-btn:active{transform:scale(.92)}
 .icon-btn svg{width:22px;height:22px;stroke-width:1.6}
-.search-box{flex:1;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 14px;height:42px;transition:border-color .2s}
+.badge{position:absolute;top:2px;right:2px;min-width:16px;height:16px;padding:0 4px;border-radius:999px;background:var(--rani);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;line-height:1}
+.search-box{flex:1;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 14px;height:42px;transition:border-color .15s}
 .search-box:focus-within{border-color:var(--rani)}
 .search-box svg{width:17px;height:17px;color:var(--muted);flex:0 0 auto}
 .search-box input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:14px}
 .search-box button{border:0;background:none;color:var(--muted);display:none;padding:0}
 .search-box.has-text button{display:flex}
 
-/* filters */
 .filters{display:flex;gap:8px;align-items:center;overflow-x:auto;padding:10px 12px;border-top:1px solid var(--line);scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
-.sort{flex:0 0 auto;border:1px solid var(--line);border-radius:999px;background:#fff;padding:8px 12px;font-size:13px;color:var(--ink)}
-.chip{flex:0 0 auto;border:1px solid var(--line);border-radius:999px;background:#fff;padding:8px 14px;font-size:13px;font-weight:500;color:var(--ink);transition:all .2s}
+.sel{flex:0 0 auto;border:1px solid var(--line);border-radius:999px;background:#fff;padding:8px 12px;font-size:13px;color:var(--ink)}
+.chip{flex:0 0 auto;border:1px solid var(--line);border-radius:999px;background:#fff;padding:8px 14px;font-size:13px;font-weight:500;color:var(--ink);cursor:pointer;transition:background .15s,border-color .15s,color .15s,transform .1s}
 .chip.is-on{background:var(--rani);border-color:var(--rani);color:#fff}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip:active{transform:scale(.95)}
+.chips-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.clear-link{background:none;border:0;color:var(--rani);font-size:13px;font-weight:600;cursor:pointer;padding:0}
 
-/* ---------- body ---------- */
 main{flex:1;padding:16px 16px calc(32px + env(safe-area-inset-bottom,0px))}
-.res-count{font-size:12px;color:var(--muted);margin:0 0 12px;display:flex;justify-content:space-between;align-items:center}
-.clear-link{background:none;border:0;color:var(--rani);font-size:13px;font-weight:600}
+.res-count{font-size:12px;color:var(--muted);margin:0 0 10px;display:flex;justify-content:space-between;align-items:center}
 .hint{text-align:center;color:var(--muted);font-size:14px;margin-top:64px;line-height:1.6}
 .hint b{color:var(--ink)}
-.recent-lbl{font-size:12.5px;color:var(--muted);font-weight:600}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px 12px}
 
-/* ---------- product card (same language as the home page) ---------- */
-.pcard{position:relative;min-width:0;background:#fff;border:1px solid var(--line);border-radius:16px;transition:box-shadow .25s,transform .25s var(--ease)}
-.pcard:hover{box-shadow:0 14px 32px rgba(36,32,36,.1)}
-.pcard-top{position:relative}
-.pcard-link{display:block}
-.pcard-media{position:relative;display:block;aspect-ratio:1/1;background:var(--cream);overflow:hidden;border-radius:15px 15px 0 0}
-.pcard-media img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
-.pcard:hover .pcard-media img{transform:scale(1.05)}
-.tags{position:absolute;left:8px;top:8px;display:flex;flex-direction:column;align-items:flex-start;gap:4px}
-.tag-off{background:var(--rani);color:#fff;font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:999px}
-.tag-best{background:rgba(27,23,25,.88);color:#fff;font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:999px}
-.rchip{position:absolute;left:8px;bottom:8px;display:inline-flex;align-items:center;gap:3px;background:rgba(255,255,255,.96);color:var(--ink);font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
-.rchip svg{width:11px;height:11px;fill:var(--gold);stroke:var(--gold)}
-.pcard-text{display:block;padding:24px 12px 14px}
-.pcard-name{display:block;font-size:13.5px;font-weight:500;line-height:1.35;color:var(--ink)}
-.pcard-price{display:flex;align-items:baseline;gap:8px;margin-top:5px}
+.result{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;margin-bottom:10px;transition:box-shadow .2s,transform .15s;opacity:0;transform:translateY(8px);animation:resultIn .32s var(--ease) forwards;animation-delay:calc(var(--i,0) * 35ms)}
+.result:hover{box-shadow:0 8px 22px rgba(36,32,36,.08)}
+.result:active{transform:scale(.99)}
+@keyframes resultIn{to{opacity:1;transform:translateY(0)}}
+.result-media{position:relative;width:96px;height:96px;flex:0 0 auto;border-radius:16px;overflow:hidden;background:var(--cream);aspect-ratio:1/1}
+.result-media img{width:100%;height:100%;object-fit:cover;display:block}
+.wish-btn{position:absolute;top:6px;right:6px;width:28px;height:28px;border-radius:50%;border:0;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;color:var(--muted);transition:transform .15s var(--ease)}
+.wish-btn svg{width:15px;height:15px;stroke-width:2}
+.wish-btn.is-on{color:var(--rani)}
+.wish-btn.is-on svg{fill:var(--rani)}
+.wish-btn.pulse{animation:pulse .32s var(--ease)}
+@keyframes pulse{0%{transform:scale(1)}40%{transform:scale(1.28)}100%{transform:scale(1)}}
+.result-info{display:flex;flex-direction:column;justify-content:center;gap:6px;min-width:0;flex:1}
+.n{font-size:14px;font-weight:500;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.price-row{display:flex;align-items:baseline;gap:8px}
 .price{font-size:16px;font-weight:700}
 .mrp{font-size:12px;color:var(--muted);text-decoration:line-through}
-.pcard-meta{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.off{font-size:12px;font-weight:600;color:#15803D}
+.meta{display:flex;align-items:center;gap:8px}
+.rating{display:inline-flex;align-items:center;gap:3px;font-weight:600;font-size:11px;color:#fff;background:#15803D;padding:2px 7px;border-radius:999px}
+.rating.mid{background:#B45309}.rating.low{background:#B91C1C}
+.rating svg{width:10px;height:10px;fill:currentColor;stroke:currentColor}
 .dots{display:inline-flex;align-items:center}
 .dots i{width:14px;height:14px;border-radius:50%;margin-left:-4px;box-shadow:0 0 0 2px #fff,inset 0 0 0 1px rgba(0,0,0,.14)}
 .dots i:first-child{margin-left:0}
 .dots b{min-width:20px;height:20px;padding:0 5px;margin-left:7px;border-radius:10px;background:#fff;border:1px solid var(--line);font-size:10.5px;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;justify-content:center}
-.low{display:block;margin-top:6px;font-size:12px;font-weight:600;color:#B45309}
-.go{position:absolute;right:12px;bottom:-18px;z-index:2;width:38px;height:38px;border-radius:50%;background:var(--rani);color:#fff;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 6px 14px rgba(216,27,96,.3);transition:background .2s,transform .1s}
-.go:hover{background:var(--rani-dark)}
-.go:active{transform:scale(.92)}
-.go svg{width:17px;height:17px}
-.heart{position:absolute;right:8px;top:8px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.95);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.12);transition:transform .15s,color .2s}
-.heart:active{transform:scale(.88)}
-.heart svg{width:17px;height:17px;stroke-width:1.8}
-.heart.is-on{color:var(--rani)}
-.heart.is-on svg{fill:currentColor}
+.cart-btn{flex:0 0 auto;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;color:var(--rani);transition:background .2s,border-color .2s,transform .15s var(--ease)}
+.cart-btn svg{width:18px;height:18px;stroke-width:1.8}
+.cart-btn.is-on{background:#15803D;border-color:#15803D;color:#fff}
+.cart-btn.pop{animation:pop .3s var(--ease)}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.18)}100%{transform:scale(1)}}
 
-/* ---------- skeleton, same shape as the real card ---------- */
-.skel-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 12px}
-.skel-card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
-.skel-media{aspect-ratio:1/1}
-.skel-foot{padding:12px}
-.skel-line{height:10px;border-radius:5px;margin-bottom:8px}
-.skel-line.w60{width:60%}.skel-line.w40{width:40%;margin-bottom:0}
-.sk{background:linear-gradient(90deg,#F1EBE3 25%,#F8F3EC 37%,#F1EBE3 63%);background-size:400% 100%;animation:shimmer 1.4s ease infinite}
+.skel{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;margin-bottom:10px}
+.skel-media{width:96px;height:96px;border-radius:16px;flex:0 0 auto}
+.skel-lines{flex:1;display:flex;flex-direction:column;gap:8px}
+.skel-line{height:12px;border-radius:6px}
+.skel-media,.skel-line{background:linear-gradient(90deg,#F1EBE3 25%,#F8F3EC 37%,#F1EBE3 63%);background-size:400% 100%;animation:shimmer 1.4s ease infinite}
 @keyframes shimmer{0%{background-position:100% 0}100%{background-position:0 0}}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,16px);background:var(--ink);color:#fff;font-size:13px;font-weight:500;padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .22s var(--ease),transform .22s var(--ease);z-index:50;white-space:nowrap}
+.toast.show{opacity:1;transform:translate(-50%,0)}
 </style>
 </head>
 <body>
@@ -122,41 +117,51 @@ main{flex:1;padding:16px 16px calc(32px + env(safe-area-inset-bottom,0px))}
         <input type="search" id="searchInput" placeholder="Search sarees, suits, lehengas" autocomplete="off" enterkeyhint="search" aria-label="Search products">
         <button type="button" id="clearBtn" aria-label="Clear search"><i data-lucide="x" style="width:16px;height:16px"></i></button>
       </label>
+      <a class="icon-btn" href="/cart" aria-label="Cart">
+        <i data-lucide="shopping-bag"></i>
+        <span class="badge" id="cartBadge" hidden>0</span>
+      </a>
     </div>
-    <div class="filters">
-      <select id="sortSel" class="sort" aria-label="Sort products">
+    <div class="filters" id="primaryFilters">
+      <select id="sortSel" class="sel" aria-label="Sort products">
         <option value="rel">Sort: Relevance</option>
         <option value="plh">Price: Low to high</option>
         <option value="phl">Price: High to low</option>
         <option value="disc">Biggest discount</option>
         <option value="rate">Top rated</option>
       </select>
+      <select id="priceSel" class="sel" aria-label="Filter by price">
+        <option value="any">Price: Any</option>
+        <option value="0-1000">Under ₹1,000</option>
+        <option value="1000-2500">₹1,000 - ₹2,500</option>
+        <option value="2500-5000">₹2,500 - ₹5,000</option>
+        <option value="5000-">Above ₹5,000</option>
+      </select>
       <button type="button" class="chip" id="chipSale" aria-pressed="false">On sale</button>
       <button type="button" class="chip" id="chipRate" aria-pressed="false">4★ &amp; above</button>
     </div>
+    <div class="filters" id="categoryFilters" hidden></div>
   </header>
 
   <main id="searchResults" aria-live="polite"></main>
 </div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-/* =========================================================
-   Helpers
-   ========================================================= */
 const $=(s,r=document)=>r.querySelector(s);
 const PLACEHOLDER='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#F7F1E8"/><text x="200" y="210" font-family="Georgia,serif" font-size="30" fill="#B9AFA6" text-anchor="middle">Aavira</text></svg>');
 window.imgFallback=img=>{img.onerror=null;img.src=PLACEHOLDER};
 const escapeHtml=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
 const safeUrl=v=>{const r=String(v??'').trim();if(!r)return'';try{const u=new URL(r,location.origin);return['http:','https:'].includes(u.protocol)?u.href:''}catch{return''}};
 const safeImageUrl=v=>safeUrl(v)||PLACEHOLDER;
-const safeJson=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))||f}catch{return f}};
+const safeJson=(k,f)=>{try{const v=JSON.parse(localStorage.getItem(k));return v==null?f:v}catch{return f}};
 const saveJson=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
 const icons=()=>{if(window.lucide)lucide.createIcons()};
 const fmt=n=>'₹'+Number(n).toLocaleString('en-IN');
 const priceInfo=p=>{const pr=Number(p.price)||0,m=Number(p.mrp)||pr;return{pr,m,off:m>pr?Math.round((m-pr)/m*100):0}};
-const vibrate=(m=30)=>{if('vibrate' in navigator)navigator.vibrate(m)};
+let toastTimer;
+const showToast=msg=>{const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),1600)};
 
-/* Colour names like "Sky Blue" are not valid CSS, so map them to fabric tones first. */
 const ethnicColors={"red":"#C8102E","maroon":"#6D1230","wine":"#5E1A2B","rani pink":"#D81B60","pink":"#F4A6C0","magenta":"#C2185B","coral":"#F08A6E","peach":"#F6C1A5","orange":"#E2711D","rust":"#B7410E","mustard":"#D4A017","yellow":"#E8B923","gold":"#C9A227","beige":"#D9C3A0","ivory":"#F5EFE0","white":"#FFFFFF","green":"#2E7D5B","emerald":"#0F7B5A","olive":"#6B7A2A","lime":"#A4C639","mint":"#A8D5BA","teal":"#0F766E","turquoise":"#2BB5B8","sky blue":"#7FB7E0","blue":"#1F4E9C","navy blue":"#1B2A5C","lavender":"#C7B8E6","violet":"#9B6BC9","purple":"#6B3FA0","brown":"#7B4B2A","gray":"#8A8A8A","black":"#1A1A1A"};
 const colorHex=n=>{
   const k=String(n).trim().toLowerCase();
@@ -164,20 +169,15 @@ const colorHex=n=>{
   return(window.CSS&&CSS.supports('color',k))?k:'#D1D5DB';
 };
 
-/* =========================================================
-   Data
-   ========================================================= */
 let allProducts=[];
-const isWished=id=>safeJson('aavira_wishlist',[]).map(String).includes(String(id));
+let categories=[];
 const normalize=x=>({
   id:x.id,name:x.name,price:x.price,mrp:x.mrp,
   colors:Array.isArray(x.colors)?x.colors:[],
   img:x.imageMain||x.image||x.imageUrl||'',
-  rating:x.rating??x.averageRating??x.avgRating??x.ratingAvg??x.average_rating??x.avg_rating??x.stars,
-  stock:x.stock,bestseller:!!x.bestseller,
-  _n:String(x.name||'').toLowerCase()
+  category:x.category||x.type||x.collection||x.tag||'',
+  rating:x.rating??x.averageRating??x.avgRating??x.ratingAvg??x.average_rating??x.avg_rating??x.stars
 });
-/* If a product has no rating, calculate it from real reviews that carry a product id. */
 const applyReviewStats=()=>{
   const agg={};
   safeJson('aavira_experiences',[]).forEach(e=>{
@@ -186,86 +186,122 @@ const applyReviewStats=()=>{
   });
   allProducts.forEach(p=>{const a=agg[String(p.id)];if(a&&a.n&&!(Number(p.rating)>0))p.rating=a.s/a.n});
 };
+const buildCategories=()=>{
+  const seen=new Map();
+  allProducts.forEach(p=>{const c=String(p.category||'').trim();if(c&&!seen.has(c.toLowerCase()))seen.set(c.toLowerCase(),c)});
+  categories=[...seen.values()];
+  const wrap=$('#categoryFilters');
+  if(categories.length<2){wrap.hidden=true;wrap.innerHTML='';return}
+  wrap.hidden=false;
+  wrap.innerHTML=categories.map(c=>`<button type="button" class="chip" data-cat="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('');
+  wrap.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{
+    const on=!b.classList.contains('is-on');
+    wrap.querySelectorAll('.chip').forEach(x=>x.classList.remove('is-on'));
+    if(on)b.classList.add('is-on');
+    render();
+  }));
+};
 
-/* =========================================================
-   Recent searches
-   ========================================================= */
 const recentSearches=()=>safeJson('aavira_searches',[]);
 const saveRecentSearch=q=>{
   q=String(q||'').trim();if(q.length<2)return;
   saveJson('aavira_searches',[q,...recentSearches().filter(x=>x.toLowerCase()!==q.toLowerCase())].slice(0,6));
 };
-window.clearRecentSearches=()=>{try{localStorage.removeItem('aavira_searches')}catch{}render()};
-window.useRecent=q=>{$('#searchInput').value=q;render()};
+const clearRecentSearches=()=>{try{localStorage.removeItem('aavira_searches')}catch{}render()};
+const useRecent=q=>{$('#searchInput').value=q;render()};
 
-/* =========================================================
-   Product card (identical language to the home page cards)
-   ========================================================= */
+const wishIds=()=>new Set(safeJson('aavira_wishlist',[]).map(String));
+const toggleWish=id=>{
+  const s=wishIds();const key=String(id);
+  if(s.has(key))s.delete(key);else s.add(key);
+  saveJson('aavira_wishlist',[...s]);
+  return s.has(key);
+};
+const cartMap=()=>safeJson('aavira_cart',{});
+const cartCount=()=>Object.values(cartMap()).reduce((a,n)=>a+(Number(n)||0),0);
+const toggleCart=id=>{
+  const m=cartMap();const key=String(id);
+  if(m[key])delete m[key];else m[key]=1;
+  saveJson('aavira_cart',m);
+  updateCartBadge();
+  return !!m[key];
+};
+const updateCartBadge=()=>{
+  const n=cartCount(),b=$('#cartBadge');
+  if(n>0){b.hidden=false;b.textContent=n>99?'99+':n}else{b.hidden=true}
+};
+
+/* multi-word search: every typed word must appear somewhere in the name, in any order */
+const matchesQuery=(name,q)=>{
+  if(!q)return true;
+  const hay=String(name||'').toLowerCase();
+  return q.split(/\s+/).filter(Boolean).every(w=>hay.includes(w));
+};
+
 const colorDots=p=>{
   const c=p.colors;if(!c.length)return'';
-  return `<span class="pcard-meta"><span class="dots" role="img" aria-label="${c.length} ${c.length>1?'colours':'colour'} available">${c.slice(0,3).map(x=>`<i style="background:${colorHex(x)}"></i>`).join('')}${c.length>3?`<b>+${c.length-3}</b>`:''}</span></span>`;
+  return `<span class="dots" role="img" aria-label="${c.length} ${c.length>1?'colours':'colour'} available">${c.slice(0,3).map(x=>`<i style="background:${colorHex(x)}"></i>`).join('')}${c.length>3?`<b>+${c.length-3}</b>`:''}</span>`;
 };
-const lowStock=p=>{const s=Number(p.stock);return(Number.isFinite(s)&&s>0&&s<=4)?`<span class="low">Only ${s} left</span>`:''};
-const cardHtml=p=>{
-  const {pr,m,off}=priceInfo(p),id=escapeHtml(p.id),name=escapeHtml(p.name);
-  const href=`/product?id=${encodeURIComponent(p.id)}`,r=Number(p.rating);
-  return `<article class="pcard">
-    <div class="pcard-top">
-      <a class="pcard-link" href="${href}" data-product="${id}" tabindex="-1" aria-hidden="true">
-        <span class="pcard-media">
-          <img src="${escapeHtml(safeImageUrl(p.img))}" alt="" loading="lazy" onerror="imgFallback(this)">
-          ${(off||p.bestseller)?`<span class="tags">${off?`<span class="tag-off">${off}% off</span>`:''}${p.bestseller?'<span class="tag-best">Bestseller</span>':''}</span>`:''}
-          ${r>0?`<span class="rchip"><i data-lucide="star"></i>${r.toFixed(1)}</span>`:''}
-        </span>
-      </a>
-      <a class="go" href="${href}&buy=1" data-product="${id}" aria-label="Buy ${name}"><i data-lucide="arrow-up-right"></i></a>
-      <button type="button" class="heart ${isWished(p.id)?'is-on':''}" data-heart="${id}" aria-pressed="${isWished(p.id)}" aria-label="Save ${name} to wishlist"><i data-lucide="heart"></i></button>
-    </div>
-    <a class="pcard-text" href="${href}" data-product="${id}">
-      <span class="pcard-name clamp1">${name}</span>
-      <span class="pcard-price"><span class="price">${fmt(pr)}</span>${m>pr?`<span class="mrp">${fmt(m)}</span>`:''}</span>
-      ${colorDots(p)}${lowStock(p)}
-    </a>
-  </article>`;
+const metaRow=p=>{
+  const r=Number(p.rating);
+  const pill=r>0?`<span class="rating ${r>=4?'':r>=3?'mid':'low'}">${r.toFixed(1)}<i data-lucide="star"></i></span>`:'';
+  const d=colorDots(p);
+  return(pill||d)?`<span class="meta">${pill}${d}</span>`:'';
+};
+const resultCard=(p,i)=>{
+  const {pr,m,off}=priceInfo(p);
+  const inWish=wishIds().has(String(p.id));
+  const inCart=!!cartMap()[String(p.id)];
+  return `<a class="result" style="--i:${i}" href="/product?id=${encodeURIComponent(p.id)}" data-product="${escapeHtml(p.id)}">
+    <span class="result-media">
+      <img src="${escapeHtml(safeImageUrl(p.img))}" alt="" loading="lazy" onerror="imgFallback(this)">
+      <button type="button" class="wish-btn${inWish?' is-on':''}" data-wish="${escapeHtml(p.id)}" aria-label="Save to wishlist" aria-pressed="${inWish}"><i data-lucide="heart"></i></button>
+    </span>
+    <span class="result-info">
+      <span class="n clamp1">${escapeHtml(p.name)}</span>
+      <span class="price-row"><span class="price">${fmt(pr)}</span>${m>pr?`<span class="mrp">${fmt(m)}</span><span class="off">${off}% off</span>`:''}</span>
+      ${metaRow(p)}
+    </span>
+    <button type="button" class="cart-btn${inCart?' is-on':''}" data-cart="${escapeHtml(p.id)}" aria-label="${inCart?'Remove from cart':'Add to cart'}" aria-pressed="${inCart}"><i data-lucide="${inCart?'check':'shopping-bag'}"></i></button>
+  </a>`;
 };
 
-/* =========================================================
-   Search matching: every typed word just needs to appear
-   somewhere in the name, in any order (so "pink silk saree"
-   also matches "Silk Saree - Rani Pink").
-   ========================================================= */
-const matches=(p,tokens)=>tokens.every(t=>p._n.includes(t));
+const activeCategory=()=>{const on=$('#categoryFilters .chip.is-on');return on?on.dataset.cat:''};
 
-/* =========================================================
-   Rendering
-   ========================================================= */
 const searchHome=()=>{
   const r=recentSearches();
-  if(!r.length)return'<div class="hint">Search by product name.</div>';
-  return `<p class="res-count"><span class="recent-lbl">Recent searches</span><button type="button" class="clear-link" onclick="clearRecentSearches()">Clear</button></p>
-    <div class="chips">${r.map(q=>`<button type="button" class="chip" data-q="${escapeHtml(q)}" onclick="useRecent(this.dataset.q)">${escapeHtml(q)}</button>`).join('')}</div>`;
+  if(!r.length)return '<div class="hint">Search by product name.</div>';
+  return `<p class="res-count"><span>Recent searches</span><button type="button" class="clear-link" onclick="clearRecentSearches()">Clear</button></p>
+    <div class="chips-row">${r.map(q=>`<button type="button" class="chip" data-q="${escapeHtml(q)}" onclick="useRecent(this.dataset.q)">${escapeHtml(q)}</button>`).join('')}</div>`;
 };
-const skeletonGrid=n=>`<div class="skel-grid">${Array(n).fill(`<div class="skel-card"><div class="skel-media sk"></div><div class="skel-foot"><div class="skel-line w60 sk"></div><div class="skel-line w40 sk"></div></div></div>`).join('')}</div>`;
 
 function render(){
   const input=$('#searchInput'),c=$('#searchResults');
-  const q=input.value.trim().toLowerCase();
+  const q=input.value.toLowerCase().trim();
   $('#searchBox').classList.toggle('has-text',!!input.value);
   const sale=$('#chipSale').classList.contains('is-on'),rate=$('#chipRate').classList.contains('is-on'),sort=$('#sortSel').value;
+  const priceRange=$('#priceSel').value,cat=activeCategory();
 
-  /* keep the address bar in sync so a search can be shared or refreshed */
   const url=new URL(location.href);
   q?url.searchParams.set('q',input.value.trim()):url.searchParams.delete('q');
   history.replaceState(null,'',url);
 
-  if(window._loading){c.innerHTML=skeletonGrid(6);return}
-  if(window._failed){c.innerHTML='<div class="hint">Products are unavailable right now.<br><button type="button" class="clear-link" onclick="loadProducts()">Try again</button></div>';return}
-  if(!q&&!sale&&!rate&&sort==='rel'){c.innerHTML=searchHome();return}
+  if(!allProducts.length&&window._loading){
+    c.innerHTML=Array(5).fill('<div class="skel"><span class="skel-media"></span><span class="skel-lines"><span class="skel-line" style="width:70%"></span><span class="skel-line" style="width:40%"></span><span class="skel-line" style="width:55%"></span></span></div>').join('');
+    return;
+  }
+  if(!allProducts.length&&window._failed){c.innerHTML='<div class="hint">Products are unavailable right now.<br><button type="button" class="clear-link" onclick="loadProducts()">Try again</button></div>';return}
+  const anyFilter=q||sale||rate||cat||priceRange!=='any'||sort!=='rel';
+  if(!anyFilter){c.innerHTML=searchHome();return}
 
-  const tokens=q.split(/\s+/).filter(Boolean);
-  let f=allProducts.filter(p=>!tokens.length||matches(p,tokens));
+  let f=allProducts.filter(p=>matchesQuery(p.name,q));
   if(sale)f=f.filter(p=>priceInfo(p).off>0);
   if(rate)f=f.filter(p=>Number(p.rating)>=4);
+  if(cat)f=f.filter(p=>String(p.category||'').toLowerCase()===cat.toLowerCase());
+  if(priceRange!=='any'){
+    const [lo,hi]=priceRange.split('-');
+    f=f.filter(p=>{const pr=priceInfo(p).pr;return pr>=Number(lo)&&(hi===''||hi===undefined||pr<=Number(hi))});
+  }
   const by={
     plh:(a,b)=>priceInfo(a).pr-priceInfo(b).pr,
     phl:(a,b)=>priceInfo(b).pr-priceInfo(a).pr,
@@ -274,9 +310,18 @@ function render(){
   }[sort];
   if(by)f=[...f].sort(by);
 
-  if(!f.length){c.innerHTML='<div class="hint"><b>No products found</b><br>Try different words or clear the filters.</div>';return}
-  c.innerHTML=`<p class="res-count"><span>${f.length} ${f.length>1?'products':'product'}</span></p><div class="grid2">${f.map(cardHtml).join('')}</div>`;
+  const activeCount=[sale,rate,!!cat,priceRange!=='any'].filter(Boolean).length;
+  if(!f.length){c.innerHTML='<div class="hint"><b>No products found</b><br>Try different words or clear the filters.</div>';icons();return}
+  c.innerHTML=`<p class="res-count"><span>${f.length} ${f.length>1?'products':'product'}</span>${activeCount?`<button type="button" class="clear-link" onclick="clearAllFilters()">Clear filters</button>`:''}</p>`+f.map((p,i)=>resultCard(p,i)).join('');
   icons();
+}
+
+function clearAllFilters(){
+  $('#chipSale').classList.remove('is-on');$('#chipSale').setAttribute('aria-pressed','false');
+  $('#chipRate').classList.remove('is-on');$('#chipRate').setAttribute('aria-pressed','false');
+  $('#priceSel').value='any';$('#sortSel').value='rel';
+  $('#categoryFilters').querySelectorAll('.chip').forEach(b=>b.classList.remove('is-on'));
+  render();
 }
 
 async function loadProducts(){
@@ -284,51 +329,57 @@ async function loadProducts(){
   try{
     const d=typeof window.getVercelData==='function'?await window.getVercelData():[];
     if(!Array.isArray(d)||!d.length)throw new Error('No products');
-    allProducts=d.map(normalize);applyReviewStats();
+    allProducts=d.map(normalize);applyReviewStats();buildCategories();
   }catch{window._failed=true}
   window._loading=false;render();
 }
 
-/* =========================================================
-   Events
-   ========================================================= */
 function goBack(){
-  /* go back if we came from another page on this site, otherwise go home */
   if(document.referrer&&new URL(document.referrer).origin===location.origin&&history.length>1)history.back();
   else location.href='/';
 }
+
 let t;
 $('#searchInput').addEventListener('input',()=>{clearTimeout(t);t=setTimeout(render,150)});
 $('#searchInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();saveRecentSearch($('#searchInput').value);e.target.blur()}});
 $('#clearBtn').addEventListener('click',()=>{const i=$('#searchInput');i.value='';i.focus();render()});
 $('#sortSel').addEventListener('change',render);
+$('#priceSel').addEventListener('change',render);
 ['chipSale','chipRate'].forEach(id=>$('#'+id).addEventListener('click',e=>{
   const b=e.currentTarget,on=!b.classList.contains('is-on');
   b.classList.toggle('is-on',on);b.setAttribute('aria-pressed',on);render();
 }));
+
 document.addEventListener('click',e=>{
-  const h=e.target.closest('[data-heart]');
-  if(h){
-    vibrate(40);
-    const id=String(h.dataset.heart);let w=safeJson('aavira_wishlist',[]).map(String);
-    const on=!h.classList.contains('is-on');
-    h.classList.toggle('is-on',on);h.setAttribute('aria-pressed',on);
-    w=on?(w.includes(id)?w:[...w,id]):w.filter(x=>x!==id);
-    saveJson('aavira_wishlist',w);
-    document.querySelectorAll(`[data-heart="${CSS.escape(id)}"]`).forEach(b=>{b.classList.toggle('is-on',on);b.setAttribute('aria-pressed',on)});
+  const wishBtn=e.target.closest('[data-wish]');
+  if(wishBtn){
+    e.preventDefault();e.stopPropagation();
+    const on=toggleWish(wishBtn.dataset.wish);
+    wishBtn.classList.toggle('is-on',on);wishBtn.setAttribute('aria-pressed',on);
+    wishBtn.classList.remove('pulse');void wishBtn.offsetWidth;wishBtn.classList.add('pulse');
+    showToast(on?'Saved to wishlist':'Removed from wishlist');
     return;
   }
-  const a=e.target.closest('a[data-product]');
-  if(a){
-    saveRecentSearch($('#searchInput').value);
-    let r=safeJson('aavira_recent',[]).filter(i=>String(i)!==a.dataset.product);
-    r.unshift(a.dataset.product);saveJson('aavira_recent',r.slice(0,8));
+  const cartBtn=e.target.closest('[data-cart]');
+  if(cartBtn){
+    e.preventDefault();e.stopPropagation();
+    const on=toggleCart(cartBtn.dataset.cart);
+    cartBtn.classList.toggle('is-on',on);cartBtn.setAttribute('aria-pressed',on);
+    cartBtn.innerHTML=`<i data-lucide="${on?'check':'shopping-bag'}"></i>`;icons();
+    cartBtn.classList.remove('pop');void cartBtn.offsetWidth;cartBtn.classList.add('pop');
+    showToast(on?'Added to cart':'Removed from cart');
+    return;
   }
+  const a=e.target.closest('a[data-product]');if(!a)return;
+  saveRecentSearch($('#searchInput').value);
+  let r=safeJson('aavira_recent',[]).filter(i=>String(i)!==a.dataset.product);
+  r.unshift(a.dataset.product);saveJson('aavira_recent',r.slice(0,8));
 });
 
 document.addEventListener('DOMContentLoaded',()=>{
   const q=new URLSearchParams(location.search).get('q');
   if(q)$('#searchInput').value=q;
+  updateCartBadge();
   icons();loadProducts();
   if(!q)$('#searchInput').focus();
 });
