@@ -332,6 +332,9 @@ main{padding:14px}
 .sk-l1{height:16px;width:90%}.sk-l2{height:16px;width:65%}.sk-l3{height:12px;width:50%}.sk-l4{height:20px;width:40%;margin-top:auto}
 .sk-amt{height:40px;width:110px}
 .sk-pbtn{height:48px;flex:0 0 190px;border-radius:999px}
+.fld.locked{background:#F3F4F6;color:var(--muted);cursor:not-allowed;border-color:#E5E7EB}
+.fx-box.locked{background:#F3F4F6;border-color:#E5E7EB}
+.fx-box.locked .fld{color:var(--muted);cursor:not-allowed}
 </style>
 </head>
 <body>
@@ -456,9 +459,9 @@ main{padding:14px}
       <div class="grp fx"><label for="ad_phone">Mobile number</label>
         <div class="fx-box"><i class="fa-solid fa-phone lead"></i><input class="fld" id="ad_phone" placeholder="Enter your 10-digit mobile number" type="tel" inputmode="numeric" maxlength="10"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i class="fa-solid fa-circle-info"></i></button></div>
         <div class="fx-tip"><i class="fa-solid fa-lightbulb"></i> अपना 10 अंकों का मोबाइल नंबर डालें। डिलीवरी वाला भैया इसी नंबर पर फोन करेगा। नंबर 6, 7, 8 या 9 से शुरू होना चाहिए।<br><b>जैसे:</b> 9876543210</div><span class="err">10-digit number required</span></div>
-      <div class="grp fx"><label for="ad_email">Email</label>
-        <div class="fx-box"><i class="fa-solid fa-envelope lead"></i><input class="fld" id="ad_email" placeholder="Enter your email address" type="email"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i class="fa-solid fa-circle-info"></i></button></div>
-        <div class="fx-tip"><i class="fa-solid fa-lightbulb"></i> अपनी ईमेल आईडी डालें। आपके ऑर्डर की जानकारी इसी पर आएगी।<br><b>जैसे:</b> rahul@gmail.com</div><span class="err">Enter a valid email</span></div>
+      <div class="grp fx" id="emailGrp"><label for="ad_email">Email</label>
+        <div class="fx-box" id="emailBox"><i class="fa-solid fa-envelope lead"></i><input class="fld" id="ad_email" placeholder="Enter your email address" type="email"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i class="fa-solid fa-circle-info"></i></button></div>
+        <div class="fx-tip" id="emailTip"><i class="fa-solid fa-lightbulb"></i> अपनी ईमेल आईडी डालें। आपके ऑर्डर की जानकारी इसी पर आएगी।<br><b>जैसे:</b> rahul@gmail.com</div><span class="err">Enter a valid email</span></div>
 
       <p class="sec-t" style="margin-top:8px">Address details</p>
       <div class="grp fx"><label for="ad_pin">Pincode</label>
@@ -524,6 +527,7 @@ const removeValue = key => { try { localStorage.removeItem(key); } catch {} };
 const SPINNER_DELAY = 1500;
 const GIFT_FEE = 49;
 const WHATSAPP_NUMBER = '919608720622';
+const ORDER_NOTIFY_URL = 'https://wwwfahimapp.vercel.app/api/update-order';
 const FALLBACK_IMG = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#F7F1E8"/><text x="200" y="210" font-family="Georgia,serif" font-size="30" fill="#B9AFA6" text-anchor="middle">Aavira</text></svg>');
 const IMG_ERROR = `onerror="this.onerror=null;this.src='${FALLBACK_IMG}'"`;
 
@@ -569,6 +573,7 @@ const orderLoginEmail = () => {
   const name = (readValue('aavira_display_name') || '').trim();
   return email && name && name.toLowerCase() !== 'guest user' ? email : '';
 };
+const isLoggedIn = () => !!loginEmail();
 const addrKey = () => 'aavira_addresses:' + (loginEmail() || 'guest');
 
 const loadAddresses = () => {
@@ -582,6 +587,10 @@ const loadAddresses = () => {
   if (!list.length && legacy && legacy.ad_name && legacy.ad_address && legacy.ad_phone) {
     list.push({ id: 'a' + Date.now(), type: 'Home', name: legacy.ad_name, phone: legacy.ad_phone, email: legacy.ad_email || loginEmail(), pin: legacy.ad_pin || '', city: legacy.ad_city || '', address: legacy.ad_address, map: legacy.ad_map_link || '' });
     writeJson(addrKey(), list);
+  }
+  if (isLoggedIn()) {
+    const locked = loginEmail();
+    list = list.map(a => ({ ...a, email: locked }));
   }
   state.addresses = list;
   state.selectedId = readValue(addrKey() + ':sel');
@@ -611,7 +620,8 @@ const pullAddresses = async () => {
     const remote = json?.data?.addresses || json?.addresses || [];
     if (!Array.isArray(remote) || !remote.length) return;
     const have = new Set(state.addresses.map(a => a.id));
-    const merged = [...state.addresses, ...remote.filter(a => a && a.id && !have.has(a.id))];
+    const locked = loginEmail();
+    const merged = [...state.addresses, ...remote.filter(a => a && a.id && !have.has(a.id)).map(a => ({ ...a, email: locked }))];
     if (merged.length === state.addresses.length) return;
     state.addresses = merged;
     if (!state.selectedId) state.selectedId = merged[0]?.id || '';
@@ -669,6 +679,23 @@ const setType = t => {
   state.addrType = t;
   $$('#typeChips .chip').forEach(c => c.classList.toggle('on', c.dataset.t === t));
 };
+const applyEmailLock = () => {
+  const emailInput = $('#ad_email');
+  const emailBox = $('#emailBox');
+  const emailGrp = $('#emailGrp');
+  if (isLoggedIn()) {
+    emailInput.value = loginEmail();
+    emailInput.readOnly = true;
+    emailInput.classList.add('locked');
+    emailBox.classList.add('locked');
+    emailGrp.querySelector('.fx-i')?.setAttribute('hidden', '');
+  } else {
+    emailInput.readOnly = false;
+    emailInput.classList.remove('locked');
+    emailBox.classList.remove('locked');
+    emailGrp.querySelector('.fx-i')?.removeAttribute('hidden');
+  }
+};
 const openAddrScreen = id => {
   state.editId = typeof id === 'string' ? id : '';
   const a = state.addresses.find(x => x.id === state.editId);
@@ -677,9 +704,14 @@ const openAddrScreen = id => {
   Object.entries(map).forEach(([fid, k]) => {
     const input = document.getElementById(fid);
     const auto = { email: loginEmail(), name: loginEmail() ? (readValue('aavira_display_name') || '').trim() : '', phone: loginEmail() ? (readValue('aavira_user_phone') || '').trim() : '' };
-    input.value = a ? (a[k] || '') : (auto[k] || '');
+    if (fid === 'ad_email' && isLoggedIn()) {
+      input.value = loginEmail();
+    } else {
+      input.value = a ? (a[k] || '') : (auto[k] || '');
+    }
     input.closest('.grp').classList.remove('bad');
   });
+  applyEmailLock();
   setType(a?.type || 'Home');
   pinSeq++; pinStatus('', '');
   $$('.fx-tip.on,.fx-i.on,.fx.active').forEach(e => e.classList.remove('on','active'));
@@ -690,11 +722,17 @@ const openAddrScreen = id => {
 const closeAddrScreen = () => { $('#addrScreen').classList.remove('on'); document.body.style.overflow = ''; };
 
 const saveAddress = () => {
+  if (isLoggedIn()) {
+    const emailInput = $('#ad_email');
+    emailInput.value = loginEmail();
+    emailInput.closest('.grp').classList.remove('bad');
+  }
   const bad = FIELD_IDS.map(id => document.getElementById(id)).filter(i => !validateField(i, true));
   if (bad.length) { toast('Please fill all required fields correctly'); bad[0].scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
   withSpinner($('#saveAddrBtn'), () => {
     const v = id => document.getElementById(id).value.trim();
-    const addr = { id: state.editId || 'a' + Date.now(), type: state.addrType, name: v('ad_name'), phone: v('ad_phone'), email: v('ad_email').toLowerCase(), pin: v('ad_pin'), city: v('ad_city'), address: v('ad_address'), map: v('ad_map_link') };
+    const finalEmail = isLoggedIn() ? loginEmail() : v('ad_email').toLowerCase();
+    const addr = { id: state.editId || 'a' + Date.now(), type: state.addrType, name: v('ad_name'), phone: v('ad_phone'), email: finalEmail, pin: v('ad_pin'), city: v('ad_city'), address: v('ad_address'), map: v('ad_map_link') };
     const i = state.addresses.findIndex(a => a.id === addr.id);
     if (i >= 0) state.addresses[i] = addr; else state.addresses.unshift(addr);
     state.selectedId = addr.id;
@@ -1095,6 +1133,17 @@ const rememberOrder = (orderId, phone) => {
   writeJson('aavira_placed_orders', [orderId]);
 };
 
+const notifyPlacedEmail = orderId => {
+  if (!orderId) return;
+  try {
+    fetch(ORDER_NOTIFY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId: String(orderId).trim(), newStatus: 'Placed' })
+    }).catch(() => {});
+  } catch {}
+};
+
 const showOnlineResult = (orderId, order) => {
   const message = `*AAVIRA - ONLINE PAYMENT REQUEST*\n\nHello Team Aavira! I would like to complete the online payment for my order.\n\n*ORDER ID:* #${orderId}\n*NAME:* ${order.customerName}\n*MOBILE:* ${order.phone}\n\n*ADDRESS:*\n${order.address}\n\n*TOTAL TO PAY: ${money(order.totalAmount)}*\n\n_Please share the UPI ID / Payment QR code. Thank you!_`;
   state.whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
@@ -1141,11 +1190,12 @@ const buildOrder = orderId => {
     };
   });
   const payment = $('input[name="payment"]:checked').value;
+  const finalEmail = orderLoginEmail() || a.email;
   return {
     orderId,
     userId: orderLoginEmail() || a.email || a.phone,
     customerName: a.name,
-    email: orderLoginEmail() || a.email,
+    email: finalEmail,
     phone: a.phone,
     address: `${a.address}, ${a.city} - Pincode: ${a.pin}`,
     mapLink: a.map || '',
@@ -1217,11 +1267,7 @@ const placeOrder = () => {
     removeValue('savedPromoCache');
     removeValue('checkoutAddressDraft');
     rememberOrder(orderId, order.phone);
-    fetch(`${VERCEL_URL}/api/update-order`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ orderId: orderId, newStatus: "Placed" })
-    }).catch(err => console.warn("Placed email failed:", err));
+    notifyPlacedEmail(orderId);
     playSuccess();
     if (order.paymentMethod === 'online') showOnlineResult(orderId, order);
     else showCodResult(orderId);
