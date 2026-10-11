@@ -31,8 +31,12 @@ button,select,input{font-family:inherit}
 .icon-btn:hover{background:var(--rani-tint);color:var(--rani)}
 .icon-btn:active{transform:scale(.9)}
 .icon-btn svg{width:22px;height:22px;stroke-width:1.6}
-.back-btn{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;cursor:pointer;box-shadow:0 2px 10px rgba(36,32,36,.08);transition:transform .12s}
+.back-btn{width:42px;height:42px;border-radius:50%;border:0;background:var(--rani);color:#fff;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;cursor:pointer;box-shadow:0 4px 14px rgba(216,27,96,.35);transition:transform .12s;position:relative}
 .back-btn:active{transform:scale(.9)}
+.back-btn.is-loading{pointer-events:none}
+.back-btn.is-loading svg{display:none}
+.back-btn.is-loading::after{content:'';width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 .back-btn svg{width:20px;height:20px;stroke-width:1.8}
 .cart-badge{position:absolute;top:3px;right:2px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--rani);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
 .search-box{flex:1;min-width:0;display:flex;align-items:center;gap:9px;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:0 8px 0 15px;height:46px;transition:border-color .15s,box-shadow .15s;box-shadow:0 2px 10px rgba(36,32,36,.05)}
@@ -206,6 +210,7 @@ main{flex:1;padding:18px 16px calc(40px + env(safe-area-inset-bottom,0px))}
 .p-ghost{background:transparent;color:var(--muted);margin-bottom:0}
 
 /* toast */
+.foot{text-align:center;color:var(--muted);font-size:12px;padding:16px 16px calc(22px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);margin-top:6px}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,16px);background:var(--ink);color:#fff;font-size:12.5px;font-weight:500;padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .22s var(--ease),transform .22s var(--ease);z-index:95;white-space:nowrap;max-width:86%;overflow:hidden;text-overflow:ellipsis}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 </style>
@@ -217,7 +222,7 @@ main{flex:1;padding:18px 16px calc(40px + env(safe-area-inset-bottom,0px))}
       <button type="button" class="back-btn" onclick="goBack()" aria-label="Back"><i data-lucide="arrow-left"></i></button>
       <label class="search-box" id="searchBox">
         <i data-lucide="search"></i>
-        <input type="search" id="searchInput" placeholder="Search sarees, suits, lehengas…" autocomplete="off" enterkeyhint="search" aria-label="Search products">
+        <input type="search" id="searchInput" placeholder="Search blouse by name…" autocomplete="off" enterkeyhint="search" aria-label="Search products">
         <button type="button" class="clear-btn" id="clearBtn" aria-label="Clear search"><i data-lucide="x"></i></button>
       </label>
       <a class="icon-btn" href="/wishlist" aria-label="Wishlist"><i data-lucide="heart"></i><span class="cart-badge" id="wishBadge" hidden>0</span></a>
@@ -233,6 +238,7 @@ main{flex:1;padding:18px 16px calc(40px + env(safe-area-inset-bottom,0px))}
   </header>
 
   <main id="searchResults" aria-live="polite"></main>
+  <footer class="foot">&copy; 2026 Aavira Fashion. All rights reserved.</footer>
 </div>
 
 <div class="scrim sheet-scrim" id="optScrim" hidden>
@@ -278,7 +284,7 @@ const colorHex=n=>{
   return(window.CSS&&CSS.supports('color',k))?k:'#D1D5DB';
 };
 
-const TRENDING=['Sarees','Suits','Lehengas','Kurtis','Gowns','Blouses'];
+const TRENDING=['Silk Blouses','Cotton Blouses','Bridal Blouses','Designer Blouses','Net Blouses'];
 
 /* ---------- storage ---------- */
 const readCart=()=>{const v=safeJson('aavira_cart',[]);return Array.isArray(v)?v:[]};
@@ -386,7 +392,7 @@ const resultCard=(p,i)=>{
       </a>
       <div class="pcard-row">
         <span class="pcard-metalink">${ratingPill(p)}${colorDots(p)}</span>
-        <button type="button" class="go${added?' is-on':''}" data-cart="${id}" aria-label="${added?'Remove from bag':'Add to bag'}" aria-pressed="${added}"><i data-lucide="${added?'check':'shopping-bag'}"></i></button>
+        <button type="button" class="go${added?' is-on':''}" data-cart="${id}" aria-label="${added?'Remove from bag':'Add to bag'}" aria-pressed="${added}"><i data-lucide="${added?'check':'shopping-cart'}"></i></button>
       </div>
     </div>
     <button type="button" class="heart${wished?' is-on':''}" data-wish="${id}" aria-label="Save to wishlist" aria-pressed="${wished}"><i data-lucide="heart"></i></button>
@@ -526,8 +532,12 @@ async function loadProducts(){
 }
 
 function goBack(){
-  if(document.referrer&&new URL(document.referrer).origin===location.origin&&history.length>1)history.back();
-  else location.href='/';
+  const btn=document.querySelector('.back-btn');
+  if(btn&&!btn.classList.contains('is-loading'))btn.classList.add('is-loading');
+  setTimeout(()=>{
+    if(document.referrer&&new URL(document.referrer).origin===location.origin&&history.length>1)history.back();
+    else location.href='/';
+  },450);
 }
 
 let searchDebounce,skeletonTimeout;
@@ -576,7 +586,7 @@ document.addEventListener('click',e=>{
     const on=toggleCart(p);
     cartBtn.classList.toggle('is-on',on);cartBtn.setAttribute('aria-pressed',on);
     cartBtn.setAttribute('aria-label',on?'Remove from bag':'Add to bag');
-    cartBtn.innerHTML=`<i data-lucide="${on?'check':'shopping-bag'}"></i>`;icons();
+    cartBtn.innerHTML=`<i data-lucide="${on?'check':'shopping-cart'}"></i>`;icons();
     cartBtn.classList.remove('pop');void cartBtn.offsetWidth;cartBtn.classList.add('pop');
     showToast(on?'Added to bag':'Removed from bag');
     return;
@@ -591,6 +601,14 @@ document.addEventListener('click',e=>{
   }
 });
 
+const PLACEHOLDERS=['Search blouse by name…','Find your matching colour…'];
+let phIdx=0;
+setInterval(()=>{
+  const inp=$('#searchInput');
+  if(!inp||(document.activeElement===inp&&inp.value))return;
+  phIdx=(phIdx+1)%PLACEHOLDERS.length;
+  inp.setAttribute('placeholder',PLACEHOLDERS[phIdx]);
+},3200);
 document.addEventListener('DOMContentLoaded',()=>{
   const q=new URLSearchParams(location.search).get('q');
   if(q)$('#searchInput').value=q;
