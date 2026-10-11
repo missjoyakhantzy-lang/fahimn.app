@@ -111,10 +111,7 @@ const SUGGESTIONS=[
   {t:'Any offers?',icon:'badge-percent'},
 ];
 
-const BRAIN=[
-  {k:['size','fit','measure','naap','bust','shoulder'],
-   t:"For the perfect blouse fit, measure your <b>bust</b> (fullest part), <b>waist</b> and <b>shoulder</b>. Our blouses follow standard Indian sizing — if you're between sizes, pick the larger one for comfort.",
-   a:[{t:'Size Guide',h:'/support',i:'ruler'},{t:'WhatsApp Us',h:WA,i:'message-circle'}]},
+const INSTANT=[
   {k:['track','order','delivery','status','shipping','parcel'],
    t:"You can track your order live from the <b>My Orders</b> section — it shows dispatch and delivery status.",
    a:[{t:'My Orders',h:'/orders',i:'package'}]},
@@ -124,26 +121,51 @@ const BRAIN=[
   {k:['price','offer','discount','coupon','promo','sale','deal'],
    t:"We run offers through the year! Check the <b>Offers</b> page for live deals and promo codes.",
    a:[{t:'View Offers',h:'/offer',i:'badge-percent'}]},
-  {k:['return','exchange','refund'],
-   t:"Easy! We offer <b>easy returns and exchanges</b>. Just raise a request from My Orders within the return window.",
-   a:[{t:'My Orders',h:'/orders',i:'package'},{t:'Help Center',h:'/support',i:'life-buoy'}]},
-  {k:['human','agent','call','whatsapp','help','support'],
+  {k:['human','agent','call','whatsapp'],
    t:"Of course! Our team replies fast on <b>WhatsApp</b> — tap below to chat.",
    a:[{t:'Chat on WhatsApp',h:WA,i:'message-circle'}]},
   {k:['hi','hello','hey','namaste','namaskar'],
    t:"Namaste! I'm <b>Aavira AI</b>. Ask me about blouse sizes, tracking your order, offers — or tap a suggestion below."},
-  {k:['blouse','saree'],
-   t:"You're at the right place — we specialise in <b>blouses</b>! Silk, cotton, bridal, designer — take your pick.",
-   a:[{t:'Shop Blouses',h:'/items/search?q=blouse',i:'shopping-bag'}]},
 ];
+const FALLBACK={t:"I'm still learning! For anything specific, our team on <b>WhatsApp</b> will help you right away.",
+  a:[{t:'Chat on WhatsApp',h:WA,i:'message-circle'},{t:'Help Center',h:'/support',i:'life-buoy'}]};
 
-function aiReply(text){
+const AI_SYSTEM = "You are Aavira AI, the friendly fashion assistant of Aavira Fashion (aavirafashion.shop), an online store specialising in women's blouses: silk, cotton, bridal, designer and net blouses. "
+  + "Reply in the same language the user writes in (English, Hindi, or Hinglish - Hindi in Roman script). "
+  + "Keep answers short (2-4 lines), warm and helpful, like a knowledgeable sales assistant. "
+  + "You may mention: size help at /support, order tracking at /orders, offers at /offer, and WhatsApp +91 96087 20622 for human help. "
+  + "Never invent order statuses, prices or discounts. If you cannot help with something, politely guide the user to WhatsApp.";
+
+function instantReply(text){
   const q=text.toLowerCase();
-  for(const b of BRAIN){
+  for(const b of INSTANT){
     if(b.k.some(k=>q.includes(k)))return b;
   }
-  return {t:"I'm still learning! For anything specific, our team on <b>WhatsApp</b> will help you right away.",
-    a:[{t:'Chat on WhatsApp',h:WA,i:'message-circle'},{t:'Help Center',h:'/support',i:'life-buoy'}]};
+  return null;
+}
+function formatAI(text){
+  return escapeHtml(text)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+async function fetchAIAnswer(text, signal){
+  const r = await fetch('https://text.pollination.ai/openai', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      model:'openai',
+      messages:[
+        {role:'system', content: AI_SYSTEM},
+        {role:'user', content: text}
+      ]
+    }),
+    signal
+  });
+  if(!r.ok) throw new Error('ai-http-'+r.status);
+  const j = await r.json();
+  const t = (j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content || '').trim();
+  if(!t) throw new Error('ai-empty');
+  return t;
 }
 
 function addMsg(who,html,actions){
@@ -161,17 +183,29 @@ function addTyping(){
 }
 function removeTyping(){document.getElementById('typingRow')?.remove()}
 
-function send(text){
+async function send(text){
   text=(text??input.value).trim();
-  if(!text)return;
+  if(!text||send._busy)return;
   addMsg('user',escapeHtml(text));
   input.value='';
+  const inst=instantReply(text);
+  if(inst){ addMsg('ai',inst.t,inst.a); return; }
+  send._busy=true;
   addTyping();
-  setTimeout(()=>{
+  const ctrl=new AbortController();
+  const timer=setTimeout(()=>ctrl.abort(),30000);
+  try{
+    const ans=await fetchAIAnswer(text, ctrl.signal);
+    clearTimeout(timer);
     removeTyping();
-    const r=aiReply(text);
-    addMsg('ai',r.t,r.a);
-  },850);
+    addMsg('ai',formatAI(ans));
+  }catch(e){
+    clearTimeout(timer);
+    removeTyping();
+    addMsg('ai',FALLBACK.t,FALLBACK.a);
+  }finally{
+    send._busy=false;
+  }
 }
 
 function renderSugg(){
