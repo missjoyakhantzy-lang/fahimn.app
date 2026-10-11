@@ -986,7 +986,7 @@ window.subscribeNewsletter = async () => {
   }
 
   if (result?.ok) {
-    showToast(result.message && result.message !== 'Subscribed' ? result.message : 'Thanks for joining');
+    showToast('Subscribed successfully');
     input.value = '';
   } else {
     showToast(result?.message || 'Could not subscribe. Please try again.', 'error');
