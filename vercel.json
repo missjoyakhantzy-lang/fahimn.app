@@ -16,7 +16,8 @@
     { "source": "/offer.html", "destination": "/offer", "permanent": true },
     { "source": "/support.html", "destination": "/support", "permanent": true },
     { "source": "/terms.html", "destination": "/terms", "permanent": true },
-    { "source": "/wishlist.html", "destination": "/wishlist", "permanent": true }
+    { "source": "/wishlist.html", "destination": "/wishlist", "permanent": true },
+    { "source": "/ai.html", "destination": "/ai", "permanent": true }
   ],
   "rewrites": [
     { "source": "/auth/aavirafashion", "destination": "/login.html" },
@@ -30,6 +31,7 @@
     { "source": "/offer", "destination": "/offer.html" },
     { "source": "/support", "destination": "/support.html" },
     { "source": "/terms", "destination": "/terms.html" },
-    { "source": "/wishlist", "destination": "/wishlist.html" }
+    { "source": "/wishlist", "destination": "/wishlist.html" },
+    { "source": "/ai", "destination": "/ai.html" }
   ]
 }
