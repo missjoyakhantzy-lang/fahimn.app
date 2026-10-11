@@ -32,11 +32,13 @@ button,select,input{font-family:inherit}
 .icon-btn:active{transform:scale(.9)}
 .icon-btn svg{width:22px;height:22px;stroke-width:1.6}
 .cart-badge{position:absolute;top:3px;right:2px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--rani);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
-.search-box{flex:1;display:flex;align-items:center;gap:9px;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:0 8px 0 15px;height:46px;transition:border-color .15s,box-shadow .15s;box-shadow:0 2px 10px rgba(36,32,36,.05)}
+.search-box{flex:1;min-width:0;display:flex;align-items:center;gap:9px;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:0 8px 0 15px;height:46px;transition:border-color .15s,box-shadow .15s;box-shadow:0 2px 10px rgba(36,32,36,.05)}
 .search-box:focus-within{border-color:var(--rani);box-shadow:0 4px 18px rgba(216,27,96,.14)}
 .search-box>svg{width:18px;height:18px;color:var(--rani);flex:0 0 auto}
 .search-box input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:14.5px;color:var(--ink)}
 .search-box input::placeholder{color:#A79FA5}
+.search-box input[type="search"]::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none;display:none;width:0;height:0}
+.search-box input[type="search"]::-ms-clear{display:none;width:0;height:0}
 .clear-btn{border:0;background:var(--cream);color:var(--muted);display:none;width:28px;height:28px;border-radius:50%;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto}
 .search-box.has-text .clear-btn{display:inline-flex}
 .clear-btn svg{width:14px;height:14px}
@@ -78,7 +80,7 @@ main{flex:1;padding:18px 16px calc(40px + env(safe-area-inset-bottom,0px))}
 .qa{display:flex;flex-direction:column;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 6px 13px;cursor:pointer;transition:transform .15s,box-shadow .2s,border-color .2s;position:relative}
 .qa:hover{box-shadow:0 8px 22px rgba(36,32,36,.08);border-color:#F3D9E2}
 .qa:active{transform:scale(.96)}
-.qa-live{opacity:0;animation:resultIn .34s var(--ease) forwards;animation-delay:calc(var(--i,0) * 45ms)}
+
 .qa-ic{width:46px;height:46px;border-radius:16px;background:var(--rani-tint);color:var(--rani);display:flex;align-items:center;justify-content:center}
 .qa-ic svg{width:21px;height:21px;stroke-width:1.8}
 .qa span{font-size:11.5px;font-weight:600;color:var(--ink);text-align:center;line-height:1.3}
@@ -100,7 +102,6 @@ main{flex:1;padding:18px 16px calc(40px + env(safe-area-inset-bottom,0px))}
 .empty-note{text-align:center;color:var(--muted);font-size:13px;padding:18px 10px;border:1.5px dashed var(--line);border-radius:16px;background:#fff}
 
 /* matched quick actions while typing */
-.qa-row>svg{width:17px;height:17px;color:var(--muted);flex:0 0 auto}
 
 /* ---------- results ---------- */
 .res-count{font-size:12.5px;color:var(--muted);margin:0 2px 12px;display:flex;justify-content:space-between;align-items:center}
@@ -249,15 +250,6 @@ const colorHex=n=>{
   return(window.CSS&&CSS.supports('color',k))?k:'#D1D5DB';
 };
 
-/* ---------- quick actions (app sections searchable too) ---------- */
-const QUICK=[
-  {id:'cart',name:'Shopping Bag',desc:'View items in your cart',icon:'shopping-bag',href:'/cart',badge:()=>cartCount()},
-  {id:'wishlist',name:'Wishlist',desc:'Your saved favourites',icon:'heart',href:'/wishlist',badge:()=>wishIds().size},
-  {id:'orders',name:'My Orders',desc:'Track & manage orders',icon:'package',href:'/orders'},
-  {id:'profile',name:'My Account',desc:'Profile & settings',icon:'user',href:'/profile'},
-  {id:'offers',name:'Offers',desc:'Deals & promo codes',icon:'badge-percent',href:'/offer'},
-  {id:'support',name:'Help Center',desc:'Support & FAQs',icon:'life-buoy',href:'/support'},
-];
 const TRENDING=['Sarees','Suits','Lehengas','Kurtis','Gowns','Blouses'];
 
 /* ---------- storage ---------- */
@@ -328,7 +320,7 @@ const buildCategories=()=>{
     const on=!b.classList.contains('is-on');
     wrap.querySelectorAll('.chip').forEach(x=>x.classList.remove('is-on'));
     if(on)b.classList.add('is-on');
-    render();
+    refresh(true);
   }));
 };
 
@@ -407,8 +399,6 @@ function render(){
   const anyFilter=q||sale||rate||cat||priceRange!=='any'||sort!=='rel';
   if(!anyFilter){c.innerHTML=homeView();bindHome();icons();return}
 
-  /* quick actions that match the query */
-  const matchedQa=q?QUICK.filter(a=>matchesQuery(a.name+' '+a.desc,q)):[];
   let f=allProducts.filter(p=>matchesQuery(p.name,q));
   if(sale)f=f.filter(p=>priceInfo(p).off>0);
   if(rate)f=f.filter(p=>Number(p.rating)>=4);
@@ -422,15 +412,7 @@ function render(){
 
   const activeCount=[sale,rate,!!cat,priceRange!=='any'].filter(Boolean).length;
   let html='';
-  if(matchedQa.length){
-    html+=`<section class="sec"><div class="sec-head"><h2 class="sec-title"><i data-lucide="zap"></i>Shortcuts</h2></div><div class="qa-grid">`;
-    html+=matchedQa.map((a,i)=>{
-      const n=typeof a.badge==='function'?a.badge():0;
-      return `<a class="qa qa-live" style="--i:${i}" href="${a.href}">${n?`<span class="mini-badge">${n>99?'99+':n}</span>`:''}<span class="qa-ic"><i data-lucide="${a.icon}"></i></span><span>${escapeHtml(a.name)}</span></a>`;
-    }).join('');
-    html+=`</div></section>`;
-  }
-  if(!f.length&&!matchedQa.length){
+  if(!f.length){
     html=`<div class="empty"><div class="e-ic"><i data-lucide="search-x"></i></div><b>No matches found</b><p>Try different words, or clear the filters below.</p>${activeCount?'<button type="button" class="chip" onclick="clearAllFilters()">Clear filters</button>':''}</div>`;
   }else if(f.length){
     html+=`<p class="res-count"><span><b>${f.length}</b> product${f.length>1?'s':''}</span>${activeCount?'<button type="button" class="clear-link" onclick="clearAllFilters()">Clear filters</button>':''}</p>`;
@@ -442,7 +424,7 @@ function render(){
 
 function bindHome(){
   document.querySelectorAll('[data-q]').forEach(b=>b.addEventListener('click',()=>{
-    $('#searchInput').value=b.dataset.q;render();$('#searchInput').focus();
+    $('#searchInput').value=b.dataset.q;refresh(true);$('#searchInput').focus();
   }));
   document.querySelectorAll('[data-hq]').forEach(b=>b.addEventListener('click',e=>{
     if(e.target.closest('[data-hx]'))return;
@@ -491,7 +473,7 @@ function closeHistoryPopup(){
 }
 $('#popupSearch').addEventListener('click',()=>{
   const q=popupQ;closeHistoryPopup();
-  if(q){$('#searchInput').value=q;render();$('#searchInput').focus()}
+  if(q){$('#searchInput').value=q;refresh(true);$('#searchInput').focus()}
 });
 $('#popupDelete').addEventListener('click',()=>{
   if(popupQ)removeRecentSearch(popupQ);
@@ -516,16 +498,31 @@ function goBack(){
   else location.href='/';
 }
 
-let t;
-$('#searchInput').addEventListener('input',()=>{clearTimeout(t);t=setTimeout(render,150)});
+let searchDebounce,skeletonTimeout;
+const hasActiveSearch=()=>{
+  if($('#searchInput').value.trim())return true;
+  if($('#chipSale').classList.contains('is-on')||$('#chipRate').classList.contains('is-on'))return true;
+  if(sortVal!=='rel'||priceVal!=='any')return true;
+  return !!$('#categoryFilters .chip.is-on');
+};
+function refresh(withSkeleton){
+  clearTimeout(searchDebounce);clearTimeout(skeletonTimeout);
+  searchDebounce=setTimeout(()=>{
+    if(withSkeleton&&allProducts.length&&hasActiveSearch()){
+      $('#searchResults').innerHTML='<div class="dots-loader"><i></i><i></i><i></i></div>'+skeletons(6);
+      skeletonTimeout=setTimeout(render,320);
+    }else render();
+  },160);
+}
+$('#searchInput').addEventListener('input',()=>refresh(true));
 $('#searchInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();saveRecentSearch($('#searchInput').value);e.target.blur()}});
 $('#clearBtn').addEventListener('click',()=>{const i=$('#searchInput');i.value='';i.focus();render()});
-$('#sortBtn').addEventListener('click',()=>openOpts('Sort by',SORT_OPTS,sortVal,v=>{sortVal=v;$('#sortLabel').textContent='Sort: '+SORT_OPTS.find(o=>o.v===v).t;render()}));
-$('#priceBtn').addEventListener('click',()=>openOpts('Price',PRICE_OPTS,priceVal,v=>{priceVal=v;$('#priceLabel').textContent='Price: '+(v==='any'?'Any':PRICE_OPTS.find(o=>o.v===v).t);render()}));
+$('#sortBtn').addEventListener('click',()=>openOpts('Sort by',SORT_OPTS,sortVal,v=>{sortVal=v;$('#sortLabel').textContent='Sort: '+SORT_OPTS.find(o=>o.v===v).t;refresh(true)}));
+$('#priceBtn').addEventListener('click',()=>openOpts('Price',PRICE_OPTS,priceVal,v=>{priceVal=v;$('#priceLabel').textContent='Price: '+(v==='any'?'Any':PRICE_OPTS.find(o=>o.v===v).t);refresh(true)}));
 $('#optScrim').addEventListener('click',e=>{if(e.target.id==='optScrim')closeOpts()});
 ['chipSale','chipRate'].forEach(id=>$('#'+id).addEventListener('click',e=>{
   const b=e.currentTarget,on=!b.classList.contains('is-on');
-  b.classList.toggle('is-on',on);b.setAttribute('aria-pressed',on);render();
+  b.classList.toggle('is-on',on);b.setAttribute('aria-pressed',on);refresh(true);
 }));
 window.addEventListener('scroll',()=>{$('#topBar').classList.toggle('scrolled',scrollY>8)},{passive:true});
 
