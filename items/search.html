@@ -31,6 +31,9 @@ button,select,input{font-family:inherit}
 .icon-btn:hover{background:var(--rani-tint);color:var(--rani)}
 .icon-btn:active{transform:scale(.9)}
 .icon-btn svg{width:22px;height:22px;stroke-width:1.6}
+.back-btn{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;cursor:pointer;box-shadow:0 2px 10px rgba(36,32,36,.08);transition:transform .12s}
+.back-btn:active{transform:scale(.9)}
+.back-btn svg{width:20px;height:20px;stroke-width:1.8}
 .cart-badge{position:absolute;top:3px;right:2px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--rani);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
 .search-box{flex:1;min-width:0;display:flex;align-items:center;gap:9px;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:0 8px 0 15px;height:46px;transition:border-color .15s,box-shadow .15s;box-shadow:0 2px 10px rgba(36,32,36,.05)}
 .search-box:focus-within{border-color:var(--rani);box-shadow:0 4px 18px rgba(216,27,96,.14)}
@@ -106,26 +109,26 @@ main{flex:1;padding:18px 16px calc(40px + env(safe-area-inset-bottom,0px))}
 /* ---------- results ---------- */
 .res-count{font-size:12.5px;color:var(--muted);margin:0 2px 12px;display:flex;justify-content:space-between;align-items:center}
 .res-count b{color:var(--ink)}
-.result{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:10px;margin-bottom:10px;transition:box-shadow .2s,transform .15s;opacity:0;transform:translateY(10px);animation:resultIn .34s var(--ease) forwards;animation-delay:calc(var(--i,0) * 45ms)}
-.result:hover{box-shadow:0 10px 26px rgba(36,32,36,.09)}
-.result:active{transform:scale(.99)}
+
+
+
 @keyframes resultIn{to{opacity:1;transform:translateY(0)}}
-.result-media{position:relative;width:96px;height:96px;flex:0 0 auto;border-radius:14px;overflow:hidden;background:var(--cream)}
-.result-media img{width:100%;height:100%;object-fit:cover;display:block}
-.off-tag{position:absolute;left:6px;bottom:6px;background:#15803D;color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px}
-.wish-btn{position:absolute;top:6px;right:6px;width:30px;height:30px;border-radius:50%;border:0;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center;color:var(--muted);cursor:pointer;transition:transform .15s var(--ease);box-shadow:0 2px 8px rgba(0,0,0,.12)}
-.wish-btn svg{width:15px;height:15px;stroke-width:2}
-.wish-btn.is-on{color:var(--rani)}
-.wish-btn.is-on svg{fill:var(--rani)}
-.wish-btn.pulse{animation:pulse .32s var(--ease)}
+
+
+
+
+
+
+
+
 @keyframes pulse{0%{transform:scale(1)}40%{transform:scale(1.3)}100%{transform:scale(1)}}
-.result-info{display:flex;flex-direction:column;justify-content:center;gap:6px;min-width:0;flex:1}
-.n{font-size:14px;font-weight:500;line-height:1.35}
-.price-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
-.price{font-size:16px;font-weight:700}
-.mrp{font-size:12px;color:var(--muted);text-decoration:line-through}
-.off{font-size:12px;font-weight:700;color:#15803D}
-.meta{display:flex;align-items:center;gap:8px}
+
+
+
+
+
+
+
 .rating{display:inline-flex;align-items:center;gap:3px;font-weight:700;font-size:11px;color:#fff;background:#15803D;padding:3px 8px;border-radius:999px}
 .rating.mid{background:#B45309}.rating.low{background:#B91C1C}
 .rating svg{width:10px;height:10px;fill:currentColor;stroke:currentColor}
@@ -133,24 +136,49 @@ main{flex:1;padding:18px 16px calc(40px + env(safe-area-inset-bottom,0px))}
 .dots i{width:14px;height:14px;border-radius:50%;margin-left:-4px;box-shadow:0 0 0 2px #fff,inset 0 0 0 1px rgba(0,0,0,.14)}
 .dots i:first-child{margin-left:0}
 .dots b{min-width:20px;height:20px;padding:0 5px;margin-left:7px;border-radius:10px;background:#fff;border:1px solid var(--line);font-size:10.5px;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;justify-content:center}
-.cart-btn{flex:0 0 auto;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;color:var(--rani);cursor:pointer;transition:all .2s var(--ease);box-shadow:0 2px 8px rgba(36,32,36,.06)}
-.cart-btn svg{width:18px;height:18px;stroke-width:1.8}
-.cart-btn.is-on{background:#15803D;border-color:#15803D;color:#fff}
-.cart-btn.pop{animation:pop .3s var(--ease)}
+
+
+
+
 @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.18)}100%{transform:scale(1)}}
 
 /* skeletons */
-.dots-loader{display:flex;align-items:center;justify-content:center;gap:8px;padding:24px 0 8px}
-.dots-loader i{width:9px;height:9px;border-radius:50%;background:var(--rani);animation:dotBounce 1s infinite}
-.dots-loader i:nth-child(2){animation-delay:.15s}
-.dots-loader i:nth-child(3){animation-delay:.3s}
-@keyframes dotBounce{0%,100%{transform:translateY(0);opacity:.45}50%{transform:translateY(-8px);opacity:1}}
-.skel{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:10px;margin-bottom:10px;opacity:0;animation:resultIn .3s var(--ease) forwards;animation-delay:calc(var(--i,0) * 60ms)}
-.skel-media{width:96px;height:96px;border-radius:14px;flex:0 0 auto}
-.skel-lines{flex:1;display:flex;flex-direction:column;gap:9px}
-.skel-line{height:12px;border-radius:6px}
-.skel-media,.skel-line{background:linear-gradient(90deg,#F1EBE3 25%,#FAF5EE 37%,#F1EBE3 63%);background-size:400% 100%;animation:shimmer 1.3s ease infinite}
+.results-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.pcard{position:relative;min-width:0;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;padding-bottom:12px;box-shadow:0 2px 8px rgba(36,32,36,.04);opacity:0;transform:translateY(10px);animation:resultIn .34s var(--ease) forwards;animation-delay:calc(var(--i,0) * 45ms);transition:box-shadow .25s}
+.pcard:hover{box-shadow:0 10px 22px rgba(36,32,36,.1)}
+.pcard-link{display:block;cursor:pointer}
+.pcard-media{position:relative;display:block;aspect-ratio:1/1;background:var(--cream);overflow:hidden}
+.pcard-media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s var(--ease)}
+.pcard:hover .pcard-media img{transform:scale(1.05)}
+.pcard-foot{display:block;padding:10px 10px 0}
+.pcard-text{display:block;min-width:0}
+.pcard-name{display:block;font-size:13px;font-weight:500;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pcard-price{display:flex;align-items:baseline;gap:7px;margin-top:5px;flex-wrap:wrap}
+.pcard-row{display:flex;align-items:center;gap:6px;margin-top:9px;min-width:0}
+.pcard-metalink{display:flex;align-items:center;gap:6px;min-width:0;flex:1}
+.tags{position:absolute;left:8px;top:8px;display:flex;gap:6px;z-index:2}
+.tag-off{background:#15803D;color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px}
+.heart{position:absolute;right:8px;top:8px;width:32px;height:32px;border-radius:50%;border:0;background:rgba(255,255,255,.95);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.14);cursor:pointer;transition:transform .15s;z-index:2}
+.heart:active{transform:scale(.88)}
+.heart svg{width:15px;height:15px;stroke-width:1.8}
+.heart.is-on{color:var(--rani)}
+.heart.is-on svg{fill:var(--rani)}
+.heart.pulse{animation:pulse .32s var(--ease)}
+.go{margin-left:auto;flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:0;background:var(--rani);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,transform .15s}
+.go svg{width:16px;height:16px;stroke-width:1.8}
+.go.is-on{background:#15803D}
+.go.pop{animation:pop .3s var(--ease)}
+
+
+
+
+
 @keyframes shimmer{0%{background-position:100% 0}100%{background-position:0 0}}
+.skel-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.skel-card{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;opacity:0;animation:resultIn .3s var(--ease) forwards;animation-delay:calc(var(--i,0) * 60ms)}
+.skel-media{aspect-ratio:1/1;background:linear-gradient(90deg,#F1EBE3 25%,#FAF5EE 37%,#F1EBE3 63%);background-size:400% 100%;animation:shimmer 1.3s ease infinite}
+.skel-body{padding:10px;display:flex;flex-direction:column;gap:8px}
+.skel-line{height:12px;border-radius:6px;background:linear-gradient(90deg,#F1EBE3 25%,#FAF5EE 37%,#F1EBE3 63%);background-size:400% 100%;animation:shimmer 1.3s ease infinite}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
 /* empty states */
@@ -186,7 +214,7 @@ main{flex:1;padding:18px 16px calc(40px + env(safe-area-inset-bottom,0px))}
 <div class="app">
   <header class="top" id="topBar">
     <div class="top-row">
-      <button type="button" class="icon-btn" onclick="goBack()" aria-label="Back"><i data-lucide="arrow-left"></i></button>
+      <button type="button" class="back-btn" onclick="goBack()" aria-label="Back"><i data-lucide="arrow-left"></i></button>
       <label class="search-box" id="searchBox">
         <i data-lucide="search"></i>
         <input type="search" id="searchInput" placeholder="Search sarees, suits, lehengas…" autocomplete="off" enterkeyhint="search" aria-label="Search products">
@@ -336,31 +364,35 @@ const colorDots=p=>{
   const c=p.colors;if(!c.length)return'';
   return `<span class="dots" role="img" aria-label="${c.length} ${c.length>1?'colours':'colour'} available">${c.slice(0,3).map(x=>`<i style="background:${colorHex(x)}"></i>`).join('')}${c.length>3?`<b>+${c.length-3}</b>`:''}</span>`;
 };
-const metaRow=p=>{
+const ratingPill=p=>{
   const r=Number(p.rating);
-  const pill=r>0?`<span class="rating ${r>=4?'':r>=3?'mid':'low'}">${r.toFixed(1)}<i data-lucide="star"></i></span>`:'';
-  const d=colorDots(p);
-  return(pill||d)?`<span class="meta">${pill}${d}</span>`:'';
+  return r>0?`<span class="rating ${r>=4?'':r>=3?'mid':'low'}">${r.toFixed(1)}<i data-lucide="star"></i></span>`:'';
 };
 const resultCard=(p,i)=>{
   const {pr,m,off}=priceInfo(p);
   const wished=wishIds().has(String(p.id));
   const added=inCart(p.id);
-  return `<a class="result" style="--i:${i}" href="/product?id=${encodeURIComponent(p.id)}" data-product="${escapeHtml(p.id)}">
-    <span class="result-media">
-      <img src="${escapeHtml(safeImageUrl(p.img))}" alt="" loading="lazy" onerror="imgFallback(this)">
-      ${off?`<span class="off-tag">${off}% off</span>`:''}
-      <button type="button" class="wish-btn${wished?' is-on':''}" data-wish="${escapeHtml(p.id)}" aria-label="Save to wishlist" aria-pressed="${wished}"><i data-lucide="heart"></i></button>
+  const id=escapeHtml(p.id),name=escapeHtml(p.name);
+  const href=`/product?id=${encodeURIComponent(p.id)}`;
+  const tags=off?`<span class="tags"><span class="tag-off">${off}% off</span></span>`:'';
+  return `<article class="pcard" style="--i:${i}">
+    <span class="pcard-link" data-product="${id}">
+      <span class="pcard-media"><img src="${escapeHtml(safeImageUrl(p.img))}" alt="" loading="lazy" onerror="imgFallback(this)">${tags}</span>
     </span>
-    <span class="result-info">
-      <span class="n clamp2">${escapeHtml(p.name)}</span>
-      <span class="price-row"><span class="price">${fmt(pr)}</span>${m>pr?`<span class="mrp">${fmt(m)}</span>`:''}</span>
-      ${metaRow(p)}
-    </span>
-    <button type="button" class="cart-btn${added?' is-on':''}" data-cart="${escapeHtml(p.id)}" aria-label="${added?'Remove from bag':'Add to bag'}" aria-pressed="${added}"><i data-lucide="${added?'check':'shopping-bag'}"></i></button>
-  </a>`;
+    <div class="pcard-foot">
+      <a class="pcard-text" href="${href}" data-product="${id}">
+        <span class="pcard-name">${name}</span>
+        <span class="pcard-price"><span class="price">${fmt(pr)}</span>${m>pr?`<span class="mrp">${fmt(m)}</span>`:''}</span>
+      </a>
+      <div class="pcard-row">
+        <span class="pcard-metalink">${ratingPill(p)}${colorDots(p)}</span>
+        <button type="button" class="go${added?' is-on':''}" data-cart="${id}" aria-label="${added?'Remove from bag':'Add to bag'}" aria-pressed="${added}"><i data-lucide="${added?'check':'shopping-bag'}"></i></button>
+      </div>
+    </div>
+    <button type="button" class="heart${wished?' is-on':''}" data-wish="${id}" aria-label="Save to wishlist" aria-pressed="${wished}"><i data-lucide="heart"></i></button>
+  </article>`;
 };
-const skeletons=(n=6)=>Array(n).fill(0).map((_,i)=>`<div class="skel" style="--i:${i}"><span class="skel-media"></span><span class="skel-lines"><span class="skel-line" style="width:72%"></span><span class="skel-line" style="width:42%"></span><span class="skel-line" style="width:58%"></span></span></div>`).join('');
+const skeletons=(n=6)=>`<div class="skel-grid">`+Array(n).fill(0).map((_,i)=>`<div class="skel-card" style="--i:${i}"><div class="skel-media"></div><div class="skel-body"><div class="skel-line" style="width:72%"></div><div class="skel-line" style="width:42%"></div><div class="skel-line" style="width:58%"></div></div></div>`).join('')+`</div>`;
 
 const homeView=()=>{
   const r=recentSearches();
@@ -391,7 +423,7 @@ function render(){
   raw?url.searchParams.set('q',raw):url.searchParams.delete('q');
   history.replaceState(null,'',url);
 
-  if(!allProducts.length&&window._loading){c.innerHTML='<div class="dots-loader"><i></i><i></i><i></i></div>'+skeletons(6);return}
+  if(!allProducts.length&&window._loading){c.innerHTML=skeletons(6);return}
   if(!allProducts.length&&window._failed){
     c.innerHTML=`<div class="empty"><div class="e-ic"><i data-lucide="cloud-off"></i></div><b>Products unavailable</b><p>Please check your connection and try again.</p><button type="button" class="chip" onclick="loadProducts()"><i data-lucide="rotate-ccw"></i>Try again</button></div>`;
     icons();return;
@@ -416,7 +448,7 @@ function render(){
     html=`<div class="empty"><div class="e-ic"><i data-lucide="search-x"></i></div><b>No matches found</b><p>Try different words, or clear the filters below.</p>${activeCount?'<button type="button" class="chip" onclick="clearAllFilters()">Clear filters</button>':''}</div>`;
   }else if(f.length){
     html+=`<p class="res-count"><span><b>${f.length}</b> product${f.length>1?'s':''}</span>${activeCount?'<button type="button" class="clear-link" onclick="clearAllFilters()">Clear filters</button>':''}</p>`;
-    html+=f.map((p,i)=>resultCard(p,i)).join('');
+    html+=`<div class="results-grid">`+f.map((p,i)=>resultCard(p,i)).join('')+`</div>`;
   }
   c.innerHTML=html;
   icons();
@@ -509,7 +541,7 @@ function refresh(withSkeleton){
   clearTimeout(searchDebounce);clearTimeout(skeletonTimeout);
   searchDebounce=setTimeout(()=>{
     if(withSkeleton&&allProducts.length&&hasActiveSearch()){
-      $('#searchResults').innerHTML='<div class="dots-loader"><i></i><i></i><i></i></div>'+skeletons(6);
+      $('#searchResults').innerHTML=skeletons(6);
       skeletonTimeout=setTimeout(render,320);
     }else render();
   },160);
@@ -549,10 +581,14 @@ document.addEventListener('click',e=>{
     showToast(on?'Added to bag':'Removed from bag');
     return;
   }
-  const a=e.target.closest('a[data-product]');if(!a)return;
+  const prodEl=e.target.closest('[data-product]');if(!prodEl)return;
   saveRecentSearch($('#searchInput').value);
-  let r=(safeJson('aavira_recent',[])||[]).filter(i=>String(i)!==a.dataset.product);
-  r.unshift(a.dataset.product);saveJson('aavira_recent',r.slice(0,8));
+  let r=(safeJson('aavira_recent',[])||[]).filter(i=>String(i)!==prodEl.dataset.product);
+  r.unshift(prodEl.dataset.product);saveJson('aavira_recent',r.slice(0,8));
+  if(prodEl.tagName!=='A'){
+    const anchor=prodEl.closest('.pcard')?.querySelector('a[data-product]');
+    if(anchor&&anchor!==prodEl){anchor.click();return}
+  }
 });
 
 document.addEventListener('DOMContentLoaded',()=>{
