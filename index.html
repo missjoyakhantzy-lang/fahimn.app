@@ -20,13 +20,25 @@
 (() => {
   const BASE_WIDTH = 420;
   const root = document.documentElement;
+  const supportsZoom = 'zoom' in root.style;
   const fit = () => {
+    const body = document.body;
     root.style.zoom = '';
+    if (body) { body.style.transform = ''; body.style.transformOrigin = ''; body.style.width = ''; }
     const vw = root.clientWidth || innerWidth;
     const touch = navigator.maxTouchPoints > 0 || matchMedia('(pointer:coarse)').matches;
-    if (touch && vw > BASE_WIDTH + 60 && vw <= 1100) root.style.zoom = (vw / BASE_WIDTH).toFixed(4);
+    if (touch && vw > BASE_WIDTH + 60 && vw <= 1100) {
+      const scale = (vw / BASE_WIDTH).toFixed(4);
+      if (supportsZoom) root.style.zoom = scale;
+      else if (body) {
+        body.style.transform = 'scale(' + scale + ')';
+        body.style.transformOrigin = 'top left';
+        body.style.width = BASE_WIDTH + 'px';
+      }
+    }
   };
   fit();
+  document.addEventListener('DOMContentLoaded', fit);
   addEventListener('resize', fit);
   addEventListener('orientationchange', fit);
 })();
@@ -95,7 +107,7 @@ a{color:inherit;text-decoration:none}
 .pcard{position:relative;min-width:0;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;padding-bottom:12px;box-shadow:0 2px 8px rgba(36,32,36,.04);transition:box-shadow .3s,border-color .3s}
 .pcard:hover{box-shadow:0 10px 22px rgba(36,32,36,.12);border-color:rgba(212,175,55,.35)}
 .pcard-rail{flex:0 0 176px;scroll-snap-align:start}
-.pcard-link{display:block}
+.pcard-link{display:block;cursor:pointer}
 .pcard-media{position:relative;display:block;aspect-ratio:1/1;background:var(--cream);overflow:hidden}
 .pcard-media img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
 .pcard:hover .pcard-media img{transform:scale(1.06)}
@@ -715,7 +727,7 @@ window.showToast = (message, type = 'success') => {
   toastTimer = setTimeout(() => toast.classList.remove('is-on'), 2200);
 };
 
-const ACTION_DELAY = 1500;
+const ACTION_DELAY = 300;
 const ACTION_SELECTOR = [
   '.btn-pink', '.btn-dark', '.btn-outline', '.go', '.menu-item', '.signin', '.icon-btn[href]',
   '.icon-btn[aria-label="Shopping cart"]', '.sec-link[onclick]', '.footer-news button',
@@ -843,14 +855,16 @@ window.handleLogout = () => {
 };
 
 window.updateWishCount = () => {
-  const count = store.json('aavira_wishlist', []).length;
+  const wishlist = store.json('aavira_wishlist', []);
+  const count = (Array.isArray(wishlist) ? wishlist : []).length;
   const badge = $('#wish-badge');
   badge.textContent = count > 99 ? '99+' : count;
   badge.hidden = count <= 0;
 };
 
 window.updateCartCount = () => {
-  const total = store.json('aavira_cart', []).reduce((sum, item) => sum + (Number(item.qty) || 1), 0);
+  const cart = store.json('aavira_cart', []);
+  const total = (Array.isArray(cart) ? cart : []).reduce((sum, item) => sum + (Number(item.qty) || 1), 0);
   const badge = $('#cart-badge');
   badge.textContent = total > 99 ? '99+' : total;
   badge.hidden = total <= 0;
@@ -1020,9 +1034,9 @@ const cardHtml = (product, variant) => {
     : '';
 
   return `<article class="pcard ${variant}">
-    <a class="pcard-link" href="${href}" data-product="${id}" tabindex="-1" aria-hidden="true">
+    <span class="pcard-link" data-product="${id}">
       <span class="pcard-media"><img src="${escapeHtml(safeImageUrl(product.img))}" alt="" loading="lazy" onerror="imgFallback(this)">${tags}</span>
-    </a>
+    </span>
     <div class="pcard-foot">
       <a class="pcard-text" href="${href}" data-product="${id}">
         <span class="pcard-name">${name}</span>
@@ -1060,10 +1074,17 @@ document.addEventListener('click', event => {
   const heart = event.target.closest('[data-heart]');
   if (heart) return toggleWishlist(heart);
 
-  const link = event.target.closest('a[data-product]');
+  const shareBtn = event.target.closest('[data-share]');
+  if (shareBtn) return shareProduct(shareBtn.dataset.share);
+
+  const link = event.target.closest('[data-product]');
   if (link) {
     rememberRecent(link.dataset.product);
     (link.closest('.pcard') || link).classList.add('is-loading');
+    if (link.tagName !== 'A') {
+      const anchor = link.closest('.pcard')?.querySelector('a[data-product]');
+      if (anchor && anchor !== link) anchor.click();
+    }
     return;
   }
 
@@ -1092,7 +1113,9 @@ const sorters = {
 };
 
 const renderNewArrivals = () => {
-  const items = state.products.slice(6).sort(sorters[state.sort]);
+  const shown = new Set(state.products.slice(0, 6).map(p => String(p.id)));
+  const pool = state.products.filter(p => !shown.has(String(p.id)));
+  const items = (pool.length ? pool : state.products.slice()).sort(sorters[state.sort]);
   $('#new-arrivals-container').innerHTML = items.length
     ? items.map(p => generateProductCard(p, true)).join('')
     : '<p class="empty" style="grid-column:1/-1">More new arrivals are coming soon.</p>';
@@ -1575,7 +1598,7 @@ window.openQuickView = id => {
     </div>
     <div class="qv-actions">
       <a class="btn-pink" href="product?id=${encodeURIComponent(product.id)}">View full details</a>
-      <button type="button" class="btn-outline" onclick="shareProduct('${escapeHtml(String(product.id))}')" aria-label="Share"><i data-lucide="share-2"></i></button>
+      <button type="button" class="btn-outline" data-share="${escapeHtml(String(product.id))}" aria-label="Share"><i data-lucide="share-2"></i></button>
     </div>`;
   refreshIcons();
   layers.open('quickView');
@@ -1659,7 +1682,7 @@ window.initializeAppEngine = () => {
   setTimeout(async () => {
     await loadWishlistFromAccount();
     await Promise.all([
-      typeof window.getBannersData === 'function' ? fetchBanners() : 0,
+      fetchBanners(),
       fetchCategories(),
       fetchProducts(),
       fetchExperiences()
