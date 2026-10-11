@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Search - Aavira</title>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#ffffff">
@@ -13,13 +13,14 @@
 <style>
 :root{--rani:#D81B60;--rani-dark:#B71550;--rani-tint:#FCE8EF;--gold:#D4AF37;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#242024;--muted:#6B6369;--line:#E7E0D9;--ease:cubic-bezier(.2,.8,.2,1)}
 *{-webkit-tap-highlight-color:transparent;box-sizing:border-box}
-body{margin:0;font-family:"Inter",system-ui,sans-serif;background:var(--ivory);color:var(--ink);-webkit-font-smoothing:antialiased}
+html,body{overflow-x:clip}
+body{margin:0;font-family:"Inter",system-ui,sans-serif;background:var(--ivory);color:var(--ink);-webkit-font-smoothing:antialiased;position:relative}
 a{color:inherit;text-decoration:none}
 button,select,input{font-family:inherit}
 :focus-visible{outline:2px solid var(--rani);outline-offset:2px}
 .clamp1{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
 .clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.app{max-width:420px;margin:0 auto;background:var(--ivory);display:flex;flex-direction:column;min-height:100dvh;position:relative}
+.app{max-width:420px;margin:0 auto;background:var(--ivory);display:flex;flex-direction:column;min-height:100dvh;position:relative;overflow-x:clip}
 @media(min-width:640px){body{background:#EFE8DE}.app{box-shadow:0 0 60px rgba(36,32,36,.12)}}
 
 /* ---------- header ---------- */
@@ -162,6 +163,7 @@ main{flex:1;padding:18px 16px calc(40px + env(safe-area-inset-bottom,0px))}
 /* ---------- custom popup ---------- */
 .scrim{position:fixed;inset:0;background:rgba(27,23,25,.5);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);z-index:90;display:flex;align-items:center;justify-content:center;padding:28px;opacity:0;pointer-events:none;transition:opacity .22s}
 .scrim.show{opacity:1;pointer-events:auto}
+.scrim[hidden]{display:none!important}
 .popup{background:#fff;border-radius:24px;padding:22px 20px 18px;width:100%;max-width:320px;box-shadow:0 24px 60px rgba(0,0,0,.25);transform:translateY(14px) scale(.97);transition:transform .24s var(--ease);text-align:center}
 .scrim.show .popup{transform:none}
 .popup .p-ic{width:52px;height:52px;border-radius:18px;background:var(--rani-tint);color:var(--rani);display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px}
