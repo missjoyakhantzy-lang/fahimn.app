@@ -6,28 +6,6 @@
 <title>Search - Aavira</title>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#ffffff">
-<script>
-(function(){
-  var W=420,root=document.documentElement;
-  var supportsZoom='zoom' in root.style;
-  function fit(){
-    var body=document.body;
-    root.style.zoom='';
-    if(body){body.style.transform='';body.style.transformOrigin='';body.style.width='';}
-    var vw=root.clientWidth||window.innerWidth;
-    var touch=(navigator.maxTouchPoints>0)||(window.matchMedia&&matchMedia('(pointer:coarse)').matches);
-    if(touch&&vw>W+60&&vw<=1100){
-      var scale=(vw/W).toFixed(4);
-      if(supportsZoom)root.style.zoom=scale;
-      else if(body){body.style.transform='scale('+scale+')';body.style.transformOrigin='top left';body.style.width=W+'px';}
-    }
-  }
-  fit();
-  document.addEventListener('DOMContentLoaded',fit);
-  window.addEventListener('resize',fit);
-  window.addEventListener('orientationchange',fit);
-})();
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
@@ -52,7 +30,7 @@ button,select,input{font-family:inherit}
 .icon-btn:hover{background:var(--rani-tint);color:var(--rani)}
 .icon-btn:active{transform:scale(.9)}
 .icon-btn svg{width:22px;height:22px;stroke-width:1.6}
-.badge{position:absolute;top:2px;right:2px;min-width:17px;height:17px;padding:0 5px;border-radius:999px;background:var(--rani);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;line-height:1;border:2px solid #fff}
+.cart-badge{position:absolute;top:3px;right:2px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--rani);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
 .search-box{flex:1;display:flex;align-items:center;gap:9px;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:0 8px 0 15px;height:46px;transition:border-color .15s,box-shadow .15s;box-shadow:0 2px 10px rgba(36,32,36,.05)}
 .search-box:focus-within{border-color:var(--rani);box-shadow:0 4px 18px rgba(216,27,96,.14)}
 .search-box>svg{width:18px;height:18px;color:var(--rani);flex:0 0 auto}
@@ -64,7 +42,21 @@ button,select,input{font-family:inherit}
 
 .filters{display:flex;gap:8px;align-items:center;overflow-x:auto;padding:2px 14px 12px;scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
-.sel{flex:0 0 auto;border:1.5px solid var(--line);border-radius:999px;background:#fff;padding:9px 12px;font-size:12.5px;font-weight:500;color:var(--ink);cursor:pointer;appearance:none;-webkit-appearance:none;padding-right:30px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6369' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center}
+.dsel{flex:0 0 auto;border:1.5px solid var(--line);border-radius:999px;background:#fff;padding:9px 13px;font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:border-color .15s,transform .12s}
+.dsel:active{transform:scale(.95)}
+.dsel svg{width:14px;height:14px;color:var(--muted)}
+/* custom option sheet */
+.scrim.sheet-scrim{align-items:flex-end;padding:0}
+.sheet{background:#fff;border-radius:24px 24px 0 0;padding:8px 20px calc(22px + env(safe-area-inset-bottom,0px));width:100%;max-width:420px;margin:0 auto;box-shadow:0 -12px 44px rgba(0,0,0,.18);transform:translateY(102%);transition:transform .3s var(--ease);max-height:72dvh;overflow-y:auto}
+.scrim.show .sheet{transform:none}
+.sheet-handle{width:42px;height:4px;border-radius:2px;background:var(--line);margin:8px auto 10px}
+.sheet h3{margin:0 0 6px;font-family:"Playfair Display",serif;font-size:19px;text-align:center}
+.opt-row{display:flex;align-items:center;justify-content:space-between;width:100%;border:0;background:none;padding:16px 4px;font-size:14.5px;font-weight:500;color:var(--ink);cursor:pointer;border-bottom:1px solid var(--line)}
+.opt-row:last-child{border-bottom:0}
+.opt-row .radio{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;transition:border-color .15s}
+.opt-row.is-on{color:var(--rani);font-weight:600}
+.opt-row.is-on .radio{border-color:var(--rani)}
+.opt-row.is-on .radio::after{content:'';width:12px;height:12px;border-radius:50%;background:var(--rani)}
 .chip{flex:0 0 auto;border:1.5px solid var(--line);border-radius:999px;background:#fff;padding:9px 15px;font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
 .chip.is-on{background:var(--ink);border-color:var(--ink);color:#fff}
 .chip:active{transform:scale(.95)}
@@ -85,6 +77,7 @@ main{flex:1;padding:18px 16px calc(40px + env(safe-area-inset-bottom,0px))}
 .qa{display:flex;flex-direction:column;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 6px 13px;cursor:pointer;transition:transform .15s,box-shadow .2s,border-color .2s;position:relative}
 .qa:hover{box-shadow:0 8px 22px rgba(36,32,36,.08);border-color:#F3D9E2}
 .qa:active{transform:scale(.96)}
+.qa-live{opacity:0;animation:resultIn .34s var(--ease) forwards;animation-delay:calc(var(--i,0) * 45ms)}
 .qa-ic{width:46px;height:46px;border-radius:16px;background:var(--rani-tint);color:var(--rani);display:flex;align-items:center;justify-content:center}
 .qa-ic svg{width:21px;height:21px;stroke-width:1.8}
 .qa span{font-size:11.5px;font-weight:600;color:var(--ink);text-align:center;line-height:1.3}
@@ -106,13 +99,6 @@ main{flex:1;padding:18px 16px calc(40px + env(safe-area-inset-bottom,0px))}
 .empty-note{text-align:center;color:var(--muted);font-size:13px;padding:18px 10px;border:1.5px dashed var(--line);border-radius:16px;background:#fff}
 
 /* matched quick actions while typing */
-.qa-row{display:flex;align-items:center;gap:13px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:9px;cursor:pointer;transition:box-shadow .2s,transform .15s;opacity:0;transform:translateY(8px);animation:resultIn .32s var(--ease) forwards;animation-delay:calc(var(--i,0) * 40ms)}
-.qa-row:hover{box-shadow:0 8px 22px rgba(36,32,36,.08)}
-.qa-row:active{transform:scale(.99)}
-.qa-row .qa-ic{width:42px;height:42px;border-radius:14px;flex:0 0 auto}
-.qa-row .qa-tx{flex:1;min-width:0}
-.qa-row .qa-tx b{display:block;font-size:14px;font-weight:600}
-.qa-row .qa-tx small{color:var(--muted);font-size:12px}
 .qa-row>svg{width:17px;height:17px;color:var(--muted);flex:0 0 auto}
 
 /* ---------- results ---------- */
@@ -152,6 +138,11 @@ main{flex:1;padding:18px 16px calc(40px + env(safe-area-inset-bottom,0px))}
 @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.18)}100%{transform:scale(1)}}
 
 /* skeletons */
+.dots-loader{display:flex;align-items:center;justify-content:center;gap:8px;padding:24px 0 8px}
+.dots-loader i{width:9px;height:9px;border-radius:50%;background:var(--rani);animation:dotBounce 1s infinite}
+.dots-loader i:nth-child(2){animation-delay:.15s}
+.dots-loader i:nth-child(3){animation-delay:.3s}
+@keyframes dotBounce{0%,100%{transform:translateY(0);opacity:.45}50%{transform:translateY(-8px);opacity:1}}
 .skel{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:10px;margin-bottom:10px;opacity:0;animation:resultIn .3s var(--ease) forwards;animation-delay:calc(var(--i,0) * 60ms)}
 .skel-media{width:96px;height:96px;border-radius:14px;flex:0 0 auto}
 .skel-lines{flex:1;display:flex;flex-direction:column;gap:9px}
@@ -198,26 +189,12 @@ main{flex:1;padding:18px 16px calc(40px + env(safe-area-inset-bottom,0px))}
         <input type="search" id="searchInput" placeholder="Search sarees, suits, lehengas…" autocomplete="off" enterkeyhint="search" aria-label="Search products">
         <button type="button" class="clear-btn" id="clearBtn" aria-label="Clear search"><i data-lucide="x"></i></button>
       </label>
-      <a class="icon-btn" href="/cart" aria-label="Shopping bag">
-        <i data-lucide="shopping-bag"></i>
-        <span class="badge" id="cartBadge" hidden>0</span>
-      </a>
+      <a class="icon-btn" href="/wishlist" aria-label="Wishlist"><i data-lucide="heart"></i><span class="cart-badge" id="wishBadge" hidden>0</span></a>
+      <a class="icon-btn" href="/cart" aria-label="Shopping cart"><i data-lucide="shopping-cart"></i><span class="cart-badge" id="cartBadge" hidden>0</span></a>
     </div>
     <div class="filters" id="primaryFilters">
-      <select id="sortSel" class="sel" aria-label="Sort products">
-        <option value="rel">Sort: Relevance</option>
-        <option value="plh">Price: Low to high</option>
-        <option value="phl">Price: High to low</option>
-        <option value="disc">Biggest discount</option>
-        <option value="rate">Top rated</option>
-      </select>
-      <select id="priceSel" class="sel" aria-label="Filter by price">
-        <option value="any">Price: Any</option>
-        <option value="0-1000">Under ₹1,000</option>
-        <option value="1000-2500">₹1,000 – ₹2,500</option>
-        <option value="2500-5000">₹2,500 – ₹5,000</option>
-        <option value="5000-">Above ₹5,000</option>
-      </select>
+      <button type="button" class="dsel" id="sortBtn" aria-label="Sort products"><span id="sortLabel">Sort: Relevance</span><i data-lucide="chevron-down"></i></button>
+      <button type="button" class="dsel" id="priceBtn" aria-label="Filter by price"><span id="priceLabel">Price: Any</span><i data-lucide="chevron-down"></i></button>
       <button type="button" class="chip" id="chipSale" aria-pressed="false"><i data-lucide="badge-percent"></i>On sale</button>
       <button type="button" class="chip" id="chipRate" aria-pressed="false"><i data-lucide="star"></i>4★ &amp; above</button>
     </div>
@@ -225,6 +202,14 @@ main{flex:1;padding:18px 16px calc(40px + env(safe-area-inset-bottom,0px))}
   </header>
 
   <main id="searchResults" aria-live="polite"></main>
+</div>
+
+<div class="scrim sheet-scrim" id="optScrim" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="optTitle">
+    <div class="sheet-handle"></div>
+    <h3 id="optTitle"></h3>
+    <div id="optList"></div>
+  </div>
 </div>
 
 <div class="scrim" id="popupScrim" hidden>
@@ -284,18 +269,23 @@ const toggleCart=p=>{
   let on;
   if(i>-1){c.splice(i,1);on=false}
   else{c.push({productId:key,name:p.name,price:Number(p.price)||0,mrp:Number(p.mrp)||0,image:p.img,qty:1,size:'Free Size',color:'As Shown'});on=true}
-  writeCart(c);updateCartBadge();renderQuickBadges();
+  writeCart(c);updateCartBadge();
   return on;
 };
 const wishIds=()=>new Set((safeJson('aavira_wishlist',[])||[]).map(String));
 const toggleWish=id=>{
   const s=wishIds(),key=String(id);
   s.has(key)?s.delete(key):s.add(key);
-  saveJson('aavira_wishlist',[...s]);renderQuickBadges();
+  saveJson('aavira_wishlist',[...s]);updateWishBadge();
   return s.has(key);
 };
 const updateCartBadge=()=>{
   const n=cartCount(),b=$('#cartBadge');
+  if(n>0){b.hidden=false;b.textContent=n>99?'99+':n}else{b.hidden=true}
+};
+const updateWishBadge=()=>{
+  const n=wishIds().size,b=$('#wishBadge');
+  if(!b)return;
   if(n>0){b.hidden=false;b.textContent=n>99?'99+':n}else{b.hidden=true}
 };
 const recentSearches=()=>{const v=safeJson('aavira_searches',[]);return Array.isArray(v)?v:[]};
@@ -378,20 +368,9 @@ const resultCard=(p,i)=>{
 };
 const skeletons=(n=6)=>Array(n).fill(0).map((_,i)=>`<div class="skel" style="--i:${i}"><span class="skel-media"></span><span class="skel-lines"><span class="skel-line" style="width:72%"></span><span class="skel-line" style="width:42%"></span><span class="skel-line" style="width:58%"></span></span></div>`).join('');
 
-const quickGrid=()=>`<div class="qa-grid">${QUICK.map(a=>{
-  const n=typeof a.badge==='function'?a.badge():0;
-  return `<a class="qa" href="${a.href}" data-qa="${a.id}">
-    ${n?`<span class="mini-badge">${n>99?'99+':n}</span>`:''}
-    <span class="qa-ic"><i data-lucide="${a.icon}"></i></span><span>${a.name}</span></a>`;
-}).join('')}</div>`;
-
 const homeView=()=>{
   const r=recentSearches();
   return `
-  <section class="sec">
-    <div class="sec-head"><h2 class="sec-title"><i data-lucide="layout-grid"></i>Quick actions</h2></div>
-    ${quickGrid()}
-  </section>
   <section class="sec">
     <div class="sec-head"><h2 class="sec-title"><i data-lucide="trending-up"></i>Trending</h2></div>
     <div class="chips-row">${TRENDING.map(t=>`<button type="button" class="trend-chip" data-q="${escapeHtml(t)}"><i data-lucide="trending-up"></i>${escapeHtml(t)}</button>`).join('')}</div>
@@ -411,14 +390,14 @@ function render(){
   const input=$('#searchInput'),c=$('#searchResults');
   const raw=input.value.trim(),q=raw.toLowerCase();
   $('#searchBox').classList.toggle('has-text',!!raw);
-  const sale=$('#chipSale').classList.contains('is-on'),rate=$('#chipRate').classList.contains('is-on'),sort=$('#sortSel').value;
-  const priceRange=$('#priceSel').value,cat=(()=>{const on=$('#categoryFilters .chip.is-on');return on?on.dataset.cat:''})();
+  const sale=$('#chipSale').classList.contains('is-on'),rate=$('#chipRate').classList.contains('is-on'),sort=sortVal;
+  const priceRange=priceVal,cat=(()=>{const on=$('#categoryFilters .chip.is-on');return on?on.dataset.cat:''})();
 
   const url=new URL(location.href);
   raw?url.searchParams.set('q',raw):url.searchParams.delete('q');
   history.replaceState(null,'',url);
 
-  if(!allProducts.length&&window._loading){c.innerHTML=skeletons(6);return}
+  if(!allProducts.length&&window._loading){c.innerHTML='<div class="dots-loader"><i></i><i></i><i></i></div>'+skeletons(6);return}
   if(!allProducts.length&&window._failed){
     c.innerHTML=`<div class="empty"><div class="e-ic"><i data-lucide="cloud-off"></i></div><b>Products unavailable</b><p>Please check your connection and try again.</p><button type="button" class="chip" onclick="loadProducts()"><i data-lucide="rotate-ccw"></i>Try again</button></div>`;
     icons();return;
@@ -442,14 +421,12 @@ function render(){
   const activeCount=[sale,rate,!!cat,priceRange!=='any'].filter(Boolean).length;
   let html='';
   if(matchedQa.length){
-    html+=`<p class="res-count"><span><b>${matchedQa.length}</b> shortcut${matchedQa.length>1?'s':''}</span></p>`;
+    html+=`<section class="sec"><div class="sec-head"><h2 class="sec-title"><i data-lucide="zap"></i>Shortcuts</h2></div><div class="qa-grid">`;
     html+=matchedQa.map((a,i)=>{
       const n=typeof a.badge==='function'?a.badge():0;
-      return `<a class="qa-row" style="--i:${i}" href="${a.href}">
-        <span class="qa-ic"><i data-lucide="${a.icon}"></i></span>
-        <span class="qa-tx"><b>${escapeHtml(a.name)}${n?` <span class="mini-badge" style="position:static;display:inline-flex;vertical-align:2px;margin-left:6px">${n>99?'99+':n}</span>`:''}</b><small>${escapeHtml(a.desc)}</small></span>
-        <i data-lucide="chevron-right"></i></a>`;
+      return `<a class="qa qa-live" style="--i:${i}" href="${a.href}">${n?`<span class="mini-badge">${n>99?'99+':n}</span>`:''}<span class="qa-ic"><i data-lucide="${a.icon}"></i></span><span>${escapeHtml(a.name)}</span></a>`;
     }).join('');
+    html+=`</div></section>`;
   }
   if(!f.length&&!matchedQa.length){
     html=`<div class="empty"><div class="e-ic"><i data-lucide="search-x"></i></div><b>No matches found</b><p>Try different words, or clear the filters below.</p>${activeCount?'<button type="button" class="chip" onclick="clearAllFilters()">Clear filters</button>':''}</div>`;
@@ -475,22 +452,21 @@ function bindHome(){
   const cb=$('#clearHistBtn');
   if(cb)cb.addEventListener('click',()=>{clearRecentSearches();showToast('Search history cleared')});
 }
-function renderQuickBadges(){
-  document.querySelectorAll('[data-qa]').forEach(a=>{
-    const def=QUICK.find(x=>x.id===a.dataset.qa);
-    const n=def&&typeof def.badge==='function'?def.badge():0;
-    let b=a.querySelector('.mini-badge');
-    if(n>0){
-      if(!b){b=document.createElement('span');b.className='mini-badge';a.prepend(b)}
-      b.textContent=n>99?'99+':n;
-    }else if(b)b.remove();
-  });
+const SORT_OPTS=[{v:'rel',t:'Relevance'},{v:'plh',t:'Price: Low to high'},{v:'phl',t:'Price: High to low'},{v:'disc',t:'Biggest discount'},{v:'rate',t:'Top rated'}];
+const PRICE_OPTS=[{v:'any',t:'Any'},{v:'0-1000',t:'Under \u20B91,000'},{v:'1000-2500',t:'\u20B91,000 \u2013 \u20B92,500'},{v:'2500-5000',t:'\u20B92,500 \u2013 \u20B95,000'},{v:'5000-',t:'Above \u20B95,000'}];
+let sortVal='rel',priceVal='any';
+function openOpts(title,opts,current,onPick){
+  $('#optTitle').textContent=title;
+  $('#optList').innerHTML=opts.map(o=>'<button type="button" class="opt-row'+(o.v===current?' is-on':'')+'" data-v="'+o.v+'"><span>'+escapeHtml(o.t)+'</span><span class="radio"></span></button>').join('');
+  $('#optList').querySelectorAll('.opt-row').forEach(b=>b.addEventListener('click',()=>{onPick(b.dataset.v);closeOpts()}));
+  const s=$('#optScrim');s.hidden=false;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>s.classList.add('show')));
 }
-
+function closeOpts(){const s=$('#optScrim');s.classList.remove('show');setTimeout(()=>{s.hidden=true},300)}
 function clearAllFilters(){
   $('#chipSale').classList.remove('is-on');$('#chipSale').setAttribute('aria-pressed','false');
   $('#chipRate').classList.remove('is-on');$('#chipRate').setAttribute('aria-pressed','false');
-  $('#priceSel').value='any';$('#sortSel').value='rel';
+  sortVal='rel';priceVal='any';$('#sortLabel').textContent='Sort: Relevance';$('#priceLabel').textContent='Price: Any';
   $('#categoryFilters').querySelectorAll('.chip').forEach(b=>b.classList.remove('is-on'));
   render();
 }
@@ -521,7 +497,7 @@ $('#popupDelete').addEventListener('click',()=>{
 });
 $('#popupCancel').addEventListener('click',closeHistoryPopup);
 $('#popupScrim').addEventListener('click',e=>{if(e.target.id==='popupScrim')closeHistoryPopup()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#popupScrim').hidden)closeHistoryPopup()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('#popupScrim').hidden)closeHistoryPopup();if(!$('#optScrim').hidden)closeOpts()}});
 
 async function loadProducts(){
   window._loading=true;window._failed=false;render();
@@ -542,8 +518,9 @@ let t;
 $('#searchInput').addEventListener('input',()=>{clearTimeout(t);t=setTimeout(render,150)});
 $('#searchInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();saveRecentSearch($('#searchInput').value);e.target.blur()}});
 $('#clearBtn').addEventListener('click',()=>{const i=$('#searchInput');i.value='';i.focus();render()});
-$('#sortSel').addEventListener('change',render);
-$('#priceSel').addEventListener('change',render);
+$('#sortBtn').addEventListener('click',()=>openOpts('Sort by',SORT_OPTS,sortVal,v=>{sortVal=v;$('#sortLabel').textContent='Sort: '+SORT_OPTS.find(o=>o.v===v).t;render()}));
+$('#priceBtn').addEventListener('click',()=>openOpts('Price',PRICE_OPTS,priceVal,v=>{priceVal=v;$('#priceLabel').textContent='Price: '+(v==='any'?'Any':PRICE_OPTS.find(o=>o.v===v).t);render()}));
+$('#optScrim').addEventListener('click',e=>{if(e.target.id==='optScrim')closeOpts()});
 ['chipSale','chipRate'].forEach(id=>$('#'+id).addEventListener('click',e=>{
   const b=e.currentTarget,on=!b.classList.contains('is-on');
   b.classList.toggle('is-on',on);b.setAttribute('aria-pressed',on);render();
@@ -582,7 +559,7 @@ document.addEventListener('click',e=>{
 document.addEventListener('DOMContentLoaded',()=>{
   const q=new URLSearchParams(location.search).get('q');
   if(q)$('#searchInput').value=q;
-  updateCartBadge();
+  updateCartBadge();updateWishBadge();
   icons();loadProducts();
   if(!q)setTimeout(()=>$('#searchInput').focus(),400);
 });
