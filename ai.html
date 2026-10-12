@@ -68,9 +68,19 @@ button,input{font-family:inherit}
 .composer-row{display:flex;align-items:center;gap:9px}
 .composer input{flex:1;min-width:0;border:1.5px solid var(--line);border-radius:999px;padding:13px 17px;font-size:14px;outline:0;background:#fff;color:var(--ink);transition:border-color .15s}
 .composer input:focus{border-color:var(--rani)}
-.send-btn{width:48px;height:48px;border-radius:50%;border:0;background:linear-gradient(135deg,var(--rani),var(--rani-dark));color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;box-shadow:0 6px 18px rgba(216,27,96,.35);transition:transform .12s}
-.send-btn:active{transform:scale(.9)}
-.send-btn svg{width:20px;height:20px}
+.send-btn{width:44px;height:44px;border-radius:50%;border:0;background:#1F2937;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;transition:all .15s}
+.send-btn svg{width:20px;height:20px;stroke-width:2.4}
+.send-btn:disabled{background:#E9E2D9;color:#B9AFA6;cursor:default}
+.send-btn:not(:disabled){box-shadow:0 4px 14px rgba(0,0,0,.28)}
+.send-btn:not(:disabled):active{transform:scale(.88)}
+.ai-prods{display:flex;gap:10px;overflow-x:auto;margin:10px -4px 0;padding:2px 4px 6px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.ai-prods::-webkit-scrollbar{display:none}
+.ai-prod{flex:0 0 132px;scroll-snap-align:start;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 8px rgba(36,32,36,.05)}
+.ai-prod:active{transform:scale(.97)}
+.ai-prod-img{display:block;aspect-ratio:1/1;background:var(--cream);overflow:hidden}
+.ai-prod-img img{width:100%;height:100%;object-fit:cover}
+.ai-prod-name{display:block;font-size:11.5px;font-weight:600;padding:8px 9px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink);text-align:left}
+.ai-prod-price{display:block;font-size:13px;font-weight:700;color:var(--rani);padding:3px 9px 10px;text-align:left}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
@@ -91,15 +101,63 @@ button,input{font-family:inherit}
   <div class="composer">
     <div class="composer-row">
       <input type="text" id="msgInput" placeholder="Ask about sizes, orders, offers…" autocomplete="off" enterkeyhint="send" aria-label="Message Aavira AI">
-      <button type="button" class="send-btn" id="sendBtn" aria-label="Send"><i data-lucide="send-horizontal"></i></button>
+      <button type="button" class="send-btn" id="sendBtn" aria-label="Send" disabled><i data-lucide="arrow-up"></i></button>
     </div>
   </div>
 </div>
 
+<script src="/user_data.js"></script>
 <script>
 const $=s=>document.querySelector(s);
 const chat=$('#chat'),input=$('#msgInput');
 const WA='https://wa.me/919608720622?text='+encodeURIComponent('Hi Aavira Fashion! I need help.');
+const HISTORY=[]; // conversation memory: {role:'user'|'ai', text}
+const MAX_HIST=12;
+let CATALOG=[];
+async function loadCatalog(){
+  try{
+    if(typeof window.getVercelData==='function'){
+      const d=await window.getVercelData();
+      if(Array.isArray(d)) CATALOG=d;
+    }
+  }catch(e){}
+}
+function pushHist(role,text){ HISTORY.push({role,text:String(text).slice(0,500)}); if(HISTORY.length>MAX_HIST) HISTORY.splice(0,HISTORY.length-MAX_HIST); }
+function buildPrompt(text){
+  let convo='';
+  if(HISTORY.length) convo='\n\nConversation so far:\n'+HISTORY.map(m=>(m.role==='user'?'Customer: ':'Aavira AI: ')+m.text).join('\n');
+  return AI_SYSTEM+convo+'\n\nCustomer message: '+text+'\nReply as Aavira AI:';
+}
+function findProducts(query,n){
+  n=n||4;
+  const words=String(query||'').toLowerCase().split(/\s+/).filter(w=>w.length>2);
+  if(!words.length||!CATALOG.length) return [];
+  return CATALOG.map(p=>({p,s:words.reduce((a,w)=>a+(((p.name||'').toLowerCase().includes(w))?1:0),0)}))
+    .filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,n).map(x=>x.p);
+}
+function topProducts(n){
+  n=n||4;
+  const bs=CATALOG.filter(p=>p.bestseller);
+  const pool=bs.length>=n?bs:CATALOG.slice().sort((a,b)=>(b.rating||0)-(a.rating||0));
+  return pool.slice(0,n);
+}
+function productCardsHTML(items){
+  if(!items||!items.length) return '';
+  return '<div class="ai-prods">'+items.map(p=>{
+    const id=encodeURIComponent(p.id);
+    const img=escapeHtml(p.imageMain||p.image||p.imageUrl||'');
+    const name=escapeHtml(p.name||'Blouse');
+    const price=p.price?('\u20B9'+Number(p.price).toLocaleString('en-IN')):'';
+    return '<a class="ai-prod" href="/product?id='+id+'">'
+      +'<span class="ai-prod-img">'+(img?'<img src="'+img+'" alt="" loading="lazy">':'')+'</span>'
+      +'<span class="ai-prod-name">'+name+'</span>'
+      +'<span class="ai-prod-price">'+price+'</span></a>';
+  }).join('')+'</div>';
+}
+function extractProductsTag(text){
+  const m=String(text).match(/\[\[SHOW_PRODUCTS:\s*([^\]]+)\]\]/i);
+  return m?m[1].trim():null;
+}
 const escapeHtml=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
 const icons=()=>{if(window.lucide)lucide.createIcons()};
 const scrollDown=()=>requestAnimationFrame(()=>{chat.scrollTop=chat.scrollHeight});
@@ -115,9 +173,9 @@ const INSTANT=[
   {k:['track','order','delivery','status','shipping','parcel'],
    t:"You can track your order live from the <b>My Orders</b> section — it shows dispatch and delivery status.",
    a:[{t:'My Orders',h:'/orders',i:'package'}]},
-  {k:['best','trend','new','latest','popular'],
-   t:"Our <b>best sellers</b> right now are Silk Blouses and Bridal Blouses. Want me to show you?",
-   a:[{t:'Best Sellers',h:'/items/search?q=blouse',i:'sparkles'},{t:'Collections',h:'/categories',i:'layout-grid'}]},
+  {k:['best','trend','new','latest','popular'], showTop:true,
+   t:"Our <b>best sellers</b> right now are Silk Blouses and Bridal Blouses. Here are some customer favourites:",
+   a:[{t:'View All',h:'/items/search?q=blouse',i:'sparkles'}]},
   {k:['price','offer','discount','coupon','promo','sale','deal'],
    t:"We run offers through the year! Check the <b>Offers</b> page for live deals and promo codes.",
    a:[{t:'View Offers',h:'/offer',i:'badge-percent'}]},
@@ -139,7 +197,9 @@ const AI_SYSTEM = "You are Aavira AI, the fun fashion assistant of Aavira Fashio
   + "CONTACT RULE: NEVER put phone numbers, WhatsApp, or links in every message. Mention them ONLY when truly needed - e.g. user asks for human help (WhatsApp +91 96087 20622), needs the size guide (/support), order tracking (/orders), or offers (/offer). "
   + "SIZES: Blouse sizes are ALWAYS numeric: 32, 34, 36, 38, 40. NEVER use S/M/L. If the user shares their bust measurement, map it directly to the number (bust 34 means size 34). "
   + "FOUNDER: If asked who is the founder or CEO of the website, answer: Fahim Akhtar, the 17-year-old founder of Aavira Fashion. "
-  + "Never invent order statuses, prices or discounts. If you cannot help with something, politely guide the user to WhatsApp +91 96087 20622.";
+  + "Never invent order statuses, prices or discounts. If you cannot help with something, politely guide the user to WhatsApp +91 96087 20622."
+  + "PRODUCTS RULE: When you recommend products (blouses), end your reply with exactly one tag like [[SHOW_PRODUCTS: silk blouse]] using 1-3 search words. The app will show real product cards there. Do not invent product names or prices - only describe types. "
+  + "MEMORY: You remember this conversation - if the user already told you their size or choice earlier, use it instead of asking again.";
 
 function instantReply(text){
   const q=text.toLowerCase();
@@ -157,7 +217,7 @@ function formatAI(text){
 }
 async function fetchAIAnswer(text, signal){
   if(!POLLINATION_API_KEY) throw new Error('no-key');
-  const prompt = AI_SYSTEM + "\n\nCustomer message: " + text + "\nReply as Aavira AI:";
+  const prompt = buildPrompt(text);
   const url = 'https://gen.pollinations.ai/text/' + encodeURIComponent(prompt) + '?key=' + encodeURIComponent(POLLINATION_API_KEY);
   const r = await fetch(url, { signal });
   if(!r.ok) throw new Error('ai-http-'+r.status);
@@ -181,13 +241,30 @@ function addTyping(){
 }
 function removeTyping(){document.getElementById('typingRow')?.remove()}
 
+function aiBubble(ans,query){
+  const clean=String(ans).replace(/\[\[SHOW_PRODUCTS:[^\]]+\]\]/gi,'').trim();
+  let html=formatAI(clean);
+  const q=query||extractProductsTag(ans);
+  if(q){
+    const items=findProducts(q);
+    if(items.length) html+=productCardsHTML(items);
+  }
+  return html;
+}
 async function send(text){
   text=(text??input.value).trim();
   if(!text||send._busy)return;
   addMsg('user',escapeHtml(text));
-  input.value='';
+  pushHist('user',text);
+  input.value=''; syncSendBtn();
   const inst=instantReply(text);
-  if(inst){ addMsg('ai',inst.t,inst.a); return; }
+  if(inst){
+    let html=inst.t;
+    if(inst.showTop){ const items=topProducts(4); if(items.length) html+=productCardsHTML(items); }
+    addMsg('ai',html,inst.a);
+    pushHist('ai',inst.t.replace(/<[^>]+>/g,''));
+    return;
+  }
   send._busy=true;
   addTyping();
   const ctrl=new AbortController();
@@ -196,15 +273,18 @@ async function send(text){
     const ans=await fetchAIAnswer(text, ctrl.signal);
     clearTimeout(timer);
     removeTyping();
-    addMsg('ai',formatAI(ans));
+    addMsg('ai',aiBubble(ans));
+    pushHist('ai',String(ans).replace(/\[\[SHOW_PRODUCTS:[^\]]+\]\]/gi,'').trim().slice(0,500));
   }catch(e){
     clearTimeout(timer);
     removeTyping();
     addMsg('ai',FALLBACK.t,FALLBACK.a);
+    pushHist('ai','fallback');
   }finally{
     send._busy=false;
   }
 }
+function syncSendBtn(){ const b=document.getElementById('sendBtn'); if(b) b.disabled=!input.value.trim(); }
 
 function renderSugg(){
   $('#sugg').innerHTML=SUGGESTIONS.map(s=>`<button type="button" data-s="${escapeHtml(s.t)}"><i data-lucide="${s.icon}"></i>${escapeHtml(s.t)}</button>`).join('');
@@ -222,10 +302,11 @@ function goBack(){
 }
 
 $('#sendBtn').addEventListener('click',()=>send());
+input.addEventListener('input',syncSendBtn);
 input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();send()}});
 
 document.addEventListener('DOMContentLoaded',()=>{
-  renderSugg();icons();
+  renderSugg();icons();syncSendBtn();loadCatalog();
   setTimeout(()=>{
     addMsg('ai',"Namaste! I'm <b>Aavira AI</b> — your blouse fashion assistant. Ask me about <b>sizes</b>, <b>orders</b> or <b>offers</b>.",
       [{t:'Find my size',h:'#',i:'ruler'},{t:'Best Sellers',h:'/items/search?q=blouse',i:'sparkles'}]);
