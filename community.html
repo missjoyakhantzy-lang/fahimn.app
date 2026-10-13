@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Aavira Community - Join the Family</title>
+<meta name="description" content="Join the Aavira Community for early access to new drops, member-only discounts and styling tips.">
+<meta name="theme-color" content="#ffffff">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<style>
+:root{--rani:#D81B60;--rani-dark:#B71550;--rani-tint:#FCE8EF;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#242024;--muted:#6B6369;--line:#E7E0D9;--gold:#C9A24B;--ease:cubic-bezier(.2,.8,.2,1)}
+*{-webkit-tap-highlight-color:transparent;box-sizing:border-box}
+html,body{overflow-x:clip}
+body{margin:0;font-family:"Inter",system-ui,sans-serif;background:var(--ivory);color:var(--ink);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,input{font-family:inherit}
+:focus-visible{outline:2px solid var(--rani);outline-offset:2px}
+.app{max-width:420px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;position:relative;overflow-x:clip;background:linear-gradient(180deg,#FDF7FA 0%,var(--ivory) 30%)}
+@media(min-width:640px){body{background:#EFE8DE}.app{box-shadow:0 0 60px rgba(36,32,36,.12)}}
+
+/* header */
+.top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.top-row{min-height:64px;display:flex;align-items:center;gap:11px;padding:8px 14px 8px 10px}
+.back-btn{width:42px;height:42px;border-radius:50%;border:0;background:var(--rani);color:#fff;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;cursor:pointer;box-shadow:0 4px 14px rgba(216,27,96,.35);transition:transform .12s}
+.back-btn:active{transform:scale(.9)}
+.back-btn svg{width:20px;height:20px;stroke-width:1.8}
+.top-tx{flex:1;min-width:0}
+.top-tx b{display:block;font-family:"Playfair Display",serif;font-size:18px}
+.top-tx small{display:block;color:var(--muted);font-size:12px;margin-top:1px}
+
+/* hero */
+.hero{margin:16px 14px 0;border-radius:22px;padding:26px 20px;color:#fff;background:linear-gradient(135deg,#E91E63 0%,#AD1457 60%,#880E4F 100%);position:relative;overflow:hidden;box-shadow:0 12px 32px rgba(216,27,96,.35)}
+.hero::after{content:'';position:absolute;right:-50px;top:-50px;width:190px;height:190px;border-radius:50%;background:rgba(255,255,255,.12)}
+.hero::before{content:'';position:absolute;right:30px;bottom:-70px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.08)}
+.hero h1{font-family:"Playfair Display",serif;font-size:27px;margin:0 0 8px;position:relative;z-index:1}
+.hero h1 em{font-style:normal;color:#FFE4EE}
+.hero p{margin:0;font-size:13.5px;line-height:1.6;color:rgba(255,255,255,.92);position:relative;z-index:1;max-width:270px}
+.hero .pill{display:inline-flex;align-items:center;gap:6px;margin-top:14px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);padding:7px 13px;border-radius:999px;font-size:12px;font-weight:600;position:relative;z-index:1}
+.hero .pill svg{width:14px;height:14px}
+
+/* perks */
+.section{padding:20px 14px 0}
+.section h2{font-family:"Playfair Display",serif;font-size:19px;margin:0 0 4px}
+.section .sub{font-size:12.5px;color:var(--muted);margin:0 0 14px}
+.perks{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.perk{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px 13px;box-shadow:0 2px 10px rgba(36,32,36,.04)}
+.perk .ic{width:38px;height:38px;border-radius:12px;background:var(--rani-tint);color:var(--rani);display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.perk .ic svg{width:19px;height:19px}
+.perk b{display:block;font-size:13.5px;margin-bottom:4px}
+.perk span{font-size:12px;color:var(--muted);line-height:1.5;display:block}
+
+/* steps */
+.steps{display:flex;flex-direction:column;gap:10px}
+.step{display:flex;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}
+.step .n{width:32px;height:32px;flex:0 0 auto;border-radius:50%;background:var(--rani);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center}
+.step b{display:block;font-size:13.5px;margin-bottom:3px}
+.step span{font-size:12.5px;color:var(--muted);line-height:1.55}
+
+/* join card */
+.join{margin:20px 14px 0;background:#fff;border:1.5px solid var(--rani);border-radius:20px;padding:20px 16px;box-shadow:0 8px 26px rgba(216,27,96,.12)}
+.join h2{font-family:"Playfair Display",serif;font-size:19px;margin:0 0 4px;text-align:center}
+.join .sub{text-align:center;font-size:12.5px;color:var(--muted);margin:0 0 16px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12px;font-weight:600;margin-bottom:6px;color:var(--ink)}
+.field input{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;background:var(--ivory);transition:border-color .15s}
+.field input:focus{border-color:var(--rani);outline:none;background:#fff}
+.join-btn{width:100%;border:0;border-radius:14px;padding:14px;background:linear-gradient(135deg,var(--rani),var(--rani-dark));color:#fff;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 18px rgba(216,27,96,.35);transition:transform .12s}
+.join-btn:active{transform:scale(.97)}
+.join-btn svg{width:18px;height:18px}
+.join-note{text-align:center;font-size:11.5px;color:var(--muted);margin:12px 0 0}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13px;font-weight:600;padding:12px 20px;border-radius:999px;opacity:0;pointer-events:none;transition:all .3s var(--ease);z-index:50;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* footer */
+.foot{margin-top:26px;padding:20px 14px calc(28px + env(safe-area-inset-bottom,0px));text-align:center;border-top:1px solid var(--line)}
+.foot .logo{font-family:"Playfair Display",serif;font-size:20px;font-weight:700}
+.foot .logo span{color:var(--rani)}
+.foot p{font-size:11.5px;color:var(--muted);margin:8px 0 0}
+.foot .links{display:flex;justify-content:center;gap:16px;margin-top:12px}
+.foot .links a{font-size:12.5px;font-weight:600;color:var(--rani)}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="top-row">
+      <button class="back-btn" onclick="goBack()" aria-label="Back"><i data-lucide="arrow-left"></i></button>
+      <div class="top-tx"><b>Aavira Community</b><small>Style, rewards &amp; sisterhood</small></div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>Join the <em>Aavira Family</em></h1>
+    <p>Be first to shop new blouse drops, unlock member-only prices and get styling tips made for you.</p>
+    <span class="pill"><i data-lucide="users"></i>500+ happy members</span>
+  </section>
+
+  <section class="section">
+    <h2>Member perks</h2>
+    <p class="sub">Little luxuries, only for our community.</p>
+    <div class="perks">
+      <div class="perk"><div class="ic"><i data-lucide="sparkles"></i></div><b>Early access</b><span>Shop new collections 48 hours before everyone else.</span></div>
+      <div class="perk"><div class="ic"><i data-lucide="badge-percent"></i></div><b>Member prices</b><span>Extra discounts on every order, all year round.</span></div>
+      <div class="perk"><div class="ic"><i data-lucide="shirt"></i></div><b>Style guidance</b><span>Size help and blouse styling tips from our team.</span></div>
+      <div class="perk"><div class="ic"><i data-lucide="gift"></i></div><b>Surprises</b><span>Birthday treats and festive gifts for members.</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>How it works</h2>
+    <p class="sub">Three tiny steps to join.</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div><b>Fill the form below</b><span>Tell us your name and WhatsApp number — that is all we need.</span></div></div>
+      <div class="step"><div class="n">2</div><div><b>Get your welcome</b><span>We will add you to the Aavira broadcast list within 24 hours.</span></div></div>
+      <div class="step"><div class="n">3</div><div><b>Enjoy the perks</b><span>Early drops, secret sales and styling help land on your phone.</span></div></div>
+    </div>
+  </section>
+
+  <section class="join" id="joinCard">
+    <h2>Become a member</h2>
+    <p class="sub">Free forever. Unsubscribe anytime.</p>
+    <form id="joinForm">
+      <div class="field">
+        <label for="cName">Your name</label>
+        <input id="cName" type="text" placeholder="e.g. Priya Sharma" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="cPhone">WhatsApp number</label>
+        <input id="cPhone" type="tel" placeholder="10-digit mobile number" inputmode="numeric" autocomplete="tel" required>
+      </div>
+      <button class="join-btn" type="submit"><i data-lucide="heart"></i>Join the Community</button>
+    </form>
+    <p class="join-note">By joining you agree to receive WhatsApp updates from Aavira Fashion.</p>
+  </section>
+
+  <footer class="foot">
+    <div class="logo">Aavira <span>Fashion</span></div>
+    <div class="links"><a href="/">Home</a><a href="/items/search.html">Search</a><a href="/ai.html">Aavira AI</a></div>
+    <p>© 2026 Aavira Fashion. Crafted with love in India.</p>
+  </footer>
+</div>
+<div class="toast" id="toast">Welcome to the Aavira family!</div>
+<script>
+lucide.createIcons();
+function goBack(){
+  if(document.referrer && new URL(document.referrer).origin===location.origin && history.length>1) history.back();
+  else location.href='/';
+}
+const MEMBERS_KEY='aavira_community_members';
+function getMembers(){ try{ return JSON.parse(localStorage.getItem(MEMBERS_KEY)||'[]'); }catch(e){ return []; } }
+function showToast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(showToast._t); showToast._t=setTimeout(()=>t.classList.remove('show'),2600);
+}
+document.getElementById('joinForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const name=document.getElementById('cName').value.trim();
+  let phone=document.getElementById('cPhone').value.replace(/\D/g,'');
+  if(phone.length===12 && phone.startsWith('91')) phone=phone.slice(2);
+  if(phone.length===11 && phone.startsWith('0')) phone=phone.slice(1);
+  if(!name){ showToast('Please enter your name'); return; }
+  if(phone.length!==10){ showToast('Enter a valid 10-digit number'); return; }
+  const members=getMembers();
+  if(members.some(m=>m.phone===phone)){ showToast('You are already a member!'); return; }
+  members.push({name:name,phone:phone,joined:new Date().toISOString()});
+  try{ localStorage.setItem(MEMBERS_KEY,JSON.stringify(members)); }catch(e){}
+  document.getElementById('joinForm').reset();
+  showToast('Welcome to the Aavira family, '+name.split(' ')[0]+'!');
+});
+</script>
+</body>
+</html>
