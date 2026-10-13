@@ -128,11 +128,6 @@ async function loadCatalog(){
   }catch(e){}
 }
 function pushHist(role,text){ HISTORY.push({role,text:String(text).slice(0,500)}); if(HISTORY.length>MAX_HIST) HISTORY.splice(0,HISTORY.length-MAX_HIST); }
-function buildPrompt(text){
-  let convo='';
-  if(HISTORY.length) convo='\n\nConversation so far:\n'+HISTORY.map(m=>(m.role==='user'?'Customer: ':'Aavira AI: ')+m.text).join('\n');
-  return AI_SYSTEM+convo+'\n\nCustomer message: '+text+'\nReply as Aavira AI:';
-}
 function findProducts(query,n){
   n=n||4;
   const words=String(query||'').toLowerCase().split(/\s+/).filter(w=>w.length>2);
@@ -177,32 +172,25 @@ const SUGGESTIONS=[
 const FALLBACK={t:"Network thoda slow lag raha hai — ek baar phir se try karo.",
   a:[]};
 
-const POLLINATION_API_KEY = 'pk_xduJB5zm8H3oRIbP';
 
-const AI_SYSTEM = "You are Aavira AI, the fun fashion assistant of Aavira Fashion (aavirafashion.shop), an online store specialising in women's blouses: silk, cotton, bridal, designer and net blouses. "
-  + "PERSONALITY: Warm, cheerful and a little funny - like a playful friend who knows fashion inside out. Light humour welcome, but never mock the customer. "
-  + "THINKING: Think deeply about what the user truly needs before answering (size confusion? gift? occasion? budget?). Answer their real need precisely, not just the literal words. "
-  + "LANGUAGE: Reply in the same language the user writes in (English, Hindi, or Hinglish - Hindi in Roman script). Keep answers short (2-4 lines). "
-  + "CONTACT RULE: NEVER put phone numbers, WhatsApp, or links in every message. Mention them ONLY when truly needed - e.g. user asks for human help (WhatsApp +91 96087 20622), needs the size guide (/support), order tracking (/orders), or offers (/offer). "
-  + "SIZES: Blouse sizes are ALWAYS numeric: 32, 34, 36, 38, 40. NEVER use S/M/L. If the user shares their bust measurement, map it directly to the number (bust 34 means size 34). "
-  + "FOUNDER: If asked who is the founder or CEO of the website, answer: Fahim Akhtar, the 17-year-old founder of Aavira Fashion. "
-  + "Never invent order statuses, prices or discounts. If you cannot help with something, politely guide the user to WhatsApp +91 96087 20622."
-  + "PRODUCTS RULE: When you recommend products (blouses), end your reply with exactly one tag like [[SHOW_PRODUCTS: silk blouse]] using 1-3 search words. The app will show real product cards there. Do not invent product names or prices - only describe types. "
-  + "MEMORY: You remember this conversation - if the user already told you their size or choice earlier, use it instead of asking again.";
 
 function formatAI(text){
   return escapeHtml(text)
     .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
     .replace(/\n/g,'<br>');
 }
+const AI_BACKEND='https://ai-system-242.vercel.app/api/chat';
 async function fetchAIAnswer(text, signal){
-  if(!POLLINATION_API_KEY) throw new Error('no-key');
-  const prompt = buildPrompt(text);
-  const url = 'https://gen.pollinations.ai/text/' + encodeURIComponent(prompt) + '?key=' + encodeURIComponent(POLLINATION_API_KEY);
-  const r = await fetch(url, { signal });
+  const r=await fetch(AI_BACKEND,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({message:text,history:HISTORY.slice(-12)}),
+    signal:signal||undefined
+  });
   if(!r.ok) throw new Error('ai-http-'+r.status);
-  const t = (await r.text()).trim();
-  if(!t || t.charAt(0)==='{') throw new Error('ai-empty');
+  const j=await r.json();
+  const t=String(j.reply||'').trim();
+  if(!t) throw new Error('ai-empty');
   return t;
 }
 
@@ -235,7 +223,6 @@ async function send(text){
   text=(text??input.value).trim();
   if(!text||send._busy)return;
   addMsg('user',escapeHtml(text));
-  pushHist('user',text);
   input.value=''; syncSendBtn();
   send._busy=true;
   setSendLoading(true);
@@ -246,6 +233,7 @@ async function send(text){
     const ans=await fetchAIAnswer(text, ctrl.signal);
     clearTimeout(timer);
     removeTyping();
+    pushHist('user',text);
     addMsg('ai',aiBubble(ans));
     pushHist('ai',String(ans).replace(/\[\[SHOW_PRODUCTS:[^\]]+\]\]/gi,'').trim().slice(0,500));
   }catch(e){
