@@ -395,6 +395,25 @@ a{color:inherit;text-decoration:none}
 .btn-dark{background:linear-gradient(135deg,#2c2c31,#0f0f12)}
 .chip{border-radius:999px;padding:8px 16px}
 .chip[aria-pressed="true"]{background:linear-gradient(135deg,#232327,#0c0c0e);border-color:transparent;box-shadow:0 8px 16px -8px rgba(0,0,0,.4)}
+
+/* ============ V2 FIXES ============ */
+.site-header-row{grid-template-columns:1fr auto}
+.header-left{display:flex;align-items:center;gap:2px;min-width:0}
+.header-left .header-actions{justify-content:flex-start;flex:1}
+.site-header-row .icon-btn{width:38px;height:38px}
+.site-logo-right{justify-self:end;display:flex;align-items:center}
+.spinner{border-width:2.5px}
+.is-busy::after{border-width:2.5px}
+.footer-news button{background:linear-gradient(135deg,#D4AF37,#A8842C);color:#1a1a1a;box-shadow:0 10px 20px -10px rgba(168,132,44,.7)}
+#experience-container{align-items:stretch}
+.review{height:372px}
+.review-photo{height:168px;aspect-ratio:auto}
+.review-body{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+.review-text{-webkit-line-clamp:4}
+.review.is-expanded{height:auto;min-height:372px}
+.review.is-expanded .review-text{-webkit-line-clamp:unset}
+.review-more{background:none;border:0;color:#A8842C;font-size:12.5px;font-weight:700;padding:4px 0 0;align-self:flex-start}
+.review-av{overflow:hidden}
 </style>
 </head>
 <body>
@@ -547,14 +566,15 @@ a{color:inherit;text-decoration:none}
 <div class="app">
   <header class="site-header">
     <div class="site-header-row">
-      <div><button type="button" class="icon-btn" onclick="openSidebar()" aria-label="Open menu"><i data-lucide="align-left"></i></button></div>
-      <a href="./" aria-label="Aavira home"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" class="site-logo"></a>
+      <div class="header-left"><button type="button" class="icon-btn" onclick="openSidebar()" aria-label="Open menu"><i data-lucide="align-left"></i></button>
       <div class="header-actions">
         <button type="button" class="icon-btn" onclick="openUserSheet()" aria-label="My account" style="overflow:hidden;padding:0"><img data-user-avatar alt="My account" hidden style="width:100%;height:100%;object-fit:cover"><i data-lucide="user-round" data-avatar-fallback></i></button>
         <a class="icon-btn" href="/items/search" aria-label="Search"><i data-lucide="search"></i></a>
         <a class="icon-btn" href="wishlist" aria-label="Wishlist"><i data-lucide="heart"></i><span id="wish-badge" class="cart-badge" hidden>0</span></a>
         <button type="button" class="icon-btn" onclick="triggerDotAction('cart',this)" aria-label="Shopping cart"><i data-lucide="shopping-cart"></i><span id="cart-badge" class="cart-badge" hidden>0</span></button>
       </div>
+      </div>
+      <a href="./" aria-label="Aavira home" class="site-logo-right"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" class="site-logo"></a>
     </div>
   </header>
   <div id="netBar" class="net-bar" role="status" hidden>You are offline. Showing saved content.</div>
@@ -1448,11 +1468,20 @@ window.renderExperiences = async () => {
   }
 
   state.photoReviews = reviews.filter(r => r.photo && String(r.photo).trim());
+  const myInfo = (typeof window.getProfileInfo === 'function') ? window.getProfileInfo() : null;
+  const myPhoto = (myInfo && myInfo.signedIn && typeof window.getProfilePhotoUrl === 'function') ? (await window.getProfilePhotoUrl()) : '';
+  const myEmail = myInfo && myInfo.email ? String(myInfo.email).toLowerCase() : '';
+  const myName = myInfo && myInfo.name ? String(myInfo.name).toLowerCase() : '';
   container.innerHTML = reviews.map(review => {
     const photoIndex = state.photoReviews.indexOf(review);
     const rating = clamp(Number(review.rating) || 5, 1, 5);
     const rawName = String(review.name || 'Customer');
     const name = escapeHtml(rawName);
+    const rEmail = String(review.email || '').toLowerCase();
+    const isMine = !!(myInfo && myInfo.signedIn && ((rEmail && myEmail && rEmail === myEmail) || (myName && rawName.toLowerCase() === myName)));
+    const avInner = (isMine && myPhoto)
+      ? `<img src="${escapeHtml(myPhoto)}" alt="" style="width:100%;height:100%;object-fit:cover">`
+      : escapeHtml(rawName.charAt(0).toUpperCase());
     const text = escapeHtml(review.text || '');
     const date = review.date && !isNaN(new Date(review.date))
       ? new Date(review.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
@@ -1465,14 +1494,14 @@ window.renderExperiences = async () => {
       <div class="review-body">
         <span class="review-quote" aria-hidden="true">&ldquo;</span>
         <div class="review-head">
-          <div class="review-av" aria-hidden="true">${escapeHtml(rawName.charAt(0).toUpperCase())}</div>
+          <div class="review-av" aria-hidden="true">${avInner}</div>
           <div class="review-meta">
             <div class="review-name">${name}${review.verified ? '<i data-lucide="circle-check"></i>' : ''}</div>
             ${date ? `<small>${date}</small>` : ''}
           </div>
         </div>
         <div class="stars" role="img" aria-label="${rating} out of 5 stars">${starText(rating)}</div>
-        ${text ? `<p class="review-text">${text}</p>` : ''}
+        ${text ? `<p class="review-text">${text}</p>${text.length > 140 ? `<button type="button" class="review-more" onclick="toggleReviewMore(this)">Read more</button>` : ''}` : ''}
       </div></article>`;
   }).join('');
 
@@ -1640,6 +1669,12 @@ window.submitExperience = async () => {
   }
 };
 
+window.toggleReviewMore = btn => {
+  const card = btn.closest('.review');
+  if (!card) return;
+  const open = card.classList.toggle('is-expanded');
+  btn.textContent = open ? 'Read less' : 'Read more';
+};
 window.openLightbox = index => {
   if (!state.photoReviews.length) return;
   state.lightboxIndex = index;
