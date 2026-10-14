@@ -328,7 +328,8 @@ window.getReviewsFromDatabase = async function (productId) {
 
 const PHOTO_TYPES = /^image\/(jpeg|png|webp|heic|heif)$/i;
 window.uploadExperiencePhoto = async function (file) {
-    if (!file || !PHOTO_TYPES.test(file.type || '') || file.size > 8 * 1024 * 1024) return '';
+    const empty = { url: '', publicId: '' };
+    if (!file || !PHOTO_TYPES.test(file.type || '') || file.size > 8 * 1024 * 1024) return empty;
     // 1. signed upload params from our secure backend (secret never touches the browser)
     const s = await jsonPost(`${PHOTO_BACKEND_URL}/api/upload-signature`, {});
     if (!s.ok || !s.data || !s.data.signature || !s.data.cloudName) return '';
@@ -342,16 +343,25 @@ window.uploadExperiencePhoto = async function (file) {
     fd.append('folder', s.data.folder || 'aavira/users');
     const up = await api(`https://api.cloudinary.com/v1_1/${s.data.cloudName}/image/upload`, { method: 'POST', body: fd }, 60000);
     const publicId = up.data && up.data.public_id;
-    if (!publicId) return '';
+    if (!publicId) return empty;
     // 3. short-lived private view URL from backend (expires in ~5 min)
-    return window.getSecurePhotoUrl(publicId);
+    const url = await window.getSecurePhotoUrl(publicId);
+    return { url, publicId };
 };
 
+const __photoUrlCache = new Map(); // publicId -> { url, expires }
 window.getSecurePhotoUrl = async function (publicId) {
     if (!publicId) return '';
-    const r = await jsonPost(`${PHOTO_BACKEND_URL}/api/photo-url`, { publicId: String(publicId) });
+    const key = String(publicId);
+    const hit = __photoUrlCache.get(key);
+    if (hit && hit.expires > Date.now()) return hit.url;
+    const r = await jsonPost(`${PHOTO_BACKEND_URL}/api/photo-url`, { publicId: key });
     const url = r.data && r.data.url;
-    return (typeof url === 'string' && url.startsWith('https://')) ? url : '';
+    if (typeof url === 'string' && url.startsWith('https://')) {
+        __photoUrlCache.set(key, { url, expires: Date.now() + 4 * 60 * 1000 });
+        return url;
+    }
+    return '';
 };
 
 window.sendToVercelExperience = async function (expData) {
