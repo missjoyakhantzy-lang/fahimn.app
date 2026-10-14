@@ -1354,13 +1354,22 @@ window.fetchProducts = async () => {
   }
 };
 
-window.renderExperiences = () => {
+window.renderExperiences = async () => {
   const reviews = store.json('aavira_experiences', []);
   const container = $('#experience-container');
   if (!reviews.length) {
     clearInterval(window.reviewTimer);
     container.innerHTML = '<div class="empty"><strong>No reviews yet</strong>Be the first to share your style.</div>';
     return;
+  }
+
+  // Secure photos live on private Cloudinary: refresh expiring view URLs before painting
+  if (typeof window.getSecurePhotoUrl === 'function') {
+    await Promise.all(reviews.map(async review => {
+      if (review && review.photoId) {
+        try { const fresh = await window.getSecurePhotoUrl(review.photoId); if (fresh) review.photo = fresh; } catch (e) {}
+      }
+    }));
   }
 
   state.photoReviews = reviews.filter(r => r.photo && String(r.photo).trim());
@@ -1526,17 +1535,19 @@ window.submitExperience = async () => {
   button.disabled = true;
 
   try {
-    let photo = '';
+    let photo = '', photoId = '';
     if (state.expFile) {
       if (typeof window.uploadExperiencePhoto !== 'function') throw new Error('Photo upload is not available');
-      photo = await window.uploadExperiencePhoto(state.expFile);
-      if (!photo) throw new Error('Photo upload failed');
+      const up = await window.uploadExperiencePhoto(state.expFile);
+      if (!up || !up.url) throw new Error('Photo upload failed');
+      photo = up.url; photoId = up.publicId || '';
     }
     const review = {
       name: store.get('aavira_display_name') || 'Customer',
       email: store.get('aavira_user_email'),
       text,
       photo: safeUrl(photo),
+      photoId,
       rating: clamp(Number(state.expRating) || 5, 1, 5),
       date: new Date().toISOString()
     };
