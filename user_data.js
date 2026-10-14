@@ -11,7 +11,6 @@
 
 const VERCEL_URL = "https://server-js-psi-five.vercel.app";   // products, orders, promo, reviews, addresses
 const AUTH_URL = "https://ssxpq15in.vercel.app";               // OTP, login, google, reset password
-const PHOTO_BACKEND_URL = "https://ai-system-242.vercel.app"; // secure photo upload/view (private Cloudinary)
 const ORDER_UPDATE_URL = "https://wwwfahimapp.vercel.app/api/update-order"; // order status emails
 
 (function () {
@@ -327,41 +326,28 @@ window.getReviewsFromDatabase = async function (productId) {
 };
 
 const PHOTO_TYPES = /^image\/(jpeg|png|webp|heic|heif)$/i;
+const CLOUDINARY_CLOUD = 'dvyqq1sn9';
+const CLOUDINARY_PRESET = 'aavira_unsigned';
+// Simple public upload via Cloudinary unsigned preset (no backend, no signature).
 window.uploadExperiencePhoto = async function (file) {
     const empty = { url: '', publicId: '' };
     if (!file || !PHOTO_TYPES.test(file.type || '') || file.size > 8 * 1024 * 1024) return empty;
-    // 1. signed upload params from our secure backend (secret never touches the browser)
-    const s = await jsonPost(`${PHOTO_BACKEND_URL}/api/upload-signature`, {});
-    if (!s.ok || !s.data || !s.data.signature || !s.data.cloudName) return '';
-    // 2. upload directly to Cloudinary as private (authenticated)
     const fd = new FormData();
     fd.append('file', file);
-    fd.append('api_key', s.data.apiKey);
-    fd.append('timestamp', s.data.timestamp);
-    fd.append('signature', s.data.signature);
-    fd.append('type', 'authenticated');
-    fd.append('folder', s.data.folder || 'aavira/users');
-    const up = await api(`https://api.cloudinary.com/v1_1/${s.data.cloudName}/image/upload`, { method: 'POST', body: fd }, 60000);
+    fd.append('upload_preset', CLOUDINARY_PRESET);
+    fd.append('folder', 'aavira/users');
+    const up = await api(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: fd }, 60000);
     const publicId = up.data && up.data.public_id;
-    if (!publicId) return empty;
-    // 3. short-lived private view URL from backend (expires in ~5 min)
-    const url = await window.getSecurePhotoUrl(publicId);
+    const url = up.data && up.data.secure_url;
+    if (!up.ok || !publicId || !url) return empty;
     return { url, publicId };
 };
 
-const __photoUrlCache = new Map(); // publicId -> { url, expires }
+// Public delivery URL (uploads are public, no expiry, no refresh needed).
 window.getSecurePhotoUrl = async function (publicId) {
     if (!publicId) return '';
-    const key = String(publicId);
-    const hit = __photoUrlCache.get(key);
-    if (hit && hit.expires > Date.now()) return hit.url;
-    const r = await jsonPost(`${PHOTO_BACKEND_URL}/api/photo-url`, { publicId: key });
-    const url = r.data && r.data.url;
-    if (typeof url === 'string' && url.startsWith('https://')) {
-        __photoUrlCache.set(key, { url, expires: Date.now() + 4 * 60 * 1000 });
-        return url;
-    }
-    return '';
+    const key = String(publicId).replace(/^\/+/, '');
+    return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/upload/${key}`;
 };
 
 window.sendToVercelExperience = async function (expData) {
