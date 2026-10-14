@@ -11,8 +11,7 @@
 
 const VERCEL_URL = "https://server-js-psi-five.vercel.app";   // products, orders, promo, reviews, addresses
 const AUTH_URL = "https://ssxpq15in.vercel.app";               // OTP, login, google, reset password
-const CLOUDINARY_CLOUD = "lqbslpty";
-const CLOUDINARY_PRESET = "hcfer3tk";
+const PHOTO_BACKEND_URL = "https://ai-system-242.vercel.app"; // secure photo upload/view (private Cloudinary)
 const ORDER_UPDATE_URL = "https://wwwfahimapp.vercel.app/api/update-order"; // order status emails
 
 (function () {
@@ -330,13 +329,29 @@ window.getReviewsFromDatabase = async function (productId) {
 const PHOTO_TYPES = /^image\/(jpeg|png|webp|heic|heif)$/i;
 window.uploadExperiencePhoto = async function (file) {
     if (!file || !PHOTO_TYPES.test(file.type || '') || file.size > 8 * 1024 * 1024) return '';
+    // 1. signed upload params from our secure backend (secret never touches the browser)
+    const s = await jsonPost(`${PHOTO_BACKEND_URL}/api/upload-signature`, {});
+    if (!s.ok || !s.data || !s.data.signature || !s.data.cloudName) return '';
+    // 2. upload directly to Cloudinary as private (authenticated)
     const fd = new FormData();
     fd.append('file', file);
-    fd.append('upload_preset', CLOUDINARY_PRESET);
-    fd.append('cloud_name', CLOUDINARY_CLOUD);
-    const r = await api(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: fd }, 60000);
-    const url = r.data && r.data.secure_url;
-    return (typeof url === 'string' && url.startsWith('https://res.cloudinary.com/')) ? url : '';
+    fd.append('api_key', s.data.apiKey);
+    fd.append('timestamp', s.data.timestamp);
+    fd.append('signature', s.data.signature);
+    fd.append('type', 'authenticated');
+    fd.append('folder', s.data.folder || 'aavira/users');
+    const up = await api(`https://api.cloudinary.com/v1_1/${s.data.cloudName}/image/upload`, { method: 'POST', body: fd }, 60000);
+    const publicId = up.data && up.data.public_id;
+    if (!publicId) return '';
+    // 3. short-lived private view URL from backend (expires in ~5 min)
+    return window.getSecurePhotoUrl(publicId);
+};
+
+window.getSecurePhotoUrl = async function (publicId) {
+    if (!publicId) return '';
+    const r = await jsonPost(`${PHOTO_BACKEND_URL}/api/photo-url`, { publicId: String(publicId) });
+    const url = r.data && r.data.url;
+    return (typeof url === 'string' && url.startsWith('https://')) ? url : '';
 };
 
 window.sendToVercelExperience = async function (expData) {
