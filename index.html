@@ -386,6 +386,28 @@ a{color:inherit;text-decoration:none}
   <button type="button" id="btnApplyPromo" class="btn-pink" onclick="processPromoCode()">Apply code</button>
 </div>
 
+<div id="userSheet" class="layer layer-sheet from-bottom" data-scrim="1" role="dialog" aria-modal="true" aria-labelledby="userSheetTitle">
+  <div class="grab"></div>
+  <div class="sheet-head">
+    <div><h2 id="userSheetTitle">My account</h2><p>Your Aavira profile</p></div>
+    <button type="button" class="icon-btn" onclick="closeUserSheet()" aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
+  <div style="display:flex;align-items:center;gap:14px;padding:2px 2px 16px">
+    <div style="position:relative;width:64px;height:64px;flex:none">
+      <span data-avatar-fallback id="userSheetInitial" style="display:flex;width:64px;height:64px;border-radius:50%;background:#FCE4EC;color:#D81B60;align-items:center;justify-content:center;font-size:26px;font-weight:800">G</span>
+      <img data-user-avatar id="userSheetPhoto" alt="Profile photo" hidden style="position:absolute;inset:0;width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid #D81B60">
+    </div>
+    <div style="min-width:0;flex:1">
+      <div id="userSheetName" style="font-weight:800;font-size:17px;color:#1c1c1e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Guest User</div>
+      <div id="userSheetEmail" style="font-size:12.5px;color:#8e8e93;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Login to sync your profile</div>
+    </div>
+  </div>
+  <div style="display:grid;gap:10px;padding-bottom:10px">
+    <button type="button" class="btn-pink" onclick="closeUserSheet();location.href='profile'">View full profile</button>
+    <button type="button" class="btn-dark" id="userSheetAuthBtn" onclick="userSheetAuthAction()">Login</button>
+  </div>
+</div>
+
 <div id="expModal" class="layer layer-sheet from-bottom" data-scrim="1" role="dialog" aria-modal="true" aria-labelledby="expTitle">
   <div class="grab"></div>
   <div class="sheet-head">
@@ -438,7 +460,7 @@ a{color:inherit;text-decoration:none}
   </div>
   <div id="vipProfileUI" class="profile" hidden>
     <div class="profile-row">
-      <div class="avatar" id="profileInitial">M</div>
+      <div class="avatar" id="profileInitial" style="position:relative;overflow:hidden"><span id="profileInitialLetter">M</span><img data-user-avatar alt="Profile photo" hidden style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div>
       <div style="min-width:0"><h3 id="vipName">Member</h3><p id="vipEmail">Aavira member</p></div>
     </div>
     <div class="profile-actions">
@@ -480,6 +502,7 @@ a{color:inherit;text-decoration:none}
       <div><button type="button" class="icon-btn" onclick="openSidebar()" aria-label="Open menu"><i data-lucide="align-left"></i></button></div>
       <a href="./" aria-label="Aavira home"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" class="site-logo"></a>
       <div class="header-actions">
+        <button type="button" class="icon-btn" onclick="openUserSheet()" aria-label="My account" style="overflow:hidden;padding:0"><img data-user-avatar alt="My account" hidden style="width:100%;height:100%;object-fit:cover"><i data-lucide="user-round" data-avatar-fallback></i></button>
         <a class="icon-btn" href="/items/search" aria-label="Search"><i data-lucide="search"></i></a>
         <a class="icon-btn" href="wishlist" aria-label="Wishlist"><i data-lucide="heart"></i><span id="wish-badge" class="cart-badge" hidden>0</span></a>
         <button type="button" class="icon-btn" onclick="triggerDotAction('cart',this)" aria-label="Shopping cart"><i data-lucide="shopping-cart"></i><span id="cart-badge" class="cart-badge" hidden>0</span></button>
@@ -821,7 +844,7 @@ window.updateProfileUI = () => {
   if (loggedIn) {
     $('#vipName').textContent = name;
     $('#vipEmail').textContent = email || 'Aavira member';
-    $('#profileInitial').textContent = name.charAt(0).toUpperCase();
+    $('#profileInitialLetter').textContent = name.charAt(0).toUpperCase();
   }
   const promo = store.json('aavira_active_promo', null);
   $('#activePromoBadge').classList.toggle('is-on', !!promo);
@@ -842,13 +865,15 @@ window.handleLogout = () => {
     'aavira_user_email',
     'aavira_display_name',
     'aavira_user_phone',
-    'aavira_active_promo'
+    'aavira_active_promo',
+      'aavira_profile_photo_id'
   ].forEach(key => store.del(key));
 
   try { sessionStorage.removeItem('loginBannerShown'); } catch {}
 
   // 3. UI refresh (reload ki zarurat nahi)
   updateProfileUI();
+  if (typeof window.paintUserAvatars === 'function') window.paintUserAvatars();
   updateCartCount();
   updateWishCount();
   showToast('Signed out successfully');
@@ -879,7 +904,7 @@ window.openPromoModal = () => {
   $('#promoInput').value = '';
   layers.open('promoModal', '#promoInput');
 };
-window.closePromoModal = () => layers.close('promoModal');
+window.closePromoModal = () => layers.close('promoModal');  window.openUserSheet = async () => {   const info = window.getProfileInfo ? window.getProfileInfo() : { name: 'Guest User', email: '', signedIn: false };   document.getElementById('userSheetName').textContent = info.name || 'Guest User';   document.getElementById('userSheetEmail').textContent = info.signedIn ? (info.email || 'Aavira member') : 'Login to sync your profile';   document.getElementById('userSheetInitial').textContent = (info.name || 'G').charAt(0).toUpperCase();   document.getElementById('userSheetAuthBtn').textContent = info.signedIn ? 'Log out' : 'Login';   layers.open('userSheet');   if (typeof window.paintUserAvatars === 'function') await window.paintUserAvatars();   if (typeof refreshIcons === 'function') refreshIcons();  };  window.closeUserSheet = () => layers.close('userSheet');  window.userSheetAuthAction = () => {   const info = window.getProfileInfo ? window.getProfileInfo() : { signedIn: false };   closeUserSheet();   if (info.signedIn) { if (typeof handleLogout === 'function') handleLogout(); }   else location.href = '/auth/aavirafashion.html';  };
 
 window.processPromoCode = async () => {
   const code = $('#promoInput').value.trim().toUpperCase();
@@ -1679,6 +1704,7 @@ const loadWishlistFromAccount = async () => {
 
 window.initializeAppEngine = () => {
   updateProfileUI();
+  if (typeof window.paintUserAvatars === 'function') window.paintUserAvatars();
   loadSkeletons();
   updateCartCount();
   updateWishCount();
