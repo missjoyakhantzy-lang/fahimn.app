@@ -347,6 +347,54 @@ a{color:inherit;text-decoration:none}
 .qv-actions .btn-outline{width:auto;padding:14px 18px}
 @media(max-width:420px){.marquee-copy{font-size:15px;gap:24px;padding-right:24px}}
 @media(prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* ============ ULTRA PROFESSIONAL REDESIGN ============ */
+.site-header{background:rgba(253,251,247,.92);backdrop-filter:blur(16px) saturate(1.25);-webkit-backdrop-filter:blur(16px) saturate(1.25);border-bottom:1px solid rgba(231,224,217,.75)}
+.hero{padding:14px 16px 0}
+.hero-track{border-radius:24px;aspect-ratio:5/6;max-height:540px;background:linear-gradient(100deg,#EDE5D3 35%,#FBF7EC 50%,#EDE5D3 65%);background-size:220% 100%;animation:heroShimmer 1.8s linear infinite;box-shadow:0 24px 48px -20px rgba(36,32,36,.35),0 2px 6px rgba(36,32,36,.08)}
+@keyframes heroShimmer{to{background-position:-220% 0}}
+.hero-track.is-loaded{animation:none;background:#0d0d0f}
+.hero-track.is-error{animation:none;background:linear-gradient(135deg,#F7F1E6,#EEE3CC)}
+.hero-slide{border-radius:24px;overflow:hidden}
+.hero-dots{padding:14px 0 4px}
+.hero-dot{height:5px;width:18px;background:#DCD3C1}
+.hero-dot.is-active{width:36px;background:linear-gradient(90deg,var(--gold),#A8842C)}
+.hero-error{color:var(--ink)}
+.hero-error button{color:#A8842C}
+.spinner{width:11px;height:11px;border-width:1.5px}
+.is-busy::after{width:14px;height:14px;border-width:1.5px}
+.go.is-busy::after{width:11px;height:11px}
+.pfeat .go.is-busy::after{width:12px;height:12px}
+.trust{margin:16px 16px 0;padding:15px 6px;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 20px -10px rgba(36,32,36,.14)}
+.trust div{font-size:10.5px;letter-spacing:.02em}
+.trust svg{width:20px;height:20px}
+.sec{padding:44px 18px 0}
+.sec-head{margin-bottom:18px}
+.sec-eyebrow{display:block;font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#A8842C;margin-bottom:7px}
+.sec-head h2{font-size:25px;letter-spacing:-.015em}
+.sec-link{font-size:12.5px;font-weight:700;color:#A8842C}
+.sec-head>a.sec-link::after{content:"\203A";font-size:16px;line-height:1;margin-left:2px}
+.cats{gap:16px;padding:4px 2px 10px}
+.cat-ring{width:78px;height:78px;border:1.5px solid transparent;padding:3px;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(140deg,#D4AF37,#F6E7BD 45%,#B8912F) border-box;box-shadow:0 8px 16px -8px rgba(168,132,44,.5);transition:transform .25s var(--ease),box-shadow .25s}
+.cat:hover .cat-ring{transform:translateY(-3px) scale(1.04);box-shadow:0 14px 24px -10px rgba(168,132,44,.6)}
+.cat-name{font-size:12px;font-weight:600}
+.pcard{border-radius:18px;border-color:#EEE4D2;box-shadow:0 8px 20px -10px rgba(36,32,36,.12);transition:box-shadow .3s,border-color .3s,transform .3s var(--ease)}
+.pcard:hover{box-shadow:0 18px 36px -14px rgba(36,32,36,.2);border-color:rgba(212,175,55,.55);transform:translateY(-2px)}
+.pcard-media{background:linear-gradient(135deg,#F6F0E2,#EEE3CB)}
+.tag-off,.tag-best{border-radius:999px;font-size:10px;letter-spacing:.05em;padding:5px 11px;box-shadow:0 4px 10px rgba(0,0,0,.2)}
+.tag-off{background:linear-gradient(135deg,#1e1e22,#000)}
+.price{font-size:16.5px;letter-spacing:-.01em}
+.heart{width:32px;height:32px;box-shadow:0 4px 12px rgba(0,0,0,.16)}
+.go{background:linear-gradient(135deg,#26262b,#0b0b0d);box-shadow:0 8px 16px -6px rgba(0,0,0,.45)}
+.rating{border-radius:999px}
+.review{border-radius:20px;box-shadow:0 12px 28px -14px rgba(36,32,36,.16)}
+.review-av{background:linear-gradient(135deg,#2b2b30,#0b0b0d);box-shadow:inset 0 0 0 1.5px rgba(212,175,55,.55)}
+.marquee-copy{font-family:"Playfair Display",serif;font-size:17px;letter-spacing:.1em}
+.nav-item[aria-current="page"]::before{background:linear-gradient(90deg,var(--gold),#A8842C)}
+.btn-pink{background:linear-gradient(135deg,#202024,#000);box-shadow:0 12px 24px -10px rgba(0,0,0,.55)}
+.btn-dark{background:linear-gradient(135deg,#2c2c31,#0f0f12)}
+.chip{border-radius:999px;padding:8px 16px}
+.chip[aria-pressed="true"]{background:linear-gradient(135deg,#232327,#0c0c0e);border-color:transparent;box-shadow:0 8px 16px -8px rgba(0,0,0,.4)}
 </style>
 </head>
 <body>
@@ -527,22 +575,22 @@ a{color:inherit;text-decoration:none}
 
 
     <section class="sec" aria-labelledby="h-coll">
-      <div class="sec-head"><h2 id="h-coll">Collections</h2><a class="sec-link" href="categories">View all</a></div>
+      <div class="sec-head"><div><span class="sec-eyebrow">Shop by</span><h2 id="h-coll">Collections</h2></div><a class="sec-link" href="categories">View all</a></div>
       <div id="category-container" class="cats no-scrollbar"></div>
     </section>
 
     <section class="sec" aria-labelledby="h-trend">
-      <div class="sec-head"><h2 id="h-trend">Trending</h2><a class="sec-link" href="/items/search">Search all</a></div>
+      <div class="sec-head"><div><span class="sec-eyebrow">Curated for you</span><h2 id="h-trend">Trending</h2></div><a class="sec-link" href="/items/search">Search all</a></div>
       <div id="trending-container" class="rail no-scrollbar"></div>
     </section>
 
     <section class="sec" id="exclusive-section" aria-labelledby="h-excl">
-      <div class="sec-head"><h2 id="h-excl">Exclusive picks</h2></div>
+      <div class="sec-head"><div><span class="sec-eyebrow">Limited edition</span><h2 id="h-excl">Exclusive picks</h2></div></div>
       <div id="exclusive-container" class="feat-list"></div>
     </section>
 
     <section class="sec" aria-labelledby="h-new">
-      <div class="sec-head"><h2 id="h-new">New arrivals</h2></div>
+      <div class="sec-head"><div><span class="sec-eyebrow">Just landed</span><h2 id="h-new">New arrivals</h2></div></div>
       <div id="sort-chips" class="chips no-scrollbar" role="group" aria-label="Sort new arrivals">
         <button type="button" class="chip" data-sort="latest" aria-pressed="true">Latest</button>
         <button type="button" class="chip" data-sort="price-asc" aria-pressed="false">Price: low to high</button>
@@ -554,12 +602,12 @@ a{color:inherit;text-decoration:none}
     </section>
 
     <section class="sec" id="recent-section" aria-labelledby="h-recent" hidden>
-      <div class="sec-head"><h2 id="h-recent">Recently viewed</h2><button type="button" class="sec-link" onclick="clearRecent()">Clear</button></div>
+      <div class="sec-head"><div><span class="sec-eyebrow">Your picks</span><h2 id="h-recent">Recently viewed</h2></div><button type="button" class="sec-link" onclick="clearRecent()">Clear</button></div>
       <div id="recent-container" class="rail no-scrollbar"></div>
     </section>
 
     <section class="sec" aria-labelledby="h-rev">
-      <div class="sec-head"><h2 id="h-rev">Customer reviews</h2></div>
+      <div class="sec-head"><div><span class="sec-eyebrow">Loved by customers</span><h2 id="h-rev">Customer reviews</h2></div></div>
       <div id="experience-container" class="rail no-scrollbar"></div>
       <button type="button" class="btn-dark" onclick="openExpModal()"><i data-lucide="pen" style="width:16px;height:16px"></i>Write a review</button>
     </section>
@@ -1186,6 +1234,7 @@ window.fetchBanners = async () => {
     };
 
     track.innerHTML = [loop ? slide(banners[count - 1], true) : '', ...banners.map(b => slide(b, false)), loop ? slide(banners[0], true) : ''].join('');
+    track.classList.add('is-loaded');
     dots.innerHTML = banners.map((_, i) => `<span class="hero-dot ${i === 0 ? 'is-active' : ''}" data-i="${i}"></span>`).join('');
 
     const width = () => track.clientWidth || 1;
@@ -1257,6 +1306,7 @@ window.fetchBanners = async () => {
   } catch {
     dots.innerHTML = '';
     track.innerHTML = '<div class="hero-error"><p>New collections are arriving soon.</p><button type="button" onclick="fetchBanners()">Try again</button></div>';
+    track.classList.add('is-error');
   }
 };
 
