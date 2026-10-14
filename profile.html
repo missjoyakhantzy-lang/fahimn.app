@@ -158,9 +158,10 @@
             <div class="px-5 pt-4 pb-4 flex items-center gap-4 min-w-0">
                 <div class="relative shrink-0">
                     <div id="profileAvatar" class="profile-avatar"><span id="profileInitial">G</span></div>
-                    <div class="absolute -right-1 -bottom-1 w-7 h-7 rounded-full bg-rani-pink text-white border-2 border-white flex items-center justify-center shadow-sm">
-                        <i data-lucide="camera" class="w-3.5 h-3.5"></i>
-                    </div>
+                    <button type="button" id="profilePhotoBtn" onclick="window.changeProfilePhoto()" aria-label="Change profile photo" class="absolute -right-1 -bottom-1 w-7 h-7 rounded-full bg-rani-pink text-white border-2 border-white flex items-center justify-center shadow-sm cursor-pointer active:scale-90 transition-transform">
+                        <i data-lucide="camera" class="w-3.5 h-3.5 pointer-events-none"></i>
+                    </button>
+                    <input type="file" id="profilePhotoInput" accept="image/*" class="hidden" onchange="window.handleProfilePhotoSelect(event)">
                 </div>
                 <div class="min-w-0 flex-1">
                     <div class="flex items-center gap-1.5">
@@ -361,6 +362,7 @@
 <!-- ============================== -->
 <!-- 5. JAVASCRIPT LOGIC -->
 <!-- ============================== -->
+<script src="/user_data.js"></script>
 <script>
     // Utility for safe JSON parsing
     const safeGet = (key, fallback) => {
@@ -565,6 +567,9 @@
 
         }
 
+        // Profile photo (secure, private Cloudinary) — restore the user's photo if they set one
+        paintStoredProfilePhoto(isLoggedIn);
+
         // Notification toggles
         paintNotifToggles();
 
@@ -580,6 +585,58 @@
             });
         });
     }
+
+    // ---------- Secure profile photo (private Cloudinary via backend) ----------
+    function profilePhotoId() { try { return localStorage.getItem('aavira_profile_photo_id') || ''; } catch (e) { return ''; } }
+
+    function paintProfilePhoto(url) {
+        const avatar = document.getElementById('profileAvatar');
+        const initial = document.getElementById('profileInitial');
+        if (!avatar) return;
+        let img = document.getElementById('profilePhotoImg');
+        if (url) {
+            if (!img) { img = document.createElement('img'); img.id = 'profilePhotoImg'; img.alt = 'Profile photo'; img.className = 'w-full h-full object-cover'; avatar.appendChild(img); }
+            img.src = url;
+            if (initial) initial.classList.add('hidden');
+        } else {
+            if (img) img.remove();
+            if (initial) initial.classList.remove('hidden');
+        }
+    }
+
+    async function paintStoredProfilePhoto(isLoggedIn) {
+        const pid = profilePhotoId();
+        if (!isLoggedIn || !pid) {
+            paintProfilePhoto('');
+            try { localStorage.removeItem('aavira_profile_photo_id'); } catch (e) {}
+            return;
+        }
+        if (typeof window.getSecurePhotoUrl !== 'function') return;
+        try { const url = await window.getSecurePhotoUrl(pid); if (url) paintProfilePhoto(url); } catch (e) {}
+    }
+
+    window.changeProfilePhoto = function () {
+        const name = localStorage.getItem('aavira_display_name');
+        if (!name || name.toLowerCase() === 'guest user') { showToast('Please login to set a profile photo'); return; }
+        document.getElementById('profilePhotoInput').click();
+    };
+
+    window.handleProfilePhotoSelect = async function (event) {
+        const input = event.target;
+        const file = input.files && input.files[0];
+        input.value = '';
+        if (!file) return;
+        if (!file.type.startsWith('image/') || file.size > 5 * 1024 * 1024) { showToast('Choose an image under 5 MB', 'error'); return; }
+        if (typeof window.uploadExperiencePhoto !== 'function') { showToast('Photo upload is not available', 'error'); return; }
+        showToast('Uploading photo...');
+        try {
+            const up = await window.uploadExperiencePhoto(file);
+            if (!up || !up.url) throw new Error('upload failed');
+            try { localStorage.setItem('aavira_profile_photo_id', up.publicId || ''); } catch (e) {}
+            paintProfilePhoto(up.url);
+            showToast('Profile photo updated');
+        } catch (e) { showToast('Could not upload photo. Please try again.', 'error'); }
+    };
 
     // Logout Action
     window.handleLogout = function() {
