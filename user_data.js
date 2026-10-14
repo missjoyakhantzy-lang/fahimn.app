@@ -459,3 +459,35 @@ window.DeliveryBoy = (function () {
     if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded',mount,{once:true});
     else mount();
 })();
+
+// ---- Shared profile sync: photo + identity, same device, every page ----
+window.getProfilePhotoUrl = async function () {
+    try {
+        const pid = localStorage.getItem('aavira_profile_photo_id') || '';
+        if (!pid || typeof window.getSecurePhotoUrl !== 'function') return '';
+        return await window.getSecurePhotoUrl(pid);
+    } catch (e) { return ''; }
+};
+window.getProfileInfo = function () {
+    let name = '', email = '';
+    try {
+        name = localStorage.getItem('aavira_display_name') || '';
+        email = localStorage.getItem('aavira_user_email') || '';
+    } catch (e) {}
+    const signedIn = !!(email && name && name.toLowerCase() !== 'guest user');
+    return { name: signedIn ? name : 'Guest User', email: signedIn ? email : '', signedIn };
+};
+// Fill every <img data-user-avatar> with the synced photo; toggle [data-avatar-fallback].
+window.paintUserAvatars = async function () {
+    const url = await window.getProfilePhotoUrl();
+    document.querySelectorAll('img[data-user-avatar]').forEach(function (img) {
+        const fb = img.parentElement ? img.parentElement.querySelector('[data-avatar-fallback]') : null;
+        if (url) { img.src = url; img.hidden = false; if (fb) fb.hidden = true; }
+        else { img.removeAttribute('src'); img.hidden = true; if (fb) fb.hidden = false; }
+    });
+    return url;
+};
+// Cross-tab sync: photo changed in another tab -> repaint here too.
+window.addEventListener('storage', function (e) {
+    if (e && e.key === 'aavira_profile_photo_id' && typeof window.paintUserAvatars === 'function') window.paintUserAvatars();
+});
