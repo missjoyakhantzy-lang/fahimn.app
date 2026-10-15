@@ -1530,6 +1530,7 @@ const normalizeProduct = raw => ({
   price: raw.price,
   mrp: raw.mrp,
   colors: Array.isArray(raw.colors) ? raw.colors : [],
+  colorImages: Array.isArray(raw.colorImages) ? raw.colorImages : [],
   img: raw.imageMain || raw.image || raw.imageUrl || '',
   rating: raw.rating ?? raw.averageRating ?? raw.avgRating ?? raw.ratingAvg ?? raw.average_rating ?? raw.avg_rating ?? raw.stars,
   reviewCount: raw.reviewCount ?? raw.reviews ?? raw.numReviews,
@@ -1809,13 +1810,13 @@ window.openQuickView = id => {
   if (!product) return;
   const { price, mrp, off } = priceInfo(product);
   const name = escapeHtml(product.name);
-  const colors = product.colors.map((c, idx) => `<button type="button" class="qv-clr${idx === 0 ? ' on' : ''}" data-color="${escapeHtml(c)}" onclick="qvPickColor(this)" aria-label="${escapeHtml(c)}"><i style="background:${colorHex(c)}"></i></button>`).join('');
+  const colors = (() => { const cimgs = Array.isArray(product.colorImages) ? product.colorImages : []; return product.colors.map((c, idx) => { const cimg = safeImageUrl(idx === 0 ? product.img : (cimgs[idx - 1] || product.img)); return `<button type="button" class="qv-clr${idx === 0 ? ' on' : ''}" data-color="${escapeHtml(c)}" data-img="${escapeHtml(cimg)}" onclick="qvPickColor(this)" aria-label="${escapeHtml(c)}"><i style="background:${colorHex(c)}"></i></button>`; }).join(''); })();
   $('#quickViewBody').innerHTML = `
     <div class="sheet-head">
       <div><h2>${name}</h2></div>
       <button type="button" class="icon-btn" onclick="closeQuickView()" aria-label="Close"><i data-lucide="x"></i></button>
     </div>
-    <img class="qv-img" src="${escapeHtml(safeImageUrl(product.img))}" alt="${name}" onerror="imgFallback(this)">
+    <img class="qv-img" id="qvImg" src="${escapeHtml(safeImageUrl(product.img))}" alt="${name}" onerror="imgFallback(this)">
     <div class="qv-info">
       <div class="qv-meta">
         <span class="price">${formatPrice(price)}</span>
@@ -1845,8 +1846,8 @@ window.openQuickView = id => {
   layers.open('quickView');
 };
 window.qvPickSize = btn => { document.querySelectorAll('#qvSizeRow .qv-sz').forEach(b => b.classList.remove('on')); btn.classList.add('on'); const err = document.getElementById('qvSizeErr'); if (err) err.hidden = true; vibrate(20); };
-window.qvAddToBag = btn => { const product = state.products.find(p => String(p.id) === String(btn.dataset.pid)); if (!product) return; const sel = document.querySelector('#qvSizeRow .qv-sz.on'); if (!sel) { const err = document.getElementById('qvSizeErr'); if (err) err.hidden = false; const row = document.getElementById('qvSizeRow'); if (row) { row.classList.remove('shake'); void row.offsetWidth; row.classList.add('shake'); } vibrate(150); showToast('Please select a size', 'error'); return; } const size = sel.dataset.size; const clrBtn = document.querySelector('.qv-color-row .qv-clr.on'); const { price } = priceInfo(product); const image = safeImageUrl(product.img); const cart = store.json('aavira_cart', []); const existing = cart.find(it => String(it.productId) === String(product.id) && it.size === size && it.image === image); if (existing) existing.qty = (Number(existing.qty) || 1) + 1; else cart.push({ productId: String(product.id), name: product.name, price: Number(price) || 0, size, color: clrBtn ? clrBtn.dataset.color : 'Standard', image, qty: 1 }); store.save('aavira_cart', cart); if (window.updateCartCount) window.updateCartCount(); if (window.paintCartBar) window.paintCartBar(); closeQuickView(); showToast('Added to cart'); };
-window.qvPickColor = btn => { document.querySelectorAll('.qv-color-row .qv-clr').forEach(b => b.classList.remove('on')); btn.classList.add('on'); const nm = document.getElementById('qvColorName'); if (nm) nm.textContent = btn.dataset.color; vibrate(20); };
+window.qvAddToBag = btn => { const product = state.products.find(p => String(p.id) === String(btn.dataset.pid)); if (!product) return; const sel = document.querySelector('#qvSizeRow .qv-sz.on'); if (!sel) { const err = document.getElementById('qvSizeErr'); if (err) err.hidden = false; const row = document.getElementById('qvSizeRow'); if (row) { row.classList.remove('shake'); void row.offsetWidth; row.classList.add('shake'); } vibrate(150); showToast('Please select a size', 'error'); return; } const size = sel.dataset.size; const clrBtn = document.querySelector('.qv-color-row .qv-clr.on'); const { price } = priceInfo(product); const selClr = document.querySelector('.qv-color-row .qv-clr.on'); const image = (selClr && selClr.dataset.img) || safeImageUrl(product.img); const cart = store.json('aavira_cart', []); const existing = cart.find(it => String(it.productId) === String(product.id) && it.size === size && it.image === image); if (existing) existing.qty = (Number(existing.qty) || 1) + 1; else cart.push({ productId: String(product.id), name: product.name, price: Number(price) || 0, size, color: clrBtn ? clrBtn.dataset.color : 'Standard', image, qty: 1 }); store.save('aavira_cart', cart); if (window.updateCartCount) window.updateCartCount(); if (window.paintCartBar) window.paintCartBar(); closeQuickView(); showToast('Added to cart'); };
+window.qvPickColor = btn => { document.querySelectorAll('.qv-color-row .qv-clr').forEach(b => b.classList.remove('on')); btn.classList.add('on'); const nm = document.getElementById('qvColorName'); if (nm) nm.textContent = btn.dataset.color; const qimg = document.getElementById('qvImg'); if (qimg && btn.dataset.img) qimg.src = btn.dataset.img; vibrate(20); };
 window.closeQuickView = () => layers.close('quickView');
 
 window.shareProduct = async id => {
