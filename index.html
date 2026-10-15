@@ -451,6 +451,18 @@ body.has-cart.has-offer .nav-restore{bottom:calc(16px + env(safe-area-inset-bott
 .toast::before{color:#16A34A}
 .toast[data-type="error"]{background:linear-gradient(135deg,#DC2626,#B91C1C)}
 .toast[data-type="error"]::before{color:#DC2626}
+
+/* ============ V6: FLOATING NAV + ARROW RIGHT + QV PRO ============ */
+.bottom-nav{margin:0 auto;width:calc(100% - 24px);max-width:396px;bottom:calc(12px + env(safe-area-inset-bottom,0px));border:1px solid var(--line);border-radius:26px;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 18px 36px -14px rgba(36,32,36,.32);padding:8px 4px}
+.nav-restore{left:auto;right:max(14px,calc(50% - 196px))}
+.qv-actions{grid-template-columns:1fr 1fr}
+.qv-add{grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#EFD281,#C9A227);color:#1c1a12;font-weight:700;font-size:14px;padding:14px;border-radius:999px;box-shadow:0 14px 26px -12px rgba(201,162,39,.65);text-decoration:none}
+.qv-add svg{width:17px;height:17px}
+.qv-actions .qv-full,.qv-actions .qv-share{border-radius:999px;display:flex;align-items:center;justify-content:center;text-align:center}
+#quickView .sheet{background:linear-gradient(180deg,#FFFDF8,#FDFBF7)}
+#quickView .sheet-head{border-bottom:1px solid var(--line);padding-bottom:14px}
+#quickView .sheet-head h2{font-size:21px}
+.qv-img{border-radius:16px;box-shadow:0 16px 30px -16px rgba(36,32,36,.3)}
 </style>
 </head>
 <body>
@@ -1784,8 +1796,9 @@ window.openQuickView = id => {
       ${lowStockBadge(product)}
     </div>
     <div class="qv-actions">
-      <a class="btn-pink" href="product?id=${encodeURIComponent(product.id)}">View full details</a>
-      <button type="button" class="btn-outline" data-share="${escapeHtml(String(product.id))}" aria-label="Share"><i data-lucide="share-2"></i></button>
+      <a class="qv-add" href="product?id=${encodeURIComponent(product.id)}&buy=1"><i data-lucide="shopping-bag"></i>Add to bag</a>
+      <a class="btn-outline qv-full" href="product?id=${encodeURIComponent(product.id)}">Full details</a>
+      <button type="button" class="btn-outline qv-share" data-share="${escapeHtml(String(product.id))}" aria-label="Share"><i data-lucide="share-2"></i></button>
     </div>`;
   refreshIcons();
   layers.open('quickView');
