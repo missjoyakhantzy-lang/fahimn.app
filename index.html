@@ -423,19 +423,17 @@ body.nav-hidden .nav-restore{opacity:1;pointer-events:auto;transform:none}
 body.has-cart .nav-restore{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
 body.has-cart.has-offer .nav-restore{bottom:calc(166px + env(safe-area-inset-bottom,0px))}
 .nav-restore svg{width:20px;height:20px}
-.cart-bar{position:fixed;z-index:9040;left:0;right:0;margin:0 auto;width:calc(100% - 32px);max-width:388px;bottom:calc(80px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#202024,#000);color:#fff;border:1px solid rgba(212,175,55,.4);border-radius:18px;padding:10px 16px 10px 10px;box-shadow:0 18px 36px -12px rgba(0,0,0,.55);transition:bottom .38s cubic-bezier(.4,0,.2,1)}
+.cart-bar{position:fixed;z-index:9040;left:0;right:0;margin:0 auto;width:calc(100% - 32px);max-width:388px;bottom:calc(80px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#1c1c20,#000);color:#fff;border:1px solid rgba(212,175,55,.45);border-radius:20px;padding:8px 8px 8px 12px;box-shadow:0 18px 36px -12px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08);transition:bottom .38s cubic-bezier(.4,0,.2,1)}
 .cart-bar[hidden]{display:none}
 body.nav-hidden .cart-bar{bottom:calc(14px + env(safe-area-inset-bottom,0px))}
 body.has-offer .cart-bar{bottom:calc(152px + env(safe-area-inset-bottom,0px))}
 body.nav-hidden.has-offer .cart-bar{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
 .cb-imgs{display:flex;align-items:center;flex:none}
-.cb-imgs img{width:46px;height:46px;border-radius:13px;object-fit:cover;border:2px solid rgba(255,255,255,.9);background:#fff}
+.cb-imgs img{width:40px;height:40px;border-radius:12px;object-fit:cover;border:2px solid rgba(255,255,255,.9);background:#fff}
 .cb-imgs img+img{margin-left:-15px}
-.cb-meta{flex:1;text-align:left;line-height:1.35;min-width:0}
-.cb-meta b{display:block;font-size:14px}
-.cb-meta small{font-size:12px;color:#EAD9A8}
-.cb-cta{display:inline-flex;align-items:center;gap:6px;flex:none;font-size:13.5px;font-weight:700;color:#F6DA7E}
-.cb-cta svg{width:16px;height:16px}
+.cb-count{flex:1;text-align:left;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cb-go{display:inline-flex;align-items:center;gap:6px;flex:none;font-size:13px;font-weight:700;color:#191919;background:linear-gradient(135deg,#F0D47E,#C49A2E);padding:10px 18px;border-radius:999px;box-shadow:0 8px 16px -6px rgba(212,175,55,.55)}
+.cb-go svg{width:15px;height:15px}
 
 /* ============ V5: COMPACT LEFT CART PILL + TOP TOAST ============ */
 .cart-bar{left:max(14px,calc(50% - 196px));right:auto;margin:0;width:auto;max-width:calc(100% - 28px);border-radius:999px;padding:6px 8px 6px 10px;gap:8px;bottom:calc(78px + env(safe-area-inset-bottom,0px))}
@@ -715,8 +713,8 @@ body.has-cart.has-offer .nav-restore{bottom:calc(16px + env(safe-area-inset-bott
 </nav>
 <button type="button" id="cartBar" class="cart-bar" hidden onclick="triggerDotAction('cart',this)" aria-label="View your cart">
   <span class="cb-imgs" id="cartBarImgs" aria-hidden="true"></span>
-  <span class="cb-meta"><b id="cartBarCount">0 items</b><small id="cartBarTotal"></small></span>
-  <span class="cb-cta">View cart <i data-lucide="arrow-right"></i></span>
+  <span class="cb-count" id="cartBarCount">0 items</span>
+  <span class="cb-go">View cart <i data-lucide="arrow-right"></i></span>
 </button>
 <button type="button" class="nav-restore" onclick="restoreNav()" aria-label="Show navigation"><i data-lucide="chevron-up"></i></button>
 
@@ -913,7 +911,6 @@ addEventListener('pageshow', () => $$('.is-loading, .is-busy').forEach(el => el.
   const handleNavScroll = () => {
     const y = window.scrollY;
     if (y > 160 && y > lastScrollY + 4) document.body.classList.add('nav-hidden');
-    else if (y < lastScrollY - 4 || y <= 160) document.body.classList.remove('nav-hidden');
     lastScrollY = y; navTicking = false;
   };
   addEventListener('scroll', () => { if (!navTicking) { navTicking = true; requestAnimationFrame(handleNavScroll); } }, {passive:true});
@@ -1026,10 +1023,8 @@ window.updateCartCount = () => {
     const items = (Array.isArray(cart) ? cart : []).filter(it => it && (Number(it.qty) || 0) > 0);
     const count = items.reduce((s, it) => s + (Number(it.qty) || 1), 0);
     if (!count) { bar.hidden = true; document.body.classList.remove('has-cart'); return; }
-    const total = items.reduce((s, it) => s + (Number(it.price) || 0) * (Number(it.qty) || 1), 0);
     $('#cartBarImgs').innerHTML = items.slice(0, 3).map(it => `<img src="${escapeHtml(safeUrl(it.image || ''))}" alt="" loading="lazy" onerror="this.style.display='none'">`).join('');
     $('#cartBarCount').textContent = count + (count === 1 ? ' item' : ' items');
-    $('#cartBarTotal').textContent = '\u20B9' + total.toLocaleString('en-IN');
     bar.hidden = false; document.body.classList.add('has-cart');
     refreshIcons();
   };
