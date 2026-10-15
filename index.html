@@ -463,6 +463,23 @@ body.has-cart.has-offer .nav-restore{bottom:calc(16px + env(safe-area-inset-bott
 #quickView .sheet-head{border-bottom:1px solid var(--line);padding-bottom:14px}
 #quickView .sheet-head h2{font-size:21px}
 .qv-img{border-radius:16px;box-shadow:0 16px 30px -16px rgba(36,32,36,.3)}
+
+/* ============ V7: QV SIZE PICKER + PILL FIT + NAV FULL HIDE ============ */
+body.nav-hidden .bottom-nav{transform:translateY(175%)}
+body.nav-hidden .cart-bar{bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+body.nav-hidden.has-offer .cart-bar{bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+.cart-bar{padding:5px 6px 5px 9px}
+.cb-imgs img{width:34px;height:34px}
+.cb-count{font-size:12px}
+.cb-go{height:34px;padding:0 13px;font-size:11.5px}
+.qv-sizes{margin:14px 0 2px}
+.qv-sizes-head{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:600;margin-bottom:8px}
+.qv-size-err{color:#DC2626;font-style:normal;font-size:12px}
+.qv-size-row{display:flex;gap:8px;flex-wrap:wrap}
+.qv-sz{min-width:46px;height:42px;padding:0 12px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:600;color:var(--ink)}
+.qv-sz.on{background:#161616;color:#fff;border-color:#161616}
+.qv-size-row.shake{animation:qvshake .3s}
+@keyframes qvshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 </style>
 </head>
 <body>
@@ -1795,14 +1812,27 @@ window.openQuickView = id => {
       ${colors ? `<div class="qv-colors">${colors}</div>` : ''}
       ${lowStockBadge(product)}
     </div>
+    <div class="qv-sizes">
+      <div class="qv-sizes-head"><span>Select size</span><em class="qv-size-err" id="qvSizeErr" hidden>Please select a size</em></div>
+      <div class="qv-size-row" id="qvSizeRow">
+        <button type="button" class="qv-sz" data-size="32" onclick="qvPickSize(this)">32</button>
+        <button type="button" class="qv-sz" data-size="34" onclick="qvPickSize(this)">34</button>
+        <button type="button" class="qv-sz" data-size="36" onclick="qvPickSize(this)">36</button>
+        <button type="button" class="qv-sz" data-size="38" onclick="qvPickSize(this)">38</button>
+        <button type="button" class="qv-sz" data-size="40" onclick="qvPickSize(this)">40</button>
+        <button type="button" class="qv-sz" data-size="42" onclick="qvPickSize(this)">42</button>
+      </div>
+    </div>
     <div class="qv-actions">
-      <a class="qv-add" href="product?id=${encodeURIComponent(product.id)}&buy=1"><i data-lucide="shopping-bag"></i>Add to bag</a>
+      <button type="button" class="qv-add" data-pid="${escapeHtml(String(product.id))}" onclick="qvAddToBag(this)"><i data-lucide="shopping-bag"></i>Add to bag</button>
       <a class="btn-outline qv-full" href="product?id=${encodeURIComponent(product.id)}">Full details</a>
       <button type="button" class="btn-outline qv-share" data-share="${escapeHtml(String(product.id))}" aria-label="Share"><i data-lucide="share-2"></i></button>
     </div>`;
   refreshIcons();
   layers.open('quickView');
 };
+window.qvPickSize = btn => { document.querySelectorAll('#qvSizeRow .qv-sz').forEach(b => b.classList.remove('on')); btn.classList.add('on'); const err = document.getElementById('qvSizeErr'); if (err) err.hidden = true; vibrate(20); };
+window.qvAddToBag = btn => { const product = state.products.find(p => String(p.id) === String(btn.dataset.pid)); if (!product) return; const sel = document.querySelector('#qvSizeRow .qv-sz.on'); if (!sel) { const err = document.getElementById('qvSizeErr'); if (err) err.hidden = false; const row = document.getElementById('qvSizeRow'); if (row) { row.classList.remove('shake'); void row.offsetWidth; row.classList.add('shake'); } vibrate(150); showToast('Please select a size', 'error'); return; } const size = sel.dataset.size; const { price } = priceInfo(product); const image = safeImageUrl(product.img); const cart = store.json('aavira_cart', []); const existing = cart.find(it => String(it.productId) === String(product.id) && it.size === size && it.image === image); if (existing) existing.qty = (Number(existing.qty) || 1) + 1; else cart.push({ productId: String(product.id), name: product.name, price: Number(price) || 0, size, color: (product.colors && product.colors[0]) || 'Standard', image, qty: 1 }); store.save('aavira_cart', cart); if (window.updateCartCount) window.updateCartCount(); if (window.paintCartBar) window.paintCartBar(); closeQuickView(); showToast('Added to cart'); };
 window.closeQuickView = () => layers.close('quickView');
 
 window.shareProduct = async id => {
