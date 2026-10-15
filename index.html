@@ -414,6 +414,28 @@ a{color:inherit;text-decoration:none}
 .review.is-expanded .review-text{-webkit-line-clamp:unset}
 .review-more{background:none;border:0;color:#A8842C;font-size:12.5px;font-weight:700;padding:4px 0 0;align-self:flex-start}
 .review-av{overflow:hidden}
+
+/* ============ AUTO-HIDE NAV + MINI CART BAR ============ */
+.bottom-nav{transition:transform .38s cubic-bezier(.4,0,.2,1)}
+body.nav-hidden .bottom-nav{transform:translateY(112%)}
+.nav-restore{position:fixed;z-index:9050;left:max(14px,calc(50% - 196px));bottom:calc(16px + env(safe-area-inset-bottom,0px));width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.96);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 26px rgba(36,32,36,.22);opacity:0;pointer-events:none;transform:translateY(10px) scale(.92);transition:opacity .3s,transform .32s cubic-bezier(.4,0,.2,1)}
+body.nav-hidden .nav-restore{opacity:1;pointer-events:auto;transform:none}
+body.has-cart .nav-restore{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+body.has-cart.has-offer .nav-restore{bottom:calc(166px + env(safe-area-inset-bottom,0px))}
+.nav-restore svg{width:20px;height:20px}
+.cart-bar{position:fixed;z-index:9040;left:0;right:0;margin:0 auto;width:calc(100% - 32px);max-width:388px;bottom:calc(80px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#202024,#000);color:#fff;border:1px solid rgba(212,175,55,.4);border-radius:18px;padding:10px 16px 10px 10px;box-shadow:0 18px 36px -12px rgba(0,0,0,.55);transition:bottom .38s cubic-bezier(.4,0,.2,1)}
+.cart-bar[hidden]{display:none}
+body.nav-hidden .cart-bar{bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+body.has-offer .cart-bar{bottom:calc(152px + env(safe-area-inset-bottom,0px))}
+body.nav-hidden.has-offer .cart-bar{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
+.cb-imgs{display:flex;align-items:center;flex:none}
+.cb-imgs img{width:46px;height:46px;border-radius:13px;object-fit:cover;border:2px solid rgba(255,255,255,.9);background:#fff}
+.cb-imgs img+img{margin-left:-15px}
+.cb-meta{flex:1;text-align:left;line-height:1.35;min-width:0}
+.cb-meta b{display:block;font-size:14px}
+.cb-meta small{font-size:12px;color:#EAD9A8}
+.cb-cta{display:inline-flex;align-items:center;gap:6px;flex:none;font-size:13.5px;font-weight:700;color:#F6DA7E}
+.cb-cta svg{width:16px;height:16px}
 </style>
 </head>
 <body>
@@ -674,6 +696,12 @@ a{color:inherit;text-decoration:none}
   <a href="orders" class="nav-item"><i data-lucide="package"></i><span>Orders</span></a>
   <a href="profile" class="nav-item"><i data-lucide="user"></i><span>Profile</span></a>
 </nav>
+<button type="button" id="cartBar" class="cart-bar" hidden onclick="triggerDotAction('cart',this)" aria-label="View your cart">
+  <span class="cb-imgs" id="cartBarImgs" aria-hidden="true"></span>
+  <span class="cb-meta"><b id="cartBarCount">0 items</b><small id="cartBarTotal"></small></span>
+  <span class="cb-cta">View cart <i data-lucide="arrow-right"></i></span>
+</button>
+<button type="button" class="nav-restore" onclick="restoreNav()" aria-label="Show navigation"><i data-lucide="chevron-up"></i></button>
 
 <script>
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -863,6 +891,16 @@ window.triggerDotAction = (target, el) => {
 };
 
 addEventListener('pageshow', () => $$('.is-loading, .is-busy').forEach(el => el.classList.remove('is-loading', 'is-busy')));
+  addEventListener('pageshow', () => { if (typeof window.paintCartBar === 'function') window.paintCartBar(); });
+  let lastScrollY = window.scrollY, navTicking = false;
+  const handleNavScroll = () => {
+    const y = window.scrollY;
+    if (y > 160 && y > lastScrollY + 4) document.body.classList.add('nav-hidden');
+    else if (y < lastScrollY - 4 || y <= 160) document.body.classList.remove('nav-hidden');
+    lastScrollY = y; navTicking = false;
+  };
+  addEventListener('scroll', () => { if (!navTicking) { navTicking = true; requestAnimationFrame(handleNavScroll); } }, {passive:true});
+  window.restoreNav = () => { document.body.classList.remove('nav-hidden'); lastScrollY = window.scrollY; };
 
 const updateNetworkBar = () => {
   $('#netBar').hidden = navigator.onLine;
@@ -879,6 +917,7 @@ const rememberRecent = id => {
 window.closeDynamicBanner = () => {
   const banner = $('#dynamic-action-banner');
   banner.classList.remove('is-on');
+  document.body.classList.remove('has-offer');
   setTimeout(() => { banner.hidden = true; }, 450);
   try { sessionStorage.setItem('loginBannerShown', 'true'); } catch {}
 };
@@ -899,6 +938,7 @@ window.checkDynamicBanner = () => {
   banner.hidden = false;
   refreshIcons();
   requestAnimationFrame(() => requestAnimationFrame(() => banner.classList.add('is-on')));
+  document.body.classList.add('has-offer');
   clearTimeout(window.bannerTimeout);
   window.bannerTimeout = setTimeout(closeDynamicBanner, 8000);
 };
@@ -942,7 +982,7 @@ window.handleLogout = () => {
   // 3. UI refresh (reload ki zarurat nahi)
   updateProfileUI();
   if (typeof window.paintUserAvatars === 'function') window.paintUserAvatars();
-  updateCartCount();
+  updateCartCount(); if (typeof window.paintCartBar === 'function') window.paintCartBar();
   updateWishCount();
   showToast('Signed out successfully');
   closeSidebar();
@@ -963,6 +1003,19 @@ window.updateCartCount = () => {
   badge.textContent = total > 99 ? '99+' : total;
   badge.hidden = total <= 0;
 };
+  window.paintCartBar = () => {
+    const bar = $('#cartBar'); if (!bar) return;
+    const cart = store.json('aavira_cart', []);
+    const items = (Array.isArray(cart) ? cart : []).filter(it => it && (Number(it.qty) || 0) > 0);
+    const count = items.reduce((s, it) => s + (Number(it.qty) || 1), 0);
+    if (!count) { bar.hidden = true; document.body.classList.remove('has-cart'); return; }
+    const total = items.reduce((s, it) => s + (Number(it.price) || 0) * (Number(it.qty) || 1), 0);
+    $('#cartBarImgs').innerHTML = items.slice(0, 3).map(it => `<img src="${escapeHtml(safeUrl(it.image || ''))}" alt="" loading="lazy" onerror="this.style.display='none'">`).join('');
+    $('#cartBarCount').textContent = count + (count === 1 ? ' item' : ' items');
+    $('#cartBarTotal').textContent = '\u20B9' + total.toLocaleString('en-IN');
+    bar.hidden = false; document.body.classList.add('has-cart');
+    refreshIcons();
+  };
 
 window.openSidebar = () => { vibrate(40); updateProfileUI(); layers.open('sidebar'); };
 window.closeSidebar = () => { vibrate(); layers.close('sidebar'); };
@@ -1791,7 +1844,7 @@ window.initializeAppEngine = () => {
   updateProfileUI();
   if (typeof window.paintUserAvatars === 'function') window.paintUserAvatars();
   loadSkeletons();
-  updateCartCount();
+  updateCartCount(); if (typeof window.paintCartBar === 'function') window.paintCartBar();
   updateWishCount();
   updateNetworkBar();
   renderExperiences();
