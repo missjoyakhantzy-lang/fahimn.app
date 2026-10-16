@@ -251,6 +251,15 @@ button.go{background:#161616;border:0;cursor:pointer}
 .sqa-sz{height:42px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font-size:13px;font-weight:700;cursor:pointer;color:#1a1a1a}
 .sqa-sz.on{background:#161616;color:#fff;border-color:#161616}
 .sqa-add{width:100%;margin-top:16px;background:#161616;color:#fff;border:0;border-radius:999px;padding:15px;font-size:14px;font-weight:800;letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer}
+
+/* mini cart bar (product page) */
+.p-cartbar{display:flex;align-items:center;gap:10px;background:#161616;border-radius:999px;padding:8px 8px 8px 12px;margin-top:14px;color:#fff}
+.p-cb-imgs{display:flex;align-items:center;flex-shrink:0}
+.p-cb-imgs img{width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #fff;margin-left:-10px;background:#f0eeec}
+.p-cb-imgs img:first-child{margin-left:0}
+.p-cb-count{font-size:13px;font-weight:700;white-space:nowrap}
+.p-cb-btn{margin-left:auto;background:#D4AF37;color:#161616;border:none;border-radius:999px;padding:10px 16px;font-size:13px;font-weight:800;white-space:nowrap}
+.p-cb-btn i{margin-left:4px;font-size:11px}
 </style>
 </head>
 <body>
@@ -280,6 +289,11 @@ button.go{background:#161616;border:0;cursor:pointer}
     <div class="lbl">Select size</div>
     <div class="sizes" id="sizes"></div>
     <div class="stock" id="stock" hidden></div>
+    <div class="p-cartbar" id="pCartBar" hidden>
+      <div class="p-cb-imgs" id="pCartBarImgs"></div>
+      <span class="p-cb-count" id="pCartBarCount"></span>
+      <button class="p-cb-btn" type="button" onclick="location.href='/cart.html'">View all products <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
   </section>
 
   <section class="blk">
@@ -684,11 +698,13 @@ const addToCart = () => {
 
   withSpinner($('#btnCart'), () => {
     const cart = readJson('aavira_cart', []);
-    const existing = cart.find(item => String(item.productId) === String(state.id) && item.size === size && item.image === state.image);
+    const colorNow = state.color || 'Standard';
+    const existing = cart.find(item => String(item.productId) === String(state.id) && item.size === size && (item.color || 'Standard') === colorNow);
     if (existing) existing.qty = (Number(existing.qty) || 1) + 1;
     else cart.push({ productId: state.id, name: state.product.name, price: Number(state.product.price) || 0, size, color: state.color || 'Standard', image: state.image, qty: 1 });
     writeJson('aavira_cart', cart);
     updateCartBadge();
+    refreshPCartBar();
     toast('Added to cart');
   });
 };
@@ -729,7 +745,7 @@ const findProduct = async id => {
   return null;
 };
 
-const COLOR_HEX = { red: '#C8102E', maroon: '#6D1230', wine: '#5E1A2B', 'rani pink': '#D81B60', pink: '#F4A6C0', magenta: '#161616', coral: '#F08A6E', peach: '#F6C1A5', orange: '#E2711D', rust: '#B7410E', mustard: '#D4A017', yellow: '#E8B923', gold: '#C9A227', beige: '#D9C3A0', ivory: '#F5EFE0', white: '#FFFFFF', green: '#2E7D5B', emerald: '#0F7B5A', olive: '#6B7A2A', lime: '#A4C639', mint: '#A8D5BA', teal: '#0F766E', turquoise: '#2BB5B8', 'sky blue': '#7FB7E0', blue: '#1F4E9C', 'navy blue': '#1B2A5C', lavender: '#C7B8E6', violet: '#9B6BC9', purple: '#6B3FA0', brown: '#7B4B2A', gray: '#8A8A8A', black: '#1A1A1A' };
+const COLOR_HEX = { red: '#C8102E', maroon: '#6D1230', wine: '#5E1A2B', 'rani pink': '#D81B60', pink: '#F4A6C0', magenta: '#C2185B', coral: '#F08A6E', peach: '#F6C1A5', orange: '#E2711D', rust: '#B7410E', mustard: '#D4A017', yellow: '#E8B923', gold: '#C9A227', beige: '#D9C3A0', ivory: '#F5EFE0', white: '#FFFFFF', green: '#2E7D5B', emerald: '#0F7B5A', olive: '#6B7A2A', lime: '#A4C639', mint: '#A8D5BA', teal: '#0F766E', turquoise: '#2BB5B8', 'sky blue': '#7FB7E0', blue: '#1F4E9C', 'navy blue': '#1B2A5C', lavender: '#C7B8E6', violet: '#9B6BC9', purple: '#6B3FA0', brown: '#7B4B2A', gray: '#8A8A8A', black: '#1A1A1A' };
 
 const colorHex = name => {
   const key = String(name).trim().toLowerCase();
@@ -872,8 +888,20 @@ $('#pick').innerHTML = [1, 2, 3, 4, 5].map(v => `<i class="fa-solid fa-star" dat
   $(selector).addEventListener('keydown', event => { if (event.key === 'Enter') handler(); });
 });
 
+const refreshPCartBar = () => {
+  const bar = $('#pCartBar');
+  if (!bar) return;
+  const cart = readJson('aavira_cart', []);
+  const count = cart.reduce((s, it) => s + (Number(it.qty) || 1), 0);
+  if (!count) { bar.hidden = true; return; }
+  bar.hidden = false;
+  $('#pCartBarCount').textContent = count + (count === 1 ? ' item' : ' items');
+  $('#pCartBarImgs').innerHTML = cart.slice(0, 3).map(it => `<img src="${esc(it.image || '')}" alt="" loading="lazy" onerror="this.style.display='none'">`).join('');
+};
+
 const init = async () => {
   updateCartBadge();
+  refreshPCartBar();
   updateWishBadge();
   const raw = new URLSearchParams(location.search).get('id');
   state.id = raw ? decodeURIComponent(raw).trim() : '';
