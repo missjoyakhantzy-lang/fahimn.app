@@ -23,7 +23,7 @@
 
   /* ---------------- CSS (injected, brand-matched) ---------------- */
   var CSS = ''
-    + '.avck-banner{position:fixed;z-index:12000;left:12px;right:12px;bottom:calc(86px + env(safe-area-inset-bottom,0px));margin:0 auto;max-width:440px;'
+    + '.avck-banner{position:fixed;z-index:12000;left:12px;right:12px;bottom:calc(98px + env(safe-area-inset-bottom,0px));margin:0 auto;max-width:440px;'
     + 'background:#FFFDF8;border:1px solid #EDE4D3;border-radius:20px;box-shadow:0 24px 48px -16px rgba(30,25,20,.35);'
     + 'transform:translateY(24px);opacity:0;pointer-events:none;transition:transform .45s cubic-bezier(.22,1,.36,1),opacity .35s}'
     + '.avck-banner.avck-show{transform:none;opacity:1;pointer-events:auto}'
