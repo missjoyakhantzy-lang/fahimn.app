@@ -9,7 +9,7 @@
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
 :root{
- --rani:#D81B60;--rani-dark:#B71550;--rani-light:#FDF0F5;
+ --rani:#161616;--rani-dark:#000000;--rani-light:#FAF7F0;
  --gold:#D4AF37;--ivory:#FDFBF7;
  --text:#242024;--muted:#756D73;--border:#E7E0D9;
  --green:#16a34a;--orange:#ea580c;
@@ -36,7 +36,7 @@ body{display:flex;justify-content:center;height:100dvh;overflow:hidden}
 .main-content::-webkit-scrollbar{display:none}
 
 /* Savings */
-.savings-card{background:linear-gradient(135deg,#1a1520 0%,#3a1426 50%,#7a1740 100%);color:#fff;border-radius:18px;padding:14px 15px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;position:relative;overflow:hidden}
+.savings-card{background:linear-gradient(135deg,#1a1520 0%,#0d0d0f 50%,#161616 100%);color:#fff;border-radius:18px;padding:14px 15px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;position:relative;overflow:hidden}
 .savings-card::after{content:'';position:absolute;right:-30px;top:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(212,175,55,.35),transparent 70%)}
 .savings-card h3{font-size:13px;font-weight:800}
 .savings-card p{font-size:11px;opacity:.8;margin-top:3px}
@@ -55,7 +55,7 @@ body{display:flex;justify-content:center;height:100dvh;overflow:hidden}
 .wishlist-toolbar{display:flex;align-items:center;justify-content:space-between;margin:4px 2px 12px}
 .toolbar-title{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .toolbar-sub{font-size:11px;color:var(--muted);margin-top:2px}
-.clear-btn{border:1px solid #F4D6E1;background:#fff;color:var(--rani);font-size:10.5px;font-weight:800;padding:8px 12px;border-radius:10px;cursor:pointer}
+.clear-btn{border:1px solid #EDE5D3;background:#fff;color:var(--rani);font-size:10.5px;font-weight:800;padding:8px 12px;border-radius:10px;cursor:pointer}
 
 .grid-container{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-bottom:10px}
 .w-card{background:#fff;display:flex;flex-direction:column;position:relative;border-radius:16px;border:1px solid #f3f0ee;overflow:hidden;box-shadow:0 4px 20px -4px rgba(0,0,0,.06);animation:popIn .35s ease}
@@ -99,11 +99,11 @@ body{display:flex;justify-content:center;height:100dvh;overflow:hidden}
 .bottom-price{flex-shrink:0;min-width:90px}
 .bottom-price b{font-size:16px;display:block;line-height:1.1}
 .bottom-price span{font-size:11px;color:var(--muted)}
-.move-all-btn{flex:1;background:var(--rani);color:#fff;border:0;border-radius:14px;padding:15px 10px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 8px 20px rgba(216,27,96,.25);white-space:nowrap}
+.move-all-btn{flex:1;background:var(--rani);color:#fff;border:0;border-radius:14px;padding:15px 10px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 8px 20px rgba(22,22,22,.25);white-space:nowrap}
 .move-all-btn:active{transform:scale(.97)}
 
 .empty-wishlist-state{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;text-align:center;padding:20px}
-.empty-wishlist-state .icon-circle{width:84px;height:84px;background:#F9E8EE;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:18px;color:var(--rani)}
+.empty-wishlist-state .icon-circle{width:84px;height:84px;background:#F5F1E8;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:18px;color:var(--rani)}
 .empty-wishlist-state h2{font:700 23px "Playfair Display",serif;margin-bottom:8px}
 .empty-wishlist-state p{font-size:12.5px;color:var(--muted);line-height:1.6;max-width:270px;margin-bottom:22px}
 .explore-btn{background:var(--rani);color:#fff;padding:14px 30px;border-radius:14px;font-size:12px;font-weight:800;text-decoration:none}
@@ -210,7 +210,7 @@ body{display:flex;justify-content:center;height:100dvh;overflow:hidden}
 
 <div class="modal-overlay" id="clearModal">
 <div class="modal" style="text-align:center">
-<div style="width:60px;height:60px;background:#FDF0F5;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:var(--rani)"><i data-lucide="trash-2" style="width:24px;height:24px"></i></div>
+<div style="width:60px;height:60px;background:#FAF7F0;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:var(--rani)"><i data-lucide="trash-2" style="width:24px;height:24px"></i></div>
 <h3>Clear wishlist?</h3>
 <p>All <span id="clearCount"></span> items will be removed.</p>
 <button class="modal-btn" onclick="confirmClear()">Yes, Clear All</button>
