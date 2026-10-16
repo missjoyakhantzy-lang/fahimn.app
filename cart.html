@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --pink:    #D81B60;
-            --pink-dark: #B71550;
-            --pink-s:  rgba(216,27,96,0.12);
-            --pink-sh: rgba(216,27,96,0.28);
+            --pink:    #161616;
+            --pink-dark: #000000;
+            --pink-s:  rgba(22,22,22,0.12);
+            --pink-sh: rgba(0,0,0,0.28);
             --gold:    #C9A84C;
             --dark:    #111111;
             --mid:     #444444;
@@ -316,7 +316,7 @@
         .shine { position:relative; overflow:hidden; }
         .shine::after {
             content:""; position:absolute; inset:0; z-index:8; pointer-events:none;
-            background:linear-gradient(105deg, rgba(255,255,255,0) 30%, rgba(216,27,96,.07) 44%, rgba(212,175,55,.22) 50%, rgba(216,27,96,.07) 56%, rgba(255,255,255,0) 70%);
+            background:linear-gradient(105deg, rgba(255,255,255,0) 30%, rgba(22,22,22,.07) 44%, rgba(212,175,55,.22) 50%, rgba(22,22,22,.07) 56%, rgba(255,255,255,0) 70%);
             transform:translateX(-120%);
             animation:shineSweep .95s cubic-bezier(.4,0,.2,1) forwards;
         }
@@ -334,8 +334,8 @@
     </style>
 <style data-aavira-ui>
 :root{
-  --aavira-rani:#D81B60;
-  --aavira-rani-dark:#B71550;
+  --aavira-rani:#161616;
+  --aavira-rani-dark:#000000;
   --aavira-gold:#D4AF37;
   --aavira-ivory:#FDFBF7;
   --aavira-cream:#FCF9F4;
@@ -343,16 +343,16 @@
   --aavira-charcoal:#242024;
   --aavira-muted:#756D73;
   --aavira-border:#E7E0D9;
-  --aavira-soft-pink:#F9E8EE;
+  --aavira-soft-pink:#F5F1E8;
 }
 
 body.aavira-theme{
-  --primary:#D81B60;
-  --primary-color:#D81B60;
-  --primary-light:rgba(216,27,96,.08);
-  --pink:#D81B60;
-  --pink-s:rgba(216,27,96,.12);
-  --pink-sh:rgba(216,27,96,.24);
+  --primary:#161616;
+  --primary-color:#161616;
+  --primary-light:rgba(22,22,22,.08);
+  --pink:#161616;
+  --pink-s:rgba(22,22,22,.12);
+  --pink-sh:rgba(0,0,0,.24);
   --secondary:#D4AF37;
   --ethnic-gold:#D4AF37;
   --gold:#D4AF37;
@@ -458,14 +458,14 @@ body.aavira-theme .modal-btn-primary{
   background:linear-gradient(135deg,var(--aavira-rani),var(--aavira-rani-dark))!important;
   color:#fff!important;
   border-color:transparent!important;
-  box-shadow:0 10px 22px rgba(216,27,96,.18);
+  box-shadow:0 10px 22px rgba(22,22,22,.18);
 }
 
 body.aavira-theme .pro-input:focus,
 body.aavira-theme .promo-input:focus,
 body.aavira-theme .search-input:focus{
   border-color:var(--aavira-rani)!important;
-  box-shadow:0 0 0 3px rgba(216,27,96,.08)!important;
+  box-shadow:0 0 0 3px rgba(22,22,22,.08)!important;
 }
 
 body.aavira-theme input,
@@ -482,7 +482,7 @@ body.aavira-theme .pay-option.selected{
 
 body.aavira-theme .color-swatch.active{
   border-color:var(--aavira-rani)!important;
-  box-shadow:0 6px 16px rgba(216,27,96,.14);
+  box-shadow:0 6px 16px rgba(22,22,22,.14);
 }
 
 body.aavira-theme .size-box.active{
