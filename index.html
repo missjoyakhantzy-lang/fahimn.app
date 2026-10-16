@@ -563,6 +563,7 @@ body.nav-hidden.has-offer .cart-bar{bottom:calc(74px + env(safe-area-inset-botto
     <button type="button" class="menu-item" onclick="openReferralCenter()"><i data-lucide="share-2"></i>Refer &amp; earn<i data-lucide="chevron-right"></i></button>
     <hr>
     <a class="menu-item" href="support"><i data-lucide="headphones"></i>Customer support<i data-lucide="chevron-right"></i></a>
+    <button type="button" class="menu-item" onclick="closeSidebar();window.AaviraConsent&&AaviraConsent.openPrefs()"><i data-lucide="cookie"></i>Cookie Settings<i data-lucide="chevron-right"></i></button>
     <div class="side-foot">
       <p class="side-follow">Follow us</p>
       <div class="side-social">
@@ -665,7 +666,7 @@ body.nav-hidden.has-offer .cart-bar{bottom:calc(74px + env(safe-area-inset-botto
     <div class="footer-grid">
       <div><h3>Explore</h3><a href="/">Home</a><a href="/categories">Collections</a><a href="/offer">Offers</a><a href="/wishlist">Wishlist</a></div>
       <div><h3>Shopping</h3><a href="/cart">Shopping bag</a><a href="/orders">My orders</a><a href="/profile">My account</a><a href="/support">Support</a></div>
-      <div><h3>Information</h3><a href="/terms">Terms &amp; conditions</a><a href="/privacy">Privacy policy</a><a href="/support">Help center</a></div>
+      <div><h3>Information</h3><a href="/terms">Terms &amp; conditions</a><a href="/privacy">Privacy policy</a><a href="/support">Help center</a><button type="button" class="avck-footerlink" onclick="window.AaviraConsent&&AaviraConsent.openPrefs()">Cookie Settings</button></div>
       <div><h3>Contact</h3><a href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a></div>
     </div>
     <div class="footer-copy">© 2026 Aavira Fashion. All rights reserved.</div>
@@ -1950,6 +1951,7 @@ window.initializeAppEngine = () => {
 document.addEventListener('DOMContentLoaded', initializeAppEngine);
 </script>
 <script src="/user_data.js"></script>
+<script src="/cookie-consent.js" defer></script>
 </body>
 </html>
 ```
