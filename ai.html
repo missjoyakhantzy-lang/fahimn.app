@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
 <style>
-:root{--rani:#D81B60;--rani-dark:#B71550;--rani-tint:#FCE8EF;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#242024;--muted:#6B6369;--line:#E7E0D9;--ease:cubic-bezier(.2,.8,.2,1)}
+:root{--rani:#161616;--rani-dark:#000000;--rani-tint:#F5F1E8;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#242024;--muted:#6B6369;--line:#E7E0D9;--ease:cubic-bezier(.2,.8,.2,1)}
 *{-webkit-tap-highlight-color:transparent;box-sizing:border-box}
 html,body{overflow-x:clip}
 body{margin:0;font-family:"Inter",system-ui,sans-serif;background:var(--ivory);color:var(--ink);-webkit-font-smoothing:antialiased;position:relative}
@@ -24,14 +24,14 @@ button,input{font-family:inherit}
 /* header */
 .top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
 .top-row{min-height:64px;display:flex;align-items:center;gap:11px;padding:8px 14px 8px 10px}
-.back-btn{width:42px;height:42px;border-radius:50%;border:0;background:var(--rani);color:#fff;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;cursor:pointer;box-shadow:0 4px 14px rgba(216,27,96,.35);transition:transform .12s;position:relative}
+.back-btn{width:42px;height:42px;border-radius:50%;border:0;background:var(--rani);color:#fff;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;cursor:pointer;box-shadow:0 4px 14px rgba(22,22,22,.35);transition:transform .12s;position:relative}
 .back-btn:active{transform:scale(.9)}
 .back-btn svg{width:20px;height:20px;stroke-width:1.8}
 .back-btn.is-loading{pointer-events:none}
 .back-btn.is-loading svg{display:none}
 .back-btn.is-loading::after{content:'';width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.ai-ava{width:46px;height:46px;border-radius:50%;object-fit:cover;flex:0 0 auto;box-shadow:0 4px 14px rgba(216,27,96,.3);border:2px solid #fff}
+.ai-ava{width:46px;height:46px;border-radius:50%;object-fit:cover;flex:0 0 auto;box-shadow:0 4px 14px rgba(22,22,22,.3);border:2px solid #fff}
 .top-tx{flex:1;min-width:0}
 .top-tx b{display:block;font-family:"Playfair Display",serif;font-size:17px}
 .top-tx small{display:flex;align-items:center;gap:5px;color:#15803D;font-size:12px;font-weight:500}
