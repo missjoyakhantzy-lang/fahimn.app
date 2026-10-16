@@ -547,7 +547,17 @@ body.aavira-theme .card-loading-overlay{
   .toast{ bottom:104px; }
   .toast-text{ font-size:14.5px; }
 }
-</style>
+
+        /* change colour */
+        .sheet-colors{padding:4px 0 8px}
+        .sheet-colors-title{font-size:13px;font-weight:800;margin:0 0 10px;display:flex;align-items:center;justify-content:space-between}
+        .sheet-colors-back{background:none;border:none;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer}
+        .sheet-swatches{display:flex;flex-wrap:wrap;gap:10px}
+        .sw{width:44px;height:44px;border-radius:50%;border:2px solid var(--border);cursor:pointer;position:relative;flex:0 0 auto}
+        .sw.on{border-color:#161616;box-shadow:0 0 0 2px #fff,0 0 0 4px #161616}
+        .sw i{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+        .c-tag-btn{cursor:pointer;border:1px solid var(--border)}
+    </style>
 </head>
 <body>
 <div class="shell">
@@ -707,12 +717,19 @@ body.aavira-theme .card-loading-overlay{
             <button class="sheet-action" onclick="doShareItem()">
                 <span class="sheet-ico"><i class="fa-solid fa-share-nodes"></i></span> Share product
             </button>
+            <button class="sheet-action" onclick="doChangeColor()">
+                <span class="sheet-ico"><i class="fa-solid fa-palette"></i></span> Change colour
+            </button>
             <button class="sheet-action" onclick="doDuplicateItem()">
                 <span class="sheet-ico"><i class="fa-solid fa-clone"></i></span> Add one more
             </button>
             <button class="sheet-action danger" onclick="doDeleteItem()">
                 <span class="sheet-ico"><i class="fa-regular fa-trash-can"></i></span> Remove from bag
             </button>
+        </div>
+        <div class="sheet-colors" id="sheetColors" hidden>
+            <p class="sheet-colors-title">Choose colour <button class="sheet-colors-back" onclick="sheetColorsBack()">Back</button></p>
+            <div class="sheet-swatches" id="sheetSwatches"></div>
         </div>
         <button class="sheet-cancel" onclick="closeItemMenu()">Cancel</button>
     </div>
@@ -721,6 +738,7 @@ body.aavira-theme .card-loading-overlay{
 
 </div>
 
+<script src="/user_data.js"></script>
 <script>
 (function(){
     'use strict';
@@ -861,7 +879,7 @@ body.aavira-theme .card-loading-overlay{
                 <div class="c-name" onclick="location.href='${href}'">${esc(item.name)}</div>
                 <div class="c-tags">
                     <span class="c-tag">${esc(item.size)}</span>
-                    <span class="c-tag">${esc(item.color)}</span>
+                    <button type="button" class="c-tag c-tag-btn" onclick="openColorPicker('${esc(item.cartId)}')">${esc(item.color)}</button>
                 </div>
                 <div class="c-bottom">
                     <div class="c-prices">
@@ -1171,6 +1189,50 @@ function stopLongSpinners(){
 }
 function init(){if(!document.body)return;markTheme();stopLongSpinners();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();})();
-</script>
+
+    /* change colour */
+    const CART_HEX = {'rani pink':'#D81B60',pink:'#F4A6C0',red:'#C8102E',maroon:'#6D1230',wine:'#5E1A2B',black:'#1A1A1A',white:'#FFFFFF',gold:'#D4AF37',green:'#2E7D32',blue:'#1565C0',yellow:'#F9A825',orange:'#EF6C00',purple:'#6A1B9A',grey:'#9E9E9E',gray:'#9E9E9E',beige:'#E8DCC8',cream:'#FFFDD0',ivory:'#FFFFF0',silver:'#C0C0C0',magenta:'#C2185B',teal:'#00796B',navy:'#1A237E',brown:'#5D4037'};
+    const cartHex = n => CART_HEX[String(n||'').trim().toLowerCase()] || '#D1D5DB';
+    window.sheetColorsBack = function(){
+        document.getElementById('sheetColors').hidden = true;
+        document.querySelector('.sheet-actions').style.display = '';
+    };
+    window.openColorPicker = function(cartId){ window.openItemMenu(cartId); window.doChangeColor(); };
+    window.doChangeColor = async function(){
+        if(!activeMenuCartId) return;
+        const item = cart.find(i=>i.cartId===activeMenuCartId);
+        if(!item) return;
+        haptic(20);
+        let colors = [];
+        try{
+            if(typeof getVercelData === 'function'){
+                const list = (await getVercelData()) || [];
+                const p = list.find(x => String(x.id ?? x.productId ?? '') === String(item.productId));
+                if(p && Array.isArray(p.colors)) colors = p.colors.filter(Boolean);
+            }
+        }catch(e){}
+        if(item.color && !colors.map(String).includes(String(item.color))) colors.unshift(item.color);
+        if(!colors.length){ toast('No other colours for this product','err'); return; }
+        const wrap = document.getElementById('sheetSwatches');
+        wrap.innerHTML = colors.map(c => {
+            const on = String(c) === String(item.color) ? ' on' : '';
+            const tick = String(c) === String(item.color) ? '<i class="fa-solid fa-check"></i>' : '';
+            return '<button type="button" class="sw' + on + '" data-c="' + esc(String(c)) + '" style="background:' + cartHex(c) + '" aria-label="' + esc(String(c)) + '">' + tick + '</button>';
+        }).join('');
+        wrap.querySelectorAll('.sw').forEach(b => b.addEventListener('click', () => {
+            const c = b.dataset.c;
+            item.color = c;
+            writeCart(cart);
+            const card = findCardEl(item.cartId);
+            const tag = card && card.querySelector('.c-tag-btn');
+            if(tag) tag.textContent = c;
+            document.getElementById('sheetMeta').textContent = item.size + ' \u00B7 ' + item.color + ' \u00B7 Qty ' + item.qty;
+            window.sheetColorsBack();
+            toast('Colour updated','ok');
+        }));
+        document.querySelector('.sheet-actions').style.display = 'none';
+        document.getElementById('sheetColors').hidden = false;
+    };
+</script></script>
 </body>
 </html>
