@@ -420,6 +420,14 @@ body.nav-hidden.has-offer .cart-bar{bottom:calc(16px + env(safe-area-inset-botto
 
 @media(max-width:420px){.marquee-copy{font-size:15px;gap:24px;padding-right:24px}}
 @media(prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* ============ V11: FIX CART/OFFER OVERLAP WITH FLOATING NAV ============ */
+.cart-bar{bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+.offer{bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+body.has-offer .cart-bar{bottom:calc(154px + env(safe-area-inset-bottom,0px))}
+body.nav-hidden .cart-bar{bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+body.nav-hidden .offer{bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+body.nav-hidden.has-offer .cart-bar{bottom:calc(74px + env(safe-area-inset-bottom,0px))}
 </style>
 </head>
 <body>
@@ -657,7 +665,7 @@ body.nav-hidden.has-offer .cart-bar{bottom:calc(16px + env(safe-area-inset-botto
     <div class="footer-grid">
       <div><h3>Explore</h3><a href="/">Home</a><a href="/categories">Collections</a><a href="/offer">Offers</a><a href="/wishlist">Wishlist</a></div>
       <div><h3>Shopping</h3><a href="/cart">Shopping bag</a><a href="/orders">My orders</a><a href="/profile">My account</a><a href="/support">Support</a></div>
-      <div><h3>Information</h3><a href="/terms">Terms &amp; conditions</a><a href="/privacy">Privacy policy</a><a href="/support">Help center</a><button type="button" class="avck-footerlink" onclick="window.AaviraConsent&&AaviraConsent.openPrefs()">Cookie Settings</button></div>
+      <div><h3>Information</h3><a href="/terms">Terms &amp; conditions</a><a href="/privacy">Privacy policy</a><a href="/support">Help center</a></div>
       <div><h3>Contact</h3><a href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a></div>
     </div>
     <div class="footer-copy">© 2026 Aavira Fashion. All rights reserved.</div>
@@ -1942,7 +1950,6 @@ window.initializeAppEngine = () => {
 document.addEventListener('DOMContentLoaded', initializeAppEngine);
 </script>
 <script src="/user_data.js"></script>
-<script src="/cookie-consent.js" defer></script>
 </body>
 </html>
 ```
