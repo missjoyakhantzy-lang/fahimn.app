@@ -1151,44 +1151,7 @@ body.aavira-theme .card-loading-overlay{
             render();
         }
     });
-})();
-</script>
-<script data-aavira-ui>
-(function(){'use strict';
-function markTheme(){if(document.body)document.body.classList.add('aavira-theme');}
-function isSpinner(el){
-  return !!(el && el.classList && (el.classList.contains('mini-spin') || el.classList.contains('fa-spin')));
-}
-function stopLongSpinners(){
-  var seen = new WeakSet();
-  function watch(root){
-    if(!root || root.nodeType !== 1) return;
-    var nodes = [];
-    if(isSpinner(root)) nodes.push(root);
-    if(root.querySelectorAll){
-      var found = root.querySelectorAll('.mini-spin, .fa-spin');
-      for(var i=0;i<found.length;i++) nodes.push(found[i]);
-    }
-    for(var j=0;j<nodes.length;j++){
-      (function(el){
-        if(seen.has(el)) return;
-        seen.add(el);
-        setTimeout(function(){
-          if(el && el.classList) el.classList.add('aavira-spinner-done');
-        }, 4000);
-      })(nodes[j]);
-    }
-  }
-  watch(document.body);
-  new MutationObserver(function(ms){
-    for(var i=0;i<ms.length;i++){
-      var a=ms[i].addedNodes||[];
-      for(var j=0;j<a.length;j++) watch(a[j]);
-    }
-  }).observe(document.body,{childList:true,subtree:true});
-}
-function init(){if(!document.body)return;markTheme();stopLongSpinners();}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+
     /* change colour */
     const CART_HEX = {'rani pink':'#D81B60',pink:'#F4A6C0',red:'#C8102E',maroon:'#6D1230',wine:'#5E1A2B',black:'#1A1A1A',white:'#FFFFFF',gold:'#D4AF37',green:'#2E7D32',blue:'#1565C0',yellow:'#F9A825',orange:'#EF6C00',purple:'#6A1B9A',grey:'#9E9E9E',gray:'#9E9E9E',beige:'#E8DCC8',cream:'#FFFDD0',ivory:'#FFFFF0',silver:'#C0C0C0',magenta:'#C2185B',teal:'#00796B',navy:'#1A237E',brown:'#5D4037'};
     const cartHex = n => CART_HEX[String(n||'').trim().toLowerCase()] || '#D1D5DB';
@@ -1236,6 +1199,44 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
         document.getElementById('sheetColors').hidden = false;
     };
 })();
+</script>
+<script data-aavira-ui>
+(function(){'use strict';
+function markTheme(){if(document.body)document.body.classList.add('aavira-theme');}
+function isSpinner(el){
+  return !!(el && el.classList && (el.classList.contains('mini-spin') || el.classList.contains('fa-spin')));
+}
+function stopLongSpinners(){
+  var seen = new WeakSet();
+  function watch(root){
+    if(!root || root.nodeType !== 1) return;
+    var nodes = [];
+    if(isSpinner(root)) nodes.push(root);
+    if(root.querySelectorAll){
+      var found = root.querySelectorAll('.mini-spin, .fa-spin');
+      for(var i=0;i<found.length;i++) nodes.push(found[i]);
+    }
+    for(var j=0;j<nodes.length;j++){
+      (function(el){
+        if(seen.has(el)) return;
+        seen.add(el);
+        setTimeout(function(){
+          if(el && el.classList) el.classList.add('aavira-spinner-done');
+        }, 4000);
+      })(nodes[j]);
+    }
+  }
+  watch(document.body);
+  new MutationObserver(function(ms){
+    for(var i=0;i<ms.length;i++){
+      var a=ms[i].addedNodes||[];
+      for(var j=0;j<a.length;j++) watch(a[j]);
+    }
+  }).observe(document.body,{childList:true,subtree:true});
+}
+function init(){if(!document.body)return;markTheme();stopLongSpinners();}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+    })();
 
     </script></script>
 </body>
