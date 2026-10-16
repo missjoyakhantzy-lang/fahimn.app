@@ -141,7 +141,7 @@ a{color:inherit;text-decoration:none}
 .btn:active{transform:scale(.97)}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .btn-o{background:#fff;color:var(--ink);border:1.5px solid var(--ink)}
-.btn-p{background:var(--rani);color:#fff;border:0;box-shadow:0 6px 16px rgba(216,27,96,.25)}
+.btn-p{background:#161616;color:#fff;border:0;box-shadow:0 6px 16px rgba(0,0,0,.28)}
 
 .ov{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center}
 .ov.on{display:flex}
@@ -227,13 +227,30 @@ a{color:inherit;text-decoration:none}
 @media(prefers-reduced-motion:reduce){*,::before,::after{transition-duration:.01ms!important;scroll-behavior:auto!important}}
 
 /* ============ V12.54F: homepage design language on product page ============ */
-.toast{top:calc(76px + env(safe-area-inset-top,0px));bottom:auto;transform:translate(-50%,-16px);background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.14);padding:12px 16px;max-width:min(92vw,380px);z-index:9600;transition:transform .35s cubic-bezier(.2,.9,.25,1.2),opacity .3s ease}
-.toast.on{transform:translate(-50%,0)}
-.toast.ok{border-color:rgba(22,163,74,.4)}
-.toast.err{border-color:rgba(220,38,38,.4)}
-.toast.ok i{color:#16a34a}
-.toast.err i{color:#dc2626}
+.toast{position:fixed;left:50%;top:calc(68px + env(safe-area-inset-top,0px));bottom:auto;transform:translate(-50%,-16px);opacity:0;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#16A34A,#15803D);color:#fff;padding:10px 18px 10px 12px;border-radius:999px;font-size:12.5px;font-weight:600;line-height:1.45;box-shadow:0 10px 28px rgba(0,0,0,.38);z-index:10060;pointer-events:none;white-space:normal;max-width:min(320px,86%);transition:opacity .25s,transform .25s cubic-bezier(.2,.9,.3,1.2)}
+.toast::before{content:"\2713";width:22px;height:22px;flex:0 0 22px;border-radius:50%;background:#fff;color:#16A34A;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+.toast[data-type="error"]{background:linear-gradient(135deg,#DC2626,#B91C1C)}
+.toast[data-type="error"]::before{content:"!";color:#DC2626}
+.toast.is-on{opacity:1;transform:translate(-50%,0)}
 .bar-bottom{left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));padding:10px 12px;border:1px solid var(--line);border-radius:22px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+
+/* ============ V12.54F: suggested quick-add (no direct buy) ============ */
+button.go{background:#161616;border:0;cursor:pointer}
+.sqa-ov{position:fixed;inset:0;z-index:9700;background:rgba(20,16,18,.5);display:flex;align-items:flex-end;justify-content:center}
+.sqa-ov[hidden]{display:none}
+.sqa-sheet{width:100%;max-width:420px;background:#fff;border-radius:22px 22px 0 0;padding:18px 18px calc(20px + env(safe-area-inset-bottom,0px));position:relative;max-height:88vh;overflow:auto;animation:sqaUp .3s cubic-bezier(.2,.9,.3,1.15)}
+@keyframes sqaUp{from{transform:translateY(40px);opacity:0}}
+.sqa-x{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#333}
+.sqa-img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:14px;background:#f5f3ef}
+.sqa-name{font-size:15px;font-weight:700;margin:12px 0 4px;color:#1a1a1a}
+.sqa-price{font-size:15px;font-weight:800;color:#1a1a1a}
+.sqa-price s{color:#999;font-weight:500;margin-left:8px;font-size:13px}
+.sqa-shead{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700;margin:14px 0 8px;color:#1a1a1a}
+.sqa-err{color:#DC2626;font-style:normal;font-size:12px;font-weight:600}
+.sqa-sizes{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.sqa-sz{height:42px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font-size:13px;font-weight:700;cursor:pointer;color:#1a1a1a}
+.sqa-sz.on{background:#161616;color:#fff;border-color:#161616}
+.sqa-add{width:100%;margin-top:16px;background:#161616;color:#fff;border:0;border-radius:999px;padding:15px;font-size:14px;font-weight:800;letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -372,7 +389,7 @@ a{color:inherit;text-decoration:none}
   <div class="sheet"><h3>Product not found</h3><p>This product is currently unavailable.</p><button class="mbtn" type="button" onclick="navigate('./',this)">Back to home</button></div>
 </div>
 
-<div class="toast" id="toast" role="status"></div>
+<div id="toast" class="toast" role="status" aria-live="polite"><span id="toast-msg"></span></div>
 
 <script src="/user_data.js"></script>
 <script src="/cookie-consent.js" defer></script>
@@ -418,13 +435,17 @@ const goBack = el => withSpinner(el, () => (history.length > 1 ? history.back() 
 const skipLogin = el => { if (state.buyLink) navigate(state.buyLink, el); };
 
 let toastTimer;
-const toast = (message, isError) => {
-  const el = $('#toast');
-  el.innerHTML = `<i class="fa-solid ${isError ? 'fa-circle-exclamation' : 'fa-circle-check'}"></i><span>${esc(message)}</span>`;
-  el.className = 'toast on ' + (isError ? 'err' : 'ok');
+let toastTimer;
+window.showToast = (message, type = 'success') => {
+  try{ if(navigator.vibrate) navigator.vibrate(40); }catch(e){}
+  const t = $('#toast');
+  $('#toast-msg').textContent = message;
+  t.dataset.type = type;
+  t.classList.add('is-on');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { el.className = 'toast'; }, 2400);
+  toastTimer = setTimeout(() => t.classList.remove('is-on'), 2200);
 };
+const toast = (message, isError) => window.showToast(message, isError ? 'error' : 'success');
 
 const openModal = id => $('#' + id).classList.add('on');
 const closeModal = id => $('#' + id).classList.remove('on');
@@ -740,7 +761,7 @@ const suggestionCard = product => {
       <a href="${href}"><span class="pc-name">${name}</span><span class="pc-price"><b>${formatPrice(price)}</b>${mrp > price ? `<s>${formatPrice(mrp)}</s>` : ''}</span></a>
       <div class="pc-row">
         <a class="pc-meta" href="${href}"><span class="rating ${rating >= 4 ? '' : rating >= 3 ? 'mid' : rating > 0 ? 'bad' : 'none'}"><i class="fa-solid fa-star"></i>${rating > 0 ? rating.toFixed(1) : '0.0'}</span>${dots}</a>
-        <a class="go" href="${href}&buy=1" aria-label="Buy ${name}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+        <button type="button" class="go" data-sugqa="${id}" aria-label="Quick add ${name}"><i class="fa-solid fa-cart-plus"></i></button>
       </div>
       ${Number.isFinite(stock) && stock > 0 && stock <= 4 ? `<span class="low">Only ${stock} left</span>` : ''}
     </div>
@@ -774,6 +795,7 @@ const loadSuggestions = async () => {
     };
   });
   if (!items.length) return;
+  items.forEach(p => { sugMap[String(p.id)] = p; });
   $('#sugGrid').innerHTML = items.map(suggestionCard).join('');
   $('#sugSec').hidden = false;
 };
@@ -932,6 +954,67 @@ addEventListener('pageshow', () => {
 
 window.lucide?.createIcons();
 init().then(() => window.lucide?.createIcons());
-</script>
+
+/* ============ V12.54F: suggested quick-add logic ============ */
+const sugMap = {};
+let sqaPid = null;
+window.openSugQA = id => {
+  const p = sugMap[String(id)];
+  if(!p) return;
+  sqaPid = String(id);
+  const price = Number(p.price) || 0, mrp = Number(p.mrp) || price;
+  $('#sqaImg').src = safeUrl(p.img) || '';
+  $('#sqaImg').alt = p.name || '';
+  $('#sqaName').textContent = p.name || '';
+  $('#sqaPrice').innerHTML = '<b>' + formatPrice(price) + '</b>' + (mrp > price ? '<s>' + formatPrice(mrp) + '</s>' : '');
+  $('#sqaErr').hidden = true;
+  $('#sqaSizes').innerHTML = ['32','34','36','38','40','42'].map(s => '<button type="button" class="sqa-sz" data-size="' + s + '">' + s + '</button>').join('');
+  $('#sqaOv').hidden = false;
+  document.body.style.overflow = 'hidden';
+};
+window.closeSugQA = () => { $('#sqaOv').hidden = true; document.body.style.overflow = ''; sqaPid = null; };
+document.addEventListener('click', e => {
+  const q = e.target.closest('[data-sugqa]');
+  if(q){ e.preventDefault(); openSugQA(q.dataset.sugqa); return; }
+  const sz = e.target.closest('#sqaSizes .sqa-sz');
+  if(sz){
+    document.querySelectorAll('#sqaSizes .sqa-sz').forEach(b => b.classList.remove('on'));
+    sz.classList.add('on');
+    $('#sqaErr').hidden = true;
+    return;
+  }
+  if(e.target.closest('#sqaOv') && !e.target.closest('.sqa-sheet')) closeSugQA();
+});
+$('#sqaAdd').addEventListener('click', () => {
+  const p = sugMap[sqaPid];
+  if(!p) return;
+  const sel = document.querySelector('#sqaSizes .sqa-sz.on');
+  if(!sel){ $('#sqaErr').hidden = false; window.showToast('Please select a size', 'error'); return; }
+  const size = sel.dataset.size;
+  const color = (p.colors && p.colors[0]) || 'Standard';
+  const img = safeUrl(p.img) || '';
+  const cart = readJson('aavira_cart', []);
+  const ex = cart.find(it => String(it.productId) === String(p.id) && it.size === size && (it.color || '') === color);
+  if(ex) ex.qty = (Number(ex.qty) || 1) + 1;
+  else cart.push({ productId: String(p.id), name: p.name, price: Number(p.price) || 0, size, color, image: img, qty: 1 });
+  writeJson('aavira_cart', cart);
+  if(typeof updateCartBadge === 'function') updateCartBadge();
+  closeSugQA();
+  window.showToast('Added to cart');
+});
+</script></script>
+
+<!-- V12.54F suggested quick-add -->
+<div class="sqa-ov" id="sqaOv" hidden>
+  <div class="sqa-sheet" role="dialog" aria-modal="true" aria-label="Quick add">
+    <button type="button" class="sqa-x" onclick="closeSugQA()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    <img class="sqa-img" id="sqaImg" alt="">
+    <div class="sqa-name" id="sqaName"></div>
+    <div class="sqa-price" id="sqaPrice"></div>
+    <div class="sqa-shead"><span>Select size</span><em class="sqa-err" id="sqaErr" hidden>Please select a size</em></div>
+    <div class="sqa-sizes" id="sqaSizes"></div>
+    <button type="button" class="sqa-add" id="sqaAdd"><i class="fa-solid fa-cart-plus"></i>Add to bag</button>
+  </div>
+</div>
 </body>
 </html>
