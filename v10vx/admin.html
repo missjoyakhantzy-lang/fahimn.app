@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Aavira Luxe - Admin OS v5</title>
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
+        <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -36,8 +35,8 @@
             --shadow-lg: 0 20px 40px rgba(0,0,0,0.08);
             --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
             --smooth: cubic-bezier(0.25, 0.8, 0.25, 1);
-            --font: 'Poppins', sans-serif;
-            --font-serif: 'Cormorant Garamond', serif;
+            --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font); -webkit-tap-highlight-color: transparent; }
@@ -244,7 +243,15 @@
             .main-content { grid-column: 2; grid-row: 2; padding: 30px 38px 46px; }
             .dash-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
             .lg-card { max-width: 400px; }
+            #allOrdersContainer, #recentOrdersContainer { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+            #allOrdersContainer .o-card, #recentOrdersContainer .o-card { margin-bottom: 0; }
+            .bottom-sheet { left: auto; right: 0; width: min(560px, 100%); border-radius: 20px 0 0 20px; }
         }
+
+        /* ===== COLOR NAME INPUT ===== */
+        .color-cell { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; width: 90px; }
+        .color-name-input { width: 90px; border: 1px solid var(--gray-border); border-radius: 10px; padding: 7px 8px; font-size: 11.5px; font-family: inherit; outline: none; background: #fff; }
+        .color-name-input:focus { border-color: var(--gold); }
     </style>
 </head>
 <body>
@@ -621,6 +628,7 @@
         window.categoriesDataCache = {};
         window.promosDataCache = {};
         window.colorImagesArray = [];
+        window.colorNamesArray = [];
 
         window.showToast = function(msg, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -698,7 +706,7 @@
             try {
                 const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: "POST", body: formData });
                 const data = await res.json();
-                if(data.secure_url) { window.colorImagesArray.push(data.secure_url); window.renderColorImages(); }
+                if(data.secure_url) { window.colorImagesArray.push(data.secure_url); window.colorNamesArray.push(''); window.renderColorImages(); }
             } catch(error) { showToast("Color image upload failed", "error"); }
             
             const loaderNode = document.getElementById(loaderId);
@@ -710,14 +718,15 @@
             const container = document.getElementById('color_upload_row');
             let html = '';
             window.colorImagesArray.forEach((url, index) => {
-                html += `<div class="upload-box-mini" style="position:relative;"><button class="remove-img-btn" onclick="removeColorImage(${index}, event)"><i class="fa-solid fa-xmark"></i></button><img src="${url}" class="preview-media" style="border-radius:12px;"></div>`;
+                const nm = String(window.colorNamesArray[index] || '').replace(/"/g, '&quot;');
+                html += `<div class="color-cell"><div class="upload-box-mini" style="position:relative;"><button class="remove-img-btn" onclick="removeColorImage(${index}, event)"><i class="fa-solid fa-xmark"></i></button><img src="${url}" class="preview-media" style="border-radius:12px;"></div><input type="text" class="color-name-input" placeholder="Color name" value="${nm}" oninput="window.colorNamesArray[${index}]=this.value"></div>`;
             });
             html += `<div class="upload-box-mini" style="background:white; border-color:var(--primary-border);" onclick="document.getElementById('pr_color_file').click()"><i class="fa-solid fa-plus" style="color:var(--primary);"></i><p style="color:var(--primary);">Add Photo</p></div>`;
             container.innerHTML = html;
         };
 
         window.removeColorImage = function(index, event) {
-            event.stopPropagation(); window.colorImagesArray.splice(index, 1); window.renderColorImages();
+            event.stopPropagation(); window.colorImagesArray.splice(index, 1); window.colorNamesArray.splice(index, 1); window.renderColorImages();
         };
 
         // NAVIGATION
@@ -749,7 +758,7 @@
                 document.getElementById('pr_desc').value = '';
                 document.getElementById('pr_rating').value = '';
                 
-                window.colorImagesArray = []; window.renderColorImages();
+                window.colorImagesArray = []; window.colorNamesArray = []; window.renderColorImages();
                 clearUpload('pr_main'); clearUpload('pr_back'); clearUpload('pr_side'); clearUpload('pr_vid');
                 
                 document.getElementById('productSheetTitle').innerText = 'Add New Product'; 
@@ -1160,7 +1169,7 @@
             document.getElementById('pr_rating').value = p.rating ?? '';
             document.getElementById('pr_colors_text').value = p.colorsInfo || ((p.colors && Array.isArray(p.colors)) ? p.colors.join(', ') : '');
             
-            window.colorImagesArray = p.colorImages || []; window.renderColorImages();
+            window.colorImagesArray = p.colorImages || []; window.colorNamesArray = p.colorNames || []; window.renderColorImages();
             
             const setupMediaPreview = (prefix, url, type) => {
                 document.getElementById(`${prefix}_final_url`).value = url || ''; const box = document.getElementById(`${prefix}_box`);
@@ -1198,7 +1207,7 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...'; btn.disabled = true;
 
             try {
-                let payload = { name, price: Number(price) || price, mrp: Number(mrp) || mrp, category: cat, fabric, pattern, description: desc, rating, colorsInfo: colorsInputText, colors: colorsArray, colorImages: window.colorImagesArray, imageMain: imgMain, imageBack: imgBack, imageSide: imgSide, videoUrl: videoUrl, updatedAt: serverTimestamp() };
+                let payload = { name, price: Number(price) || price, mrp: Number(mrp) || mrp, category: cat, fabric, pattern, description: desc, rating, colorsInfo: colorsInputText, colors: colorsArray, colorImages: window.colorImagesArray, colorNames: window.colorNamesArray, imageMain: imgMain, imageBack: imgBack, imageSide: imgSide, videoUrl: videoUrl, updatedAt: serverTimestamp() };
                 Object.keys(payload).forEach(key => (payload[key] === undefined || payload[key] === '') && delete payload[key]);
 
                 if(id) await updateDoc(doc(db, targetCol, id), payload); 
