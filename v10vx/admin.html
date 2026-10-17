@@ -12,9 +12,11 @@
     
     <style>
         :root {
-            --primary: #D81B60; 
-            --primary-light: #FDF2F8;
-            --primary-border: #FBCFE8;
+            --primary: #161616; 
+            --primary-light: #F5F1E8;
+            --primary-border: #E8DCC8;
+            --gold: #D4AF37;
+            --gold-light: #FBF3DF;
             --dark: #0F172A; 
             --dark-light: #1E293B;
             --gray-bg: #F3F4F6; 
@@ -47,7 +49,7 @@
         @keyframes spinSlow { 100% { transform: rotate(360deg); } }
         
         header { background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--gray-border); }
-        .header-title h1 { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 2px; background: linear-gradient(135deg, var(--primary), #FF4081); -webkit-background-clip: text; color: transparent; font-family: var(--font-serif);}
+        .header-title h1 { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 2px; background: linear-gradient(135deg, var(--primary), #D4AF37); -webkit-background-clip: text; color: transparent; font-family: var(--font-serif);}
         .header-title span { font-size: 10px; font-weight: 700; color: var(--gray-text); letter-spacing: 1.5px; text-transform: uppercase; }
         .logout-btn { background: var(--gray-card); width: 38px; height: 38px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--dark); cursor: pointer; transition: 0.2s; border: 1px solid var(--gray-border); box-shadow: var(--shadow-sm);}
         .logout-btn:active { transform: scale(0.9); background: var(--danger-light); color: var(--danger); border-color: var(--danger); }
@@ -135,7 +137,7 @@
         .q-btn-resolve { background: var(--success-light); color: var(--success); border: 1px solid #A7F3D0; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer;}
 
         /* FAB & BOTTOM NAV */
-        .fab { position: absolute; bottom: 85px; right: 18px; width: 56px; height: 56px; background: linear-gradient(135deg, var(--primary), #FF4081); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 22px; box-shadow: var(--shadow-md); cursor: pointer; z-index: 90; display: none; transition: 0.2s;}
+        .fab { position: absolute; bottom: 85px; right: 18px; width: 56px; height: 56px; background: linear-gradient(135deg, var(--primary), #D4AF37); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 22px; box-shadow: var(--shadow-md); cursor: pointer; z-index: 90; display: none; transition: 0.2s;}
         .fab:active { transform: scale(0.9); }
 
         .bottom-nav { position: absolute; bottom: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); display: flex; justify-content: space-between; padding: 10px 6px calc(10px + env(safe-area-inset-bottom, 8px)); border-top: 1px solid var(--gray-border); z-index: 100; box-shadow: 0 -5px 25px rgba(0,0,0,0.04); }
@@ -215,6 +217,34 @@
         .toast.show { transform: translateX(0); }
         .toast.success { border-left-color: var(--success); }
         .toast.error { border-left-color: var(--danger); }
+    
+        /* ===== ADMIN LOGIN GATE ===== */
+        #loginGate { position: absolute; inset: 0; z-index: 10000; display: none; align-items: center; justify-content: center; background: radial-gradient(120% 120% at 50% 0%, #232323 0%, #0b0b0c 60%, #000 100%); padding: 24px; }
+        .lg-card { width: 100%; max-width: 360px; background: #141414; border: 1px solid #2a2a2a; border-radius: 22px; padding: 34px 28px; text-align: center; box-shadow: 0 30px 80px rgba(0,0,0,.55); }
+        .lg-logo { font-family: var(--font-serif); font-size: 30px; font-weight: 700; letter-spacing: 4px; color: #fff; }
+        .lg-logo span { color: var(--gold); }
+        .lg-sub { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #9a9a9a; margin: 8px 0 24px; font-weight: 700; }
+        .lg-card input { width: 100%; background: #1f1f1f; border: 1px solid #333; color: #fff; border-radius: 14px; padding: 14px 16px; font-size: 14px; margin-bottom: 12px; outline: none; font-family: inherit; }
+        .lg-card input:focus { border-color: var(--gold); }
+        .lg-btn { width: 100%; background: var(--gold); color: #161616; border: none; border-radius: 14px; padding: 15px; font-size: 15px; font-weight: 800; cursor: pointer; margin-top: 6px; letter-spacing: .5px; }
+        .lg-btn:disabled { opacity: .6; }
+        .lg-err { color: #ff8a8a; font-size: 12.5px; margin-top: 12px; font-weight: 600; }
+        .lg-note { color: #6f6f6f; font-size: 11px; margin-top: 16px; }
+
+        /* ===== DESKTOP MODE ===== */
+        @media (min-width: 960px) {
+            .app-container { max-width: 1280px; display: grid; grid-template-columns: 232px 1fr; grid-template-rows: auto 1fr; }
+            .app-container > header { grid-column: 1 / -1; }
+            .bottom-nav { position: static; grid-column: 1; grid-row: 2; width: auto; height: auto; flex-direction: column; justify-content: flex-start; align-items: stretch; gap: 6px; padding: 20px 14px; border-top: none; border-right: 1px solid var(--gray-border); box-shadow: none; }
+            .nav-item { flex: none; flex-direction: row; justify-content: flex-start; gap: 13px; padding: 13px 15px; border-radius: 13px; }
+            .nav-item i { font-size: 17px; }
+            .nav-item span { font-size: 13px; }
+            .nav-item.active { background: #161616; color: #fff; }
+            .nav-item.active i { transform: none; color: var(--gold); }
+            .main-content { grid-column: 2; grid-row: 2; padding: 30px 38px 46px; }
+            .dash-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+            .lg-card { max-width: 400px; }
+        }
     </style>
 </head>
 <body>
@@ -230,13 +260,26 @@
 
         <div id="toast-container"></div>
 
+        <!-- ADMIN LOGIN GATE -->
+        <div id="loginGate">
+            <div class="lg-card">
+                <div class="lg-logo">AAVIRA <span>OS</span></div>
+                <p class="lg-sub">Administrator Access</p>
+                <input type="email" id="lgEmail" placeholder="Admin email" value="info@fahimakhtar3.in" autocomplete="username">
+                <input type="password" id="lgPass" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doAdminLogin()">
+                <button class="lg-btn" type="button" onclick="doAdminLogin()">Login</button>
+                <p class="lg-err" id="lgErr" hidden></p>
+                <p class="lg-note">Sirf admin login kar sakta hai.</p>
+            </div>
+        </div>
+
         <!-- HEADER -->
         <header>
             <div class="header-title">
                 <h1>AAVIRA OS</h1>
                 <span>Administrator Access</span>
             </div>
-            <div class="logout-btn" onclick="window.location.reload()"><i class="fa-solid fa-rotate-right"></i></div>
+            <div class="logout-btn" onclick="adminLogout()" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></div>
         </header>
 
         <main class="main-content">
@@ -531,6 +574,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc, updateDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
         // MAIN APP DATABASE
         const firebaseConfig = {
@@ -543,6 +587,31 @@
         };
         const app = initializeApp(firebaseConfig, "mainApp");
         const db = getFirestore(app);
+        const auth = getAuth(app);
+        const ADMIN_UID = 'wWamvB7vl7QJIfmpUQ84n4Kc9ci1';
+        let appBooted = false;
+
+        window.doAdminLogin = async () => {
+            const email = document.getElementById('lgEmail').value.trim();
+            const pass = document.getElementById('lgPass').value;
+            const errEl = document.getElementById('lgErr');
+            const btn = document.querySelector('.lg-btn');
+            errEl.hidden = true;
+            if (!email || !pass) { errEl.textContent = 'Email aur password dono daalo.'; errEl.hidden = false; return; }
+            btn.disabled = true; btn.textContent = 'Logging in...';
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+            } catch (e) {
+                errEl.textContent = 'Login failed. Email/password check karo.';
+                errEl.hidden = false;
+                btn.disabled = false; btn.textContent = 'Login';
+            }
+        };
+
+        window.adminLogout = async () => {
+            try { await signOut(auth); } catch (e) {}
+            location.reload();
+        };
 
         window.currentActiveTab = 'dashboard';
         
@@ -1388,7 +1457,19 @@
             }
         };
 
-        window.onload = () => { loadData(); };
+        window.onload = () => {
+            onAuthStateChanged(auth, (user) => {
+                const gate = document.getElementById('loginGate');
+                if (user && user.uid === ADMIN_UID) {
+                    gate.style.display = 'none';
+                    if (!appBooted) { appBooted = true; loadData(); }
+                } else {
+                    if (user) { signOut(auth); return; }
+                    document.getElementById('adminPreloader').style.display = 'none';
+                    gate.style.display = 'flex';
+                }
+            });
+        };
     </script>
 </body>
 </html>
