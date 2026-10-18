@@ -136,7 +136,7 @@ body{display:flex;justify-content:center;height:100dvh;overflow:hidden}
 
 <header class="pro-header">
 <div class="header-left">
-<button class="icon-btn" onclick="history.back()"><i data-lucide="arrow-left" style="width:20px;height:20px"></i></button>
+<button class="icon-btn" onclick="goBack()" aria-label="Back"><i data-lucide="arrow-left" style="width:20px;height:20px"></i></button>
 </div>
 <div class="header-titles"><h1>MY WISHLIST</h1><p id="headerItemCount">0 Items</p></div>
 <div class="header-right">
@@ -229,6 +229,7 @@ function parsePrice(v){return parseInt(String(v??'').replace(/[^0-9]/g,''))||0}
 function hashId(s){let h=0;s=String(s);for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h}
 function toast(m){const t=document.getElementById('alertToast');document.getElementById('toastMsg').innerText=m;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),2600);try{navigator.vibrate&&navigator.vibrate(30)}catch(e){}}
 function icons(){if(window.lucide)lucide.createIcons()}
+function goBack(){try{if(document.referrer&&new URL(document.referrer).origin===location.origin&&history.length>1){history.back();return;}}catch(e){}location.href='./';}
 document.addEventListener('DOMContentLoaded',()=>{updateCartBadge();initWishlist();icons()});
 function updateCartBadge(){
  let cart=[];try{cart=JSON.parse(localStorage.getItem('aavira_cart'))||[]}catch(e){}

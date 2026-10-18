@@ -6,7 +6,7 @@
 <title>Aavira Luxe - Collections</title>
 <meta name="theme-color" content="#ffffff">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
 <style>
 :root{
  --rani:#161616; --rani-dark:#000000; --rani-light:#FAF7F0;
@@ -22,6 +22,8 @@ body{display:flex;justify-content:center;height:100dvh;overflow:hidden}
 /* HEADER - rounded */
 .pro-header{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#fff;border-bottom:1px solid var(--border);flex-shrink:0}
 .icon-btn{width:40px;height:40px;flex-shrink:0;background:#fff;border:1px solid var(--border);border-radius:13px;display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer;font-size:16px;text-decoration:none;position:relative}
+svg.lucide{width:1em;height:1em;flex-shrink:0}
+.btn-wish.wished svg.lucide{fill:currentColor}
 .icon-btn:active{transform:scale(.92)}
 .search-bar{flex:1;background:#F9FAFB;border:1px solid transparent;border-radius:13px;padding:0 12px;height:42px;display:flex;align-items:center;gap:9px;min-width:0}
 .search-bar i{color:#9CA3AF;font-size:13px}
@@ -91,10 +93,10 @@ body{display:flex;justify-content:center;height:100dvh;overflow:hidden}
 <body>
 <div class="app-container">
 <header class="pro-header">
-<button class="icon-btn" onclick="window.location.href='./'"><i class="fa-solid fa-arrow-left"></i></button>
-<div class="search-bar"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="searchInput" placeholder="Search kurtis, sarees, lehengas..."></div>
-<a href="wishlist" class="icon-btn"><i class="fa-regular fa-heart"></i></a>
-<a href="cart" class="icon-btn"><i class="fa-solid fa-cart-shopping"></i><span class="cart-badge" id="topCartBadge" style="display:none">0</span></a>
+<button class="icon-btn" onclick="goBack()" aria-label="Back"><i data-lucide="arrow-left"></i></button>
+<div class="search-bar"><i data-lucide="search"></i><input type="text" id="searchInput" placeholder="Search kurtis, sarees, lehengas..."></div>
+<a href="wishlist" class="icon-btn"><i data-lucide="heart"></i></a>
+<a href="cart" class="icon-btn"><i data-lucide="shopping-cart"></i><span class="cart-badge" id="topCartBadge" style="display:none">0</span></a>
 </header>
 
 <div class="cat-scroll-bar" id="categoryTabsContainer">
@@ -113,10 +115,10 @@ body{display:flex;justify-content:center;height:100dvh;overflow:hidden}
 <option value="discount">Discount</option>
 <option value="rating">Rating</option>
 </select>
-<button class="filter-chip-btn" onclick="toggleDiscount(this)"><i class="fa-solid fa-filter"></i> 50%+ Off</button>
+<button class="filter-chip-btn" onclick="toggleDiscount(this)"><i data-lucide="filter"></i> 50%+ Off</button>
 </div>
 <div class="products-grid" id="productsGrid"></div>
-<div id="emptyProductState" class="empty-state" style="display:none"><i class="fa-solid fa-box-open"></i><h3 id="emptyStateTitle">No Products Found</h3><p>Try different search or category.</p></div>
+<div id="emptyProductState" class="empty-state" style="display:none"><i data-lucide="package-open"></i><h3 id="emptyStateTitle">No Products Found</h3><p>Try different search or category.</p></div>
 </div>
 <div class="pro-toast" id="alertToast"><span>♥</span><span id="toastMsg">Done</span></div>
 </div>
@@ -133,8 +135,9 @@ function meta(p){
 }
 function showToast(m){const t=document.getElementById('alertToast');document.getElementById('toastMsg').innerText=m;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),2500);try{navigator.vibrate&&navigator.vibrate(30)}catch(e){}}
 function triggerHaptic(){try{navigator.vibrate&&navigator.vibrate(30)}catch(e){}}
+function goBack(){try{if(document.referrer&&new URL(document.referrer).origin===location.origin&&history.length>1){history.back();return;}}catch(e){}location.href='./';}
 
-document.addEventListener('DOMContentLoaded',()=>{updateCartBadge();loadData();
+document.addEventListener('DOMContentLoaded',()=>{if(window.lucide)lucide.createIcons();updateCartBadge();loadData();
  document.getElementById('searchInput').addEventListener('input',e=>{clearTimeout(e.target._d);e.target._d=setTimeout(()=>{searchQ=e.target.value.toLowerCase().trim();filterAndRender()},250)});
 });
 
@@ -200,25 +203,26 @@ function renderUI(arr,title){
     ${m.d>0?`<div class="discount-tag">${m.d}% OFF</div>`:''}
     ${m.d>=20&&!m.out?`<div class="price-drop">PRICE DROP</div>`:''}
     ${m.best?`<div class="bestseller">★ Bestseller</div>`:''}
-    <button class="btn-wish ${isW?'wished':''}" onclick="toggleHeart(event,this,'${p.id}')"><i class="${isW?'fa-solid':'fa-regular'} fa-heart"></i></button>
+    <button class="btn-wish ${isW?'wished':''}" onclick="toggleHeart(event,this,'${p.id}')"><i data-lucide="heart"></i></button>
    </div>
    <div class="p-info" onclick="window.location.href='product?id=${p.id}'">
     <div class="p-brand">Aavira Luxe</div>
     <div class="p-name">${p.name||'Aavira Product'}</div>
-    <div class="rating-row"><span class="rating-badge"><i class="fa-solid fa-star"></i>${m.rating}</span></div>
+    <div class="rating-row"><span class="rating-badge"><i data-lucide="star" fill="currentColor"></i>${m.rating}</span></div>
     <div class="colour-row"><div class="swatches">${dots}</div><span class="colour-text">${cols.length||1} Colour${(cols.length||1)>1?'s':''}</span></div>
-    ${!m.out&&m.stock<=4?`<div class="urgency"><i class="fa-solid fa-fire"></i>Only ${m.stock} left</div>`:''}
+    ${!m.out&&m.stock<=4?`<div class="urgency"><i data-lucide="flame"></i>Only ${m.stock} left</div>`:''}
     <div class="p-price-row"><span class="p-price">₹${m.c.toLocaleString('en-IN')}</span>${m.d>0?`<span class="p-old">₹${m.o.toLocaleString('en-IN')}</span><span class="p-off">${m.d}% OFF</span>`:''}</div>
    </div>`;
   grid.appendChild(card);
  });
+ if(window.lucide)lucide.createIcons();
 }
 function toggleHeart(e,btn,id){
  e.preventDefault();e.stopPropagation();triggerHaptic();
- const icon=btn.querySelector('i');let w=[];try{w=JSON.parse(localStorage.getItem('aavira_wishlist'))||[]}catch(e){}
+ let w=[];try{w=JSON.parse(localStorage.getItem('aavira_wishlist'))||[]}catch(e){}
  const s=String(id);
- if(btn.classList.contains('wished')){btn.classList.remove('wished');icon.classList.replace('fa-solid','fa-regular');w=w.filter(x=>String(x)!==s);showToast("Removed from wishlist");}
- else{btn.classList.add('wished');icon.classList.replace('fa-regular','fa-solid');if(!w.includes(s))w.push(s);showToast("Saved to wishlist ♥");}
+ if(btn.classList.contains('wished')){btn.classList.remove('wished');w=w.filter(x=>String(x)!==s);showToast("Removed from wishlist");}
+ else{btn.classList.add('wished');if(!w.includes(s))w.push(s);showToast("Saved to wishlist ♥");}
  localStorage.setItem('aavira_wishlist',JSON.stringify(w));
 }
 function updateCartBadge(){
