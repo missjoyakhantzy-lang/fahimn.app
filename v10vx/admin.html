@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -198,7 +199,7 @@
         .btn-submit { width: 100%; background: var(--primary); color: white; padding: 16px; border: none; border-radius: 12px; font-size: 15px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 8px;}
 
         /* Media Uploaders */
-        .media-upload-row { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 16px; scrollbar-width: none; }
+        .media-upload-row { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 16px; scrollbar-width: none; align-items: flex-start; }
         .upload-box-mini { width: 90px; height: 90px; flex-shrink: 0; border: 2px dashed #cbd5e1; border-radius: 14px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; background: var(--gray-bg); color: #9ca3af; position: relative; overflow: hidden; text-align: center;}
         .upload-box-mini i { font-size: 20px; margin-bottom: 6px; }
         .upload-box-mini p { font-size: 9.5px; font-weight: 700; line-height: 1.2; }
@@ -248,12 +249,255 @@
             .bottom-sheet { left: auto; right: 0; width: min(560px, 100%); border-radius: 20px 0 0 20px; }
         }
 
-        /* ===== COLOR NAME INPUT ===== */
-        .color-cell { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; width: 118px; }
-        .color-meta { display: flex; gap: 6px; align-items: center; }
-        .color-name-input { flex: 1; min-width: 0; border: 1px solid var(--gray-border); border-radius: 10px; padding: 7px 8px; font-size: 11.5px; font-family: inherit; outline: none; background: #fff; }
-        .color-name-input:focus { border-color: var(--gold); }
-        .color-hex-input { width: 38px; height: 38px; flex-shrink: 0; border: 1px solid var(--gray-border); border-radius: 10px; padding: 3px; background: #fff; cursor: pointer; }
+        /* ===== PROFESSIONAL 100-COLOR PICKER ===== */
+        .color-cell { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; width: 118px; }
+        .prod-color-btn {
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 9px 10px;
+            border-radius: 11px;
+            border: 1.5px solid var(--primary-border);
+            background: #fff;
+            color: var(--dark);
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: var(--shadow-sm);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .prod-color-btn:active { transform: scale(0.96); }
+        .prod-color-btn.selected {
+            border-color: var(--gold);
+            background: var(--gold-light);
+            color: var(--primary);
+        }
+        .prod-color-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(0,0,0,0.22);
+            flex-shrink: 0;
+            display: inline-block;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        .top-color-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            background: var(--primary-light);
+            border: 1px solid var(--primary-border);
+            padding: 10px 14px;
+            border-radius: 13px;
+            margin-top: -6px;
+            margin-bottom: 16px;
+        }
+        .top-color-bar-label {
+            font-size: 11.5px;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .card-color-btn {
+            width: 100%;
+            margin-bottom: 8px;
+            padding: 7px 10px;
+            border-radius: 9px;
+            border: 1px solid var(--primary-border);
+            background: var(--primary-light);
+            color: var(--dark);
+            font-size: 10.5px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .card-color-btn:active { transform: scale(0.96); }
+
+        /* 100-COLOR PROFESSIONAL MODAL */
+        .color-picker-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 14px;
+        }
+        .color-picker-overlay.open { display: flex; animation: fadeUp 0.25s var(--smooth) forwards; }
+        .color-picker-card {
+            width: 100%;
+            max-width: 440px;
+            background: var(--gray-card);
+            border-radius: 24px;
+            padding: 18px 16px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+            border: 1px solid var(--gray-border);
+            max-height: 88vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .cp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--gray-border);
+            margin-bottom: 12px;
+        }
+        .cp-header h3 {
+            font-size: 15.5px;
+            font-weight: 800;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .cp-search-wrap {
+            background: var(--gray-bg);
+            border: 1.5px solid var(--gray-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            margin-bottom: 12px;
+            transition: 0.2s;
+        }
+        .cp-search-wrap:focus-within {
+            border-color: var(--gold);
+            background: #fff;
+            box-shadow: 0 0 0 3px var(--gold-light);
+        }
+        .cp-search-wrap i { color: var(--gray-text); font-size: 13px; }
+        .cp-search-wrap input {
+            border: none;
+            outline: none;
+            background: transparent;
+            width: 100%;
+            padding: 11px 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        .cp-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            overflow-y: auto;
+            padding: 2px 2px 10px;
+            max-height: 54vh;
+        }
+        .cp-item {
+            border: 1.5px solid var(--gray-border);
+            border-radius: 13px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            cursor: pointer;
+            background: #fff;
+            transition: 0.16s;
+        }
+        .cp-item:hover { border-color: #cbd5e1; background: #fafafa; }
+        .cp-item.active {
+            border-color: var(--primary);
+            background: var(--gold-light);
+            box-shadow: 0 4px 12px rgba(212,175,55,0.2);
+        }
+        .cp-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+        .cp-swatch {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid rgba(0,0,0,0.15);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.08);
+            flex-shrink: 0;
+        }
+        .cp-name {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--dark);
+            line-height: 1.2;
+        }
+        .cp-num {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--gray-text);
+            margin-right: 4px;
+        }
+        .cp-check {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 1.5px solid var(--gray-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: transparent;
+            flex-shrink: 0;
+            background: #fff;
+        }
+        .cp-item.active .cp-check {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--gold);
+        }
+        .cp-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding-top: 12px;
+            border-top: 1px solid var(--gray-border);
+            margin-top: 4px;
+        }
+        .cp-selected-preview {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--dark);
+            flex: 1;
+            min-width: 0;
+        }
+        .cp-ok-btn {
+            background: linear-gradient(135deg, var(--primary), #333);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-size: 13.5px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+        }
+        .cp-ok-btn:active { transform: scale(0.96); }
     </style>
 </head>
 <body>
@@ -274,7 +518,7 @@
             <div class="lg-card">
                 <div class="lg-logo">AAVIRA <span>OS</span></div>
                 <p class="lg-sub">Administrator Access</p>
-                <input type="email" id="lgEmail" placeholder="Admin email" value="info@fahimakhtar3.in" autocomplete="username">
+                <input type="email" id="lgEmail" placeholder="Admin email" autocomplete="off">
                 <input type="password" id="lgPass" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doAdminLogin()">
                 <button class="lg-btn" type="button" onclick="doAdminLogin()">Login</button>
                 <p class="lg-err" id="lgErr" hidden></p>
@@ -379,6 +623,38 @@
                 <div id="allReviewsContainer"></div>
             </div>
 
+            <!-- 7. COOKIES TAB -->
+            <div id="tab-cookies" class="tab-section">
+                <div class="section-title"><div class="title-left"><i class="fa-solid fa-cookie-bite"></i> Cookie Consent</div></div>
+                <div id="ckBackendNote" style="margin-bottom:16px;"></div>
+                <div style="display:flex;gap:8px;margin-bottom:14px;">
+                    <button class="ck-period" onclick="setCkPeriod('today', this)" style="flex:1;padding:10px;border-radius:12px;border:1px solid var(--gray-border);background:#fff;font-weight:700;font-size:12px;cursor:pointer;">Today</button>
+                    <button class="ck-period" onclick="setCkPeriod('7d', this)" style="flex:1;padding:10px;border-radius:12px;border:1px solid var(--gray-border);background:#fff;font-weight:700;font-size:12px;cursor:pointer;">7 days</button>
+                    <button class="ck-period on" onclick="setCkPeriod('all', this)" style="flex:1;padding:10px;border-radius:12px;border:1px solid var(--primary);background:var(--primary);color:#fff;font-weight:700;font-size:12px;cursor:pointer;">All time</button>
+                </div>
+                <div class="dash-grid">
+                    <div class="dash-card"><h3>Accepted</h3><h2 id="ckAccepted" style="color:var(--success);">0</h2></div>
+                    <div class="dash-card"><h3>Rejected</h3><h2 id="ckRejected" style="color:var(--danger);">0</h2></div>
+                    <div class="dash-card"><h3>Customised</h3><h2 id="ckCustom" style="color:var(--warning);">0</h2></div>
+                    <div class="dash-card"><h3>Total choices</h3><h2 id="ckTotal">0</h2></div>
+                </div>
+                <div class="section-title"><div class="title-left"><i class="fa-solid fa-calendar-days"></i> Day-wise</div></div>
+                <div id="ckDaily"></div>
+                <div class="section-title" style="margin-top:24px;"><div class="title-left"><i class="fa-solid fa-circle-info"></i> System status</div></div>
+                <div class="ui-list-item">
+                    <div class="promo-info">
+                        <h3 style="font-size:13px;">cookie-consent.js v1.0</h3>
+                        <p style="color:var(--gray-text);">Banner live: <b>index.html</b>, <b>product.html</b> · ~14 pages pending</p>
+                        <p style="color:var(--gray-text);">Choice sirf visitor ke browser me save hoti hai; count <b>consent_stats</b> collection me aata hai.</p>
+                    </div>
+                </div>
+                <div class="section-title" style="margin-top:24px;"><div class="title-left"><i class="fa-solid fa-vial"></i> Test</div></div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                    <button onclick="resetMyConsent()" class="q-btn-resolve" style="background:var(--warning-light);color:var(--warning);border-color:#FDE68A;"><i class="fa-solid fa-rotate-left"></i> Reset my consent (this browser)</button>
+                    <a href="https://aavirafashion.shop" target="_blank" rel="noopener" class="q-btn-resolve" style="background:var(--primary);color:#fff;border-color:var(--primary);text-decoration:none;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Open site</a>
+                </div>
+            </div>
+
         </main>
 
         <!-- FLOATING ACTION BUTTON -->
@@ -392,10 +668,50 @@
             <div class="nav-item" onclick="switchTab('support', this)"><i class="fa-solid fa-headset"></i><span>Support</span></div>
             <div class="nav-item" onclick="switchTab('storeui', this)"><i class="fa-solid fa-store"></i><span>UI</span></div>
             <div class="nav-item" onclick="switchTab('insights', this)"><i class="fa-solid fa-chart-line"></i><span>Insights</span></div>
+            <div class="nav-item" onclick="switchTab('cookies', this)"><i class="fa-solid fa-cookie-bite"></i><span>Cookies</span></div>
         </nav>
 
         <!-- OVERLAYS -->
         <div class="sheet-overlay" id="sheetOverlay" onclick="closeSheets()"></div>
+
+        <!-- 100-COLOR PROFESSIONAL PICKER MODAL -->
+        <div class="color-picker-overlay" id="colorPickerModal" onclick="if(event.target===this)closeColorPickerModal()">
+            <div class="color-picker-card">
+                <div class="cp-header">
+                    <h3><i class="fa-solid fa-palette" style="color:var(--gold);"></i> Select Product Colour (100 Shades)</h3>
+                    <i class="fa-solid fa-circle-xmark" onclick="closeColorPickerModal()" style="font-size:22px; color:var(--gray-text); cursor:pointer;"></i>
+                </div>
+                <div class="cp-search-wrap">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="cpSearchInput" placeholder="Search colour (e.g. Rani Pink, Maroon, Gold)..." oninput="filterColorPickerList(this.value)">
+                </div>
+                <div class="cp-grid" id="cpGridContainer"></div>
+                <div class="cp-footer">
+                    <div class="cp-selected-preview" id="cpSelectedPreview">
+                        <span class="prod-color-dot" id="cpPreviewDot" style="background:#ccc; width:20px; height:20px;"></span>
+                        <span id="cpPreviewText" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Choose a colour</span>
+                    </div>
+                    <button type="button" class="cp-ok-btn" onclick="confirmColorSelection()">
+                        <i class="fa-solid fa-check"></i> OK
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- DELETE CONFIRM MODAL -->
+        <div class="color-picker-overlay" id="deleteConfirmModal" onclick="if(event.target===this)closeDeleteModal()">
+            <div class="color-picker-card" style="max-width:340px; text-align:center;">
+                <div style="width:52px;height:52px;border-radius:50%;background:var(--danger-light);color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 12px;">
+                    <i class="fa-solid fa-trash-can"></i>
+                </div>
+                <h3 style="font-size:16px;font-weight:800;color:var(--dark);margin-bottom:6px;">Delete Item?</h3>
+                <p style="font-size:12.5px;color:var(--gray-text);margin-bottom:18px;font-weight:600;">Permanently delete this? Action cannot be undone.</p>
+                <div style="display:flex;gap:10px;">
+                    <button type="button" onclick="closeDeleteModal()" style="flex:1;padding:12px;border-radius:12px;border:1px solid var(--gray-border);background:var(--gray-bg);color:var(--dark);font-weight:800;font-size:13px;cursor:pointer;">Cancel</button>
+                    <button type="button" onclick="confirmDeleteDocItem()" style="flex:1;padding:12px;border-radius:12px;border:none;background:var(--danger);color:#fff;font-weight:800;font-size:13px;cursor:pointer;">Delete</button>
+                </div>
+            </div>
+        </div>
 
         <!-- ORDER MASTER VIEW -->
         <div class="order-master-modal" id="orderMasterView">
@@ -438,8 +754,13 @@
             
             <span class="form-label">Upload High-Res Media</span>
             <div class="media-upload-row">
-                <div class="upload-box-mini" id="pr_main_box" onclick="document.getElementById('pr_main_file').click()">
-                    <i class="fa-solid fa-image"></i><p>Main Photo<br>(Req)</p>
+                <div style="display:flex; flex-direction:column; gap:6px; flex-shrink:0;">
+                    <div class="upload-box-mini" id="pr_main_box" onclick="document.getElementById('pr_main_file').click()">
+                        <i class="fa-solid fa-image"></i><p>Main Photo<br>(Req)</p>
+                    </div>
+                    <button type="button" class="prod-color-btn" id="pr_main_color_mini_btn" onclick="openColorPickerModal('main')" style="width:90px; padding:6px 4px; font-size:9.5px;">
+                        <i class="fa-solid fa-palette" style="color:var(--gold);"></i> <span id="pr_main_color_mini_text">Product Colour</span>
+                    </button>
                 </div>
                 <div class="upload-box-mini" id="pr_back_box" onclick="document.getElementById('pr_back_file').click()">
                     <i class="fa-regular fa-image"></i><p>Back Photo<br>(Opt)</p>
@@ -450,6 +771,18 @@
                 <div class="upload-box-mini" id="pr_vid_box" onclick="document.getElementById('pr_vid_file').click()">
                     <i class="fa-solid fa-video"></i><p>Product Video<br>(Opt)</p>
                 </div>
+            </div>
+
+            <!-- TOP MAIN PRODUCT COLOUR BAR -->
+            <div class="top-color-bar">
+                <div class="top-color-bar-label">
+                    <i class="fa-solid fa-palette"></i> Main Product Colour:
+                </div>
+                <button type="button" class="prod-color-btn" id="mainProductColorBtn" onclick="openColorPickerModal('main')" style="width:auto; min-width:155px; padding:8px 14px;">
+                    <span class="prod-color-dot" id="mainProductColorDot" style="background:#ccc; display:none;"></span>
+                    <i class="fa-solid fa-swatchbook" id="mainProductColorIcon" style="color:var(--primary);"></i>
+                    <span id="mainProductColorLabel">Product Colour</span>
+                </button>
             </div>
 
             <div class="form-group">
@@ -486,15 +819,15 @@
             </div>
 
             <div class="form-group" style="background: var(--primary-light); padding: 16px; border-radius: 14px; border: 1px solid var(--primary-border); margin-top: 16px;">
-                <h4 style="font-size: 13px; font-weight: 800; color: var(--primary); margin-bottom: 12px;"><i class="fa-solid fa-palette"></i> Color Variations</h4>
+                <h4 style="font-size: 13px; font-weight: 800; color: var(--primary); margin-bottom: 10px;"><i class="fa-solid fa-palette"></i> Color Variations</h4>
                 
-                <div class="form-group">
-                    <span class="form-label">Color Information (Text)</span>
-                    <input type="text" class="form-input" id="pr_colors_text" placeholder="e.g. '5 Colors' OR 'Red, Blue, Pink'" style="background: white;">
+                <input type="hidden" id="pr_colors_text">
+                <div id="auto_colors_summary" style="font-size:11.5px; font-weight:700; color:var(--dark); background:#fff; padding:10px 12px; border-radius:10px; border:1px solid var(--primary-border); margin-bottom:12px;">
+                    Selected Colours: <span id="auto_colors_badge_list" style="color:var(--gray-text);">Automatic (Select from Product Colour button)</span>
                 </div>
                 
-                <span class="form-label" style="margin-top:8px;">Upload Specific Color Photos</span>
-                <p style="font-size:11px;color:var(--gray-text);margin:4px 0 8px;">Photo upload karo, phir uske neeche <b>color select</b> karo + naam likho.</p>
+                <span class="form-label" style="margin-top:4px;">Upload Specific Color Photos</span>
+                <p style="font-size:11px;color:var(--gray-text);margin:4px 0 10px;">Photo ke neeche <b>Product Colour</b> par click karein — 100 colours ki list me se choose karte hi naam aur colour automatic lag jayega.</p>
                 <input type="file" id="pr_color_file" accept="image/*" style="display:none;" onchange="uploadColorImage(event)">
                 <div class="media-upload-row" id="color_upload_row" style="margin-bottom:0;">
                     <div class="upload-box-mini" style="background:white; border-color:var(--primary-border);" onclick="document.getElementById('pr_color_file').click()">
@@ -633,6 +966,319 @@
         window.colorImagesArray = [];
         window.colorNamesArray = [];
         window.colorHexesArray = [];
+        window.mainProductColorName = '';
+        window.mainProductColorHex = '';
+        window.editingOriginalCol = '';
+
+        // 100 PROFESSIONAL COLOURS LIST
+        window.PRESET_100_COLORS = [
+            { num: 1, name: 'Red', hex: '#E51C23' },
+            { num: 2, name: 'Crimson', hex: '#DC143C' },
+            { num: 3, name: 'Maroon', hex: '#800000' },
+            { num: 4, name: 'Burgundy', hex: '#800020' },
+            { num: 5, name: 'Scarlet', hex: '#FF2400' },
+            { num: 6, name: 'Ruby Red', hex: '#9B111E' },
+            { num: 7, name: 'Cherry Red', hex: '#D2042D' },
+            { num: 8, name: 'Brick Red', hex: '#CB4154' },
+            { num: 9, name: 'Coral', hex: '#FF7F50' },
+            { num: 10, name: 'Salmon', hex: '#FA8072' },
+            { num: 11, name: 'Pink', hex: '#FFC0CB' },
+            { num: 12, name: 'Baby Pink', hex: '#F4C2C2' },
+            { num: 13, name: 'Rani Pink', hex: '#D81B60' },
+            { num: 14, name: 'Hot Pink', hex: '#FF69B4' },
+            { num: 15, name: 'Fuchsia', hex: '#FF00FF' },
+            { num: 16, name: 'Magenta', hex: '#C2185B' },
+            { num: 17, name: 'Rose Pink', hex: '#FF66CC' },
+            { num: 18, name: 'Dusty Rose', hex: '#DCAE96' },
+            { num: 19, name: 'Peach', hex: '#FFE5B4' },
+            { num: 20, name: 'Apricot', hex: '#FBCEB1' },
+            { num: 21, name: 'Orange', hex: '#FF6600' },
+            { num: 22, name: 'Tangerine', hex: '#F28500' },
+            { num: 23, name: 'Burnt Orange', hex: '#CC5500' },
+            { num: 24, name: 'Pumpkin', hex: '#FF7518' },
+            { num: 25, name: 'Amber', hex: '#FFBF00' },
+            { num: 26, name: 'Yellow', hex: '#FFD700' },
+            { num: 27, name: 'Lemon Yellow', hex: '#FFF44F' },
+            { num: 28, name: 'Mustard', hex: '#D4A017' },
+            { num: 29, name: 'Saffron', hex: '#F4C430' },
+            { num: 30, name: 'Gold', hex: '#D4AF37' },
+            { num: 31, name: 'Goldenrod', hex: '#DAA520' },
+            { num: 32, name: 'Cream', hex: '#FFFDD0' },
+            { num: 33, name: 'Ivory', hex: '#FFFFF0' },
+            { num: 34, name: 'Beige', hex: '#F5F5DC' },
+            { num: 35, name: 'Champagne', hex: '#F7E7CE' },
+            { num: 36, name: 'Tan', hex: '#D2B48C' },
+            { num: 37, name: 'Camel', hex: '#C19A6B' },
+            { num: 38, name: 'Brown', hex: '#7B3F00' },
+            { num: 39, name: 'Chocolate', hex: '#5C2C06' },
+            { num: 40, name: 'Coffee', hex: '#6F4E37' },
+            { num: 41, name: 'Mocha', hex: '#967969' },
+            { num: 42, name: 'Caramel', hex: '#C68E17' },
+            { num: 43, name: 'Chestnut', hex: '#954535' },
+            { num: 44, name: 'Mahogany', hex: '#C04000' },
+            { num: 45, name: 'Copper', hex: '#B87333' },
+            { num: 46, name: 'Bronze', hex: '#CD7F32' },
+            { num: 47, name: 'Rust', hex: '#B7410E' },
+            { num: 48, name: 'Terracotta', hex: '#E2725B' },
+            { num: 49, name: 'Sienna', hex: '#A0522D' },
+            { num: 50, name: 'Ochre', hex: '#CC7722' },
+            { num: 51, name: 'Olive Green', hex: '#6B8E23' },
+            { num: 52, name: 'Lime Green', hex: '#32CD32' },
+            { num: 53, name: 'Mint Green', hex: '#98FF98' },
+            { num: 54, name: 'Sage Green', hex: '#9DC183' },
+            { num: 55, name: 'Emerald Green', hex: '#0F7B5A' },
+            { num: 56, name: 'Forest Green', hex: '#228B22' },
+            { num: 57, name: 'Jade Green', hex: '#00A86B' },
+            { num: 58, name: 'Pistachio Green', hex: '#93C572' },
+            { num: 59, name: 'Sea Green', hex: '#2E8B57' },
+            { num: 60, name: 'Teal', hex: '#008080' },
+            { num: 61, name: 'Turquoise', hex: '#40E0D0' },
+            { num: 62, name: 'Aqua', hex: '#00FFFF' },
+            { num: 63, name: 'Aquamarine', hex: '#7FFFD4' },
+            { num: 64, name: 'Cyan', hex: '#00BCD4' },
+            { num: 65, name: 'Sky Blue', hex: '#87CEEB' },
+            { num: 66, name: 'Baby Blue', hex: '#89CFF0' },
+            { num: 67, name: 'Powder Blue', hex: '#B0E0E6' },
+            { num: 68, name: 'Royal Blue', hex: '#1F4E9C' },
+            { num: 69, name: 'Navy Blue', hex: '#1B2A5C' },
+            { num: 70, name: 'Cobalt Blue', hex: '#0047AB' },
+            { num: 71, name: 'Sapphire Blue', hex: '#0F52BA' },
+            { num: 72, name: 'Azure', hex: '#007FFF' },
+            { num: 73, name: 'Cerulean', hex: '#007BA7' },
+            { num: 74, name: 'Indigo', hex: '#4B0082' },
+            { num: 75, name: 'Ultramarine', hex: '#3F00FF' },
+            { num: 76, name: 'Periwinkle', hex: '#CCCCFF' },
+            { num: 77, name: 'Steel Blue', hex: '#4682B4' },
+            { num: 78, name: 'Purple', hex: '#800080' },
+            { num: 79, name: 'Violet', hex: '#8F00FF' },
+            { num: 80, name: 'Lavender', hex: '#C7B8E6' },
+            { num: 81, name: 'Lilac', hex: '#C8A2C8' },
+            { num: 82, name: 'Mauve', hex: '#E0B0FF' },
+            { num: 83, name: 'Plum', hex: '#8E4585' },
+            { num: 84, name: 'Amethyst', hex: '#9966CC' },
+            { num: 85, name: 'Orchid', hex: '#DA70D6' },
+            { num: 86, name: 'Wisteria', hex: '#C9A0DC' },
+            { num: 87, name: 'Eggplant', hex: '#614051' },
+            { num: 88, name: 'Mulberry', hex: '#C54B8C' },
+            { num: 89, name: 'Black', hex: '#161616' },
+            { num: 90, name: 'Jet Black', hex: '#0A0A0A' },
+            { num: 91, name: 'Charcoal', hex: '#36454F' },
+            { num: 92, name: 'Grey', hex: '#808080' },
+            { num: 93, name: 'Silver', hex: '#C0C0C0' },
+            { num: 94, name: 'Slate Grey', hex: '#708090' },
+            { num: 95, name: 'White', hex: '#FFFFFF' },
+            { num: 96, name: 'Snow White', hex: '#FFFAFA' },
+            { num: 97, name: 'Pearl White', hex: '#F8F6F0' },
+            { num: 98, name: 'Alabaster', hex: '#EDEAE0' },
+            { num: 99, name: 'Taupe', hex: '#483C32' },
+            { num: 100, name: 'Khaki', hex: '#C3B091' }
+        ];
+
+        window.cpTargetMode = null; // 'main' | 'variant' | 'card'
+        window.cpTargetIndex = null;
+        window.cpTempSelected = { name: '', hex: '' };
+        window.cpSearchQuery = '';
+
+        window.updateMainColorUI = function(name, hex) {
+            window.mainProductColorName = String(name || '');
+            window.mainProductColorHex = String(hex || '');
+            const dot = document.getElementById('mainProductColorDot');
+            const icon = document.getElementById('mainProductColorIcon');
+            const label = document.getElementById('mainProductColorLabel');
+            const btn = document.getElementById('mainProductColorBtn');
+            const miniBtn = document.getElementById('pr_main_color_mini_btn');
+            const miniText = document.getElementById('pr_main_color_mini_text');
+
+            if (window.mainProductColorName && window.mainProductColorHex) {
+                if (dot) { dot.style.background = window.mainProductColorHex; dot.style.display = 'inline-block'; }
+                if (icon) icon.style.display = 'none';
+                if (label) label.textContent = window.mainProductColorName;
+                if (btn) btn.classList.add('selected');
+                if (miniBtn) miniBtn.classList.add('selected');
+                if (miniText) miniText.innerHTML = `<span class="prod-color-dot" style="background:${window.mainProductColorHex};width:10px;height:10px;"></span> ${window.mainProductColorName}`;
+            } else {
+                if (dot) dot.style.display = 'none';
+                if (icon) icon.style.display = 'inline-block';
+                if (label) label.textContent = 'Product Colour';
+                if (btn) btn.classList.remove('selected');
+                if (miniBtn) miniBtn.classList.remove('selected');
+                if (miniText) miniText.textContent = 'Product Colour';
+            }
+        };
+
+        window.syncColorsInfoInput = function() {
+            const names = [];
+            if (window.mainProductColorName) names.push(window.mainProductColorName);
+            (window.colorNamesArray || []).forEach(n => {
+                const clean = String(n || '').trim();
+                if (clean && !names.includes(clean)) names.push(clean);
+            });
+            const inputEl = document.getElementById('pr_colors_text');
+            if (inputEl) {
+                inputEl.value = names.join(', ');
+            }
+            const badgeEl = document.getElementById('auto_colors_badge_list');
+            if (badgeEl) {
+                if (names.length > 0) {
+                    badgeEl.style.color = 'var(--primary)';
+                    badgeEl.textContent = names.join(', ');
+                } else {
+                    badgeEl.style.color = 'var(--gray-text)';
+                    badgeEl.textContent = 'Automatic (Select from Product Colour button)';
+                }
+            }
+        };
+
+        window.openColorPickerModal = function(mode, targetKey) {
+            window.cpTargetMode = mode;
+            window.cpTargetIndex = targetKey;
+            window.cpSearchQuery = '';
+            const searchInput = document.getElementById('cpSearchInput');
+            if (searchInput) searchInput.value = '';
+
+            let currentName = '';
+            let currentHex = '';
+
+            if (mode === 'main') {
+                currentName = window.mainProductColorName || '';
+                currentHex = window.mainProductColorHex || '';
+            } else if (mode === 'variant') {
+                currentName = (window.colorNamesArray && window.colorNamesArray[targetKey]) ? window.colorNamesArray[targetKey] : '';
+                currentHex = (window.colorHexesArray && window.colorHexesArray[targetKey]) ? window.colorHexesArray[targetKey] : '';
+            } else if (mode === 'card') {
+                const p = window.productsDataCache[targetKey];
+                if (p) {
+                    currentName = p.mainColorName || (Array.isArray(p.colorNames) && p.colorNames.find(Boolean)) || (Array.isArray(p.colors) && p.colors[0]) || p.colorsInfo || '';
+                    currentHex = p.mainColorHex || (Array.isArray(p.colorHexes) && p.colorHexes.find(Boolean)) || NAME_HEX[String(currentName).toLowerCase()] || '';
+                }
+            }
+
+            if (!currentName) {
+                window.cpTempSelected = { name: window.PRESET_100_COLORS[0].name, hex: window.PRESET_100_COLORS[0].hex };
+            } else {
+                const found = window.PRESET_100_COLORS.find(c => c.name.toLowerCase() === String(currentName).trim().toLowerCase());
+                window.cpTempSelected = {
+                    name: found ? found.name : String(currentName).trim(),
+                    hex: found ? found.hex : (currentHex || '#E51C23')
+                };
+            }
+
+            window.renderColorPickerGrid();
+            document.getElementById('colorPickerModal').classList.add('open');
+        };
+
+        window.filterColorPickerList = function(queryStr) {
+            window.cpSearchQuery = String(queryStr || '').trim().toLowerCase();
+            window.renderColorPickerGrid();
+        };
+
+        window.renderColorPickerGrid = function() {
+            const grid = document.getElementById('cpGridContainer');
+            let html = '';
+            const q = window.cpSearchQuery || '';
+            window.PRESET_100_COLORS.forEach((c, idx) => {
+                if (q && !c.name.toLowerCase().includes(q) && !String(c.num).includes(q)) return;
+                const isSelected = window.cpTempSelected.name.toLowerCase() === c.name.toLowerCase();
+                html += `
+                    <div class="cp-item ${isSelected ? 'active' : ''}" onclick="selectPresetColor(${idx})">
+                        <div class="cp-item-left">
+                            <div class="cp-swatch" style="background:${c.hex};"></div>
+                            <div class="cp-name"><span class="cp-num">${c.num}.</span> ${c.name}</div>
+                        </div>
+                        <div class="cp-check"><i class="fa-solid fa-check"></i></div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html || '<div style="text-align:center; padding:24px; color:var(--gray-text); font-size:12.5px; font-weight:700;">No matching colour found</div>';
+
+            const dot = document.getElementById('cpPreviewDot');
+            const txt = document.getElementById('cpPreviewText');
+            if (dot) dot.style.background = window.cpTempSelected.hex || '#ccc';
+            if (txt) txt.textContent = window.cpTempSelected.name ? `${window.cpTempSelected.name}` : 'Choose a colour';
+        };
+
+        window.selectPresetColor = function(idx) {
+            const c = window.PRESET_100_COLORS[idx];
+            if (!c) return;
+            window.cpTempSelected = { name: c.name, hex: c.hex };
+            window.renderColorPickerGrid();
+        };
+
+        window.closeColorPickerModal = function() {
+            document.getElementById('colorPickerModal').classList.remove('open');
+        };
+
+        window.confirmColorSelection = async function() {
+            const name = String(window.cpTempSelected.name || '').trim();
+            const hex = String(window.cpTempSelected.hex || '#E51C23').trim();
+            if (!name) {
+                showToast("Please choose a colour first", "error");
+                return;
+            }
+
+            if (window.cpTargetMode === 'main') {
+                window.updateMainColorUI(name, hex);
+                window.syncColorsInfoInput();
+                window.closeColorPickerModal();
+                showToast(`Main Product Colour: ${name}`);
+            } else if (window.cpTargetMode === 'variant') {
+                const idx = window.cpTargetIndex;
+                if (idx !== null && idx !== undefined) {
+                    // Normalize arrays so no undefined index ever exists
+                    for (let i = 0; i < window.colorImagesArray.length; i++) {
+                        window.colorNamesArray[i] = String(window.colorNamesArray[i] || '');
+                        window.colorHexesArray[i] = String(window.colorHexesArray[i] || '');
+                    }
+                    window.colorNamesArray[idx] = name;
+                    window.colorHexesArray[idx] = hex;
+                    window.renderColorImages();
+                    window.syncColorsInfoInput();
+                }
+                window.closeColorPickerModal();
+                showToast(`Selected Colour: ${name}`);
+            } else if (window.cpTargetMode === 'card') {
+                const docId = window.cpTargetIndex;
+                const p = window.productsDataCache[docId];
+                window.closeColorPickerModal();
+                if (!p) return;
+
+                try {
+                    const imgLen = Array.isArray(p.colorImages) ? p.colorImages.length : 0;
+                    const updatedNames = [];
+                    const updatedHexes = [];
+                    for (let i = 0; i < imgLen; i++) {
+                        updatedNames.push(String((p.colorNames && p.colorNames[i]) || ''));
+                        updatedHexes.push(String((p.colorHexes && p.colorHexes[i]) || ''));
+                    }
+                    if (imgLen > 0) {
+                        updatedNames[0] = name;
+                        updatedHexes[0] = hex;
+                    } else {
+                        updatedNames.push(name);
+                        updatedHexes.push(hex);
+                    }
+                    const updatedColors = [name];
+                    updatedNames.forEach(n => {
+                        if (n && !updatedColors.includes(n)) updatedColors.push(n);
+                    });
+                    const newColorsInfo = updatedColors.join(', ');
+                    await updateDoc(doc(db, p.col, docId), {
+                        mainColorName: name,
+                        mainColorHex: hex,
+                        colorsInfo: newColorsInfo,
+                        colors: updatedColors,
+                        colorNames: updatedNames,
+                        colorHexes: updatedHexes,
+                        updatedAt: serverTimestamp()
+                    });
+                    await fetchProducts();
+                    showToast(`Updated "${p.name}" colour to ${name}!`);
+                } catch (err) {
+                    console.error("Quick Color Update Error:", err);
+                    showToast("Failed to update product colour", "error");
+                }
+            }
+        };
 
         window.showToast = function(msg, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -710,7 +1356,12 @@
             try {
                 const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: "POST", body: formData });
                 const data = await res.json();
-                if(data.secure_url) { window.colorImagesArray.push(data.secure_url); window.colorNamesArray.push(''); window.colorHexesArray.push(''); window.renderColorImages(); }
+                if(data.secure_url) {
+                    window.colorImagesArray.push(data.secure_url);
+                    window.colorNamesArray.push('');
+                    window.colorHexesArray.push('');
+                    window.renderColorImages();
+                }
             } catch(error) { showToast("Color image upload failed", "error"); }
             
             const loaderNode = document.getElementById(loaderId);
@@ -718,30 +1369,34 @@
             event.target.value = ''; 
         };
 
-        const NAME_HEX = {'red':'#C8102E','maroon':'#6D1230','wine':'#5E1A2B','rani pink':'#D81B60','pink':'#F4A6C0','magenta':'#C2185B','coral':'#F08A6E','peach':'#F6C1A5','orange':'#E2711D','rust':'#B7410E','mustard':'#D4A017','yellow':'#E8B923','gold':'#C9A227','beige':'#D9C3A0','ivory':'#F5EFE0','white':'#FFFFFF','green':'#2E7D5B','emerald':'#0F7B5A','olive':'#6B7A2A','teal':'#0F766E','blue':'#1F4E9C','navy blue':'#1B2A5C','lavender':'#C7B8E6','violet':'#9B6BC9','purple':'#6B3FA0','brown':'#7B4B2A','gray':'#8A8A8A','black':'#1A1A1A'};
-        window.colorNameTyped = function(index, el) {
-            window.colorNamesArray[index] = el.value;
-            const hx = NAME_HEX[String(el.value).trim().toLowerCase()];
-            if (hx && !window.colorHexesArray[index]) {
-                window.colorHexesArray[index] = hx;
-                const pk = el.parentElement.querySelector('.color-hex-input');
-                if (pk) pk.value = hx;
-            }
-        };
+        const NAME_HEX = {};
+        window.PRESET_100_COLORS.forEach(c => { NAME_HEX[c.name.toLowerCase()] = c.hex; });
+
         window.renderColorImages = function() {
             const container = document.getElementById('color_upload_row');
             let html = '';
             window.colorImagesArray.forEach((url, index) => {
-                const nm = String(window.colorNamesArray[index] || '').replace(/"/g, '&quot;');
-                const hx = window.colorHexesArray[index] || '#000000';
-                html += `<div class="color-cell"><div class="upload-box-mini" style="position:relative;"><button class="remove-img-btn" onclick="removeColorImage(${index}, event)"><i class="fa-solid fa-xmark"></i></button><img src="${url}" class="preview-media" style="border-radius:12px;"></div><div class="color-meta"><input type="color" class="color-hex-input" value="${hx}" title="Color select karo" oninput="window.colorHexesArray[${index}]=this.value"><input type="text" class="color-name-input" placeholder="Color name" value="${nm}" oninput="window.colorNameTyped(${index},this)"></div></div>`;
+                const rawName = String(window.colorNamesArray[index] || '').trim();
+                const nm = rawName.replace(/"/g, '&quot;');
+                const hx = String(window.colorHexesArray[index] || NAME_HEX[rawName.toLowerCase()] || '#D4AF37');
+                const hasColor = Boolean(rawName);
+                html += `
+                    <div class="color-cell">
+                        <div class="upload-box-mini" style="position:relative; width:100%;">
+                            <button class="remove-img-btn" onclick="removeColorImage(${index}, event)"><i class="fa-solid fa-xmark"></i></button>
+                            <img src="${url}" class="preview-media" style="border-radius:12px;">
+                        </div>
+                        <button type="button" class="prod-color-btn ${hasColor ? 'selected' : ''}" onclick="openColorPickerModal('variant', ${index})">
+                            ${hasColor ? `<span class="prod-color-dot" style="background:${hx};"></span> <span>${nm}</span>` : `<i class="fa-solid fa-palette" style="color:var(--gold);"></i> <span>Product Colour</span>`}
+                        </button>
+                    </div>`;
             });
             html += `<div class="upload-box-mini" style="background:white; border-color:var(--primary-border);" onclick="document.getElementById('pr_color_file').click()"><i class="fa-solid fa-plus" style="color:var(--primary);"></i><p style="color:var(--primary);">Add Photo</p></div>`;
             container.innerHTML = html;
         };
 
         window.removeColorImage = function(index, event) {
-            event.stopPropagation(); window.colorImagesArray.splice(index, 1); window.colorNamesArray.splice(index, 1); window.colorHexesArray.splice(index, 1); window.renderColorImages();
+            event.stopPropagation(); window.colorImagesArray.splice(index, 1); window.colorNamesArray.splice(index, 1); window.colorHexesArray.splice(index, 1); window.renderColorImages(); window.syncColorsInfoInput();
         };
 
         // NAVIGATION
@@ -767,12 +1422,14 @@
         window.openFabAction = function() {
             if(window.currentActiveTab === 'products') { 
                 document.getElementById('pr_id').value = ''; document.getElementById('pr_collection').disabled = false; 
+                window.editingOriginalCol = '';
                 document.getElementById('pr_name').value = ''; document.getElementById('pr_price').value = ''; 
                 document.getElementById('pr_mrp').value = ''; document.getElementById('pr_colors_text').value = ''; 
                 document.getElementById('pr_fabric').value = ''; document.getElementById('pr_pattern').value = ''; 
                 document.getElementById('pr_desc').value = '';
                 document.getElementById('pr_rating').value = '';
                 
+                window.updateMainColorUI('', ''); window.syncColorsInfoInput();
                 window.colorImagesArray = []; window.colorNamesArray = []; window.colorHexesArray = []; window.renderColorImages();
                 clearUpload('pr_main'); clearUpload('pr_back'); clearUpload('pr_side'); clearUpload('pr_vid');
                 
@@ -801,6 +1458,7 @@
             await fetchBanners(); 
             await fetchCategories();
             await fetchInsights();
+            await fetchCookieStats();
             document.getElementById('adminPreloader').style.opacity = '0';
             setTimeout(() => { document.getElementById('adminPreloader').style.display = 'none'; }, 400);
         }
@@ -1004,10 +1662,19 @@
                         <i class="fa-brands fa-whatsapp" style="color:#25D366; font-size:16px;"></i> Send WhatsApp Payment Link
                     </button>` : ''}
                     
-                    <!-- NEW EMAIL BUTTON -->
-                    <button onclick="triggerOrderEmail('${docId}', this)" style="width:100%; margin-top:10px; background:var(--primary); color:white; padding:14px; border-radius:12px; border:none; font-weight:700; cursor:pointer; font-size:13.5px; display:flex; justify-content:center; align-items:center; gap:8px; box-shadow: 0 4px 12px rgba(216, 27, 96, 0.2);">
-                        <i class="fa-solid fa-envelope-open-text" style="font-size:16px;"></i> Send Order Status via Email
-                    </button>
+                    <div id="omEmailPromptBox" style="margin-top:14px; background:#fff; border:1.5px solid var(--primary-border); border-radius:12px; padding:12px;">
+                        <div id="omEmailPromptLabel" style="font-size:11.5px; font-weight:800; color:var(--dark); margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+                            <i class="fa-solid fa-envelope-open-text" style="color:var(--primary);"></i> Send Status Email to Customer?
+                        </div>
+                        <div style="display:flex; gap:10px;">
+                            <button type="button" id="omYesEmailBtn" onclick="triggerOrderEmail('${docId}', this)" style="flex:1; background:var(--primary); color:white; padding:12px; border-radius:10px; border:none; font-weight:800; cursor:pointer; font-size:13px; display:flex; justify-content:center; align-items:center; gap:6px;">
+                                <i class="fa-solid fa-paper-plane"></i> Yes, Send Email
+                            </button>
+                            <button type="button" id="omNoEmailBtn" onclick="declineOrderEmail('${docId}', this)" style="flex:1; background:var(--gray-bg); color:var(--dark); padding:12px; border-radius:10px; border:1.5px solid var(--gray-border); font-weight:800; cursor:pointer; font-size:13px; display:flex; justify-content:center; align-items:center; gap:6px;">
+                                <i class="fa-solid fa-xmark"></i> No
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="om-section">
@@ -1071,58 +1738,52 @@
             document.getElementById('orderMasterView').classList.remove('open'); 
         };
 
-        // 🔥 UPDATED STATUS UPDATE CONTROLLER (VIA API) 🔥
-        const UPDATE_ORDER_API_URL = "https://wwwfahimapp.vercel.app/api/update-order"; // Apna backend URL check kar lena
+        const UPDATE_ORDER_API_URL = "https://wwwfahimapp.vercel.app/api/update-order";
 
         window.updateFirebaseField = async function(docId, fieldKey, newValue) {
             try {
                 const order = window.ordersDataCache[docId];
                 if(!order) throw new Error("Order not found in cache");
 
-                // Agar Payment Status update hai toh purana wala hi method use karenge
-                if (fieldKey === 'paymentStatus') {
-                     let updateObj = {}; 
-                     updateObj[fieldKey] = newValue;
-                     updateObj['updatedAt'] = serverTimestamp();
-                     await updateDoc(doc(db, "orders", docId), updateObj); 
-                     
-                     if(window.ordersDataCache[docId]) window.ordersDataCache[docId][fieldKey] = newValue; 
-                     fetchOrders(); 
-                     showToast(`Updated Payment Status to "${newValue}"!`, 'success');
-                     return;
-                }
-                
-                // Agar Order Status update hai toh API call karenge
-                if (fieldKey === 'orderStatus') {
-                     showToast("Updating order and sending email...", "success"); // Info message
-                     
-                     const response = await fetch(UPDATE_ORDER_API_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            docId: docId,
-                            newStatus: newValue,
-                            orderId: order.orderId,
-                            customerEmail: order.email, 
-                            customerName: order.customerName
-                        })
-                     });
-                     
-                     const resData = await response.json();
-                     
-                     if (response.ok && resData.success) {
-                          if(window.ordersDataCache[docId]) window.ordersDataCache[docId][fieldKey] = newValue; 
-                          fetchOrders(); 
-                          showToast(`Updated Order Status to "${newValue}"!`, 'success');
-                     } else {
-                          throw new Error(resData.message || "API Error");
-                     }
-                }
+                let updateObj = {};
+                updateObj[fieldKey] = newValue;
+                updateObj['updatedAt'] = serverTimestamp();
+                await updateDoc(doc(db, "orders", docId), updateObj);
 
+                if (window.ordersDataCache[docId]) {
+                    window.ordersDataCache[docId][fieldKey] = newValue;
+                }
+                fetchOrders();
+
+                const labelName = fieldKey === 'orderStatus' ? 'Order Status' : 'Payment Status';
+                showToast(`Updated ${labelName} to "${newValue}"`, 'success');
+
+                const promptBox = document.getElementById('omEmailPromptBox');
+                const promptLabel = document.getElementById('omEmailPromptLabel');
+                if (promptBox) {
+                    promptBox.style.borderColor = 'var(--gold)';
+                    promptBox.style.background = 'var(--gold-light)';
+                }
+                if (promptLabel) {
+                    promptLabel.innerHTML = `<i class="fa-solid fa-bell" style="color:var(--primary);"></i> ${labelName} changed to "${newValue}". Send Email?`;
+                }
             } catch(error) { 
                 console.error("Update Error:", error);
                 showToast(`Update Failed: ${error.message || 'Error'}`, 'error'); 
             }
+        };
+
+        window.declineOrderEmail = function(docId, btnElement) {
+            const promptBox = document.getElementById('omEmailPromptBox');
+            const promptLabel = document.getElementById('omEmailPromptLabel');
+            if (promptBox) {
+                promptBox.style.borderColor = 'var(--primary-border)';
+                promptBox.style.background = '#fff';
+            }
+            if (promptLabel) {
+                promptLabel.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--success);"></i> Saved without sending email`;
+            }
+            showToast("Status saved (No email sent)", "success");
         };
 
         // 3. PRODUCTS LOGIC
@@ -1142,10 +1803,19 @@
                     let badgeColor = d.col === 'main_products' ? 'var(--primary)' : 'var(--blue)';
                     let badgeText = d.col === 'main_products' ? 'MAIN' : 'REGULAR';
 
+                    let primaryColorName = d.mainColorName || (Array.isArray(d.colorNames) && d.colorNames.find(Boolean)) || (Array.isArray(d.colors) && d.colors[0]) || d.colorsInfo || '';
+                    let primaryColorHex = d.mainColorHex || (Array.isArray(d.colorHexes) && d.colorHexes.find(Boolean)) || NAME_HEX[String(primaryColorName).trim().toLowerCase()] || '';
+
                     let colorsHtml = '';
                     if (d.colorsInfo) {
-                        colorsHtml = `<div style="font-size:9.5px; color:#888; font-weight:600; text-transform:uppercase; margin-bottom:6px;">${d.colorsInfo}</div>`;
+                        colorsHtml = `<div style="font-size:9.5px; color:#888; font-weight:600; text-transform:uppercase; margin-bottom:4px;">${d.colorsInfo}</div>`;
                     }
+
+                    let colorBtnHtml = `
+                        <button type="button" class="card-color-btn" onclick="event.stopPropagation(); openColorPickerModal('card', '${d.id}')">
+                            ${primaryColorName ? `<span class="prod-color-dot" style="background:${primaryColorHex || '#D4AF37'};width:11px;height:11px;"></span> <span>${primaryColorName}</span>` : `<i class="fa-solid fa-palette" style="color:var(--gold);"></i> <span>Product Colour</span>`}
+                        </button>
+                    `;
 
                     html += `
                         <div class="p-card">
@@ -1156,6 +1826,7 @@
                             <div class="p-details">
                                 <div class="p-name">${d.name}</div>
                                 ${colorsHtml}
+                                ${colorBtnHtml}
                                 <div style="font-size:11px; font-weight:800; color:#B45309; margin-bottom:6px;">⭐ ${Number(d.rating || 0).toFixed(1)}</div>
                                 <div class="p-bottom">
                                     <div class="p-price">₹${d.price}</div>
@@ -1175,16 +1846,36 @@
 
         window.editProduct = function(docId) {
             let p = window.productsDataCache[docId];
+            if (!p) return;
             document.getElementById('pr_id').value = p.id;
-            const colSelect = document.getElementById('pr_collection'); colSelect.value = p.col; colSelect.disabled = true; 
-            document.getElementById('pr_name').value = p.name || ''; document.getElementById('pr_price').value = p.price || '';
-            document.getElementById('pr_mrp').value = p.mrp || ''; document.getElementById('pr_cat').value = p.category || 'Sarees';
-            document.getElementById('pr_fabric').value = p.fabric || ''; document.getElementById('pr_pattern').value = p.pattern || '';
+            const colSelect = document.getElementById('pr_collection');
+            colSelect.value = p.col || 'products';
+            colSelect.disabled = false;
+            window.editingOriginalCol = p.col || 'products';
+
+            document.getElementById('pr_name').value = p.name || '';
+            document.getElementById('pr_price').value = p.price || '';
+            document.getElementById('pr_mrp').value = p.mrp || '';
+            document.getElementById('pr_cat').value = p.category || 'Sarees';
+            document.getElementById('pr_fabric').value = p.fabric || '';
+            document.getElementById('pr_pattern').value = p.pattern || '';
             document.getElementById('pr_desc').value = p.description || '';
             document.getElementById('pr_rating').value = p.rating ?? '';
-            document.getElementById('pr_colors_text').value = p.colorsInfo || ((p.colors && Array.isArray(p.colors)) ? p.colors.join(', ') : '');
+            document.getElementById('pr_colors_text').value = p.colorsInfo || ((p.colors && Array.isArray(p.colors)) ? p.colors.filter(Boolean).join(', ') : '');
             
-            window.colorImagesArray = p.colorImages || []; window.colorNamesArray = p.colorNames || []; window.colorHexesArray = p.colorHexes || []; window.renderColorImages();
+            const initMainName = p.mainColorName || (Array.isArray(p.colorNames) && p.colorNames.find(Boolean)) || (Array.isArray(p.colors) && p.colors.find(Boolean)) || '';
+            const initMainHex = p.mainColorHex || (Array.isArray(p.colorHexes) && p.colorHexes.find(Boolean)) || NAME_HEX[String(initMainName).trim().toLowerCase()] || '';
+            window.updateMainColorUI(initMainName, initMainHex);
+
+            window.colorImagesArray = Array.isArray(p.colorImages) ? p.colorImages.filter(Boolean).map(u => String(u)) : [];
+            window.colorNamesArray = window.colorImagesArray.map((_, idx) => String((Array.isArray(p.colorNames) && p.colorNames[idx]) ? p.colorNames[idx] : ''));
+            window.colorHexesArray = window.colorImagesArray.map((_, idx) => {
+                const existingHex = (Array.isArray(p.colorHexes) && p.colorHexes[idx]) ? String(p.colorHexes[idx]) : '';
+                const existingName = window.colorNamesArray[idx];
+                return existingHex || NAME_HEX[existingName.toLowerCase()] || '';
+            });
+            window.renderColorImages();
+            window.syncColorsInfoInput();
             
             const setupMediaPreview = (prefix, url, type) => {
                 document.getElementById(`${prefix}_final_url`).value = url || ''; const box = document.getElementById(`${prefix}_box`);
@@ -1205,16 +1896,46 @@
         };
 
         window.saveProduct = async function() {
-            const id = document.getElementById('pr_id').value; const targetCol = document.getElementById('pr_collection').value; 
-            const name = document.getElementById('pr_name').value.trim(); const price = document.getElementById('pr_price').value.trim();
-            const mrp = document.getElementById('pr_mrp').value.trim(); const cat = document.getElementById('pr_cat').value;
-            const fabric = document.getElementById('pr_fabric').value.trim(); const pattern = document.getElementById('pr_pattern').value.trim();
-            const desc = document.getElementById('pr_desc').value.trim(); const colorsInputText = document.getElementById('pr_colors_text').value.trim();
+            const id = document.getElementById('pr_id').value;
+            const targetCol = document.getElementById('pr_collection').value || 'products'; 
+            const name = document.getElementById('pr_name').value.trim();
+            const price = document.getElementById('pr_price').value.trim();
+            const mrp = document.getElementById('pr_mrp').value.trim();
+            const cat = document.getElementById('pr_cat').value || 'Sarees';
+            const fabric = document.getElementById('pr_fabric').value.trim();
+            const pattern = document.getElementById('pr_pattern').value.trim();
+            const desc = document.getElementById('pr_desc').value.trim();
             
             const rating = Math.max(0, Math.min(5, Number(document.getElementById('pr_rating').value) || 0));
-            let colorsArray = []; if(colorsInputText.includes(',')) colorsArray = colorsInputText.split(',').map(c => c.trim()).filter(c => c !== '');
-            const imgMain = document.getElementById('pr_main_final_url').value; const imgBack = document.getElementById('pr_back_final_url').value;
-            const imgSide = document.getElementById('pr_side_final_url').value; const videoUrl = document.getElementById('pr_vid_final_url').value;
+
+            // Normalize & sanitize color arrays so Firestore NEVER receives undefined
+            const cleanColorImages = (window.colorImagesArray || []).map(u => String(u || '').trim()).filter(Boolean);
+            const cleanColorNames = cleanColorImages.map((_, i) => String((window.colorNamesArray && window.colorNamesArray[i]) || '').trim());
+            const cleanColorHexes = cleanColorImages.map((_, i) => {
+                const nm = cleanColorNames[i];
+                const hx = String((window.colorHexesArray && window.colorHexesArray[i]) || '').trim();
+                return hx || NAME_HEX[nm.toLowerCase()] || '';
+            });
+
+            const autoColors = [];
+            if (window.mainProductColorName) autoColors.push(String(window.mainProductColorName).trim());
+            cleanColorNames.forEach(c => {
+                if (c && !autoColors.includes(c)) autoColors.push(c);
+            });
+
+            let colorsInputText = autoColors.join(', ');
+            if (!colorsInputText) {
+                colorsInputText = String(document.getElementById('pr_colors_text').value || '').trim();
+            }
+
+            const colorsArray = colorsInputText
+                ? colorsInputText.split(',').map(c => String(c || '').trim()).filter(Boolean)
+                : [];
+
+            const imgMain = String(document.getElementById('pr_main_final_url').value || '').trim();
+            const imgBack = String(document.getElementById('pr_back_final_url').value || '').trim();
+            const imgSide = String(document.getElementById('pr_side_final_url').value || '').trim();
+            const videoUrl = String(document.getElementById('pr_vid_final_url').value || '').trim();
 
             if(!name || !price || !imgMain) { showToast("Name, Price, and Main Photo are required!", "error"); return; }
             
@@ -1222,13 +1943,52 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...'; btn.disabled = true;
 
             try {
-                let payload = { name, price: Number(price) || price, mrp: Number(mrp) || mrp, category: cat, fabric, pattern, description: desc, rating, colorsInfo: colorsInputText, colors: colorsArray, colorImages: window.colorImagesArray, colorNames: window.colorNamesArray, colorHexes: window.colorHexesArray, imageMain: imgMain, imageBack: imgBack, imageSide: imgSide, videoUrl: videoUrl, updatedAt: serverTimestamp() };
-                Object.keys(payload).forEach(key => (payload[key] === undefined || payload[key] === '') && delete payload[key]);
+                let payload = {
+                    name: name,
+                    price: Number(price) || price,
+                    mrp: mrp ? (Number(mrp) || mrp) : '',
+                    category: cat,
+                    fabric: fabric,
+                    pattern: pattern,
+                    description: desc,
+                    rating: rating,
+                    mainColorName: String(window.mainProductColorName || '').trim(),
+                    mainColorHex: String(window.mainProductColorHex || '').trim(),
+                    colorsInfo: colorsInputText,
+                    colors: colorsArray,
+                    colorImages: cleanColorImages,
+                    colorNames: cleanColorNames,
+                    colorHexes: cleanColorHexes,
+                    imageMain: imgMain,
+                    imageBack: imgBack,
+                    imageSide: imgSide,
+                    videoUrl: videoUrl,
+                    updatedAt: serverTimestamp()
+                };
 
-                if(id) await updateDoc(doc(db, targetCol, id), payload); 
-                else { payload.createdAt = serverTimestamp(); payload.brand = "Aavira"; await setDoc(doc(collection(db, targetCol)), payload); }
+                // Remove empty string fields and guarantee zero undefined anywhere
+                Object.keys(payload).forEach(key => {
+                    if (payload[key] === undefined || payload[key] === null || payload[key] === '') {
+                        delete payload[key];
+                    } else if (Array.isArray(payload[key])) {
+                        payload[key] = payload[key].map(item => item === undefined || item === null ? '' : item);
+                    }
+                });
+
+                if(id) {
+                    if (window.editingOriginalCol && window.editingOriginalCol !== targetCol) {
+                        await setDoc(doc(db, targetCol, id), { ...payload, brand: "Aavira" }, { merge: true });
+                        await deleteDoc(doc(db, window.editingOriginalCol, id));
+                    } else {
+                        await updateDoc(doc(db, targetCol, id), payload);
+                    }
+                } else {
+                    payload.createdAt = serverTimestamp();
+                    payload.brand = "Aavira";
+                    await setDoc(doc(collection(db, targetCol)), payload);
+                }
                 
-                closeSheets(); fetchProducts(); showToast(`Successfully saved to ${targetCol}`);
+                closeSheets(); await fetchProducts(); showToast(`Successfully saved to ${targetCol}`);
             } catch(error) { console.error("Save failed:", error); showToast("Save failed: " + (error && error.message ? error.message : error), "error"); } finally { btn.innerHTML = ogText; btn.disabled = false; }
         };
 
@@ -1383,26 +2143,96 @@
             } catch (e) { console.error("Insights Error:", e); }
         }
 
-        window.deleteDocItem = async function(colName, id) {
-            if(confirm("Permanently delete this? Action cannot be undone.")) {
-                try {
-                    await deleteDoc(doc(db, colName, id)); showToast("Deleted successfully");
-                    if(colName === 'orders') fetchOrders(); 
-                    else if(colName === 'products' || colName === 'main_products') fetchProducts(); 
-                    else if(colName === 'promo_codes') fetchPromos(); 
-                    else if(colName === 'banners') fetchBanners(); 
-                    else if(colName === 'categories') fetchCategories();
-                    else if(colName === 'newsletter_subscribers' || colName === 'public_experiences') fetchInsights();
-                } catch(error) { showToast("Failed to delete", "error"); }
-            }
+        /* ----- 7. COOKIE CONSENT STATS ----- */
+        let ckData = [];
+        let ckPeriod = 'all';
+        async function fetchCookieStats() {
+            try {
+                const snap = await getDocs(collection(db, "consent_stats"));
+                ckData = [];
+                snap.forEach(s => {
+                    const d = s.data() || {};
+                    ckData.push({ date: s.id,
+                        accepted: Number(d.accepted) || 0,
+                        rejected: Number(d.rejected) || 0,
+                        customized: Number(d.customized) || 0 });
+                });
+                ckData.sort((a, b) => (a.date < b.date ? 1 : -1));
+                renderCookieStats();
+            } catch (e) { console.error("Cookie stats error:", e); }
+        }
+        function ckInPeriod(row) {
+            if (ckPeriod === 'all') return true;
+            const days = ckPeriod === 'today' ? 1 : 7;
+            const d = new Date(); d.setDate(d.getDate() - (days - 1));
+            return row.date >= d.toISOString().slice(0, 10);
+        }
+        function renderCookieStats() {
+            let a = 0, r = 0, c = 0;
+            ckData.filter(ckInPeriod).forEach(x => { a += x.accepted; r += x.rejected; c += x.customized; });
+            document.getElementById('ckAccepted').innerText = a;
+            document.getElementById('ckRejected').innerText = r;
+            document.getElementById('ckCustom').innerText = c;
+            document.getElementById('ckTotal').innerText = a + r + c;
+            const rows = ckData.slice(0, 14);
+            let html = '';
+            rows.forEach(x => {
+                const t = x.accepted + x.rejected + x.customized;
+                const pct = t ? Math.round(x.accepted / t * 100) : 0;
+                html += '<div class="ui-list-item"><div class="promo-info"><h3 style="font-size:13px;">'
+                    + esc(x.date) + '</h3><p style="color:var(--gray-text);">' + t + ' choices · ' + pct + '% accepted</p></div>'
+                    + '<div style="font-size:12px;font-weight:700;white-space:nowrap;">'
+                    + '<span style="color:var(--success);">' + x.accepted + ' ✓</span> · '
+                    + '<span style="color:var(--danger);">' + x.rejected + ' ✕</span> · '
+                    + '<span style="color:var(--warning);">' + x.customized + ' ~</span></div></div>';
+            });
+            document.getElementById('ckDaily').innerHTML = html || '<p style="color:#aaa;text-align:center;font-weight:600;">No data yet</p>';
+            document.getElementById('ckBackendNote').innerHTML = ckData.length
+                ? '<div class="ui-list-item" style="border-color:var(--success);background:var(--success-light);"><div class="promo-info"><h3 style="font-size:13px;color:var(--success);">Stats live</h3><p style="color:var(--gray-text);">/api/consents endpoint data bhej raha hai.</p></div></div>'
+                : '<div class="ui-list-item" style="border-color:var(--warning);background:var(--warning-light);"><div class="promo-info"><h3 style="font-size:13px;color:var(--warning);">Backend pending</h3><p style="color:var(--gray-text);">/api/consents endpoint abhi live nahi hai — stats tab aayenge jab backend wala endpoint laga dega.</p></div></div>';
+        }
+        window.setCkPeriod = function (p, el) {
+            ckPeriod = p;
+            document.querySelectorAll('.ck-period').forEach(b => {
+                b.classList.remove('on');
+                b.style.background = '#fff'; b.style.color = '#111'; b.style.borderColor = 'var(--gray-border)';
+            });
+            el.classList.add('on');
+            el.style.background = 'var(--primary)'; el.style.color = '#fff'; el.style.borderColor = 'var(--primary)';
+            renderCookieStats();
+        };
+        window.resetMyConsent = function () {
+            try { localStorage.removeItem('aavira_cookie_consent_v1'); } catch (e) {}
+            showToast('Consent reset — site reload karo, banner dobara dikhega');
         };
 
-        // MANUAL EMAIL SENDING LOGIC
+        window.pendingDeleteTarget = null;
+        window.deleteDocItem = function(colName, id) {
+            window.pendingDeleteTarget = { colName, id };
+            document.getElementById('deleteConfirmModal').classList.add('open');
+        };
+        window.closeDeleteModal = function() {
+            window.pendingDeleteTarget = null;
+            document.getElementById('deleteConfirmModal').classList.remove('open');
+        };
+        window.confirmDeleteDocItem = async function() {
+            if (!window.pendingDeleteTarget) return;
+            const { colName, id } = window.pendingDeleteTarget;
+            window.closeDeleteModal();
+            try {
+                await deleteDoc(doc(db, colName, id)); showToast("Deleted successfully");
+                if(colName === 'orders') fetchOrders(); 
+                else if(colName === 'products' || colName === 'main_products') fetchProducts(); 
+                else if(colName === 'promo_codes') fetchPromos(); 
+                else if(colName === 'banners') fetchBanners(); 
+                else if(colName === 'categories') fetchCategories();
+                else if(colName === 'newsletter_subscribers' || colName === 'public_experiences') fetchInsights();
+            } catch(error) { showToast("Failed to delete", "error"); }
+        };
+
         window.sendManualEmail = async function(email, event) {
             const btn = event.currentTarget;
             const ogIcon = btn.innerHTML;
-            
-            // Button ko loading spinner mein badalna
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
             btn.disabled = true;
 
@@ -1412,9 +2242,7 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email: email })
                 });
-                
                 const data = await response.json();
-                
                 if (response.ok && data.success) {
                     showToast(`Email sent to ${email}`, 'success');
                 } else {
@@ -1423,16 +2251,13 @@
             } catch (error) {
                 showToast("Error sending email", 'error');
             } finally {
-                // Wapas original icon lana
                 btn.innerHTML = ogIcon;
                 btn.disabled = false;
             }
         };
 
-        // NEW: MANUAL ORDER STATUS EMAIL CONTROLLER
         window.triggerOrderEmail = async function(docId, btnElement) {
             const order = window.ordersDataCache[docId];
-            
             if (!order) {
                 showToast("Order data not found!", "error");
                 return;
@@ -1443,30 +2268,30 @@
             }
 
             const ogContent = btnElement.innerHTML;
-            // Button loading state
-            btnElement.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending Email...';
+            btnElement.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
             btnElement.disabled = true;
 
             try {
-                // Get current status
                 let currentStatus = order.orderStatus || 'Processing';
                 if(currentStatus === 'Placed' || currentStatus === 'Pending') currentStatus = 'Processing';
 
-                const response = await fetch("https://wwwfahimapp.vercel.app/api/update-order", {
+                const response = await fetch(UPDATE_ORDER_API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         docId: docId,
                         newStatus: currentStatus, 
                         orderId: order.orderId,
-                        customerEmail: order.email, // Screen par dikhne wala exact email
+                        customerEmail: order.email,
                         customerName: order.customerName
                     })
                 });
-                
                 const resData = await response.json();
-                
                 if (response.ok && resData.success) {
+                    const promptLabel = document.getElementById('omEmailPromptLabel');
+                    if (promptLabel) {
+                        promptLabel.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--success);"></i> Email sent to customer`;
+                    }
                     showToast(`Status update sent to ${order.email}`, 'success');
                 } else {
                     throw new Error(resData.message || "Failed to send email");
@@ -1475,7 +2300,6 @@
                 console.error("Email Error:", error);
                 showToast(`Error: ${error.message}`, 'error'); 
             } finally {
-                // Restore button state
                 btnElement.innerHTML = ogContent;
                 btnElement.disabled = false;
             }
@@ -1486,8 +2310,6 @@
                 const gate = document.getElementById('loginGate');
                 if (user && user.uid === ADMIN_UID) {
                     gate.style.display = 'none';
-                    const sub = document.querySelector('.header-title span');
-                    if (sub) sub.textContent = user.email || 'Administrator Access';
                     if (!appBooted) { appBooted = true; loadData(); }
                 } else {
                     if (user) { signOut(auth); return; }
@@ -1499,3 +2321,4 @@
     </script>
 </body>
 </html>
+```
