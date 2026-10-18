@@ -10,7 +10,7 @@
 <meta name="color-scheme" content="light">
 <meta name="format-detection" content="telephone=no">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
 <style>
 :root{color-scheme:light;--rani:#161616;--gold:#C9A227;--gold-soft:#E7D39A;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#242024;--muted:#6B6369;--line:#E7E0D9;--blush:#F5F1E8;--plum:#1B1719;--plum2:#3A1226;--green:#15803D;--danger:#B91C1C;--amber:#B45309;--ease:cubic-bezier(.2,.8,.2,1)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -26,6 +26,7 @@ a{color:inherit}
 .hdr{display:grid;grid-template-columns:48px 1fr 48px;align-items:center;min-height:62px;padding:env(safe-area-inset-top,0) 6px 0;background:#fff;border-bottom:1px solid var(--line);flex:0 0 auto;position:relative;z-index:5}
 .hdr h1{font-family:"Playfair Display",serif;font-size:18px;text-align:center}
 .ib{width:42px;height:42px;border:0;background:none;border-radius:50%;color:var(--rani);font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s}
+svg.lucide{width:1em;height:1em;flex-shrink:0}
 .ib.back{width:46px;height:46px;background:var(--rani);color:#fff;font-size:17px;box-shadow:0 6px 14px rgba(22,22,22,.3)}
 .ib.back:hover,.ib.back:active{background:#000000;color:#fff}
 .ib:hover,.ib:active{background:var(--blush);color:var(--rani)}
@@ -210,29 +211,29 @@ a{color:inherit}
 <body>
 <div class="app">
   <header class="hdr">
-    <button class="ib back" onclick="location.href='/'" aria-label="Back to home"><i class="fa-solid fa-arrow-left"></i></button>
+    <button class="ib back" onclick="goBack()" aria-label="Back"><i data-lucide="arrow-left"></i></button>
     <div class="brand" data-brand></div>
-    <button class="ib" id="refBtn" onclick="refresh()" aria-label="Refresh orders"><i class="fa-solid fa-rotate-right"></i></button>
+    <button class="ib" id="refBtn" onclick="refresh()" aria-label="Refresh orders"><i data-lucide="rotate-cw"></i></button>
   </header>
   <div class="searchbar">
-    <div class="search"><i class="fa-solid fa-magnifying-glass s"></i><input id="q" type="search" placeholder="Search by order ID or product name" autocomplete="off" aria-label="Search orders" oninput="onSearch()"><button class="clr" id="clr" hidden onclick="clearQ()" aria-label="Clear search"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="search"><i data-lucide="search"></i><input id="q" type="search" placeholder="Search by order ID or product name" autocomplete="off" aria-label="Search orders" oninput="onSearch()"><button class="clr" id="clr" hidden onclick="clearQ()" aria-label="Clear search"><i data-lucide="x"></i></button></div>
   </div>
   <div class="head">
     <div><h2>My Orders</h2><p id="sub">Track all your orders here</p></div>
-    <button class="sort" id="sortBtn" onclick="toggleSort()" aria-label="Change sort order"><i class="fa-solid fa-arrow-down-wide-short"></i><span id="sortTx">Newest</span></button>
+    <button class="sort" id="sortBtn" onclick="toggleSort()" aria-label="Change sort order"><i data-lucide="arrow-down-wide-narrow"></i><span id="sortTx">Newest</span></button>
   </div>
   <div class="tabs" id="tabs" role="tablist"></div>
   <div class="scroll" id="list"></div>
 
   <section class="dv" id="dv" aria-label="Order details">
-    <header class="hdr"><button class="ib back" onclick="location.href='/'" aria-label="Back to home"><i class="fa-solid fa-arrow-left"></i></button><h1>Track order</h1><button class="ib" id="refBtn2" onclick="refresh()" aria-label="Refresh"><i class="fa-solid fa-rotate-right"></i></button></header>
+    <header class="hdr"><button class="ib back" onclick="goBack()" aria-label="Back"><i data-lucide="arrow-left"></i></button><h1>Track order</h1><button class="ib" id="refBtn2" onclick="refresh()" aria-label="Refresh"><i data-lucide="rotate-cw"></i></button></header>
     <div class="dv-body" id="dvBody"></div>
   </section>
   <div class="mo" id="inv" onclick="if(event.target===this)closeInv()">
     <div class="sheet">
-      <div class="row"><h3 class="h3" style="margin:0">Order invoice</h3><button class="ib" onclick="closeInv()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="row"><h3 class="h3" style="margin:0">Order invoice</h3><button class="ib" onclick="closeInv()" aria-label="Close"><i data-lucide="x"></i></button></div>
       <div class="inv" id="invBody"></div>
-      <button class="btn p" onclick="window.print()"><i class="fa-solid fa-print"></i>Print / Save as PDF</button>
+      <button class="btn p" onclick="window.print()"><i data-lucide="printer"></i>Print / Save as PDF</button>
     </div>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -240,6 +241,8 @@ a{color:inherit}
 <script src="/user_data.js"></script>
 <script>
 const $ = s => document.querySelector(s);
+const icons = () => { if (window.lucide) lucide.createIcons(); };
+const goBack = () => { try { if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) { history.back(); return; } } catch (e) {} location.href = '/'; };
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const money = n => '₹' + Number(n || 0).toLocaleString('en-IN', { maximumFractionDigits: 2 });
 const BACKEND = 'https://server-js-psi-five.vercel.app';
@@ -253,11 +256,11 @@ window.logoErr = img => {
   if (i < LOGOS.length) { img.dataset.i = i; img.src = LOGOS[i]; }
   else { img.hidden = true; const w = img.nextElementSibling; if (w) w.hidden = false; }
 };
-window.phErr = img => { img.outerHTML = '<div class="ph"><i class="fa-solid fa-shirt"></i></div>'; };
+window.phErr = img => { img.outerHTML = '<div class="ph"><i data-lucide="shirt"></i></div>'; };
 
 const STEPS = ['Processing', 'Confirmed', 'Shipped', 'Out for Delivery', 'Delivered'];
 const STEP_LABEL = ['Placed', 'Confirmed', 'Shipped', 'Out for delivery', 'Delivered'];
-const ICONS = ['fa-box', 'fa-circle-check', 'fa-truck', 'fa-truck-fast', 'fa-house-circle-check'];
+const ICONS = ['package', 'circle-check', 'truck', 'truck', 'house'];
 const TABS = ['All', 'Processing', 'Shipped', 'Delivered', 'Cancelled'];
 const S = { orders: [], tab: 'All', cur: null, synced: 0, sort: 'new' };
 
@@ -284,7 +287,7 @@ const rawId = o => String(o.orderId || o.id || o._id || '');
 const oid = o => { const v = rawId(o); return v.startsWith('#') ? v : '#' + v; };
 const imgTag = src => src
   ? `<img src="${esc(src)}" alt="" loading="lazy" onerror="phErr(this)">`
-  : `<div class="ph"><i class="fa-solid fa-shirt"></i></div>`;
+  : `<div class="ph"><i data-lucide="shirt"></i></div>`;
 
 let toastT;
 const toast = m => {
@@ -329,7 +332,8 @@ const courier = o => ({
 /* session + fetch */
 const session = () => ''; // track page is for guests: no login lookup
 window.aaviraSessionExpired = () => {
-  $('#list').innerHTML = `<div class="empty"><div class="ico"><i class="fa-solid fa-lock"></i></div><h3>Session expired</h3><p>Please log in again to view your orders.</p><a href="login.html">Go to Login</a></div>`;
+  $('#list').innerHTML = `<div class="empty"><div class="ico"><i data-lucide="lock"></i></div><h3>Session expired</h3><p>Please log in again to view your orders.</p><a href="login.html">Go to Login</a></div>`;
+  icons();
   toast('Session expired. Please log in again.', 'err');
   try { if (typeof window.clearAaviraSession === 'function') window.clearAaviraSession(); } catch (e) {}
   setTimeout(() => {
@@ -381,7 +385,8 @@ const clearQ = () => { $('#q').value = ''; $('#clr').hidden = true; draw(); $('#
 const toggleSort = () => {
   S.sort = S.sort === 'new' ? 'old' : 'new';
   $('#sortTx').textContent = S.sort === 'new' ? 'Newest' : 'Oldest';
-  $('#sortBtn i').className = 'fa-solid ' + (S.sort === 'new' ? 'fa-arrow-down-wide-short' : 'fa-arrow-up-short-wide');
+  const sic = document.querySelector('#sortBtn [data-lucide]');
+  if (sic) { sic.setAttribute('data-lucide', S.sort === 'new' ? 'arrow-down-wide-narrow' : 'arrow-up-narrow-wide'); icons(); }
   draw();
 };
 
@@ -420,16 +425,17 @@ const draw = () => {
     .filter(o => matchTab(o, S.tab) && (!q || rawId(o).toLowerCase().includes(q) || (o.items || []).some(i => String(i.name || '').toLowerCase().includes(q))))
     .sort((a, b) => ((pdate(b.createdAt) || 0) - (pdate(a.createdAt) || 0)) * (S.sort === 'new' ? 1 : -1));
   if (!rows.length) {
-    $('#list').innerHTML = `<div class="empty"><div class="ico"><i class="fa-solid fa-${q ? 'magnifying-glass' : 'box-open'}"></i></div><h3>${q ? 'No matching orders' : 'No orders found'}</h3><p>${q ? 'Try a different order ID or product name.' : S.orders.length ? 'Nothing here for this filter.' : 'Your orders will appear here.'}</p>${q ? '<a href="#" onclick="clearQ();return false">Clear search</a>' : '<a href="/">Start shopping</a>'}</div>` + footer();
+    $('#list').innerHTML = `<div class="empty"><div class="ico"><i data-lucide="${q ? 'search' : 'package-open'}"></i></div><h3>${q ? 'No matching orders' : 'No orders found'}</h3><p>${q ? 'Try a different order ID or product name.' : S.orders.length ? 'Nothing here for this filter.' : 'Your orders will appear here.'}</p>${q ? '<a href="#" onclick="clearQ();return false">Clear search</a>' : '<a href="/">Start shopping</a>'}</div>` + footer();
+    icons();
     return;
   }
   $('#list').innerHTML = `<div class="rc">${rows.length} order${rows.length > 1 ? 's' : ''}${q ? ' found' : ''}</div>` + rows.map((o, i) => {
     const st = norm(o.orderStatus), items = o.items || [], first = items[0] || {};
     const d = pdate(o.createdAt), eta = etaText(o), cd = etaCountdown(o);
-    let bot = eta ? `<span><i class="fa-solid fa-truck"></i>${cd || eta}</span>` : `<span><i class="fa-regular fa-clock"></i>Delivery update soon</span>`;
-    if (st === 'Delivered') bot = '<span style="color:var(--green)"><i class="fa-solid fa-circle-check"></i>Delivered</span>';
-    if (st === 'Cancelled') bot = '<span><i class="fa-solid fa-circle-xmark"></i>Cancelled</span>';
-    if (st === 'Out for Delivery') bot = `<span style="color:#E11D48"><i class="fa-solid fa-truck-fast"></i>${cd || eta || 'Out for delivery'}</span>`;
+    let bot = eta ? `<span><i data-lucide="truck"></i>${cd || eta}</span>` : `<span><i data-lucide="clock"></i>Delivery update soon</span>`;
+    if (st === 'Delivered') bot = '<span style="color:var(--green)"><i data-lucide="circle-check"></i>Delivered</span>';
+    if (st === 'Cancelled') bot = '<span><i data-lucide="circle-x"></i>Cancelled</span>';
+    if (st === 'Out for Delivery') bot = `<span style="color:#E11D48"><i data-lucide="truck"></i>${cd || eta || 'Out for delivery'}</span>`;
     return `<article class="card oc" style="animation-delay:${Math.min(i * .06, .3)}s" data-id="${esc(rawId(o))}" tabindex="0" role="button" aria-label="Track order ${esc(oid(o))}">
       <div class="oc-head"><div><div class="lbl">Order</div><div class="oid">${esc(oid(o))}</div></div><span class="badge b-${st.replace(/ /g, '')}">${st}</span></div>
       <div class="oc-body">
@@ -439,8 +445,9 @@ const draw = () => {
           <div class="price">${money(o.totalAmount || o.total)}</div></div>
       </div>
       ${miniTrack(st)}
-      <div class="oc-bot">${bot}<span class="go">Track order<i class="fa-solid fa-arrow-right"></i></span></div></article>`;
+      <div class="oc-bot">${bot}<span class="go">Track order<i data-lucide="arrow-right"></i></span></div></article>`;
   }).join('') + footer();
+  icons();
 };
 $('#list').addEventListener('click', e => { const c = e.target.closest('.oc'); if (c) openDv(c.dataset.id); });
 $('#list').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { const c = e.target.closest('.oc'); if (c) { e.preventDefault(); openDv(c.dataset.id); } } });
@@ -460,14 +467,14 @@ const PRODUCT_PAGE = '/product?id=';
 const itemPic = i => {
   const pid = String(i.productId || '').trim();
   if (!pid) return `<div class="pic nolink">${imgTag(i.image)}</div>`;
-  return `<a class="pic" href="${PRODUCT_PAGE}${encodeURIComponent(pid)}" aria-label="View ${esc(i.name || 'product')}">${imgTag(i.image)}<span class="view"><i class="fa-regular fa-eye"></i>View product</span></a>`;
+  return `<a class="pic" href="${PRODUCT_PAGE}${encodeURIComponent(pid)}" aria-label="View ${esc(i.name || 'product')}">${imgTag(i.image)}<span class="view"><i data-lucide="eye"></i>View product</span></a>`;
 };
 const stepper = st => {
   if (st === 'Cancelled') return '';
   const idx = STEPS.indexOf(st), pct = idx / (STEPS.length - 1) * 100;
   return `<div class="sp"><div class="sp-track"><div class="sp-fill" data-w="${pct}"></div></div>${STEPS.map((s, i) => {
     const cls = i < idx || (st === 'Delivered' && i === idx) ? 'done' : i === idx ? 'cur' : '';
-    return `<div class="sp-s ${cls}"><div class="sp-c"><i class="fa-solid ${cls === 'done' ? 'fa-check' : ICONS[i]}"></i></div><span class="sp-l">${STEP_LABEL[i]}</span></div>`;
+    return `<div class="sp-s ${cls}"><div class="sp-c"><i data-lucide="${cls === 'done' ? 'check' : ICONS[i]}"></i></div><span class="sp-l">${STEP_LABEL[i]}</span></div>`;
   }).join('')}</div>`;
 };
 
@@ -480,16 +487,16 @@ const renderDv = (o, keepScroll) => {
   const hero = HERO[st];
   const heroCls = st === 'Delivered' ? 'ok' : st === 'Cancelled' ? 'no' : '';
   let etaPill = '';
-  if (st !== 'Delivered' && st !== 'Cancelled') etaPill = `<div class="eta-pill"><i class="fa-solid fa-calendar-check"></i><span>${eta ? `Expected <b>${eta}</b>${cd ? ` · ${cd}` : ''}` : 'Delivery date will be updated soon'}</span></div>`;
-  if (st === 'Delivered') { const t = stepTime(o, 'Delivered'); if (t) etaPill = `<div class="eta-pill"><i class="fa-solid fa-circle-check"></i><span>Delivered on <b>${t}</b></span></div>`; }
+  if (st !== 'Delivered' && st !== 'Cancelled') etaPill = `<div class="eta-pill"><i data-lucide="calendar-check"></i><span>${eta ? `Expected <b>${eta}</b>${cd ? ` · ${cd}` : ''}` : 'Delivery date will be updated soon'}</span></div>`;
+  if (st === 'Delivered') { const t = stepTime(o, 'Delivered'); if (t) etaPill = `<div class="eta-pill"><i data-lucide="circle-check"></i><span>Delivered on <b>${t}</b></span></div>`; }
   const heroHtml = `<div class="hero ${heroCls}">
-    <div class="hero-top"><div><div class="lbl">Order</div><div class="oid idrow">${esc(oid(o))}<button class="idcp" onclick="copyTxt(rawId(S.cur),'Order ID copied')" aria-label="Copy order ID"><i class="fa-regular fa-copy"></i></button></div></div>${live ? '<span class="pill-live"><i></i>On the way</span>' : `<span class="badge b-${st.replace(/ /g, '')}" style="background:rgba(255,255,255,.14);color:#fff">${st}</span>`}</div>
+    <div class="hero-top"><div><div class="lbl">Order</div><div class="oid idrow">${esc(oid(o))}<button class="idcp" onclick="copyTxt(rawId(S.cur),'Order ID copied')" aria-label="Copy order ID"><i data-lucide="copy"></i></button></div></div>${live ? '<span class="pill-live"><i></i>On the way</span>' : `<span class="badge b-${st.replace(/ /g, '')}" style="background:rgba(255,255,255,.14);color:#fff">${st}</span>`}</div>
     <h3>${hero[0]}</h3><p class="sub">${hero[1]}</p>${etaPill}${stepper(st)}<p class="placed">Placed on ${d ? fdt(d) : '-'}</p></div>`;
 
   const c = courier(o);
-  const courierHtml = (c.name || c.id || c.url) ? `<div class="card"><h3 class="h3">Delivery partner</h3><div class="cour"><div class="cour-ic"><i class="fa-solid fa-truck-fast"></i></div>
+  const courierHtml = (c.name || c.id || c.url) ? `<div class="card"><h3 class="h3">Delivery partner</h3><div class="cour"><div class="cour-ic"><i data-lucide="truck"></i></div>
     <div><b>${esc(c.name || 'Courier partner')}</b><small>${c.id ? 'Tracking ID: ' + esc(c.id) : 'Tracking ID will be shared soon'}</small></div>${c.id ? `<button class="cp" data-copy="${esc(c.id)}" onclick="copyTxt(this.dataset.copy,'Tracking ID copied')">Copy</button>` : ''}</div>
-    ${c.url ? `<button class="btn k" data-url="${esc(c.url)}" onclick="window.open(this.dataset.url,'_blank','noopener')"><i class="fa-solid fa-location-crosshairs"></i>Track on courier site</button>` : ''}</div>` : '';
+    ${c.url ? `<button class="btn k" data-url="${esc(c.url)}" onclick="window.open(this.dataset.url,'_blank','noopener')"><i data-lucide="crosshair"></i>Track on courier site</button>` : ''}</div>` : '';
 
   const sub = Number(o.subtotal || 0), ship = o.deliveryFee ?? o.shippingFee, gift = Number(o.giftWrapFee || 0), disc = Number(o.promoDiscount || 0);
   const bill = (sub ? `<div class="kv"><span>Items subtotal</span><span>${money(sub)}</span></div>` : '')
@@ -503,23 +510,24 @@ const renderDv = (o, keepScroll) => {
   const label = paid ? 'Payment received' : failed ? 'Payment failed' : pm === 'cod' ? 'Pay on delivery' : 'Payment pending';
   const color = paid ? 'var(--green)' : failed ? 'var(--danger)' : 'var(--amber)';
   let payAct = '';
-  if (!paid && st !== 'Cancelled') payAct = `<button class="btn p" onclick="payWA()"><i class="fa-brands fa-whatsapp"></i>${pm === 'cod' ? 'Pay online instead' : 'Complete payment'} ${money(total)}</button>`;
+  if (!paid && st !== 'Cancelled') payAct = `<button class="btn p" onclick="payWA()"><i data-lucide="message-circle"></i>${pm === 'cod' ? 'Pay online instead' : 'Complete payment'} ${money(total)}</button>`;
 
   const addrFull = `${o.customerName || o.name || ''}, ${o.address || ''}, ${o.phone || o.customerPhone || ''}`;
   body.innerHTML = `
     ${heroHtml}
-    <div class="qa"><button onclick="openInv()"><i class="fa-solid fa-file-invoice"></i>Invoice</button><button onclick="supportWA()"><i class="fa-brands fa-whatsapp" style="color:#25D366"></i>Support</button><button onclick="shareOrder()"><i class="fa-solid fa-share-nodes"></i>Share</button></div>
+    <div class="qa"><button onclick="openInv()"><i data-lucide="file-text"></i>Invoice</button><button onclick="supportWA()"><i data-lucide="message-circle" style="color:#25D366"></i>Support</button><button onclick="shareOrder()"><i data-lucide="share-2"></i>Share</button></div>
     ${courierHtml}
     <div class="card"><h3 class="h3">Your order</h3>${(items.length ? items : [{ name: 'Item', qty: 1, price: total }]).map(i => `<div class="it">${itemPic(i)}<div class="it-info"><h4>${esc(i.name || 'Item')}</h4><small>Size: ${esc(i.size || 'Free Size')}</small><small>Color: ${esc(colorTxt(i.color))}</small><small>Qty: ${i.qty || 1}</small><div class="ip">${money(Number(i.price || 0) * (i.qty || 1))}</div></div></div>`).join('')}</div>
-    <div class="card addr"><h3 class="h3">Delivery address</h3><b>${esc(o.customerName || o.name || 'Customer')}</b><p>${esc(o.address || 'Address not provided')}</p><p><i class="fa-solid fa-phone" style="font-size:10px"></i> ${esc(o.phone || o.customerPhone || '-')}</p><button class="cpy" data-copy="${esc(addrFull)}" onclick="copyTxt(this.dataset.copy,'Address copied')"><i class="fa-regular fa-copy"></i> Copy address</button></div>
+    <div class="card addr"><h3 class="h3">Delivery address</h3><b>${esc(o.customerName || o.name || 'Customer')}</b><p>${esc(o.address || 'Address not provided')}</p><p><i data-lucide="phone" style="font-size:10px"></i> ${esc(o.phone || o.customerPhone || '-')}</p><button class="cpy" data-copy="${esc(addrFull)}" onclick="copyTxt(this.dataset.copy,'Address copied')"><i data-lucide="copy"></i> Copy address</button></div>
     <div class="card"><h3 class="h3">Payment summary</h3>${bill}
       <div class="pay"><div class="kv"><span>Method</span><b style="color:var(--ink);text-transform:uppercase">${esc(o.paymentMethod || '-')}</b></div><div class="kv" style="margin:0"><span>Status</span><b style="color:${color}">${label}</b></div>${payAct}</div></div>
-    ${st === 'Delivered' ? '<button class="btn p" onclick="buyAgain()"><i class="fa-solid fa-rotate-right"></i>Order again</button>' : ''}
-    ${['Processing', 'Confirmed'].includes(st) ? '<button class="btn d" onclick="cancelWA()"><i class="fa-solid fa-ban"></i>Request cancellation</button>' : ''}
-    <button class="btn l" onclick="supportWA()"><i class="fa-brands fa-whatsapp" style="color:#25D366"></i>Need help with this order?</button>
+    ${st === 'Delivered' ? '<button class="btn p" onclick="buyAgain()"><i data-lucide="rotate-cw"></i>Order again</button>' : ''}
+    ${['Processing', 'Confirmed'].includes(st) ? '<button class="btn d" onclick="cancelWA()"><i data-lucide="ban"></i>Request cancellation</button>' : ''}
+    <button class="btn l" onclick="supportWA()"><i data-lucide="message-circle" style="color:#25D366"></i>Need help with this order?</button>
     ${footer()}`;
   if (keepScroll) body.scrollTop = top;
   requestAnimationFrame(() => requestAnimationFrame(() => { const f = body.querySelector('.sp-fill'); if (f) f.style.width = f.dataset.w + '%'; }));
+  icons();
 };
 
 const openDv = id => {
@@ -586,6 +594,7 @@ document.addEventListener('click', e => {
 }, true);
 window.addEventListener('pageshow', () => document.querySelectorAll('.is-busy').forEach(el => el.classList.remove('is-busy')));
 
+icons();
 document.querySelectorAll('[data-brand]').forEach(el => { el.innerHTML = brandHtml(); });
 $('#dv').classList.add('on');
 $('#dvBody').innerHTML = '<div class="skel"></div>';
@@ -597,7 +606,8 @@ const showForm = (err, id = G.id, c = G.c) => {
     <label class="tl" for="tfC">Email or phone number</label>
     <input class="tf" id="tfC" value="${esc(c)}" placeholder="Email or 10-digit mobile number" autocomplete="off" autocapitalize="none" onkeydown="if(event.key==='Enter')submitTrack()">
     ${err ? `<div class="terr">${esc(err)}</div>` : ''}
-    <button class="btn p" onclick="submitTrack()"><i class="fa-solid fa-location-crosshairs"></i>Track order</button></div>` + footer();
+    <button class="btn p" onclick="submitTrack()"><i data-lucide="crosshair"></i>Track order</button></div>` + footer();
+  icons();
 };
 const submitTrack = () => {
   const id = $('#tfId').value.trim().replace(/^#/, '').toUpperCase();
@@ -612,8 +622,9 @@ const showTrack = keep => {
   if (o) {
     renderDv(o, !!keep);
     const f = $('#dvBody').querySelector('.foot');
-    const privacy = o.masked ? '<div class="card" style="border-color:#F5D77A;background:#FFF8E1"><b style="font-size:14px"><i class="fa-solid fa-shield-halved" style="color:#D99A00"></i> Personal details are hidden</b><p class="meta" style="margin:6px 0 0;line-height:1.55">For your privacy, name, phone and address are hidden on this link. Enter the email or phone number used for this order to see everything.</p><button class="btn p" onclick="showForm(\'\', G.id, \'\')"><i class="fa-solid fa-unlock"></i>View full details</button></div>' : '';
-    if (f) f.insertAdjacentHTML('beforebegin', privacy + '<button class="btn l" onclick="showForm()"><i class="fa-solid fa-magnifying-glass"></i>Track another order</button>');
+    const privacy = o.masked ? '<div class="card" style="border-color:#F5D77A;background:#FFF8E1"><b style="font-size:14px"><i data-lucide="shield-check" style="color:#D99A00"></i> Personal details are hidden</b><p class="meta" style="margin:6px 0 0;line-height:1.55">For your privacy, name, phone and address are hidden on this link. Enter the email or phone number used for this order to see everything.</p><button class="btn p" onclick="showForm(\'\', G.id, \'\')"><i data-lucide="lock-open"></i>View full details</button></div>' : '';
+    if (f) f.insertAdjacentHTML('beforebegin', privacy + '<button class="btn l" onclick="showForm()"><i data-lucide="search"></i>Track another order</button>');
+    icons();
     // remove the secret code from the address bar so it is not kept in history or shared by mistake
     try { if (G.t && location.search.includes('t=')) history.replaceState(null, '', location.pathname + '?id=' + encodeURIComponent(G.id)); } catch (e) {}
     return;
