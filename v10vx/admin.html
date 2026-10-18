@@ -249,9 +249,11 @@
         }
 
         /* ===== COLOR NAME INPUT ===== */
-        .color-cell { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; width: 90px; }
-        .color-name-input { width: 90px; border: 1px solid var(--gray-border); border-radius: 10px; padding: 7px 8px; font-size: 11.5px; font-family: inherit; outline: none; background: #fff; }
+        .color-cell { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; width: 118px; }
+        .color-meta { display: flex; gap: 6px; align-items: center; }
+        .color-name-input { flex: 1; min-width: 0; border: 1px solid var(--gray-border); border-radius: 10px; padding: 7px 8px; font-size: 11.5px; font-family: inherit; outline: none; background: #fff; }
         .color-name-input:focus { border-color: var(--gold); }
+        .color-hex-input { width: 38px; height: 38px; flex-shrink: 0; border: 1px solid var(--gray-border); border-radius: 10px; padding: 3px; background: #fff; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -492,6 +494,7 @@
                 </div>
                 
                 <span class="form-label" style="margin-top:8px;">Upload Specific Color Photos</span>
+                <p style="font-size:11px;color:var(--gray-text);margin:4px 0 8px;">Photo upload karo, phir uske neeche <b>color select</b> karo + naam likho.</p>
                 <input type="file" id="pr_color_file" accept="image/*" style="display:none;" onchange="uploadColorImage(event)">
                 <div class="media-upload-row" id="color_upload_row" style="margin-bottom:0;">
                     <div class="upload-box-mini" style="background:white; border-color:var(--primary-border);" onclick="document.getElementById('pr_color_file').click()">
@@ -629,6 +632,7 @@
         window.promosDataCache = {};
         window.colorImagesArray = [];
         window.colorNamesArray = [];
+        window.colorHexesArray = [];
 
         window.showToast = function(msg, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -706,7 +710,7 @@
             try {
                 const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: "POST", body: formData });
                 const data = await res.json();
-                if(data.secure_url) { window.colorImagesArray.push(data.secure_url); window.colorNamesArray.push(''); window.renderColorImages(); }
+                if(data.secure_url) { window.colorImagesArray.push(data.secure_url); window.colorNamesArray.push(''); window.colorHexesArray.push(''); window.renderColorImages(); }
             } catch(error) { showToast("Color image upload failed", "error"); }
             
             const loaderNode = document.getElementById(loaderId);
@@ -714,19 +718,30 @@
             event.target.value = ''; 
         };
 
+        const NAME_HEX = {'red':'#C8102E','maroon':'#6D1230','wine':'#5E1A2B','rani pink':'#D81B60','pink':'#F4A6C0','magenta':'#C2185B','coral':'#F08A6E','peach':'#F6C1A5','orange':'#E2711D','rust':'#B7410E','mustard':'#D4A017','yellow':'#E8B923','gold':'#C9A227','beige':'#D9C3A0','ivory':'#F5EFE0','white':'#FFFFFF','green':'#2E7D5B','emerald':'#0F7B5A','olive':'#6B7A2A','teal':'#0F766E','blue':'#1F4E9C','navy blue':'#1B2A5C','lavender':'#C7B8E6','violet':'#9B6BC9','purple':'#6B3FA0','brown':'#7B4B2A','gray':'#8A8A8A','black':'#1A1A1A'};
+        window.colorNameTyped = function(index, el) {
+            window.colorNamesArray[index] = el.value;
+            const hx = NAME_HEX[String(el.value).trim().toLowerCase()];
+            if (hx && !window.colorHexesArray[index]) {
+                window.colorHexesArray[index] = hx;
+                const pk = el.parentElement.querySelector('.color-hex-input');
+                if (pk) pk.value = hx;
+            }
+        };
         window.renderColorImages = function() {
             const container = document.getElementById('color_upload_row');
             let html = '';
             window.colorImagesArray.forEach((url, index) => {
                 const nm = String(window.colorNamesArray[index] || '').replace(/"/g, '&quot;');
-                html += `<div class="color-cell"><div class="upload-box-mini" style="position:relative;"><button class="remove-img-btn" onclick="removeColorImage(${index}, event)"><i class="fa-solid fa-xmark"></i></button><img src="${url}" class="preview-media" style="border-radius:12px;"></div><input type="text" class="color-name-input" placeholder="Color name" value="${nm}" oninput="window.colorNamesArray[${index}]=this.value"></div>`;
+                const hx = window.colorHexesArray[index] || '#000000';
+                html += `<div class="color-cell"><div class="upload-box-mini" style="position:relative;"><button class="remove-img-btn" onclick="removeColorImage(${index}, event)"><i class="fa-solid fa-xmark"></i></button><img src="${url}" class="preview-media" style="border-radius:12px;"></div><div class="color-meta"><input type="color" class="color-hex-input" value="${hx}" title="Color select karo" oninput="window.colorHexesArray[${index}]=this.value"><input type="text" class="color-name-input" placeholder="Color name" value="${nm}" oninput="window.colorNameTyped(${index},this)"></div></div>`;
             });
             html += `<div class="upload-box-mini" style="background:white; border-color:var(--primary-border);" onclick="document.getElementById('pr_color_file').click()"><i class="fa-solid fa-plus" style="color:var(--primary);"></i><p style="color:var(--primary);">Add Photo</p></div>`;
             container.innerHTML = html;
         };
 
         window.removeColorImage = function(index, event) {
-            event.stopPropagation(); window.colorImagesArray.splice(index, 1); window.colorNamesArray.splice(index, 1); window.renderColorImages();
+            event.stopPropagation(); window.colorImagesArray.splice(index, 1); window.colorNamesArray.splice(index, 1); window.colorHexesArray.splice(index, 1); window.renderColorImages();
         };
 
         // NAVIGATION
@@ -758,7 +773,7 @@
                 document.getElementById('pr_desc').value = '';
                 document.getElementById('pr_rating').value = '';
                 
-                window.colorImagesArray = []; window.colorNamesArray = []; window.renderColorImages();
+                window.colorImagesArray = []; window.colorNamesArray = []; window.colorHexesArray = []; window.renderColorImages();
                 clearUpload('pr_main'); clearUpload('pr_back'); clearUpload('pr_side'); clearUpload('pr_vid');
                 
                 document.getElementById('productSheetTitle').innerText = 'Add New Product'; 
@@ -1169,7 +1184,7 @@
             document.getElementById('pr_rating').value = p.rating ?? '';
             document.getElementById('pr_colors_text').value = p.colorsInfo || ((p.colors && Array.isArray(p.colors)) ? p.colors.join(', ') : '');
             
-            window.colorImagesArray = p.colorImages || []; window.colorNamesArray = p.colorNames || []; window.renderColorImages();
+            window.colorImagesArray = p.colorImages || []; window.colorNamesArray = p.colorNames || []; window.colorHexesArray = p.colorHexes || []; window.renderColorImages();
             
             const setupMediaPreview = (prefix, url, type) => {
                 document.getElementById(`${prefix}_final_url`).value = url || ''; const box = document.getElementById(`${prefix}_box`);
@@ -1207,7 +1222,7 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...'; btn.disabled = true;
 
             try {
-                let payload = { name, price: Number(price) || price, mrp: Number(mrp) || mrp, category: cat, fabric, pattern, description: desc, rating, colorsInfo: colorsInputText, colors: colorsArray, colorImages: window.colorImagesArray, colorNames: window.colorNamesArray, imageMain: imgMain, imageBack: imgBack, imageSide: imgSide, videoUrl: videoUrl, updatedAt: serverTimestamp() };
+                let payload = { name, price: Number(price) || price, mrp: Number(mrp) || mrp, category: cat, fabric, pattern, description: desc, rating, colorsInfo: colorsInputText, colors: colorsArray, colorImages: window.colorImagesArray, colorNames: window.colorNamesArray, colorHexes: window.colorHexesArray, imageMain: imgMain, imageBack: imgBack, imageSide: imgSide, videoUrl: videoUrl, updatedAt: serverTimestamp() };
                 Object.keys(payload).forEach(key => (payload[key] === undefined || payload[key] === '') && delete payload[key]);
 
                 if(id) await updateDoc(doc(db, targetCol, id), payload); 
