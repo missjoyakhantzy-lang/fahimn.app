@@ -4,7 +4,7 @@
      <script src="/cookie-consent.js" defer></script>
    - Floating consent banner (Accept / Reject / Customise)
    - Preferences sheet with granular category toggles
-   - Consent stored locally (never sent anywhere)
+   - Consent stored locally; anonymous choice counts reported to /api/consents (no identity)
    - Script gating: AaviraConsent.loadScript(src, category)
    - Re-open anytime: AaviraConsent.openPrefs()
    ============================================================ */
@@ -102,6 +102,30 @@
     document.head.appendChild(s);
   }
 
+  function choiceOf(cats) {
+    var on = ['preferences', 'analytics', 'marketing'].filter(function (k) { return !!cats[k]; }).length;
+    if (on === 3) return 'accepted';
+    if (on === 0) return 'rejected';
+    return 'customized';
+  }
+
+  /* Anonymous consent stats (privacy-safe: sirf choice ki ginti, koi pehchan nahi).
+     Endpoint live nahi hai to chup-chaap skip — koi error nahi. */
+  var CONSENTS_URL = 'https://server-js-psi-five.vercel.app/api/consents';
+  function reportConsent(state) {
+    try {
+      if (!window.fetch) return;
+      var payload = JSON.stringify({
+        v: state.v, choice: choiceOf(state.cats), cats: state.cats, at: state.ts
+      });
+      fetch(CONSENTS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: payload, keepalive: true
+      }).catch(function () {});
+    } catch (e) {}
+  }
+
   function save(cats) {
     var state = {
       v: CONSENT_VERSION,
@@ -116,6 +140,7 @@
     try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
     flushPending();
     try { document.dispatchEvent(new CustomEvent('aavira:consent', { detail: state })); } catch (e) {}
+    reportConsent(state);
     return state;
   }
 

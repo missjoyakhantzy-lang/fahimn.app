@@ -504,6 +504,7 @@ window.sendToVercelExperience = async function (expData) {
     const r = await jsonPost(`${VERCEL_URL}/api/experience`, {
         name: cleanStr(e.name, 60), email: cleanStr(e.email, 120).toLowerCase(),
         text: cleanStr(e.text, 500), photo: cleanStr(e.photo, 500),
+        avatar: cleanStr(e.avatar, 500),
         rating: Math.max(1, Math.min(5, Number(e.rating) || 5)), date: cleanStr(e.date, 40)
     }, window.authHeaders());
     return isSuccess(r);
