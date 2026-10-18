@@ -1229,7 +1229,7 @@
                 else { payload.createdAt = serverTimestamp(); payload.brand = "Aavira"; await setDoc(doc(collection(db, targetCol)), payload); }
                 
                 closeSheets(); fetchProducts(); showToast(`Successfully saved to ${targetCol}`);
-            } catch(error) { showToast("Error saving product", "error"); } finally { btn.innerHTML = ogText; btn.disabled = false; }
+            } catch(error) { console.error("Save failed:", error); showToast("Save failed: " + (error && error.message ? error.message : error), "error"); } finally { btn.innerHTML = ogText; btn.disabled = false; }
         };
 
         // 4. PROMOS, BANNERS, CATEGORIES
@@ -1486,6 +1486,8 @@
                 const gate = document.getElementById('loginGate');
                 if (user && user.uid === ADMIN_UID) {
                     gate.style.display = 'none';
+                    const sub = document.querySelector('.header-title span');
+                    if (sub) sub.textContent = user.email || 'Administrator Access';
                     if (!appBooted) { appBooted = true; loadData(); }
                 } else {
                     if (user) { signOut(auth); return; }
