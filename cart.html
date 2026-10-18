@@ -1118,7 +1118,7 @@ body.aavira-theme .card-loading-overlay{
         if(!btn || btn.classList.contains('is-busy')) return;
         haptic(20);
         btn.classList.add('is-busy');
-        setTimeout(()=>{ window.location.href = './'; }, BACK_LOAD_MS);
+        setTimeout(()=>{ try{ if(document.referrer&&new URL(document.referrer).origin===location.origin&&history.length>1){ history.back(); return; } }catch(e){} window.location.href = './'; }, BACK_LOAD_MS);
     };
 
     let healing = false;
