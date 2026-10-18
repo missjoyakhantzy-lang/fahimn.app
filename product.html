@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
 <style>
 :root{--rani:#161616;--rani-dark:#000000;--gold:#D4AF37;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#242024;--muted:#6B6369;--line:#E7E0D9;--blush:#F5F1E8;--green:#15803D;--danger:#B91C1C}
@@ -42,6 +42,7 @@ a{color:inherit;text-decoration:none}
 .ib{position:relative;width:42px;height:42px;border:0;background:transparent;border-radius:50%;color:var(--ink);font-size:17px;display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s,transform .2s}
 @media(hover:hover){.ib:hover{background:var(--blush);color:var(--rani)}}
 .ib:active{transform:scale(.94)}
+svg.lucide{width:1em;height:1em;flex-shrink:0}
 .ib svg{width:22px;height:22px;stroke-width:1.6}
 .ib.on svg{color:var(--rani);fill:currentColor}
 .ib.back-fab{width:46px;height:46px;background:var(--rani);color:#fff;font-size:17px}
@@ -160,8 +161,8 @@ a{color:inherit;text-decoration:none}
 .skip{width:100%;margin-top:10px;padding:13px;border:1.5px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);font-size:13px;font-weight:600}
 .skip:hover{border-color:var(--ink)}
 .pick{display:flex;justify-content:center;gap:10px;margin:6px 0 18px}
-.pick i{font-size:32px;color:#E5E7EB;cursor:pointer;transition:color .15s}
-.pick i.on{color:var(--gold)}
+.pick svg.lucide{width:32px;height:32px;color:#E5E7EB;cursor:pointer;transition:color .15s}
+.pick svg.lucide.on{color:var(--gold);fill:currentColor}
 .perks{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:14px}
 .perks li{display:flex;gap:12px;font-size:13px;line-height:1.5;color:#4B5563}
 .perks i{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--blush);color:var(--rani);display:flex;align-items:center;justify-content:center;font-size:13px}
@@ -202,6 +203,7 @@ a{color:inherit;text-decoration:none}
 .low{display:block;margin-top:6px;font-size:12px;font-weight:600;color:#B45309;background:rgba(180,83,9,.08);padding:3px 6px;border-radius:4px;width:fit-content}
 .heart{position:absolute;right:8px;top:8px;width:30px;height:30px;border-radius:50%;border:0;background:rgba(255,255,255,.95);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.14);font-size:14px}
 .heart.on{color:var(--rani);background:var(--blush)}
+.heart.on svg.lucide{fill:currentColor}
 
 .footer{background:#1B1719;color:#fff;padding:36px 20px calc(100px + env(safe-area-inset-bottom,0px));border-top:3px solid rgba(212,175,55,.4)}
 .footer-brand{font-family:"Playfair Display",serif;font-size:24px;font-weight:600;color:var(--gold)}
@@ -265,7 +267,7 @@ button.go{background:#161616;border:0;cursor:pointer}
 <body>
 <div class="app">
   <header class="hdr">
-    <div><button class="ib back-fab" type="button" onclick="goBack(this)" aria-label="Back"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <div><button class="ib back-fab" type="button" onclick="goBack(this)" aria-label="Back"><i data-lucide="arrow-left"></i></button></div>
     <a href="./" aria-label="Aavira home"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira"></a>
     <div class="hdr-r">
       <button class="ib" type="button" id="wishBtn" onclick="toggleWish()" aria-label="Wishlist"><i data-lucide="heart"></i><span class="badge" id="wishBadge" hidden>0</span></button>
@@ -292,25 +294,25 @@ button.go{background:#161616;border:0;cursor:pointer}
     <div class="p-cartbar" id="pCartBar" hidden>
       <div class="p-cb-imgs" id="pCartBarImgs"></div>
       <span class="p-cb-count" id="pCartBarCount"></span>
-      <button class="p-cb-btn" type="button" onclick="location.href='/cart.html'">View all products <i class="fa-solid fa-arrow-right"></i></button>
+      <button class="p-cb-btn" type="button" onclick="location.href='/cart.html'">View all products <i data-lucide="arrow-right"></i></button>
     </div>
   </section>
 
   <section class="blk">
-    <div class="wa"><span>Need help with size or fabric?<br><b>Chat with our stylist</b></span><a href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a></div>
+    <div class="wa"><span>Need help with size or fabric?<br><b>Chat with our stylist</b></span><a href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i data-lucide="message-circle"></i></a></div>
   </section>
 
   <section class="blk">
     <h2>Product details</h2>
     <div class="acc">
-      <div class="acc-i on"><button class="acc-h" type="button" onclick="toggleAcc(this)">Description <i class="fa-solid fa-chevron-down"></i></button><div class="acc-b"><p id="desc"></p><p id="sku" style="margin-top:10px;font-weight:600;color:var(--ink)"></p></div></div>
-      <div class="acc-i" id="specItem" hidden><button class="acc-h" type="button" onclick="toggleAcc(this)">Style &amp; specifications <i class="fa-solid fa-chevron-down"></i></button><div class="acc-b"><ul id="specs"></ul></div></div>
-      <div class="acc-i"><button class="acc-h" type="button" onclick="toggleAcc(this)">Shipping &amp; returns <i class="fa-solid fa-chevron-down"></i></button><div class="acc-b"><ul><li>Free delivery on prepaid orders across India.</li><li>Return window of 4 hours from delivery for defects or exchange.</li></ul></div></div>
+      <div class="acc-i on"><button class="acc-h" type="button" onclick="toggleAcc(this)">Description <i data-lucide="chevron-down"></i></button><div class="acc-b"><p id="desc"></p><p id="sku" style="margin-top:10px;font-weight:600;color:var(--ink)"></p></div></div>
+      <div class="acc-i" id="specItem" hidden><button class="acc-h" type="button" onclick="toggleAcc(this)">Style &amp; specifications <i data-lucide="chevron-down"></i></button><div class="acc-b"><ul id="specs"></ul></div></div>
+      <div class="acc-i"><button class="acc-h" type="button" onclick="toggleAcc(this)">Shipping &amp; returns <i data-lucide="chevron-down"></i></button><div class="acc-b"><ul><li>Free delivery on prepaid orders across India.</li><li>Return window of 4 hours from delivery for defects or exchange.</li></ul></div></div>
     </div>
     <div class="trust">
-      <div><i class="fa-solid fa-shield-halved"></i>100%<br>Original</div>
-      <div><i class="fa-solid fa-truck"></i>Premium<br>Shipping</div>
-      <div><i class="fa-solid fa-money-bill-transfer"></i>Cash on<br>Delivery</div>
+      <div><i data-lucide="shield-check"></i>100%<br>Original</div>
+      <div><i data-lucide="truck"></i>Premium<br>Shipping</div>
+      <div><i data-lucide="banknote"></i>Cash on<br>Delivery</div>
     </div>
   </section>
 
@@ -318,7 +320,7 @@ button.go{background:#161616;border:0;cursor:pointer}
     <h2>Ratings &amp; reviews</h2>
     <div id="summary"></div>
     <div class="rv-list" id="reviews"><div class="empty">Loading reviews…</div></div>
-    <button class="btn-write" type="button" id="btnWrite" onclick="writeReview()"><i class="fa-solid fa-plus"></i>Write a review</button>
+    <button class="btn-write" type="button" id="btnWrite" onclick="writeReview()"><i data-lucide="plus"></i>Write a review</button>
   </section>
 
   <section class="blk" id="sugSec" hidden>
@@ -347,14 +349,14 @@ button.go{background:#161616;border:0;cursor:pointer}
 </div>
 
 <div class="bar-bottom">
-  <button class="btn btn-o" type="button" id="btnCart" onclick="addToCart()"><i class="fa-solid fa-cart-plus"></i>Add to cart</button>
-  <button class="btn btn-p" type="button" id="btnBuy" onclick="buyNow()"><i class="fa-solid fa-bolt"></i>Buy now</button>
+  <button class="btn btn-o" type="button" id="btnCart" onclick="addToCart()"><i data-lucide="shopping-cart"></i>Add to cart</button>
+  <button class="btn btn-p" type="button" id="btnBuy" onclick="buyNow()"><i data-lucide="zap"></i>Buy now</button>
 </div>
 
 <!-- MODALS (same as before) -->
 <div class="ov" id="loginModal" onclick="if(event.target===this)closeModal('loginModal')">
   <div class="sheet">
-    <button class="x" type="button" onclick="closeModal('loginModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    <button class="x" type="button" onclick="closeModal('loginModal')" aria-label="Close"><i data-lucide="x"></i></button>
     <h3>Sign in to continue</h3>
     <p>Please log in or create an account to write a review.</p>
     <button class="mbtn" type="button" onclick="navigate('/auth/verify',this)">Log in / Sign up</button>
@@ -363,24 +365,24 @@ button.go{background:#161616;border:0;cursor:pointer}
 
 <div class="ov" id="buyModal" onclick="if(event.target===this)closeModal('buyModal')">
   <div class="sheet">
-    <button class="x" type="button" onclick="closeModal('buyModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    <button class="x" type="button" onclick="closeModal('buyModal')" aria-label="Close"><i data-lucide="x"></i></button>
     <h3>Log in to place your order</h3>
     <p>Signing in takes less than a minute and gives you full control of your order.</p>
     <ul class="perks">
-      <li><i class="fa-solid fa-location-dot"></i><span><b>Track your order.</b> Without logging in, you will not be able to track your order status or view your order history.</span></li>
-      <li><i class="fa-solid fa-bolt"></i><span><b>Faster checkout</b> with your details saved for next time.</span></li>
-      <li><i class="fa-solid fa-gift"></i><span><b>Offers &amp; rewards</b> including promo codes and referral benefits.</span></li>
+      <li><i data-lucide="map-pin"></i><span><b>Track your order.</b> Without logging in, you will not be able to track your order status or view your order history.</span></li>
+      <li><i data-lucide="zap"></i><span><b>Faster checkout</b> with your details saved for next time.</span></li>
+      <li><i data-lucide="gift"></i><span><b>Offers &amp; rewards</b> including promo codes and referral benefits.</span></li>
     </ul>
-    <a class="termlink" href="/terms"><span><i class="fa-solid fa-file-lines"></i> Terms &amp; policy conditions</span><i class="fa-solid fa-chevron-right"></i></a>
+    <a class="termlink" href="/terms"><span><i data-lucide="file-text"></i> Terms &amp; policy conditions</span><i data-lucide="chevron-right"></i></a>
     <p class="agree">By continuing you agree to our <a href="/terms">Terms &amp; Conditions</a> and <a href="/terms">Privacy Policy</a>.</p>
     <button class="mbtn" type="button" onclick="navigate('/auth/verify',this)">Log in / Sign up</button>
-    <button class="skip" type="button" onclick="skipLogin(this)">Skip &amp; continue to checkout <i class="fa-solid fa-arrow-right"></i></button>
+    <button class="skip" type="button" onclick="skipLogin(this)">Skip &amp; continue to checkout <i data-lucide="arrow-right"></i></button>
   </div>
 </div>
 
 <div class="ov" id="sizeModal" onclick="if(event.target===this)closeModal('sizeModal')">
   <div class="sheet">
-    <button class="x" type="button" onclick="closeModal('sizeModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    <button class="x" type="button" onclick="closeModal('sizeModal')" aria-label="Close"><i data-lucide="x"></i></button>
     <h3>Custom size</h3><p>Enter your measurements in inches.</p>
     <div class="row2"><input class="fld" id="csBust" type="number" min="1" inputmode="decimal" placeholder="Bust (in)"><input class="fld" id="csWaist" type="number" min="1" inputmode="decimal" placeholder="Waist (in)"></div>
     <input class="fld" id="csNote" type="text" placeholder="Any specific instructions? (optional)">
@@ -390,7 +392,7 @@ button.go{background:#161616;border:0;cursor:pointer}
 
 <div class="ov" id="reviewModal" onclick="if(event.target===this)closeModal('reviewModal')">
   <div class="sheet">
-    <button class="x" type="button" onclick="closeModal('reviewModal')" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    <button class="x" type="button" onclick="closeModal('reviewModal')" aria-label="Close"><i data-lucide="x"></i></button>
     <h3>Rate &amp; review</h3><p>Tap a star to rate.</p>
     <div class="pick" id="pick"></div>
     <input class="fld" id="rvTitle" type="text" maxlength="80" placeholder="Title (optional)">
@@ -445,7 +447,7 @@ const withSpinner = (el, action) => {
 };
 
 const navigate = (url, el) => withSpinner(el, () => { location.href = url; });
-const goBack = el => withSpinner(el, () => (history.length > 1 ? history.back() : (location.href = './')));
+const goBack = el => withSpinner(el, () => { try { if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) { history.back(); return; } } catch (e) {} location.href = './'; });
 const skipLogin = el => { if (state.buyLink) navigate(state.buyLink, el); };
 
 let toastTimer;
@@ -497,8 +499,9 @@ const updateWishBadge = () => {
 };
 
 const starsHtml = rating => [1, 2, 3, 4, 5].map(i => {
-  const icon = rating >= i ? 'solid fa-star' : rating >= i - .5 ? 'solid fa-star-half-stroke' : 'regular fa-star';
-  return `<i class="fa-${icon}"></i>`;
+  const nm = rating >= i ? 'star' : rating >= i - .5 ? 'star-half' : 'star';
+  const fill = rating >= i ? ' fill="currentColor"' : '';
+  return `<i data-lucide="${nm}"${fill}></i>`;
 }).join('');
 
 const isWished = () => readJson('aavira_wishlist', []).map(String).includes(String(state.id));
@@ -617,7 +620,7 @@ const renderRatings = (experiences, all) => {
   chip.hidden = !(rating > 0);
   if (rating > 0) {
     chip.className = 'rate-chip' + (rating >= 4 ? '' : rating >= 3 ? ' mid' : ' bad');
-    chip.innerHTML = `<i class="fa-solid fa-star"></i>${rating.toFixed(1)}`;
+    chip.innerHTML = `<i data-lucide="star" fill="currentColor"></i>${rating.toFixed(1)}`;
   }
 
   const summary = $('#summary');
@@ -652,11 +655,12 @@ const renderRatings = (experiences, all) => {
       ${body ? `<p class="rv-b">${esc(body)}</p>` : ''}
     </article>`;
   }).join('');
+  if (window.lucide) lucide.createIcons();
 };
 
 const setStar = value => {
   state.rating = value;
-  $$('#pick i').forEach((star, i) => star.classList.toggle('on', i < value));
+  $$('#pick [data-lucide]').forEach((star, i) => star.classList.toggle('on', i < value));
 };
 
 const writeReview = () => {
@@ -775,12 +779,12 @@ const suggestionCard = product => {
     <div class="pc-foot">
       <a href="${href}"><span class="pc-name">${name}</span><span class="pc-price"><b>${formatPrice(price)}</b>${mrp > price ? `<s>${formatPrice(mrp)}</s>` : ''}</span></a>
       <div class="pc-row">
-        <a class="pc-meta" href="${href}"><span class="rating ${rating >= 4 ? '' : rating >= 3 ? 'mid' : rating > 0 ? 'bad' : 'none'}"><i class="fa-solid fa-star"></i>${rating > 0 ? rating.toFixed(1) : '0.0'}</span>${dots}</a>
-        <button type="button" class="go" data-sugqa="${id}" aria-label="Quick add ${name}"><i class="fa-solid fa-cart-plus"></i></button>
+        <a class="pc-meta" href="${href}"><span class="rating ${rating >= 4 ? '' : rating >= 3 ? 'mid' : rating > 0 ? 'bad' : 'none'}"><i data-lucide="star" fill="currentColor"></i>${rating > 0 ? rating.toFixed(1) : '0.0'}</span>${dots}</a>
+        <button type="button" class="go" data-sugqa="${id}" aria-label="Quick add ${name}"><i data-lucide="shopping-cart"></i></button>
       </div>
       ${Number.isFinite(stock) && stock > 0 && stock <= 4 ? `<span class="low">Only ${stock} left</span>` : ''}
     </div>
-    <button type="button" class="heart ${wished ? 'on' : ''}" data-heart="${id}" aria-label="Save ${name} to wishlist"><i class="fa-${wished ? 'solid' : 'regular'} fa-heart"></i></button>
+    <button type="button" class="heart ${wished ? 'on' : ''}" data-heart="${id}" aria-label="Save ${name} to wishlist"><i data-lucide="heart"></i></button>
   </article>`;
 };
 
@@ -813,6 +817,7 @@ const loadSuggestions = async () => {
   items.forEach(p => { sugMap[String(p.id)] = p; });
   $('#sugGrid').innerHTML = items.map(suggestionCard).join('');
   $('#sugSec').hidden = false;
+  if (window.lucide) lucide.createIcons();
 };
 
 const subscribeNewsletter = () => {
@@ -848,7 +853,7 @@ document.addEventListener('click', event => {
   const swatch = event.target.closest('.sw');
   if (swatch) return pickColor(Number(swatch.dataset.i));
 
-  const star = event.target.closest('#pick i');
+  const star = event.target.closest('#pick [data-lucide]');
   if (star) return setStar(Number(star.dataset.v));
 
   const dot = event.target.closest('.dot');
@@ -870,7 +875,6 @@ document.addEventListener('click', event => {
     const active = !list.includes(id);
     writeJson('aavira_wishlist', active ? [...list, id] : list.filter(item => item !== id));
     heart.classList.toggle('on', active);
-    heart.querySelector('i').className = `fa-${active ? 'solid' : 'regular'} fa-heart`;
     toast(active ? 'Added to wishlist' : 'Removed from wishlist');
     updateWishBadge();
   }
@@ -882,7 +886,7 @@ $('#carousel').addEventListener('scroll', () => {
   $$('.dot').forEach((dot, i) => dot.classList.toggle('on', i === index));
 }, { passive: true });
 
-$('#pick').innerHTML = [1, 2, 3, 4, 5].map(v => `<i class="fa-solid fa-star" data-v="${v}"></i>`).join('');
+$('#pick').innerHTML = [1, 2, 3, 4, 5].map(v => `<i data-lucide="star" data-v="${v}"></i>`).join('');
 
 [['#newsletterEmail', subscribeNewsletter], ['#csWaist', () => saveCustom($('#sizeModal .mbtn'))]].forEach(([selector, handler]) => {
   $(selector).addEventListener('keydown', event => { if (event.key === 'Enter') handler(); });
@@ -961,7 +965,7 @@ const init = async () => {
   });
   if (state.colors.length > 1) {
     $('#colorWrap').hidden = false;
-    $('#colors').innerHTML = state.colors.map((c, i) => `<button type="button" class="sw ${i ? '' : 'on'}" data-i="${i}" title="${esc(c.name)}" aria-label="${esc(c.name)}"><img src="${esc(safeUrl(c.image) || IMG_FALLBACK)}" alt="" ${FALLBACK_ATTR}><i class="fa-solid fa-check"></i></button>`).join('');
+    $('#colors').innerHTML = state.colors.map((c, i) => `<button type="button" class="sw ${i ? '' : 'on'}" data-i="${i}" title="${esc(c.name)}" aria-label="${esc(c.name)}"><img src="${esc(safeUrl(c.image) || IMG_FALLBACK)}" alt="" ${FALLBACK_ATTR}><i data-lucide="check"></i></button>`).join('');
     state.color = state.colors[0].name;
     $('#colorInfo').textContent = '· ' + state.color;
   }
@@ -1034,13 +1038,13 @@ $('#sqaAdd').addEventListener('click', () => {
 <!-- V12.54F suggested quick-add -->
 <div class="sqa-ov" id="sqaOv" hidden>
   <div class="sqa-sheet" role="dialog" aria-modal="true" aria-label="Quick add">
-    <button type="button" class="sqa-x" onclick="closeSugQA()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    <button type="button" class="sqa-x" onclick="closeSugQA()" aria-label="Close"><i data-lucide="x"></i></button>
     <img class="sqa-img" id="sqaImg" alt="">
     <div class="sqa-name" id="sqaName"></div>
     <div class="sqa-price" id="sqaPrice"></div>
     <div class="sqa-shead"><span>Select size</span><em class="sqa-err" id="sqaErr" hidden>Please select a size</em></div>
     <div class="sqa-sizes" id="sqaSizes"></div>
-    <button type="button" class="sqa-add" id="sqaAdd"><i class="fa-solid fa-cart-plus"></i>Add to bag</button>
+    <button type="button" class="sqa-add" id="sqaAdd"><i data-lucide="shopping-cart"></i>Add to bag</button>
   </div>
 </div>
 </body>
