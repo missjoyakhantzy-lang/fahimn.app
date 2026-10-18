@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
 <style>
 :root{--rani:#161616;--rani-dark:#000000;--gold:#D4AF37;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#242024;--muted:#6B6369;--line:#E7E0D9;--blush:#F5F1E8;--green:#15803D;--danger:#B91C1C}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -29,6 +29,7 @@ a{color:inherit;text-decoration:none}
 .hdr{position:sticky;top:0;z-index:40;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:60px;padding:env(safe-area-inset-top,0) 8px 0;background:#fff;border-bottom:1px solid var(--line)}
 .hdr h1{font-family:"Playfair Display",serif;font-size:18px;font-weight:600;text-align:center}
 .ib{width:42px;height:42px;border:0;background:none;border-radius:50%;color:var(--rani);font-size:18px;display:inline-flex;align-items:center;justify-content:center}
+svg.lucide{width:1em;height:1em;flex-shrink:0}
 .ib:hover{background:var(--blush)}
 .secure{justify-self:end;padding-right:10px;font-size:11px;font-weight:600;color:var(--green);display:flex;align-items:center;gap:5px}
 
@@ -340,9 +341,9 @@ main{padding:14px}
 <body>
 <div class="app">
   <header class="hdr">
-    <div><button class="ib" onclick="goBack(this)" aria-label="Back"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <div><button class="ib" onclick="goBack(this)" aria-label="Back"><i data-lucide="arrow-left"></i></button></div>
     <h1>Checkout</h1>
-    <span class="secure"><i class="fa-solid fa-lock"></i>Secure</span>
+    <span class="secure"><i data-lucide="lock"></i>Secure</span>
   </header>
 
   <main id="skelView" aria-hidden="true">
@@ -355,7 +356,7 @@ main{padding:14px}
   <div class="bar" id="skelBar" aria-hidden="true"><div class="bar-main"><div class="sk sk-amt"></div><div class="sk sk-pbtn"></div></div></div>
 
   <div class="empty" id="emptyView" hidden>
-    <i class="fa-solid fa-cart-shopping"></i>
+    <i data-lucide="shopping-cart"></i>
     <h2>Your cart is empty</h2>
     <p>Explore our latest collections and add something you love.</p>
     <a href="./">Shop new arrivals</a>
@@ -364,9 +365,9 @@ main{padding:14px}
   <main id="checkoutView" hidden>
     <section class="card">
       <h2>Delivery address</h2>
-      <div class="loginline" id="loginLine" hidden><i class="fa-solid fa-circle-user"></i><span id="loginText"></span></div>
+      <div class="loginline" id="loginLine" hidden><i data-lucide="circle-user"></i><span id="loginText"></span></div>
       <div id="addrBox"></div>
-      <button class="add-addr" type="button" onclick="openAddrScreen()"><i class="fa-solid fa-plus"></i>Add your address</button>
+      <button class="add-addr" type="button" onclick="openAddrScreen()"><i data-lucide="plus"></i>Add your address</button>
     </section>
 
     <section class="card">
@@ -382,8 +383,8 @@ main{padding:14px}
     <section class="card">
       <h2>Delivery</h2>
       <div class="opts">
-        <label class="opt"><input type="radio" name="delivery" value="0" checked><span class="radio"></span><span class="opt-ico"><i class="fa-solid fa-truck"></i></span><span class="opt-txt"><b>Standard shipping</b><small>4 to 6 business days</small></span><span class="tag free">Free</span></label>
-        <label class="opt"><input type="radio" name="delivery" value="99"><span class="radio"></span><span class="opt-ico"><i class="fa-solid fa-bolt"></i></span><span class="opt-txt"><b>Express priority</b><small>Faster dispatch</small></span><span class="tag">₹99</span></label>
+        <label class="opt"><input type="radio" name="delivery" value="0" checked><span class="radio"></span><span class="opt-ico"><i data-lucide="truck"></i></span><span class="opt-txt"><b>Standard shipping</b><small>4 to 6 business days</small></span><span class="tag free">Free</span></label>
+        <label class="opt"><input type="radio" name="delivery" value="99"><span class="radio"></span><span class="opt-ico"><i data-lucide="zap"></i></span><span class="opt-txt"><b>Express priority</b><small>Faster dispatch</small></span><span class="tag">₹99</span></label>
       </div>
       <label class="switch-row">
         <span><b>Premium gift wrap</b><small>Ribbon and seal, +₹49</small></span>
@@ -394,7 +395,7 @@ main{padding:14px}
     <section class="card">
       <h2>Payment</h2>
       <div class="opts">
-        <label class="opt"><input type="radio" name="payment" value="cod" checked><span class="radio"></span><span class="opt-ico"><i class="fa-solid fa-hand-holding-dollar"></i></span><span class="opt-txt"><b>Cash on delivery</b><small>Pay when your order arrives</small></span></label>
+        <label class="opt"><input type="radio" name="payment" value="cod" checked><span class="radio"></span><span class="opt-ico"><i data-lucide="hand-coins"></i></span><span class="opt-txt"><b>Cash on delivery</b><small>Pay when your order arrives</small></span></label>
         <label class="opt"><input type="radio" name="payment" value="online"><span class="radio"></span><span class="opt-ico upi"><img src="upi-logo.png" alt="UPI" onerror="this.replaceWith(document.createTextNode('UPI'))"></span><span class="opt-txt"><b>Online payment</b><small>UPI or card, confirmed on WhatsApp</small></span></label>
       </div>
     </section>
@@ -402,9 +403,9 @@ main{padding:14px}
     <section class="card coupon">
       <h2>Offers &amp; coupons</h2>
       <button class="cp-toggle" id="couponToggle" type="button" onclick="toggleCoupon()" aria-expanded="false">
-        <span class="cp-ic"><i class="fa-solid fa-ticket"></i></span>
+        <span class="cp-ic"><i data-lucide="ticket"></i></span>
         <span class="cp-tx"><b>Have a coupon code?</b><small>Tap to enter your code</small></span>
-        <i class="fa-solid fa-chevron-down chev"></i>
+        <i data-lucide="chevron-down"></i>
       </button>
       <div class="promo" id="promoForm" style="display:none">
         <input class="fld" id="promoInput" placeholder="Enter coupon code" autocomplete="off" autocapitalize="characters" aria-label="Coupon code">
@@ -412,8 +413,8 @@ main{padding:14px}
       </div>
       <p class="cp-err" id="promoErr" role="alert" hidden></p>
       <div class="applied" id="promoApplied">
-        <span class="ap-l"><i class="fa-solid fa-circle-check"></i><span><b id="promoName"></b> applied<small>You saved <b id="promoSave"></b></small></span></span>
-        <button type="button" onclick="removePromo()" aria-label="Remove coupon"><i class="fa-solid fa-xmark"></i></button>
+        <span class="ap-l"><i data-lucide="circle-check"></i><span><b id="promoName"></b> applied<small>You saved <b id="promoSave"></b></small></span></span>
+        <button type="button" onclick="removePromo()" aria-label="Remove coupon"><i data-lucide="x"></i></button>
       </div>
     </section>
 
@@ -431,7 +432,7 @@ main{padding:14px}
     </section>
     <footer class="foot">
       <img src="public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira Fashion" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='/file_0000000015bc82119a5830b82bcd3a20.png'}else{this.style.display='none'}">
-      <p class="foot-secure"><i class="fa-solid fa-shield-halved"></i>100% secure checkout</p>
+      <p class="foot-secure"><i data-lucide="shield-check"></i>100% secure checkout</p>
       <p class="foot-copy">&copy; <span id="copyYear">2026</span> Aavira Fashion. All rights reserved.</p>
     </footer>
   </main>
@@ -439,14 +440,14 @@ main{padding:14px}
   <div class="bar" id="payBar" hidden>
     <div class="bar-main">
       <div><small>Final amount</small><b id="barTotal">&#8377;0</b></div>
-      <button class="btn-place" id="placeBtn" type="button" onclick="placeOrder()"><i class="fa-solid fa-lock"></i>Place order</button>
+      <button class="btn-place" id="placeBtn" type="button" onclick="placeOrder()"><i data-lucide="lock"></i>Place order</button>
     </div>
   </div>
 </div>
 
 <div class="screen" id="addrScreen" role="dialog" aria-label="Add address">
   <header class="hdr">
-    <div><button class="ib" onclick="closeAddrScreen()" aria-label="Close"><i class="fa-solid fa-arrow-left"></i></button></div>
+    <div><button class="ib" onclick="closeAddrScreen()" aria-label="Close"><i data-lucide="arrow-left"></i></button></div>
     <h1 id="addrTitle">Add address</h1>
     <span></span>
   </header>
@@ -454,45 +455,45 @@ main{padding:14px}
     <form class="form" id="addressForm" autocomplete="off" novalidate onsubmit="return false">
       <p class="sec-t">Contact details</p>
       <div class="grp fx"><label for="ad_name">Full name</label>
-        <div class="fx-box"><i class="fa-solid fa-user lead"></i><input class="fld" id="ad_name" placeholder="Enter your full name" autocomplete="name"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i class="fa-solid fa-circle-info"></i></button></div>
-        <div class="fx-tip"><i class="fa-solid fa-lightbulb"></i> यहाँ अपना पूरा नाम लिखें, जैसा आपके पहचान पत्र पर है। पार्सल इसी नाम से आएगा।<br><b>जैसे:</b> राहुल कुमार</div><span class="err">Enter your full name</span></div>
+        <div class="fx-box"><i data-lucide="user"></i><input class="fld" id="ad_name" placeholder="Enter your full name" autocomplete="name"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i data-lucide="info"></i></button></div>
+        <div class="fx-tip"><i data-lucide="lightbulb"></i> यहाँ अपना पूरा नाम लिखें, जैसा आपके पहचान पत्र पर है। पार्सल इसी नाम से आएगा।<br><b>जैसे:</b> राहुल कुमार</div><span class="err">Enter your full name</span></div>
       <div class="grp fx"><label for="ad_phone">Mobile number</label>
-        <div class="fx-box"><i class="fa-solid fa-phone lead"></i><input class="fld" id="ad_phone" placeholder="Enter your 10-digit mobile number" type="tel" inputmode="numeric" maxlength="10"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i class="fa-solid fa-circle-info"></i></button></div>
-        <div class="fx-tip"><i class="fa-solid fa-lightbulb"></i> अपना 10 अंकों का मोबाइल नंबर डालें। डिलीवरी वाला भैया इसी नंबर पर फोन करेगा। नंबर 6, 7, 8 या 9 से शुरू होना चाहिए।<br><b>जैसे:</b> 9876543210</div><span class="err">10-digit number required</span></div>
+        <div class="fx-box"><i data-lucide="phone"></i><input class="fld" id="ad_phone" placeholder="Enter your 10-digit mobile number" type="tel" inputmode="numeric" maxlength="10"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i data-lucide="info"></i></button></div>
+        <div class="fx-tip"><i data-lucide="lightbulb"></i> अपना 10 अंकों का मोबाइल नंबर डालें। डिलीवरी वाला भैया इसी नंबर पर फोन करेगा। नंबर 6, 7, 8 या 9 से शुरू होना चाहिए।<br><b>जैसे:</b> 9876543210</div><span class="err">10-digit number required</span></div>
       <div class="grp fx" id="emailGrp"><label for="ad_email">Email</label>
-        <div class="fx-box" id="emailBox"><i class="fa-solid fa-envelope lead"></i><input class="fld" id="ad_email" placeholder="Enter your email address" type="email"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i class="fa-solid fa-circle-info"></i></button></div>
-        <div class="fx-tip" id="emailTip"><i class="fa-solid fa-lightbulb"></i> अपनी ईमेल आईडी डालें। आपके ऑर्डर की जानकारी इसी पर आएगी।<br><b>जैसे:</b> rahul@gmail.com</div><span class="err">Enter a valid email</span></div>
+        <div class="fx-box" id="emailBox"><i data-lucide="mail"></i><input class="fld" id="ad_email" placeholder="Enter your email address" type="email"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i data-lucide="info"></i></button></div>
+        <div class="fx-tip" id="emailTip"><i data-lucide="lightbulb"></i> अपनी ईमेल आईडी डालें। आपके ऑर्डर की जानकारी इसी पर आएगी।<br><b>जैसे:</b> rahul@gmail.com</div><span class="err">Enter a valid email</span></div>
 
       <p class="sec-t" style="margin-top:8px">Address details</p>
       <div class="grp fx"><label for="ad_pin">Pincode</label>
-        <div class="fx-box"><i class="fa-solid fa-map-pin lead"></i><input class="fld" id="ad_pin" placeholder="Enter your 6-digit pincode" inputmode="numeric" maxlength="6"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i class="fa-solid fa-circle-info"></i></button></div>
-        <div class="fx-tip"><i class="fa-solid fa-lightbulb"></i> अपने इलाके का 6 अंकों का पिनकोड डालें। पिनकोड डालते ही आपका जिला अपने आप भर जाएगा।<br><b>जैसे:</b> 800001</div><span class="err">6-digit pincode</span></div>
+        <div class="fx-box"><i data-lucide="map-pin"></i><input class="fld" id="ad_pin" placeholder="Enter your 6-digit pincode" inputmode="numeric" maxlength="6"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i data-lucide="info"></i></button></div>
+        <div class="fx-tip"><i data-lucide="lightbulb"></i> अपने इलाके का 6 अंकों का पिनकोड डालें। पिनकोड डालते ही आपका जिला अपने आप भर जाएगा।<br><b>जैसे:</b> 800001</div><span class="err">6-digit pincode</span></div>
       <p class="pin-status" id="pinStatus" hidden></p>
       <div class="grp fx"><label for="ad_city">District, State</label>
-        <div class="fx-box" role="button" tabindex="0" onclick="if(!event.target.closest('.fx-i'))openDistrict()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDistrict()}"><i class="fa-solid fa-city lead"></i><input class="fld" id="ad_city" placeholder="Tap to select your district" readonly><i class="fa-solid fa-chevron-down caret2"></i><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i class="fa-solid fa-circle-info"></i></button></div>
-        <div class="fx-tip"><i class="fa-solid fa-lightbulb"></i> इस बॉक्स पर टैप करें और लिस्ट में से अपना जिला चुनें। ऊपर सर्च करके भी ढूंढ सकते हैं। पिनकोड डालने पर यह अपने आप भर जाता है।</div><span class="err">Select your district</span></div>
+        <div class="fx-box" role="button" tabindex="0" onclick="if(!event.target.closest('.fx-i'))openDistrict()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDistrict()}"><i data-lucide="building-2"></i><input class="fld" id="ad_city" placeholder="Tap to select your district" readonly><i data-lucide="chevron-down"></i><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i data-lucide="info"></i></button></div>
+        <div class="fx-tip"><i data-lucide="lightbulb"></i> इस बॉक्स पर टैप करें और लिस्ट में से अपना जिला चुनें। ऊपर सर्च करके भी ढूंढ सकते हैं। पिनकोड डालने पर यह अपने आप भर जाता है।</div><span class="err">Select your district</span></div>
       <div class="grp fx"><label for="ad_address">House no, street, area</label>
-        <div class="fx-box"><i class="fa-solid fa-house lead"></i><input class="fld" id="ad_address" placeholder="Enter house no, street, area" ><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i class="fa-solid fa-circle-info"></i></button></div>
-        <div class="fx-tip"><i class="fa-solid fa-lightbulb"></i> अपना मकान नंबर, गली या मोहल्ले का नाम और पास की कोई पहचान लिखें, ताकि डिलीवरी वाले को घर ढूंढने में आसानी हो।<br><b>जैसे:</b> मकान नं. 12, गांधी नगर, स्कूल के पास</div><span class="err">Enter your full address</span></div>
+        <div class="fx-box"><i data-lucide="house"></i><input class="fld" id="ad_address" placeholder="Enter house no, street, area" ><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i data-lucide="info"></i></button></div>
+        <div class="fx-tip"><i data-lucide="lightbulb"></i> अपना मकान नंबर, गली या मोहल्ले का नाम और पास की कोई पहचान लिखें, ताकि डिलीवरी वाले को घर ढूंढने में आसानी हो।<br><b>जैसे:</b> मकान नं. 12, गांधी नगर, स्कूल के पास</div><span class="err">Enter your full address</span></div>
       <div class="grp fx"><label for="ad_map_link">Google Maps link (optional)</label>
-        <div class="fx-box"><i class="fa-solid fa-location-crosshairs lead"></i><input class="fld" id="ad_map_link" placeholder="Paste Google Maps link (optional)" type="url"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i class="fa-solid fa-circle-info"></i></button></div>
-        <div class="fx-tip"><i class="fa-solid fa-lightbulb"></i> यह जरूरी नहीं है। Google Maps खोलें, अपनी जगह पर टैप करें, फिर Share दबाएं और Copy link करें। उस लिंक को यहाँ पेस्ट कर दें। इससे डिलीवरी आसान हो जाती है।</div></div>
+        <div class="fx-box"><i data-lucide="crosshair"></i><input class="fld" id="ad_map_link" placeholder="Paste Google Maps link (optional)" type="url"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Kya likhna hai"><i data-lucide="info"></i></button></div>
+        <div class="fx-tip"><i data-lucide="lightbulb"></i> यह जरूरी नहीं है। Google Maps खोलें, अपनी जगह पर टैप करें, फिर Share दबाएं और Copy link करें। उस लिंक को यहाँ पेस्ट कर दें। इससे डिलीवरी आसान हो जाती है।</div></div>
 
       <p class="sec-t" style="margin-top:8px">Save address as</p>
       <div class="chips" id="typeChips">
-        <button type="button" class="chip on" data-t="Home"><i class="fa-solid fa-house"></i>Home</button>
-        <button type="button" class="chip" data-t="Work"><i class="fa-solid fa-briefcase"></i>Work</button>
-        <button type="button" class="chip" data-t="Other"><i class="fa-solid fa-location-dot"></i>Other</button>
+        <button type="button" class="chip on" data-t="Home"><i data-lucide="house"></i>Home</button>
+        <button type="button" class="chip" data-t="Work"><i data-lucide="briefcase"></i>Work</button>
+        <button type="button" class="chip" data-t="Other"><i data-lucide="map-pin"></i>Other</button>
       </div>
     </form>
   </div>
-  <div class="screen-foot"><button class="btn-save" id="saveAddrBtn" type="button" onclick="saveAddress()"><i class="fa-solid fa-check"></i>Save and deliver here</button></div>
+  <div class="screen-foot"><button class="btn-save" id="saveAddrBtn" type="button" onclick="saveAddress()"><i data-lucide="check"></i>Save and deliver here</button></div>
 </div>
 
 <div class="sheet-wrap" id="sheetWrap" onclick="if(event.target===this)closeSheet()"><div class="sheet" id="sheet"></div></div>
 
 <div class="fs" id="fsView" role="dialog" aria-label="Product photo">
-  <button type="button" class="fs-x" onclick="closeFull()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+  <button type="button" class="fs-x" onclick="closeFull()" aria-label="Close"><i data-lucide="x"></i></button>
   <div class="fs-stage"><img id="fsImg" alt="" onclick="this.classList.toggle('zoom')"></div>
   <div class="fs-cap" id="fsCap"></div>
 </div>
@@ -500,9 +501,9 @@ main{padding:14px}
 <div class="dist-wrap" id="distWrap" onclick="if(event.target===this)closeDistrict()">
   <div class="dist" role="dialog" aria-label="Select district">
     <div class="grab"></div>
-    <div class="dist-top"><h3>Select district</h3><button type="button" class="sh-x" onclick="closeDistrict()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
-    <p class="dist-sub"><i class="fa-solid fa-location-dot"></i>Bihar · <span id="distCount">38</span> districts</p>
-    <div class="dist-search"><i class="fa-solid fa-magnifying-glass"></i><input id="distSearch" type="search" placeholder="Search district" autocomplete="off" aria-label="Search district"></div>
+    <div class="dist-top"><h3>Select district</h3><button type="button" class="sh-x" onclick="closeDistrict()" aria-label="Close"><i data-lucide="x"></i></button></div>
+    <p class="dist-sub"><i data-lucide="map-pin"></i>Bihar · <span id="distCount">38</span> districts</p>
+    <div class="dist-search"><i data-lucide="search"></i><input id="distSearch" type="search" placeholder="Search district" autocomplete="off" aria-label="Search district"></div>
     <div class="dist-list" id="distList"></div>
   </div>
 </div>
@@ -550,7 +551,7 @@ const withSpinner = (el, action) => {
   el.classList.add('is-busy');
   setTimeout(() => { el.classList.remove('is-busy'); action(); }, SPINNER_DELAY);
 };
-const goBack = el => withSpinner(el, () => (history.length > 1 ? history.back() : (location.href = './')));
+const goBack = el => withSpinner(el, () => { try { if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) { history.back(); return; } } catch (e) {} location.href = './'; });
 const navigate = (url, el) => withSpinner(el, () => { location.href = url; });
 
 let toastTimer;
@@ -636,7 +637,7 @@ const renderAddresses = () => {
   $('#loginLine').hidden = !email;
   $('#loginText').textContent = email ? `Saved addresses for ${email}` : '';
   if (!state.addresses.length) {
-    $('#addrBox').innerHTML = `<div class="noaddr"><i class="fa-solid fa-location-dot"></i>No saved address found.<br>Add one to continue.</div>`;
+    $('#addrBox').innerHTML = `<div class="noaddr"><i data-lucide="map-pin"></i>No saved address found.<br>Add one to continue.</div>`;
     return;
   }
   $('#addrBox').innerHTML = `<div class="addr-list">${state.addresses.map(a => `
@@ -645,13 +646,14 @@ const renderAddresses = () => {
       <div class="addr-body">
         <b>${esc(a.name)} <span class="type">${esc(a.type || 'Home')}</span></b>
         ${esc(a.address)}, ${esc(a.city)} - ${esc(a.pin)}<br>
-        <i class="fa-solid fa-phone" style="font-size:10px"></i> ${esc(a.phone)}
+        <i data-lucide="phone" style="font-size:10px"></i> ${esc(a.phone)}
         <div class="addr-act">
           <button type="button" onclick="event.stopPropagation();openAddrScreen('${esc(a.id)}')">Edit</button>
           <button type="button" class="del" onclick="event.stopPropagation();deleteAddress('${esc(a.id)}')">Remove</button>
         </div>
       </div>
     </div>`).join('')}</div>`;
+  icons();
 };
 const selectAddress = id => { state.selectedId = id; persistAddresses(); renderAddresses(); };
 const deleteAddress = id => {
@@ -762,8 +764,9 @@ const renderDistricts = () => {
   const list = BIHAR.filter(d => d.toLowerCase().includes(q));
   $('#distCount').textContent = list.length;
   $('#distList').innerHTML = list.length
-    ? list.map((d, i) => `<button type="button" class="d-item ${d === current ? 'on' : ''}" style="animation-delay:${Math.min(i, 14) * 22}ms" onclick="pickDistrict('${esc(d)}')"><span class="ico"><i class="fa-solid fa-location-dot"></i></span><span>${distHL(d, q)}</span><i class="fa-solid fa-circle-check tick"></i></button>`).join('')
-    : `<div class="d-empty"><i class="fa-solid fa-magnifying-glass-location"></i>No district found for "${esc(q)}"</div>`;
+    ? list.map((d, i) => `<button type="button" class="d-item ${d === current ? 'on' : ''}" style="animation-delay:${Math.min(i, 14) * 22}ms" onclick="pickDistrict('${esc(d)}')"><span class="ico"><i data-lucide="map-pin"></i></span><span>${distHL(d, q)}</span><i data-lucide="circle-check" class="tick"></i></button>`).join('')
+    : `<div class="d-empty"><i data-lucide="locate-fixed"></i>No district found for "${esc(q)}"</div>`;
+  icons();
 };
 const openDistrict = () => {
   $('#distSearch').value = '';
@@ -787,11 +790,13 @@ const pickDistrict = name => {
 };
 
 let pinSeq = 0;
+const icons = () => { if (window.lucide) lucide.createIcons(); };
 const pinStatus = (type, html) => {
   const el = $('#pinStatus');
   el.hidden = !html;
   el.className = 'pin-status ' + (type || '');
   el.innerHTML = html || '';
+  icons();
 };
 const detectPin = async pin => {
   const seq = ++pinSeq;
@@ -804,19 +809,19 @@ const detectPin = async pin => {
     const data = await res.json();
     if (seq !== pinSeq) return;
     const po = data?.[0]?.Status === 'Success' ? data[0].PostOffice?.[0] : null;
-    if (!po) { pinStatus('err', '<i class="fa-solid fa-circle-exclamation"></i>Pincode not found. Please select your district.'); return; }
+    if (!po) { pinStatus('err', '<i data-lucide="circle-alert"></i>Pincode not found. Please select your district.'); return; }
     const stateName = po.State || '';
     const d = stateName.toLowerCase() === 'bihar' ? matchDistrict(po.District) : '';
     if (d) {
       setDistrict(d);
-      pinStatus('ok', `<i class="fa-solid fa-circle-check"></i>Detected: ${esc(d)}, Bihar`);
+      pinStatus('ok', `<i data-lucide="circle-check"></i>Detected: ${esc(d)}, Bihar`);
     } else if (stateName) {
       setDistrict(po.District || po.Name, stateName);
-      pinStatus('ok', `<i class="fa-solid fa-circle-check"></i>Detected: ${esc(po.District || po.Name)}, ${esc(stateName)}`);
+      pinStatus('ok', `<i data-lucide="circle-check"></i>Detected: ${esc(po.District || po.Name)}, ${esc(stateName)}`);
     }
   } catch {
     if (seq !== pinSeq) return;
-    pinStatus('', '<i class="fa-solid fa-circle-info"></i>Could not auto-detect. Please select your district.');
+    pinStatus('', '<i data-lucide="info"></i>Could not auto-detect. Please select your district.');
   }
 };
 
@@ -831,6 +836,7 @@ const openFull = index => {
   $('#fsCap').innerHTML = `${esc(p.name)}<small>${money(parsePrice(p.price))} · Size: ${esc(item.size || 'Free Size')} · Qty: ${item.qty}</small>`;
   $('#fsView').classList.add('on');
   document.body.style.overflow = 'hidden';
+  icons();
 };
 const closeFull = () => { $('#fsView').classList.remove('on'); document.body.style.overflow = ''; };
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeFull(); });
@@ -946,14 +952,14 @@ const render = () => {
     const mrp = parsePrice(product.mrp);
     return `<div class="item">
       <button class="pic" type="button" onclick="openFull(${index})" aria-label="View full screen">
-        <img src="${productImage(item, product)}" alt="" ${IMG_ERROR}><span class="zoom"><i class="fa-solid fa-expand"></i></span>
+        <img src="${productImage(item, product)}" alt="" ${IMG_ERROR}><span class="zoom"><i data-lucide="expand"></i></span>
       </button>
       <div class="item-info">
         <h3>${esc(product.name)}</h3>
         <small>Size: ${esc(item.size || 'Free Size')} · Qty: ${item.qty}</small>
         <div class="item-price">${money(price * item.qty)}${mrp > price ? `<s>${money(mrp * item.qty)}</s>` : ''}</div>
       </div>
-      <button class="info-btn" type="button" onclick="openSheet(${index})" aria-label="Product info"><i class="fa-solid fa-circle-info"></i></button>
+      <button class="info-btn" type="button" onclick="openSheet(${index})" aria-label="Product info"><i data-lucide="info"></i></button>
     </div>`;
   }).join('');
 
@@ -982,7 +988,7 @@ const openSheet = index => {
   const off = mrp > price ? Math.round((mrp - price) / mrp * 100) : 0;
   const wished = readJson('aavira_wishlist', []).map(String).includes(item.productId);
   $('#sheet').innerHTML = `<div class="grab"></div>
-    <div class="sh-head"><h3>${esc(p.name)}</h3><button type="button" class="sh-x" onclick="closeSheet()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="sh-head"><h3>${esc(p.name)}</h3><button type="button" class="sh-x" onclick="closeSheet()" aria-label="Close"><i data-lucide="x"></i></button></div>
     <div class="price">${money(price)}${mrp > price ? `<s>${money(mrp)}</s> <small style="color:var(--green);font-size:12px;font-weight:700">${off}% off</small>` : ''}</div>
     <div class="lbl">Size</div>
     <div class="chips">${sizes.map(s => `<button type="button" class="chip ${String(s) === String(item.size) ? 'on' : ''}" onclick="changeSize('${esc(s)}')">${esc(s)}</button>`).join('')}</div>
@@ -991,16 +997,17 @@ const openSheet = index => {
     <div class="lbl">Quantity</div>
     <div class="qty-row">
       <div class="qty"><button type="button" onclick="changeQty(-1)" aria-label="Decrease">−</button><span>${item.qty}</span><button type="button" onclick="changeQty(1)" aria-label="Increase">+</button></div>
-      <button class="more" type="button" onclick="changeQty(1)"><i class="fa-solid fa-plus"></i>Add 1 more</button>
+      <button class="more" type="button" onclick="changeQty(1)"><i data-lucide="plus"></i>Add 1 more</button>
     </div>
     <div class="line-total"><span>Item total (${item.qty} × ${money(price)})</span><b>${money(price * item.qty)}</b></div>
     <div class="sheet-acts">
-      <button class="wish ${wished ? 'on' : ''}" type="button" onclick="wishItem()"><i class="fa-${wished ? 'solid' : 'regular'} fa-heart"></i>${wished ? 'In wishlist' : 'Add to wishlist'}</button>
-      <button class="rm" type="button" onclick="removeItem(${index})"><i class="fa-solid fa-trash-can"></i>Remove</button>
+      <button class="wish ${wished ? 'on' : ''}" type="button" onclick="wishItem()"><i data-lucide="heart"></i>${wished ? 'In wishlist' : 'Add to wishlist'}</button>
+      <button class="rm" type="button" onclick="removeItem(${index})"><i data-lucide="trash-2"></i>Remove</button>
     </div>
     <button class="done" type="button" onclick="closeSheet()">Done</button>`;
   $('#sheetWrap').classList.add('on');
   document.body.style.overflow = 'hidden';
+  icons();
 };
 const closeSheet = () => { $('#sheetWrap').classList.remove('on'); document.body.style.overflow = ''; };
 const changeSize = s => { state.cart[state.sheetIndex].size = s; saveCart(); render(); openSheet(state.sheetIndex); };
@@ -1106,7 +1113,7 @@ const removePromo = () => {
   toast('Coupon removed');
 };
 
-const openDialog = html => { $('#dialog').innerHTML = html; $('#overlay').classList.add('on'); };
+const openDialog = html => { $('#dialog').innerHTML = html; $('#overlay').classList.add('on'); icons(); };
 const showProcessing = text => openDialog(`<div class="loader"></div><h2>Processing order</h2><p>${esc(text)}</p>`);
 
 const openWhatsApp = () => {
@@ -1147,13 +1154,13 @@ const notifyPlacedEmail = orderId => {
 const showOnlineResult = (orderId, order) => {
   const message = `*AAVIRA - ONLINE PAYMENT REQUEST*\n\nHello Team Aavira! I would like to complete the online payment for my order.\n\n*ORDER ID:* #${orderId}\n*NAME:* ${order.customerName}\n*MOBILE:* ${order.phone}\n\n*ADDRESS:*\n${order.address}\n\n*TOTAL TO PAY: ${money(order.totalAmount)}*\n\n_Please share the UPI ID / Payment QR code. Thank you!_`;
   state.whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-  openDialog(`<div class="badge-ico" style="background:#F59E0B"><i class="fa-solid fa-hourglass-half"></i></div>
+  openDialog(`<div class="badge-ico" style="background:#F59E0B"><i data-lucide="hourglass"></i></div>
     <h2>Awaiting payment</h2>
     <div class="oid">ORDER ID: ${esc(orderId)}</div>
     <p>Complete the payment on WhatsApp to confirm your order.</p>
     <div class="acts">
-      <button class="btn-wa" type="button" onclick="openWhatsApp()"><i class="fa-brands fa-whatsapp"></i>Open WhatsApp <small id="waTimer">5s</small></button>
-      <button class="btn-line" type="button" onclick="navigate('${esc(orderPageUrl(orderId))}',this)"><i class="fa-solid fa-box"></i>${state.verified ? 'View my orders' : 'Track my order'}</button>
+      <button class="btn-wa" type="button" onclick="openWhatsApp()"><i data-lucide="message-circle"></i>Open WhatsApp <small id="waTimer">5s</small></button>
+      <button class="btn-line" type="button" onclick="navigate('${esc(orderPageUrl(orderId))}',this)"><i data-lucide="package"></i>${state.verified ? 'View my orders' : 'Track my order'}</button>
     </div>`);
   let seconds = 5;
   clearInterval(state.timer);
@@ -1165,13 +1172,13 @@ const showOnlineResult = (orderId, order) => {
   }, 1000);
 };
 
-const showCodResult = orderId => openDialog(`<div class="badge-ico" style="background:var(--green)"><i class="fa-solid fa-check"></i></div>
+const showCodResult = orderId => openDialog(`<div class="badge-ico" style="background:var(--green)"><i data-lucide="check"></i></div>
   <h2>Order placed</h2>
   <div class="oid">ORDER ID: ${esc(orderId)}</div>
   <p>Your order has been recorded. We will start processing it shortly.</p>
   <div class="acts">
-    <button class="btn-fill" type="button" onclick="withSpinner(this,()=>trackOrder('${esc(orderId)}'))"><i class="fa-solid fa-location-arrow"></i>Track order</button>
-    <button class="btn-line" type="button" onclick="navigate('./',this)"><i class="fa-solid fa-bag-shopping"></i>Continue shopping</button>
+    <button class="btn-fill" type="button" onclick="withSpinner(this,()=>trackOrder('${esc(orderId)}'))"><i data-lucide="navigation"></i>Track order</button>
+    <button class="btn-line" type="button" onclick="navigate('./',this)"><i data-lucide="shopping-bag"></i>Continue shopping</button>
   </div>`);
 
 const buildOrder = orderId => {
