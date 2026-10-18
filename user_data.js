@@ -313,6 +313,155 @@ window.trackAaviraOrder = async function (orderId, contact, linkToken) {
 };
 
 // ==========================================
+// 2.3 CART CLOUD SYNC (login wale customers)
+// Pattern orders.html jaisa: localStorage primary + fast; login ho to cloud se auto-sync.
+// Backend endpoints (server-js): GET /api/cart, PUT /api/cart — Bearer aavira_token.
+// Endpoint abhi live nahi hai to ye code chup-chaap local par chalta hai (koi error/toast nahi);
+// endpoint lagte hi sync apne aap kaam karne lagega, dobara frontend change nahi chahiye.
+// ==========================================
+const CART_KEY = 'aavira_cart';
+const CART_MAX_ITEMS = 50;
+const CART_PUSH_DEBOUNCE_MS = 1200;
+
+function cartCloudOff() { try { return sessionStorage.getItem('aavira_cart_cloud_off') === '1'; } catch (e) { return false; } }
+function markCartCloudOff() { try { sessionStorage.setItem('aavira_cart_cloud_off', '1'); } catch (e) {} }
+function cartPullDoneFor(email) { try { return sessionStorage.getItem('aavira_cart_pulled_for') === email; } catch (e) { return false; } }
+function markCartPulledFor(email) { try { sessionStorage.setItem('aavira_cart_pulled_for', email); } catch (e) {} }
+
+function cartSignedIn() {
+    try { return !!window.getAaviraToken(); }
+    catch (e) { return false; }
+}
+
+function readLocalCart() {
+    const arr = LS.json(CART_KEY, []);
+    return Array.isArray(arr) ? arr : [];
+}
+
+function sanitizeCartItem(raw) {
+    const o = raw || {};
+    const qty = Math.max(1, Math.min(10, parseInt(o.qty, 10) || 1));
+    return {
+        productId: String(o.productId ?? o.id ?? '').slice(0, 100),
+        name: String(o.name ?? o.title ?? 'Product').slice(0, 160),
+        price: Math.max(0, parseInt(o.price, 10) || 0),
+        mrp: Math.max(0, parseInt(o.mrp, 10) || 0),
+        image: String(o.image || o.imageMain || o.img || '').slice(0, 500),
+        size: String(o.size || 'Free Size').slice(0, 40),
+        color: String(o.color || 'As Shown').slice(0, 60),
+        qty
+    };
+}
+
+function cartItemKey(it) {
+    return [String(it.productId || ''), String(it.size || ''), String(it.color || '')].join('__');
+}
+
+// Union merge: dono taraf ka samaan bana rahe; same variant (productId+size+color) par qty = max.
+// Note (v1 limit): dusre device par delete kiya item wapas aa sakta hai — delete propagate nahi hota.
+function mergeCartItems(localArr, cloudArr) {
+    const map = new Map();
+    (Array.isArray(cloudArr) ? cloudArr : []).forEach(raw => {
+        const it = sanitizeCartItem(raw);
+        if (!it.productId) return;
+        map.set(cartItemKey(it), it);
+    });
+    (Array.isArray(localArr) ? localArr : []).forEach(raw => {
+        const it = sanitizeCartItem(raw);
+        if (!it.productId) return;
+        const k = cartItemKey(it);
+        if (map.has(k)) map.get(k).qty = Math.max(map.get(k).qty, it.qty);
+        else map.set(k, it);
+    });
+    return Array.from(map.values()).slice(0, CART_MAX_ITEMS);
+}
+
+function extractCloudItems(data) {
+    if (!data) return null;
+    const d = data.data !== undefined ? data.data : data;
+    if (Array.isArray(d)) return d;
+    if (d && Array.isArray(d.items)) return d.items;
+    if (d && Array.isArray(d.cart)) return d.cart;
+    return null;
+}
+
+let cartPushTimer = null;
+async function pushCartToCloud() {
+    if (!cartSignedIn() || cartCloudOff()) return false;
+    const items = readLocalCart().map(sanitizeCartItem).filter(i => i.productId).slice(0, CART_MAX_ITEMS);
+    const r = await jsonPost(`${VERCEL_URL}/api/cart`, { items }, window.authHeaders());
+    if (r.status === 404) { markCartCloudOff(); return false; } // endpoint abhi live nahi
+    if (r.status === 401) { markSessionExpired(); return false; }
+    return !!r.ok;
+}
+
+async function pullCartFromCloud(force) {
+    if (!cartSignedIn() || cartCloudOff()) return false;
+    const email = String(LS.get('aavira_user_email') || '').trim().toLowerCase();
+    if (!force && email && cartPullDoneFor(email)) return false;
+    const r = await api(`${VERCEL_URL}/api/cart?nocache=${Date.now()}`, { headers: window.authHeaders() });
+    if (r.status === 404) { markCartCloudOff(); return false; } // endpoint abhi live nahi
+    if (r.status === 401) { markSessionExpired(); return false; }
+    if (!(r.ok && r.data)) return false;
+    const cloudItems = extractCloudItems(r.data);
+    if (!cloudItems) return false;
+    const local = readLocalCart();
+    const merged = mergeCartItems(local, cloudItems);
+    const before = JSON.stringify(local.map(cartItemKey).sort());
+    const after = JSON.stringify(merged.map(cartItemKey).sort());
+    const changed = before !== after;
+    if (changed) {
+        LS.set(CART_KEY, JSON.stringify(merged));
+        try { document.dispatchEvent(new CustomEvent('aavira:cart-synced')); } catch (e) {}
+    }
+    if (email) markCartPulledFor(email);
+    return changed;
+}
+
+window.AaviraCartSync = {
+    pushSoon() {
+        if (!cartSignedIn() || cartCloudOff()) return;
+        if (cartPushTimer) clearTimeout(cartPushTimer);
+        cartPushTimer = setTimeout(() => { cartPushTimer = null; pushCartToCloud(); }, CART_PUSH_DEBOUNCE_MS);
+    },
+    pushNow() { return pushCartToCloud(); },
+    pullFromCloud(force) { return pullCartFromCloud(!!force); }
+};
+
+// ---- Sab pages par cart writes pakdo: localStorage.setItem/removeItem wrap ----
+// Har page (cart, product, index, search, wishlist, orders...) alag tareeke se
+// aavira_cart likhta hai; ye single wrap sab ko pakadta hai — koi page edit nahi chahiye.
+(function patchLocalStorageForCart() {
+    try {
+        if (localStorage.setItem.__aaviraCartPatched) return;
+        const rawSet = localStorage.setItem.bind(localStorage);
+        const rawDel = localStorage.removeItem.bind(localStorage);
+        localStorage.setItem = function (k, v) {
+            rawSet(k, v);
+            if (k === CART_KEY && window.AaviraCartSync) { try { window.AaviraCartSync.pushSoon(); } catch (e) {} }
+        };
+        localStorage.setItem.__aaviraCartPatched = true;
+        localStorage.removeItem = function (k) {
+            rawDel(k);
+            if (k === CART_KEY && window.AaviraCartSync) { try { window.AaviraCartSync.pushSoon(); } catch (e) {} }
+        };
+    } catch (e) {}
+})();
+
+// ---- Har page load par ek baar: login hai to cloud cart lao + merge ----
+// (cart.html khud pull karta hai — wahan ye skip hota hai, double GET se bachne ke liye.)
+(function bootCartSync() {
+    try {
+        const run = () => {
+            if (window.AAVIRA_CART_MANUAL_PULL) return;
+            if (window.AaviraCartSync) window.AaviraCartSync.pullFromCloud(false);
+        };
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once: true });
+        else run();
+    } catch (e) {}
+})();
+
+// ==========================================
 // 3. PRODUCT REVIEWS & EXPERIENCE LOGIC
 // ==========================================
 window.saveReviewToDatabase = async function (productId, reviewData) {

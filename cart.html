@@ -743,6 +743,8 @@ body.aavira-theme .card-loading-overlay{
 (function(){
     'use strict';
 
+    window.AAVIRA_CART_MANUAL_PULL = true; // is page ka cloud cart pull neeche khud handle hoga (user_data.js ka boot pull skip)
+
     const CART_KEY        = 'aavira_cart';
     const MIN_QTY         = 1;
     const MAX_QTY         = 10;
@@ -1143,6 +1145,16 @@ body.aavira-theme .card-loading-overlay{
             if(cart.length===0) show('emptyView');
             else { show('mainView'); render(); watchCartContainer(); }
         }, wait);
+
+        /* cloud cart sync (login): server wala cart lao + merge; badlav ho to dobara render */
+        if(window.AaviraCartSync && typeof window.AaviraCartSync.pullFromCloud==='function'){
+            window.AaviraCartSync.pullFromCloud(true).then(function(changed){
+                if(!changed) return;
+                cart = readCart().map(normalize);
+                if(!cart.length) return;
+                show('mainView'); render();
+            }).catch(function(){});
+        }
     });
 
     addEventListener('pageshow', ()=>{
