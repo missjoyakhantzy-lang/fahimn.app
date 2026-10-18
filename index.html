@@ -1557,9 +1557,12 @@ window.renderExperiences = async () => {
     const name = escapeHtml(rawName);
     const rEmail = String(review.email || '').toLowerCase();
     const isMine = !!(myInfo && myInfo.signedIn && ((rEmail && myEmail && rEmail === myEmail) || (myName && rawName.toLowerCase() === myName)));
-    const avInner = (isMine && myPhoto)
-      ? `<img src="${escapeHtml(myPhoto)}" alt="" style="width:100%;height:100%;object-fit:cover">`
-      : escapeHtml(rawName.charAt(0).toUpperCase());
+    const avatarUrl = safeUrl(review.avatar || '');
+    const avInner = avatarUrl
+      ? `<img src="${escapeHtml(avatarUrl)}" alt="" style="width:100%;height:100%;object-fit:cover" loading="lazy">`
+      : ((isMine && myPhoto)
+        ? `<img src="${escapeHtml(myPhoto)}" alt="" style="width:100%;height:100%;object-fit:cover">`
+        : escapeHtml(rawName.charAt(0).toUpperCase()));
     const text = escapeHtml(review.text || '');
     const date = review.date && !isNaN(new Date(review.date))
       ? new Date(review.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
@@ -1725,12 +1728,14 @@ window.submitExperience = async () => {
       photo = up.url;
       photoId = up.publicId || '';
     }
+    const avatar = (typeof window.getProfilePhotoUrl === 'function') ? (await window.getProfilePhotoUrl()) : '';
     const review = {
       name: store.get('aavira_display_name') || 'Customer',
       email: store.get('aavira_user_email'),
       text,
       photo: safeUrl(photo),
       photoId,
+      avatar: safeUrl(avatar),
       rating: clamp(Number(state.expRating) || 5, 1, 5),
       date: new Date().toISOString()
     };
