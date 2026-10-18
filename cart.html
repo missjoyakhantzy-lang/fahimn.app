@@ -6,7 +6,7 @@
     <title>Aavira — Shopping Bag</title>
     <meta name="theme-color" content="#ffffff">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
     <style>
         :root {
             --pink:    #161616;
@@ -331,6 +331,8 @@
 
         @keyframes fadeIn { from{opacity:0} to{opacity:1} }
         @keyframes popIn  { from{transform:scale(.88);opacity:0} to{transform:scale(1);opacity:1} }
+        /* lucide outline icons (home/sidebar style): FA jaisa 1em sizing */
+        svg.lucide{width:1em;height:1em;vertical-align:-.125em;flex-shrink:0;}
     </style>
 <style data-aavira-ui>
 :root{
@@ -564,14 +566,14 @@ body.aavira-theme .card-loading-overlay{
 
     <header class="hdr">
         <button class="hdr-back" onclick="goBack(this)" aria-label="Back">
-            <i class="fa-solid fa-arrow-left"></i>
+            <i data-lucide="arrow-left"></i>
         </button>
         <div class="hdr-center">
             <h1>My Bag</h1>
             <p id="itemCountLabel">Loading…</p>
         </div>
         <button class="hdr-wish" onclick="window.location.href='wishlist'" aria-label="Wishlist">
-            <i class="fa-regular fa-heart"></i>
+            <i data-lucide="heart"></i>
         </button>
     </header>
 
@@ -635,7 +637,7 @@ body.aavira-theme .card-loading-overlay{
     <main class="scroll" id="mainView" style="display:none;">
 
         <div class="delivery-strip">
-            <i class="fa-solid fa-truck-fast"></i>
+            <i data-lucide="truck"></i>
             <p>You're getting <span>FREE delivery</span> on this order — no minimum required!</p>
         </div>
 
@@ -643,25 +645,25 @@ body.aavira-theme .card-loading-overlay{
 
         <div class="trust-row">
             <div class="trust-badge">
-                <i class="fa-solid fa-shield-halved"></i>
+                <i data-lucide="shield-check"></i>
                 <span>Secure Payment</span>
             </div>
             <div class="trust-badge">
-                <i class="fa-solid fa-rotate-left"></i>
+                <i data-lucide="rotate-ccw"></i>
                 <span>Easy Returns</span>
             </div>
             <div class="trust-badge">
-                <i class="fa-solid fa-gem"></i>
+                <i data-lucide="gem"></i>
                 <span>100% Authentic</span>
             </div>
             <div class="trust-badge">
-                <i class="fa-solid fa-headset"></i>
+                <i data-lucide="headphones"></i>
                 <span>24/7 Support</span>
             </div>
         </div>
 
         <div class="bill-card">
-            <div class="bill-head"><i class="fa-solid fa-receipt"></i> Order Summary</div>
+            <div class="bill-head"><i data-lucide="receipt"></i> Order Summary</div>
             <div class="bill-rows">
                 <div class="bill-row"><span>Total MRP</span><span id="billMrp">₹0</span></div>
                 <div class="bill-row green"><span>Product Discount</span><span id="billDiscount">–₹0</span></div>
@@ -677,7 +679,7 @@ body.aavira-theme .card-loading-overlay{
                 <img src="public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" class="cf-logo">
                 <p class="cf-thanks">Thank you for<br>shopping with us</p>
                 <p class="cf-sub">Luxury ethnic fashion, designed for modern elegance.</p>
-                <p class="cf-copy">© 2026 Aavira Fashion, Inc.</p>
+                <p class="cf-copy">© 2026 Aavira Fashion. All rights reserved.</p>
             </div>
             <div class="cf-right">
                 <img src="public/file_xx234.png" alt="Fashion Feels Better With You" class="cf-art">
@@ -693,7 +695,7 @@ body.aavira-theme .card-loading-overlay{
             <small id="bottomSaving" style="display:none;"></small>
         </div>
         <button class="pay-btn" id="proceedBtn" onclick="proceedToOrder(this)">
-            <span id="proceedLabel">Proceed</span> <i class="fa-solid fa-arrow-right" id="proceedIcon"></i>
+            <span id="proceedLabel">Proceed</span> <i data-lucide="arrow-right" id="proceedIcon"></i>
         </button>
     </div>
 
@@ -709,22 +711,22 @@ body.aavira-theme .card-loading-overlay{
         </div>
         <div class="sheet-actions">
             <button class="sheet-action" onclick="doViewDetails()">
-                <span class="sheet-ico"><i class="fa-solid fa-eye"></i></span> View product details
+                <span class="sheet-ico"><i data-lucide="eye"></i></span> View product details
             </button>
             <button class="sheet-action" onclick="doMoveToWishlist()">
-                <span class="sheet-ico"><i class="fa-solid fa-heart"></i></span> Move to wishlist
+                <span class="sheet-ico"><i data-lucide="heart"></i></span> Move to wishlist
             </button>
             <button class="sheet-action" onclick="doShareItem()">
-                <span class="sheet-ico"><i class="fa-solid fa-share-nodes"></i></span> Share product
+                <span class="sheet-ico"><i data-lucide="share-2"></i></span> Share product
             </button>
             <button class="sheet-action" onclick="doChangeColor()">
-                <span class="sheet-ico"><i class="fa-solid fa-palette"></i></span> Change colour
+                <span class="sheet-ico"><i data-lucide="palette"></i></span> Change colour
             </button>
             <button class="sheet-action" onclick="doDuplicateItem()">
-                <span class="sheet-ico"><i class="fa-solid fa-clone"></i></span> Add one more
+                <span class="sheet-ico"><i data-lucide="copy"></i></span> Add one more
             </button>
             <button class="sheet-action danger" onclick="doDeleteItem()">
-                <span class="sheet-ico"><i class="fa-regular fa-trash-can"></i></span> Remove from bag
+                <span class="sheet-ico"><i data-lucide="trash-2"></i></span> Remove from bag
             </button>
         </div>
         <div class="sheet-colors" id="sheetColors" hidden>
@@ -890,17 +892,17 @@ body.aavira-theme .card-loading-overlay{
                     </div>
                     <div class="qty">
                         <button class="qty-btn" onclick="changeQty('${esc(item.cartId)}',-1,this)">
-                            <i class="fa-solid fa-minus" style="font-size:10px;"></i>
+                            <i data-lucide="minus" style="font-size:10px;"></i>
                         </button>
                         <span class="qty-val">${item.qty}</span>
                         <button class="qty-btn" onclick="changeQty('${esc(item.cartId)}',1,this)">
-                            <i class="fa-solid fa-plus" style="font-size:10px;"></i>
+                            <i data-lucide="plus" style="font-size:10px;"></i>
                         </button>
                     </div>
                 </div>
             </div>
             <button class="c-info-btn" onclick="openItemMenu('${esc(item.cartId)}')" aria-label="More options">
-                <i class="fa-solid fa-ellipsis-vertical"></i>
+                <i data-lucide="ellipsis-vertical"></i>
             </button>
         `;
         return card;
@@ -912,6 +914,7 @@ body.aavira-theme .card-loading-overlay{
         cart.forEach((item, idx)=> container.appendChild(cardTemplate(item, idx)));
         calcBill();
         updateLabel();
+        if(window.lucide) lucide.createIcons();
     }
 
     function updateCardValues(item){
@@ -996,8 +999,9 @@ body.aavira-theme .card-loading-overlay{
             if(btn){
                 btn.disabled = false;
                 btn.innerHTML = delta>0
-                    ? '<i class="fa-solid fa-plus" style="font-size:10px;"></i>'
-                    : '<i class="fa-solid fa-minus" style="font-size:10px;"></i>';
+                    ? '<i data-lucide="plus" style="font-size:10px;"></i>'
+                    : '<i data-lucide="minus" style="font-size:10px;"></i>';
+                if(window.lucide) lucide.createIcons();
             }
 
             updateCardValues(item);
@@ -1134,6 +1138,7 @@ body.aavira-theme .card-loading-overlay{
     }
 
     document.addEventListener('DOMContentLoaded',()=>{
+        if(window.lucide) lucide.createIcons();
         show('skeletonView');
         const t0 = Date.now();
         const raw = readCart();
@@ -1193,9 +1198,10 @@ body.aavira-theme .card-loading-overlay{
         const wrap = document.getElementById('sheetSwatches');
         wrap.innerHTML = colors.map(c => {
             const on = String(c) === String(item.color) ? ' on' : '';
-            const tick = String(c) === String(item.color) ? '<i class="fa-solid fa-check"></i>' : '';
+            const tick = String(c) === String(item.color) ? '<i data-lucide="check"></i>' : '';
             return '<button type="button" class="sw' + on + '" data-c="' + esc(String(c)) + '" style="background:' + cartHex(c) + '" aria-label="' + esc(String(c)) + '">' + tick + '</button>';
         }).join('');
+        if(window.lucide) lucide.createIcons();
         wrap.querySelectorAll('.sw').forEach(b => b.addEventListener('click', () => {
             const c = b.dataset.c;
             item.color = c;
