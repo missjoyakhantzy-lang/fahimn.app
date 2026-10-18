@@ -401,6 +401,11 @@ body.nav-hidden.has-offer .cart-bar{bottom:calc(16px + env(safe-area-inset-botto
 .qv-clr{width:38px;height:38px;flex:0 0 38px;border-radius:50%;border:2px solid var(--line);background:#fff;padding:3px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s}
 .qv-clr i{width:100%;height:100%;border-radius:50%;display:block;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
 .qv-clr.on{border-color:#161616;box-shadow:0 0 0 2px #fff,0 0 0 4px #161616}
+.qv-sw{position:relative;flex:0 0 auto;width:54px;height:54px;border-radius:50%;border:2px solid var(--line);padding:3px;background:#fff;cursor:pointer;transition:transform .25s,border-color .25s}
+.qv-sw img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:50%;display:block}
+.qv-sw i{display:none;position:absolute;inset:3px;border-radius:50%;background:rgba(0,0,0,.4);color:#fff;font-size:16px;align-items:center;justify-content:center}
+.qv-sw.on{border-color:#161616;transform:scale(1.06)}
+.qv-sw.on i{display:flex}
 .qv-sizes{margin:14px 0 4px}
 .qv-sizes-head{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:600;margin-bottom:8px}
 .qv-size-err{color:#DC2626;font-style:normal;font-size:12px}
@@ -1787,6 +1792,12 @@ window.openQuickView = id => {
   if (!product) return;
   const { price, mrp, off } = priceInfo(product);
   const name = escapeHtml(product.name);
+  const qvMain = product.imageMain || product.image || product.imageUrl || product.img || '';
+  const qvNames = Array.isArray(product.colors) && product.colors.length ? product.colors : (product.colorsInfo ? String(product.colorsInfo).split(',') : []);
+  const qvColors = [{ name: String(qvNames[0] || 'Main').trim(), image: qvMain }];
+  (Array.isArray(product.colorImages) ? product.colorImages : []).forEach((url, i) => {
+    if (url && url !== qvMain) qvColors.push({ name: String(qvNames[i + 1] || `Colour ${i + 2}`).trim(), image: url });
+  });
   $('#quickViewBody').innerHTML = `
     <div class="sheet-head">
       <div><h2>${name}</h2></div>
@@ -1801,6 +1812,10 @@ window.openQuickView = id => {
       </div>
       ${lowStockBadge(product)}
     </div>
+    ${qvColors.length > 1 ? `<div class="qv-colors-pick">
+      <div class="qv-pick-head"><span>Colours</span><em id="qvColorName">\u00b7 ${esc(qvColors[0].name)}</em></div>
+      <div class="qv-color-row" id="qvColorRow">${qvColors.map((c, i) => `<button type="button" class="qv-sw${i ? '' : ' on'}" data-color="${esc(c.name)}" data-img="${esc(safeImageUrl(c.image))}" title="${esc(c.name)}" aria-label="${esc(c.name)}" onclick="qvPickColor(this)"><img src="${esc(safeImageUrl(c.image))}" alt="" loading="lazy" onerror="imgFallback(this)"><i data-lucide="check"></i></button>`).join('')}</div>
+    </div>` : ''}
     <div class="qv-sizes">
       <div class="qv-sizes-head"><span>Select size</span><em class="qv-size-err" id="qvSizeErr" hidden>Please select a size</em></div>
       <div class="qv-size-row" id="qvSizeRow">
@@ -1829,6 +1844,16 @@ window.qvPickSize = btn => {
   vibrate(20);
 };
 
+window.qvPickColor = btn => {
+  $$('#qvColorRow .qv-sw').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  const em = $('#qvColorName');
+  if (em) em.textContent = '\u00b7 ' + (btn.dataset.color || '');
+  const img = $('#qvImg');
+  if (img && btn.dataset.img) img.src = btn.dataset.img;
+  vibrate(20);
+};
+
 window.qvAddToBag = btn => {
   const product = state.products.find(p => String(p.id) === String(btn.dataset.pid));
   if (!product) return;
@@ -1847,7 +1872,7 @@ window.qvAddToBag = btn => {
     return;
   }
   const size = sel.dataset.size;
-  const clrBtn = $('#qvColorRow .qv-clr.on');
+  const clrBtn = $('#qvColorRow .on');
   const color = clrBtn?.dataset.color || (product.colors && product.colors[0]) || 'Standard';
   const { price } = priceInfo(product);
   const image = (clrBtn?.dataset.img) || safeImageUrl(product.img);
