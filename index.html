@@ -1813,8 +1813,8 @@ window.openQuickView = id => {
       ${lowStockBadge(product)}
     </div>
     ${qvColors.length > 1 ? `<div class="qv-colors-pick">
-      <div class="qv-pick-head"><span>Colours</span><em id="qvColorName">\u00b7 ${esc(qvColors[0].name)}</em></div>
-      <div class="qv-color-row" id="qvColorRow">${qvColors.map((c, i) => `<button type="button" class="qv-sw${i ? '' : ' on'}" data-color="${esc(c.name)}" data-img="${esc(safeImageUrl(c.image))}" title="${esc(c.name)}" aria-label="${esc(c.name)}" onclick="qvPickColor(this)"><img src="${esc(safeImageUrl(c.image))}" alt="" loading="lazy" onerror="imgFallback(this)"><i data-lucide="check"></i></button>`).join('')}</div>
+      <div class="qv-pick-head"><span>Colours</span><em id="qvColorName">\u00b7 ${escapeHtml(qvColors[0].name)}</em></div>
+      <div class="qv-color-row" id="qvColorRow">${qvColors.map((c, i) => `<button type="button" class="qv-sw${i ? '' : ' on'}" data-color="${escapeHtml(c.name)}" data-img="${escapeHtml(safeImageUrl(c.image))}" title="${escapeHtml(c.name)}" aria-label="${escapeHtml(c.name)}" onclick="qvPickColor(this)"><img src="${escapeHtml(safeImageUrl(c.image))}" alt="" loading="lazy" onerror="imgFallback(this)"><i data-lucide="check"></i></button>`).join('')}</div>
     </div>` : ''}
     <div class="qv-sizes">
       <div class="qv-sizes-head"><span>Select size</span><em class="qv-size-err" id="qvSizeErr" hidden>Please select a size</em></div>
