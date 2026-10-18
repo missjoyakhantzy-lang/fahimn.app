@@ -636,5 +636,6 @@ const ready = () => $('.app').classList.remove('is-loading');
 Promise.all([fetchOrders(), new Promise(r => setTimeout(r, 700))]).then(ready, ready);
 drawTabs();
 </script>
+<script src="/cookie-consent.js" defer></script>
 </body>
 </html>
