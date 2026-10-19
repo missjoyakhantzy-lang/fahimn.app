@@ -569,6 +569,7 @@ const showGallery = slides => {
     : '';
 };
 
+let pickToken = 0;
 const pickColor = index => {
   const option = state.colors[index];
   if (!option) return;
@@ -580,11 +581,30 @@ const pickColor = index => {
     ? state.mainSlides
     : [`<div class="slide"><img src="${esc(safeUrl(option.image) || IMG_FALLBACK)}" alt="${esc(option.name)}"></div>`];
   const carousel = $('#carousel');
+  const src = safeUrl(option.image) || '';
+  const curImg = carousel.querySelector('img');
+  if (curImg && src) {
+    let cur = curImg.currentSrc || curImg.src || '', abs = src;
+    try { cur = new URL(cur, location.href).href; } catch {}
+    try { abs = new URL(src, location.href).href; } catch {}
+    if (cur === abs) { if (window.navigator?.vibrate) navigator.vibrate(10); return; }
+  }
+  const my = ++pickToken;
+  const t0 = Date.now(), MIN_SHOW = 750;
   carousel.classList.add('skel');
   if (window.navigator?.vibrate) navigator.vibrate(10);
+  const finish = ok => {
+    if (my !== pickToken) return;
+    const wait = ok ? Math.max(0, MIN_SHOW - (Date.now() - t0)) : 0;
+    setTimeout(() => {
+      if (my !== pickToken) return;
+      showGallery(slides);
+    }, wait);
+  };
   const pre = new Image();
-  pre.onload = pre.onerror = () => showGallery(slides);
-  pre.src = safeUrl(option.image) || '';
+  pre.onload = () => finish(true);
+  pre.onerror = () => finish(false);
+  pre.src = src;
 };
 
 const reviewProductId = entry => entry.productId ?? entry.product_id ?? entry.pid;
