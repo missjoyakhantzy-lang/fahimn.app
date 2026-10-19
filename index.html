@@ -1260,7 +1260,7 @@ document.addEventListener('click', event => {
     return;
   }
 
-  const quick = event.target.closest('.qv');
+  const quick = event.target.closest('.qv,[data-qv]');
   if (quick) return openQuickView(quick.dataset.qv);
   const qadd = event.target.closest('[data-qadd]');
   if (qadd) { event.preventDefault(); return openQuickView(qadd.dataset.qadd); }
