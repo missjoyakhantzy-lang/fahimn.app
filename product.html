@@ -592,6 +592,7 @@ const pickColor = index => {
   const my = ++pickToken;
   const t0 = Date.now(), MIN_SHOW = 750;
   carousel.classList.add('skel');
+  carousel.innerHTML = '';
   if (window.navigator?.vibrate) navigator.vibrate(10);
   const finish = ok => {
     if (my !== pickToken) return;
