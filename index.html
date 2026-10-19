@@ -151,9 +151,9 @@ a{color:inherit;text-decoration:none}
 .rating.none{background:#9A9298}
 .rating svg{width:10px;height:10px;fill:currentColor}
 .dots{display:inline-flex;align-items:center}
-.dots i{width:16px;height:16px;border-radius:50%;margin-left:-6px;box-shadow:0 0 0 2px #fff,inset 0 0 0 1px rgba(0,0,0,.12)}
+.dots i{width:12px;height:12px;border-radius:50%;margin-left:-4px;box-shadow:0 0 0 1.5px #fff,inset 0 0 0 1px rgba(0,0,0,.12)}
 .dots i:first-child{margin-left:0}
-.dots b{min-width:20px;height:20px;padding:0 6px;margin-left:6px;border-radius:999px;background:#161616;color:#fff;font-size:10px;font-weight:700;letter-spacing:.02em;display:inline-flex;align-items:center;justify-content:center}
+.dots b{min-width:16px;height:16px;padding:0 5px;margin-left:5px;border-radius:999px;background:#161616;color:#fff;font-size:8.5px;font-weight:700;letter-spacing:.02em;display:inline-flex;align-items:center;justify-content:center}
 .low{display:inline-flex;align-items:center;margin-top:6px;font-size:11.5px;font-weight:600;color:#B45309;background:rgba(180,83,9,.08);padding:3px 8px;border-radius:999px;width:fit-content}
 .heart,.qv{position:absolute;right:8px;width:32px;height:32px;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.7);background:rgba(255,255,255,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.15);transition:transform .2s var(--ease),background .2s,color .2s}
 .heart{top:8px}
@@ -405,14 +405,12 @@ body.nav-hidden.has-offer .cart-bar{bottom:calc(16px + env(safe-area-inset-botto
 .qv-clr.on{border-color:#161616;box-shadow:0 0 0 2px #fff,0 0 0 4px #161616}
 .qv-sw{position:relative;flex:0 0 auto;width:54px;height:54px;border-radius:50%;border:2px solid var(--line);padding:3px;background:#fff;cursor:pointer;transition:transform .25s,border-color .25s}
 .qv-sw img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:50%;display:block}
-.qv-sw i{display:none;position:absolute;inset:3px;border-radius:50%;background:rgba(0,0,0,.4);color:#fff;font-size:16px;align-items:center;justify-content:center}
 .qv-sw.on{border-color:#161616;transform:scale(1.06)}
-.qv-sw.on i{display:flex}
 .qv-sizes{margin:14px 0 4px}
 .qv-sizes-head{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:600;margin-bottom:8px}
 .qv-size-err{color:#DC2626;font-style:normal;font-size:12px}
-.qv-size-row{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
-.qv-sz{width:100%;height:40px;padding:0;border-radius:999px;border:1.5px solid var(--line);background:#fff;font-size:13px;font-weight:600;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s,border-color .2s,box-shadow .2s,transform .2s var(--ease)}
+.qv-size-row{display:flex;gap:10px;flex-wrap:wrap}
+.qv-sz{width:44px;height:44px;flex:0 0 44px;padding:0;border-radius:50%;border:1.5px solid var(--line);background:#fff;font-size:13px;font-weight:600;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s,border-color .2s,box-shadow .2s,transform .2s var(--ease)}
 .qv-sz:hover{border-color:#B8AFA6}
 .qv-sz:active{transform:scale(.95)}
 .qv-sz.on{background:linear-gradient(135deg,#242429,#0a0a0c);color:#fff;border-color:transparent;box-shadow:0 6px 14px -4px rgba(0,0,0,.4)}
@@ -1219,12 +1217,11 @@ const cardHtml = (product, variant) => {
       </a>
       <div class="pcard-row">
         <a class="pcard-metalink" href="${href}" data-product="${id}">${ratingBadge(rating)}${colorDots(product)}</a>
-        <button type="button" class="go" data-qadd="${id}" aria-label="Quick add ${name}"><i data-lucide="shopping-cart"></i></button>
+        <button type="button" class="go" data-qv="${id}" aria-label="Quick view ${name}"><i data-lucide="eye"></i></button>
       </div>
       ${lowStockBadge(product)}
     </div>
     <button type="button" class="heart ${wished ? 'is-on' : ''}" data-heart="${id}" aria-pressed="${wished}" aria-label="Save ${name} to wishlist"><i data-lucide="heart"></i></button>
-    <button type="button" class="qv" data-qv="${id}" aria-label="Quick view ${name}"><i data-lucide="eye"></i></button>
   </article>`;
 };
 
@@ -1816,7 +1813,7 @@ window.openQuickView = id => {
     </div>
     ${qvColors.length > 1 ? `<div class="qv-colors-pick">
       <div class="qv-pick-head"><span>Colours</span><em id="qvColorName">\u00b7 ${escapeHtml(qvColors[0].name)}</em></div>
-      <div class="qv-color-row" id="qvColorRow">${qvColors.map((c, i) => `<button type="button" class="qv-sw${i ? '' : ' on'}" data-color="${escapeHtml(c.name)}" data-img="${escapeHtml(safeImageUrl(c.image))}" title="${escapeHtml(c.name)}" aria-label="${escapeHtml(c.name)}" onclick="qvPickColor(this)"><img src="${escapeHtml(safeImageUrl(c.image))}" alt="" loading="lazy" onerror="imgFallback(this)"><i data-lucide="check"></i></button>`).join('')}</div>
+      <div class="qv-color-row" id="qvColorRow">${qvColors.map((c, i) => `<button type="button" class="qv-sw${i ? '' : ' on'}" data-color="${escapeHtml(c.name)}" data-img="${escapeHtml(safeImageUrl(c.image))}" title="${escapeHtml(c.name)}" aria-label="${escapeHtml(c.name)}" onclick="qvPickColor(this)"><img src="${escapeHtml(safeImageUrl(c.image))}" alt="" loading="lazy" onerror="imgFallback(this)"></button>`).join('')}</div>
     </div>` : ''}
     <div class="qv-sizes">
       <div class="qv-sizes-head"><span>Select size</span><em class="qv-size-err" id="qvSizeErr" hidden>Please select a size</em></div>
