@@ -869,7 +869,7 @@ document.addEventListener('click', event => {
   }
 
   const buy = event.target.closest('.go');
-  if (buy) {
+  if (buy && !buy.hasAttribute('data-sugqa')) {
     event.preventDefault();
     return navigate(buy.href, buy);
   }
