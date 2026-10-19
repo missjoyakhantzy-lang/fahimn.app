@@ -80,9 +80,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .colors::-webkit-scrollbar{display:none}
 .sw{position:relative;flex:0 0 auto;width:54px;height:54px;border-radius:50%;border:2px solid var(--line);padding:3px;background:#fff;transition:transform .25s,border-color .25s}
 .sw img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:50%}
-.sw i{display:none;position:absolute;inset:3px;border-radius:50%;background:rgba(0,0,0,.4);color:#fff;font-size:16px;align-items:center;justify-content:center}
-.sw.on{border-color:var(--rani);transform:scale(1.06)}
-.sw.on i{display:flex}
+.sw.on{border-color:#161616;transform:scale(1.06)}
 .sizes{display:flex;flex-wrap:wrap;gap:10px}
 .sz{min-width:48px;height:48px;padding:0 6px;border-radius:24px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:500;color:var(--ink);transition:background .2s,color .2s}
 .sz.custom{padding:0 18px}
@@ -576,9 +574,15 @@ const pickColor = index => {
   state.image = option.image;
   state.color = option.name;
   $('#colorInfo').textContent = '· ' + option.name;
-  showGallery(option.main
+  const slides = option.main
     ? state.mainSlides
-    : [`<div class="slide"><img src="${esc(safeUrl(option.image) || IMG_FALLBACK)}" alt="${esc(option.name)}"></div>`]);
+    : [`<div class="slide"><img src="${esc(safeUrl(option.image) || IMG_FALLBACK)}" alt="${esc(option.name)}"></div>`];
+  const carousel = $('#carousel');
+  carousel.classList.add('skel');
+  if (window.navigator?.vibrate) navigator.vibrate(10);
+  const pre = new Image();
+  pre.onload = pre.onerror = () => showGallery(slides);
+  pre.src = safeUrl(option.image) || '';
 };
 
 const reviewProductId = entry => entry.productId ?? entry.product_id ?? entry.pid;
@@ -963,9 +967,9 @@ const init = async () => {
   (Array.isArray(product.colorImages) ? product.colorImages : []).forEach((url, i) => {
     if (url && url !== main) state.colors.push({ name: String(names[i + 1] || `Colour ${i + 2}`).trim(), image: url, main: false });
   });
-  if (state.colors.length > 1) {
+  if (state.colors.length >= 1) {
     $('#colorWrap').hidden = false;
-    $('#colors').innerHTML = state.colors.map((c, i) => `<button type="button" class="sw ${i ? '' : 'on'}" data-i="${i}" title="${esc(c.name)}" aria-label="${esc(c.name)}"><img src="${esc(safeUrl(c.image) || IMG_FALLBACK)}" alt="" ${FALLBACK_ATTR}><i data-lucide="check"></i></button>`).join('');
+    $('#colors').innerHTML = state.colors.map((c, i) => `<button type="button" class="sw ${i ? '' : 'on'}" data-i="${i}" title="${esc(c.name)}" aria-label="${esc(c.name)}"><img src="${esc(safeUrl(c.image) || IMG_FALLBACK)}" alt="" ${FALLBACK_ATTR}></button>`).join('');
     state.color = state.colors[0].name;
     $('#colorInfo').textContent = '· ' + state.color;
   }
