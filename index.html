@@ -406,6 +406,9 @@ body.nav-hidden.has-offer .cart-bar{bottom:calc(16px + env(safe-area-inset-botto
 .qv-sw{position:relative;flex:0 0 auto;width:54px;height:54px;border-radius:50%;border:2px solid var(--line);padding:3px;background:#fff;cursor:pointer;transition:transform .25s,border-color .25s}
 .qv-sw img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:50%;display:block}
 .qv-sw.on{border-color:#161616;transform:scale(1.06)}
+.qv-dot{width:34px;height:34px;flex:0 0 34px;border-radius:50%;border:2px solid var(--line);background:#fff;padding:3px;cursor:pointer;transition:transform .2s,border-color .2s}
+.qv-dot i{width:100%;height:100%;border-radius:50%;display:block;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.qv-dot.on{border-color:#161616;transform:scale(1.08)}
 .qv-sizes{margin:14px 0 4px}
 .qv-sizes-head{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:600;margin-bottom:8px}
 .qv-size-err{color:#DC2626;font-style:normal;font-size:12px}
@@ -1797,6 +1800,9 @@ window.openQuickView = id => {
   (Array.isArray(product.colorImages) ? product.colorImages : []).forEach((url, i) => {
     if (url && url !== qvMain) qvColors.push({ name: String(qvNames[i + 1] || `Colour ${i + 2}`).trim(), image: url });
   });
+  const qvColorNames = qvNames.map(n => String(n || '').trim()).filter(Boolean);
+  const qvPhotoSwatches = qvColors.length > 1;
+  const qvDotSwatches = !qvPhotoSwatches && qvColorNames.length > 1;
   $('#quickViewBody').innerHTML = `
     <div class="sheet-head">
       <div><h2>${name}</h2></div>
@@ -1811,9 +1817,12 @@ window.openQuickView = id => {
       </div>
       ${lowStockBadge(product)}
     </div>
-    ${qvColors.length > 1 ? `<div class="qv-colors-pick">
+    ${qvPhotoSwatches ? `<div class="qv-colors-pick">
       <div class="qv-pick-head"><span>Colours</span><em id="qvColorName">\u00b7 ${escapeHtml(qvColors[0].name)}</em></div>
       <div class="qv-color-row" id="qvColorRow">${qvColors.map((c, i) => `<button type="button" class="qv-sw${i ? '' : ' on'}" data-color="${escapeHtml(c.name)}" data-img="${escapeHtml(safeImageUrl(c.image))}" title="${escapeHtml(c.name)}" aria-label="${escapeHtml(c.name)}" onclick="qvPickColor(this)"><img src="${escapeHtml(safeImageUrl(c.image))}" alt="" loading="lazy" onerror="imgFallback(this)"></button>`).join('')}</div>
+    </div>` : qvDotSwatches ? `<div class="qv-colors-pick">
+      <div class="qv-pick-head"><span>Colours</span><em id="qvColorName">\u00b7 ${escapeHtml(qvColorNames[0])}</em></div>
+      <div class="qv-color-row" id="qvColorRow">${qvColorNames.map((n, i) => `<button type="button" class="qv-dot${i ? '' : ' on'}" data-color="${escapeHtml(n)}" title="${escapeHtml(n)}" aria-label="${escapeHtml(n)}" onclick="qvPickColor(this)"><i style="background:${escapeHtml(colorHex(n))}"></i></button>`).join('')}</div>
     </div>` : ''}
     <div class="qv-sizes">
       <div class="qv-sizes-head"><span>Select size</span><em class="qv-size-err" id="qvSizeErr" hidden>Please select a size</em></div>
@@ -1844,7 +1853,7 @@ window.qvPickSize = btn => {
 };
 
 window.qvPickColor = btn => {
-  $$('#qvColorRow .qv-sw').forEach(b => b.classList.remove('on'));
+  $$('#qvColorRow .qv-sw, #qvColorRow .qv-dot').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   const em = $('#qvColorName');
   if (em) em.textContent = '\u00b7 ' + (btn.dataset.color || '');
