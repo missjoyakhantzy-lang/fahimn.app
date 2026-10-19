@@ -394,6 +394,9 @@ body.nav-hidden.has-offer .cart-bar{bottom:calc(16px + env(safe-area-inset-botto
 #quickView .sheet-head{border-bottom:1px solid var(--line);padding-bottom:14px}
 #quickView .sheet-head h2{font-size:21px}
 .qv-img{width:100%;aspect-ratio:1/1;max-height:42vh;object-fit:cover;border-radius:16px;background:var(--cream);box-shadow:0 16px 30px -16px rgba(36,32,36,.3)}
+.qv-media{position:relative}
+.qv-media.is-switching::after{content:"";position:absolute;inset:0;border-radius:16px;background:linear-gradient(100deg,#efe9e0 40%,#faf7f2 50%,#efe9e0 60%);background-size:200% 100%;animation:qvShimmer 1.1s infinite;z-index:2}
+@keyframes qvShimmer{to{background-position:-200% 0}}
 .qv-info{margin:14px 0 10px}
 .qv-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .qv-colors-pick{margin:12px 0 4px}
@@ -1801,14 +1804,14 @@ window.openQuickView = id => {
     if (url && url !== qvMain) qvColors.push({ name: String(qvNames[i + 1] || `Colour ${i + 2}`).trim(), image: url });
   });
   const qvColorNames = qvNames.map(n => String(n || '').trim()).filter(Boolean);
-  const qvPhotoSwatches = qvColors.length > 1;
+  const qvPhotoSwatches = qvColors.length >= 1;
   const qvDotSwatches = !qvPhotoSwatches && qvColorNames.length > 1;
   $('#quickViewBody').innerHTML = `
     <div class="sheet-head">
       <div><h2>${name}</h2></div>
       <button type="button" class="icon-btn" onclick="closeQuickView()" aria-label="Close"><i data-lucide="x"></i></button>
     </div>
-    <img class="qv-img" id="qvImg" src="${escapeHtml(safeImageUrl(product.img))}" alt="${name}" onerror="imgFallback(this)">
+    <div class="qv-media" id="qvMedia"><img class="qv-img" id="qvImg" src="${escapeHtml(safeImageUrl(product.img))}" alt="${name}" onerror="imgFallback(this)"></div>
     <div class="qv-info">
       <div class="qv-meta">
         <span class="price">${formatPrice(price)}</span>
@@ -1852,14 +1855,38 @@ window.qvPickSize = btn => {
   vibrate(20);
 };
 
+let qvSwitchToken = 0;
 window.qvPickColor = btn => {
   $$('#qvColorRow .qv-sw, #qvColorRow .qv-dot').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   const em = $('#qvColorName');
   if (em) em.textContent = '\u00b7 ' + (btn.dataset.color || '');
   const img = $('#qvImg');
-  if (img && btn.dataset.img) img.src = btn.dataset.img;
+  const media = $('#qvMedia');
+  const src = btn.dataset.img || '';
+  if (!img || !src) { vibrate(20); return; }
+  let cur = img.currentSrc || img.src || '';
+  let abs = src;
+  try { cur = new URL(cur, location.href).href; } catch {}
+  try { abs = new URL(src, location.href).href; } catch {}
+  if (cur === abs) { vibrate(20); return; }
+  const my = ++qvSwitchToken;
+  const t0 = Date.now(), MIN_SHOW = 750;
+  if (media) media.classList.add('is-switching');
   vibrate(20);
+  const finish = ok => {
+    if (my !== qvSwitchToken) return;
+    const wait = ok ? Math.max(0, MIN_SHOW - (Date.now() - t0)) : 0;
+    setTimeout(() => {
+      if (my !== qvSwitchToken) return;
+      if (ok) img.src = src;
+      if (media) media.classList.remove('is-switching');
+    }, wait);
+  };
+  const pre = new Image();
+  pre.onload = () => finish(true);
+  pre.onerror = () => finish(false);
+  pre.src = src;
 };
 
 window.qvAddToBag = btn => {
