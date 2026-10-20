@@ -11,91 +11,156 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
 <style>
-:root{--rani:#161616;--rani-dark:#000000;--gold:#D4AF37;--gold-deep:#9A741C;--gold-soft:#FBF5E6;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#242024;--muted:#6B6369;--line:#E7E0D9;--blush:#F5F1E8;--green:#15803D;--danger:#B91C1C;--ease:cubic-bezier(.2,.8,.2,1)}
+:root{--rani:#161616;--rani-dark:#000000;--gold:#D4AF37;--gold-deep:#9A741C;--gold-soft:#FBF5E6;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#161616;--muted:#6B6369;--line:#E5E0D8;--blush:#F4F1EA;--green:#15803D;--danger:#B91C1C;--ease:cubic-bezier(.2,.8,.2,1)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{font-family:Inter,system-ui,sans-serif;background:var(--ivory);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 button{font-family:inherit;cursor:pointer;user-select:none}
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%}
-:focus-visible{outline:2px solid var(--gold-deep);outline-offset:2px}
+:focus-visible{outline:2px solid var(--rani);outline-offset:2px}
 [hidden]{display:none!important}
 .app{max-width:420px;margin:0 auto;background:#fff;min-height:100vh;position:relative}
-@media(min-width:640px){body{background:#EFE8DE}.app{box-shadow:0 0 60px rgba(36,32,36,.12)}}
+@media(min-width:640px){body{background:#EFE8DE}.app{box-shadow:0 0 60px rgba(22,22,22,.12)}}
 
 /* Compact & Bold Loading Spinner State */
 .is-busy{position:relative;pointer-events:none;color:transparent!important}
 .is-busy>*{opacity:0!important}
 .is-busy::after{content:"";position:absolute;inset:0;margin:auto;width:13px;height:13px;border:2.6px solid var(--spin,var(--ink));border-top-color:transparent;border-radius:50%;animation:spin .55s linear infinite;z-index:5}
 :is(.btn-p,.mbtn,.btn-write,.go,.sqa-add,.cd-checkout,.ib.rani,.ib.back-fab,.footer-news button).is-busy{--spin:#fff}
-.btn-o.is-busy{--spin:var(--gold-deep);background:var(--gold-soft)}
-.p-cb-btn.is-busy{--spin:#fff;background:var(--gold-deep)}
+.btn-o.is-busy{--spin:var(--rani);background:#F5F5F5}
 .ib.rani.is-busy,.ib.rani.is-busy:hover{background:var(--rani)}
 .ib.back-fab.is-busy,.ib.back-fab.is-busy:hover{background:var(--rani)}
-.btn-p.is-busy,.btn-p.is-busy:hover{background:linear-gradient(135deg,#B88924,#8A6412)}
-.mbtn.is-busy,.mbtn.is-busy:hover,.sqa-add.is-busy{background:linear-gradient(135deg,#B88924,#8A6412)}
+.btn-p.is-busy,.btn-p.is-busy:hover{background:var(--rani-dark)}
+.mbtn.is-busy,.mbtn.is-busy:hover,.sqa-add.is-busy{background:var(--rani-dark)}
 .skip.is-busy,.skip.is-busy:hover{background:#fff;--spin:var(--ink)}
-.btn-write.is-busy{background:var(--ink)}
+.btn-write.is-busy{background:var(--rani)}
 .go.is-busy,.go.is-busy:hover{background:#161616;transform:none}
-.go.is-busy::after,.ib.is-busy::after,.p-cb-btn.is-busy::after{width:11px;height:11px;border-width:2.4px}
+.go.is-busy::after,.ib.is-busy::after{width:11px;height:11px;border-width:2.4px}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* Header */
-.hdr{position:sticky;top:0;z-index:40;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:58px;padding:env(safe-area-inset-top,0) 12px 0;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.hdr{position:sticky;top:0;z-index:40;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:58px;padding:env(safe-area-inset-top,0) 12px 0;background:rgba(255,255,255,.95);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .hdr img{height:34px;width:auto;max-width:110px;object-fit:contain}
 .hdr-r{display:flex;justify-content:flex-end;align-items:center;gap:4px}
 .ib{position:relative;width:38px;height:38px;border:0;background:transparent;border-radius:50%;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s,transform .2s var(--ease)}
-@media(hover:hover){.ib:hover{background:var(--blush);color:var(--rani)}}
+@media(hover:hover){.ib:hover{background:#F3F3F3;color:var(--rani)}}
 .ib:active{transform:scale(.92)}
 svg.lucide{width:1em;height:1em;flex-shrink:0}
 .ib svg{width:20px;height:20px;stroke-width:1.8}
 .ib.on svg{color:#C8102E;fill:currentColor}
-.ib.back-fab{width:38px;height:38px;background:var(--Cream,#F7F1E8);color:var(--ink);border:1px solid var(--line);box-shadow:0 4px 10px rgba(36,32,36,.08)}
+.ib.back-fab{width:38px;height:38px;background:#F6F6F6;color:var(--ink);border:1px solid var(--line);box-shadow:0 4px 10px rgba(0,0,0,.06)}
 .ib.back-fab svg{width:18px;height:18px;stroke-width:2.2}
-@media(hover:hover){.ib.back-fab:hover{background:var(--gold-soft);color:var(--gold-deep)}}
-.badge{position:absolute;top:2px;right:1px;min-width:16px;height:16px;padding:0 4px;border-radius:999px;background:var(--gold-deep);color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
+@media(hover:hover){.ib.back-fab:hover{background:var(--rani);color:#fff}}
+.badge{position:absolute;top:2px;right:1px;min-width:16px;height:16px;padding:0 4px;border-radius:999px;background:var(--rani);color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
 
-/* Product Media & Gallery */
-.media{position:relative;background:var(--cream);border-bottom:1px solid var(--line)}
-.carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;aspect-ratio:1/1;scrollbar-width:none}
+/* Product Media & Professional Black-Tinted Shimmer (Simar) Animation on Big Photo */
+.media{position:relative;background:var(--cream);border-bottom:1px solid var(--line);overflow:hidden}
+.carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;aspect-ratio:1/1;scrollbar-width:none;position:relative}
 .carousel::-webkit-scrollbar{display:none}
 .slide{flex:0 0 100%;scroll-snap-align:center;scroll-snap-stop:always}
-.slide img,.slide video{width:100%;height:100%;object-fit:contain;display:block;background:var(--cream)}
+.slide img,.slide video{width:100%;height:100%;object-fit:contain;display:block;background:var(--cream);transition:opacity .28s ease,transform .32s var(--ease)}
 .slide video{background:#000}
-.dots{position:absolute;bottom:12px;left:0;right:0;display:flex;justify-content:center;gap:6px}
-.dot{width:7px;height:7px;border-radius:4px;background:rgba(255,255,255,.8);box-shadow:0 0 0 1px rgba(0,0,0,.12);transition:width .3s;border:0;padding:0}
-.dot.on{width:20px;background:var(--gold-deep);box-shadow:none}
-.skel{background:linear-gradient(90deg,#F1EBE3 25%,#F8F3EC 37%,#F1EBE3 63%);background-size:400% 100%;animation:sh 1.4s ease infinite;color:transparent!important;border-radius:6px}
-@keyframes sh{to{background-position:0 0}}
+.media.is-shimmering::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:6;
+  pointer-events:none;
+  background:linear-gradient(110deg,rgba(22,22,22,.06) 15%,rgba(22,22,22,.18) 38%,rgba(255,255,255,.85) 50%,rgba(22,22,22,.16) 62%,rgba(22,22,22,.05) 85%);
+  background-size:240% 100%;
+  animation:photoSimar .65s linear infinite;
+}
+.media.is-shimmering .slide img{opacity:.32;transform:scale(.985)}
+@keyframes photoSimar{from{background-position:130% 0}to{background-position:-110% 0}}
+.dots{position:absolute;bottom:12px;left:0;right:0;display:flex;justify-content:center;gap:6px;z-index:7}
+.dot{width:7px;height:7px;border-radius:4px;background:rgba(255,255,255,.85);box-shadow:0 0 0 1px rgba(0,0,0,.15);transition:width .3s,background .3s;border:0;padding:0}
+.dot.on{width:20px;background:var(--rani);box-shadow:none}
+.skel{background:linear-gradient(100deg,#ECE9E2 25%,#F7F5F0 42%,#E2DED6 58%,#ECE9E2 75%);background-size:300% 100%;animation:sh 1.1s linear infinite;color:transparent!important;border-radius:6px}
+@keyframes sh{from{background-position:100% 0}to{background-position:-100% 0}}
 
 /* Product Info */
-.info{padding:20px 18px 10px}
+.info{padding:20px 18px 16px}
 .title{font-family:"Playfair Display",serif;font-size:21px;font-weight:600;line-height:1.35;margin-bottom:10px}
 .prow{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px}
-.price{font-size:24px;font-weight:800;letter-spacing:-.01em}
+.price{font-size:24px;font-weight:800;letter-spacing:-.01em;color:var(--rani)}
 .mrp{font-size:14.5px;color:var(--muted);text-decoration:line-through}
-.off{background:linear-gradient(135deg,#C89D28,#8E6B13);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px}
+.off{background:var(--rani);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px}
 .rate-chip{display:inline-flex;align-items:center;gap:4px;background:var(--green);color:#fff;font-size:12px;font-weight:700;padding:3.5px 9px;border-radius:999px;margin-bottom:14px}
 .rate-chip.mid{background:#B45309}
 .rate-chip.bad{background:var(--danger)}
 .rate-chip svg{width:11px;height:11px;fill:currentColor}
 .lbl{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:var(--muted);margin:14px 0 10px}
-.lbl span{text-transform:none;letter-spacing:0;font-weight:700;color:var(--gold-deep)}
+.lbl span{text-transform:none;letter-spacing:0;font-weight:700;color:var(--rani)}
 .colors{display:flex;gap:10px;overflow-x:auto;padding:4px 18px 10px;margin:0 -18px;scrollbar-width:none}
 .colors::-webkit-scrollbar{display:none}
 .sw{position:relative;flex:0 0 auto;width:54px;height:54px;border-radius:50%;border:2px solid var(--line);padding:3px;background:#fff;transition:transform .25s,border-color .25s,box-shadow .25s}
 .sw img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:50%}
-.sw.on{border-color:var(--gold-deep);transform:scale(1.06);box-shadow:0 4px 12px rgba(154,116,28,.25)}
+.sw.on{border-color:var(--rani);transform:scale(1.06);box-shadow:0 4px 12px rgba(22,22,22,.22)}
 .sizes{display:flex;flex-wrap:wrap;gap:8px}
 .sz{min-width:44px;height:42px;padding:0 10px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font-size:13px;font-weight:700;color:var(--ink);transition:background .2s,color .2s,border-color .2s,transform .15s}
 .sz:active{transform:scale(.95)}
 .sz.custom{padding:0 16px}
-.sz.on{background:linear-gradient(135deg,#C89D28,#8E6B13);border-color:transparent;color:#fff;font-weight:800;box-shadow:0 6px 14px -4px rgba(154,116,28,.45)}
+.sz.on{background:var(--rani);border-color:var(--rani);color:#fff;font-weight:800;box-shadow:0 6px 14px -4px rgba(22,22,22,.4)}
 .sizes.err .sz{border-color:var(--danger);color:var(--danger);background:#FEF2F2;animation:shake .4s}
-.sizes.err .sz.on{background:linear-gradient(135deg,#C89D28,#8E6B13);color:#fff}
+.sizes.err .sz.on{background:var(--rani);color:#fff}
 @keyframes shake{0%,100%{transform:translateX(0)}25%,75%{transform:translateX(-4px)}50%{transform:translateX(4px)}}
-.stock{margin-top:12px;font-size:12px;font-weight:700;color:#B45309}
+.stock{margin-top:10px;font-size:12px;font-weight:700;color:#B45309}
 .stock.out{color:var(--danger)}
+
+/* Order Studio Below Size:
+   Row 1: Left = Tap to view (Cart products), Right = Professional Qty (- 1 +) with Black Shimmer
+   Row 2: Left = Add to cart, Right = Buy now (Single Buy Now Button) */
+.order-studio{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.os-top-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+
+/* Tap to View Bar (Left Side of Upper Row) */
+.p-cartbar{display:flex;align-items:center;gap:9px;min-height:44px;background:#F8F7F4;border:1.5px solid #DEDAD2;border-radius:999px;padding:5px 11px 5px 7px;color:var(--ink);cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s;min-width:0}
+.p-cartbar:hover{border-color:var(--rani)}
+.p-cartbar:active{transform:scale(.98)}
+.p-cb-imgs{display:flex;align-items:center;flex-shrink:0}
+.p-cb-imgs img{width:30px;height:30px;border-radius:50%;object-fit:cover;border:1.8px solid #fff;margin-left:-9px;background:#ECE9E2;box-shadow:0 2px 5px rgba(0,0,0,.12)}
+.p-cb-imgs img:first-child{margin-left:0}
+.p-cb-empty-ic{width:30px;height:30px;border-radius:50%;background:var(--rani);color:#fff;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.p-cb-empty-ic svg{width:14px;height:14px;stroke-width:2.2}
+.p-cb-meta{display:flex;flex-direction:column;min-width:0; flex:1;line-height:1.2}
+.p-cb-top{font-size:12px;font-weight:800;color:var(--rani);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-cb-sub{font-size:10.5px;color:var(--muted);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-cb-arr{width:15px;height:15px;color:var(--rani);flex-shrink:0;stroke-width:2.3}
+
+/* Professional Qty (- 1 +) on Right Side with Black Primary Shimmer Animation */
+.qty-box{position:relative;display:inline-flex;align-items:center;height:44px;background:#F8F7F4;border:1.5px solid #D5D0C8;border-radius:999px;padding:3px;box-shadow:0 3px 10px rgba(0,0,0,.05);overflow:hidden;transition:border-color .25s,box-shadow .25s}
+.qty-box.simar-pulse{border-color:var(--rani);box-shadow:0 0 0 3px rgba(22,22,22,.12)}
+.qty-btn{position:relative;width:36px;height:36px;border:0;border-radius:50%;background:#fff;color:var(--rani);font-size:17px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;transition:transform .15s,background .2s;overflow:hidden}
+.qty-btn.minus{border:1px solid #E5E0D8}
+.qty-btn:active{transform:scale(.88)}
+.qty-btn.plus{background:var(--rani);color:#fff;box-shadow:0 3px 8px rgba(0,0,0,.22)}
+/* Continuous + Triggered Black Shimmer ("Simar") on + Button */
+.qty-btn.plus::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.55) 50%,transparent 80%);
+  background-size:220% 100%;
+  background-position:180% 0;
+  pointer-events:none;
+  animation:plusSimarIdle 3.2s ease-in-out infinite;
+}
+.qty-btn.plus.simar-hit{animation:plusPop .45s var(--ease)}
+.qty-btn.plus.simar-hit::after{animation:plusSimarFast .55s linear 2}
+@keyframes plusSimarIdle{0%,65%{background-position:180% 0}100%{background-position:-140% 0}}
+@keyframes plusSimarFast{from{background-position:160% 0}to{background-position:-140% 0}}
+@keyframes plusPop{0%{transform:scale(1)}40%{transform:scale(1.14)}100%{transform:scale(1)}}
+.qty-val{min-width:28px;text-align:center;font-size:13.5px;font-weight:800;color:var(--rani);padding:0 4px}
+
+/* Bottom Row: Left = Add to Cart, Right = Buy Now */
+.os-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:center}
+.btn{min-height:46px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 14px;border-radius:999px;font-size:12.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;transition:transform .2s,opacity .2s,box-shadow .2s,background .2s}
+.btn svg{width:15px;height:15px;stroke-width:2.2}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-o{background:#fff;color:var(--rani);border:1.8px solid var(--rani);box-shadow:0 4px 10px rgba(0,0,0,.04)}
+.btn-p{background:var(--rani);color:#fff;border:1.8px solid var(--rani);box-shadow:0 8px 18px -4px rgba(22,22,22,.38)}
 
 /* Content Blocks & Accordions */
 .blk{padding:20px 18px;border-top:8px solid var(--cream)}
@@ -109,47 +174,13 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .acc-h svg{width:16px;height:16px;color:#A8A0A5;transition:transform .3s,color .3s}
 .acc-b{max-height:0;overflow:hidden;padding:0 16px;font-size:13px;line-height:1.65;color:#4B5563;transition:max-height .3s}
 .acc-i.on .acc-b{max-height:900px;padding:2px 16px 16px}
-.acc-i.on .acc-h svg{transform:rotate(180deg);color:var(--gold-deep)}
+.acc-i.on .acc-h svg{transform:rotate(180deg);color:var(--rani)}
 .acc-b ul{padding-left:16px}
 .acc-b li{margin-bottom:6px}
 
-/* 3-Button Order Studio Below Description & Shipping & Returns (Add to Cart, Buy Now, - 1 +) */
-.order-studio{margin-top:16px;padding:14px;border-radius:18px;background:linear-gradient(145deg,#FFFDF9,#FAF3E4);border:1.5px solid #E5D4B3;box-shadow:0 10px 26px -12px rgba(138,109,29,.18)}
-.os-active{display:flex;align-items:center;gap:10px;padding-bottom:11px;margin-bottom:12px;border-bottom:1px dashed #E2D3B5}
-.os-thumb{width:38px;height:38px;flex:0 0 38px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);background:#fff}
-.os-meta{flex:1;min-width:0;line-height:1.3}
-.os-meta small{display:block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--gold-deep)}
-.os-meta b{display:block;font-size:12.5px;font-weight:800;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.os-hint{font-size:10.5px;font-weight:600;color:var(--muted)}
-.os-btns{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:center}
-.btn{min-height:43px;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.35px;text-transform:uppercase;transition:transform .2s,opacity .2s,box-shadow .2s}
-.btn svg{width:15px;height:15px;stroke-width:2.2}
-.btn:active{transform:scale(.97)}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.btn-o{background:#fff;color:var(--ink);border:1.8px solid #C89D28;box-shadow:0 4px 12px rgba(154,116,28,.1)}
-.btn-p{background:linear-gradient(135deg,#C89D28,#8E6B13);color:#fff;border:0;box-shadow:0 8px 18px -4px rgba(142,107,19,.45)}
-.qty-box{display:inline-flex;align-items:center;height:43px;background:#fff;border:1.8px solid #DEC89A;border-radius:999px;padding:3px;box-shadow:0 4px 12px rgba(154,116,28,.1)}
-.qty-btn{width:34px;height:35px;border:0;border-radius:50%;background:var(--gold-soft);color:var(--gold-deep);font-size:16px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;transition:transform .15s,background .2s}
-.qty-btn:active{transform:scale(.9)}
-.qty-btn.plus{background:linear-gradient(135deg,#D4AF37,#A8842C);color:#fff}
-.qty-val{min-width:28px;text-align:center;font-size:13.5px;font-weight:800;color:var(--ink);padding:0 4px}
-
-/* Light Luxury Mini Cart Bar (NO Black Colour) */
-.p-cartbar{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#FFFDF9 0%,#F7EFE0 100%);border:1.5px solid #DFC580;border-radius:999px;padding:7px 8px 7px 11px;margin-top:12px;color:var(--ink);box-shadow:0 10px 24px -8px rgba(138,109,29,.22);cursor:pointer;transition:transform .2s}
-.p-cartbar:active{transform:scale(.99)}
-.p-cb-imgs{display:flex;align-items:center;flex-shrink:0}
-.p-cb-imgs img{width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid #fff;margin-left:-10px;background:#f0eeec;box-shadow:0 2px 6px rgba(0,0,0,.1)}
-.p-cb-imgs img:first-child{margin-left:0}
-.p-cb-meta{display:flex;flex-direction:column;min-width:0;line-height:1.25}
-.p-cb-count{font-size:12.5px;font-weight:800;color:var(--ink);white-space:nowrap}
-.p-cb-sub{font-size:10.5px;color:var(--gold-deep);font-weight:700;white-space:nowrap}
-.p-cb-btn{margin-left:auto;height:36px;padding:0 13px;flex:0 0 auto;background:linear-gradient(135deg,#D4AF37,#9A741C);color:#fff;border:none;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:11.5px;font-weight:800;box-shadow:0 4px 12px rgba(154,116,28,.32);transition:transform .2s}
-.p-cb-btn:active{transform:scale(.93)}
-.p-cb-btn svg{width:15px;height:15px;stroke-width:2.5}
-
 .trust{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
 .trust div{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;background:var(--ivory);border:1px solid var(--line);border-radius:12px;padding:13px 6px;font-size:10px;font-weight:800;letter-spacing:.4px;text-transform:uppercase}
-.trust svg{width:20px;height:20px;color:var(--gold);stroke-width:1.8}
+.trust svg{width:20px;height:20px;color:var(--rani);stroke-width:1.8}
 
 /* Reviews Section */
 .sum{display:flex;align-items:center;gap:16px;border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px}
@@ -164,12 +195,12 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .bar b{width:22px;font-weight:700}
 .bar em{min-width:28px;text-align:right;font-style:normal}
 .track{flex:1;height:6px;border-radius:3px;background:#E5E7EB;overflow:hidden}
-.fill{height:100%;background:var(--gold-deep);border-radius:3px}
+.fill{height:100%;background:var(--rani);border-radius:3px}
 .rv-list{display:flex;gap:12px;overflow-x:auto;margin:0 -18px;padding:0 18px 10px;scrollbar-width:none}
 .rv-list::-webkit-scrollbar{display:none}
 .rv{flex:0 0 268px;border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:0 2px 8px rgba(36,32,36,.04)}
 .rv-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.rv-av{width:36px;height:36px;border-radius:50%;background:var(--blush);color:var(--rani);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px}
+.rv-av{width:36px;height:36px;border-radius:50%;background:var(--rani);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px}
 .rv-n{font-size:13.5px;font-weight:700}
 .rv-d{font-size:11px;color:var(--muted)}
 .rv .stars{justify-content:flex-start;margin:0 0 8px}
@@ -177,19 +208,19 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .rv-b{font-size:12.5px;line-height:1.55;color:var(--muted)}
 .empty{width:100%;text-align:center;padding:22px 16px;border:1px dashed var(--line);border-radius:12px;font-size:12px;color:var(--muted)}
 .empty b{display:block;font-size:13.5px;color:var(--ink);margin-bottom:3px}
-.btn-write{width:100%;margin-top:14px;min-height:44px;display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;border:1.5px solid #DEC89A;border-radius:999px;background:var(--gold-soft);color:var(--ink);font-size:13.5px;font-weight:800;letter-spacing:.2px;transition:transform .2s}
+.btn-write{width:100%;margin-top:14px;min-height:44px;display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;border:0;border-radius:999px;background:var(--rani);color:#fff;font-size:13.5px;font-weight:800;letter-spacing:.2px;transition:transform .2s}
 .btn-write:active{transform:scale(.98)}
-.btn-write svg{width:16px;height:16px;stroke-width:2.5;color:var(--gold-deep)}
+.btn-write svg{width:16px;height:16px;stroke-width:2.5;color:#fff}
 
 /* Wishlisted Items Section on Product Page */
 .sec-head-inline{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
 .sec-head-inline h2{margin-bottom:0;display:inline-flex;align-items:center;gap:7px;font-size:15.5px}
 .sec-head-inline h2 svg{width:16px;height:16px;color:#C8102E;fill:#C8102E}
 .wish-pill-cnt{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 6px;border-radius:999px;background:#FFF0F3;color:#C8102E;font-size:11px;font-weight:800;border:1px solid #FBCFE8}
-.wish-link-all{font-size:12px;font-weight:700;color:var(--gold-deep);padding:4px 10px;border-radius:999px;background:var(--gold-soft);border:1px solid #E5D4B3}
+.wish-link-all{font-size:12px;font-weight:700;color:var(--rani);padding:4px 10px;border-radius:999px;background:#F4F4F4;border:1px solid var(--line)}
 
-/* Modals */
-.ov{position:fixed;inset:0;z-index:100;background:rgba(36,32,36,.45);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center}
+/* Modals (Light Surface - Popup Background Not Black) */
+.ov{position:fixed;inset:0;z-index:100;background:rgba(22,22,22,.45);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center}
 .ov.on{display:flex}
 .ov.center{align-items:center;padding:20px}
 .sheet{width:100%;max-width:420px;max-height:90dvh;overflow-y:auto;background:linear-gradient(180deg,#FFFDF9,#FAF5EC);border-radius:24px 24px 0 0;padding:20px 18px calc(22px + env(safe-area-inset-bottom,0px));position:relative;animation:up .3s ease;border-top:1.5px solid #E5D4B3;box-shadow:0 -18px 44px rgba(36,32,36,.18)}
@@ -200,13 +231,13 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .x{position:absolute;top:14px;right:14px;width:32px;height:32px;border:1px solid var(--line);border-radius:50%;background:#fff;color:var(--muted);display:inline-flex;align-items:center;justify-content:center}
 .x svg{width:16px;height:16px;stroke-width:2.2}
 .fld{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font:inherit;font-size:14px;margin-bottom:10px;outline:none;background:#fff}
-.fld:focus{border-color:var(--gold-deep);box-shadow:0 0 0 3px rgba(212,175,55,.15)}
+.fld:focus{border-color:var(--rani);box-shadow:0 0 0 3px rgba(22,22,22,.08)}
 .row2{display:flex;gap:10px}
-.mbtn{width:100%;min-height:42px;padding:11px 16px;border:0;border-radius:999px;background:linear-gradient(135deg,#C89D28,#8E6B13);color:#fff;font-size:13.5px;font-weight:800;letter-spacing:.2px;box-shadow:0 8px 18px -4px rgba(142,107,19,.4)}
+.mbtn{width:100%;min-height:42px;padding:11px 16px;border:0;border-radius:999px;background:var(--rani);color:#fff;font-size:13.5px;font-weight:800;letter-spacing:.2px;box-shadow:0 8px 18px -4px rgba(22,22,22,.35)}
 .mbtn:disabled{opacity:.6}
-.skip{width:100%;margin-top:8px;min-height:40px;padding:10px 14px;border:1.5px solid #DEC89A;border-radius:999px;background:#fff;color:var(--ink);font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.skip{width:100%;margin-top:8px;min-height:40px;padding:10px 14px;border:1.5px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:6px}
 .skip svg{width:14px;height:14px;stroke-width:2.2}
-.skip:hover{border-color:var(--gold-deep)}
+.skip:hover{border-color:var(--rani)}
 .pick{display:flex;justify-content:center;gap:10px;margin:6px 0 18px}
 .pick svg.lucide{width:30px;height:30px;color:#E5E7EB;cursor:pointer;transition:color .15s,transform .15s}
 .pick svg.lucide:active{transform:scale(.9)}
@@ -221,9 +252,9 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .termlink span svg{width:15px;height:15px;color:var(--gold-deep);stroke-width:2}
 .termlink>svg{color:#A8A0A5;width:15px;height:15px}
 .sheet p.agree{font-size:11px;margin-bottom:14px}
-.agree a{color:var(--gold-deep);text-decoration:underline}
+.agree a{color:var(--rani);text-decoration:underline}
 
-/* Light Luxury Cart Items Popup Drawer (Zero Black Colour) */
+/* Light Luxury Cart Items Popup Drawer (Popup stays light, not black) */
 .cd-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:12px;border-bottom:1px solid #EAE0D0;margin-bottom:12px}
 .cd-title-wrap{display:flex;align-items:center;gap:10px}
 .cd-bag-ic{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#FFF8E6,#F3E3B8);color:var(--gold-deep);display:flex;align-items:center;justify-content:center;border:1px solid #E2C98A}
@@ -252,18 +283,18 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .cd-checkout{width:100%;min-height:44px;border:0;border-radius:999px;background:linear-gradient(135deg,#C89D28,#8E6B13);color:#fff;font-size:13.5px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 10px 22px -6px rgba(142,107,19,.45)}
 .cd-more{width:100%;min-height:40px;border:1.5px solid #DEC89A;border-radius:999px;background:#fff;color:var(--gold-deep);font-size:12.5px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px}
 
-/* Product Cards: Sharp 1:1 Top Image, Rounded Bottom Only, Discount Tag in Price Row, No Card Heart */
+/* Product Cards */
 .grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px 10px}
 .pcard{position:relative;min-width:0;background:#fff;border:1px solid #EEE4D2;border-radius:0 0 16px 16px;overflow:hidden;padding-bottom:10px;box-shadow:0 8px 20px -10px rgba(36,32,36,.12);display:flex;flex-direction:column;transition:box-shadow .3s,border-color .3s,transform .3s var(--ease)}
-@media(hover:hover){.pcard:hover{box-shadow:0 18px 36px -14px rgba(36,32,36,.2);border-color:rgba(212,175,55,.55);transform:translateY(-2px)}}
+@media(hover:hover){.pcard:hover{box-shadow:0 18px 36px -14px rgba(36,32,36,.2);border-color:rgba(22,22,22,.35);transform:translateY(-2px)}}
 .pcard-link{display:block;cursor:pointer}
 .pcard-media{position:relative;display:block;width:100%;aspect-ratio:1/1;border-radius:0;background:linear-gradient(135deg,#F6F0E2,#EEE3CB);overflow:hidden}
 .pcard-media img{width:100%;height:100%;aspect-ratio:1/1;object-fit:cover;border-radius:0;transition:transform .5s var(--ease)}
 @media(hover:hover){.pcard:hover .pcard-media img{transform:scale(1.06)}}
 .tags{position:absolute;left:7px;top:7px;max-width:calc(100% - 14px);display:flex;flex-direction:column;align-items:flex-start;gap:4px;z-index:2;pointer-events:none}
 .tag-off,.tag-best{color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.03em;padding:3.5px 8px;border-radius:999px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.tag-off{background:linear-gradient(135deg,#C89D28,#8E6B13)}
-.tag-best{background:var(--ink);box-shadow:0 4px 10px rgba(0,0,0,.2)}
+.tag-off{background:var(--rani)}
+.tag-best{background:var(--rani);box-shadow:0 4px 10px rgba(0,0,0,.2)}
 .pcard-foot{display:flex;flex-direction:column;flex:1;padding:10px 10px 0;min-width:0}
 .pcard-text{display:block;min-width:0}
 .pcard-name{display:block;font-size:13px;font-weight:500;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -280,16 +311,16 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .cdots{display:inline-flex;align-items:center;flex-shrink:1;min-width:0;overflow:hidden}
 .cdots i{width:11px;height:11px;flex:0 0 11px;border-radius:50%;margin-left:-3.5px;box-shadow:0 0 0 1.2px #fff,inset 0 0 0 1px rgba(0,0,0,.15)}
 .cdots i:first-child{margin-left:0}
-.cdots b{min-width:15px;height:15px;padding:0 4px;margin-left:3px;border-radius:999px;background:var(--gold-soft);color:var(--gold-deep);border:1px solid #E2C98A;font-size:8px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
-.go{margin-left:auto;flex:0 0 28px;width:28px;height:28px;padding:0;border:1px solid #E2C98A;border-radius:50%;background:linear-gradient(135deg,#FFF9EB,#F3E2B3);color:var(--gold-deep);display:inline-flex;align-items:center;justify-content:center;box-shadow:0 4px 10px -2px rgba(154,116,28,.25);transition:transform .2s var(--ease),box-shadow .2s}
-@media(hover:hover){.go:hover{transform:scale(1.06);box-shadow:0 8px 14px -2px rgba(154,116,28,.35)}}
+.cdots b{min-width:15px;height:15px;padding:0 4px;margin-left:3px;border-radius:999px;background:#F3F3F3;color:var(--rani);border:1px solid var(--line);font-size:8px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.go{margin-left:auto;flex:0 0 28px;width:28px;height:28px;padding:0;border:0;border-radius:50%;background:var(--rani);color:#fff;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 4px 10px -2px rgba(22,22,22,.28);transition:transform .2s var(--ease),box-shadow .2s}
+@media(hover:hover){.go:hover{transform:scale(1.06);box-shadow:0 8px 14px -2px rgba(22,22,22,.38)}}
 .go:active{transform:scale(.92)}
 .go svg{width:13px;height:13px;stroke-width:2.2}
 .low{display:inline-flex;align-items:center;margin-top:6px;font-size:11px;font-weight:700;color:#B45309;background:rgba(180,83,9,.08);padding:2.5px 7px;border-radius:999px;width:fit-content;max-width:100%}
 .low.out{color:#B91C1C;background:rgba(185,28,28,.08)}
 
-/* Footer (No bottom nav bar gap needed) */
-.footer{background:#1B1719;color:#fff;padding:34px 18px calc(28px + env(safe-area-inset-bottom,0px));border-top:3px solid rgba(212,175,55,.4)}
+/* Footer */
+.footer{background:#161616;color:#fff;padding:34px 18px calc(28px + env(safe-area-inset-bottom,0px));border-top:3px solid rgba(212,175,55,.4)}
 .footer-brand{font-family:"Playfair Display",serif;font-size:24px;font-weight:600;color:var(--gold)}
 .footer-tag{margin:6px 0 0;font-size:13px;line-height:1.6;color:#B5ADB2}
 .footer-news{margin:22px 0 4px}
@@ -314,7 +345,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .toast[data-type="error"]::before{content:"!";color:#DC2626}
 .toast.is-on{opacity:1;transform:translate(-50%,0)}
 
-/* Light Luxury Compact Quick View Popup (No Black Buttons, Quantity Stepper, Shimmer on Colour Switch, Wishlist Inside) */
+/* Light Luxury Compact Quick View Popup (Light Popup Surface preserved) */
 .sqa-ov{position:fixed;inset:0;z-index:9700;background:rgba(36,32,36,.48);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:flex-end;justify-content:center}
 .sqa-ov[hidden]{display:none!important}
 .sqa-sheet{width:100%;max-width:420px;background:linear-gradient(180deg,#FFFDF9,#FAF4E8);border-top:1.5px solid #E5D4B3;border-radius:24px 24px 0 0;padding:12px 16px calc(18px + env(safe-area-inset-bottom,0px));position:relative;max-height:92dvh;overflow-y:auto;animation:sqaUp .28s cubic-bezier(.2,.9,.3,1.15);box-shadow:0 -20px 50px rgba(36,32,36,.2)}
@@ -378,9 +409,10 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
   .cdots b{font-size:7.5px;min-width:14px;height:14px;padding:0 3px}
   .go{width:26px;height:26px;flex:0 0 26px}
   .go svg{width:12px;height:12px}
-  .os-btns{grid-template-columns:1fr 1fr;gap:8px}
-  .qty-box{grid-column:1/-1;justify-content:space-between;padding:3px 10px}
-  .btn{font-size:11.5px;min-height:40px;padding:9px 8px}
+  .p-cb-imgs img{width:26px;height:26px}
+  .qty-btn{width:32px;height:32px;font-size:15px}
+  .qty-val{min-width:24px;font-size:12.5px}
+  .btn{font-size:11.5px;min-height:42px;padding:9px 10px}
   .sqa-media{width:98px;height:98px;flex:0 0 98px}
 }
 @media(prefers-reduced-motion:reduce){*,::before,::after{transition-duration:.01ms!important;scroll-behavior:auto!important}}
@@ -398,7 +430,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
     </div>
   </header>
 
-  <div class="media">
+  <div class="media" id="mediaBox">
     <div class="carousel skel" id="carousel"></div>
     <div class="dots" id="dots"></div>
   </div>
@@ -414,6 +446,33 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
     <div class="lbl">Select size <span id="sizeInfo"></span></div>
     <div class="sizes" id="sizes"></div>
     <div class="stock" id="stock" hidden></div>
+
+    <!-- Order Controls Right Below Size:
+         Top Row: Left = Tap to view (opens cart products popup), Right = Professional Qty (- 1 +)
+         Bottom Row: Left = Add to cart, Right = Buy now (Single Buy Now Button) -->
+    <div class="order-studio" id="orderStudio">
+      <div class="os-top-row">
+        <div class="p-cartbar" id="pCartBar" role="button" tabindex="0" onclick="openCartDrawer()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCartDrawer()}">
+          <div class="p-cb-imgs" id="pCartBarImgs"></div>
+          <div class="p-cb-meta">
+            <span class="p-cb-top" id="pCartBarTitle">Tap to view</span>
+            <span class="p-cb-sub" id="pCartBarCount">View bag items</span>
+          </div>
+          <i data-lucide="chevron-right" class="p-cb-arr"></i>
+        </div>
+
+        <div class="qty-box" id="qtyBox" aria-label="Quantity selector">
+          <button type="button" class="qty-btn minus" id="qtyMinus" onclick="stepProductQty(-1)" aria-label="Decrease quantity">−</button>
+          <span class="qty-val" id="qtyVal">1</span>
+          <button type="button" class="qty-btn plus" id="qtyPlus" onclick="stepProductQty(1)" aria-label="Increase quantity">+</button>
+        </div>
+      </div>
+
+      <div class="os-btns">
+        <button class="btn btn-o" type="button" id="btnCart" onclick="addToCart()"><i data-lucide="shopping-bag"></i>Add to cart</button>
+        <button class="btn btn-p" type="button" id="btnBuy" onclick="buyNow()"><i data-lucide="zap"></i>Buy now</button>
+      </div>
+    </div>
   </section>
 
   <section class="blk">
@@ -426,37 +485,6 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
       <div class="acc-i on"><button class="acc-h" type="button" onclick="toggleAcc(this)">Description <i data-lucide="chevron-down"></i></button><div class="acc-b"><p id="desc"></p><p id="sku" style="margin-top:10px;font-weight:700;color:var(--ink)"></p></div></div>
       <div class="acc-i" id="specItem" hidden><button class="acc-h" type="button" onclick="toggleAcc(this)">Style &amp; specifications <i data-lucide="chevron-down"></i></button><div class="acc-b"><ul id="specs"></ul></div></div>
       <div class="acc-i"><button class="acc-h" type="button" onclick="toggleAcc(this)">Shipping &amp; returns <i data-lucide="chevron-down"></i></button><div class="acc-b"><ul><li>Free delivery on prepaid orders across India.</li><li>Return window of 4 hours from delivery for defects or exchange.</li></ul></div></div>
-    </div>
-
-    <!-- 3 Buttons Below Description & Shipping & Returns: 1. Add to Cart, 2. Buy Now, 3. (- 1 +) Quantity Stepper -->
-    <div class="order-studio" id="orderStudio">
-      <div class="os-active">
-        <img class="os-thumb" id="osThumb" src="" alt="">
-        <div class="os-meta">
-          <small>Selected Variant</small>
-          <b id="osVariantText">Main · Select size</b>
-          <span class="os-hint">Pick any colour above &amp; use (- 1 +) to add multiple colours</span>
-        </div>
-      </div>
-      <div class="os-btns">
-        <button class="btn btn-o" type="button" id="btnCart" onclick="addToCart()"><i data-lucide="shopping-bag"></i>Add to cart</button>
-        <button class="btn btn-p" type="button" id="btnBuy" onclick="buyNow()"><i data-lucide="zap"></i>Buy now</button>
-        <div class="qty-box" aria-label="Quantity selector">
-          <button type="button" class="qty-btn minus" id="qtyMinus" onclick="stepProductQty(-1)" aria-label="Decrease quantity">−</button>
-          <span class="qty-val" id="qtyVal">1</span>
-          <button type="button" class="qty-btn plus" id="qtyPlus" onclick="stepProductQty(1)" aria-label="Increase quantity">+</button>
-        </div>
-      </div>
-
-      <!-- Light Luxury Cart Summary Bar (Opens Light Cart Items Popup) -->
-      <div class="p-cartbar" id="pCartBar" hidden onclick="openCartDrawer()">
-        <div class="p-cb-imgs" id="pCartBarImgs"></div>
-        <div class="p-cb-meta">
-          <span class="p-cb-count" id="pCartBarCount"></span>
-          <span class="p-cb-sub" id="pCartBarTotal">Tap to review colours &amp; order</span>
-        </div>
-        <button class="p-cb-btn" type="button" id="pCartOrderBtn" onclick="event.stopPropagation();openCartDrawer()" aria-label="View &amp; order cart items">Order <i data-lucide="arrow-right"></i></button>
-      </div>
     </div>
 
     <div class="trust">
@@ -508,7 +536,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 </div>
 
 <!-- MODALS -->
-<!-- Light Luxury Professional Cart Items Popup (Zero Black Colour) -->
+<!-- Light Luxury Professional Cart Items Popup (Popup stays light, not black) -->
 <div class="ov" id="cartDrawerOv" onclick="if(event.target===this)closeModal('cartDrawerOv')">
   <div class="sheet" role="dialog" aria-modal="true" aria-label="Your shopping bag">
     <div class="cd-head">
@@ -586,7 +614,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 
 <div id="toast" class="toast" role="status" aria-live="polite"><span id="toast-msg"></span></div>
 
-<!-- Compact Professional Quick View Popup (Light Luxury Theme, Small Image, Shimmer on Colour Switch, Quantity Stepper, Wishlist Inside) -->
+<!-- Compact Professional Quick View Popup (Light Luxury Theme Preserved) -->
 <div class="sqa-ov" id="sqaOv" hidden>
   <div class="sqa-sheet" role="dialog" aria-modal="true" aria-label="Quick view">
     <div class="sqa-grab"></div>
@@ -797,20 +825,28 @@ const rememberRecent = id => {
   writeJson('aavira_recent', list.slice(0, 8));
 };
 
-/* Sync Active Variant Display & Quantity Stepper for Selected Colour + Size */
+/* Trigger Professional Black Shimmer ("Simar") Animation on (- 1 +) Plus Button */
+let plusSimarTimer;
+const triggerPlusSimar = () => {
+  const plusBtn = $('#qtyPlus');
+  const qtyBox = $('#qtyBox');
+  if (!plusBtn) return;
+  plusBtn.classList.remove('simar-hit');
+  qtyBox?.classList.remove('simar-pulse');
+  void plusBtn.offsetWidth;
+  plusBtn.classList.add('simar-hit');
+  qtyBox?.classList.add('simar-pulse');
+  clearTimeout(plusSimarTimer);
+  plusSimarTimer = setTimeout(() => {
+    plusBtn.classList.remove('simar-hit');
+    qtyBox?.classList.remove('simar-pulse');
+  }, 1150);
+};
+
+/* Sync Active Variant Quantity Stepper for Selected Colour + Size */
 const syncActiveVariantUI = () => {
   const colorNow = state.color || 'Main';
   const sizeNow = state.size || '';
-  const imgNow = safeUrl(state.image) || IMG_FALLBACK;
-  const thumb = $('#osThumb');
-  if (thumb) {
-    thumb.src = imgNow;
-    thumb.onerror = function () { this.onerror = null; this.src = IMG_FALLBACK; };
-  }
-  const textEl = $('#osVariantText');
-  if (textEl) {
-    textEl.textContent = `${colorNow} · ${sizeNow ? `Size ${sizeNow}` : 'Select size'}`;
-  }
   const sizeInfo = $('#sizeInfo');
   if (sizeInfo) {
     sizeInfo.textContent = sizeNow ? `· ${sizeNow}` : '';
@@ -824,6 +860,7 @@ const syncActiveVariantUI = () => {
   }
   const qtyEl = $('#qtyVal');
   if (qtyEl) qtyEl.textContent = String(state.qty || 1);
+  refreshPCartBar();
 };
 
 const renderSizes = () => {
@@ -867,7 +904,7 @@ const ensureSizeSelected = autoPickFirst => {
   return null;
 };
 
-/* (- 1 +) Stepper Logic: When user selects any colour (e.g. 2nd colour) and taps (- 1 +), that exact colour is added/updated in cart */
+/* (- 1 +) Stepper Logic */
 const upsertCurrentVariantInCart = newQty => {
   if (!state.product) return;
   const size = ensureSizeSelected(true);
@@ -914,6 +951,7 @@ window.stepProductQty = delta => {
   if (!state.product) return;
   const size = ensureSizeSelected(true);
   if (!size) return;
+  if (delta > 0) triggerPlusSimar();
   const colorNow = state.color || 'Main';
   const cart = readJson('aavira_cart', []);
   const existing = cart.find(item => String(item.productId) === String(state.id) && item.size === size && (item.color || 'Main') === colorNow);
@@ -935,7 +973,9 @@ const slidesHtml = (product, main) => {
 
 const showGallery = slides => {
   const carousel = $('#carousel');
+  const mediaBox = $('#mediaBox');
   carousel.classList.remove('skel');
+  mediaBox?.classList.remove('is-shimmering');
   carousel.innerHTML = slides.join('');
   carousel.scrollLeft = 0;
   $('#dots').innerHTML = slides.length > 1
@@ -943,6 +983,7 @@ const showGallery = slides => {
     : '';
 };
 
+/* Colour Switch with Professional Shimmer ("Simar") on Big Photo + Plus (+) Button */
 let pickToken = 0;
 const pickColor = index => {
   const option = state.colors[index];
@@ -953,35 +994,36 @@ const pickColor = index => {
   state.qty = 1;
   $('#colorInfo').textContent = '· ' + option.name;
   syncActiveVariantUI();
+  triggerPlusSimar();
 
   const slides = option.main
     ? state.mainSlides
     : [`<div class="slide"><img src="${esc(safeUrl(option.image) || IMG_FALLBACK)}" alt="${esc(option.name)}" ${FALLBACK_ATTR}></div>`];
   const carousel = $('#carousel');
+  const mediaBox = $('#mediaBox');
   const src = safeUrl(option.image) || '';
-  const curImg = carousel.querySelector('img');
-  if (curImg && src) {
-    let cur = curImg.currentSrc || curImg.src || '', abs = src;
-    try { cur = new URL(cur, location.href).href; } catch {}
-    try { abs = new URL(src, location.href).href; } catch {}
-    if (cur === abs) { if (window.navigator?.vibrate) navigator.vibrate(10); return; }
-  }
   const my = ++pickToken;
-  const t0 = Date.now(), MIN_SHOW = 500;
+  const t0 = Date.now(), MIN_SHOW = 520;
+
+  mediaBox?.classList.add('is-shimmering');
   carousel.classList.add('skel');
-  carousel.innerHTML = '';
-  if (window.navigator?.vibrate) navigator.vibrate(10);
-  const finish = ok => {
+  if (window.navigator?.vibrate) navigator.vibrate(12);
+
+  const finish = () => {
     if (my !== pickToken) return;
-    const wait = ok ? Math.max(0, MIN_SHOW - (Date.now() - t0)) : 0;
+    const wait = Math.max(0, MIN_SHOW - (Date.now() - t0));
     setTimeout(() => {
       if (my !== pickToken) return;
       showGallery(slides);
     }, wait);
   };
+  if (!src) {
+    finish();
+    return;
+  }
   const pre = new Image();
-  pre.onload = () => finish(true);
-  pre.onerror = () => finish(false);
+  pre.onload = finish;
+  pre.onerror = finish;
   pre.src = src;
 };
 
@@ -1122,6 +1164,7 @@ const addToCart = () => {
     updateCartBadge();
     refreshPCartBar();
     syncActiveVariantUI();
+    triggerPlusSimar();
     toast(`${colorNow} (${size}) added to bag`);
   });
 };
@@ -1317,7 +1360,6 @@ const colorHex = name => {
   return COLOR_HEX[key] || (CSS.supports('color', key) ? key : '#D1D5DB');
 };
 
-/* Product Card: 1:1 unrounded top image, bottom-only rounded card, no discount on photo, discount tag in place of MRP, no wishlist icon on card */
 const suggestionCard = product => {
   const price = Number(product.price) || 0;
   const mrp = Number(product.mrp) || price;
@@ -1370,7 +1412,6 @@ const normalizeCardItem = (p, totals = {}) => {
   };
 };
 
-/* Render User's Wishlisted Items Professionally Below on Product Page */
 const renderWishlistSection = () => {
   const wishSec = $('#wishSec');
   if (!wishSec) return;
@@ -1503,18 +1544,31 @@ $('#pick').innerHTML = [1, 2, 3, 4, 5].map(v => `<i data-lucide="star" data-v="$
   $(selector)?.addEventListener('keydown', event => { if (event.key === 'Enter') handler(); });
 });
 
+/* Tap to View Bar (Always aligned on left of Qty Stepper) */
 const refreshPCartBar = () => {
   const bar = $('#pCartBar');
   if (!bar) return;
   const cart = readJson('aavira_cart', []).filter(it => it && (Number(it.qty) || 0) > 0);
   const count = cart.reduce((s, it) => s + (Number(it.qty) || 1), 0);
-  if (!count) { bar.hidden = true; return; }
+  const imgsEl = $('#pCartBarImgs');
+  const titleEl = $('#pCartBarTitle');
+  const subEl = $('#pCartBarCount');
+
+  if (!count) {
+    const fallbackImg = safeUrl(state.image) || '';
+    imgsEl.innerHTML = fallbackImg
+      ? `<img src="${esc(fallbackImg)}" alt="" loading="lazy" ${FALLBACK_ATTR}>`
+      : `<span class="p-cb-empty-ic"><i data-lucide="shopping-bag"></i></span>`;
+    if (titleEl) titleEl.textContent = 'Tap to view';
+    if (subEl) subEl.textContent = '0 items in bag';
+    window.lucide?.createIcons();
+    return;
+  }
+
   const totalAmount = cart.reduce((s, it) => s + (Number(it.price) || 0) * (Number(it.qty) || 1), 0);
-  bar.hidden = false;
-  $('#pCartBarCount').textContent = `${count} ${count === 1 ? 'item' : 'items'} in bag · ${formatPrice(totalAmount)}`;
-  const totalEl = $('#pCartBarTotal');
-  if (totalEl) totalEl.textContent = 'Tap to view colours, change qty & order';
-  $('#pCartBarImgs').innerHTML = cart.slice(0, 4).map(it => `<img src="${esc(safeUrl(it.image) || IMG_FALLBACK)}" alt="" loading="lazy" ${FALLBACK_ATTR}>`).join('');
+  if (titleEl) titleEl.textContent = 'Tap to view';
+  if (subEl) subEl.textContent = `${count} ${count === 1 ? 'item' : 'items'} · ${formatPrice(totalAmount)}`;
+  imgsEl.innerHTML = cart.slice(0, 4).map(it => `<img src="${esc(safeUrl(it.image) || IMG_FALLBACK)}" alt="" loading="lazy" ${FALLBACK_ATTR}>`).join('');
 };
 
 const init = async () => {
@@ -1613,7 +1667,7 @@ addEventListener('storage', event => {
 window.lucide?.createIcons();
 init().then(() => window.lucide?.createIcons());
 
-/* ============ Compact Professional Quick View Logic (Small Image, Full Details, Quantity Stepper, Shimmer on Colour Change, Wishlist Inside) ============ */
+/* ============ Compact Professional Quick View Logic ============ */
 let sqaPid = null;
 let sqaQty = 1;
 let sqaSwitchToken = 0;
@@ -1664,7 +1718,6 @@ window.openSugQA = id => {
 
   $('#sqaSku').textContent = 'SKU: AV-' + String(p.id).substring(0, 5).toUpperCase() + ' · Free delivery';
 
-  /* Colour photo swatches: Main photo is ALWAYS first in #sqaColors + any admin-uploaded colorImages */
   const qvNames = Array.isArray(p.colors) && p.colors.length ? p.colors : (p.colorsInfo ? String(p.colorsInfo).split(',') : []);
   const qvColors = [{ name: String(qvNames[0] || 'Main').trim(), image: mainImg }];
   (Array.isArray(p.colorImages) ? p.colorImages : []).forEach((url, i) => {
