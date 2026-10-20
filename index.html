@@ -380,12 +380,9 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
 .qv-pick-head{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:600;margin-bottom:8px}
 .qv-pick-head em{font-style:normal;color:#8a8a8a;font-weight:500}
 .qv-color-row{display:flex;gap:10px;flex-wrap:wrap}
-.qv-sw{position:relative;flex:0 0 auto;width:48px;height:48px;border-radius:50%;border:2px solid var(--line);padding:3px;background:#fff;cursor:pointer;transition:transform .25s,border-color .25s}
+.qv-sw{position:relative;flex:0 0 auto;width:52px;height:52px;border-radius:50%;border:2px solid var(--line);padding:3px;background:#fff;cursor:pointer;transition:transform .25s,border-color .25s}
 .qv-sw img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:50%;display:block}
 .qv-sw.on{border-color:#161616;transform:scale(1.06)}
-.qv-dot{width:34px;height:34px;flex:0 0 34px;border-radius:50%;border:2px solid var(--line);background:#fff;padding:3px;cursor:pointer;transition:transform .2s,border-color .2s}
-.qv-dot i{width:100%;height:100%;border-radius:50%;display:block;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
-.qv-dot.on{border-color:#161616;transform:scale(1.08)}
 .qv-sizes{margin:12px 0 4px}
 .qv-sizes-head{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:600;margin-bottom:8px}
 .qv-size-err{color:#DC2626;font-style:normal;font-size:12px}
@@ -652,7 +649,7 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
 
     <section class="marquee" aria-label="Aavira Fashion highlights">
       <div class="marquee-row"><div class="marquee-track"><div class="marquee-set"><span class="marquee-copy">Premium Ethnic Wear</span><span class="marquee-copy">Premium Ethnic Wear</span><span class="marquee-copy">Premium Ethnic Wear</span></div><div class="marquee-set" aria-hidden="true"><span class="marquee-copy">Premium Ethnic Wear</span><span class="marquee-copy">Premium Ethnic Wear</span><span class="marquee-copy">Premium Ethnic Wear</span></div></div></div>
-      <div class="marquee-row"><div class="marquee-track"><div class="marquee-set"><span class="marquee-copy">Crafted for Elegance</span><span class="marquee-copy">Crafted for Elegance</span><span class="marquee-copy">Crafted for Elegance</span></div><div class="marquee-set" aria-hidden="true"><span class="marquee-copy">Premium Ethnic Wear</span><span class="marquee-copy">Crafted for Elegance</span><span class="marquee-copy">Crafted for Elegance</span></div></div></div>
+      <div class="marquee-row"><div class="marquee-track"><div class="marquee-set"><span class="marquee-copy">Crafted for Elegance</span><span class="marquee-copy">Crafted for Elegance</span><span class="marquee-copy">Crafted for Elegance</span></div><div class="marquee-set" aria-hidden="true"><span class="marquee-copy">Crafted for Elegance</span><span class="marquee-copy">Crafted for Elegance</span><span class="marquee-copy">Crafted for Elegance</span></div></div></div>
       <div class="marquee-row"><div class="marquee-track"><div class="marquee-set"><span class="marquee-copy">New Collection 2026</span><span class="marquee-copy">New Collection 2026</span><span class="marquee-copy">New Collection 2026</span></div><div class="marquee-set" aria-hidden="true"><span class="marquee-copy">New Collection 2026</span><span class="marquee-copy">New Collection 2026</span><span class="marquee-copy">New Collection 2026</span></div></div></div>
     </section>
   </main>
@@ -1545,26 +1542,21 @@ window.clearRecent = () => {
   renderRecent();
 };
 
-const normalizeProduct = raw => {
-  const parsedColors = Array.isArray(raw.colors) && raw.colors.length
-    ? raw.colors
-    : (raw.colorsInfo ? String(raw.colorsInfo).split(',').map(s => s.trim()).filter(Boolean) : []);
-  return {
-    id: raw.id ?? raw._id,
-    name: raw.name || raw.title || '',
-    price: raw.price,
-    mrp: raw.mrp ?? raw.originalPrice,
-    colors: parsedColors,
-    colorsInfo: raw.colorsInfo || '',
-    colorImages: Array.isArray(raw.colorImages) ? raw.colorImages : [],
-    sizes: Array.isArray(raw.sizes) && raw.sizes.length ? raw.sizes : ['32', '34', '36', '38', '40', '42'],
-    img: raw.imageMain || raw.image || raw.imageUrl || raw.img || '',
-    rating: clamp(Number(raw.rating ?? raw.averageRating ?? raw.avgRating ?? raw.ratingAvg ?? raw.average_rating ?? raw.avg_rating ?? raw.stars) || 0, 0, 5),
-    reviewCount: Number(raw.reviewCount ?? raw.reviews ?? raw.numReviews) || 0,
-    stock: raw.stock,
-    bestseller: !!raw.bestseller
-  };
-};
+const normalizeProduct = raw => ({
+  id: raw.id ?? raw._id,
+  name: raw.name || raw.title || '',
+  price: raw.price,
+  mrp: raw.mrp ?? raw.originalPrice,
+  colors: Array.isArray(raw.colors) ? raw.colors : [],
+  colorsInfo: raw.colorsInfo || '',
+  colorImages: Array.isArray(raw.colorImages) ? raw.colorImages : [],
+  sizes: Array.isArray(raw.sizes) && raw.sizes.length ? raw.sizes : ['32', '34', '36', '38', '40', '42'],
+  img: raw.imageMain || raw.image || raw.imageUrl || raw.img || '',
+  rating: clamp(Number(raw.rating ?? raw.averageRating ?? raw.avgRating ?? raw.ratingAvg ?? raw.average_rating ?? raw.avg_rating ?? raw.stars) || 0, 0, 5),
+  reviewCount: Number(raw.reviewCount ?? raw.reviews ?? raw.numReviews) || 0,
+  stock: raw.stock,
+  bestseller: !!raw.bestseller
+});
 
 window.fetchProducts = async () => {
   try {
@@ -1833,20 +1825,19 @@ window.updateLbUI = () => {
 window.lbNext = event => { event?.stopPropagation(); state.lightboxIndex++; updateLbUI(); };
 window.lbPrev = event => { event?.stopPropagation(); state.lightboxIndex--; updateLbUI(); };
 
+/* Quick View: Main photo is ALWAYS shown in both the main preview (#qvImg) AND as the first colour image swatch (#qvColorRow), plus any admin-uploaded colorImages (never fake colour dots) */
 window.openQuickView = id => {
   const product = state.products.find(p => String(p.id) === String(id));
   if (!product) return;
   const { price, mrp, off } = priceInfo(product);
   const name = escapeHtml(product.name);
   const qvMain = product.img || '';
-  const qvNames = Array.isArray(product.colors) && product.colors.length ? product.colors : [];
-  const qvColors = [{ name: String(qvNames[0] || 'Standard').trim(), image: qvMain }];
+  const qvNames = Array.isArray(product.colors) && product.colors.length ? product.colors : (product.colorsInfo ? String(product.colorsInfo).split(',') : []);
+  const qvColors = [{ name: String(qvNames[0] || 'Main').trim(), image: qvMain }];
   (Array.isArray(product.colorImages) ? product.colorImages : []).forEach((url, i) => {
     if (url && url !== qvMain) qvColors.push({ name: String(qvNames[i + 1] || `Colour ${i + 2}`).trim(), image: url });
   });
-  const qvColorNames = qvNames.map(n => String(n || '').trim()).filter(Boolean);
-  const qvPhotoSwatches = qvColors.length > 1;
-  const qvDotSwatches = !qvPhotoSwatches && qvColorNames.length > 1;
+  const qvPhotoSwatches = qvColors.length >= 1;
   const sizes = Array.isArray(product.sizes) && product.sizes.length ? product.sizes : ['32', '34', '36', '38', '40', '42'];
   const stockNum = Number(product.stock);
   const isOutOfStock = Number.isFinite(stockNum) && stockNum <= 0 && product.stock !== '' && product.stock != null;
@@ -1856,7 +1847,7 @@ window.openQuickView = id => {
       <div><h2>${name}</h2></div>
       <button type="button" class="icon-btn" onclick="closeQuickView()" aria-label="Close"><i data-lucide="x"></i></button>
     </div>
-    <div class="qv-media" id="qvMedia"><img class="qv-img" id="qvImg" src="${escapeHtml(safeImageUrl(product.img))}" alt="${name}" onerror="imgFallback(this)"></div>
+    <div class="qv-media" id="qvMedia"><img class="qv-img" id="qvImg" src="${escapeHtml(safeImageUrl(qvMain))}" alt="${name}" onerror="imgFallback(this)"></div>
     <div class="qv-info">
       <div class="qv-meta">
         <span class="price">${formatPrice(price)}</span>
@@ -1868,9 +1859,6 @@ window.openQuickView = id => {
     ${qvPhotoSwatches ? `<div class="qv-colors-pick">
       <div class="qv-pick-head"><span>Colours</span><em id="qvColorName">\u00b7 ${escapeHtml(qvColors[0].name)}</em></div>
       <div class="qv-color-row" id="qvColorRow">${qvColors.map((c, i) => `<button type="button" class="qv-sw${i ? '' : ' on'}" data-color="${escapeHtml(c.name)}" data-img="${escapeHtml(safeImageUrl(c.image))}" title="${escapeHtml(c.name)}" aria-label="${escapeHtml(c.name)}" onclick="qvPickColor(this)"><img src="${escapeHtml(safeImageUrl(c.image))}" alt="" loading="lazy" onerror="imgFallback(this)"></button>`).join('')}</div>
-    </div>` : qvDotSwatches ? `<div class="qv-colors-pick">
-      <div class="qv-pick-head"><span>Colours</span><em id="qvColorName">\u00b7 ${escapeHtml(qvColorNames[0])}</em></div>
-      <div class="qv-color-row" id="qvColorRow">${qvColorNames.map((n, i) => `<button type="button" class="qv-dot${i ? '' : ' on'}" data-color="${escapeHtml(n)}" title="${escapeHtml(n)}" aria-label="${escapeHtml(n)}" onclick="qvPickColor(this)"><i style="background:${escapeHtml(colorHex(n))}"></i></button>`).join('')}</div>
     </div>` : ''}
     <div class="qv-sizes">
       <div class="qv-sizes-head"><span>Select size</span><em class="qv-size-err" id="qvSizeErr" hidden>Please select a size</em></div>
@@ -1897,7 +1885,7 @@ window.qvPickSize = btn => {
 
 let qvSwitchToken = 0;
 window.qvPickColor = btn => {
-  $$('#qvColorRow .qv-sw, #qvColorRow .qv-dot').forEach(b => b.classList.remove('on'));
+  $$('#qvColorRow .qv-sw').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   const em = $('#qvColorName');
   if (em) em.textContent = '\u00b7 ' + (btn.dataset.color || '');
@@ -1954,7 +1942,7 @@ window.qvAddToBag = btn => {
   const clrBtn = $('#qvColorRow .on');
   const color = clrBtn?.dataset.color || (product.colors && product.colors[0]) || 'Standard';
   const { price } = priceInfo(product);
-  const image = (clrBtn?.dataset.img) || product.img || '';
+  const image = (clrBtn?.dataset.img) || safeImageUrl(product.img);
   const cart = store.json('aavira_cart', []);
   const existing = cart.find(it => String(it.productId) === String(product.id) && it.size === size && (it.color || 'Standard') === color);
   if (existing) existing.qty = (Number(existing.qty) || 1) + 1;
