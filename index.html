@@ -321,15 +321,16 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
 .promo-badge.is-on{display:flex}
 .promo-badge button{height:28px;padding:0 12px;border-radius:999px;background:rgba(138,109,29,.12);border:0;color:var(--gold-text);font-size:11.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
 .side-nav{flex:1;overflow-y:auto;padding:8px 10px 24px}
-.side-nav hr{border:0;border-top:1px solid var(--line);margin:8px}
-.menu-item{width:100%;display:flex;align-items:center;gap:14px;padding:12px 14px;background:none;border:0;border-radius:999px;font-size:14px;font-weight:500;color:var(--ink);text-align:left;text-decoration:none;cursor:pointer;transition:background .2s,transform .2s}
-@media(hover:hover){.menu-item:hover{background:var(--cream)}}
-.menu-item:active{transform:scale(.98)}
-.menu-item>svg:first-child{width:20px;height:20px;flex:0 0 20px;color:var(--rani);stroke-width:1.6}
-.menu-item>svg:last-child{width:16px;height:16px;flex:0 0 16px;margin-left:auto;color:#A8A0A5}
-.sb-mini{display:block;margin:14px 2px 0;padding:14px 16px;border-radius:14px;background:linear-gradient(135deg,#C8102E,#8F0B20);color:#fff;text-decoration:none;text-align:center}
-.sb-mini b{display:block;font-family:"Playfair Display",serif;font-size:16px;font-weight:700;color:#FFD873;letter-spacing:.4px}
-.sb-mini span{display:block;margin-top:3px;font-size:11.5px;color:rgba(255,255,255,.85);letter-spacing:.3px}
+.sb-head{display:flex;align-items:center;gap:10px;margin:16px 4px 10px;font-family:"Playfair Display",serif;font-size:13px;font-weight:700;letter-spacing:2.4px;text-transform:uppercase;color:var(--gold-text)}
+.sb-head::after{content:"";flex:1;height:1px;background:var(--line)}
+.sb-pages{display:grid;gap:4px}
+.sb-page{display:flex;align-items:center;gap:12px;width:100%;padding:13px 14px;background:#161616;color:#fff;border:0;border-radius:0;font-family:"Playfair Display",serif;font-size:15px;font-weight:600;letter-spacing:.2px;text-align:left;text-decoration:none;cursor:pointer;transition:background .2s,transform .15s}
+.side-nav>.sb-page{margin-bottom:4px}
+.sb-page>svg:first-child{width:18px;height:18px;flex:0 0 18px;color:var(--gold);stroke-width:1.8}
+.sb-page>svg:last-child{width:15px;height:15px;flex:0 0 15px;margin-left:auto;color:rgba(255,255,255,.55)}
+.sb-page:active{transform:scale(.98);background:#000}
+@media(hover:hover){.sb-page:hover{background:#000}}
+#sidebar.is-open .sb-page{animation:sbIn .45s var(--ease) both;animation-delay:var(--d,0s)}
 #sidebar.is-open .side-top{animation:sbIn .4s var(--ease) both}
 #sidebar.is-open .profile{animation:sbIn .5s var(--ease) both;animation-delay:.05s}
 @keyframes sbIn{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}
@@ -405,6 +406,10 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
 .qv-price-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:2px}
 .qv-price-row .price{font-size:18px;font-weight:800;color:var(--rani)}
 .qv-badges{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:2px}
+.qv-rot{display:inline-flex;height:22px;overflow:hidden;border-radius:999px;background:#161616}
+.qv-rot-track{display:flex;flex-direction:column;animation:qvRot 5s ease-in-out infinite;will-change:transform}
+.qv-rot-track>span{height:22px;line-height:22px;padding:0 11px;font-size:10.5px;font-weight:700;letter-spacing:.6px;color:var(--gold);white-space:nowrap;text-transform:uppercase}
+@keyframes qvRot{0%,38%{transform:translateY(0)}50%,88%{transform:translateY(-22px)}100%{transform:translateY(-44px)}}
 .qv-sku{font-size:11px;font-weight:600;color:var(--muted)}
 .qv-colors-pick{margin:11px 0 4px}
 .qv-pick-head{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px;color:var(--muted)}
@@ -587,26 +592,26 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
     <button type="button" onclick="removePromoCode()">Remove</button>
   </div>
   <nav class="side-nav">
-    <a class="menu-item" href="./"><i data-lucide="home"></i>Home<i data-lucide="chevron-right"></i></a>
-    <a class="menu-item" href="categories"><i data-lucide="layout-grid"></i>Collections<i data-lucide="chevron-right"></i></a>
-    <button type="button" class="menu-item" onclick="triggerDotAction('cart',this)"><i data-lucide="shopping-cart"></i>My cart<i data-lucide="chevron-right"></i></button>
-    <a class="menu-item" href="orders"><i data-lucide="package"></i>My orders<i data-lucide="chevron-right"></i></a>
-    <a class="menu-item" href="wishlist"><i data-lucide="heart"></i>My wishlist<i data-lucide="chevron-right"></i></a>
-    <hr>
-    <button type="button" class="menu-item" onclick="openPromoModal()"><i data-lucide="ticket"></i>Apply promo code<i data-lucide="chevron-right"></i></button>
-    <button type="button" class="menu-item" onclick="openReferralCenter()"><i data-lucide="share-2"></i>Refer &amp; earn<i data-lucide="chevron-right"></i></button>
-    <hr>
-    <a class="menu-item" href="support"><i data-lucide="headphones"></i>Customer support<i data-lucide="chevron-right"></i></a>
-    <button type="button" class="menu-item" data-no-delay="1" onclick="closeSidebar();window.AaviraConsent&&AaviraConsent.openPrefs()"><i data-lucide="cookie"></i>Cookie Settings<i data-lucide="chevron-right"></i></button>
-    <hr>
-      <a class="menu-item" href="items/search"><i data-lucide="search"></i>Search Products<i data-lucide="chevron-right"></i></a>
-      <a class="menu-item" href="ai"><i data-lucide="sparkles"></i>AI Fashion Assistant<i data-lucide="chevron-right"></i></a>
-      <a class="menu-item" href="match/colours"><i data-lucide="palette"></i>Colour Match<i data-lucide="chevron-right"></i></a>
-      <a class="menu-item" href="track/order"><i data-lucide="package-search"></i>Track Order<i data-lucide="chevron-right"></i></a>
-      <a class="menu-item" href="community"><i data-lucide="users"></i>Community<i data-lucide="chevron-right"></i></a>
-      <a class="menu-item" href="profile"><i data-lucide="user-round"></i>My Profile<i data-lucide="chevron-right"></i></a>
-      <a class="menu-item" href="auth/verify"><i data-lucide="log-in"></i>Log in / Sign up<i data-lucide="chevron-right"></i></a>
-      <a class="menu-item" href="privacy/terms"><i data-lucide="file-text"></i>Terms & Privacy<i data-lucide="chevron-right"></i></a>
+    <a class="sb-page" style="--d:.03s" href="./"><i data-lucide="home"></i>Home<i data-lucide="chevron-right"></i></a>
+    <a class="sb-page" style="--d:.06s" href="categories"><i data-lucide="layout-grid"></i>Collections<i data-lucide="chevron-right"></i></a>
+    <button type="button" class="sb-page" style="--d:.09s" onclick="triggerDotAction('cart',this)"><i data-lucide="shopping-cart"></i>My cart<i data-lucide="chevron-right"></i></button>
+    <a class="sb-page" style="--d:.12s" href="orders"><i data-lucide="package"></i>My orders<i data-lucide="chevron-right"></i></a>
+    <a class="sb-page" style="--d:.15s" href="wishlist"><i data-lucide="heart"></i>My wishlist<i data-lucide="chevron-right"></i></a>
+    <button type="button" class="sb-page" style="--d:.18s" onclick="openPromoModal()"><i data-lucide="ticket"></i>Apply promo code<i data-lucide="chevron-right"></i></button>
+    <button type="button" class="sb-page" style="--d:.21s" onclick="openReferralCenter()"><i data-lucide="share-2"></i>Refer &amp; earn<i data-lucide="chevron-right"></i></button>
+    <a class="sb-page" style="--d:.24s" href="support"><i data-lucide="headphones"></i>Customer support<i data-lucide="chevron-right"></i></a>
+    <button type="button" class="sb-page" style="--d:.27s" data-no-delay="1" onclick="closeSidebar();window.AaviraConsent&&AaviraConsent.openPrefs()"><i data-lucide="cookie"></i>Cookie Settings<i data-lucide="chevron-right"></i></button>
+    <div class="sb-head">All Pages</div>
+    <div class="sb-pages">
+      <a class="sb-page" style="--d:0.30s" href="items/search"><i data-lucide="search"></i>Search Products<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.33s" href="ai"><i data-lucide="sparkles"></i>AI Fashion Assistant<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.36s" href="match/colours"><i data-lucide="palette"></i>Colour Match<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.42s" href="track/order"><i data-lucide="package-search"></i>Track Order<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.45s" href="community"><i data-lucide="users"></i>Community<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.48s" href="profile"><i data-lucide="user-round"></i>My Profile<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.51s" href="auth/verify"><i data-lucide="log-in"></i>Log in / Sign up<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.54s" href="privacy/terms"><i data-lucide="file-text"></i>Terms & Privacy<i data-lucide="chevron-right"></i></a>
+    </div>
     <div class="side-foot">
       <p class="side-follow">Follow us</p>
       <div class="side-social">
@@ -617,7 +622,6 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
       </div>
     </div>
     <p class="side-ver">Aavira Fashion v2.3.2</p>
-    <a class="sb-mini" href="categories"><b>The Festive Edit</b><span>New blouses added \u2014 tap to explore</span></a>
     <div class="side-brand"><img src="/public/file_xx234.png" alt="Aavira Fashion" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
   </nav>
 </aside>
@@ -1912,6 +1916,7 @@ window.openQuickView = id => {
     : (Number.isFinite(stockNum) && stockNum > 0 && stockNum <= 4
       ? `<span class="low" style="margin:0">Only ${stockNum} left</span>`
       : '<span class="low" style="margin:0;color:#15803D;background:rgba(21,128,61,.08)">In stock</span>');
+  const rotTag = isOutOfStock ? '' : '<span class="qv-rot" aria-hidden="true"><span class="qv-rot-track"><span>Ready to Ship</span><span>Perfect Outfit</span><span>Ready to Ship</span></span></span>';
 
   $('#quickViewBody').innerHTML = `
     <div class="qv-top">
@@ -1930,6 +1935,7 @@ window.openQuickView = id => {
           ${ratingBadge(clamp(Number(product.rating) || 0, 0, 5))}
           ${product.bestseller ? '<span class="tag-best">Bestseller</span>' : ''}
           ${stockTag}
+          ${rotTag}
         </div>
         <div class="qv-sku">SKU: AV-${escapeHtml(String(product.id).substring(0, 5).toUpperCase())} · Free delivery</div>
       </div>
