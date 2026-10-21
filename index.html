@@ -327,6 +327,20 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
 .menu-item:active{transform:scale(.98)}
 .menu-item>svg:first-child{width:20px;height:20px;flex:0 0 20px;color:var(--rani);stroke-width:1.6}
 .menu-item>svg:last-child{width:16px;height:16px;flex:0 0 16px;margin-left:auto;color:#A8A0A5}
+.sb-head{display:flex;align-items:center;gap:10px;margin:16px 4px 10px;font-size:11.5px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--gold-text)}
+.sb-head::after{content:"";flex:1;height:1px;background:var(--line)}
+.sb-pages{display:grid;gap:8px}
+.sb-page{display:flex;align-items:center;gap:12px;width:100%;padding:13px 14px;background:#161616;color:#fff;border:0;border-radius:0;font-size:13.5px;font-weight:600;text-align:left;text-decoration:none;cursor:pointer;transition:background .2s,transform .15s}
+.sb-page>svg:first-child{width:18px;height:18px;flex:0 0 18px;color:var(--gold);stroke-width:1.8}
+.sb-page>svg:last-child{width:15px;height:15px;flex:0 0 15px;margin-left:auto;color:rgba(255,255,255,.55)}
+.sb-page:active{transform:scale(.98);background:#000}
+@media(hover:hover){.sb-page:hover{background:#000}}
+#sidebar.is-open .sb-page{animation:sbIn .45s var(--ease) both;animation-delay:var(--d,0s)}
+@keyframes sbIn{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}
+#sbTransition{position:fixed;inset:0;margin:0 auto;width:100%;max-width:420px;background:#161616;z-index:20000;transform:translateX(-103%);transition:transform .32s var(--ease);display:flex;align-items:center;justify-content:center;pointer-events:none}
+#sbTransition.on{transform:translateX(0)}
+#sbTransition span{font-family:"Playfair Display",serif;font-size:26px;font-weight:600;color:var(--gold);opacity:0;transition:opacity .2s .1s}
+#sbTransition.on span{opacity:1}
 .side-foot{margin-top:10px;padding:16px 6px 6px;border-top:1px solid var(--line)}
 .side-follow{margin:0 0 10px;text-align:center;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted)}
 .side-social{display:flex;justify-content:center;gap:12px}
@@ -591,6 +605,23 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
     <hr>
     <a class="menu-item" href="support"><i data-lucide="headphones"></i>Customer support<i data-lucide="chevron-right"></i></a>
     <button type="button" class="menu-item" data-no-delay="1" onclick="closeSidebar();window.AaviraConsent&&AaviraConsent.openPrefs()"><i data-lucide="cookie"></i>Cookie Settings<i data-lucide="chevron-right"></i></button>
+    <div class="sb-head">All Pages</div>
+    <div class="sb-pages">
+      <a class="sb-page" style="--d:0.04s" href="./" onclick="return sbGo(this)"><i data-lucide="home"></i>Home<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.08s" href="categories" onclick="return sbGo(this)"><i data-lucide="layout-grid"></i>Collections<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.12s" href="items/search" onclick="return sbGo(this)"><i data-lucide="search"></i>Search Products<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.16s" href="ai" onclick="return sbGo(this)"><i data-lucide="sparkles"></i>AI Fashion Assistant<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.20s" href="match/colours" onclick="return sbGo(this)"><i data-lucide="palette"></i>Colour Match<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.24s" href="cart" onclick="return sbGo(this)"><i data-lucide="shopping-cart"></i>Shopping Bag<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.28s" href="checkout" onclick="return sbGo(this)"><i data-lucide="credit-card"></i>Checkout<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.32s" href="orders" onclick="return sbGo(this)"><i data-lucide="package"></i>My Orders<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.36s" href="track/order" onclick="return sbGo(this)"><i data-lucide="package-search"></i>Track Order<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.40s" href="wishlist" onclick="return sbGo(this)"><i data-lucide="heart"></i>My Wishlist<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.44s" href="community" onclick="return sbGo(this)"><i data-lucide="users"></i>Community<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.48s" href="profile" onclick="return sbGo(this)"><i data-lucide="user-round"></i>My Profile<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.52s" href="auth/verify" onclick="return sbGo(this)"><i data-lucide="log-in"></i>Log in / Sign up<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.56s" href="privacy/terms" onclick="return sbGo(this)"><i data-lucide="file-text"></i>Terms & Privacy<i data-lucide="chevron-right"></i></a>
+    </div>
     <div class="side-foot">
       <p class="side-follow">Follow us</p>
       <div class="side-social">
@@ -604,6 +635,7 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
     <div class="side-brand"><img src="/public/file_xx234.png" alt="Aavira Fashion" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
   </nav>
 </aside>
+<div id="sbTransition" aria-hidden="true"><span>Aavira</span></div>
 
 <div class="app">
   <header class="site-header">
@@ -1100,6 +1132,16 @@ window.paintCartBar = () => {
 
 window.openSidebar = () => { vibrate(40); updateProfileUI(); layers.open('sidebar'); };
 window.closeSidebar = () => { vibrate(); layers.close('sidebar'); };
+window.sbGo = a => {
+  try {
+    const url = a.getAttribute('href');
+    if (!url) return true;
+    vibrate(25);
+    document.getElementById('sbTransition')?.classList.add('on');
+    setTimeout(() => { location.href = url; }, 330);
+    return false;
+  } catch { return true; }
+};
 
 window.openPromoModal = () => {
   layers.close('sidebar');
