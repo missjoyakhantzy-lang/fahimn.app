@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
 <style>
-:root{--rani:#161616;--rani-dark:#000000;--gold:#D4AF37;--gold-deep:#9A741C;--gold-soft:#FBF5E6;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#161616;--muted:#6B6369;--line:#E5E0D8;--blush:#F4F1EA;--green:#15803D;--danger:#B91C1C;--ease:cubic-bezier(.2,.8,.2,1)}
+:root{--rani:#161616;--rani-dark:#000000;--gold:#D4AF37;--gold-deep:#161616;--gold-soft:#F4F4F4;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#161616;--muted:#6B6369;--line:#E5E0D8;--blush:#F4F1EA;--green:#15803D;--danger:#B91C1C;--ease:cubic-bezier(.2,.8,.2,1)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{font-family:Inter,system-ui,sans-serif;background:var(--ivory);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -31,8 +31,9 @@ img{display:block;max-width:100%}
 .btn-o.is-busy{--spin:var(--rani);background:#F5F5F5}
 .ib.rani.is-busy,.ib.rani.is-busy:hover{background:var(--rani)}
 .ib.back-fab.is-busy,.ib.back-fab.is-busy:hover{background:var(--rani)}
+.ib.cart-nav.is-busy{background:var(--rani);--spin:#fff}
 .btn-p.is-busy,.btn-p.is-busy:hover{background:var(--rani-dark)}
-.mbtn.is-busy,.mbtn.is-busy:hover,.sqa-add.is-busy{background:var(--rani-dark)}
+.mbtn.is-busy,.mbtn.is-busy:hover,.sqa-add.is-busy,.cd-checkout.is-busy{background:var(--rani-dark)}
 .skip.is-busy,.skip.is-busy:hover{background:#fff;--spin:var(--ink)}
 .btn-write.is-busy{background:var(--rani)}
 .go.is-busy,.go.is-busy:hover{background:#161616;transform:none}
@@ -108,9 +109,9 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .stock{margin-top:10px;font-size:12px;font-weight:700;color:#B45309}
 .stock.out{color:var(--danger)}
 
-/* Order Studio Below Size:
-   Row 1: Left = Tap to view (Cart products), Right = Professional Qty (- 1 +) with Black Shimmer
-   Row 2: Left = Add to cart, Right = Buy now (Single Buy Now Button) */
+/* Order Studio Below Size (Idea 1):
+   Row 1: Left = Tap to view (Cart products popup), Right = Professional Qty (- 1 +) Selector
+   Row 2: Left = Add to cart (🛒), Right = Buy now (Direct Checkout) */
 .order-studio{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
 .os-top-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
 
@@ -123,7 +124,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .p-cb-imgs img:first-child{margin-left:0}
 .p-cb-empty-ic{width:30px;height:30px;border-radius:50%;background:var(--rani);color:#fff;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
 .p-cb-empty-ic svg{width:14px;height:14px;stroke-width:2.2}
-.p-cb-meta{display:flex;flex-direction:column;min-width:0; flex:1;line-height:1.2}
+.p-cb-meta{display:flex;flex-direction:column;min-width:0;flex:1;line-height:1.2}
 .p-cb-top{font-size:12px;font-weight:800;color:var(--rani);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .p-cb-sub{font-size:10.5px;color:var(--muted);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .p-cb-arr{width:15px;height:15px;color:var(--rani);flex-shrink:0;stroke-width:2.3}
@@ -219,16 +220,16 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .wish-pill-cnt{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 6px;border-radius:999px;background:#FFF0F3;color:#C8102E;font-size:11px;font-weight:800;border:1px solid #FBCFE8}
 .wish-link-all{font-size:12px;font-weight:700;color:var(--rani);padding:4px 10px;border-radius:999px;background:#F4F4F4;border:1px solid var(--line)}
 
-/* Modals (Light Surface - Popup Background Not Black) */
+/* Modals (Clean Light Surface + Black Primary Accents, Zero Gold) */
 .ov{position:fixed;inset:0;z-index:100;background:rgba(22,22,22,.45);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center}
 .ov.on{display:flex}
 .ov.center{align-items:center;padding:20px}
-.sheet{width:100%;max-width:420px;max-height:90dvh;overflow-y:auto;background:linear-gradient(180deg,#FFFDF9,#FAF5EC);border-radius:24px 24px 0 0;padding:20px 18px calc(22px + env(safe-area-inset-bottom,0px));position:relative;animation:up .3s ease;border-top:1.5px solid #E5D4B3;box-shadow:0 -18px 44px rgba(36,32,36,.18)}
+.sheet{width:100%;max-width:420px;max-height:90dvh;overflow-y:auto;background:#FFFFFF;border-radius:24px 24px 0 0;padding:20px 18px calc(22px + env(safe-area-inset-bottom,0px));position:relative;animation:up .3s ease;border-top:1.5px solid #E5E5E5;box-shadow:0 -18px 44px rgba(22,22,22,.18)}
 .center .sheet{border-radius:20px;text-align:center;max-width:340px}
 @keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
 .sheet h3{font-family:"Playfair Display",serif;font-size:21px;margin-bottom:6px;color:var(--ink)}
 .sheet p{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.5}
-.x{position:absolute;top:14px;right:14px;width:32px;height:32px;border:1px solid var(--line);border-radius:50%;background:#fff;color:var(--muted);display:inline-flex;align-items:center;justify-content:center}
+.x{position:absolute;top:14px;right:14px;width:32px;height:32px;border:1px solid var(--line);border-radius:50%;background:#fff;color:var(--ink);display:inline-flex;align-items:center;justify-content:center}
 .x svg{width:16px;height:16px;stroke-width:2.2}
 .fld{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font:inherit;font-size:14px;margin-bottom:10px;outline:none;background:#fff}
 .fld:focus{border-color:var(--rani);box-shadow:0 0 0 3px rgba(22,22,22,.08)}
@@ -241,47 +242,49 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .pick{display:flex;justify-content:center;gap:10px;margin:6px 0 18px}
 .pick svg.lucide{width:30px;height:30px;color:#E5E7EB;cursor:pointer;transition:color .15s,transform .15s}
 .pick svg.lucide:active{transform:scale(.9)}
-.pick svg.lucide.on{color:var(--gold);fill:currentColor}
+.pick svg.lucide.on{color:var(--rani);fill:currentColor}
 .perks{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:14px;text-align:left}
 .perks li{display:flex;align-items:flex-start;gap:12px;font-size:12.5px;line-height:1.5;color:#4B5563}
-.perks-ic{flex:0 0 30px;width:30px;height:30px;border-radius:50%;background:var(--gold-soft);color:var(--gold-deep);display:flex;align-items:center;justify-content:center}
+.perks-ic{flex:0 0 30px;width:30px;height:30px;border-radius:50%;background:#F3F3F3;color:var(--rani);display:flex;align-items:center;justify-content:center}
 .perks-ic svg{width:14px;height:14px;stroke-width:2}
 .perks b{color:var(--ink)}
-.termlink{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;margin-bottom:8px;border:1px solid var(--line);border-radius:10px;background:var(--ivory);font-size:12.5px;font-weight:700}
+.termlink{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;margin-bottom:8px;border:1px solid var(--line);border-radius:10px;background:#F9F9F9;font-size:12.5px;font-weight:700}
 .termlink span{display:inline-flex;align-items:center;gap:8px}
-.termlink span svg{width:15px;height:15px;color:var(--gold-deep);stroke-width:2}
+.termlink span svg{width:15px;height:15px;color:var(--rani);stroke-width:2}
 .termlink>svg{color:#A8A0A5;width:15px;height:15px}
 .sheet p.agree{font-size:11px;margin-bottom:14px}
 .agree a{color:var(--rani);text-decoration:underline}
 
-/* Light Luxury Cart Items Popup Drawer (Popup stays light, not black) */
-.cd-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:12px;border-bottom:1px solid #EAE0D0;margin-bottom:12px}
+/* Tap to View Cart Popup Drawer (Black Primary Accents on Clean White Surface - No Gold) */
+.cd-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:12px;border-bottom:1px solid #EBEBEB;margin-bottom:12px}
 .cd-title-wrap{display:flex;align-items:center;gap:10px}
-.cd-bag-ic{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#FFF8E6,#F3E3B8);color:var(--gold-deep);display:flex;align-items:center;justify-content:center;border:1px solid #E2C98A}
+.cd-bag-ic{width:38px;height:38px;border-radius:50%;background:var(--rani);color:#fff;display:flex;align-items:center;justify-content:center;border:1px solid var(--rani)}
 .cd-bag-ic svg{width:18px;height:18px;stroke-width:2.2}
-.cd-title-wrap h3{font-size:18px;margin:0}
-.cd-title-wrap small{display:block;font-size:11.5px;color:var(--gold-deep);font-weight:700}
+.cd-title-wrap h3{font-size:18px;margin:0;color:var(--rani)}
+.cd-title-wrap small{display:block;font-size:11.5px;color:var(--muted);font-weight:700}
 .cd-list{display:flex;flex-direction:column;gap:10px;max-height:46dvh;overflow-y:auto;padding-right:2px}
-.cd-item{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid #EAE0D0;border-radius:16px;padding:10px;box-shadow:0 4px 14px -6px rgba(138,109,29,.12)}
-.cd-img{width:62px;height:62px;flex:0 0 62px;border-radius:12px;object-fit:cover;background:var(--cream);border:1px solid var(--line)}
+.cd-item{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid #E5E5E5;border-radius:16px;padding:10px;box-shadow:0 4px 14px -6px rgba(0,0,0,.08)}
+.cd-img{width:62px;height:62px;flex:0 0 62px;border-radius:12px;object-fit:cover;background:#F6F6F6;border:1px solid #E5E5E5}
 .cd-info{flex:1;min-width:0}
-.cd-name{font-size:13px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
+.cd-name{font-size:13px;font-weight:700;color:var(--rani);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
 .cd-meta{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:5px}
-.cd-chip{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--gold-soft);color:var(--gold-deep);border:1px solid #E6D5B5}
-.cd-price{font-size:13px;font-weight:800;color:var(--ink)}
+.cd-chip{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:#F3F3F3;color:var(--rani);border:1px solid #DFDFDF}
+.cd-price{font-size:13px;font-weight:800;color:var(--rani)}
 .cd-ctrl{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 .cd-del{width:26px;height:26px;border:0;border-radius:50%;background:#FEF2F2;color:var(--danger);display:inline-flex;align-items:center;justify-content:center}
 .cd-del svg{width:13px;height:13px;stroke-width:2.2}
-.cd-qty{display:inline-flex;align-items:center;background:var(--ivory);border:1px solid #E2D3B5;border-radius:999px;padding:2px}
-.cd-qbtn{width:25px;height:25px;border:0;border-radius:50%;background:#fff;color:var(--ink);font-weight:800;font-size:13px;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.08)}
-.cd-qbtn.plus{background:var(--gold);color:#fff}
-.cd-qval{min-width:22px;text-align:center;font-size:12px;font-weight:800;color:var(--ink)}
-.cd-sum{margin-top:14px;padding:12px 14px;border-radius:14px;background:#FFFDF7;border:1.5px dashed #DFC580;display:flex;justify-content:space-between;align-items:center}
+.cd-qty{display:inline-flex;align-items:center;background:#F5F5F5;border:1px solid #DCDCDC;border-radius:999px;padding:2px}
+.cd-qbtn{width:25px;height:25px;border:0;border-radius:50%;background:#fff;color:var(--rani);font-weight:800;font-size:13px;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.cd-qbtn.plus{background:var(--rani);color:#fff}
+.cd-qval{min-width:22px;text-align:center;font-size:12px;font-weight:800;color:var(--rani)}
+.cd-sum{margin-top:14px;padding:12px 14px;border-radius:14px;background:#F8F8F8;border:1.5px dashed #C8C8C8;display:flex;justify-content:space-between;align-items:center}
 .cd-sum span{font-size:12px;font-weight:700;color:var(--muted)}
-.cd-sum b{font-size:17px;font-weight:800;color:var(--ink)}
+.cd-sum b{font-size:17px;font-weight:800;color:var(--rani)}
 .cd-actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:12px}
-.cd-checkout{width:100%;min-height:44px;border:0;border-radius:999px;background:linear-gradient(135deg,#C89D28,#8E6B13);color:#fff;font-size:13.5px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 10px 22px -6px rgba(142,107,19,.45)}
-.cd-more{width:100%;min-height:40px;border:1.5px solid #DEC89A;border-radius:999px;background:#fff;color:var(--gold-deep);font-size:12.5px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px}
+.cd-checkout{width:100%;min-height:44px;border:0;border-radius:999px;background:var(--rani);color:#fff;font-size:13.5px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 10px 22px -6px rgba(22,22,22,.38)}
+.cd-checkout svg{width:16px;height:16px;stroke-width:2.2}
+.cd-more{width:100%;min-height:40px;border:1.5px solid var(--rani);border-radius:999px;background:#fff;color:var(--rani);font-size:12.5px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px}
+.cd-more svg{width:15px;height:15px;stroke-width:2.2}
 
 /* Product Cards */
 .grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px 10px}
@@ -345,15 +348,15 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .toast[data-type="error"]::before{content:"!";color:#DC2626}
 .toast.is-on{opacity:1;transform:translate(-50%,0)}
 
-/* Light Luxury Compact Quick View Popup (Light Popup Surface preserved) */
-.sqa-ov{position:fixed;inset:0;z-index:9700;background:rgba(36,32,36,.48);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:flex-end;justify-content:center}
+/* Compact Quick View Popup (Light Surface + Black Accents) */
+.sqa-ov{position:fixed;inset:0;z-index:9700;background:rgba(22,22,22,.48);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:flex-end;justify-content:center}
 .sqa-ov[hidden]{display:none!important}
-.sqa-sheet{width:100%;max-width:420px;background:linear-gradient(180deg,#FFFDF9,#FAF4E8);border-top:1.5px solid #E5D4B3;border-radius:24px 24px 0 0;padding:12px 16px calc(18px + env(safe-area-inset-bottom,0px));position:relative;max-height:92dvh;overflow-y:auto;animation:sqaUp .28s cubic-bezier(.2,.9,.3,1.15);box-shadow:0 -20px 50px rgba(36,32,36,.2)}
+.sqa-sheet{width:100%;max-width:420px;background:#FFFFFF;border-top:1.5px solid #E5E5E5;border-radius:24px 24px 0 0;padding:12px 16px calc(18px + env(safe-area-inset-bottom,0px));position:relative;max-height:92dvh;overflow-y:auto;animation:sqaUp .28s cubic-bezier(.2,.9,.3,1.15);box-shadow:0 -20px 50px rgba(22,22,22,.2)}
 @keyframes sqaUp{from{transform:translateY(40px);opacity:0}}
-.sqa-grab{width:40px;height:4px;border-radius:999px;background:#D9CEBE;margin:0 auto 12px}
-.sqa-top{display:flex;gap:14px;align-items:flex-start;padding-bottom:12px;border-bottom:1px solid #EAE0D0}
-.sqa-media{position:relative;width:112px;height:112px;flex:0 0 112px;border-radius:14px;overflow:hidden;background:var(--cream);border:1px solid #E5D4B3;box-shadow:0 8px 20px -8px rgba(138,109,29,.22)}
-.sqa-media.is-switching::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(241,235,227,.95) 25%,rgba(255,253,249,1) 50%,rgba(241,235,227,.95) 75%);background-size:220% 100%;animation:sqaShimmer .75s linear infinite;z-index:3}
+.sqa-grab{width:40px;height:4px;border-radius:999px;background:#D4D4D4;margin:0 auto 12px}
+.sqa-top{display:flex;gap:14px;align-items:flex-start;padding-bottom:12px;border-bottom:1px solid #EBEBEB}
+.sqa-media{position:relative;width:112px;height:112px;flex:0 0 112px;border-radius:14px;overflow:hidden;background:#F6F6F6;border:1px solid #E5E5E5;box-shadow:0 8px 20px -8px rgba(0,0,0,.12)}
+.sqa-media.is-switching::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(22,22,22,.06) 20%,rgba(255,255,255,.9) 50%,rgba(22,22,22,.06) 80%);background-size:220% 100%;animation:sqaShimmer .75s linear infinite;z-index:3}
 @keyframes sqaShimmer{to{background-position:-220% 0}}
 .sqa-img{width:100%;height:100%;aspect-ratio:1/1;object-fit:cover;display:block;transition:opacity .2s}
 .sqa-media.is-switching .sqa-img{opacity:.25}
@@ -363,30 +366,30 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .sqa-x{width:30px;height:30px;flex:0 0 30px;border-radius:50%;border:1px solid var(--line);background:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:#333;margin-top:-2px}
 .sqa-x svg{width:15px;height:15px;stroke-width:2.2}
 .sqa-price-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:2px}
-.sqa-price{font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-.01em}
+.sqa-price{font-size:18px;font-weight:800;color:var(--rani);letter-spacing:-.01em}
 .sqa-mrp{font-size:12px;color:var(--muted);text-decoration:line-through}
 .sqa-badges{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:2px}
 .sqa-sku{font-size:11px;font-weight:600;color:var(--muted)}
 .sqa-shead{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;margin:11px 0 7px;color:var(--muted)}
-.sqa-shead em{font-style:normal;color:var(--gold-deep);font-weight:700;text-transform:none;letter-spacing:0}
+.sqa-shead em{font-style:normal;color:var(--rani);font-weight:700;text-transform:none;letter-spacing:0}
 .sqa-err{color:#DC2626!important;font-style:normal;font-size:11.5px;font-weight:700!important;text-transform:none!important;letter-spacing:0!important}
 .sqa-colors{display:flex;gap:9px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none}
 .sqa-colors::-webkit-scrollbar{display:none}
 .sqa-sw{position:relative;flex:0 0 auto;width:46px;height:46px;border-radius:50%;border:2px solid var(--line);padding:2.5px;background:#fff;cursor:pointer;transition:transform .2s,border-color .2s}
 .sqa-sw img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:50%;display:block}
-.sqa-sw.on{border-color:var(--gold-deep);transform:scale(1.06);box-shadow:0 3px 8px rgba(154,116,28,.22)}
+.sqa-sw.on{border-color:var(--rani);transform:scale(1.06);box-shadow:0 3px 8px rgba(22,22,22,.2)}
 .sqa-sizes{display:flex;gap:7px;flex-wrap:wrap}
 .sqa-sz{min-width:40px;height:38px;padding:0 10px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font-size:12.5px;font-weight:700;cursor:pointer;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s,border-color .2s,transform .15s}
 .sqa-sz:active{transform:scale(.95)}
-.sqa-sz.on{background:linear-gradient(135deg,#C89D28,#8E6B13);color:#fff;border-color:transparent;font-weight:800;box-shadow:0 5px 12px -3px rgba(142,107,19,.4)}
+.sqa-sz.on{background:var(--rani);color:#fff;border-color:var(--rani);font-weight:800;box-shadow:0 5px 12px -3px rgba(22,22,22,.35)}
 .sqa-sizes.shake{animation:shake .35s}
 .sqa-actions{display:grid;grid-template-columns:auto 1fr 40px 40px;gap:8px;margin-top:12px;align-items:center}
-.sqa-add{grid-column:1/-1;width:100%;min-height:42px;background:linear-gradient(135deg,#C89D28,#8E6B13);color:#fff;border:0;border-radius:999px;padding:10px 18px;font-size:13px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 10px 22px -8px rgba(142,107,19,.45)}
+.sqa-add{grid-column:1/-1;width:100%;min-height:42px;background:var(--rani);color:#fff;border:0;border-radius:999px;padding:10px 18px;font-size:13px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 10px 22px -8px rgba(22,22,22,.4)}
 .sqa-add:active{transform:scale(.98)}
 .sqa-add:disabled{opacity:.5;cursor:not-allowed}
 .sqa-add svg{width:15px;height:15px;stroke-width:2.3}
-.sqa-full{min-height:40px;padding:0 14px;border-radius:999px;border:1.5px solid #DEC89A;background:#fff;color:var(--ink);font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
-.sqa-wish,.sqa-share{width:40px;height:40px;border-radius:50%;border:1.5px solid #DEC89A;background:#fff;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:transform .2s,background .2s,color .2s,border-color .2s}
+.sqa-full{min-height:40px;padding:0 14px;border-radius:999px;border:1.5px solid #D5D5D5;background:#fff;color:var(--rani);font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+.sqa-wish,.sqa-share{width:40px;height:40px;border-radius:50%;border:1.5px solid #D5D5D5;background:#fff;color:var(--rani);display:inline-flex;align-items:center;justify-content:center;transition:transform .2s,background .2s,color .2s,border-color .2s}
 .sqa-wish:active,.sqa-share:active{transform:scale(.9)}
 .sqa-wish svg,.sqa-share svg{width:16px;height:16px;stroke-width:2}
 .sqa-wish.on{color:#C8102E;background:#FFF0F3;border-color:#C8102E}
@@ -426,7 +429,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
     <div class="hdr-r">
       <button class="ib" type="button" onclick="shareCurrentProduct()" aria-label="Share product"><i data-lucide="share-2"></i></button>
       <button class="ib" type="button" id="wishBtn" onclick="toggleWish()" aria-label="Wishlist"><i data-lucide="heart"></i><span class="badge" id="wishBadge" hidden>0</span></button>
-      <button class="ib" type="button" onclick="openCartDrawer()" aria-label="Cart"><i data-lucide="shopping-cart"></i><span class="badge" id="cartBadge" hidden>0</span></button>
+      <button class="ib cart-nav" type="button" onclick="navigate('/cart',this)" aria-label="Cart"><i data-lucide="shopping-cart"></i><span class="badge" id="cartBadge" hidden>0</span></button>
     </div>
   </header>
 
@@ -447,16 +450,16 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
     <div class="sizes" id="sizes"></div>
     <div class="stock" id="stock" hidden></div>
 
-    <!-- Order Controls Right Below Size:
-         Top Row: Left = Tap to view (opens cart products popup), Right = Professional Qty (- 1 +)
-         Bottom Row: Left = Add to cart, Right = Buy now (Single Buy Now Button) -->
+    <!-- Idea 1 Order Studio Below Size:
+         Top Row: Left = Tap to view (opens cart popup), Right = Qty (- 1 +) Selector (only sets qty)
+         Bottom Row: Left = Add to cart (🛒 adds to cart), Right = Buy now (direct checkout) -->
     <div class="order-studio" id="orderStudio">
       <div class="os-top-row">
         <div class="p-cartbar" id="pCartBar" role="button" tabindex="0" onclick="openCartDrawer()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCartDrawer()}">
           <div class="p-cb-imgs" id="pCartBarImgs"></div>
           <div class="p-cb-meta">
             <span class="p-cb-top" id="pCartBarTitle">Tap to view</span>
-            <span class="p-cb-sub" id="pCartBarCount">View bag items</span>
+            <span class="p-cb-sub" id="pCartBarCount">0 items in cart</span>
           </div>
           <i data-lucide="chevron-right" class="p-cb-arr"></i>
         </div>
@@ -469,7 +472,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
       </div>
 
       <div class="os-btns">
-        <button class="btn btn-o" type="button" id="btnCart" onclick="addToCart()"><i data-lucide="shopping-bag"></i>Add to cart</button>
+        <button class="btn btn-o" type="button" id="btnCart" onclick="addToCart()"><i data-lucide="shopping-cart"></i>Add to cart</button>
         <button class="btn btn-p" type="button" id="btnBuy" onclick="buyNow()"><i data-lucide="zap"></i>Buy now</button>
       </div>
     </div>
@@ -536,14 +539,14 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 </div>
 
 <!-- MODALS -->
-<!-- Light Luxury Professional Cart Items Popup (Popup stays light, not black) -->
+<!-- Tap to View Cart Popup (Clean White Surface + Professional Black Accents, No Gold) -->
 <div class="ov" id="cartDrawerOv" onclick="if(event.target===this)closeModal('cartDrawerOv')">
-  <div class="sheet" role="dialog" aria-modal="true" aria-label="Your shopping bag">
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="Your shopping cart">
     <div class="cd-head">
       <div class="cd-title-wrap">
-        <div class="cd-bag-ic"><i data-lucide="shopping-bag"></i></div>
+        <div class="cd-bag-ic"><i data-lucide="shopping-cart"></i></div>
         <div>
-          <h3>Your Shopping Bag</h3>
+          <h3>Your Shopping Cart</h3>
           <small id="cdSubCount">Selected colours &amp; sizes</small>
         </div>
       </div>
@@ -555,8 +558,8 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
       <b id="cdTotalAmt">₹0</b>
     </div>
     <div class="cd-actions">
-      <button type="button" class="cd-checkout" id="cdCheckoutBtn" onclick="orderCartItems(this)"><i data-lucide="check-circle-2"></i><span id="cdCheckoutText">Place Order</span></button>
-      <button type="button" class="cd-more" onclick="addAnotherColorFlow()"><i data-lucide="palette"></i>+ Select Another Colour / Size</button>
+      <button type="button" class="cd-checkout" id="cdCheckoutBtn" onclick="orderCartItems(this)"><i data-lucide="shopping-cart"></i><span id="cdCheckoutText">Place Order</span></button>
+      <button type="button" class="cd-more" onclick="navigate('/cart',this)"><i data-lucide="external-link"></i>Open Full Cart Page</button>
     </div>
   </div>
 </div>
@@ -614,7 +617,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 
 <div id="toast" class="toast" role="status" aria-live="polite"><span id="toast-msg"></span></div>
 
-<!-- Compact Professional Quick View Popup (Light Luxury Theme Preserved) -->
+<!-- Compact Professional Quick View Popup -->
 <div class="sqa-ov" id="sqaOv" hidden>
   <div class="sqa-sheet" role="dialog" aria-modal="true" aria-label="Quick view">
     <div class="sqa-grab"></div>
@@ -639,7 +642,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
     <div class="sqa-shead"><span>Select size</span><em class="sqa-err" id="sqaErr" hidden>Please select a size</em></div>
     <div class="sqa-sizes" id="sqaSizes"></div>
     <div class="sqa-actions">
-      <button type="button" class="sqa-add" id="sqaAdd"><i data-lucide="shopping-bag"></i><span id="sqaAddText">Add to bag</span></button>
+      <button type="button" class="sqa-add" id="sqaAdd"><i data-lucide="shopping-cart"></i><span id="sqaAddText">Add to cart</span></button>
       <div class="qty-box" style="height:40px">
         <button type="button" class="qty-btn minus" style="width:30px;height:30px" onclick="stepSqaQty(-1)" aria-label="Decrease quantity">−</button>
         <span class="qty-val" id="sqaQtyVal">1</span>
@@ -843,20 +846,12 @@ const triggerPlusSimar = () => {
   }, 1150);
 };
 
-/* Sync Active Variant Quantity Stepper for Selected Colour + Size */
+/* Sync Active Variant & Quantity Display (Idea 1: Qty selector only manages selected state.qty) */
 const syncActiveVariantUI = () => {
-  const colorNow = state.color || 'Main';
   const sizeNow = state.size || '';
   const sizeInfo = $('#sizeInfo');
   if (sizeInfo) {
     sizeInfo.textContent = sizeNow ? `· ${sizeNow}` : '';
-  }
-  const cart = readJson('aavira_cart', []);
-  const existing = sizeNow
-    ? cart.find(item => String(item.productId) === String(state.id) && item.size === sizeNow && (item.color || 'Main') === colorNow)
-    : null;
-  if (existing && Number(existing.qty) > 0) {
-    state.qty = Number(existing.qty);
   }
   const qtyEl = $('#qtyVal');
   if (qtyEl) qtyEl.textContent = String(state.qty || 1);
@@ -904,63 +899,14 @@ const ensureSizeSelected = autoPickFirst => {
   return null;
 };
 
-/* (- 1 +) Stepper Logic */
-const upsertCurrentVariantInCart = newQty => {
-  if (!state.product) return;
-  const size = ensureSizeSelected(true);
-  if (!size) return;
-  const colorNow = state.color || 'Main';
-  const imgNow = safeUrl(state.image) || state.image || IMG_FALLBACK;
-  let cart = readJson('aavira_cart', []);
-  const idx = cart.findIndex(item => String(item.productId) === String(state.id) && item.size === size && (item.color || 'Main') === colorNow);
-
-  if (newQty <= 0) {
-    if (idx > -1) cart.splice(idx, 1);
-    state.qty = 1;
-    writeJson('aavira_cart', cart);
-    updateCartBadge();
-    refreshPCartBar();
-    syncActiveVariantUI();
-    toast(`Removed ${colorNow} (${size}) from bag`);
-    return;
-  }
-
-  state.qty = clamp(newQty, 1, 20);
-  if (idx > -1) {
-    cart[idx].qty = state.qty;
-    cart[idx].image = imgNow;
-  } else {
-    cart.push({
-      productId: state.id,
-      name: state.product.name,
-      price: Number(state.product.price) || 0,
-      size,
-      color: colorNow,
-      image: imgNow,
-      qty: state.qty
-    });
-  }
-  writeJson('aavira_cart', cart);
-  updateCartBadge();
-  refreshPCartBar();
-  syncActiveVariantUI();
-  toast(`${colorNow} (Size ${size}) × ${state.qty} in cart`);
-};
-
+/* Idea 1: (- 1 +) Stepper ONLY changes quantity number (1, 2, 3...) without adding to cart */
 window.stepProductQty = delta => {
   if (!state.product) return;
-  const size = ensureSizeSelected(true);
-  if (!size) return;
+  state.qty = clamp((Number(state.qty) || 1) + delta, 1, 20);
   if (delta > 0) triggerPlusSimar();
-  const colorNow = state.color || 'Main';
-  const cart = readJson('aavira_cart', []);
-  const existing = cart.find(item => String(item.productId) === String(state.id) && item.size === size && (item.color || 'Main') === colorNow);
-  const nextQty = existing ? (Number(existing.qty) || 1) + delta : (delta > 0 ? state.qty + delta : Math.max(1, state.qty - 1));
-  if (!existing && delta > 0 && state.qty === 1) {
-    upsertCurrentVariantInCart(1);
-    return;
-  }
-  upsertCurrentVariantInCart(nextQty);
+  navigator.vibrate?.(15);
+  const qtyEl = $('#qtyVal');
+  if (qtyEl) qtyEl.textContent = String(state.qty);
 };
 
 const slidesHtml = (product, main) => {
@@ -1142,6 +1088,7 @@ const submitReview = () => {
   });
 };
 
+/* Idea 1: Add to Cart Button adds selected Colour + Size + state.qty to aavira_cart */
 const addToCart = () => {
   if (!state.product) return;
   const size = ensureSizeSelected(false);
@@ -1151,21 +1098,18 @@ const addToCart = () => {
     const cart = readJson('aavira_cart', []);
     const colorNow = state.color || 'Main';
     const imgNow = safeUrl(state.image) || state.image || IMG_FALLBACK;
-    const addQty = Math.max(1, Number(state.qty) || 1);
+    const addQty = clamp(Number(state.qty) || 1, 1, 20);
     const existing = cart.find(item => String(item.productId) === String(state.id) && item.size === size && (item.color || 'Main') === colorNow);
     if (existing) {
-      existing.qty = Math.max(addQty, (Number(existing.qty) || 1) + 1);
+      existing.qty = clamp((Number(existing.qty) || 1) + addQty, 1, 20);
       existing.image = imgNow;
-      state.qty = existing.qty;
     } else {
       cart.push({ productId: state.id, name: state.product.name, price: Number(state.product.price) || 0, size, color: colorNow, image: imgNow, qty: addQty });
     }
     writeJson('aavira_cart', cart);
     updateCartBadge();
     refreshPCartBar();
-    syncActiveVariantUI();
-    triggerPlusSimar();
-    toast(`${colorNow} (${size}) added to bag`);
+    toast(`${colorNow} (${size}) × ${addQty} added to cart`);
   });
 };
 
@@ -1206,7 +1150,7 @@ const buildCartCheckoutUrl = cart => {
   return `/checkout?${params}`;
 };
 
-/* Light Luxury Cart Items Popup Functions */
+/* Tap to View Cart Popup Functions */
 window.renderCartDrawer = () => {
   const cart = readJson('aavira_cart', []).filter(it => it && (Number(it.qty) || 0) > 0);
   const listEl = $('#cdList');
@@ -1217,13 +1161,13 @@ window.renderCartDrawer = () => {
 
   $('#cdSubCount').textContent = totalCount
     ? `${totalCount} ${totalCount === 1 ? 'item' : 'items'} ready to order`
-    : 'Your bag is currently empty';
+    : 'Your cart is currently empty';
 
   if (!cart.length) {
-    listEl.innerHTML = '<div class="empty"><b>No items in your bag yet</b>Select any colour &amp; size above and tap Add to Cart or (+).</div>';
+    listEl.innerHTML = '<div class="empty"><b>No items in your cart yet</b>Select any colour, size &amp; qty above and tap Add to Cart.</div>';
     sumBox.hidden = true;
     checkoutBtn.disabled = true;
-    $('#cdCheckoutText').textContent = 'Bag is Empty';
+    $('#cdCheckoutText').textContent = 'Cart is Empty';
     window.lucide?.createIcons();
     return;
   }
@@ -1273,7 +1217,6 @@ window.changeCartItemQty = (index, delta) => {
   writeJson('aavira_cart', cart);
   updateCartBadge();
   refreshPCartBar();
-  syncActiveVariantUI();
   renderCartDrawer();
 };
 
@@ -1283,15 +1226,7 @@ window.removeCartItemAt = index => {
   writeJson('aavira_cart', cart);
   updateCartBadge();
   refreshPCartBar();
-  syncActiveVariantUI();
   renderCartDrawer();
-};
-
-window.addAnotherColorFlow = () => {
-  closeModal('cartDrawerOv');
-  const wrap = $('#colorWrap');
-  if (wrap && !wrap.hidden) wrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  else $('#sizes')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 };
 
 const orderCartItems = btn => {
@@ -1306,31 +1241,14 @@ const orderCartItems = btn => {
   });
 };
 
+/* Idea 1: Buy Now goes directly to Checkout with selected Colour + Size + state.qty without adding to cart */
 const buyNow = () => {
   if (!state.product) return;
   const size = ensureSizeSelected(false);
   if (!size) return;
 
-  const cart = readJson('aavira_cart', []);
-  const colorNow = state.color || 'Main';
-  const imgNow = safeUrl(state.image) || state.image || IMG_FALLBACK;
-  const qtyNow = Math.max(1, Number(state.qty) || 1);
-
-  if (cart.length > 0) {
-    const existing = cart.find(item => String(item.productId) === String(state.id) && item.size === size && (item.color || 'Main') === colorNow);
-    if (existing) {
-      existing.qty = Math.max(qtyNow, Number(existing.qty) || 1);
-      existing.image = imgNow;
-    } else {
-      cart.push({ productId: state.id, name: state.product.name, price: Number(state.product.price) || 0, size, color: colorNow, image: imgNow, qty: qtyNow });
-    }
-    writeJson('aavira_cart', cart);
-    updateCartBadge();
-    refreshPCartBar();
-    state.buyLink = buildCartCheckoutUrl(cart);
-  } else {
-    state.buyLink = buildCheckoutUrl(size, qtyNow);
-  }
+  const qtyNow = clamp(Number(state.qty) || 1, 1, 20);
+  state.buyLink = buildCheckoutUrl(size, qtyNow);
 
   withSpinner($('#btnBuy'), () => {
     if (isLoggedIn()) location.href = state.buyLink;
@@ -1544,7 +1462,7 @@ $('#pick').innerHTML = [1, 2, 3, 4, 5].map(v => `<i data-lucide="star" data-v="$
   $(selector)?.addEventListener('keydown', event => { if (event.key === 'Enter') handler(); });
 });
 
-/* Tap to View Bar (Always aligned on left of Qty Stepper) */
+/* Tap to View Bar (Left of Qty Stepper, uses Cart Icon when empty) */
 const refreshPCartBar = () => {
   const bar = $('#pCartBar');
   if (!bar) return;
@@ -1555,12 +1473,9 @@ const refreshPCartBar = () => {
   const subEl = $('#pCartBarCount');
 
   if (!count) {
-    const fallbackImg = safeUrl(state.image) || '';
-    imgsEl.innerHTML = fallbackImg
-      ? `<img src="${esc(fallbackImg)}" alt="" loading="lazy" ${FALLBACK_ATTR}>`
-      : `<span class="p-cb-empty-ic"><i data-lucide="shopping-bag"></i></span>`;
+    imgsEl.innerHTML = `<span class="p-cb-empty-ic"><i data-lucide="shopping-cart"></i></span>`;
     if (titleEl) titleEl.textContent = 'Tap to view';
-    if (subEl) subEl.textContent = '0 items in bag';
+    if (subEl) subEl.textContent = '0 items in cart';
     window.lucide?.createIcons();
     return;
   }
@@ -1740,7 +1655,7 @@ window.openSugQA = id => {
 
   const addBtn = $('#sqaAdd');
   addBtn.disabled = isOut;
-  $('#sqaAddText').textContent = isOut ? 'Out of stock' : 'Add to bag';
+  $('#sqaAddText').textContent = isOut ? 'Out of stock' : 'Add to cart';
   $('#sqaFullLink').href = '/product?id=' + encodeURIComponent(p.id);
 
   const wishBtn = $('#sqaWishBtn');
