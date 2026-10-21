@@ -55,7 +55,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 @media(hover:hover){.ib.back-fab:hover{background:var(--rani);color:#fff}}
 .badge{position:absolute;top:2px;right:1px;min-width:16px;height:16px;padding:0 4px;border-radius:999px;background:var(--rani);color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
 
-/* Product Media & Professional Black-Tinted Shimmer (Simar) Animation on Big Photo */
+/* Product Media & Professional Black Shimmer (Simar) Animation on Big Photo */
 .media{position:relative;background:var(--cream);border-bottom:1px solid var(--line);overflow:hidden}
 .carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;aspect-ratio:1/1;scrollbar-width:none;position:relative}
 .carousel::-webkit-scrollbar{display:none}
@@ -109,9 +109,9 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .stock{margin-top:10px;font-size:12px;font-weight:700;color:#B45309}
 .stock.out{color:var(--danger)}
 
-/* Order Studio Below Size (Idea 1):
-   Row 1: Left = Tap to view (Cart products popup), Right = Professional Qty (- 1 +) Selector
-   Row 2: Left = Add to cart (🛒), Right = Buy now (Direct Checkout) */
+/* Order Studio Below Size:
+   Row 1: Left = Tap to view (Cart products popup), Right = Independent Qty (- 1 +) Selector
+   Row 2: Add to Cart (Full width if current product not in cart; 2-column with Buy Now once product is in cart) */
 .order-studio{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
 .os-top-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
 
@@ -129,14 +129,13 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .p-cb-sub{font-size:10.5px;color:var(--muted);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .p-cb-arr{width:15px;height:15px;color:var(--rani);flex-shrink:0;stroke-width:2.3}
 
-/* Professional Qty (- 1 +) on Right Side with Black Primary Shimmer Animation */
+/* Independent Professional Qty (- 1 +) on Right Side with Black Shimmer Animation */
 .qty-box{position:relative;display:inline-flex;align-items:center;height:44px;background:#F8F7F4;border:1.5px solid #D5D0C8;border-radius:999px;padding:3px;box-shadow:0 3px 10px rgba(0,0,0,.05);overflow:hidden;transition:border-color .25s,box-shadow .25s}
 .qty-box.simar-pulse{border-color:var(--rani);box-shadow:0 0 0 3px rgba(22,22,22,.12)}
 .qty-btn{position:relative;width:36px;height:36px;border:0;border-radius:50%;background:#fff;color:var(--rani);font-size:17px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;transition:transform .15s,background .2s;overflow:hidden}
 .qty-btn.minus{border:1px solid #E5E0D8}
 .qty-btn:active{transform:scale(.88)}
 .qty-btn.plus{background:var(--rani);color:#fff;box-shadow:0 3px 8px rgba(0,0,0,.22)}
-/* Continuous + Triggered Black Shimmer ("Simar") on + Button */
 .qty-btn.plus::after{
   content:"";
   position:absolute;
@@ -154,8 +153,11 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 @keyframes plusPop{0%{transform:scale(1)}40%{transform:scale(1.14)}100%{transform:scale(1)}}
 .qty-val{min-width:28px;text-align:center;font-size:13.5px;font-weight:800;color:var(--rani);padding:0 4px}
 
-/* Bottom Row: Left = Add to Cart, Right = Buy Now */
+/* Bottom Row: Single Full-Width Add to Cart when product not in cart; 2-Column when product is in cart */
 .os-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:center}
+.os-btns.single-mode{grid-template-columns:1fr}
+.os-btns.single-mode .btn-o{background:var(--rani);color:#fff;border-color:var(--rani);box-shadow:0 8px 18px -4px rgba(22,22,22,.38)}
+.os-btns.single-mode .btn-o.is-busy{--spin:#fff;background:var(--rani-dark)}
 .btn{min-height:46px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 14px;border-radius:999px;font-size:12.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;transition:transform .2s,opacity .2s,box-shadow .2s,background .2s}
 .btn svg{width:15px;height:15px;stroke-width:2.2}
 .btn:active{transform:scale(.97)}
@@ -220,7 +222,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .wish-pill-cnt{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 6px;border-radius:999px;background:#FFF0F3;color:#C8102E;font-size:11px;font-weight:800;border:1px solid #FBCFE8}
 .wish-link-all{font-size:12px;font-weight:700;color:var(--rani);padding:4px 10px;border-radius:999px;background:#F4F4F4;border:1px solid var(--line)}
 
-/* Modals (Clean Light Surface + Black Primary Accents, Zero Gold) */
+/* Modals (Clean Light Surface + Black Primary Accents) */
 .ov{position:fixed;inset:0;z-index:100;background:rgba(22,22,22,.45);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center}
 .ov.on{display:flex}
 .ov.center{align-items:center;padding:20px}
@@ -255,7 +257,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .sheet p.agree{font-size:11px;margin-bottom:14px}
 .agree a{color:var(--rani);text-decoration:underline}
 
-/* Tap to View Cart Popup Drawer (Black Primary Accents on Clean White Surface - No Gold) */
+/* Tap to View Cart Popup Drawer (Clean White Surface + Black Primary Accents) */
 .cd-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:12px;border-bottom:1px solid #EBEBEB;margin-bottom:12px}
 .cd-title-wrap{display:flex;align-items:center;gap:10px}
 .cd-bag-ic{width:38px;height:38px;border-radius:50%;background:var(--rani);color:#fff;display:flex;align-items:center;justify-content:center;border:1px solid var(--rani)}
@@ -322,24 +324,63 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .low{display:inline-flex;align-items:center;margin-top:6px;font-size:11px;font-weight:700;color:#B45309;background:rgba(180,83,9,.08);padding:2.5px 7px;border-radius:999px;width:fit-content;max-width:100%}
 .low.out{color:#B91C1C;background:rgba(185,28,28,.08)}
 
-/* Footer */
-.footer{background:#161616;color:#fff;padding:34px 18px calc(28px + env(safe-area-inset-bottom,0px));border-top:3px solid rgba(212,175,55,.4)}
-.footer-brand{font-family:"Playfair Display",serif;font-size:24px;font-weight:600;color:var(--gold)}
-.footer-tag{margin:6px 0 0;font-size:13px;line-height:1.6;color:#B5ADB2}
-.footer-news{margin:22px 0 4px}
-.footer-news label{display:block;font-size:13.5px;font-weight:600;margin-bottom:8px}
-.footer-news-row{display:flex;gap:8px}
-.footer-news input{flex:1;min-width:0;height:42px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:0 16px;color:#fff;font-size:14px;outline:none}
-.footer-news input::placeholder{color:#9F979D}
-.footer-news input:focus{border-color:var(--gold)}
-.footer-news button{height:42px;background:linear-gradient(135deg,#D4AF37,#A8842C);color:#161616;border:0;border-radius:999px;padding:0 20px;min-width:72px;font-weight:800;font-size:13px}
+/* Redesigned Light Editorial Multi-Feature Footer (Replaces Old Black Screen) */
+.footer{background:linear-gradient(180deg,#FAF8F3 0%,#F1ECE1 100%);color:var(--ink);padding:26px 16px calc(26px + env(safe-area-inset-bottom,0px));border-top:8px solid var(--cream)}
+.ft-hero{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 6px 20px -10px rgba(22,22,22,.08)}
+.ft-brand-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.footer-brand{font-family:"Playfair Display",serif;font-size:22px;font-weight:700;color:var(--rani);letter-spacing:-.01em}
+.ft-verified{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:800;padding:4px 9px;border-radius:999px;background:#ECFDF5;color:#15803D;border:1px solid #A7F3D0}
+.ft-verified svg{width:12px;height:12px;stroke-width:2.4}
+.footer-tag{margin:6px 0 12px;font-size:12.5px;line-height:1.55;color:var(--muted)}
+.ft-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-top:12px;border-top:1px dashed var(--line);text-align:center}
+.ft-stats b{display:block;font-size:13.5px;font-weight:800;color:var(--rani)}
+.ft-stats span{font-size:10px;font-weight:600;color:var(--muted)}
+
+/* Delivery & Logistics Partners Card */
+.ft-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:15px;margin-top:12px;box-shadow:0 6px 18px -10px rgba(22,22,22,.06)}
+.ft-card-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.ft-card-title{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--rani)}
+.ft-card-title svg{width:16px;height:16px;stroke-width:2.2}
+.ft-pill-live{font-size:10px;font-weight:800;padding:3px 8px;border-radius:999px;background:#F3F4F6;color:var(--rani)}
+.ft-couriers{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.ft-courier{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border-radius:10px;background:#F8F7F4;border:1px solid #E2DDD3;font-size:11.5px;font-weight:800;color:var(--rani)}
+.ft-courier i{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.ft-ship-notes{display:grid;grid-template-columns:1fr 1fr;gap:7px;font-size:11px;font-weight:600;color:var(--muted);padding-top:9px;border-top:1px dashed var(--line)}
+.ft-ship-notes div{display:flex;align-items:center;gap:5px}
+.ft-ship-notes svg{width:13px;height:13px;color:var(--rani);stroke-width:2.2}
+
+/* Quick Action Tiles */
+.ft-qactions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.ft-qa{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 6px;font-size:11px;font-weight:700;color:var(--rani);text-align:center;transition:transform .15s,border-color .2s}
+.ft-qa:active{transform:scale(.96)}
+.ft-qa svg{width:17px;height:17px;stroke-width:2}
+
+/* Newsletter Box */
+.footer-news{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:12px}
+.footer-news label{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:800;color:var(--rani);margin-bottom:8px}
+.footer-news label svg{width:15px;height:15px;stroke-width:2.2}
+.footer-news-row{display:flex;gap:7px}
+.footer-news input{flex:1;min-width:0;height:40px;background:#F8F7F4;border:1px solid var(--line);border-radius:999px;padding:0 14px;color:var(--ink);font-size:13px;outline:none}
+.footer-news input::placeholder{color:#8E878C}
+.footer-news input:focus{border-color:var(--rani);background:#fff}
+.footer-news button{height:40px;background:var(--rani);color:#fff;border:0;border-radius:999px;padding:0 18px;min-width:72px;font-weight:800;font-size:12.5px}
 .footer-news button:disabled{opacity:.8;cursor:not-allowed}
-.footer-news button.is-busy{background:var(--gold);--spin:#161616}
-.footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px 16px;padding:24px 0;margin-top:20px;border-top:1px solid rgba(255,255,255,.1)}
-.footer h3{font-family:Inter,sans-serif;font-size:14px;font-weight:600;margin-bottom:10px;color:var(--gold)}
-.footer-grid a,.footer-grid .avck-footerlink{display:block;font-size:13px;color:#B5ADB2;line-height:2;background:none;border:0;padding:0;text-align:left}
-.footer-grid a:hover,.footer-grid .avck-footerlink:hover{color:#fff}
-.footer-copy{padding-top:18px;border-top:1px solid rgba(255,255,255,.1);font-size:12px;color:#8F878D}
+.footer-news button.is-busy{background:var(--rani);--spin:#fff}
+
+/* Navigation Grid */
+.footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px;margin-top:14px}
+.ft-col{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 13px}
+.footer h3{font-family:Inter,sans-serif;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin-bottom:7px;color:var(--rani)}
+.footer-grid a,.footer-grid .avck-footerlink{display:block;font-size:12.5px;font-weight:600;color:var(--muted);line-height:1.95;background:none;border:0;padding:0;text-align:left}
+.footer-grid a:hover,.footer-grid .avck-footerlink:hover{color:var(--rani)}
+
+/* Payment Modes Strip */
+.ft-pay{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 13px}
+.ft-pay-title{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:7px;display:flex;align-items:center;justify-content:space-between}
+.ft-pay-badges{display:flex;flex-wrap:wrap;gap:5px}
+.ft-pay-badges span{font-size:10.5px;font-weight:800;padding:4px 8px;border-radius:7px;background:#F5F4F0;color:var(--rani);border:1px solid #E2DDD3}
+
+.footer-copy{margin-top:14px;padding-top:12px;border-top:1px solid #DFD9CE;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;font-size:11.5px;font-weight:600;color:var(--muted)}
 
 /* Toast */
 .toast{position:fixed;left:50%;top:calc(68px + env(safe-area-inset-top,0px));bottom:auto;transform:translate(-50%,-16px);opacity:0;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#16A34A,#15803D);color:#fff;padding:10px 18px 10px 12px;border-radius:999px;font-size:12.5px;font-weight:600;line-height:1.45;box-shadow:0 10px 28px rgba(0,0,0,.38);z-index:10060;pointer-events:none;white-space:normal;max-width:min(320px,86%);transition:opacity .25s,transform .25s cubic-bezier(.2,.9,.3,1.2)}
@@ -450,9 +491,9 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
     <div class="sizes" id="sizes"></div>
     <div class="stock" id="stock" hidden></div>
 
-    <!-- Idea 1 Order Studio Below Size:
-         Top Row: Left = Tap to view (opens cart popup), Right = Qty (- 1 +) Selector (only sets qty)
-         Bottom Row: Left = Add to cart (🛒 adds to cart), Right = Buy now (direct checkout) -->
+    <!-- Order Studio Right Below Size:
+         1. Top Row: Left = Tap to view (opens cart popup), Right = Independent Qty (- 1 +) for selected product
+         2. Bottom Row: Only Add to Cart if current product is NOT in cart; Left Add to Cart + Right Buy Now once added -->
     <div class="order-studio" id="orderStudio">
       <div class="os-top-row">
         <div class="p-cartbar" id="pCartBar" role="button" tabindex="0" onclick="openCartDrawer()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCartDrawer()}">
@@ -471,9 +512,9 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
         </div>
       </div>
 
-      <div class="os-btns">
+      <div class="os-btns single-mode" id="osBtns">
         <button class="btn btn-o" type="button" id="btnCart" onclick="addToCart()"><i data-lucide="shopping-cart"></i>Add to cart</button>
-        <button class="btn btn-p" type="button" id="btnBuy" onclick="buyNow()"><i data-lucide="zap"></i>Buy now</button>
+        <button class="btn btn-p" type="button" id="btnBuy" onclick="buyNow()" hidden><i data-lucide="shopping-cart"></i>Buy now</button>
       </div>
     </div>
   </section>
@@ -504,7 +545,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
     <button class="btn-write" type="button" id="btnWrite" onclick="writeReview()"><i data-lucide="plus"></i>Write a review</button>
   </section>
 
-  <!-- Professional Wishlisted Items Section (Live-Updated) -->
+  <!-- Wishlisted Items Section -->
   <section class="blk" id="wishSec" hidden>
     <div class="sec-head-inline">
       <h2><i data-lucide="heart"></i>Your wishlisted items <span class="wish-pill-cnt" id="wishSecCount">0</span></h2>
@@ -518,28 +559,89 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
     <div class="grid2" id="sugGrid"></div>
   </section>
 
+  <!-- Redesigned Light Luxury Multi-Feature Footer (No Black Screen) -->
   <footer class="footer">
-    <div class="footer-brand">Aavira Fashion</div>
-    <p class="footer-tag">Luxury ethnic fashion, designed for modern elegance.</p>
+    <div class="ft-hero">
+      <div class="ft-brand-row">
+        <div class="footer-brand">Aavira Fashion</div>
+        <span class="ft-verified"><i data-lucide="badge-check"></i>Verified Store</span>
+      </div>
+      <p class="footer-tag">Handcrafted premium ethnic wear from Surat, designed for modern celebrations with quality-checked finishing.</p>
+      <div class="ft-stats">
+        <div><b>19,000+</b><span>Pincodes Served</span></div>
+        <div><b>24–48 Hrs</b><span>Express Dispatch</span></div>
+        <div><b>100% QC</b><span>Checked Outfits</span></div>
+      </div>
+    </div>
+
+    <!-- Courier & Delivery Partners Card -->
+    <div class="ft-card">
+      <div class="ft-card-head">
+        <span class="ft-card-title"><i data-lucide="truck"></i>Official Delivery Partners</span>
+        <span class="ft-pill-live">Pan-India</span>
+      </div>
+      <div class="ft-couriers">
+        <span class="ft-courier"><i></i>Delhivery</span>
+        <span class="ft-courier"><i></i>BlueDart</span>
+        <span class="ft-courier"><i></i>DTDC Express</span>
+        <span class="ft-courier"><i></i>Xpressbees</span>
+        <span class="ft-courier"><i></i>Ecom Express</span>
+      </div>
+      <div class="ft-ship-notes">
+        <div><i data-lucide="package-check"></i>Tamper-proof packaging</div>
+        <div><i data-lucide="bell-ring"></i>Live SMS &amp; WhatsApp tracking</div>
+        <div><i data-lucide="clock"></i>3–5 days metro delivery</div>
+        <div><i data-lucide="indian-rupee"></i>COD &amp; Prepaid available</div>
+      </div>
+    </div>
+
+    <!-- Quick Action Tiles -->
+    <div class="ft-qactions">
+      <a class="ft-qa" href="/orders"><i data-lucide="map-pin"></i>Track Order</a>
+      <a class="ft-qa" href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer"><i data-lucide="message-circle"></i>WhatsApp Help</a>
+      <a class="ft-qa" href="/cart"><i data-lucide="shopping-cart"></i>View Cart</a>
+    </div>
+
+    <!-- Newsletter -->
     <div class="footer-news">
-      <label for="newsletterEmail">Get new collections and offers by email</label>
+      <label for="newsletterEmail"><i data-lucide="mail"></i>Get new collections &amp; festive offers</label>
       <div class="footer-news-row">
-        <input type="email" id="newsletterEmail" placeholder="Your email address" autocomplete="email">
+        <input type="email" id="newsletterEmail" placeholder="Enter your email address" autocomplete="email">
         <button type="button" id="btnNewsletter" onclick="subscribeNewsletter()">Join</button>
       </div>
     </div>
+
+    <!-- Links Grid -->
     <div class="footer-grid">
-      <div><h3>Explore</h3><a href="/">Home</a><a href="/categories">Collections</a><a href="/offer">Offers</a><a href="/wishlist">Wishlist</a></div>
-      <div><h3>Shopping</h3><a href="/cart">Shopping cart</a><a href="/orders">My orders</a><a href="/profile">My account</a><a href="/support">Support</a></div>
-      <div><h3>Information</h3><a href="/terms">Terms &amp; conditions</a><a href="/privacy">Privacy policy</a><a href="/support">Help center</a><button type="button" class="avck-footerlink" onclick="window.AaviraConsent&&AaviraConsent.openPrefs()">Cookie Settings</button></div>
-      <div><h3>Contact</h3><a href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a></div>
+      <div class="ft-col"><h3>Explore</h3><a href="/">Home</a><a href="/categories">Collections</a><a href="/offer">Offers</a><a href="/wishlist">Wishlist</a></div>
+      <div class="ft-col"><h3>Shopping</h3><a href="/cart">Shopping cart</a><a href="/orders">My orders</a><a href="/profile">My account</a><a href="/support">Support</a></div>
+      <div class="ft-col"><h3>Policies</h3><a href="/terms">Terms &amp; conditions</a><a href="/privacy">Privacy policy</a><a href="/support">Return policy</a><button type="button" class="avck-footerlink" onclick="window.AaviraConsent&&AaviraConsent.openPrefs()">Cookie settings</button></div>
+      <div class="ft-col"><h3>Care Hours</h3><a href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer">+91 96087 20622</a><a href="/support">Mon–Sat: 10AM–7PM</a><a href="/support">Surat, Gujarat</a></div>
     </div>
-    <div class="footer-copy">© 2026 Aavira Fashion. All rights reserved.</div>
+
+    <!-- Secure Payment Modes -->
+    <div class="ft-pay">
+      <div class="ft-pay-title"><span>100% Secure Payments</span><span>SSL Encrypted</span></div>
+      <div class="ft-pay-badges">
+        <span>UPI</span>
+        <span>GPay</span>
+        <span>PhonePe</span>
+        <span>Paytm</span>
+        <span>Visa / Mastercard</span>
+        <span>RuPay</span>
+        <span>Cash on Delivery</span>
+      </div>
+    </div>
+
+    <div class="footer-copy">
+      <span>© 2026 Aavira Fashion. All rights reserved.</span>
+      <span>Made in India</span>
+    </div>
   </footer>
 </div>
 
 <!-- MODALS -->
-<!-- Tap to View Cart Popup (Clean White Surface + Professional Black Accents, No Gold) -->
+<!-- Tap to View Cart Popup (Clean White Surface + Professional Black Accents) -->
 <div class="ov" id="cartDrawerOv" onclick="if(event.target===this)closeModal('cartDrawerOv')">
   <div class="sheet" role="dialog" aria-modal="true" aria-label="Your shopping cart">
     <div class="cd-head">
@@ -846,7 +948,18 @@ const triggerPlusSimar = () => {
   }, 1150);
 };
 
-/* Sync Active Variant & Quantity Display (Idea 1: Qty selector only manages selected state.qty) */
+/* Check if current product is in cart -> Show/Hide Buy Now Button accordingly */
+const syncOrderButtons = () => {
+  const cart = readJson('aavira_cart', []).filter(it => it && (Number(it.qty) || 0) > 0);
+  const inCart = cart.some(it => String(it.productId) === String(state.id));
+  const buyBtn = $('#btnBuy');
+  const osBtns = $('#osBtns');
+  if (!buyBtn || !osBtns) return;
+  buyBtn.hidden = !inCart;
+  osBtns.classList.toggle('single-mode', !inCart);
+};
+
+/* Sync Active Variant & Independent Quantity Display */
 const syncActiveVariantUI = () => {
   const sizeNow = state.size || '';
   const sizeInfo = $('#sizeInfo');
@@ -855,6 +968,7 @@ const syncActiveVariantUI = () => {
   }
   const qtyEl = $('#qtyVal');
   if (qtyEl) qtyEl.textContent = String(state.qty || 1);
+  syncOrderButtons();
   refreshPCartBar();
 };
 
@@ -899,7 +1013,7 @@ const ensureSizeSelected = autoPickFirst => {
   return null;
 };
 
-/* Idea 1: (- 1 +) Stepper ONLY changes quantity number (1, 2, 3...) without adding to cart */
+/* Independent Quantity Selector: Only changes quantity to be added for selected product, does not touch cart directly */
 window.stepProductQty = delta => {
   if (!state.product) return;
   state.qty = clamp((Number(state.qty) || 1) + delta, 1, 20);
@@ -1088,7 +1202,7 @@ const submitReview = () => {
   });
 };
 
-/* Idea 1: Add to Cart Button adds selected Colour + Size + state.qty to aavira_cart */
+/* Add to Cart: Adds selected Colour + Size + Quantity to cart, then reveals Buy Now button */
 const addToCart = () => {
   if (!state.product) return;
   const size = ensureSizeSelected(false);
@@ -1107,37 +1221,15 @@ const addToCart = () => {
       cart.push({ productId: state.id, name: state.product.name, price: Number(state.product.price) || 0, size, color: colorNow, image: imgNow, qty: addQty });
     }
     writeJson('aavira_cart', cart);
+    state.qty = 1;
     updateCartBadge();
-    refreshPCartBar();
+    syncActiveVariantUI();
     toast(`${colorNow} (${size}) × ${addQty} added to cart`);
   });
 };
 
-const buildCheckoutUrl = (size, qty = 1) => {
-  const item = {
-    productId: state.id,
-    name: state.product.name || '',
-    price: Number(state.product.price) || 0,
-    size,
-    color: state.color || 'Main',
-    image: safeUrl(state.image) || state.image,
-    qty: Math.max(1, Number(qty) || 1)
-  };
-  writeJson('aavira_checkout_items', [item]);
-  const params = new URLSearchParams({
-    buy_now: state.id,
-    name: item.name,
-    price: String(item.price),
-    size,
-    color: item.color,
-    image: item.image,
-    qty: String(item.qty)
-  });
-  return `/checkout?${params}`;
-};
-
 const buildCartCheckoutUrl = cart => {
-  const validItems = (Array.isArray(cart) ? cart : []).filter(item => item && item.productId);
+  const validItems = (Array.isArray(cart) ? cart : []).filter(item => item && item.productId && (Number(item.qty) || 0) > 0);
   if (!validItems.length) return '/checkout';
   writeJson('aavira_checkout_items', validItems);
   const totalQty = validItems.reduce((sum, item) => sum + (Number(item.qty) || 1), 0);
@@ -1216,7 +1308,7 @@ window.changeCartItemQty = (index, delta) => {
   else cart[index].qty = clamp(next, 1, 20);
   writeJson('aavira_cart', cart);
   updateCartBadge();
-  refreshPCartBar();
+  syncActiveVariantUI();
   renderCartDrawer();
 };
 
@@ -1225,12 +1317,12 @@ window.removeCartItemAt = index => {
   cart.splice(index, 1);
   writeJson('aavira_cart', cart);
   updateCartBadge();
-  refreshPCartBar();
+  syncActiveVariantUI();
   renderCartDrawer();
 };
 
 const orderCartItems = btn => {
-  const cart = readJson('aavira_cart', []);
+  const cart = readJson('aavira_cart', []).filter(it => it && (Number(it.qty) || 0) > 0);
   if (!cart.length) return toast('Your cart is empty', true);
   state.buyLink = buildCartCheckoutUrl(cart);
 
@@ -1241,14 +1333,14 @@ const orderCartItems = btn => {
   });
 };
 
-/* Idea 1: Buy Now goes directly to Checkout with selected Colour + Size + state.qty without adding to cart */
+/* Buy Now: Redirects with ALL cart items (not just a single product) */
 const buyNow = () => {
-  if (!state.product) return;
-  const size = ensureSizeSelected(false);
-  if (!size) return;
-
-  const qtyNow = clamp(Number(state.qty) || 1, 1, 20);
-  state.buyLink = buildCheckoutUrl(size, qtyNow);
+  const cart = readJson('aavira_cart', []).filter(it => it && (Number(it.qty) || 0) > 0);
+  if (!cart.length) {
+    syncOrderButtons();
+    return toast('Please add product to cart first', true);
+  }
+  state.buyLink = buildCartCheckoutUrl(cart);
 
   withSpinner($('#btnBuy'), () => {
     if (isLoggedIn()) location.href = state.buyLink;
@@ -1462,7 +1554,7 @@ $('#pick').innerHTML = [1, 2, 3, 4, 5].map(v => `<i data-lucide="star" data-v="$
   $(selector)?.addEventListener('keydown', event => { if (event.key === 'Enter') handler(); });
 });
 
-/* Tap to View Bar (Left of Qty Stepper, uses Cart Icon when empty) */
+/* Tap to View Bar (Left of Qty Stepper) */
 const refreshPCartBar = () => {
   const bar = $('#pCartBar');
   if (!bar) return;
@@ -1488,10 +1580,12 @@ const refreshPCartBar = () => {
 
 const init = async () => {
   updateCartBadge();
-  refreshPCartBar();
   updateWishBadge();
   const raw = new URLSearchParams(location.search).get('id');
   state.id = raw ? decodeURIComponent(raw).trim() : '';
+  syncOrderButtons();
+  refreshPCartBar();
+
   const product = state.id ? await findProduct(state.id) : null;
   if (!product) return openModal('errModal');
   state.product = product;
@@ -1564,7 +1658,6 @@ const init = async () => {
 
 const syncPageState = () => {
   updateCartBadge();
-  refreshPCartBar();
   syncActiveVariantUI();
   paintWish();
   const wishedSet = new Set(readJson('aavira_wishlist', []).map(String));
@@ -1759,7 +1852,6 @@ $('#sqaAdd').addEventListener('click', () => {
     else cart.push({ productId: String(p.id), name: p.name, price: Number(p.price) || 0, size, color, image: img, qty: addQty });
     writeJson('aavira_cart', cart);
     updateCartBadge();
-    refreshPCartBar();
     syncActiveVariantUI();
     closeSugQA();
     window.showToast(`${color} (${size}) × ${addQty} added to cart`);
