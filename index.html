@@ -218,12 +218,17 @@ a{color:inherit;text-decoration:none}
 .footer-logo-link{display:inline-flex}
 .footer-logo{height:46px;width:auto;max-width:170px;object-fit:contain}
 .ftr-logos{display:flex;flex-wrap:wrap;gap:9px}
-.ftr-logo-card{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:7px 14px;box-shadow:0 6px 14px -10px rgba(36,32,36,.22)}
+.ftr-logo-card{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;background:transparent;border:0;border-radius:0;padding:4px 8px;box-shadow:none}
 .ftr-logo-card img{height:24px;width:auto;max-width:104px;object-fit:contain;display:block}
 .ftr-logo-card img.tall{height:32px}
 .ftr-logo-name{font-size:12.5px;font-weight:700;color:var(--ink)}
 .ftr-logo-card.txt{font-size:12.5px;font-weight:700;color:var(--ink)}
 .ftr-logo-card.txt svg{width:16px;height:16px;color:var(--gold-text)}
+.ftr-points{margin-top:16px;display:grid;gap:11px}
+.ftr-point{display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.5;color:var(--muted)}
+.ftr-point svg{width:17px;height:17px;flex:0 0 17px;margin-top:2px;color:var(--gold-text)}
+.ftr-point span{min-width:0}
+.ftr-point b{color:var(--ink);font-weight:700}
 .footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px 16px;padding:24px 0;margin-top:26px;border-top:1px solid var(--line)}
 .footer-grid h3{margin-bottom:10px}
 .footer-grid a,.footer-grid .avck-footerlink{display:block;font-size:13px;color:var(--muted);line-height:2;background:none;border:0;padding:0;text-align:left;text-decoration:none}
@@ -329,8 +334,9 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
 .menu-item>svg:last-child{width:16px;height:16px;flex:0 0 16px;margin-left:auto;color:#A8A0A5}
 .sb-head{display:flex;align-items:center;gap:10px;margin:16px 4px 10px;font-size:11.5px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--gold-text)}
 .sb-head::after{content:"";flex:1;height:1px;background:var(--line)}
-.sb-pages{display:grid;gap:8px}
-.sb-page{display:flex;align-items:center;gap:12px;width:100%;padding:13px 14px;background:#161616;color:#fff;border:0;border-radius:0;font-size:13.5px;font-weight:600;text-align:left;text-decoration:none;cursor:pointer;transition:background .2s,transform .15s}
+.sb-pages{display:grid;gap:4px}
+.sb-page{display:flex;align-items:center;gap:12px;width:100%;padding:13px 14px;background:#161616;color:#fff;border:0;border-radius:0;font-family:inherit;font-size:13.5px;font-weight:600;text-align:left;text-decoration:none;cursor:pointer;transition:background .2s,transform .15s}
+.side-nav>.sb-page{margin-bottom:4px}
 .sb-page>svg:first-child{width:18px;height:18px;flex:0 0 18px;color:var(--gold);stroke-width:1.8}
 .sb-page>svg:last-child{width:15px;height:15px;flex:0 0 15px;margin-left:auto;color:rgba(255,255,255,.55)}
 .sb-page:active{transform:scale(.98);background:#000}
@@ -594,33 +600,26 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
     <button type="button" onclick="removePromoCode()">Remove</button>
   </div>
   <nav class="side-nav">
-    <a class="menu-item" href="./"><i data-lucide="home"></i>Home<i data-lucide="chevron-right"></i></a>
-    <a class="menu-item" href="categories"><i data-lucide="layout-grid"></i>Collections<i data-lucide="chevron-right"></i></a>
-    <button type="button" class="menu-item" onclick="triggerDotAction('cart',this)"><i data-lucide="shopping-cart"></i>My cart<i data-lucide="chevron-right"></i></button>
-    <a class="menu-item" href="orders"><i data-lucide="package"></i>My orders<i data-lucide="chevron-right"></i></a>
-    <a class="menu-item" href="wishlist"><i data-lucide="heart"></i>My wishlist<i data-lucide="chevron-right"></i></a>
-    <hr>
-    <button type="button" class="menu-item" onclick="openPromoModal()"><i data-lucide="ticket"></i>Apply promo code<i data-lucide="chevron-right"></i></button>
-    <button type="button" class="menu-item" onclick="openReferralCenter()"><i data-lucide="share-2"></i>Refer &amp; earn<i data-lucide="chevron-right"></i></button>
-    <hr>
-    <a class="menu-item" href="support"><i data-lucide="headphones"></i>Customer support<i data-lucide="chevron-right"></i></a>
-    <button type="button" class="menu-item" data-no-delay="1" onclick="closeSidebar();window.AaviraConsent&&AaviraConsent.openPrefs()"><i data-lucide="cookie"></i>Cookie Settings<i data-lucide="chevron-right"></i></button>
+    <a class="sb-page" style="--d:.03s" href="./" onclick="return sbGo(this)"><i data-lucide="home"></i>Home<i data-lucide="chevron-right"></i></a>
+    <a class="sb-page" style="--d:.06s" href="categories" onclick="return sbGo(this)"><i data-lucide="layout-grid"></i>Collections<i data-lucide="chevron-right"></i></a>
+    <button type="button" class="sb-page" style="--d:.09s" onclick="sbNav('cart')"><i data-lucide="shopping-cart"></i>My cart<i data-lucide="chevron-right"></i></button>
+    <a class="sb-page" style="--d:.12s" href="orders" onclick="return sbGo(this)"><i data-lucide="package"></i>My orders<i data-lucide="chevron-right"></i></a>
+    <a class="sb-page" style="--d:.15s" href="wishlist" onclick="return sbGo(this)"><i data-lucide="heart"></i>My wishlist<i data-lucide="chevron-right"></i></a>
+    <button type="button" class="sb-page" style="--d:.18s" onclick="openPromoModal()"><i data-lucide="ticket"></i>Apply promo code<i data-lucide="chevron-right"></i></button>
+    <button type="button" class="sb-page" style="--d:.21s" onclick="openReferralCenter()"><i data-lucide="share-2"></i>Refer &amp; earn<i data-lucide="chevron-right"></i></button>
+    <a class="sb-page" style="--d:.24s" href="support" onclick="return sbGo(this)"><i data-lucide="headphones"></i>Customer support<i data-lucide="chevron-right"></i></a>
+    <button type="button" class="sb-page" style="--d:.27s" data-no-delay="1" onclick="closeSidebar();window.AaviraConsent&&AaviraConsent.openPrefs()"><i data-lucide="cookie"></i>Cookie Settings<i data-lucide="chevron-right"></i></button>
     <div class="sb-head">All Pages</div>
     <div class="sb-pages">
-      <a class="sb-page" style="--d:0.04s" href="./" onclick="return sbGo(this)"><i data-lucide="home"></i>Home<i data-lucide="chevron-right"></i></a>
-      <a class="sb-page" style="--d:0.08s" href="categories" onclick="return sbGo(this)"><i data-lucide="layout-grid"></i>Collections<i data-lucide="chevron-right"></i></a>
-      <a class="sb-page" style="--d:0.12s" href="items/search" onclick="return sbGo(this)"><i data-lucide="search"></i>Search Products<i data-lucide="chevron-right"></i></a>
-      <a class="sb-page" style="--d:0.16s" href="ai" onclick="return sbGo(this)"><i data-lucide="sparkles"></i>AI Fashion Assistant<i data-lucide="chevron-right"></i></a>
-      <a class="sb-page" style="--d:0.20s" href="match/colours" onclick="return sbGo(this)"><i data-lucide="palette"></i>Colour Match<i data-lucide="chevron-right"></i></a>
-      <a class="sb-page" style="--d:0.24s" href="cart" onclick="return sbGo(this)"><i data-lucide="shopping-cart"></i>Shopping Bag<i data-lucide="chevron-right"></i></a>
-      <a class="sb-page" style="--d:0.28s" href="checkout" onclick="return sbGo(this)"><i data-lucide="credit-card"></i>Checkout<i data-lucide="chevron-right"></i></a>
-      <a class="sb-page" style="--d:0.32s" href="orders" onclick="return sbGo(this)"><i data-lucide="package"></i>My Orders<i data-lucide="chevron-right"></i></a>
-      <a class="sb-page" style="--d:0.36s" href="track/order" onclick="return sbGo(this)"><i data-lucide="package-search"></i>Track Order<i data-lucide="chevron-right"></i></a>
-      <a class="sb-page" style="--d:0.40s" href="wishlist" onclick="return sbGo(this)"><i data-lucide="heart"></i>My Wishlist<i data-lucide="chevron-right"></i></a>
-      <a class="sb-page" style="--d:0.44s" href="community" onclick="return sbGo(this)"><i data-lucide="users"></i>Community<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.30s" href="items/search" onclick="return sbGo(this)"><i data-lucide="search"></i>Search Products<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.33s" href="ai" onclick="return sbGo(this)"><i data-lucide="sparkles"></i>AI Fashion Assistant<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.36s" href="match/colours" onclick="return sbGo(this)"><i data-lucide="palette"></i>Colour Match<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.39s" href="checkout" onclick="return sbGo(this)"><i data-lucide="credit-card"></i>Checkout<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.42s" href="track/order" onclick="return sbGo(this)"><i data-lucide="package-search"></i>Track Order<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.45s" href="community" onclick="return sbGo(this)"><i data-lucide="users"></i>Community<i data-lucide="chevron-right"></i></a>
       <a class="sb-page" style="--d:0.48s" href="profile" onclick="return sbGo(this)"><i data-lucide="user-round"></i>My Profile<i data-lucide="chevron-right"></i></a>
-      <a class="sb-page" style="--d:0.52s" href="auth/verify" onclick="return sbGo(this)"><i data-lucide="log-in"></i>Log in / Sign up<i data-lucide="chevron-right"></i></a>
-      <a class="sb-page" style="--d:0.56s" href="privacy/terms" onclick="return sbGo(this)"><i data-lucide="file-text"></i>Terms & Privacy<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.51s" href="auth/verify" onclick="return sbGo(this)"><i data-lucide="log-in"></i>Log in / Sign up<i data-lucide="chevron-right"></i></a>
+      <a class="sb-page" style="--d:0.54s" href="privacy/terms" onclick="return sbGo(this)"><i data-lucide="file-text"></i>Terms & Privacy<i data-lucide="chevron-right"></i></a>
     </div>
     <div class="side-foot">
       <p class="side-follow">Follow us</p>
@@ -1132,6 +1131,13 @@ window.paintCartBar = () => {
 
 window.openSidebar = () => { vibrate(40); updateProfileUI(); layers.open('sidebar'); };
 window.closeSidebar = () => { vibrate(); layers.close('sidebar'); };
+window.sbNav = url => {
+  try {
+    vibrate(25);
+    document.getElementById('sbTransition')?.classList.add('on');
+    setTimeout(() => { location.href = url; }, 330);
+  } catch { location.href = url; }
+};
 window.sbGo = a => {
   try {
     const url = a.getAttribute('href');
