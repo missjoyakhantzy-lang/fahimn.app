@@ -215,28 +215,15 @@ a{color:inherit;text-decoration:none}
 .ftr-sec-head{display:flex;align-items:center;gap:9px;margin-bottom:12px}
 .ftr-sec-head .ic{width:30px;height:30px;flex:0 0 auto;border-radius:10px;background:#fff;border:1px solid var(--line);color:var(--gold-text);display:flex;align-items:center;justify-content:center}
 .ftr-sec-head .ic svg{width:15px;height:15px}
-.ftr-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.ftr-act{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;text-decoration:none;box-shadow:0 8px 18px -12px rgba(36,32,36,.25);transition:transform .2s var(--ease)}
-.ftr-act:active{transform:scale(.97)}
-.ftr-act .ic{width:38px;height:38px;flex:0 0 auto;border-radius:12px;background:var(--cream);border:1px solid var(--line);color:#161616;display:flex;align-items:center;justify-content:center}
-.ftr-act .ic svg{width:18px;height:18px}
-.ftr-act b{display:block;font-size:13px;font-weight:700;color:var(--ink);line-height:1.25}
-.ftr-act small{display:block;font-size:11px;color:var(--muted);margin-top:2px;line-height:1.3}
-.ftr-chips{display:flex;flex-wrap:wrap;gap:8px}
-.ftr-chip{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 13px;font-size:12.5px;font-weight:700;color:var(--ink)}
-.ftr-chip svg{width:14px;height:14px;color:var(--gold-text)}
-.ftr-chip.pay{font-weight:600}
-.ftr-points{margin-top:13px;display:grid;gap:9px}
-.ftr-point{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.5;color:var(--muted);font-weight:500}
-.ftr-point svg{width:16px;height:16px;flex:0 0 auto;color:var(--gold-text);margin-top:1px}
-.ftr-point b{color:var(--ink);font-weight:700}
-.ftr-support{margin-top:26px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 10px 22px -14px rgba(36,32,36,.25)}
-.ftr-support .ftr-sec-head{margin-bottom:10px}
-.ftr-srow{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);padding:5px 0;font-weight:500}
-.ftr-srow svg{width:16px;height:16px;flex:0 0 auto;color:var(--gold-text)}
-.ftr-srow b{color:var(--ink);font-weight:700}
-.ftr-wa{margin-top:12px;display:flex;align-items:center;justify-content:center;gap:8px;height:44px;border-radius:999px;background:#161616;color:#fff;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 10px 20px -10px rgba(22,22,22,.5)}
-.ftr-wa svg{width:16px;height:16px}
+.footer-logo-link{display:inline-flex}
+.footer-logo{height:46px;width:auto;max-width:170px;object-fit:contain}
+.ftr-logos{display:flex;flex-wrap:wrap;gap:9px}
+.ftr-logo-card{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:7px 14px;box-shadow:0 6px 14px -10px rgba(36,32,36,.22)}
+.ftr-logo-card img{height:24px;width:auto;max-width:104px;object-fit:contain;display:block}
+.ftr-logo-card img.tall{height:32px}
+.ftr-logo-name{font-size:12.5px;font-weight:700;color:var(--ink)}
+.ftr-logo-card.txt{font-size:12.5px;font-weight:700;color:var(--ink)}
+.ftr-logo-card.txt svg{width:16px;height:16px;color:var(--gold-text)}
 .footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px 16px;padding:24px 0;margin-top:26px;border-top:1px solid var(--line)}
 .footer-grid h3{margin-bottom:10px}
 .footer-grid a,.footer-grid .avck-footerlink{display:block;font-size:13px;color:var(--muted);line-height:2;background:none;border:0;padding:0;text-align:left;text-decoration:none}
@@ -695,7 +682,7 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
   </main>
 
   <footer class="footer">
-    <div class="footer-brand">Aavira <span>Fashion</span></div>
+    <a href="./" aria-label="Aavira home" class="footer-logo-link"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira Fashion" class="footer-logo"></a>
     <p class="footer-tag">Luxury ethnic fashion, designed for modern elegance.</p>
     <div class="footer-news">
       <label for="newsletterEmail">Get new collections and offers by email</label>
@@ -706,23 +693,13 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
     </div>
 
     <div class="ftr-sec">
-      <div class="ftr-sec-head"><span class="ic"><i data-lucide="sparkles"></i></span><h3>Quick Actions</h3></div>
-      <div class="ftr-actions">
-        <a class="ftr-act" href="/track"><span class="ic"><i data-lucide="package-search"></i></span><span><b>Track Order</b><small>Live delivery status</small></span></a>
-        <a class="ftr-act" href="/orders"><span class="ic"><i data-lucide="clipboard-list"></i></span><span><b>My Orders</b><small>History &amp; invoices</small></span></a>
-        <a class="ftr-act" href="/cart"><span class="ic"><i data-lucide="shopping-bag"></i></span><span><b>Shopping Bag</b><small>Review your items</small></span></a>
-        <a class="ftr-act" href="/wishlist"><span class="ic"><i data-lucide="heart"></i></span><span><b>Wishlist</b><small>Your saved styles</small></span></a>
-      </div>
-    </div>
-
-    <div class="ftr-sec">
       <div class="ftr-sec-head"><span class="ic"><i data-lucide="truck"></i></span><h3>Delivery Partners</h3></div>
-      <div class="ftr-chips">
-        <span class="ftr-chip"><i data-lucide="package"></i>Delhivery</span>
-        <span class="ftr-chip"><i data-lucide="package"></i>Blue Dart</span>
-        <span class="ftr-chip"><i data-lucide="package"></i>DTDC</span>
-        <span class="ftr-chip"><i data-lucide="package"></i>Xpressbees</span>
-        <span class="ftr-chip"><i data-lucide="package"></i>Ecom Express</span>
+      <div class="ftr-logos">
+        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Delhivery_Logo_%282019%29.png/330px-Delhivery_Logo_%282019%29.png" alt="Delhivery" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Delhivery</span></span>
+        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Blue_Dart_logo_transparent.png/330px-Blue_Dart_logo_transparent.png" alt="Blue Dart" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Blue Dart</span></span>
+        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/DTDC_logo.png/330px-DTDC_logo.png" alt="DTDC" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">DTDC</span></span>
+        <span class="ftr-logo-card"><img src="https://chinapost-track.com/cdn/images/carriers/thumbnails/0389-xpressbees.png" alt="Xpressbees" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Xpressbees</span></span>
+        <span class="ftr-logo-card"><img class="tall" src="https://qubix.in/wp-content/uploads/2024/05/Ecom-Express-Logo.png" alt="Ecom Express" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Ecom Express</span></span>
       </div>
       <div class="ftr-points">
         <div class="ftr-point"><i data-lucide="timer"></i><span><b>Fast dispatch</b> — orders are packed &amp; dispatched within 24–48 hours.</span></div>
@@ -733,21 +710,16 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
 
     <div class="ftr-sec">
       <div class="ftr-sec-head"><span class="ic"><i data-lucide="shield-check"></i></span><h3>We Accept</h3></div>
-      <div class="ftr-chips">
-        <span class="ftr-chip pay"><i data-lucide="smartphone"></i>UPI</span>
-        <span class="ftr-chip pay"><i data-lucide="wallet"></i>Google Pay</span>
-        <span class="ftr-chip pay"><i data-lucide="smartphone"></i>PhonePe</span>
-        <span class="ftr-chip pay"><i data-lucide="credit-card"></i>Credit / Debit Cards</span>
-        <span class="ftr-chip pay"><i data-lucide="landmark"></i>Net Banking</span>
-        <span class="ftr-chip pay"><i data-lucide="banknote"></i>Cash on Delivery</span>
+      <div class="ftr-logos">
+        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/330px-UPI-Logo-vector.svg.png" alt="UPI" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">UPI</span></span>
+        <span class="ftr-logo-card"><img src="https://cdn.simpleicons.org/googlepay" alt="Google Pay" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Google Pay</span></span>
+        <span class="ftr-logo-card"><img src="https://cdn.simpleicons.org/phonepe" alt="PhonePe" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">PhonePe</span></span>
+        <span class="ftr-logo-card"><img src="https://cdn.simpleicons.org/visa" alt="Visa" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Visa</span></span>
+        <span class="ftr-logo-card"><img src="https://cdn.simpleicons.org/mastercard" alt="Mastercard" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Mastercard</span></span>
+        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/RuPay-Logo.png/330px-RuPay-Logo.png" alt="RuPay" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">RuPay</span></span>
+        <span class="ftr-logo-card txt"><i data-lucide="landmark"></i>Net Banking</span>
+        <span class="ftr-logo-card txt"><i data-lucide="banknote"></i>Cash on Delivery</span>
       </div>
-    </div>
-
-    <div class="ftr-support">
-      <div class="ftr-sec-head"><span class="ic"><i data-lucide="headphones"></i></span><h3>Support Timings</h3></div>
-      <div class="ftr-srow"><i data-lucide="clock"></i><span><b>Mon – Sat:</b>&nbsp;9:00 AM – 7:00 PM</span></div>
-      <div class="ftr-srow"><i data-lucide="message-circle"></i><span><b>WhatsApp:</b>&nbsp;replies within a few hours on working days</span></div>
-      <a class="ftr-wa" href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer"><i data-lucide="message-circle"></i>Chat on WhatsApp</a>
     </div>
 
     <div class="footer-grid">
