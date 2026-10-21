@@ -544,7 +544,7 @@ window.fetch = (url, opts = {}) => {
   return _fetch(url, opts);
 };
 
-const state = { track: '', cart: [], db: {}, buyNow: false, promo: { code: '', amount: 0 }, whatsappUrl: '', timer: null, addresses: [], selectedId: '', editId: '', addrType: 'Home', sheetIndex: -1 };
+const state = { track: '', cart: [], db: {}, buyNow: false, onlyId: '', promo: { code: '', amount: 0 }, whatsappUrl: '', timer: null, addresses: [], selectedId: '', editId: '', addrType: 'Home', sheetIndex: -1 };
 
 const withSpinner = (el, action) => {
   if (!el || el.classList.contains('is-busy')) return;
@@ -876,7 +876,15 @@ const bindForm = () => {
   $('#promoInput').addEventListener('input', () => setPromoErr(''));
 };
 
-const saveCart = () => { if (!state.buyNow) writeJson('aavira_cart', state.cart); };
+const saveCart = () => {
+  if (state.buyNow) return;
+  if (state.onlyId) {
+    const others = readJson('aavira_cart', []).filter(it => it && String(it.productId) !== state.onlyId);
+    writeJson('aavira_cart', [...others, ...state.cart]);
+    return;
+  }
+  writeJson('aavira_cart', state.cart);
+};
 
 const loadProducts = async () => {
   for (const loader of ['getVercelData', 'getMainProductsData']) {
@@ -892,28 +900,35 @@ const loadCart = () => {
   const buyNowId = params.get('buy_now');
   if (buyNowId) {
     state.buyNow = true;
+    /* Only the product ID and variant come from the URL — never the
+       price or name. Both are resolved from the server catalog below. */
     state.cart = [{
       productId: decodeURIComponent(buyNowId).trim(),
       size: params.get('size') || 'Free Size',
       color: params.get('color') || 'Standard',
-      image: params.get('image') || '',
-      qty: 1,
-      name: params.get('name') || 'Exclusive item',
-      price: params.get('price') || 0
+      image: '',
+      qty: 1
     }];
   } else {
     state.cart = readJson('aavira_cart', []);
+    const onlyId = (params.get('only') || '').trim();
+    if (onlyId) {
+      state.onlyId = onlyId;
+      state.cart = state.cart.filter(item => item && String(item.productId) === onlyId);
+    }
   }
+  /* Secure pricing: an item survives only if the server catalog has it.
+     Client-side prices/names from localStorage or the URL are never
+     trusted — unknown items are dropped, not priced by the browser. */
   state.cart = state.cart.filter(item => {
-    const id = String(item.productId).trim();
+    if (!item) return false;
+    const id = String(item.productId || '').trim();
+    if (!id) return false;
     item.productId = id;
     item.qty = item.qty || 1;
-    if (state.db[id]) return true;
-    if (item.price && item.name) {
-      state.db[id] = { id, name: item.name, price: item.price, image: item.image };
-      return true;
-    }
-    return false;
+    delete item.price;
+    delete item.name;
+    return !!state.db[id];
   });
 };
 
@@ -1270,7 +1285,10 @@ const placeOrder = () => {
     order.totalAmount = Number((result.json.order || {}).totalAmount ?? order.totalAmount);
     state.track = result.json.orderToken || '';
     state.verified = !!result.json.verified;
-    if (!state.buyNow) removeValue('aavira_cart');
+    if (state.onlyId) {
+      const remaining = readJson('aavira_cart', []).filter(it => it && String(it.productId) !== state.onlyId);
+      writeJson('aavira_cart', remaining);
+    } else if (!state.buyNow) removeValue('aavira_cart');
     removeValue('savedPromoCache');
     removeValue('checkoutAddressDraft');
     rememberOrder(orderId, order.phone);
