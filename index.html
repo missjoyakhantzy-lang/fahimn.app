@@ -224,11 +224,6 @@ a{color:inherit;text-decoration:none}
 .ftr-logo-name{font-size:12.5px;font-weight:700;color:var(--ink)}
 .ftr-logo-card.txt{font-size:12.5px;font-weight:700;color:var(--ink)}
 .ftr-logo-card.txt svg{width:16px;height:16px;color:var(--gold-text)}
-.ftr-points{margin-top:16px;display:grid;gap:11px}
-.ftr-point{display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.5;color:var(--muted)}
-.ftr-point svg{width:17px;height:17px;flex:0 0 17px;margin-top:2px;color:var(--gold-text)}
-.ftr-point span{min-width:0}
-.ftr-point b{color:var(--ink);font-weight:700}
 .footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px 16px;padding:24px 0;margin-top:26px;border-top:1px solid var(--line)}
 .footer-grid h3{margin-bottom:10px}
 .footer-grid a,.footer-grid .avck-footerlink{display:block;font-size:13px;color:var(--muted);line-height:2;background:none;border:0;padding:0;text-align:left;text-decoration:none}
@@ -329,11 +324,11 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
 .sb-head{display:flex;align-items:center;gap:10px;margin:16px 4px 10px;font-family:"Playfair Display",serif;font-size:13px;font-weight:700;letter-spacing:2.4px;text-transform:uppercase;color:var(--gold-text)}
 .sb-head::after{content:"";flex:1;height:1px;background:var(--line)}
 .sb-pages{display:grid;gap:4px}
-.sb-page{display:flex;align-items:center;gap:12px;width:100%;padding:13px 14px;background:linear-gradient(180deg,#1E1E20,#131314);color:#fff;border:1px solid rgba(212,175,55,.18);box-shadow:inset 3px 0 0 rgba(212,175,55,.7);border-radius:0;font-family:"Playfair Display",serif;font-size:15px;font-weight:600;letter-spacing:.2px;text-align:left;text-decoration:none;cursor:pointer;transition:background .2s,transform .15s}
+.sb-page{display:flex;align-items:center;gap:12px;width:100%;padding:13px 14px;background:#161616;color:#fff;border:0;border-radius:0;font-family:"Playfair Display",serif;font-size:15px;font-weight:600;letter-spacing:.2px;text-align:left;text-decoration:none;cursor:pointer;transition:background .2s,transform .15s}
 .side-nav>.sb-page{margin-bottom:4px}
 .sb-page>svg:first-child{width:18px;height:18px;flex:0 0 18px;color:var(--gold);stroke-width:1.8}
 .sb-page>svg:last-child{width:15px;height:15px;flex:0 0 15px;margin-left:auto;color:rgba(255,255,255,.55)}
-.sb-page:active{transform:scale(.98);background:#000;box-shadow:inset 3px 0 0 var(--gold)}
+.sb-page:active{transform:scale(.98);background:#000}
 @media(hover:hover){.sb-page:hover{background:#000}}
 #sidebar.is-open .sb-page{animation:sbIn .45s var(--ease) both;animation-delay:var(--d,0s)}
 #sidebar.is-open .side-top{animation:sbIn .4s var(--ease) both}
@@ -649,7 +644,6 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
       <div id="bannerCarousel" class="hero-track no-scrollbar"></div>
       <h1 class="sr-only">Luxury ethnic elegance</h1>
       <div id="banner-dots" class="hero-dots"></div>
-      <section id="miniHeroSection" aria-label="Highlights"><div class="mini-track" id="miniTrack"></div><div class="mini-dots" id="miniDots"></div></section>
     </section>
 
     <div class="trust" aria-label="Our promises">
@@ -704,6 +698,8 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
     </section>
   </main>
 
+  <section id="miniHeroSection" aria-label="Highlights" style="margin:16px 16px 20px"><div class="mini-track" id="miniTrack"></div><div class="mini-dots" id="miniDots"></div></section>
+
   <footer class="footer">
     <a href="./" aria-label="Aavira home" class="footer-logo-link"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira Fashion" class="footer-logo"></a>
     <p class="footer-tag">Luxury ethnic fashion, designed for modern elegance.</p>
@@ -723,11 +719,6 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
         <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/DTDC_logo.png/330px-DTDC_logo.png" alt="DTDC" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">DTDC</span></span>
         <span class="ftr-logo-card"><img src="https://chinapost-track.com/cdn/images/carriers/thumbnails/0389-xpressbees.png" alt="Xpressbees" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Xpressbees</span></span>
         <span class="ftr-logo-card"><img class="tall" src="https://qubix.in/wp-content/uploads/2024/05/Ecom-Express-Logo.png" alt="Ecom Express" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Ecom Express</span></span>
-      </div>
-      <div class="ftr-points">
-        <div class="ftr-point"><i data-lucide="timer"></i><span><b>Fast dispatch</b> — orders are packed &amp; dispatched within 24–48 hours.</span></div>
-        <div class="ftr-point"><i data-lucide="map-pin"></i><span><b>Pincode check</b> — enter your pincode at checkout to see delivery options for your area.</span></div>
-        <div class="ftr-point"><i data-lucide="package-check"></i><span><b>Live tracking</b> — a tracking link is shared on every order.</span></div>
       </div>
     </div>
 
