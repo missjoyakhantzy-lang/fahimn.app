@@ -73,7 +73,8 @@
       Array.prototype.forEach.call(dots.children, function (d, j) { d.classList.toggle('is-active', j === idx); });
     }
     function play() { if (items.length > 1 && !timer) timer = setInterval(function () { go(idx + 1); }, 3200); }
-    function stop() { clearInterval(timer); timer = null; }
+    var resume = null;
+    function stop() { clearInterval(timer); timer = null; clearTimeout(resume); resume = setTimeout(play, 4000); }
     sec.addEventListener('pointerdown', stop);
     play();
   }
