@@ -197,22 +197,51 @@ a{color:inherit;text-decoration:none}
 .marquee-row:nth-child(3) .marquee-copy{color:var(--muted)}
 @keyframes slide{to{transform:translateX(-50%)}}
 
-.footer{margin-top:44px;background:var(--plum);color:#fff;padding:34px 18px 28px;border-top:3px solid rgba(212,175,55,.4)}
-.footer-brand{font-family:"Playfair Display",serif;font-size:24px;font-weight:600;color:var(--gold)}
-.footer-tag{margin:6px 0 0;font-size:13px;line-height:1.6;color:#B5ADB2}
+.footer{margin-top:44px;position:relative;background:linear-gradient(180deg,var(--ivory),var(--cream));color:var(--ink);padding:32px 18px 30px;border-top:1px solid var(--line)}
+.footer::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.footer-brand{font-family:"Playfair Display",serif;font-size:25px;font-weight:600;color:#161616}
+.footer-brand span{color:var(--gold-text)}
+.footer-tag{margin:6px 0 0;font-size:13px;line-height:1.6;color:var(--muted)}
 .footer-news{margin:22px 0 4px}
-.footer-news label{display:block;font-size:13.5px;font-weight:600;margin-bottom:10px}
+.footer-news label{display:block;font-size:13.5px;font-weight:600;margin-bottom:10px;color:var(--ink)}
 .footer-news-row{display:flex;align-items:center;gap:8px}
-.footer-news input{flex:1;min-width:0;height:44px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:0 16px;color:#fff;font-size:14px;outline:none;transition:border-color .2s,background .2s}
-.footer-news input:focus{border-color:var(--gold);background:rgba(255,255,255,.12)}
+.footer-news input{flex:1;min-width:0;height:44px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 16px;color:var(--ink);font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s}
+.footer-news input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.18)}
 .footer-news button{height:44px;flex:0 0 auto;background:linear-gradient(135deg,#D4AF37,#A8842C);color:#1a1a1a;border:0;border-radius:999px;padding:0 20px;font-weight:700;font-size:13px;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 10px 20px -10px rgba(168,132,44,.7);transition:transform .2s var(--ease),filter .2s}
 @media(hover:hover){.footer-news button:hover{filter:brightness(1.06)}}
 .footer-news button:active{transform:scale(.96)}
-.footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px 16px;padding:24px 0;margin-top:20px;border-top:1px solid rgba(255,255,255,.1)}
-.footer h3{font-family:Inter,sans-serif;font-size:14px;font-weight:600;margin-bottom:10px;color:var(--gold)}
-.footer-grid a,.footer-grid .avck-footerlink{display:block;font-size:13px;color:#B5ADB2;line-height:2;background:none;border:0;padding:0;text-align:left}
-.footer-grid a:hover,.footer-grid .avck-footerlink:hover{color:#fff}
-.footer-copy{padding-top:18px;border-top:1px solid rgba(255,255,255,.1);font-size:12px;color:#8F878D}
+.footer h3{font-family:Inter,sans-serif;font-size:13px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin:0;color:var(--gold-text)}
+.ftr-sec{margin-top:26px}
+.ftr-sec-head{display:flex;align-items:center;gap:9px;margin-bottom:12px}
+.ftr-sec-head .ic{width:30px;height:30px;flex:0 0 auto;border-radius:10px;background:#fff;border:1px solid var(--line);color:var(--gold-text);display:flex;align-items:center;justify-content:center}
+.ftr-sec-head .ic svg{width:15px;height:15px}
+.ftr-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ftr-act{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;text-decoration:none;box-shadow:0 8px 18px -12px rgba(36,32,36,.25);transition:transform .2s var(--ease)}
+.ftr-act:active{transform:scale(.97)}
+.ftr-act .ic{width:38px;height:38px;flex:0 0 auto;border-radius:12px;background:var(--cream);border:1px solid var(--line);color:#161616;display:flex;align-items:center;justify-content:center}
+.ftr-act .ic svg{width:18px;height:18px}
+.ftr-act b{display:block;font-size:13px;font-weight:700;color:var(--ink);line-height:1.25}
+.ftr-act small{display:block;font-size:11px;color:var(--muted);margin-top:2px;line-height:1.3}
+.ftr-chips{display:flex;flex-wrap:wrap;gap:8px}
+.ftr-chip{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 13px;font-size:12.5px;font-weight:700;color:var(--ink)}
+.ftr-chip svg{width:14px;height:14px;color:var(--gold-text)}
+.ftr-chip.pay{font-weight:600}
+.ftr-points{margin-top:13px;display:grid;gap:9px}
+.ftr-point{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.5;color:var(--muted);font-weight:500}
+.ftr-point svg{width:16px;height:16px;flex:0 0 auto;color:var(--gold-text);margin-top:1px}
+.ftr-point b{color:var(--ink);font-weight:700}
+.ftr-support{margin-top:26px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 10px 22px -14px rgba(36,32,36,.25)}
+.ftr-support .ftr-sec-head{margin-bottom:10px}
+.ftr-srow{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);padding:5px 0;font-weight:500}
+.ftr-srow svg{width:16px;height:16px;flex:0 0 auto;color:var(--gold-text)}
+.ftr-srow b{color:var(--ink);font-weight:700}
+.ftr-wa{margin-top:12px;display:flex;align-items:center;justify-content:center;gap:8px;height:44px;border-radius:999px;background:#161616;color:#fff;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 10px 20px -10px rgba(22,22,22,.5)}
+.ftr-wa svg{width:16px;height:16px}
+.footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px 16px;padding:24px 0;margin-top:26px;border-top:1px solid var(--line)}
+.footer-grid h3{margin-bottom:10px}
+.footer-grid a,.footer-grid .avck-footerlink{display:block;font-size:13px;color:var(--muted);line-height:2;background:none;border:0;padding:0;text-align:left;text-decoration:none}
+.footer-grid a:hover,.footer-grid .avck-footerlink:hover{color:#161616}
+.footer-copy{padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:#9A8F96;text-align:center}
 
 /* Floating Navigation, Cart Bar, Offer Banner & FABs - Coordinated Stack (Zero Overlap) */
 .bottom-nav{position:fixed;left:0;right:0;bottom:calc(10px + env(safe-area-inset-bottom,0px));margin:0 auto;width:calc(100% - 24px);max-width:396px;z-index:9000;background:rgba(255,255,255,.95);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:24px;box-shadow:0 18px 36px -14px rgba(36,32,36,.32);display:grid;grid-template-columns:repeat(5,1fr);padding:6px 4px;transition:transform .38s cubic-bezier(.4,0,.2,1)}
@@ -666,7 +695,7 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
   </main>
 
   <footer class="footer">
-    <div class="footer-brand">Aavira Fashion</div>
+    <div class="footer-brand">Aavira <span>Fashion</span></div>
     <p class="footer-tag">Luxury ethnic fashion, designed for modern elegance.</p>
     <div class="footer-news">
       <label for="newsletterEmail">Get new collections and offers by email</label>
@@ -675,6 +704,52 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
         <button type="button" id="btnNewsletter" data-no-delay="1" onclick="subscribeNewsletter()">Join</button>
       </div>
     </div>
+
+    <div class="ftr-sec">
+      <div class="ftr-sec-head"><span class="ic"><i data-lucide="sparkles"></i></span><h3>Quick Actions</h3></div>
+      <div class="ftr-actions">
+        <a class="ftr-act" href="/track"><span class="ic"><i data-lucide="package-search"></i></span><span><b>Track Order</b><small>Live delivery status</small></span></a>
+        <a class="ftr-act" href="/orders"><span class="ic"><i data-lucide="clipboard-list"></i></span><span><b>My Orders</b><small>History &amp; invoices</small></span></a>
+        <a class="ftr-act" href="/cart"><span class="ic"><i data-lucide="shopping-bag"></i></span><span><b>Shopping Bag</b><small>Review your items</small></span></a>
+        <a class="ftr-act" href="/wishlist"><span class="ic"><i data-lucide="heart"></i></span><span><b>Wishlist</b><small>Your saved styles</small></span></a>
+      </div>
+    </div>
+
+    <div class="ftr-sec">
+      <div class="ftr-sec-head"><span class="ic"><i data-lucide="truck"></i></span><h3>Delivery Partners</h3></div>
+      <div class="ftr-chips">
+        <span class="ftr-chip"><i data-lucide="package"></i>Delhivery</span>
+        <span class="ftr-chip"><i data-lucide="package"></i>Blue Dart</span>
+        <span class="ftr-chip"><i data-lucide="package"></i>DTDC</span>
+        <span class="ftr-chip"><i data-lucide="package"></i>Xpressbees</span>
+        <span class="ftr-chip"><i data-lucide="package"></i>Ecom Express</span>
+      </div>
+      <div class="ftr-points">
+        <div class="ftr-point"><i data-lucide="timer"></i><span><b>Fast dispatch</b> — orders are packed &amp; dispatched within 24–48 hours.</span></div>
+        <div class="ftr-point"><i data-lucide="map-pin"></i><span><b>Pincode check</b> — enter your pincode at checkout to see delivery options for your area.</span></div>
+        <div class="ftr-point"><i data-lucide="package-check"></i><span><b>Live tracking</b> — a tracking link is shared on every order.</span></div>
+      </div>
+    </div>
+
+    <div class="ftr-sec">
+      <div class="ftr-sec-head"><span class="ic"><i data-lucide="shield-check"></i></span><h3>We Accept</h3></div>
+      <div class="ftr-chips">
+        <span class="ftr-chip pay"><i data-lucide="smartphone"></i>UPI</span>
+        <span class="ftr-chip pay"><i data-lucide="wallet"></i>Google Pay</span>
+        <span class="ftr-chip pay"><i data-lucide="smartphone"></i>PhonePe</span>
+        <span class="ftr-chip pay"><i data-lucide="credit-card"></i>Credit / Debit Cards</span>
+        <span class="ftr-chip pay"><i data-lucide="landmark"></i>Net Banking</span>
+        <span class="ftr-chip pay"><i data-lucide="banknote"></i>Cash on Delivery</span>
+      </div>
+    </div>
+
+    <div class="ftr-support">
+      <div class="ftr-sec-head"><span class="ic"><i data-lucide="headphones"></i></span><h3>Support Timings</h3></div>
+      <div class="ftr-srow"><i data-lucide="clock"></i><span><b>Mon – Sat:</b>&nbsp;9:00 AM – 7:00 PM</span></div>
+      <div class="ftr-srow"><i data-lucide="message-circle"></i><span><b>WhatsApp:</b>&nbsp;replies within a few hours on working days</span></div>
+      <a class="ftr-wa" href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer"><i data-lucide="message-circle"></i>Chat on WhatsApp</a>
+    </div>
+
     <div class="footer-grid">
       <div><h3>Explore</h3><a href="/">Home</a><a href="/categories">Collections</a><a href="/offer">Offers</a><a href="/wishlist">Wishlist</a></div>
       <div><h3>Shopping</h3><a href="/cart">Shopping bag</a><a href="/orders">My orders</a><a href="/profile">My account</a><a href="/support">Support</a></div>
