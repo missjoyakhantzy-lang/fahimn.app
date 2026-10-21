@@ -51,7 +51,7 @@ a{color:inherit;text-decoration:none}
 .net-bar{position:sticky;top:58px;z-index:39;background:var(--ink);color:#fff;text-align:center;font-size:12px;font-weight:500;padding:7px 12px}
 
 .hero{padding:14px 16px 0}
-.hero-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:24px;aspect-ratio:5/6;max-height:540px;background:linear-gradient(100deg,#EDE5D3 35%,#FBF7EC 50%,#EDE5D3 65%);background-size:220% 100%;animation:heroShimmer 1.8s linear infinite;box-shadow:0 24px 48px -20px rgba(36,32,36,.35),0 2px 6px rgba(36,32,36,.08)}
+.hero-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:24px;aspect-ratio:1/1;max-height:540px;background:linear-gradient(100deg,#EDE5D3 35%,#FBF7EC 50%,#EDE5D3 65%);background-size:220% 100%;animation:heroShimmer 1.8s linear infinite;box-shadow:0 24px 48px -20px rgba(36,32,36,.35),0 2px 6px rgba(36,32,36,.08)}
 @keyframes heroShimmer{to{background-position:-220% 0}}
 .hero-track.is-loaded{animation:none;background:#0d0d0f}
 .hero-track.is-error{animation:none;background:linear-gradient(135deg,#F7F1E6,#EEE3CC)}
@@ -326,20 +326,14 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
 .promo-badge.is-on{display:flex}
 .promo-badge button{height:28px;padding:0 12px;border-radius:999px;background:rgba(138,109,29,.12);border:0;color:var(--gold-text);font-size:11.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
 .side-nav{flex:1;overflow-y:auto;padding:8px 10px 24px}
-.side-nav hr{border:0;border-top:1px solid var(--line);margin:8px}
-.menu-item{width:100%;display:flex;align-items:center;gap:14px;padding:12px 14px;background:none;border:0;border-radius:999px;font-size:14px;font-weight:500;color:var(--ink);text-align:left;transition:background .2s,transform .2s}
-@media(hover:hover){.menu-item:hover{background:var(--cream)}}
-.menu-item:active{transform:scale(.98)}
-.menu-item>svg:first-child{width:20px;height:20px;flex:0 0 20px;color:var(--rani);stroke-width:1.6}
-.menu-item>svg:last-child{width:16px;height:16px;flex:0 0 16px;margin-left:auto;color:#A8A0A5}
-.sb-head{display:flex;align-items:center;gap:10px;margin:16px 4px 10px;font-size:11.5px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--gold-text)}
+.sb-head{display:flex;align-items:center;gap:10px;margin:16px 4px 10px;font-family:"Playfair Display",serif;font-size:13px;font-weight:700;letter-spacing:2.4px;text-transform:uppercase;color:var(--gold-text)}
 .sb-head::after{content:"";flex:1;height:1px;background:var(--line)}
 .sb-pages{display:grid;gap:4px}
-.sb-page{display:flex;align-items:center;gap:12px;width:100%;padding:13px 14px;background:#161616;color:#fff;border:0;border-radius:0;font-family:"Playfair Display",serif;font-size:15px;font-weight:600;letter-spacing:.2px;text-align:left;text-decoration:none;cursor:pointer;transition:background .2s,transform .15s}
+.sb-page{display:flex;align-items:center;gap:12px;width:100%;padding:13px 14px;background:linear-gradient(180deg,#1E1E20,#131314);color:#fff;border:1px solid rgba(212,175,55,.18);box-shadow:inset 3px 0 0 rgba(212,175,55,.7);border-radius:0;font-family:"Playfair Display",serif;font-size:15px;font-weight:600;letter-spacing:.2px;text-align:left;text-decoration:none;cursor:pointer;transition:background .2s,transform .15s}
 .side-nav>.sb-page{margin-bottom:4px}
 .sb-page>svg:first-child{width:18px;height:18px;flex:0 0 18px;color:var(--gold);stroke-width:1.8}
 .sb-page>svg:last-child{width:15px;height:15px;flex:0 0 15px;margin-left:auto;color:rgba(255,255,255,.55)}
-.sb-page:active{transform:scale(.98);background:#000}
+.sb-page:active{transform:scale(.98);background:#000;box-shadow:inset 3px 0 0 var(--gold)}
 @media(hover:hover){.sb-page:hover{background:#000}}
 #sidebar.is-open .sb-page{animation:sbIn .45s var(--ease) both;animation-delay:var(--d,0s)}
 #sidebar.is-open .side-top{animation:sbIn .4s var(--ease) both}
@@ -474,6 +468,7 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
 }
 @media(prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
+<link rel="stylesheet" href="mini-hero.css">
 </head>
 <body>
 <div id="toast" class="toast" role="status" aria-live="polite"><span id="toast-msg"></span></div>
@@ -654,6 +649,7 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
       <div id="bannerCarousel" class="hero-track no-scrollbar"></div>
       <h1 class="sr-only">Luxury ethnic elegance</h1>
       <div id="banner-dots" class="hero-dots"></div>
+      <section id="miniHeroSection" aria-label="Highlights"><div class="mini-track" id="miniTrack"></div><div class="mini-dots" id="miniDots"></div></section>
     </section>
 
     <div class="trust" aria-label="Our promises">
@@ -2142,5 +2138,6 @@ window.initializeAppEngine = () => {
 
 document.addEventListener('DOMContentLoaded', initializeAppEngine);
 </script>
+<script src="mini-hero.js" defer></script>
 </body>
 </html>
