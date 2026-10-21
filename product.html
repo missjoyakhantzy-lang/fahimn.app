@@ -282,6 +282,8 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .cd-sum{margin-top:14px;padding:12px 14px;border-radius:14px;background:#F8F8F8;border:1.5px dashed #C8C8C8;display:flex;justify-content:space-between;align-items:center}
 .cd-sum span{font-size:12px;font-weight:700;color:var(--muted)}
 .cd-sum b{font-size:17px;font-weight:800;color:var(--rani)}
+.bc-note{font-size:12.5px;color:var(--muted);font-weight:600;margin:-4px 0 12px;line-height:1.5}
+.cd-chip.bc-old{background:#161616;color:#fff;border-color:#161616}
 .cd-actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:12px}
 .cd-checkout{width:100%;min-height:44px;border:0;border-radius:999px;background:var(--rani);color:#fff;font-size:13.5px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 10px 22px -6px rgba(22,22,22,.38)}
 .cd-checkout svg{width:16px;height:16px;stroke-width:2.2}
@@ -662,6 +664,28 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
     <div class="cd-actions">
       <button type="button" class="cd-checkout" id="cdCheckoutBtn" onclick="orderCartItems(this)"><i data-lucide="shopping-cart"></i><span id="cdCheckoutText">Place Order</span></button>
       <button type="button" class="cd-more" onclick="navigate('/cart',this)"><i data-lucide="external-link"></i>Open Full Cart Page</button>
+    </div>
+  </div>
+</div>
+
+<!-- Buy Now Choice: older cart items must never ride along silently -->
+<div class="ov" id="buyChoiceOv" onclick="if(event.target===this)closeModal('buyChoiceOv')">
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="Choose what to buy">
+    <div class="cd-head">
+      <div class="cd-title-wrap">
+        <div class="cd-bag-ic"><i data-lucide="shopping-cart"></i></div>
+        <div>
+          <h3>Older items in your cart</h3>
+          <small>Choose what you want to buy now</small>
+        </div>
+      </div>
+      <button class="x" type="button" style="position:static" onclick="closeModal('buyChoiceOv')" aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+    <p class="bc-note">Your cart also has items from before. Buy only this product, or everything together — nothing is added silently.</p>
+    <div class="cd-list" id="bcList"></div>
+    <div class="cd-actions">
+      <button type="button" class="cd-checkout" onclick="buyOnlyThis(this)"><i data-lucide="zap"></i><span id="bcOnlyText">Buy Only This Item</span></button>
+      <button type="button" class="cd-more" onclick="buyAllItems(this)"><i data-lucide="shopping-cart"></i><span id="bcAllText">Buy All Items</span></button>
     </div>
   </div>
 </div>
@@ -1228,19 +1252,17 @@ const addToCart = () => {
   });
 };
 
+/* Secure checkout links: prices/totals NEVER travel in the URL or in a
+   localStorage stash. Checkout re-prices every item from the server
+   catalog, and the orders API re-verifies each price from the database. */
 const buildCartCheckoutUrl = cart => {
   const validItems = (Array.isArray(cart) ? cart : []).filter(item => item && item.productId && (Number(item.qty) || 0) > 0);
+  try { localStorage.removeItem('aavira_checkout_items'); } catch {}
   if (!validItems.length) return '/checkout';
-  writeJson('aavira_checkout_items', validItems);
-  const totalQty = validItems.reduce((sum, item) => sum + (Number(item.qty) || 1), 0);
-  const totalAmount = validItems.reduce((sum, item) => sum + (Number(item.price) || 0) * (Number(item.qty) || 1), 0);
-  const params = new URLSearchParams({
-    source: 'cart',
-    items: String(totalQty),
-    total: String(totalAmount)
-  });
-  return `/checkout?${params}`;
+  return '/checkout?source=cart';
 };
+
+const buildOnlyCheckoutUrl = productId => `/checkout?source=buynow&only=${encodeURIComponent(productId)}`;
 
 /* Tap to View Cart Popup Functions */
 window.renderCartDrawer = () => {
@@ -1296,6 +1318,8 @@ window.renderCartDrawer = () => {
 };
 
 window.openCartDrawer = () => {
+  const cart = readJson('aavira_cart', []).filter(it => it && (Number(it.qty) || 0) > 0);
+  if (!cart.length) return toast('Select a size & tap Add to Cart first', true);
   renderCartDrawer();
   openModal('cartDrawerOv');
 };
@@ -1333,19 +1357,67 @@ const orderCartItems = btn => {
   });
 };
 
-/* Buy Now: Redirects with ALL cart items (not just a single product) */
+/* Buy Now: if older items are sitting in the cart, ask first — never
+   silently bill the customer for the whole cart. */
+const proceedToCheckout = btn => {
+  withSpinner(btn || $('#btnBuy'), () => {
+    if (isLoggedIn()) location.href = state.buyLink;
+    else openModal('buyModal');
+  });
+};
+
 const buyNow = () => {
   const cart = readJson('aavira_cart', []).filter(it => it && (Number(it.qty) || 0) > 0);
   if (!cart.length) {
     syncOrderButtons();
     return toast('Please add product to cart first', true);
   }
-  state.buyLink = buildCartCheckoutUrl(cart);
+  const others = cart.filter(it => String(it.productId) !== String(state.id));
+  if (!others.length) {
+    state.buyLink = buildCartCheckoutUrl(cart);
+    return proceedToCheckout($('#btnBuy'));
+  }
+  openBuyChoice(cart);
+};
 
-  withSpinner($('#btnBuy'), () => {
-    if (isLoggedIn()) location.href = state.buyLink;
-    else openModal('buyModal');
-  });
+const openBuyChoice = cart => {
+  const mine = cart.filter(it => String(it.productId) === String(state.id));
+  const sum = list => list.reduce((s, it) => s + (Number(it.price) || 0) * (Number(it.qty) || 1), 0);
+  const totalQty = cart.reduce((s, it) => s + (Number(it.qty) || 1), 0);
+  $('#bcList').innerHTML = cart.map(it => {
+    const isMine = String(it.productId) === String(state.id);
+    const qty = Number(it.qty) || 1;
+    const price = Number(it.price) || 0;
+    return `<div class="cd-item">
+      <img class="cd-img" src="${esc(safeUrl(it.image) || IMG_FALLBACK)}" alt="" ${FALLBACK_ATTR}>
+      <div class="cd-info">
+        <div class="cd-name">${esc(it.name || 'Aavira Outfit')}</div>
+        <div class="cd-meta">
+          <span class="cd-chip">Colour: ${esc(it.color || 'Main')}</span>
+          <span class="cd-chip">Size: ${esc(it.size || 'Free')}</span>
+          <span class="cd-chip${isMine ? '' : ' bc-old'}">${isMine ? 'This product' : 'Older item'}</span>
+        </div>
+        <div class="cd-price">${formatPrice(price * qty)} <small style="font-weight:600;color:var(--muted)">(${formatPrice(price)} × ${qty})</small></div>
+      </div>
+    </div>`;
+  }).join('');
+  $('#bcOnlyText').textContent = `Buy Only This Item · ${formatPrice(sum(mine))}`;
+  $('#bcAllText').textContent = `Buy All ${totalQty} Items · ${formatPrice(sum(cart))}`;
+  window.lucide?.createIcons();
+  openModal('buyChoiceOv');
+};
+
+window.buyOnlyThis = btn => {
+  state.buyLink = buildOnlyCheckoutUrl(state.id);
+  closeModal('buyChoiceOv');
+  proceedToCheckout(btn);
+};
+
+window.buyAllItems = btn => {
+  const cart = readJson('aavira_cart', []).filter(it => it && (Number(it.qty) || 0) > 0);
+  state.buyLink = buildCartCheckoutUrl(cart);
+  closeModal('buyChoiceOv');
+  proceedToCheckout(btn);
 };
 
 const findProduct = async id => {
