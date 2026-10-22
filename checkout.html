@@ -433,10 +433,6 @@ main{padding:14px}
         <label class="opt"><input type="radio" name="delivery" value="0" checked><span class="radio"></span><span class="opt-ico"><i data-lucide="truck"></i></span><span class="opt-txt"><b>Standard shipping</b><small>Delivery in 4 to 6 business days</small></span><span class="tag free">Free</span></label>
         <label class="opt"><input type="radio" name="delivery" value="99"><span class="radio"></span><span class="opt-ico"><i data-lucide="zap"></i></span><span class="opt-txt"><b>Express priority</b><small>Priority dispatch &amp; faster delivery</small></span><span class="tag">₹99</span></label>
       </div>
-      <label class="switch-row">
-        <span><b>Premium gift wrap</b><small>Luxury box, ribbon &amp; greeting card (+₹49)</small></span>
-        <span class="switch"><input type="checkbox" id="giftWrap"><span></span></span>
-      </label>
     </section>
 
     <!-- 5. PAYMENT METHOD -->
@@ -444,7 +440,7 @@ main{padding:14px}
       <h2>Payment method</h2>
       <div class="opts">
         <label class="opt"><input type="radio" name="payment" value="cod" checked><span class="radio"></span><span class="opt-ico"><i data-lucide="banknote"></i></span><span class="opt-txt"><b>Cash on delivery (COD)</b><small>Pay in cash when your order arrives</small></span></label>
-        <label class="opt"><input type="radio" name="payment" value="online"><span class="radio"></span><span class="opt-ico upi"><img src="upi-logo.png" alt="UPI" onerror="this.replaceWith(document.createTextNode('UPI'))"></span><span class="opt-txt"><b>Online payment (UPI / QR)</b><small>Instant confirmation on WhatsApp</small></span></label>
+        <label class="opt"><input type="radio" name="payment" value="online"><span class="radio"></span><span class="opt-ico upi"><img src="/public/upi-logo.png" alt="UPI" onerror="this.replaceWith(document.createTextNode('UPI'))"></span><span class="opt-txt"><b>Online payment (UPI / QR)</b><small>Instant confirmation on WhatsApp</small></span></label>
       </div>
     </section>
 
@@ -475,7 +471,6 @@ main{padding:14px}
         <div class="save" id="rowDiscount"><span>Discount on MRP</span><span id="billDiscount"></span></div>
         <div class="save" id="rowPromo"><span>Coupon discount</span><span id="billPromo"></span></div>
         <div><span>Shipping fee</span><span id="billShip"></span></div>
-        <div id="rowGift"><span>Premium gift wrap</span><span>₹49</span></div>
         <hr>
         <div class="total"><span>Total payable</span><span id="billTotal"></span></div>
       </div>
@@ -537,7 +532,7 @@ main{padding:14px}
         <div class="fx-tip"><i data-lucide="lightbulb"></i> <b>Address Line 1:</b> अपना मकान नंबर, फ्लैट/रूम नंबर या बिल्डिंग का नाम लिखें।<br><b>जैसे:</b> मकान नं. 12, शांति निकेतन</div><span class="err">Enter house / flat / building details</span></div>
 
       <!-- ADDRESS LINE 2 -->
-      <div class="grp fx"><label for="ad_line2">Address line 2 <small>Street / Area / Landmark *</small></label>
+      <div class="grp fx"><label for="ad_line2">Address line 2 <small>Street / Area / Landmark (optional)</small></label>
         <div class="fx-box"><i data-lucide="compass"></i><input class="fld" id="ad_line2" placeholder="Street, colony, sector, nearby landmark"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Help"><i data-lucide="info"></i></button></div>
         <div class="fx-tip"><i data-lucide="lightbulb"></i> <b>Address Line 2:</b> अपनी गली, मोहल्ला, गांव/कॉलोनी और पास की कोई मशहूर जगह (Landmark) लिखें।<br><b>जैसे:</b> गांधी नगर मेन रोड, स्टेट बैंक के पास</div><span class="err">Enter street, area or nearby landmark</span></div>
 
@@ -621,7 +616,11 @@ const state = {
   catalogLoaded: false,
   buyNow: false,
   onlyId: '',
-  promo: { code: '', amount: 0 },
+  promo: { code: '', amount: 0, minOrder: 0 },
+  catalogComplete: false,
+  placing: false,
+  idemKey: '',
+  idemFp: '',
   whatsappUrl: '',
   timer: null,
   addresses: [],
@@ -835,7 +834,7 @@ const deleteAddress = id => {
 };
 
 /* Address Validation (Including Address Line 1 & Address Line 2) */
-const FIELD_IDS = ['ad_name', 'ad_phone', 'ad_email', 'ad_pin', 'ad_city', 'ad_line1', 'ad_line2'];
+const FIELD_IDS = ['ad_name', 'ad_phone', 'ad_email', 'ad_pin', 'ad_city', 'ad_line1']; // ad_line2 optional hai
 const validators = {
   ad_email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
   ad_phone: v => /^[6-9]\d{9}$/.test(v),
@@ -1193,7 +1192,6 @@ const saveCart = () => {
       qty: it.qty
     };
   });
-  writeJson('aavira_checkout_items', cleanForStorage);
   if (state.buyNow) return;
   if (state.onlyId) {
     const others = readJson('aavira_cart', []).filter(it => it && String(it.productId) !== state.onlyId);
@@ -1213,8 +1211,10 @@ const DEMO_SVG_2 = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="
 const DEMO_SVG_3 = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500"><defs><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1B2A5C"/><stop offset="100%" stop-color="#0B132B"/></linearGradient></defs><rect width="400" height="500" fill="url(#g3)"/><circle cx="200" cy="210" r="88" fill="none" stroke="#D4AF37" stroke-width="3" opacity="0.55"/><text x="200" y="218" font-family="Georgia,serif" font-size="26" fill="#FBF5E6" text-anchor="middle">Midnight Navy</text><text x="200" y="430" font-family="Georgia,serif" font-size="20" fill="#D4AF37" text-anchor="middle">Aavira Couture</text></svg>');
 
 const loadProducts = async () => {
+  let loadersTried = 0, loadersOk = 0;
   for (const loader of ['getVercelData', 'getMainProductsData']) {
     if (typeof window[loader] !== 'function') continue;
+    loadersTried++;
     try {
       const list = (await window[loader]()) || [];
       list.forEach(p => {
@@ -1222,8 +1222,12 @@ const loadProducts = async () => {
         if (pid != null) state.db[String(pid).trim()] = p;
       });
       if (Object.keys(state.db).length > 0) state.catalogLoaded = true;
+      loadersOk++;
     } catch {}
   }
+  /* Catalog tabhi "complete" hai jab HAR source sahi se load hua ho.
+     Aadha load = items filter/delete nahi honge (Bug 5 fix). */
+  state.catalogComplete = state.catalogLoaded && loadersTried > 0 && loadersOk === loadersTried;
   if (!state.catalogLoaded && isCanvasPreview()) {
     state.db['xwrIGjub70rSRttRZ8pE'] = {
       id: 'xwrIGjub70rSRttRZ8pE',
@@ -1264,9 +1268,10 @@ const loadCart = () => {
     }]);
   } else {
     let rawCart = readJson('aavira_cart', []);
-    if (!Array.isArray(rawCart) || !rawCart.length) {
-      rawCart = readJson('aavira_checkout_items', []);
-    }
+    if (!Array.isArray(rawCart)) rawCart = [];
+    /* Legacy stash hamesha saaf karo — wahan se items kabhi wapas mat
+       uthao, warna delete kiya hua cart zinda ho jata hai (Bug 4 fix). */
+    removeValue('aavira_checkout_items');
     const onlyId = (params.get('only') || '').trim();
     if (onlyId) {
       state.onlyId = onlyId;
@@ -1275,8 +1280,9 @@ const loadCart = () => {
     state.cart = deduplicateCartVariants(rawCart);
   }
 
-  /* When server catalog is available, enforce server-side product verification */
-  if (state.catalogLoaded) {
+  /* Sirf COMPLETE catalog par hi items filter karo — aadhe load par
+     item gayab nahi hoga (Bug 5 fix) */
+  if (state.catalogComplete) {
     state.cart = state.cart.filter(item => !!state.db[item.productId]);
   } else if (!state.cart.length && isCanvasPreview()) {
     state.cart = [
@@ -1418,7 +1424,7 @@ const render = (pulsePlusIdx = -1) => {
   $('#billPromo').textContent = '- ' + money(bill.coupon);
   $('#promoSave').textContent = money(bill.coupon);
   $('#billShip').textContent = bill.delivery ? money(bill.delivery) : 'Free';
-  $('#rowGift').hidden = !bill.gift;
+  if ($('#rowGift')) $('#rowGift').hidden = !bill.gift;
   $('#billTotal').textContent = money(bill.total);
   $('#barTotal').textContent = money(bill.total);
   $('#barSubText').textContent = `Final amount (${bill.totalQty} ${bill.totalQty === 1 ? 'item' : 'items'})`;
@@ -1651,13 +1657,41 @@ const toggleCoupon = () => {
   $('#couponToggle').setAttribute('aria-expanded', open);
   if (open) $('#promoInput').focus();
 };
-const restorePromo = () => {
+/* Promo ko server se dobara verify karke hi lagao. Jo code expire ho,
+   limit khatm ho ya is order ki value uski minimum shart se kam ho —
+   use lagao hi mat, warna backend poora order rok deta hai (Bug 1 fix). */
+const fetchPromo = async code => {
+  const base = typeof VERCEL_URL !== 'undefined' ? VERCEL_URL : '';
+  if (!base) return null;
+  let response = await fetch(`${base}/api/promo_codes/${encodeURIComponent(code)}`);
+  if (!response.ok) response = await fetch(`${base}/api/promocodes/${encodeURIComponent(code)}`);
+  if (!response.ok) return null;
+  const result = await response.json();
+  const data = result.data || result;
+  if (!data || data.isActive === false) return null;
+  const amount = Number(data.amount || data.discountAmount || data.discount || 0);
+  if (!(amount > 0)) return null;
+  return { code, amount, minOrder: Number(data.minOrder || 0) };
+};
+
+const clearPromoCache = () => {
+  removeValue('savedPromoCache');
+  removeValue('aavira_active_promo');
+};
+
+const restorePromo = async () => {
   const saved = readJson('savedPromoCache', null);
   const homePromo = readJson('aavira_active_promo', null);
   const code = saved?.label || homePromo?.code || '';
   const discount = Number(saved?.discount || homePromo?.discount || 0);
   if (!code || !(discount > 0)) return;
-  state.promo = { code, amount: discount };
+  let fresh = null;
+  try { fresh = await fetchPromo(code); } catch { return; } // net fail: is session me mat lagao, cache rehne do
+  if (!fresh || (fresh.minOrder > 0 && pricing().subtotal < fresh.minOrder)) {
+    clearPromoCache();
+    return;
+  }
+  state.promo = fresh;
   setPromoView(code);
 };
 const applyPromo = () => {
@@ -1665,32 +1699,23 @@ const applyPromo = () => {
   if (code.length < 3) return setPromoErr('Enter a valid coupon code');
   setPromoErr('');
   withSpinner($('#promoBtn'), async () => {
-    let amount = 0;
-    try {
-      const base = typeof VERCEL_URL !== 'undefined' ? VERCEL_URL : '';
-      if (base) {
-        let response = await fetch(`${base}/api/promo_codes/${encodeURIComponent(code)}`);
-        if (!response.ok) response = await fetch(`${base}/api/promocodes/${encodeURIComponent(code)}`);
-        if (response.ok) {
-          const result = await response.json();
-          const data = result.data || result;
-          if (data && data.isActive !== false) amount = Number(data.amount || data.discountAmount || data.discount || 0);
-        }
-      }
-    } catch {}
-    if (!(amount > 0)) return setPromoErr('This coupon code is invalid or has expired.');
-    state.promo = { code, amount };
-    writeJson('savedPromoCache', { label: code, discount: amount });
-    writeJson('aavira_active_promo', { code, discount: amount });
+    let fresh = null;
+    try { fresh = await fetchPromo(code); } catch {}
+    if (!fresh) return setPromoErr('This coupon code is invalid or has expired.');
+    if (fresh.minOrder > 0 && pricing().subtotal < fresh.minOrder) {
+      return setPromoErr(`This code needs a minimum order of ${money(fresh.minOrder)}. Add more items to use it.`);
+    }
+    state.promo = fresh;
+    writeJson('savedPromoCache', { label: code, discount: fresh.amount });
+    writeJson('aavira_active_promo', { code, discount: fresh.amount });
     setPromoView(code);
     toast(`Coupon ${code} applied!`);
     render();
   });
 };
 const removePromo = () => {
-  state.promo = { code: '', amount: 0 };
-  removeValue('savedPromoCache');
-  removeValue('aavira_active_promo');
+  state.promo = { code: '', amount: 0, minOrder: 0 };
+  clearPromoCache();
   $('#promoInput').value = '';
   setPromoView('');
   render();
@@ -1801,7 +1826,7 @@ const buildOrder = orderId => {
     address: `${fullAddrLine}, ${a.city} - Pincode: ${a.pin}`,
     mapLink: a.map || '',
     items,
-    idempotencyKey: newTrackToken(),
+    idempotencyKey: checkoutIdemKey(bill),
     subtotal: bill.subtotal,
     deliveryFee: bill.delivery,
     giftWrapFee: bill.gift,
@@ -1843,7 +1868,34 @@ const postOrder = async order => {
   return { ok: res.ok && json.status === 'success' && !!json.orderId, json };
 };
 
+/* Ek checkout ke liye EK hi idempotency key: jab tak cart, address,
+   promo aur total wahi hain, key wahi rehti hai — khoya hua response
+   dobara bhejne par backend purana order lauta deta hai, duplicate
+   nahi banta. Kuch bhi badle to nayi key (Bug 3 fix). */
+const checkoutIdemKey = bill => {
+  const a = selectedAddress();
+  const fp = JSON.stringify({
+    e: `${a?.email || ''}|${a?.phone || ''}`,
+    i: state.cart.map(it => [it.productId, it.size, it.color, it.qty]),
+    d: bill.delivery, g: bill.gift, p: state.promo.code, t: bill.total
+  });
+  if (state.idemFp === fp && state.idemKey) return state.idemKey;
+  try {
+    const saved = JSON.parse(sessionStorage.getItem('aavira_idem') || 'null');
+    if (saved && saved.fp === fp && saved.key) {
+      state.idemFp = fp;
+      state.idemKey = saved.key;
+      return state.idemKey;
+    }
+  } catch {}
+  state.idemFp = fp;
+  state.idemKey = newTrackToken();
+  try { sessionStorage.setItem('aavira_idem', JSON.stringify({ fp, key: state.idemKey })); } catch {}
+  return state.idemKey;
+};
+
 const placeOrder = () => {
+  if (state.placing) return;
   if (!selectedAddress()) {
     toast('Please add a delivery address first', true);
     $('#addrBox').scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1854,19 +1906,47 @@ const placeOrder = () => {
     toast('Your order has no items', true);
     return;
   }
+  /* Catalog se verify hue bina koi item order nahi hoga — warna screen
+     par kuch total dikhega aur backend par kuch aur banega (Bug 6 fix). */
+  if (state.cart.some(item => !state.db[String(item.productId || '').trim()])) {
+    toast('Some items could not be verified. Please check your connection and refresh the page.', true);
+    return;
+  }
+  /* Cart promo ki minimum shart se neeche gir gaya ho to coupon abhi
+     hata do — aakhiri kadam par order fail nahi hoga (Bug 1 fix). */
+  if (state.promo.code && state.promo.minOrder > 0 && pricing().subtotal < state.promo.minOrder) {
+    const dropped = state.promo.code;
+    const droppedMin = state.promo.minOrder;
+    removePromo();
+    toast(`Coupon ${dropped} removed — it needs a minimum order of ${money(droppedMin)}.`, true);
+    return;
+  }
+  state.placing = true;
   primeSound();
   withSpinner($('#placeBtn'), async () => {
     showProcessing('Please wait while we confirm your order details.');
     const order = buildOrder('');
     let result = { ok: false, json: {} };
-    try { result = await postOrder(order); } catch (error) { console.error('Order save failed:', error); }
+    try { result = await postOrder(order); } catch (error) { console.error('Order save failed:', error); state.placing = false; }
     if (!result.ok) {
+      state.placing = false;
       $('#overlay').classList.remove('on');
       syncBodyLock();
-      return toast(result.json.message || 'Order could not be saved. Please try again', true);
+      const msg = result.json.message || '';
+      /* Server ne promo ki wajah se roka ho to coupon hata kar raasta
+         saaf kar do — customer dobara tap karke aage badh sakta hai. */
+      if (state.promo.code && /promo|coupon|minimum order|usage limit/i.test(msg)) {
+        removePromo();
+        return toast('That coupon is no longer valid, so it was removed. Please tap Place Order again.', true);
+      }
+      return toast(msg || 'Order could not be saved. Please try again', true);
     }
     const orderId = result.json.orderId;
     order.orderId = orderId;
+    state.placing = false;
+    state.idemKey = '';
+    state.idemFp = '';
+    try { sessionStorage.removeItem('aavira_idem'); } catch {}
     order.totalAmount = Number((result.json.order || {}).totalAmount ?? order.totalAmount);
     state.track = result.json.orderToken || '';
     state.verified = !!result.json.verified;
@@ -1897,7 +1977,7 @@ const init = async () => {
   const t0 = Date.now();
   await loadProducts();
   loadCart();
-  restorePromo();
+  await restorePromo();
   await new Promise(r => setTimeout(r, Math.max(0, 480 - (Date.now() - t0))));
   render();
 };
