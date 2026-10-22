@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
 <style>
-:root{--rani:#161616;--rani-dark:#000000;--gold:#D4AF37;--gold-deep:#161616;--gold-soft:#F4F4F4;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#161616;--muted:#6B6369;--line:#E5E0D8;--blush:#F4F1EA;--green:#15803D;--danger:#B91C1C;--ease:cubic-bezier(.2,.8,.2,1)}
+:root{--rani:#161616;--rani-dark:#000000;--gold:#D4AF37;--gold-deep:#161616;--gold-text:#8A6D1D;--gold-soft:#F4F4F4;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#161616;--muted:#6B6369;--line:#E5E0D8;--blush:#F4F1EA;--green:#15803D;--danger:#B91C1C;--ease:cubic-bezier(.2,.8,.2,1)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{font-family:Inter,system-ui,sans-serif;background:var(--ivory);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -113,7 +113,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
    Row 1: Left = Tap to view (Cart products popup), Right = Independent Qty (- 1 +) Selector
    Row 2: Add to Cart (Full width if current product not in cart; 2-column with Buy Now once product is in cart) */
 .order-studio{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
-.os-top-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+.os-top-row{display:block}
 
 /* Tap to View Bar (Left Side of Upper Row) */
 .p-cartbar{display:flex;align-items:center;gap:9px;min-height:44px;background:#F8F7F4;border:1.5px solid #DEDAD2;border-radius:999px;padding:5px 11px 5px 7px;color:var(--ink);cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s;min-width:0}
@@ -131,27 +131,15 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 
 /* Independent Professional Qty (- 1 +) on Right Side with Black Shimmer Animation */
 .qty-box{position:relative;display:inline-flex;align-items:center;height:44px;background:#F8F7F4;border:1.5px solid #D5D0C8;border-radius:999px;padding:3px;box-shadow:0 3px 10px rgba(0,0,0,.05);overflow:hidden;transition:border-color .25s,box-shadow .25s}
-.qty-box.simar-pulse{border-color:var(--rani);box-shadow:0 0 0 3px rgba(22,22,22,.12)}
 .qty-btn{position:relative;width:36px;height:36px;border:0;border-radius:50%;background:#fff;color:var(--rani);font-size:17px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;transition:transform .15s,background .2s;overflow:hidden}
 .qty-btn.minus{border:1px solid #E5E0D8}
 .qty-btn:active{transform:scale(.88)}
 .qty-btn.plus{background:var(--rani);color:#fff;box-shadow:0 3px 8px rgba(0,0,0,.22)}
-.qty-btn.plus::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.55) 50%,transparent 80%);
-  background-size:220% 100%;
-  background-position:180% 0;
-  pointer-events:none;
-  animation:plusSimarIdle 3.2s ease-in-out infinite;
-}
-.qty-btn.plus.simar-hit{animation:plusPop .45s var(--ease)}
-.qty-btn.plus.simar-hit::after{animation:plusSimarFast .55s linear 2}
-@keyframes plusSimarIdle{0%,65%{background-position:180% 0}100%{background-position:-140% 0}}
-@keyframes plusSimarFast{from{background-position:160% 0}to{background-position:-140% 0}}
-@keyframes plusPop{0%{transform:scale(1)}40%{transform:scale(1.14)}100%{transform:scale(1)}}
 .qty-val{min-width:28px;text-align:center;font-size:13.5px;font-weight:800;color:var(--rani);padding:0 4px}
+.qty-row{display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap}
+.qty-lbl{font-size:13px;font-weight:700;color:var(--ink)}
+.qty-total{font-size:13.5px;font-weight:800;color:var(--ink)}
+.qty-total small{font-size:12px;font-weight:600;color:var(--muted)}
 
 /* Bottom Row: Single Full-Width Add to Cart when product not in cart; 2-Column when product is in cart */
 .os-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:center}
@@ -327,62 +315,38 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .low.out{color:#B91C1C;background:rgba(185,28,28,.08)}
 
 /* Redesigned Light Editorial Multi-Feature Footer (Replaces Old Black Screen) */
-.footer{background:linear-gradient(180deg,#FAF8F3 0%,#F1ECE1 100%);color:var(--ink);padding:26px 16px calc(26px + env(safe-area-inset-bottom,0px));border-top:8px solid var(--cream)}
-.ft-hero{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 6px 20px -10px rgba(22,22,22,.08)}
-.ft-brand-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.footer-brand{font-family:"Playfair Display",serif;font-size:22px;font-weight:700;color:var(--rani);letter-spacing:-.01em}
-.ft-verified{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:800;padding:4px 9px;border-radius:999px;background:#ECFDF5;color:#15803D;border:1px solid #A7F3D0}
-.ft-verified svg{width:12px;height:12px;stroke-width:2.4}
-.footer-tag{margin:6px 0 12px;font-size:12.5px;line-height:1.55;color:var(--muted)}
-.ft-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-top:12px;border-top:1px dashed var(--line);text-align:center}
-.ft-stats b{display:block;font-size:13.5px;font-weight:800;color:var(--rani)}
-.ft-stats span{font-size:10px;font-weight:600;color:var(--muted)}
-
-/* Delivery & Logistics Partners Card */
-.ft-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:15px;margin-top:12px;box-shadow:0 6px 18px -10px rgba(22,22,22,.06)}
-.ft-card-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
-.ft-card-title{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--rani)}
-.ft-card-title svg{width:16px;height:16px;stroke-width:2.2}
-.ft-pill-live{font-size:10px;font-weight:800;padding:3px 8px;border-radius:999px;background:#F3F4F6;color:var(--rani)}
-.ft-couriers{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-.ft-courier{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border-radius:10px;background:#F8F7F4;border:1px solid #E2DDD3;font-size:11.5px;font-weight:800;color:var(--rani)}
-.ft-courier i{width:7px;height:7px;border-radius:50%;background:var(--green)}
-.ft-ship-notes{display:grid;grid-template-columns:1fr 1fr;gap:7px;font-size:11px;font-weight:600;color:var(--muted);padding-top:9px;border-top:1px dashed var(--line)}
-.ft-ship-notes div{display:flex;align-items:center;gap:5px}
-.ft-ship-notes svg{width:13px;height:13px;color:var(--rani);stroke-width:2.2}
-
-/* Quick Action Tiles */
-.ft-qactions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
-.ft-qa{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 6px;font-size:11px;font-weight:700;color:var(--rani);text-align:center;transition:transform .15s,border-color .2s}
-.ft-qa:active{transform:scale(.96)}
-.ft-qa svg{width:17px;height:17px;stroke-width:2}
-
-/* Newsletter Box */
-.footer-news{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:12px}
-.footer-news label{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:800;color:var(--rani);margin-bottom:8px}
-.footer-news label svg{width:15px;height:15px;stroke-width:2.2}
-.footer-news-row{display:flex;gap:7px}
-.footer-news input{flex:1;min-width:0;height:40px;background:#F8F7F4;border:1px solid var(--line);border-radius:999px;padding:0 14px;color:var(--ink);font-size:13px;outline:none}
-.footer-news input::placeholder{color:#8E878C}
-.footer-news input:focus{border-color:var(--rani);background:#fff}
-.footer-news button{height:40px;background:var(--rani);color:#fff;border:0;border-radius:999px;padding:0 18px;min-width:72px;font-weight:800;font-size:12.5px}
-.footer-news button:disabled{opacity:.8;cursor:not-allowed}
-.footer-news button.is-busy{background:var(--rani);--spin:#fff}
-
-/* Navigation Grid */
-.footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px;margin-top:14px}
-.ft-col{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 13px}
-.footer h3{font-family:Inter,sans-serif;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin-bottom:7px;color:var(--rani)}
-.footer-grid a,.footer-grid .avck-footerlink{display:block;font-size:12.5px;font-weight:600;color:var(--muted);line-height:1.95;background:none;border:0;padding:0;text-align:left}
-.footer-grid a:hover,.footer-grid .avck-footerlink:hover{color:var(--rani)}
-
-/* Payment Modes Strip */
-.ft-pay{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 13px}
-.ft-pay-title{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:7px;display:flex;align-items:center;justify-content:space-between}
-.ft-pay-badges{display:flex;flex-wrap:wrap;gap:5px}
-.ft-pay-badges span{font-size:10.5px;font-weight:800;padding:4px 8px;border-radius:7px;background:#F5F4F0;color:var(--rani);border:1px solid #E2DDD3}
-
-.footer-copy{margin-top:14px;padding-top:12px;border-top:1px solid #DFD9CE;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;font-size:11.5px;font-weight:600;color:var(--muted)}
+.footer{margin-top:44px;position:relative;background:linear-gradient(180deg,var(--ivory),var(--cream));color:var(--ink);padding:32px 18px 30px;border-top:1px solid var(--line)}
+.footer::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.footer-brand{font-family:"Playfair Display",serif;font-size:25px;font-weight:600;color:#161616}
+.footer-brand span{color:var(--gold-text)}
+.footer-tag{margin:6px 0 0;font-size:13px;line-height:1.6;color:var(--muted)}
+.footer-news{margin:22px 0 4px}
+.footer-news label{display:block;font-size:13.5px;font-weight:600;margin-bottom:10px;color:var(--ink)}
+.footer-news-row{display:flex;align-items:center;gap:8px}
+.footer-news input{flex:1;min-width:0;height:44px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 16px;color:var(--ink);font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s}
+.footer-news input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.18)}
+.footer-news button{height:44px;flex:0 0 auto;background:linear-gradient(135deg,#D4AF37,#A8842C);color:#1a1a1a;border:0;border-radius:999px;padding:0 20px;font-weight:700;font-size:13px;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 10px 20px -10px rgba(168,132,44,.7);transition:transform .2s var(--ease),filter .2s}
+@media(hover:hover){.footer-news button:hover{filter:brightness(1.06)}}
+.footer-news button:active{transform:scale(.96)}
+.footer h3{font-family:"Playfair Display",serif;font-size:15px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;margin:0;color:var(--gold-text)}
+.ftr-sec{margin-top:26px}
+.ftr-sec-head{display:flex;align-items:center;gap:9px;margin-bottom:12px}
+.ftr-sec-head .ic{width:30px;height:30px;flex:0 0 auto;border-radius:10px;background:#fff;border:1px solid var(--line);color:var(--gold-text);display:flex;align-items:center;justify-content:center}
+.ftr-sec-head .ic svg{width:15px;height:15px}
+.footer-logo-link{display:inline-flex}
+.footer-logo{height:46px;width:auto;max-width:170px;object-fit:contain}
+.ftr-logos{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center}
+.ftr-logo-card{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;background:transparent;border:0;border-radius:0;padding:4px 8px;box-shadow:none}
+.ftr-logo-card img{height:26px;width:auto;max-width:110px;object-fit:contain;display:block;mix-blend-mode:multiply}
+.ftr-logo-card img.tall{height:32px}
+.ftr-logo-name{font-size:12.5px;font-weight:700;color:var(--ink)}
+.ftr-logo-card.txt{font-size:12.5px;font-weight:700;color:var(--ink)}
+.ftr-logo-card.txt svg{width:16px;height:16px;color:var(--gold-text)}
+.footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px 16px;padding:24px 0;margin-top:26px;border-top:1px solid var(--line)}
+.footer-grid h3{margin-bottom:10px}
+.footer-grid a,.footer-grid .avck-footerlink{display:block;font-size:13px;color:var(--muted);line-height:2;background:none;border:0;padding:0;text-align:left;text-decoration:none}
+.footer-grid a:hover,.footer-grid .avck-footerlink:hover{color:#161616}
+.footer-copy{padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:#9A8F96;text-align:center}
 
 /* Toast */
 .toast{position:fixed;left:50%;top:calc(68px + env(safe-area-inset-top,0px));bottom:auto;transform:translate(-50%,-16px);opacity:0;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#16A34A,#15803D);color:#fff;padding:10px 18px 10px 12px;border-radius:999px;font-size:12.5px;font-weight:600;line-height:1.45;box-shadow:0 10px 28px rgba(0,0,0,.38);z-index:10060;pointer-events:none;white-space:normal;max-width:min(320px,86%);transition:opacity .25s,transform .25s cubic-bezier(.2,.9,.3,1.2)}
@@ -492,10 +456,17 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
     <div class="lbl">Select size <span id="sizeInfo"></span></div>
     <div class="sizes" id="sizes"></div>
     <div class="stock" id="stock" hidden></div>
+    <div class="qty-row">
+      <span class="qty-lbl">Quantity</span>
+      <div class="qty-box" id="qtyBox" aria-label="Quantity selector">
+        <button type="button" class="qty-btn minus" id="qtyMinus" onclick="stepProductQty(-1)" aria-label="Decrease quantity">−</button>
+        <span class="qty-val" id="qtyVal">1</span>
+        <button type="button" class="qty-btn plus" id="qtyPlus" onclick="stepProductQty(1)" aria-label="Increase quantity">+</button>
+      </div>
+      <span class="qty-total" id="qtyTotal"></span>
+    </div>
 
-    <!-- Order Studio Right Below Size:
-         1. Top Row: Left = Tap to view (opens cart popup), Right = Independent Qty (- 1 +) for selected product
-         2. Bottom Row: Only Add to Cart if current product is NOT in cart; Left Add to Cart + Right Buy Now once added -->
+    <!-- Order Studio: Tap to view bar + Add to Cart / Buy Now (qty selector sits right below the sizes) -->
     <div class="order-studio" id="orderStudio">
       <div class="os-top-row">
         <div class="p-cartbar" id="pCartBar" role="button" tabindex="0" onclick="openCartDrawer()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCartDrawer()}">
@@ -507,11 +478,6 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
           <i data-lucide="chevron-right" class="p-cb-arr"></i>
         </div>
 
-        <div class="qty-box" id="qtyBox" aria-label="Quantity selector">
-          <button type="button" class="qty-btn minus" id="qtyMinus" onclick="stepProductQty(-1)" aria-label="Decrease quantity">−</button>
-          <span class="qty-val" id="qtyVal">1</span>
-          <button type="button" class="qty-btn plus" id="qtyPlus" onclick="stepProductQty(1)" aria-label="Increase quantity">+</button>
-        </div>
       </div>
 
       <div class="os-btns single-mode" id="osBtns">
@@ -561,84 +527,44 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
     <div class="grid2" id="sugGrid"></div>
   </section>
 
-  <!-- Redesigned Light Luxury Multi-Feature Footer (No Black Screen) -->
   <footer class="footer">
-    <div class="ft-hero">
-      <div class="ft-brand-row">
-        <div class="footer-brand">Aavira Fashion</div>
-        <span class="ft-verified"><i data-lucide="badge-check"></i>Verified Store</span>
-      </div>
-      <p class="footer-tag">Handcrafted premium ethnic wear from Surat, designed for modern celebrations with quality-checked finishing.</p>
-      <div class="ft-stats">
-        <div><b>19,000+</b><span>Pincodes Served</span></div>
-        <div><b>24–48 Hrs</b><span>Express Dispatch</span></div>
-        <div><b>100% QC</b><span>Checked Outfits</span></div>
-      </div>
-    </div>
-
-    <!-- Courier & Delivery Partners Card -->
-    <div class="ft-card">
-      <div class="ft-card-head">
-        <span class="ft-card-title"><i data-lucide="truck"></i>Official Delivery Partners</span>
-        <span class="ft-pill-live">Pan-India</span>
-      </div>
-      <div class="ft-couriers">
-        <span class="ft-courier"><i></i>Delhivery</span>
-        <span class="ft-courier"><i></i>BlueDart</span>
-        <span class="ft-courier"><i></i>DTDC Express</span>
-        <span class="ft-courier"><i></i>Xpressbees</span>
-        <span class="ft-courier"><i></i>Ecom Express</span>
-      </div>
-      <div class="ft-ship-notes">
-        <div><i data-lucide="package-check"></i>Tamper-proof packaging</div>
-        <div><i data-lucide="bell-ring"></i>Live SMS &amp; WhatsApp tracking</div>
-        <div><i data-lucide="clock"></i>3–5 days metro delivery</div>
-        <div><i data-lucide="indian-rupee"></i>COD &amp; Prepaid available</div>
-      </div>
-    </div>
-
-    <!-- Quick Action Tiles -->
-    <div class="ft-qactions">
-      <a class="ft-qa" href="/orders"><i data-lucide="map-pin"></i>Track Order</a>
-      <a class="ft-qa" href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer"><i data-lucide="message-circle"></i>WhatsApp Help</a>
-      <a class="ft-qa" href="/cart"><i data-lucide="shopping-cart"></i>View Cart</a>
-    </div>
-
-    <!-- Newsletter -->
+    <a href="./" aria-label="Aavira home" class="footer-logo-link"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira Fashion" class="footer-logo"></a>
+    <p class="footer-tag">Luxury ethnic fashion, designed for modern elegance.</p>
     <div class="footer-news">
-      <label for="newsletterEmail"><i data-lucide="mail"></i>Get new collections &amp; festive offers</label>
+      <label for="newsletterEmail">Get new collections and offers by email</label>
       <div class="footer-news-row">
-        <input type="email" id="newsletterEmail" placeholder="Enter your email address" autocomplete="email">
-        <button type="button" id="btnNewsletter" onclick="subscribeNewsletter()">Join</button>
+        <input type="email" id="newsletterEmail" placeholder="Your email address" autocomplete="email">
+        <button type="button" id="btnNewsletter" data-no-delay="1" onclick="subscribeNewsletter()">Join</button>
       </div>
     </div>
 
-    <!-- Links Grid -->
+    <div class="ftr-sec">
+      <div class="ftr-sec-head"><span class="ic"><i data-lucide="truck"></i></span><h3>Delivery Partners</h3></div>
+      <div class="ftr-logos">
+        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Delhivery_Logo_%282019%29.png/330px-Delhivery_Logo_%282019%29.png" alt="Delhivery" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Delhivery</span></span>
+        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Blue_Dart_logo_transparent.png/330px-Blue_Dart_logo_transparent.png" alt="Blue Dart" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Blue Dart</span></span>
+        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/DTDC_logo.png/330px-DTDC_logo.png" alt="DTDC" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">DTDC</span></span>
+        <span class="ftr-logo-card"><img src="https://chinapost-track.com/cdn/images/carriers/thumbnails/0389-xpressbees.png" alt="Xpressbees" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Xpressbees</span></span>
+        <span class="ftr-logo-card"><img class="tall" src="https://qubix.in/wp-content/uploads/2024/05/Ecom-Express-Logo.png" alt="Ecom Express" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Ecom Express</span></span>
+      </div>
+    </div>
+
+    <div class="ftr-sec">
+      <div class="ftr-sec-head"><span class="ic"><i data-lucide="shield-check"></i></span><h3>We Accept</h3></div>
+      <div class="ftr-logos">
+        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/330px-UPI-Logo-vector.svg.png" alt="UPI" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">UPI</span></span>
+        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/RuPay-Logo.png/330px-RuPay-Logo.png" alt="RuPay" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">RuPay</span></span>
+        <span class="ftr-logo-card txt"><i data-lucide="banknote"></i>Cash on Delivery</span>
+      </div>
+    </div>
+
     <div class="footer-grid">
-      <div class="ft-col"><h3>Explore</h3><a href="/">Home</a><a href="/categories">Collections</a><a href="/offer">Offers</a><a href="/wishlist">Wishlist</a></div>
-      <div class="ft-col"><h3>Shopping</h3><a href="/cart">Shopping cart</a><a href="/orders">My orders</a><a href="/profile">My account</a><a href="/support">Support</a></div>
-      <div class="ft-col"><h3>Policies</h3><a href="/terms">Terms &amp; conditions</a><a href="/privacy">Privacy policy</a><a href="/support">Return policy</a><button type="button" class="avck-footerlink" onclick="window.AaviraConsent&&AaviraConsent.openPrefs()">Cookie settings</button></div>
-      <div class="ft-col"><h3>Care Hours</h3><a href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer">+91 96087 20622</a><a href="/support">Mon–Sat: 10AM–7PM</a><a href="/support">Surat, Gujarat</a></div>
+      <div><h3>Explore</h3><a href="/">Home</a><a href="/categories">Collections</a><a href="/offer">Offers</a><a href="/wishlist">Wishlist</a></div>
+      <div><h3>Shopping</h3><a href="/cart">Shopping bag</a><a href="/orders">My orders</a><a href="/profile">My account</a><a href="/support">Support</a></div>
+      <div><h3>Information</h3><a href="/terms">Terms &amp; conditions</a><a href="/privacy">Privacy policy</a><a href="/support">Help center</a><button type="button" class="avck-footerlink" onclick="window.AaviraConsent&&AaviraConsent.openPrefs()">Cookie Settings</button></div>
+      <div><h3>Contact</h3><a href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a></div>
     </div>
-
-    <!-- Secure Payment Modes -->
-    <div class="ft-pay">
-      <div class="ft-pay-title"><span>100% Secure Payments</span><span>SSL Encrypted</span></div>
-      <div class="ft-pay-badges">
-        <span>UPI</span>
-        <span>GPay</span>
-        <span>PhonePe</span>
-        <span>Paytm</span>
-        <span>Visa / Mastercard</span>
-        <span>RuPay</span>
-        <span>Cash on Delivery</span>
-      </div>
-    </div>
-
-    <div class="footer-copy">
-      <span>© 2026 Aavira Fashion. All rights reserved.</span>
-      <span>Made in India</span>
-    </div>
+    <div class="footer-copy">© 2026 Aavira Fashion. All rights reserved.</div>
   </footer>
 </div>
 
@@ -664,28 +590,6 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
     <div class="cd-actions">
       <button type="button" class="cd-checkout" id="cdCheckoutBtn" onclick="orderCartItems(this)"><i data-lucide="shopping-cart"></i><span id="cdCheckoutText">Place Order</span></button>
       <button type="button" class="cd-more" onclick="navigate('/cart',this)"><i data-lucide="external-link"></i>Open Full Cart Page</button>
-    </div>
-  </div>
-</div>
-
-<!-- Buy Now Choice: older cart items must never ride along silently -->
-<div class="ov" id="buyChoiceOv" onclick="if(event.target===this)closeModal('buyChoiceOv')">
-  <div class="sheet" role="dialog" aria-modal="true" aria-label="Choose what to buy">
-    <div class="cd-head">
-      <div class="cd-title-wrap">
-        <div class="cd-bag-ic"><i data-lucide="shopping-cart"></i></div>
-        <div>
-          <h3>Older items in your cart</h3>
-          <small>Choose what you want to buy now</small>
-        </div>
-      </div>
-      <button class="x" type="button" style="position:static" onclick="closeModal('buyChoiceOv')" aria-label="Close"><i data-lucide="x"></i></button>
-    </div>
-    <p class="bc-note">Your cart also has items from before. Buy only this product, or everything together — nothing is added silently.</p>
-    <div class="cd-list" id="bcList"></div>
-    <div class="cd-actions">
-      <button type="button" class="cd-checkout" onclick="buyOnlyThis(this)"><i data-lucide="zap"></i><span id="bcOnlyText">Buy Only This Item</span></button>
-      <button type="button" class="cd-more" onclick="buyAllItems(this)"><i data-lucide="shopping-cart"></i><span id="bcAllText">Buy All Items</span></button>
     </div>
   </div>
 </div>
@@ -956,21 +860,7 @@ const rememberRecent = id => {
 
 /* Trigger Professional Black Shimmer ("Simar") Animation on (- 1 +) Plus Button */
 let plusSimarTimer;
-const triggerPlusSimar = () => {
-  const plusBtn = $('#qtyPlus');
-  const qtyBox = $('#qtyBox');
-  if (!plusBtn) return;
-  plusBtn.classList.remove('simar-hit');
-  qtyBox?.classList.remove('simar-pulse');
-  void plusBtn.offsetWidth;
-  plusBtn.classList.add('simar-hit');
-  qtyBox?.classList.add('simar-pulse');
-  clearTimeout(plusSimarTimer);
-  plusSimarTimer = setTimeout(() => {
-    plusBtn.classList.remove('simar-hit');
-    qtyBox?.classList.remove('simar-pulse');
-  }, 1150);
-};
+const triggerPlusSimar = () => {};
 
 /* Check if current product is in cart -> Show/Hide Buy Now Button accordingly */
 const syncOrderButtons = () => {
@@ -992,6 +882,7 @@ const syncActiveVariantUI = () => {
   }
   const qtyEl = $('#qtyVal');
   if (qtyEl) qtyEl.textContent = String(state.qty || 1);
+  paintQtyTotal();
   syncOrderButtons();
   refreshPCartBar();
 };
@@ -1038,13 +929,23 @@ const ensureSizeSelected = autoPickFirst => {
 };
 
 /* Independent Quantity Selector: Only changes quantity to be added for selected product, does not touch cart directly */
+/* Live amount for the chosen quantity — updates instantly on every tap,
+   so the customer always sees price x qty = total with no flicker. */
+const paintQtyTotal = () => {
+  const el = $('#qtyTotal');
+  if (!el) return;
+  const qty = clamp(Number(state.qty) || 1, 1, 20);
+  const unit = Number(state.product?.price) || 0;
+  el.innerHTML = qty > 1 && unit > 0 ? `<small>${formatPrice(unit)} \u00D7 ${qty} =</small> ${formatPrice(unit * qty)}` : '';
+};
+
 window.stepProductQty = delta => {
   if (!state.product) return;
   state.qty = clamp((Number(state.qty) || 1) + delta, 1, 20);
-  if (delta > 0) triggerPlusSimar();
   navigator.vibrate?.(15);
   const qtyEl = $('#qtyVal');
   if (qtyEl) qtyEl.textContent = String(state.qty);
+  paintQtyTotal();
 };
 
 const slidesHtml = (product, main) => {
@@ -1262,7 +1163,6 @@ const buildCartCheckoutUrl = cart => {
   return '/checkout?source=cart';
 };
 
-const buildOnlyCheckoutUrl = productId => `/checkout?source=buynow&only=${encodeURIComponent(productId)}`;
 
 /* Tap to View Cart Popup Functions */
 window.renderCartDrawer = () => {
@@ -1328,12 +1228,33 @@ window.changeCartItemQty = (index, delta) => {
   const cart = readJson('aavira_cart', []);
   if (!cart[index]) return;
   const next = (Number(cart[index].qty) || 1) + delta;
-  if (next <= 0) cart.splice(index, 1);
+  const removed = next <= 0;
+  if (removed) cart.splice(index, 1);
   else cart[index].qty = clamp(next, 1, 20);
   writeJson('aavira_cart', cart);
   updateCartBadge();
   syncActiveVariantUI();
-  renderCartDrawer();
+  if (removed) return renderCartDrawer();
+  /* Update the open drawer in place — rebuilding the whole list on every
+     tap made the amounts flicker/reload (the counting "glitch"). */
+  const kept = cart.filter(it => it && (Number(it.qty) || 0) > 0);
+  const row = $$('#cdList .cd-item')[index];
+  const it = kept[index];
+  if (!row || !it) return renderCartDrawer();
+  const qty = Number(it.qty) || 1;
+  const price = Number(it.price) || 0;
+  const qv = row.querySelector('.cd-qval');
+  if (qv) qv.textContent = qty;
+  const pr = row.querySelector('.cd-price');
+  if (pr) pr.innerHTML = `${formatPrice(price * qty)} <small style="font-weight:600;color:var(--muted)">(${formatPrice(price)} \u00D7 ${qty})</small>`;
+  const totalCount = kept.reduce((sum, x) => sum + (Number(x.qty) || 1), 0);
+  const totalAmt = kept.reduce((sum, x) => sum + (Number(x.price) || 0) * (Number(x.qty) || 1), 0);
+  const subEl = $('#cdSubCount');
+  if (subEl) subEl.textContent = `${totalCount} ${totalCount === 1 ? 'item' : 'items'} ready to order`;
+  const totEl = $('#cdTotalAmt');
+  if (totEl) totEl.textContent = formatPrice(totalAmt);
+  const coEl = $('#cdCheckoutText');
+  if (coEl) coEl.textContent = `Place Order \u00B7 ${formatPrice(totalAmt)}`;
 };
 
 window.removeCartItemAt = index => {
@@ -1357,8 +1278,7 @@ const orderCartItems = btn => {
   });
 };
 
-/* Buy Now: if older items are sitting in the cart, ask first — never
-   silently bill the customer for the whole cart. */
+/* Buy Now: straight to checkout with the cart as it stands. */
 const proceedToCheckout = btn => {
   withSpinner(btn || $('#btnBuy'), () => {
     if (isLoggedIn()) location.href = state.buyLink;
@@ -1372,52 +1292,8 @@ const buyNow = () => {
     syncOrderButtons();
     return toast('Please add product to cart first', true);
   }
-  const others = cart.filter(it => String(it.productId) !== String(state.id));
-  if (!others.length) {
-    state.buyLink = buildCartCheckoutUrl(cart);
-    return proceedToCheckout($('#btnBuy'));
-  }
-  openBuyChoice(cart);
-};
-
-const openBuyChoice = cart => {
-  const mine = cart.filter(it => String(it.productId) === String(state.id));
-  const sum = list => list.reduce((s, it) => s + (Number(it.price) || 0) * (Number(it.qty) || 1), 0);
-  const totalQty = cart.reduce((s, it) => s + (Number(it.qty) || 1), 0);
-  $('#bcList').innerHTML = cart.map(it => {
-    const isMine = String(it.productId) === String(state.id);
-    const qty = Number(it.qty) || 1;
-    const price = Number(it.price) || 0;
-    return `<div class="cd-item">
-      <img class="cd-img" src="${esc(safeUrl(it.image) || IMG_FALLBACK)}" alt="" ${FALLBACK_ATTR}>
-      <div class="cd-info">
-        <div class="cd-name">${esc(it.name || 'Aavira Outfit')}</div>
-        <div class="cd-meta">
-          <span class="cd-chip">Colour: ${esc(it.color || 'Main')}</span>
-          <span class="cd-chip">Size: ${esc(it.size || 'Free')}</span>
-          <span class="cd-chip${isMine ? '' : ' bc-old'}">${isMine ? 'This product' : 'Older item'}</span>
-        </div>
-        <div class="cd-price">${formatPrice(price * qty)} <small style="font-weight:600;color:var(--muted)">(${formatPrice(price)} × ${qty})</small></div>
-      </div>
-    </div>`;
-  }).join('');
-  $('#bcOnlyText').textContent = `Buy Only This Item · ${formatPrice(sum(mine))}`;
-  $('#bcAllText').textContent = `Buy All ${totalQty} Items · ${formatPrice(sum(cart))}`;
-  window.lucide?.createIcons();
-  openModal('buyChoiceOv');
-};
-
-window.buyOnlyThis = btn => {
-  state.buyLink = buildOnlyCheckoutUrl(state.id);
-  closeModal('buyChoiceOv');
-  proceedToCheckout(btn);
-};
-
-window.buyAllItems = btn => {
-  const cart = readJson('aavira_cart', []).filter(it => it && (Number(it.qty) || 0) > 0);
   state.buyLink = buildCartCheckoutUrl(cart);
-  closeModal('buyChoiceOv');
-  proceedToCheckout(btn);
+  proceedToCheckout($('#btnBuy'));
 };
 
 const findProduct = async id => {
