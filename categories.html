@@ -100,7 +100,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .skel-line{height:12px;margin:10px 10px 0;border-radius:4px}
 .skel-line.w60{width:60%;height:14px;margin-top:6px}
 
-/* New Product Cards: Sharp 1:1 Top Image, Rounded Bottom Only, Discount Tag in Price Row, Quick View Eye Button */
+/* Product Cards: Sharp 1:1 Top Image, Rounded Bottom Only, Discount Tag in Price Row, Quick View Eye Button */
 .grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px 10px}
 .pcard{position:relative;min-width:0;background:#fff;border:1px solid #EEE4D2;border-radius:0 0 16px 16px;overflow:hidden;padding-bottom:10px;box-shadow:0 8px 20px -10px rgba(36,32,36,.12);display:flex;flex-direction:column;transition:box-shadow .3s,border-color .3s,transform .3s var(--ease)}
 @media(hover:hover){.pcard:hover{box-shadow:0 18px 36px -14px rgba(36,32,36,.2);border-color:rgba(22,22,22,.35);transform:translateY(-2px)}}
@@ -331,7 +331,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
         <i data-lucide="chevron-down" class="sort-ic"></i>
       </div>
       <button type="button" class="filter-chip-btn" id="discountFilterBtn" onclick="toggleDiscount(this)">
-        <i data-lucide="SlidersHorizontal"></i>50%+ Off
+        <i data-lucide="sliders-horizontal"></i>50%+ Off
       </button>
     </div>
 
@@ -568,9 +568,7 @@ const hashId = s => {
   return h;
 };
 
-const reviewProductId = entry => entry.productId ?? entry.product_id ?? entry.pid;
-
-const normalizeProduct = (p, totals = {}) => {
+const normalizeProduct = p => {
   const pid = String(p.id ?? p._id ?? '');
   const price = parsePrice(p.price);
   const mrpRaw = parsePrice(p.mrp ?? p.originalPrice);
@@ -578,10 +576,7 @@ const normalizeProduct = (p, totals = {}) => {
   const off = mrp > price ? Math.round((mrp - price) / mrp * 100) : 0;
   const h = hashId(pid);
   const baseRating = clamp(Number(p.rating ?? p.averageRating ?? p.avgRating ?? p.ratingAvg ?? p.average_rating ?? p.avg_rating ?? p.stars) || 0, 0, 5);
-  const expTotal = totals[pid];
-  const rating = expTotal?.count
-    ? clamp(Math.round(expTotal.sum / expTotal.count * 10) / 10, 0, 5)
-    : (baseRating > 0 ? baseRating : Number((3.9 + (h % 10) / 10).toFixed(1)));
+  const rating = baseRating > 0 ? baseRating : Number((3.9 + (h % 10) / 10).toFixed(1));
 
   const rawColors = Array.isArray(p.colors) && p.colors.length
     ? p.colors.map(c => (typeof c === 'object' ? (c.name || c.color || c.hex || 'Main') : String(c).trim()))
@@ -603,11 +598,12 @@ const normalizeProduct = (p, totals = {}) => {
     colorsInfo: p.colorsInfo || '',
     colorImages: Array.isArray(p.colorImages) ? p.colorImages : [],
     sizes: Array.isArray(p.sizes) && p.sizes.length ? p.sizes : ['32', '34', '36', '38', '40', '42'],
-    img: p.imageMain || p.image || p.imageUrl || p.img || ''
+    img: p.imageMain || p.image || p.imageUrl || p.img || '',
+    createdAt: Number(p.createdAt?.seconds ?? p.timestamp?.seconds ?? p.createdAt ?? p.timestamp ?? 0) || 0
   };
 };
 
-/* New Product Card HTML (Matches Product Page Design) */
+/* Product Card HTML */
 const productCardHtml = product => {
   const price = Number(product.price) || 0;
   const off = Number(product.off) || 0;
@@ -704,7 +700,7 @@ const filterAndRender = () => {
   else if (currentSort === 'high') list.sort((a, b) => b.price - a.price);
   else if (currentSort === 'discount') list.sort((a, b) => b.off - a.off);
   else if (currentSort === 'rating') list.sort((a, b) => b.rating - a.rating);
-  else if (currentSort === 'new') list.reverse();
+  else if (currentSort === 'new') list.sort((a, b) => (b.createdAt - a.createdAt) || -1);
 
   const title = searchQ
     ? `Search: "${searchQ}"`
@@ -733,45 +729,67 @@ const renderUI = (arr, title) => {
   window.lucide?.createIcons();
 };
 
-const loadData = async () => {
-  try {
-    let rawList = [];
-    let experiences = [];
-    for (const loader of ['getVercelData', 'getMainProductsData']) {
-      if (typeof window[loader] === 'function') {
-        rawList = (await window[loader]()) || [];
-        if (rawList.length) break;
-      }
-    }
-    try { if (typeof getVercelExperiences === 'function') experiences = (await getVercelExperiences()) || []; } catch {}
+/* Apply synced data from .collection("main_products") */
+let initialCatChecked = false;
+const applyMainProducts = rawList => {
+  allProducts = (Array.isArray(rawList) ? rawList : []).map(p => {
+    const norm = normalizeProduct(p);
+    sugMap[String(norm.id)] = norm;
+    return norm;
+  });
 
-    const totals = {};
-    experiences.forEach(entry => {
-      const pid = reviewProductId(entry);
-      const val = Number(entry.rating);
-      if (pid == null || !(val > 0)) return;
-      const t = totals[String(pid)] ||= { sum: 0, count: 0 };
-      t.sum += val;
-      t.count++;
-    });
+  const catSet = new Set();
+  allProducts.forEach(p => { if (p.category) catSet.add(p.category); });
+  allCategories = [...catSet];
 
-    allProducts = rawList.map(p => {
-      const norm = normalizeProduct(p, totals);
-      sugMap[String(norm.id)] = norm;
-      return norm;
-    });
-
-    const catSet = new Set();
-    allProducts.forEach(p => { if (p.category) catSet.add(p.category); });
-    allCategories = [...catSet];
-
+  if (!initialCatChecked) {
+    initialCatChecked = true;
     const cp = new URLSearchParams(location.search).get('cat');
     if (cp) currentActiveCategory = decodeURIComponent(cp);
+  }
 
-    renderCategories(currentActiveCategory);
-    filterAndRender();
+  renderCategories(currentActiveCategory);
+  filterAndRender();
+};
+
+/* STRICTLY SYNC ONLY FROM .collection("main_products") */
+const loadData = async () => {
+  try {
+    const fsDb = (typeof db !== 'undefined' && db && typeof db.collection === 'function')
+      ? db
+      : (window.db && typeof window.db.collection === 'function'
+        ? window.db
+        : (window.firebase?.firestore ? window.firebase.firestore() : null));
+
+    if (fsDb) {
+      fsDb.collection("main_products").onSnapshot(snapshot => {
+        const list = [];
+        snapshot.forEach(doc => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+        applyMainProducts(list);
+      }, async err => {
+        console.error('main_products sync error:', err);
+        if (typeof window.getMainProductsData === 'function') {
+          const fallbackList = (await window.getMainProductsData()) || [];
+          applyMainProducts(fallbackList);
+        } else {
+          toast('Could not sync main_products', true);
+        }
+      });
+      return;
+    }
+
+    if (typeof window.getMainProductsData === 'function') {
+      const rawList = (await window.getMainProductsData()) || [];
+      applyMainProducts(rawList);
+      return;
+    }
+
+    applyMainProducts([]);
   } catch (e) {
-    toast('Could not load collection data', true);
+    console.error(e);
+    toast('Could not load main_products', true);
   }
 };
 
@@ -1050,4 +1068,3 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
-
