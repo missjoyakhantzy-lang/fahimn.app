@@ -54,9 +54,6 @@ main{padding:14px}
 .card-head h2{margin-bottom:0}
 .head-right{display:flex;align-items:center;gap:6px}
 .count{font-family:Inter,sans-serif;font-size:11px;font-weight:800;color:var(--ink);background:var(--cream);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
-.add-more-top{font-family:Inter,sans-serif;font-size:11.5px;font-weight:700;color:var(--rani);background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:4px 10px;display:inline-flex;align-items:center;gap:4px;transition:border-color .2s}
-.add-more-top:hover{border-color:var(--rani)}
-.add-more-top svg{width:12px;height:12px;stroke-width:2.4}
 
 /* Saved Addresses List */
 .addr-list{display:flex;flex-direction:column;gap:10px}
@@ -100,46 +97,20 @@ main{padding:14px}
 .item-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
 .item-top-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
 .item-info h3{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.32;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.item-del{width:28px;height:28px;flex:0 0 28px;border:1px solid #FECACA;border-radius:50%;background:#FEF2F2;color:var(--danger);display:inline-flex;align-items:center;justify-content:center;transition:transform .15s}
-.item-del:active{transform:scale(.9)}
-.item-del svg{width:13px;height:13px;stroke-width:2.2}
+.item-info-btn{width:30px;height:30px;flex:0 0 30px;border:1px solid var(--line);border-radius:50%;background:#fff;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:transform .15s,border-color .2s}
+.item-info-btn:active{transform:scale(.9)}
+.item-info-btn svg{width:15px;height:15px;stroke-width:2.2}
 .item-variants{display:flex;flex-wrap:wrap;align-items:center;gap:5px}
-.v-chip{display:inline-flex;align-items:center;gap:5px;padding:3.5px 9px;border-radius:999px;background:var(--cream);border:1px solid var(--line);font-size:11px;font-weight:700;color:var(--ink);cursor:pointer;transition:border-color .2s,background .2s}
-.v-chip:hover{border-color:var(--rani);background:var(--blush)}
+.v-chip{display:inline-flex;align-items:center;gap:5px;padding:3.5px 9px;border-radius:999px;background:var(--cream);border:1px solid var(--line);font-size:11px;font-weight:700;color:var(--ink)}
 .v-chip svg{width:11px;height:11px;color:var(--muted)}
-.v-chip.edit-pill{background:#fff;border-color:#D5CDC2;color:var(--rani)}
 .item-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:2px}
 .item-price-box{display:flex;flex-direction:column;line-height:1.2}
 .item-price{font-size:16.5px;font-weight:800;color:var(--rani);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .item-price s{font-size:12px;font-weight:500;color:var(--muted)}
 .item-unit{font-size:10.5px;font-weight:600;color:var(--muted);margin-top:2px}
 
-/* Inline (- 1 +) Stepper on Order Item Card with Primary Black Shimmer '+' */
-.item-qty-box{display:inline-flex;align-items:center;gap:3px;height:36px;padding:2px 3px;background:#FAF7F2;border:1.5px solid var(--line);border-radius:999px}
-.iq-btn{position:relative;overflow:hidden;width:28px;height:28px;border:1px solid var(--line);border-radius:50%;background:#fff;color:var(--ink);font-size:15px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;transition:transform .15s}
-.iq-btn:active{transform:scale(.88)}
-.iq-btn.plus{background:linear-gradient(135deg,#242429,#000);color:#fff;border-color:#000;box-shadow:0 3px 8px rgba(0,0,0,.22)}
-.iq-btn.plus::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.72) 50%,transparent 80%);transform:translateX(-140%);pointer-events:none}
-.iq-btn.plus.simar-on::before{animation:plusSimar .62s cubic-bezier(.2,.8,.2,1) 2}
-@keyframes plusSimar{0%{transform:translateX(-140%)}100%{transform:translateX(140%)}}
-.iq-val{min-width:22px;text-align:center;font-size:13px;font-weight:800;color:var(--ink)}
 
-.item-foot-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:8px;border-top:1px dashed var(--line)}
-.btn-item-sub{flex:1;height:32px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:5px;transition:border-color .2s,background .2s}
-.btn-item-sub:hover{border-color:var(--rani);background:var(--ivory)}
-.btn-item-sub svg{width:12.5px;height:12.5px;color:var(--rani)}
 
-/* Recommendations Rail */
-.rec{margin:0 0 14px}
-.rec h3{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 4px 10px}
-.rec-row{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
-.rec-row::-webkit-scrollbar{display:none}
-.rec-card{flex:0 0 124px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px;display:flex;flex-direction:column}
-.rec-card img{width:100%;aspect-ratio:1/1;border-radius:9px;object-fit:cover;background:var(--cream)}
-.rec-card p{font-size:11.5px;font-weight:600;margin:6px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3;min-height:30px}
-.rec-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
-.rec-foot b{font-size:12.5px;font-weight:800}
-.rec-foot button{border:0;background:var(--rani);color:#fff;border-radius:999px;padding:4px 10px;font-size:10.5px;font-weight:800}
 
 /* Delivery & Payment Options */
 .opts{display:flex;flex-direction:column;gap:10px}
@@ -172,14 +143,7 @@ main{padding:14px}
 
 /* Coupons & Order Summary */
 .coupon h2{margin-bottom:14px}
-.cp-toggle{width:100%;display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px dashed var(--rani);border-radius:14px;background:linear-gradient(135deg,#FAF7F0,var(--blush));text-align:left;color:var(--ink)}
-.cp-ic{width:40px;height:40px;border-radius:12px;background:#fff;color:var(--rani);display:flex;align-items:center;justify-content:center;font-size:17px;flex:0 0 auto;box-shadow:0 4px 10px rgba(22,22,22,.1)}
-.cp-tx{flex:1;min-width:0}
-.cp-tx b{display:block;font-size:13.5px;font-weight:700}
-.cp-tx small{font-size:11.5px;color:var(--muted)}
-.cp-toggle .chev{font-size:14px;color:var(--rani);transition:transform .25s}
-.cp-toggle.open .chev{transform:rotate(180deg)}
-.promo{display:flex;gap:8px;margin:14px 0 0;animation:rise .25s ease}
+.promo{display:flex;gap:8px;margin:0;animation:rise .25s ease}
 .promo .fld{flex:1;height:48px;border:1.5px dashed var(--line);border-radius:12px;padding:0 14px;font:inherit;font-size:14px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:var(--ink);background:#fff;outline:none}
 .promo .fld:focus{border-color:var(--rani)}
 .fld.bad{border-color:var(--danger)!important;box-shadow:0 0 0 3px rgba(185,28,28,.08)}
@@ -225,12 +189,6 @@ main{padding:14px}
 .grp.fx .fld{flex:1;min-width:0;height:100%;border:0;background:transparent;box-shadow:none;padding:0;border-radius:0;font:inherit;font-size:15px;font-weight:500;color:var(--ink);outline:none}
 .grp.fx .fld::placeholder{color:#A8A0A5;font-weight:400}
 .fx-box[role=button],.fx-box[role=button] .fld{cursor:pointer}
-.fx-i{width:34px;height:34px;border:0;border-radius:50%;background:transparent;color:#9A8F96;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;transition:background .2s,color .2s}
-.fx-i svg{width:16px;height:16px}
-.fx-i.on{color:var(--rani);background:var(--blush)}
-.fx-tip{display:none;margin-top:8px;padding:11px 13px;border-radius:12px;background:#FFF8E1;border:1px dashed #F5D77A;font-size:12.5px;line-height:1.6;color:#5C4A12}
-.fx-tip svg{width:15px;height:15px;color:#D99A00;vertical-align:-2px;margin-right:4px}
-.fx-tip.on{display:block;animation:rise .25s ease}
 .grp.fx .err{display:none;margin:5px 0 0 4px;font-size:11px;font-weight:700;color:var(--danger)}
 .grp.fx.bad .err{display:block}
 .grp.fx.bad .fx-box{border-color:var(--danger);background:#FEF2F2}
@@ -325,8 +283,9 @@ main{padding:14px}
 .badge-ico svg{width:30px;height:30px;stroke-width:2.5}
 .oid{margin:14px 0;padding:9px 12px;border-radius:10px;background:#fff;border:1px dashed #DFC580;font-size:13px;font-weight:800;letter-spacing:.4px}
 .dialog .acts{display:flex;flex-direction:column;gap:10px;margin-top:20px}
-.btn-fill,.btn-line,.btn-wa{width:100%;padding:13px 16px;border-radius:999px;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-fill,.btn-line,.btn-wa,.btn-danger{width:100%;padding:13px 16px;border-radius:999px;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px}
 .btn-fill{border:0;background:linear-gradient(135deg,#242429,#000);color:#fff}
+.btn-danger{border:0;background:var(--danger);color:#fff}
 .btn-wa{border:0;background:#25D366;color:#fff}
 .btn-line{border:1.5px solid var(--line);background:#fff;color:var(--ink)}
 .btn-wa small{background:rgba(0,0,0,.15);border-radius:999px;padding:2px 8px;font-size:11px}
@@ -414,16 +373,9 @@ main{padding:14px}
         <h2>Your order</h2>
         <div class="head-right">
           <span class="count" id="itemCount">0 items</span>
-          <a class="add-more-top" href="./"><i data-lucide="plus"></i>Add more</a>
         </div>
       </div>
       <div class="list" id="items"></div>
-    </section>
-
-    <!-- 3. RECOMMENDED FOR YOU -->
-    <section class="rec" id="recSection" hidden>
-      <h3>Pair it with</h3>
-      <div class="rec-row" id="recRow"></div>
     </section>
 
     <!-- 4. DELIVERY OPTIONS -->
@@ -431,7 +383,6 @@ main{padding:14px}
       <h2>Delivery method</h2>
       <div class="opts">
         <label class="opt"><input type="radio" name="delivery" value="0" checked><span class="radio"></span><span class="opt-ico"><i data-lucide="truck"></i></span><span class="opt-txt"><b>Standard shipping</b><small>Delivery in 4 to 6 business days</small></span><span class="tag free">Free</span></label>
-        <label class="opt"><input type="radio" name="delivery" value="99"><span class="radio"></span><span class="opt-ico"><i data-lucide="zap"></i></span><span class="opt-txt"><b>Express priority</b><small>Priority dispatch &amp; faster delivery</small></span><span class="tag">₹99</span></label>
       </div>
     </section>
 
@@ -447,12 +398,7 @@ main{padding:14px}
     <!-- 6. OFFERS & COUPONS -->
     <section class="card coupon">
       <h2>Offers &amp; coupons</h2>
-      <button class="cp-toggle" id="couponToggle" type="button" onclick="toggleCoupon()" aria-expanded="false">
-        <span class="cp-ic"><i data-lucide="ticket"></i></span>
-        <span class="cp-tx"><b>Have a coupon code?</b><small>Tap here to apply your voucher</small></span>
-        <i data-lucide="chevron-down" class="chev"></i>
-      </button>
-      <div class="promo" id="promoForm" style="display:none">
+      <div class="promo" id="promoForm" style="display:flex">
         <input class="fld" id="promoInput" placeholder="Enter coupon code" autocomplete="off" autocapitalize="characters" aria-label="Coupon code">
         <button class="apply" id="promoBtn" type="button" onclick="applyPromo()">Apply</button>
       </div>
@@ -505,40 +451,32 @@ main{padding:14px}
     <form class="form" id="addressForm" autocomplete="off" novalidate onsubmit="return false">
       <p class="sec-t">Contact details</p>
       <div class="grp fx"><label for="ad_name">Full name <span>*</span></label>
-        <div class="fx-box"><i data-lucide="user"></i><input class="fld" id="ad_name" placeholder="Enter receiver's full name" autocomplete="name"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Help"><i data-lucide="info"></i></button></div>
-        <div class="fx-tip"><i data-lucide="lightbulb"></i> यहाँ अपना पूरा नाम लिखें। पार्सल इसी नाम से डिलीवर होगा।<br><b>जैसे:</b> राहुल कुमार</div><span class="err">Please enter your full name</span></div>
+        <div class="fx-box"><i data-lucide="user"></i><input class="fld" id="ad_name" placeholder="Enter receiver's full name" autocomplete="name"></div><span class="err">Please enter your full name</span></div>
 
       <div class="grp fx"><label for="ad_phone">Mobile number <span>*</span></label>
-        <div class="fx-box"><i data-lucide="phone"></i><input class="fld" id="ad_phone" placeholder="10-digit mobile number" type="tel" inputmode="numeric" maxlength="10"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Help"><i data-lucide="info"></i></button></div>
-        <div class="fx-tip"><i data-lucide="lightbulb"></i> अपना 10 अंकों का चालू मोबाइल नंबर डालें। डिलीवरी पार्टनर इसी नंबर पर कॉल करेगा।<br><b>जैसे:</b> 9876543210</div><span class="err">Valid 10-digit mobile number required</span></div>
+        <div class="fx-box"><i data-lucide="phone"></i><input class="fld" id="ad_phone" placeholder="10-digit mobile number" type="tel" inputmode="numeric" maxlength="10"></div><span class="err">Valid 10-digit mobile number required</span></div>
 
       <div class="grp fx" id="emailGrp"><label for="ad_email">Email address <span>*</span></label>
-        <div class="fx-box" id="emailBox"><i data-lucide="mail"></i><input class="fld" id="ad_email" placeholder="yourname@gmail.com" type="email"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Help"><i data-lucide="info"></i></button></div>
-        <div class="fx-tip" id="emailTip"><i data-lucide="lightbulb"></i> अपनी ईमेल आईडी डालें। ऑर्डर कन्फर्मेशन और ट्रैकिंग डिटेल्स इसी पर आएंगी।</div><span class="err">Enter a valid email address</span></div>
+        <div class="fx-box" id="emailBox"><i data-lucide="mail"></i><input class="fld" id="ad_email" placeholder="yourname@gmail.com" type="email"></div><span class="err">Enter a valid email address</span></div>
 
       <p class="sec-t" style="margin-top:6px">Address details</p>
       <div class="grp fx"><label for="ad_pin">Pincode <span>*</span></label>
-        <div class="fx-box"><i data-lucide="map-pin"></i><input class="fld" id="ad_pin" placeholder="6-digit area pincode" inputmode="numeric" maxlength="6"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Help"><i data-lucide="info"></i></button></div>
-        <div class="fx-tip"><i data-lucide="lightbulb"></i> अपने इलाके का 6 अंकों का पिनकोड डालें। पिनकोड डालते ही आपका जिला और राज्य अपने आप भर जाएगा।</div><span class="err">6-digit pincode required</span></div>
+        <div class="fx-box"><i data-lucide="map-pin"></i><input class="fld" id="ad_pin" placeholder="6-digit area pincode" inputmode="numeric" maxlength="6"></div><span class="err">6-digit pincode required</span></div>
       <p class="pin-status" id="pinStatus" hidden></p>
 
       <div class="grp fx"><label for="ad_city">District / City, State <span>*</span></label>
-        <div class="fx-box" role="button" tabindex="0" onclick="if(!event.target.closest('.fx-i'))openDistrict()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDistrict()}"><i data-lucide="building-2"></i><input class="fld pick" id="ad_city" placeholder="Tap to select or auto-detect via pincode" readonly><i data-lucide="chevron-down"></i><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Help"><i data-lucide="info"></i></button></div>
-        <div class="fx-tip"><i data-lucide="lightbulb"></i> पिनकोड डालने पर यह अपने आप भर जाता है, या इस बॉक्स पर टैप करके अपना जिला/शहर चुनें।</div><span class="err">Please select your district / city</span></div>
+        <div class="fx-box" role="button" tabindex="0" onclick="openDistrict()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDistrict()}"><i data-lucide="building-2"></i><input class="fld pick" id="ad_city" placeholder="Tap to select or auto-detect via pincode" readonly><i data-lucide="chevron-down"></i></div><span class="err">Please select your district / city</span></div>
 
       <!-- ADDRESS LINE 1 -->
       <div class="grp fx"><label for="ad_line1">Address line 1 <small>House / Flat / Building *</small></label>
-        <div class="fx-box"><i data-lucide="house"></i><input class="fld" id="ad_line1" placeholder="House no., flat, floor, building name"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Help"><i data-lucide="info"></i></button></div>
-        <div class="fx-tip"><i data-lucide="lightbulb"></i> <b>Address Line 1:</b> अपना मकान नंबर, फ्लैट/रूम नंबर या बिल्डिंग का नाम लिखें।<br><b>जैसे:</b> मकान नं. 12, शांति निकेतन</div><span class="err">Enter house / flat / building details</span></div>
+        <div class="fx-box"><i data-lucide="house"></i><input class="fld" id="ad_line1" placeholder="House no., flat, floor, building name"></div><span class="err">Enter house / flat / building details</span></div>
 
       <!-- ADDRESS LINE 2 -->
       <div class="grp fx"><label for="ad_line2">Address line 2 <small>Street / Area / Landmark (optional)</small></label>
-        <div class="fx-box"><i data-lucide="compass"></i><input class="fld" id="ad_line2" placeholder="Street, colony, sector, nearby landmark"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Help"><i data-lucide="info"></i></button></div>
-        <div class="fx-tip"><i data-lucide="lightbulb"></i> <b>Address Line 2:</b> अपनी गली, मोहल्ला, गांव/कॉलोनी और पास की कोई मशहूर जगह (Landmark) लिखें।<br><b>जैसे:</b> गांधी नगर मेन रोड, स्टेट बैंक के पास</div><span class="err">Enter street, area or nearby landmark</span></div>
+        <div class="fx-box"><i data-lucide="compass"></i><input class="fld" id="ad_line2" placeholder="Street, colony, sector, nearby landmark"></div><span class="err">Enter street, area or nearby landmark</span></div>
 
       <div class="grp fx"><label for="ad_map_link">Google Maps link <small>(Optional)</small></label>
-        <div class="fx-box"><i data-lucide="navigation"></i><input class="fld" id="ad_map_link" placeholder="Paste Google Maps location link (optional)" type="url"><button type="button" class="fx-i" onclick="toggleInfo(this)" aria-label="Help"><i data-lucide="info"></i></button></div>
-        <div class="fx-tip"><i data-lucide="lightbulb"></i> यह जरूरी नहीं है। अगर आप चाहें तो Google Maps से अपनी लोकेशन का Share link कॉपी करके यहाँ पेस्ट कर सकते हैं।</div></div>
+        <div class="fx-box"><i data-lucide="navigation"></i><input class="fld" id="ad_map_link" placeholder="Paste Google Maps location link (optional)" type="url"></div></div>
 
       <p class="sec-t" style="margin-top:6px">Save address as</p>
       <div class="chips" id="typeChips">
@@ -866,12 +804,10 @@ const applyEmailLock = () => {
     emailInput.readOnly = true;
     emailInput.classList.add('locked');
     emailBox.classList.add('locked');
-    emailGrp.querySelector('.fx-i')?.setAttribute('hidden', '');
   } else {
     emailInput.readOnly = false;
     emailInput.classList.remove('locked');
     emailBox.classList.remove('locked');
-    emailGrp.querySelector('.fx-i')?.removeAttribute('hidden');
   }
 };
 
@@ -904,7 +840,7 @@ const openAddrScreen = id => {
   setType(a?.type || 'Home');
   pinSeq++;
   pinStatus('', '');
-  $$('.fx-tip.on,.fx-i.on,.fx.active').forEach(e => e.classList.remove('on', 'active'));
+  $$('.fx.active').forEach(e => e.classList.remove('active'));
   $('#addrScreen').classList.add('on');
   syncBodyLock();
   icons();
@@ -1079,14 +1015,6 @@ document.addEventListener('keydown', e => {
   if ($('#addrScreen').classList.contains('on')) return closeAddrScreen();
 });
 
-const toggleInfo = btn => {
-  const wrap = btn.closest('.fx');
-  const tip = wrap.querySelector('.fx-tip');
-  const open = !tip.classList.contains('on');
-  $$('.fx-tip.on').forEach(t => t.classList.remove('on'));
-  $$('.fx-i.on').forEach(b => b.classList.remove('on'));
-  if (open) { tip.classList.add('on'); btn.classList.add('on'); }
-};
 
 const bindForm = () => {
   $('#distSearch').addEventListener('input', renderDistricts);
@@ -1095,8 +1023,6 @@ const bindForm = () => {
     $$('.fx.active').forEach(x => {
       if (x === w) return;
       x.classList.remove('active');
-      x.querySelector('.fx-tip')?.classList.remove('on');
-      x.querySelector('.fx-i')?.classList.remove('on');
     });
     if (w) w.classList.add('active');
   });
@@ -1331,22 +1257,6 @@ const showView = hasItems => {
 };
 
 /* Inline Quantity Stepper on Checkout Card with Primary Black Shimmer '+' */
-window.inlineStepQty = (index, delta) => {
-  const item = state.cart[index];
-  if (!item) return;
-  const next = (Number(item.qty) || 1) + delta;
-  if (next <= 0) {
-    removeItem(index);
-    return;
-  }
-  if (next > 20) {
-    toast('Maximum 20 pieces per variant', true);
-    return;
-  }
-  item.qty = next;
-  saveCart();
-  render(delta > 0 ? index : -1);
-};
 
 const render = (pulsePlusIdx = -1) => {
   if (!state.cart.length) {
@@ -1366,8 +1276,6 @@ const render = (pulsePlusIdx = -1) => {
     const mrp = Math.max(parsePrice(product.mrp || product.originalPrice), price);
     const linePrice = price * item.qty;
     const lineMrp = mrp * item.qty;
-    const colours = getProductColours(product, item);
-    const pulseClass = pulsePlusIdx === index ? ' simar-on' : '';
 
     return `<article class="item" id="orderItem-${index}">
       <div class="item-main">
@@ -1378,40 +1286,20 @@ const render = (pulsePlusIdx = -1) => {
         <div class="item-info">
           <div class="item-top-row">
             <h3>${esc(product.name)}</h3>
-            <button class="item-del" type="button" onclick="removeItem(${index})" aria-label="Remove item"><i data-lucide="trash-2"></i></button>
+            <button class="item-info-btn" type="button" onclick="openItemInfo(${index})" aria-label="Item options"><i data-lucide="info"></i></button>
           </div>
           <div class="item-variants">
-            <button type="button" class="v-chip" onclick="openSheet(${index})" title="Tap to change colour">
-              <span>Colour: ${esc(item.color || 'Main')}</span>
-            </button>
-            <button type="button" class="v-chip" onclick="openSheet(${index})" title="Tap to change size">
-              <span>Size: ${esc(item.size || 'Free Size')}</span>
-            </button>
-            <button type="button" class="v-chip edit-pill" onclick="openSheet(${index})">
-              <i data-lucide="sliders-horizontal"></i>Edit
-            </button>
+            <span class="v-chip"><span>Colour: ${esc(item.color || 'Main')}</span></span>
+            <span class="v-chip"><span>Size: ${esc(item.size || 'Free Size')}</span></span>
+            <span class="v-chip"><span>Qty: ${item.qty}</span></span>
           </div>
           <div class="item-bottom">
             <div class="item-price-box">
               <div class="item-price">${money(linePrice)}${lineMrp > linePrice ? `<s>${money(lineMrp)}</s>` : ''}</div>
               ${item.qty > 1 ? `<span class="item-unit">${money(price)} × ${item.qty} pcs</span>` : ''}
             </div>
-            <div class="item-qty-box" aria-label="Quantity">
-              <button type="button" class="iq-btn minus" onclick="inlineStepQty(${index}, -1)" aria-label="Decrease quantity">−</button>
-              <span class="iq-val">${item.qty}</span>
-              <button type="button" class="iq-btn plus${pulseClass}" onclick="inlineStepQty(${index}, 1)" aria-label="Increase quantity">+</button>
-            </div>
           </div>
         </div>
-      </div>
-      <div class="item-foot-bar">
-        <button type="button" class="btn-item-sub" onclick="openSheet(${index})">
-          <i data-lucide="palette"></i>Change colour / size
-        </button>
-        ${colours.length > 1 || (Array.isArray(product.sizes) && product.sizes.length > 1) ? `
-        <button type="button" class="btn-item-sub" onclick="duplicateVariant(${index})">
-          <i data-lucide="copy-plus"></i>+ Add another colour/size
-        </button>` : ''}
       </div>
     </article>`;
   }).join('');
@@ -1437,7 +1325,6 @@ const render = (pulsePlusIdx = -1) => {
     savBanner.hidden = true;
   }
 
-  renderRecommendations();
   icons();
 };
 
@@ -1596,35 +1483,36 @@ const wishItem = () => {
   openSheet(state.sheetIndex);
 };
 
-const renderRecommendations = () => {
-  const inCart = new Set(state.cart.map(item => String(item.productId)));
-  const wishlist = readJson('aavira_wishlist', []).map(String);
-  const ids = [...new Set([...wishlist, ...Object.keys(state.db)])].filter(id => state.db[id] && !inCart.has(String(id))).slice(0, 6);
-  $('#recSection').hidden = !ids.length;
-  $('#recRow').innerHTML = ids.map(id => {
-    const p = state.db[id];
-    const image = esc(p.imageMain || p.imageUrl || p.image || FALLBACK_IMG);
-    return `<div class="rec-card"><img src="${image}" alt="" ${IMG_ERROR}><p>${esc(p.name)}</p><div class="rec-foot"><b>${money(parsePrice(p.price))}</b><button type="button" onclick="addRecommended('${esc(id)}')">+ Add</button></div></div>`;
-  }).join('');
-};
 
-const addRecommended = id => {
-  const product = state.db[String(id).trim()];
-  if (!product) return;
-  const defaultSize = Array.isArray(product.sizes) && product.sizes.length ? String(product.sizes[0]) : 'Free Size';
-  const defaultColor = Array.isArray(product.colors) && product.colors.length ? String(product.colors[0]) : 'Main';
-  state.cart.push({
-    productId: String(product.id ?? product._id).trim(),
-    size: defaultSize,
-    color: defaultColor,
-    qty: 1,
-    image: product.imageMain || product.image || product.imageUrl || ''
-  });
-  state.cart = deduplicateCartVariants(state.cart);
-  saveCart();
-  toast('Added to your order');
-  render(state.cart.length - 1);
+
+/* Clean item options: info popup (Delete + Add more); Delete pehle Yes/No confirm */
+window.closeInfoDialog = () => { $('#overlay').classList.remove('on'); syncBodyLock(); };
+window.openItemInfo = index => {
+  const item = state.cart[index];
+  if (!item) return;
+  const product = getProductMeta(item);
+  openDialog(`<div class="badge-ico" style="background:var(--rani)"><i data-lucide="info"></i></div>
+    <h2>${esc(product.name)}</h2>
+    <p>Colour: ${esc(item.color || 'Main')} · Size: ${esc(item.size || 'Free Size')} · Qty: ${item.qty}</p>
+    <div class="acts">
+      <button class="btn-danger" type="button" onclick="confirmRemoveItem(${index})"><i data-lucide="trash-2"></i>Delete item</button>
+      <a class="btn-line" href="./"><i data-lucide="plus"></i>Add more</a>
+      <button class="btn-fill" type="button" onclick="closeInfoDialog()">Close</button>
+    </div>`);
 };
+window.confirmRemoveItem = index => {
+  const item = state.cart[index];
+  if (!item) return closeInfoDialog();
+  const product = getProductMeta(item);
+  openDialog(`<div class="badge-ico" style="background:var(--danger)"><i data-lucide="trash-2"></i></div>
+    <h2>Remove this item?</h2>
+    <p>${esc(product.name)} (Colour: ${esc(item.color || 'Main')}, Size: ${esc(item.size || 'Free Size')}) will be removed from your order.</p>
+    <div class="acts">
+      <button class="btn-danger" type="button" onclick="removeItemConfirmed(${index})">Yes, remove</button>
+      <button class="btn-line" type="button" onclick="closeInfoDialog()">No, keep it</button>
+    </div>`);
+};
+window.removeItemConfirmed = index => { closeInfoDialog(); removeItem(index); };
 
 const removeItem = index => {
   if (!state.cart[index]) return;
@@ -1637,9 +1525,7 @@ const removeItem = index => {
 
 /* Coupon / Promo Code Handling (Synced with Home Page aavira_active_promo & savedPromoCache) */
 const setPromoView = code => {
-  $('#couponToggle').style.display = code ? 'none' : 'flex';
-  $('#promoForm').style.display = 'none';
-  $('#couponToggle').classList.remove('open');
+  $('#promoForm').style.display = code ? 'none' : 'flex';
   $('#promoApplied').style.display = code ? 'flex' : 'none';
   $('#promoName').textContent = code;
 };
@@ -1648,14 +1534,6 @@ const setPromoErr = m => {
   e.textContent = m || '';
   e.hidden = !m;
   $('#promoInput').classList.toggle('bad', !!m);
-};
-const toggleCoupon = () => {
-  const form = $('#promoForm');
-  const open = form.style.display !== 'flex';
-  form.style.display = open ? 'flex' : 'none';
-  $('#couponToggle').classList.toggle('open', open);
-  $('#couponToggle').setAttribute('aria-expanded', open);
-  if (open) $('#promoInput').focus();
 };
 /* Promo ko server se dobara verify karke hi lagao. Jo code expire ho,
    limit khatm ho ya is order ki value uski minimum shart se kam ho —
