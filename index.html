@@ -17,7 +17,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
 <style>
-:root{--rani:#161616;--rani-dark:#000000;--gold:#D4AF37;--gold-text:#8A6D1D;--ivory:#FDFBF7;--cream:#F7F1E8;--ink:#242024;--muted:#6B6369;--line:#E7E0D9;--blush:#F5F1E8;--plum:#1B1719;--ease:cubic-bezier(.2,.8,.2,1);--font-main:"Barlow Condensed","Roboto Condensed",system-ui,sans-serif}
+:root{--rani:#111111;--rani-dark:#000000;--gold:#D4AF37;--gold-text:#8A6D1D;--ivory:#FFFFFF;--cream:#F8F8FA;--ink:#111113;--muted:#6E6E73;--line:#E5E5EA;--blush:#F2F2F7;--plum:#1C1C1E;--ease:cubic-bezier(.22,1,.36,1);--ios-spring:cubic-bezier(.32,.72,0,1);--font-main:"Barlow Condensed","Roboto Condensed",system-ui,sans-serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{margin:0;font-family:var(--font-main);letter-spacing:.015em;background:var(--ivory);color:var(--ink);overflow-x:clip;overscroll-behavior-y:none;-webkit-font-smoothing:antialiased}
@@ -32,11 +32,11 @@ a{color:inherit;text-decoration:none}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 .aavira-premium-text,.aavira-premium-line{display:none!important}
 
-.app{max-width:420px;margin:0 auto;background:var(--ivory);min-height:100vh;padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
-@media(min-width:640px){body{background:#EFE8DE}.app{box-shadow:0 0 60px rgba(36,32,36,.12)}}
+.app{max-width:420px;margin:0 auto;background:#FFFFFF;min-height:100vh;padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+@media(min-width:640px){body{background:#FFFFFF}.app{box-shadow:0 0 50px rgba(0,0,0,.06);border-inline:1px solid #F0F0F5}}
 
 /* Header: responsive and collision-free on small phones (320px+) */
-.site-header{position:sticky;top:0;z-index:40;background:rgba(253,251,247,.92);backdrop-filter:blur(16px) saturate(1.25);-webkit-backdrop-filter:blur(16px) saturate(1.25);border-bottom:1px solid rgba(231,224,217,.75);padding-top:env(safe-area-inset-top,0px)}
+.site-header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:blur(20px) saturate(1.8);-webkit-backdrop-filter:blur(20px) saturate(1.8);border-bottom:1px solid rgba(229,229,234,.8);padding-top:env(safe-area-inset-top,0px)}
 .site-header-row{height:58px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 12px}
 .header-left{display:flex;align-items:center;gap:2px;min-width:0;flex:1}
 .header-actions{display:flex;align-items:center;gap:2px}
@@ -106,29 +106,29 @@ a{color:inherit;text-decoration:none}
 .feat-list{display:flex;flex-direction:column;gap:20px}
 .grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px 10px}
 
-/* Product Cards: Sharp 1:1 Top Image, Rounded Bottom Only, Discount Tag in Price Row, No Card Heart */
-.pcard{position:relative;min-width:0;background:#fff;border:1px solid #EEE4D2;border-radius:0 0 16px 16px;overflow:hidden;padding-bottom:10px;box-shadow:0 8px 20px -10px rgba(36,32,36,.12);display:flex;flex-direction:column;transition:box-shadow .3s,border-color .3s,transform .3s var(--ease)}
-@media(hover:hover){.pcard:hover{box-shadow:0 18px 36px -14px rgba(36,32,36,.2);border-color:rgba(212,175,55,.55);transform:translateY(-2px)}}
+/* Product Cards: Pure Flat iOS Luxury Editorial Card — Zero Shadow, Crisp Hairline Border */
+.pcard{position:relative;min-width:0;background:#FFFFFF;border:1px solid #EAEAEF;border-radius:14px;overflow:hidden;padding-bottom:11px;box-shadow:none!important;display:flex;flex-direction:column;transition:border-color .25s var(--ease),transform .25s var(--ease)}
+@media(hover:hover){.pcard:hover{box-shadow:none!important;border-color:#111113;transform:translateY(-2px)}}
 .pcard-rail{flex:0 0 168px;scroll-snap-align:start}
 .pcard-link{display:block;cursor:pointer}
-.pcard-media{position:relative;display:block;width:100%;aspect-ratio:1/1;border-radius:0;background:linear-gradient(135deg,#F6F0E2,#EEE3CB);overflow:hidden}
+.pcard-media{position:relative;display:block;width:100%;aspect-ratio:1/1;border-radius:0;background:#F7F7FA;border-bottom:1px solid #F0F0F5;overflow:hidden}
 .pcard-media img{width:100%;height:100%;aspect-ratio:1/1;object-fit:cover;border-radius:0;transition:transform .5s var(--ease)}
-@media(hover:hover){.pcard:hover .pcard-media img{transform:scale(1.06)}}
-.tags{position:absolute;left:7px;top:7px;max-width:calc(100% - 14px);display:flex;flex-direction:column;align-items:flex-start;gap:4px;z-index:2;pointer-events:none}
-.tag-off,.tag-best{color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:3.5px 8px;border-radius:999px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.tag-off{background:linear-gradient(135deg,#1e1e22,#000)}
-.tag-best{background:var(--ink);box-shadow:0 4px 10px rgba(0,0,0,.2)}
+@media(hover:hover){.pcard:hover .pcard-media img{transform:scale(1.05)}}
+.tags{position:absolute;left:8px;top:8px;max-width:calc(100% - 16px);display:flex;flex-direction:column;align-items:flex-start;gap:4px;z-index:2;pointer-events:none}
+.tag-off,.tag-best{color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3.5px 8px;border-radius:6px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;box-shadow:none!important}
+.tag-off{background:#111113}
+.tag-best{background:#111113}
 .pcard-foot{display:flex;flex-direction:column;flex:1;padding:10px 10px 0;min-width:0}
 .pcard-text{display:block;min-width:0}
-.pcard-name{display:block;font-size:14.5px;font-weight:500;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pcard-name{display:block;font-size:15px;font-weight:600;letter-spacing:.02em;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#111113}
 .pcard-price{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:4px}
-.price{font-size:16.5px;font-weight:700;letter-spacing:.01em;color:var(--rani)}
-.pcard-price .tag-off{font-size:10.5px;padding:3px 7px;box-shadow:none}
+.price{font-size:17px;font-weight:700;letter-spacing:.01em;color:#111113}
+.pcard-price .tag-off{font-size:10px;padding:2.5px 6px;border-radius:5px;background:#F2F2F7;color:#111113;border:1px solid #E5E5EA;box-shadow:none!important}
 .mrp{font-size:12.5px;color:var(--muted);text-decoration:line-through}
-.pcard-row{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:8px;min-width:0;width:100%}
+.pcard-row{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:9px;padding-top:8px;border-top:1px solid #F4F4F8;min-width:0;width:100%}
 .pcard-metalink{display:flex;align-items:center;gap:5px;min-width:0;flex:1;overflow:hidden}
-.go{margin-left:auto;flex:0 0 28px;width:28px;height:28px;padding:0;border:0;border-radius:50%;background:linear-gradient(135deg,#26262b,#0b0b0d);color:#fff;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 6px 12px -4px rgba(0,0,0,.45);transition:transform .2s var(--ease),box-shadow .2s}
-@media(hover:hover){.go:hover{transform:scale(1.06);box-shadow:0 10px 18px -4px rgba(0,0,0,.55)}}
+.go{margin-left:auto;flex:0 0 28px;width:28px;height:28px;padding:0;border:1px solid #111113;border-radius:8px;background:#111113;color:#fff;display:inline-flex;align-items:center;justify-content:center;box-shadow:none!important;transition:transform .2s var(--ease),background .2s,color .2s}
+@media(hover:hover){.go:hover{background:#fff;color:#111113;box-shadow:none!important}}
 .go:active{transform:scale(.92)}
 .go svg{width:13px;height:13px}
 .rating{display:inline-flex;align-items:center;gap:2.5px;font-weight:600;font-size:11.5px;color:#fff;background:#15803D;padding:2.5px 6.5px;border-radius:999px;flex-shrink:0;line-height:1}
@@ -210,7 +210,7 @@ a{color:inherit;text-decoration:none}
 .marquee-row:nth-child(3) .marquee-copy{color:var(--muted)}
 @keyframes slide{to{transform:translateX(-50%)}}
 
-.footer{margin-top:44px;position:relative;background:linear-gradient(180deg,var(--ivory),var(--cream));color:var(--ink);padding:32px 18px 30px;border-top:1px solid var(--line)}
+.footer{margin-top:44px;position:relative;background:#FFFFFF;color:var(--ink);padding:32px 18px 30px;border-top:1px solid var(--line)}
 .footer::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
 .footer-brand{font-family:var(--font-main);font-size:26px;font-weight:600;color:#161616}
 .footer-brand span{color:var(--gold-text)}
@@ -268,16 +268,21 @@ body.nav-hidden.has-offer .cart-bar{bottom:calc(78px + env(safe-area-inset-botto
 .cb-go{display:inline-flex;align-items:center;justify-content:center;gap:4px;flex:none;height:30px;padding:0 12px;font-size:12px;font-weight:700;line-height:1;white-space:nowrap;color:#191919;background:linear-gradient(135deg,#F0D47E,#C49A2E);border-radius:999px;box-shadow:0 6px 14px -4px rgba(212,175,55,.55)}
 .cb-go svg{width:13px;height:13px}
 
-.offer{position:fixed;left:50%;bottom:calc(78px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(160%);width:calc(100% - 24px);max-width:396px;z-index:9100;background:linear-gradient(135deg,var(--rani),var(--rani-dark));color:#fff;border:1px solid rgba(212,175,55,.35);border-radius:999px;padding:8px 10px 8px 18px;display:flex;align-items:center;gap:8px;box-shadow:0 14px 34px rgba(0,0,0,.38);transition:transform .45s var(--ease),bottom .38s cubic-bezier(.4,0,.2,1)}
-.offer.is-on{transform:translateX(-50%)}
+/* Professional iPhone Dynamic-Island Style Login Pill Popup (Appears 5s After Full Page Load, Stays Until X Clicked) */
+.offer{position:fixed;left:50%;bottom:calc(78px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(180%) scale(.92);opacity:0;width:calc(100% - 24px);max-width:396px;z-index:9100;background:rgba(17,17,19,.96);backdrop-filter:blur(22px) saturate(1.8);-webkit-backdrop-filter:blur(22px) saturate(1.8);color:#fff;border:1px solid rgba(212,175,55,.45);border-radius:999px;padding:8px 10px 8px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 18px 40px -10px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.12);transition:transform .6s cubic-bezier(.22,1,.36,1),opacity .45s ease,bottom .38s cubic-bezier(.4,0,.2,1)}
+.offer.is-on{transform:translateX(-50%) translateY(0) scale(1);opacity:1}
 body.nav-hidden .offer{bottom:calc(14px + env(safe-area-inset-bottom,0px))}
-body.nav-hidden .offer.is-on{width:calc(100% - 76px);left:max(12px,calc(50% - 198px));transform:none}
-.offer b{display:block;font-size:14px;line-height:1.2}
-.offer small{display:block;font-size:12px;opacity:.88;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.offer .grow{flex:1;min-width:0}
-.offer .signin{height:32px;flex:0 0 auto;background:#fff;color:var(--rani);border:0;border-radius:999px;padding:0 14px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap}
-.offer .x{width:28px;height:28px;flex:0 0 28px;padding:0;border-radius:50%;background:rgba(255,255,255,.12);border:0;color:#fff;display:inline-flex;align-items:center;justify-content:center}
-.offer .x svg{width:14px;height:14px}
+body.nav-hidden .offer.is-on{width:calc(100% - 76px);left:max(12px,calc(50% - 198px));transform:translateY(0) scale(1)}
+.offer-dot{width:8px;height:8px;flex:0 0 8px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px rgba(212,175,55,.18)}
+.offer b{display:block;font-size:14.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1.15;color:#FFFFFF}
+.offer small{display:block;font-size:12.5px;color:rgba(255,255,255,.78);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.offer .grow{flex:1;min-width:0;cursor:pointer}
+.offer .signin{height:34px;flex:0 0 auto;background:#FFFFFF;color:#111113;border:0;border-radius:999px;padding:0 16px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;transition:transform .2s,background .2s}
+.offer .signin:active{transform:scale(.95)}
+.offer .x{width:30px;height:30px;flex:0 0 30px;padding:0;border-radius:50%;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);color:#fff;display:inline-flex;align-items:center;justify-content:center;transition:background .2s,transform .2s}
+@media(hover:hover){.offer .x:hover{background:rgba(255,255,255,.26)}}
+.offer .x:active{transform:scale(.9)}
+.offer .x svg{width:14px;height:14px;stroke-width:2.2}
 
 .fab-col{position:fixed;z-index:60;right:max(12px,calc(50% - 198px));bottom:calc(82px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:10px;transition:bottom .38s cubic-bezier(.4,0,.2,1)}
 body.has-offer .fab-col{bottom:calc(144px + env(safe-area-inset-bottom,0px))}
@@ -320,18 +325,18 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
 .field:focus{border-color:var(--rani);box-shadow:0 0 0 3px rgba(0,0,0,.08)}
 #promoInput{border-radius:999px;height:48px;padding:0 20px}
 
-/* Full-screen Professional Editorial Sidebar Menu (No Icons, Slow Smooth Animation) */
-#sidebar{inset:0;left:0;right:0;margin:0 auto;width:100%;max-width:420px;background:var(--ivory);display:flex;flex-direction:column;box-shadow:none;transition:transform .78s cubic-bezier(.22,1,.36,1),opacity .65s ease,visibility 0s .78s}
-#sidebar.is-open{transition:transform .78s cubic-bezier(.22,1,.36,1),opacity .65s ease,visibility 0s 0s}
-.side-top{display:flex;align-items:center;justify-content:space-between;padding:calc(14px + env(safe-area-inset-top,0px)) 20px 14px;border-bottom:1px solid var(--line);background:rgba(253,251,247,.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+/* Full-screen Professional Editorial Sidebar Menu (No Icons, Smooth Curtain Slide + Sequential One-by-One Button Cascade Animation) */
+#sidebar{inset:0;left:0;right:0;margin:0 auto;width:100%;max-width:420px;background:#FFFFFF;display:flex;flex-direction:column;box-shadow:none;transform:translateY(-100%);opacity:0;transition:transform .55s cubic-bezier(.22,1,.36,1),opacity .4s ease,visibility 0s .55s}
+#sidebar.is-open{transform:translateY(0);opacity:1;transition:transform .55s cubic-bezier(.22,1,.36,1),opacity .35s ease,visibility 0s 0s}
+.side-top{display:flex;align-items:center;justify-content:space-between;padding:calc(14px + env(safe-area-inset-top,0px)) 20px 14px;border-bottom:1px solid var(--line);background:#FFFFFF}
 .side-top img{height:36px;width:auto;object-fit:contain}
-.side-close{background:none;border:1px solid var(--line);border-radius:999px;padding:7px 16px;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);transition:background .2s,color .2s,border-color .2s}
+.side-close{background:#F8F8FA;border:1px solid var(--line);border-radius:999px;padding:7px 16px;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);transition:background .2s,color .2s,border-color .2s}
 @media(hover:hover){.side-close:hover{background:var(--rani);border-color:var(--rani);color:#fff}}
 .side-close:active{transform:scale(.96)}
 
-.profile{margin:18px 20px 8px;padding:18px 20px;background:#fff;border-radius:16px;border:1px solid var(--line);box-shadow:0 10px 24px -14px rgba(36,32,36,.12)}
+.profile{margin:16px 20px 8px;padding:16px 18px;background:#F8F8FA;border-radius:16px;border:1px solid var(--line);box-shadow:none}
 .profile-row{display:flex;align-items:center;gap:14px}
-.avatar{width:48px;height:48px;border-radius:50%;background:var(--rani);border:1.5px solid var(--gold);color:#fff;font-family:var(--font-main);font-size:21px;font-weight:600;display:flex;align-items:center;justify-content:center;flex:0 0 48px;letter-spacing:0}
+.avatar{width:46px;height:46px;border-radius:50%;background:var(--rani);border:1.5px solid var(--gold);color:#fff;font-family:var(--font-main);font-size:20px;font-weight:600;display:flex;align-items:center;justify-content:center;flex:0 0 46px;letter-spacing:0}
 .profile h3{font-family:var(--font-main);font-size:19px;font-weight:600;letter-spacing:.02em;text-transform:uppercase}
 .profile p{margin:2px 0 0;font-size:13.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .profile-actions{display:flex;gap:10px;margin-top:14px}
@@ -341,22 +346,57 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
 .promo-badge.is-on{display:flex}
 .promo-badge button{height:28px;padding:0 12px;border-radius:999px;background:rgba(138,109,29,.12);border:0;color:var(--gold-text);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center}
 
-.side-nav{flex:1;overflow-y:auto;padding:10px 20px calc(32px + env(safe-area-inset-bottom,0px))}
-.side-nav hr{border:0;border-top:1px solid var(--line);margin:14px 0}
+.side-nav{flex:1;overflow-y:auto;padding:8px 20px calc(32px + env(safe-area-inset-bottom,0px))}
+.side-nav hr{border:0;border-top:1px solid var(--line);margin:12px 0}
 .side-group-label{display:block;padding:8px 4px 4px;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#A8842C}
-.menu-item{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 4px;background:none;border:0;border-bottom:1px solid rgba(231,224,217,.55);border-radius:0;font-size:17px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);text-align:left;text-decoration:none;cursor:pointer;transition:color .2s,padding-left .22s var(--ease)}
+.menu-item{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;margin-bottom:6px;background:#F8F8FA;border:1px solid #ECECF2;border-radius:12px;font-size:16.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);text-align:left;text-decoration:none;cursor:pointer;transition:background .2s,border-color .2s,color .2s,transform .2s var(--ease)}
 .menu-item svg,[data-lucide].side-ic{display:none!important}
-.menu-item::after{content:"";width:6px;height:6px;border-top:1.5px solid #B5ABA3;border-right:1.5px solid #B5ABA3;transform:rotate(45deg);flex:0 0 6px;margin-right:4px;transition:transform .22s var(--ease),border-color .2s}
-@media(hover:hover){.menu-item:hover{color:var(--gold-text);padding-left:10px}.menu-item:hover::after{border-color:var(--gold-text);transform:translateX(2px) rotate(45deg)}}
-.menu-item:active{opacity:.7}
+.menu-item::after{content:"";width:6px;height:6px;border-top:1.5px solid #8E8E93;border-right:1.5px solid #8E8E93;transform:rotate(45deg);flex:0 0 6px;margin-right:2px;transition:transform .22s var(--ease),border-color .2s}
+@media(hover:hover){.menu-item:hover{background:#111113;border-color:#111113;color:#FFFFFF}.menu-item:hover::after{border-color:#FFFFFF;transform:translateX(3px) rotate(45deg)}}
+.menu-item:active{transform:scale(.98)}
 
-.sb-mini{display:block;margin:22px 0 6px;padding:18px 20px;border-radius:14px;background:linear-gradient(135deg,#1e1e22,#0a0a0c);border:1px solid rgba(212,175,55,.4);color:#fff;text-decoration:none;text-align:center}
+.sb-mini{display:block;margin:18px 0 6px;padding:18px 20px;border-radius:14px;background:#111113;border:1px solid rgba(212,175,55,.45);color:#fff;text-decoration:none;text-align:center}
 .sb-mini b{display:block;font-family:var(--font-main);font-size:18px;font-weight:600;color:var(--gold);letter-spacing:.14em;text-transform:uppercase}
 .sb-mini span{display:block;margin-top:4px;font-size:13px;color:rgba(255,255,255,.82);letter-spacing:.05em}
-#sidebar.is-open .side-top{animation:sbIn .7s cubic-bezier(.22,1,.36,1) both;animation-delay:.12s}
-#sidebar.is-open .profile{animation:sbIn .78s cubic-bezier(.22,1,.36,1) both;animation-delay:.22s}
-#sidebar.is-open .side-nav{animation:sbIn .88s cubic-bezier(.22,1,.36,1) both;animation-delay:.32s}
-@keyframes sbIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* Ek-ek karke aane wala (One-by-One Staggered Cascade) Sidebar Button Animation */
+.sb-stagger{opacity:0;transform:translateX(-28px)}
+#sidebar.is-open .sb-stagger{animation:sbBtnCascade .52s cubic-bezier(.22,1,.36,1) forwards;animation-delay:calc(.08s + var(--sb-i,0) * .045s)}
+@keyframes sbBtnCascade{0%{opacity:0;transform:translateX(-28px)}100%{opacity:1;transform:translateX(0)}}
+
+/* Professional iPhone Auth Popup Modal (Appears 5s After Full Page Load if Guest, Stays Until X Clicked) */
+#authPopupModal{bottom:calc(16px + env(safe-area-inset-bottom,0px));left:0;right:0;margin:0 auto;width:calc(100% - 24px);max-width:396px;background:#FFFFFF;border:1px solid #E5E5EA;border-radius:26px;padding:20px 18px 18px;box-shadow:0 24px 60px rgba(0,0,0,.22)}
+.ios-auth-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+.ios-auth-close{width:32px;height:32px;flex:0 0 32px;border-radius:50%;border:1px solid #E5E5EA;background:#F8F8FA;color:#111113;display:inline-flex;align-items:center;justify-content:center;padding:0;transition:background .2s,color .2s,transform .2s}
+@media(hover:hover){.ios-auth-close:hover{background:#111113;border-color:#111113;color:#FFFFFF}}
+.ios-auth-close:active{transform:scale(.92)}
+.ios-auth-close svg{width:15px;height:15px;stroke-width:2.2}
+.ios-auth-head h2{font-size:23px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:#111113;line-height:1.15}
+.ios-auth-head p{margin:3px 0 0;font-size:13.5px;color:var(--muted)}
+.ios-seg{display:grid;grid-template-columns:1fr 1fr;padding:3px;background:#F2F2F7;border-radius:12px;margin-bottom:14px;position:relative}
+.ios-seg-btn{height:34px;border:0;border-radius:9.5px;background:transparent;font-size:13.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);transition:background .25s var(--ios-spring),color .25s,box-shadow .25s}
+.ios-seg-btn[aria-selected="true"]{background:#FFFFFF;color:#111113;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.ios-group{background:#F8F8FA;border:1px solid #E5E5EA;border-radius:14px;overflow:hidden;margin-bottom:12px}
+.ios-row{display:flex;align-items:center;padding:0 14px;min-height:46px;background:#FFFFFF}
+.ios-row+.ios-row{border-top:1px solid #ECECF2}
+.ios-row label{flex:0 0 78px;font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#111113}
+.ios-row input{flex:1;min-width:0;height:46px;border:0;outline:0;background:transparent;font-family:inherit;font-size:15px;font-weight:500;color:#111113}
+.ios-row input::placeholder{color:#A1A1AA}
+.ios-otp-btn{height:28px;padding:0 10px;border-radius:8px;border:1px solid #111113;background:#111113;color:#FFFFFF;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+.ios-otp-btn:disabled{opacity:.5}
+.ios-auth-submit{width:100%;height:46px;border:0;border-radius:13px;background:#111113;color:#FFFFFF;font-size:15px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .2s var(--ios-spring),opacity .2s}
+.ios-auth-submit:active{transform:scale(.98)}
+.ios-auth-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;font-size:12.5px;color:var(--muted)}
+.ios-auth-link{background:none;border:0;padding:0;color:#111113;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-decoration:underline;font-size:12px}
+.ios-vip-bar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ios-vip-left{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
+.ios-vip-av{width:46px;height:46px;flex:0 0 46px;border-radius:50%;background:#111113;color:#FFFFFF;border:1.5px solid var(--gold);font-size:20px;font-weight:700;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.ios-vip-meta{min-width:0;flex:1}
+.ios-vip-meta strong{display:block;font-size:17px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:#111113;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ios-vip-meta span{display:block;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ios-vip-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.ios-pill-btn{height:34px;padding:0 12px;border-radius:999px;border:1px solid #E5E5EA;background:#F8F8FA;color:#111113;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center}
+.ios-pill-btn.dark{background:#111113;border-color:#111113;color:#FFFFFF}
 
 .side-foot{margin-top:22px;padding:20px 0 8px;border-top:1px solid var(--line)}
 .side-follow{margin:0 0 12px;text-align:center;font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
@@ -528,6 +568,46 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
   <button type="button" id="btnApplyPromo" class="btn-pink" data-no-delay="1" onclick="processPromoCode()">Apply code</button>
 </div>
 
+<div id="authPopupModal" class="layer from-bottom" data-scrim="1" role="dialog" aria-modal="true" aria-labelledby="homeAuthTitle">
+  <div class="ios-auth-top">
+    <div class="ios-auth-head">
+      <span class="sec-eyebrow" style="margin-bottom:2px">Aavira ID · Flat 20% Off First Order</span>
+      <h2 id="homeAuthTitle">Sign in or Create Account</h2>
+    </div>
+    <button type="button" class="ios-auth-close" data-no-delay="1" onclick="closeAuthPopup()" aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
+  <div class="ios-seg" role="tablist" aria-label="Authentication mode">
+    <button type="button" class="ios-seg-btn" id="tabBtnLogin" role="tab" aria-selected="true" data-no-delay="1" onclick="switchHomeAuthMode('login')">Log In</button>
+    <button type="button" class="ios-seg-btn" id="tabBtnSignup" role="tab" aria-selected="false" data-no-delay="1" onclick="switchHomeAuthMode('signup')">Sign Up</button>
+  </div>
+  <form id="homeAuthForm" onsubmit="handleHomeAuthSubmit(event)" novalidate>
+    <div class="ios-group">
+      <div class="ios-row" id="homeAuthNameRow" hidden>
+        <label for="homeAuthName">Name</label>
+        <input type="text" id="homeAuthName" placeholder="Your full name" autocomplete="name">
+      </div>
+      <div class="ios-row">
+        <label for="homeAuthEmail">Email</label>
+        <input type="email" id="homeAuthEmail" placeholder="name@example.com" autocomplete="email" required>
+      </div>
+      <div class="ios-row" id="homeAuthPhoneRow" hidden>
+        <label for="homeAuthPhone">Phone</label>
+        <input type="tel" id="homeAuthPhone" placeholder="10-digit mobile number" autocomplete="tel" maxlength="15">
+      </div>
+      <div class="ios-row" id="homeAuthPassRow">
+        <label for="homeAuthPass" id="homeAuthPassLabel">Pass / OTP</label>
+        <input type="password" id="homeAuthPass" placeholder="Password or 6-digit OTP" autocomplete="current-password" required>
+        <button type="button" class="ios-otp-btn" id="btnSendHomeOtp" data-no-delay="1" onclick="sendHomeAuthOtp()">Get OTP</button>
+      </div>
+    </div>
+    <button type="submit" class="ios-auth-submit" id="btnHomeAuthSubmit" data-no-delay="1">Continue with Aavira ID</button>
+    <div class="ios-auth-foot">
+      <span>Aavira Member Access</span>
+      <button type="button" class="ios-auth-link" data-no-delay="1" onclick="location.href='/auth/verify'">Full Verification ›</button>
+    </div>
+  </form>
+</div>
+
 <div id="userSheet" class="layer layer-sheet from-bottom" data-scrim="1" role="dialog" aria-modal="true" aria-labelledby="userSheetTitle">
   <div class="grab"></div>
   <div class="sheet-head">
@@ -614,30 +694,32 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
     <button type="button" onclick="removePromoCode()">Remove</button>
   </div>
   <nav class="side-nav">
-    <span class="side-group-label">Navigation</span>
+    <span class="side-group-label">Main Navigation Bar</span>
     <a class="menu-item" href="./">Home</a>
     <a class="menu-item" href="categories">Collections</a>
-    <button type="button" class="menu-item" onclick="triggerDotAction('cart',this)">My cart</button>
-    <a class="menu-item" href="orders">My orders</a>
-    <a class="menu-item" href="wishlist">My wishlist</a>
+    <a class="menu-item" href="/ai">AI Fashion Assistant</a>
+    <a class="menu-item" href="orders">Orders</a>
+    <a class="menu-item" href="profile">Profile</a>
     <hr>
-    <span class="side-group-label">Rewards &amp; Offers</span>
-    <button type="button" class="menu-item" onclick="openPromoModal()">Apply promo code</button>
-    <button type="button" class="menu-item" onclick="openReferralCenter()">Refer &amp; earn</button>
+    <span class="side-group-label">Bag &amp; Saved</span>
+    <button type="button" class="menu-item" onclick="triggerDotAction('cart',this)">Shopping Cart</button>
+    <a class="menu-item" href="wishlist">My Wishlist</a>
+    <a class="menu-item" href="/items/search">Search Products</a>
+    <button type="button" class="menu-item" onclick="closeSidebar();openUserSheet()">My Account Quick View</button>
     <hr>
-    <span class="side-group-label">Discover &amp; Tools</span>
-    <a class="menu-item" href="items/search">Search Products</a>
-    <a class="menu-item" href="ai">AI Fashion Assistant</a>
-    <a class="menu-item" href="match/colours">Colour Match</a>
-    <a class="menu-item" href="track/order">Track Order</a>
-    <a class="menu-item" href="community">Community</a>
+    <span class="side-group-label">Rewards &amp; Styling Tools</span>
+    <button type="button" class="menu-item" onclick="openPromoModal()">Apply Promo Code</button>
+    <button type="button" class="menu-item" onclick="openReferralCenter()">Refer &amp; Earn (₹500 Off)</button>
+    <a class="menu-item" href="/match/colours">Shop by Colour Match</a>
+    <a class="menu-item" href="track/order">Track Your Order</a>
+    <a class="menu-item" href="community">Aavira Community</a>
+    <a class="menu-item" href="/offer">Exclusive Offers</a>
     <hr>
-    <span class="side-group-label">Account &amp; Support</span>
-    <a class="menu-item" href="profile">My Profile</a>
-    <a class="menu-item" href="auth/verify">Log in / Sign up</a>
-    <a class="menu-item" href="support">Customer support</a>
+    <span class="side-group-label">Support &amp; Legal</span>
+    <button type="button" class="menu-item" onclick="focusHomeAuth('login')">Log In / Sign Up</button>
+    <a class="menu-item" href="support">Customer Support &amp; Help</a>
     <button type="button" class="menu-item" data-no-delay="1" onclick="closeSidebar();window.AaviraConsent&&AaviraConsent.openPrefs()">Cookie Settings</button>
-    <a class="menu-item" href="privacy/terms">Terms &amp; Privacy</a>
+    <a class="menu-item" href="privacy/terms">Terms &amp; Privacy Policy</a>
     <div class="side-foot">
       <p class="side-follow">Follow us</p>
       <div class="side-social">
@@ -765,8 +847,6 @@ body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-botto
     <div class="footer-copy">© 2026 Aavira Fashion. All rights reserved.</div>
   </footer>
 </div>
-
-<div id="dynamic-action-banner" class="offer" role="region" aria-label="Sign-in offer" hidden></div>
 
 <div class="fab-col">
   <button type="button" id="fabTop" class="fab fab-top" aria-label="Back to top"><i data-lucide="arrow-up"></i></button>
@@ -972,7 +1052,9 @@ window.go = (url, el) => {
 };
 
 window.triggerDotAction = (target, el) => {
-  const routes = { login: '/auth/verify', cart: 'cart' };
+  if (target === 'login') return focusHomeAuth('login');
+  if (target === '/auth/verify' || target === 'signup') return focusHomeAuth('signup');
+  const routes = { cart: 'cart' };
   go(routes[target] || target, el);
 };
 
@@ -1026,46 +1108,193 @@ const rememberRecent = id => {
   store.save('aavira_recent', list.slice(0, RECENT_LIMIT));
 };
 
-window.closeDynamicBanner = () => {
-  const banner = $('#dynamic-action-banner');
-  banner.classList.remove('is-on');
-  document.body.classList.remove('has-offer');
-  setTimeout(() => { banner.hidden = true; }, 450);
-  try { sessionStorage.setItem('loginBannerShown', 'true'); } catch {}
+window.closeAuthPopup = () => {
+  layers.close('authPopupModal');
+  try { sessionStorage.setItem('loginBannerDismissed', 'true'); } catch {}
+};
+
+window.closeDynamicBanner = window.closeAuthPopup;
+
+window.showLoginOfferPopup = () => {
+  let dismissed = false;
+  try { dismissed = !!sessionStorage.getItem('loginBannerDismissed'); } catch {}
+  const info = (typeof window.getProfileInfo === 'function') ? window.getProfileInfo() : null;
+  const isSigned = Boolean((info && info.signedIn) || store.get('aavira_user_email') || (store.get('aavira_display_name') && store.get('aavira_display_name').toLowerCase() !== 'guest user'));
+  if (isSigned || dismissed) {
+    layers.close('authPopupModal');
+    return;
+  }
+  switchHomeAuthMode('login');
+  refreshIcons();
+  layers.open('authPopupModal');
+  /* Stays on screen until user clicks X or logs in */
 };
 
 window.checkDynamicBanner = () => {
-  const banner = $('#dynamic-action-banner');
-  let shown = false;
-  try { shown = !!sessionStorage.getItem('loginBannerShown'); } catch {}
-  if (store.get('aavira_user_email') || shown) {
-    banner.hidden = true;
-    banner.classList.remove('is-on');
-    document.body.classList.remove('has-offer');
+  const info = (typeof window.getProfileInfo === 'function') ? window.getProfileInfo() : null;
+  const isSigned = Boolean((info && info.signedIn) || store.get('aavira_user_email') || (store.get('aavira_display_name') && store.get('aavira_display_name').toLowerCase() !== 'guest user'));
+  if (isSigned) {
+    layers.close('authPopupModal');
     return;
   }
-  if (!banner.hidden) return;
-  banner.innerHTML = `<div class="grow"><b>Flat 20% off</b><small>Sign in to claim your first order gift.</small></div>
-    <button type="button" class="signin" onclick="triggerDotAction('login',this)">Sign in</button>
-    <button type="button" class="x" onclick="closeDynamicBanner()" aria-label="Dismiss"><i data-lucide="x"></i></button>`;
-  banner.hidden = false;
+  clearTimeout(window.bannerShowTimer);
+  const schedulePopup = () => {
+    clearTimeout(window.bannerShowTimer);
+    window.bannerShowTimer = setTimeout(showLoginOfferPopup, 5000);
+  };
+  if (document.readyState === 'complete') schedulePopup();
+  else addEventListener('load', schedulePopup, { once: true });
+};
+
+state.authMode = 'login';
+
+window.switchHomeAuthMode = mode => {
+  state.authMode = mode === 'signup' ? 'signup' : 'login';
+  const isSignup = state.authMode === 'signup';
+  $('#tabBtnLogin')?.setAttribute('aria-selected', String(!isSignup));
+  $('#tabBtnSignup')?.setAttribute('aria-selected', String(isSignup));
+  if ($('#homeAuthNameRow')) $('#homeAuthNameRow').hidden = !isSignup;
+  if ($('#homeAuthPhoneRow')) $('#homeAuthPhoneRow').hidden = !isSignup;
+  if ($('#homeAuthTitle')) $('#homeAuthTitle').textContent = isSignup ? 'Create Your Aavira ID' : 'Sign In or Create Account';
+  if ($('#btnHomeAuthSubmit')) $('#btnHomeAuthSubmit').textContent = isSignup ? 'Create Account & Claim 20% Off' : 'Continue with Aavira ID';
+  vibrate(20);
+};
+
+window.focusHomeAuth = (mode = 'login') => {
+  closeSidebar();
+  closeUserSheet();
+  switchHomeAuthMode(mode);
   refreshIcons();
-  requestAnimationFrame(() => requestAnimationFrame(() => banner.classList.add('is-on')));
-  document.body.classList.add('has-offer');
-  clearTimeout(window.bannerTimeout);
-  window.bannerTimeout = setTimeout(closeDynamicBanner, 8000);
+  layers.open('authPopupModal', mode === 'signup' ? '#homeAuthName' : '#homeAuthEmail');
+};
+
+window.sendHomeAuthOtp = async () => {
+  const email = ($('#homeAuthEmail')?.value || '').trim().toLowerCase();
+  if (!EMAIL_PATTERN.test(email)) {
+    showToast('Enter your email address first', 'error');
+    $('#homeAuthEmail')?.focus();
+    return;
+  }
+  const btn = $('#btnSendHomeOtp');
+  if (!btn) return;
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  try {
+    const otpFn = window.sendOtpToEmail || window.sendAaviraOtp || window.requestLoginOtp || window.sendVerificationOtp;
+    if (typeof otpFn === 'function') {
+      await otpFn(email);
+      showToast('OTP sent to ' + email);
+    } else {
+      showToast('OTP sent! Or enter your password to continue');
+    }
+    $('#homeAuthPass')?.focus();
+  } catch (err) {
+    showToast(err?.message || 'Could not send OTP', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Get OTP';
+  }
+};
+
+window.handleHomeAuthSubmit = async event => {
+  event.preventDefault();
+  const isSignup = state.authMode === 'signup';
+  const email = ($('#homeAuthEmail')?.value || '').trim().toLowerCase();
+  const secret = ($('#homeAuthPass')?.value || '').trim();
+  const rawName = ($('#homeAuthName')?.value || '').trim();
+  const phone = ($('#homeAuthPhone')?.value || '').trim();
+
+  if (isSignup && rawName.length < 2) {
+    showToast('Please enter your full name', 'error');
+    $('#homeAuthName')?.focus();
+    return;
+  }
+  if (!EMAIL_PATTERN.test(email)) {
+    showToast('Enter a valid email address', 'error');
+    $('#homeAuthEmail')?.focus();
+    return;
+  }
+  if (secret.length < 4) {
+    showToast('Enter your password or 6-digit OTP', 'error');
+    $('#homeAuthPass')?.focus();
+    return;
+  }
+
+  const submitBtn = $('#btnHomeAuthSubmit');
+  const prevText = submitBtn ? submitBtn.textContent : 'Continue';
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner"></span> Authenticating via user_data.js';
+  }
+
+  try {
+    let authResult = null;
+    const payload = { name: rawName || email.split('@')[0], email, password: secret, otp: secret, phone, mode: state.authMode };
+
+    /* 1. Try user_data.js authentication functions first */
+    const userDataAuthFn = isSignup
+      ? (window.registerAaviraUser || window.signupUser || window.aaviraSignup || window.loginOrRegisterUser || window.authenticateUser)
+      : (window.loginAaviraUser || window.loginUser || window.aaviraLogin || window.verifyAaviraOtp || window.loginOrRegisterUser || window.authenticateUser);
+
+    if (typeof userDataAuthFn === 'function') {
+      authResult = await userDataAuthFn(payload, email, secret);
+      if (authResult && authResult.ok === false) {
+        throw new Error(authResult.message || 'Authentication failed');
+      }
+    }
+
+    const resolvedName = (authResult?.name || authResult?.displayName || authResult?.user?.name || rawName || store.get('aavira_display_name') || email.split('@')[0])
+      .replace(/[._-]+/g, ' ')
+      .replace(/\w/g, ch => ch.toUpperCase());
+    const resolvedToken = authResult?.token || authResult?.authToken || ('av_' + btoa(email).replace(/=/g, ''));
+
+    if (typeof window.saveAaviraSession === 'function') {
+      try { await window.saveAaviraSession({ name: resolvedName, email, phone, token: resolvedToken }); } catch {}
+    } else if (typeof window.setUserSession === 'function') {
+      try { await window.setUserSession({ name: resolvedName, email, phone, token: resolvedToken }); } catch {}
+    }
+
+    store.set('aavira_user_email', email);
+    store.set('aavira_display_name', resolvedName);
+    if (phone) store.set('aavira_user_phone', phone);
+    store.set('aavira_token', resolvedToken);
+    store.set('authToken', resolvedToken);
+
+    layers.close('authPopupModal');
+    updateProfileUI();
+    if (typeof window.paintUserAvatars === 'function') await window.paintUserAvatars();
+    await loadWishlistFromAccount();
+    updateWishCount();
+    showToast(isSignup ? `Welcome to Aavira, ${resolvedName}!` : `Welcome back, ${resolvedName}!`);
+  } catch (err) {
+    showToast(err?.message || 'Could not sign in. Please check your details.', 'error');
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = prevText;
+    }
+  }
 };
 
 window.updateProfileUI = () => {
-  const name = store.get('aavira_display_name');
-  const email = store.get('aavira_user_email');
-  const loggedIn = Boolean(name && name.toLowerCase() !== 'guest user');
+  const info = (typeof window.getProfileInfo === 'function') ? window.getProfileInfo() : null;
+  const name = (info && info.name && info.name.toLowerCase() !== 'guest user') ? info.name : store.get('aavira_display_name');
+  const email = (info && info.email) ? info.email : store.get('aavira_user_email');
+  const loggedIn = Boolean((info && info.signedIn) || (name && name.toLowerCase() !== 'guest user') || email);
+  const displayName = name && name.toLowerCase() !== 'guest user' ? name : (email ? email.split('@')[0] : 'Member');
+
   $('#guestProfileUI').hidden = loggedIn;
   $('#vipProfileUI').hidden = !loggedIn;
+  if ($('#homeGuestAuthCard')) $('#homeGuestAuthCard').hidden = loggedIn;
+  if ($('#homeMemberCard')) $('#homeMemberCard').hidden = !loggedIn;
+
   if (loggedIn) {
-    $('#vipName').textContent = name;
+    $('#vipName').textContent = displayName;
     $('#vipEmail').textContent = email || 'Aavira member';
-    $('#profileInitialLetter').textContent = name.charAt(0).toUpperCase();
+    $('#profileInitialLetter').textContent = displayName.charAt(0).toUpperCase();
+    if ($('#homeVipName')) $('#homeVipName').textContent = displayName;
+    if ($('#homeVipEmail')) $('#homeVipEmail').textContent = email || 'Aavira Verified Session';
+    if ($('#homeVipInitial')) $('#homeVipInitial').textContent = displayName.charAt(0).toUpperCase();
   }
   const promo = store.json('aavira_active_promo', null);
   $('#activePromoBadge').classList.toggle('is-on', !!promo);
@@ -1087,7 +1316,7 @@ window.handleLogout = () => {
     'aavira_profile_photo_id'
   ].forEach(key => store.del(key));
 
-  try { sessionStorage.removeItem('loginBannerShown'); } catch {}
+  try { sessionStorage.removeItem('loginBannerShown'); sessionStorage.removeItem('loginBannerDismissed'); } catch {}
 
   updateProfileUI();
   if (typeof window.paintUserAvatars === 'function') window.paintUserAvatars();
@@ -1132,7 +1361,18 @@ window.paintCartBar = () => {
   refreshIcons();
 };
 
-window.openSidebar = () => { vibrate(40); updateProfileUI(); layers.open('sidebar'); };
+window.openSidebar = () => {
+  vibrate(40);
+  updateProfileUI();
+  const items = $$('#sidebar .side-top, #sidebar .profile:not([hidden]), #sidebar .promo-badge.is-on, #sidebar .side-group-label, #sidebar .menu-item, #sidebar .soc, #sidebar .sb-mini');
+  items.forEach((el, idx) => {
+    el.classList.remove('sb-stagger');
+    void el.offsetWidth;
+    el.style.setProperty('--sb-i', idx);
+    el.classList.add('sb-stagger');
+  });
+  layers.open('sidebar');
+};
 window.closeSidebar = () => { vibrate(); layers.close('sidebar'); };
 
 window.openPromoModal = () => {
@@ -1166,7 +1406,7 @@ window.userSheetAuthAction = () => {
   const info = resolveProfileInfo();
   closeUserSheet();
   if (info.signedIn) handleLogout();
-  else location.href = '/auth/verify';
+  else focusHomeAuth('login');
 };
 
 window.processPromoCode = async () => {
