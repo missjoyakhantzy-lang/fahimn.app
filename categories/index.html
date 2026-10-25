@@ -35,6 +35,30 @@ footer b{font-family:"Playfair Display",serif;color:#D4AF37;font-size:16px}
 </style>
 </head>
 <body>
+<script>
+(function () {
+  try {
+    var q = new URLSearchParams(location.search).get('category');
+    if (!q) return;
+    var key = decodeURIComponent(q).toLowerCase();
+    fetch('https://server-js-psi-five.vercel.app/api/categories')
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        var list = (j.data || []);
+        var match = list.find(function (c) {
+          return String(c.id || '').toLowerCase() === key || String(c.name || '').toLowerCase() === key;
+        });
+        if (!match) return;
+        var raw = String(match.link || match.customLink || match.pageUrl || match.redirectUrl || '').trim();
+        if (!raw || /^(javascript|data):/i.test(raw)) return;
+        var href = raw;
+        if (raw.startsWith('categories/')) href = '/' + raw;
+        location.replace(href);
+      })
+      .catch(function () {});
+  } catch (e) {}
+})();
+</script>
 <div class="app">
 <header><a class="back" href="../index.html" aria-label="Back">&#8592;</a><h1>Aavira <span>Fashion</span></h1></header>
 <div class="hero"><h2>Categories</h2><p>Choose a category to browse its collection. New products added to a category appear on its page automatically.</p></div>

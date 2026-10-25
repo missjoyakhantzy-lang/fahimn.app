@@ -890,6 +890,11 @@
                 <span class="form-label">Category Name</span>
                 <input type="text" class="form-input" id="c_name" placeholder="e.g. Bridal Lehengas">
             </div>
+            <div class="form-group">
+                <span class="form-label">Custom Link / Page URL (Optional)</span>
+                <input type="text" class="form-input" id="c_link" placeholder="e.g. categories/men.tshirt.html">
+                <p style="font-size:12px; color:var(--gray-text); margin-top:6px;">Home Screen category tap will open this page. Leave empty for the default categories list. A file name alone (e.g. women.blouse.html) is treated as categories/women.blouse.html.</p>
+            </div>
             <button class="btn-submit" onclick="saveCategory()"><i class="fa-solid fa-layer-group"></i> Save Category</button>
         </div>
 
@@ -1414,7 +1419,7 @@
 
         window.openFabActionStore = function(type) {
             if(type === 'banner') { document.getElementById('b_id').value = ''; document.getElementById('b_link').value = ''; clearUpload('b'); document.getElementById('bannerSheetTitle').innerText = 'Add App Banner'; openSheet('bannerSheet'); } 
-            else if(type === 'category') { document.getElementById('c_id').value = ''; document.getElementById('c_name').value = ''; clearUpload('c'); document.getElementById('categorySheetTitle').innerText = 'Add Category'; openSheet('categorySheet'); } 
+            else if(type === 'category') { document.getElementById('c_id').value = ''; document.getElementById('c_name').value = ''; document.getElementById('c_link').value = ''; clearUpload('c'); document.getElementById('categorySheetTitle').innerText = 'Add Category'; openSheet('categorySheet'); } 
             else if(type === 'promo') { document.getElementById('p_code').value = ''; document.getElementById('p_code').disabled = false; document.getElementById('p_discount').value = ''; document.getElementById('promoSheetTitle').innerText = 'Generate Promo Code'; openSheet('promoSheet'); }
         };
 
@@ -2068,7 +2073,7 @@
                     html += `
                         <div class="ui-list-item">
                             <img src="${img}" onerror="this.src='https://placehold.co/400x400/f8f8f8/d81b60?text=Error'">
-                            <div style="flex:1; margin-left:14px; font-size:13.5px; font-weight:800; color:var(--dark);">${d.name}</div>
+                            <div style="flex:1; margin-left:14px; font-size:13.5px; font-weight:800; color:var(--dark);">${d.name}${(d.link || d.customLink || d.pageUrl || d.redirectUrl) ? `<div style="font-size:11px; color:#888; font-weight:600; margin-top:2px;">${d.link || d.customLink || d.pageUrl || d.redirectUrl}</div>` : ''}</div>
                             <div style="display:flex; gap:12px; align-items:center;">
                                 <button onclick="editCategory('${docSnap.id}')" style="background:none; border:none; color:var(--blue); font-size:15px; cursor:pointer;"><i class="fa-solid fa-pen"></i></button>
                                 <button onclick="deleteDocItem('categories', '${docSnap.id}')" style="background:none; border:none; color:var(--danger); font-size:15px; cursor:pointer;"><i class="fa-solid fa-trash-can"></i></button>
@@ -2079,7 +2084,7 @@
         }
 
         window.editCategory = function(id) {
-            let c = window.categoriesDataCache[id]; document.getElementById('c_id').value = c.id; document.getElementById('c_name').value = c.name || ''; document.getElementById('c_final_url').value = c.img;
+            let c = window.categoriesDataCache[id]; document.getElementById('c_id').value = c.id; document.getElementById('c_name').value = c.name || ''; document.getElementById('c_link').value = c.link || c.customLink || c.pageUrl || c.redirectUrl || ''; document.getElementById('c_final_url').value = c.img;
             let box = document.getElementById('c_upload_box');
             if(c.img) box.innerHTML = `<button class="remove-img-btn" onclick="clearUpload('c', event)"><i class="fa-solid fa-xmark"></i></button><img src="${c.img}" class="preview-media" onerror="this.src='https://placehold.co/400x400/f8f8f8/d81b60?text=Error'">`;
             else clearUpload('c'); 
@@ -2087,11 +2092,11 @@
         };
 
         window.saveCategory = async function() {
-            const id = document.getElementById('c_id').value; const name = document.getElementById('c_name').value.trim(); const img = document.getElementById('c_final_url').value;
+            const id = document.getElementById('c_id').value; const name = document.getElementById('c_name').value.trim(); const img = document.getElementById('c_final_url').value; const link = document.getElementById('c_link').value.trim();
             if(!name || !img) { showToast("Name and image required", "error"); return; }
             try {
-                if(id) await updateDoc(doc(db, "categories", id), { name: name, image: img }); else await setDoc(doc(collection(db, "categories")), { name: name, image: img, createdAt: serverTimestamp() });
-                closeSheets(); clearUpload('c'); document.getElementById('c_name').value = ''; fetchCategories(); showToast("Category Saved Successfully");
+                if(id) await updateDoc(doc(db, "categories", id), { name: name, image: img, link: link }); else await setDoc(doc(collection(db, "categories")), { name: name, image: img, link: link, createdAt: serverTimestamp() });
+                closeSheets(); clearUpload('c'); document.getElementById('c_name').value = ''; document.getElementById('c_link').value = ''; fetchCategories(); showToast("Category Saved Successfully");
             } catch(error) { showToast("Failed to save category", "error"); }
         };
 

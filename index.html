@@ -2320,7 +2320,15 @@ window.fetchCategories = async () => {
     container.innerHTML = categories.map(category => {
       const name = escapeHtml(category.name);
       const key = encodeURIComponent(category.id || category.name || '');
-      return `<a class="cat" href="categories${key ? `?category=${key}` : ''}" aria-label="Browse ${name}">
+      const rawLink = String(category.link || category.customLink || category.pageUrl || category.redirectUrl || '').trim();
+      let catHref = `categories${key ? `?category=${key}` : ''}`;
+      if (rawLink && !/^(javascript|data):/i.test(rawLink)) {
+        if (/^https?:\/\//i.test(rawLink) || rawLink.startsWith('/')) catHref = rawLink;
+        else if (rawLink.includes('/')) catHref = rawLink;
+        else if (rawLink.endsWith('.html')) catHref = 'categories/' + rawLink;
+        else catHref = rawLink;
+      }
+      return `<a class="cat" href="${escapeHtml(catHref)}" aria-label="Browse ${name}">
         <span class="cat-ring"><img src="${escapeHtml(safeImageUrl(category.image || category.imageUrl || category.url))}" alt="" loading="lazy" onerror="imgFallback(this)"></span>
         <span class="cat-name">${name}</span></a>`;
     }).join('');
