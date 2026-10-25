@@ -2,424 +2,1394 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Aavira Luxe - My Wishlist</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Aavira - My Wishlist | Luxury Ethnic Elegance</title>
+<meta name="description" content="View and manage your saved luxury ethnic wear pieces on Aavira.">
 <meta name="theme-color" content="#ffffff">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="canonical" href="https://aavirafashion.shop/wishlist">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
 <style>
-:root{
- --rani:#161616;--rani-dark:#000000;--rani-light:#FAF7F0;
- --gold:#D4AF37;--ivory:#FDFBF7;
- --text:#242024;--muted:#756D73;--border:#E7E0D9;
- --green:#16a34a;--orange:#ea580c;
-}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;width:100%;background:var(--ivory);font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;color:var(--text)}
-body{display:flex;justify-content:center;height:100dvh;overflow:hidden}
+:root{--rani:#111111;--rani-dark:#000000;--gold:#D4AF37;--gold-text:#8A6D1D;--ivory:#FFFFFF;--cream:#F8F8FA;--ink:#111113;--muted:#6E6E73;--line:#E5E5EA;--blush:#F2F2F7;--plum:#1C1C1E;--ease:cubic-bezier(.22,1,.36,1);--ios-spring:cubic-bezier(.32,.72,0,1);--font-main:"Barlow Condensed","Roboto Condensed",system-ui,sans-serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--font-main);letter-spacing:.015em;background:var(--ivory);color:var(--ink);overflow-x:clip;overscroll-behavior-y:none;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--font-main);letter-spacing:.01em;margin:0}
+img{display:block;max-width:100%}
+button,select,input{font-family:inherit;letter-spacing:inherit}
+button{cursor:pointer;user-select:none}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--rani);outline-offset:2px}
+[hidden]{display:none!important}
+.no-scrollbar{scrollbar-width:none}
+.no-scrollbar::-webkit-scrollbar{display:none}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 
-/* FIX 1: App proper full height flex, taaki footer hide na ho */
-.app-container{width:100%;max-width:460px;height:100dvh;background:var(--ivory);display:flex;flex-direction:column;position:relative;overflow:hidden}
+.app{max-width:420px;margin:0 auto;background:#FFFFFF;min-height:100vh;padding-bottom:calc(132px + env(safe-area-inset-bottom,0px))}
+@media(min-width:640px){body{background:#FFFFFF}.app{box-shadow:0 0 50px rgba(0,0,0,.06);border-inline:1px solid #F0F0F5}}
 
-.pro-header{height:68px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(255,255,255,.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);z-index:50}
-.header-left,.header-right{display:flex;align-items:center;gap:8px}
-.icon-btn{width:40px;height:40px;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:13px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+/* Header: Compact Solid Bar Matching Home Screen & Bottom Nav */
+.site-header{position:sticky;top:0;z-index:40;background:#FFFFFF!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border-bottom:1px solid #E5E5EA;box-shadow:none!important;padding-top:env(safe-area-inset-top,0px)}
+.site-header-row{height:46px;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:0 10px}
+.header-left{display:flex;align-items:center;gap:4px;min-width:0;flex:1}
+.header-title-wrap{display:flex;align-items:baseline;gap:6px;min-width:0;padding-left:2px}
+.header-title-wrap h1{font-size:18.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);white-space:nowrap}
+.header-count-pill{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-text);background:rgba(212,175,55,.14);border:1px solid rgba(212,175,55,.32);padding:1.5px 7px;border-radius:999px;line-height:1.1;white-space:nowrap}
+.header-actions{display:flex;align-items:center;gap:2px}
+.site-logo-right{flex-shrink:0;display:flex;align-items:center;margin-left:2px}
+.site-logo{height:26px;width:auto;max-width:90px;object-fit:contain}
+.icon-btn{position:relative;width:32px;height:32px;flex:0 0 32px;padding:0;border-radius:50%;border:0;background:transparent;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s,transform .2s var(--ease)}
+@media(hover:hover){.icon-btn:hover{background:rgba(212,175,55,.14);color:var(--rani)}}
 .icon-btn:active{transform:scale(.92)}
-.header-titles{text-align:center}
-.header-titles h1{font:700 17px "Playfair Display",serif;letter-spacing:.04em}
-.header-titles p{font-size:9px;font-weight:800;color:var(--rani);text-transform:uppercase;letter-spacing:.12em;margin-top:2px}
-.cart-icon-wrapper{position:relative}
-.cart-badge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 4px;border-radius:10px;background:var(--rani);color:#fff;border:2px solid #fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.icon-btn svg{width:17.5px;height:17.5px;stroke-width:1.7}
+.cart-badge{position:absolute;top:1px;right:0;min-width:15px;height:15px;padding:0 3.5px;border-radius:999px;background:var(--rani);color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
 
-/* Scroll area */
-.main-content{flex:1;overflow-y:auto;overflow-x:hidden;padding:14px 14px 20px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.main-content::-webkit-scrollbar{display:none}
+.net-bar{position:sticky;top:46px;z-index:39;background:var(--ink);color:#fff;text-align:center;font-size:13px;font-weight:500;padding:6px 12px}
 
-/* Savings */
-.savings-card{background:linear-gradient(135deg,#1a1520 0%,#0d0d0f 50%,#161616 100%);color:#fff;border-radius:18px;padding:14px 15px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;position:relative;overflow:hidden}
-.savings-card::after{content:'';position:absolute;right:-30px;top:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(212,175,55,.35),transparent 70%)}
-.savings-card h3{font-size:13px;font-weight:800}
-.savings-card p{font-size:11px;opacity:.8;margin-top:3px}
-.savings-card .save-badge{background:var(--gold);color:#111;font-size:11px;font-weight:800;padding:7px 12px;border-radius:12px;z-index:1;white-space:nowrap}
+/* Home Screen Mini Hero Banner Carousel (#miniHeroSection) */
+#miniHeroSection{margin:14px 16px 0;position:relative}
+.mini-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:18px;scrollbar-width:none;-webkit-overflow-scrolling:touch;box-shadow:0 14px 28px -12px rgba(0,0,0,.32)}
+.mini-track::-webkit-scrollbar{display:none}
+.mini-slide{flex:0 0 100%;min-width:100%;scroll-snap-align:start;position:relative;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#242429 0%,#0f0f12 60%,#1c1c20 100%);color:#fff;border:1px solid rgba(212,175,55,.42);padding:15px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:84px}
+.mini-slide.alt-gold{background:linear-gradient(135deg,#1E1912 0%,#0E0C08 65%,#292115 100%)}
+.mini-slide.alt-plum{background:linear-gradient(135deg,#23141D 0%,#0F090D 65%,#1F1119 100%)}
+.mini-slide::after{content:"";position:absolute;right:-28px;top:-28px;width:118px;height:118px;background:radial-gradient(circle,rgba(212,175,55,.28),transparent 70%);pointer-events:none}
+.mini-meta{min-width:0;flex:1;z-index:1}
+.mini-eyebrow{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+.mini-meta h2{font-size:19.5px;font-weight:600;letter-spacing:.02em;line-height:1.15;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-meta p{margin:3px 0 0;font-size:12.5px;color:rgba(255,255,255,.78);letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.save-badge{z-index:1;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;gap:4px;height:32px;padding:0 13px;font-size:12.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#161616;background:linear-gradient(135deg,#F0D47E,#C49A2E);border-radius:999px;box-shadow:0 6px 14px -4px rgba(212,175,55,.55);white-space:nowrap;border:0}
+.mini-dots{display:flex;justify-content:center;align-items:center;gap:5px;padding:8px 0 0;min-height:13px}
+.mini-dot{height:4px;width:14px;border-radius:999px;background:#DCD3C1;border:0;padding:0;transition:width .35s var(--ease),background .35s;cursor:pointer}
+.mini-dot.is-active{width:28px;background:linear-gradient(90deg,var(--gold),#A8842C)}
 
-.search-row{display:flex;gap:8px;margin-bottom:10px}
-.search-box{flex:1;background:#fff;border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;gap:8px;padding:0 12px;height:42px}
-.search-box input{border:0;outline:0;flex:1;font-size:12.5px;font-family:inherit;background:transparent;min-width:0}
-.sort-select{height:42px;border:1px solid var(--border);border-radius:12px;background:#fff;font-size:11.5px;font-weight:700;padding:0 10px;outline:none;max-width:118px;font-family:inherit}
+/* Search & Sort Controls */
+.controls-wrap{padding:12px 16px 0}
+.search-row{display:flex;gap:8px;margin-bottom:12px}
+.search-box{flex:1;min-width:0;height:38px;background:#fff;border:1px solid var(--line);border-radius:999px;display:flex;align-items:center;gap:8px;padding:0 12px 0 14px;box-shadow:0 2px 6px rgba(36,32,36,.03);transition:border-color .2s,box-shadow .2s}
+.search-box:focus-within{border-color:var(--rani);box-shadow:0 0 0 3px rgba(0,0,0,.06)}
+.search-box svg{width:15px;height:15px;color:var(--muted);flex-shrink:0}
+.search-box input{border:0;outline:0;flex:1;min-width:0;font-size:14px;font-weight:500;color:var(--ink);background:transparent}
+.search-box input::placeholder{color:#9A9A9E}
+.search-clear{width:20px;height:20px;flex:0 0 20px;border:0;border-radius:50%;background:var(--blush);color:var(--muted);display:inline-flex;align-items:center;justify-content:center;padding:0}
+.search-clear svg{width:11px;height:11px}
 
-.filter-chips{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;scrollbar-width:none}
-.filter-chips::-webkit-scrollbar{display:none}
-.chip{flex-shrink:0;border:1px solid var(--border);background:#fff;padding:8px 14px;border-radius:100px;font-size:11px;font-weight:700;cursor:pointer;color:var(--muted)}
-.chip.active{background:var(--text);color:#fff;border-color:var(--text)}
+.sort-select{height:38px;border:1px solid #E2D9CE;border-radius:999px;background:#fff;color:var(--ink);font-size:13.5px;font-weight:600;padding:0 12px;outline:none;max-width:142px;box-shadow:0 2px 6px rgba(36,32,36,.04);cursor:pointer;transition:border-color .2s}
+.sort-select:focus{border-color:var(--rani)}
 
-.wishlist-toolbar{display:flex;align-items:center;justify-content:space-between;margin:4px 2px 12px}
-.toolbar-title{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
-.toolbar-sub{font-size:11px;color:var(--muted);margin-top:2px}
-.clear-btn{border:1px solid #EDE5D3;background:#fff;color:var(--rani);font-size:10.5px;font-weight:800;padding:8px 12px;border-radius:10px;cursor:pointer}
+/* Exact Home Screen Filter Chips */
+.chips{display:flex;gap:8px;overflow-x:auto;margin:0 0 4px;padding:2px 2px 6px}
+.chip{flex:0 0 auto;height:34px;padding:0 14px;border:1px solid #E2D9CE;background:#fff;color:var(--ink);border-radius:999px;font-size:13.5px;font-weight:600;line-height:1;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:5px;box-shadow:0 2px 6px rgba(36,32,36,.04);transition:background .2s,color .2s,border-color .2s,box-shadow .2s,transform .2s var(--ease)}
+@media(hover:hover){.chip:hover{border-color:#C9B99F}}
+.chip:active{transform:scale(.96)}
+.chip[aria-pressed="true"]{background:linear-gradient(135deg,#242429,#0a0a0c);border-color:transparent;color:#fff;box-shadow:0 8px 16px -6px rgba(0,0,0,.4)}
 
-.grid-container{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-bottom:10px}
-.w-card{background:#fff;display:flex;flex-direction:column;position:relative;border-radius:16px;border:1px solid #f3f0ee;overflow:hidden;box-shadow:0 4px 20px -4px rgba(0,0,0,.06);animation:popIn .35s ease}
-.w-card.removing{transform:scale(.86);opacity:0;transition:.3s}
-.w-card.out-stock{opacity:.85}
+/* Section Header & Grid */
+.sec{padding:14px 16px 0}
+.sec-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.sec-eyebrow{display:block;font-size:11.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#A8842C;margin-bottom:2px}
+.sec-head h2{font-size:23px;font-weight:600;letter-spacing:.01em;line-height:1.15}
+.sec-link{display:inline-flex;align-items:center;justify-content:center;gap:4px;height:30px;padding:0 12px;border-radius:999px;background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.32);font-size:12.5px;font-weight:700;color:#8A6D1D;line-height:1;white-space:nowrap;flex-shrink:0;transition:background .2s,border-color .2s,transform .2s var(--ease)}
+@media(hover:hover){.sec-link:hover{background:rgba(212,175,55,.22);border-color:rgba(168,132,44,.5)}}
+.sec-link:active{transform:scale(.95)}
 
-/* FIX 2: Product view 1:1 square */
-.w-img-wrapper{position:relative;background:#f9f8f7;cursor:pointer;overflow:hidden;width:100%;aspect-ratio:1/1;flex-shrink:0}
-.w-img{position:absolute;inset:0;width:100%;height:100%;background-size:cover;background-position:center;transition:transform .6s ease}
-.w-card:hover .w-img{transform:scale(1.05)}
-.discount-tag{position:absolute;top:8px;left:8px;z-index:10;background:#fff;padding:4px 8px;font-size:9px;font-weight:800;color:var(--rani);border-radius:7px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
-.price-drop-tag{position:absolute;top:32px;left:8px;z-index:10;background:var(--green);color:#fff;padding:3px 7px;font-size:8.5px;font-weight:800;border-radius:7px}
-.bestseller{position:absolute;bottom:0;left:0;right:0;z-index:10;background:rgba(17,24,39,.88);color:#fff;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;text-align:center;padding:5px}
-.out-label{position:absolute;inset:0;background:rgba(255,255,255,.65);display:flex;align-items:center;justify-content:center;z-index:5;font-size:11px;font-weight:800;color:#111}
-.btn-remove{position:absolute;top:6px;right:6px;z-index:10;width:32px;height:32px;border:0;background:rgba(255,255,255,.95);color:var(--rani);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 6px;margin-inline:-8px}
 
-.w-info{padding:11px 11px 12px;display:flex;flex-direction:column;flex:1}
-.w-title{font-size:12.5px;font-weight:600;color:#1f2937;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:5px;cursor:pointer}
-.rating-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
-.rating-badge{display:inline-flex;align-items:center;gap:3px;background:var(--green);color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:6px}
-.rating-count{font-size:10px;color:#9ca3af}
-.colour-row{display:flex;align-items:center;gap:7px;margin-bottom:6px}
-.swatches{display:flex;margin-left:1px}
-.swatches span{width:12px;height:12px;border-radius:50%;border:1px solid #e5e7eb;margin-left:-4px}
-.swatches span:first-child{margin-left:0}
-.colour-text{font-size:9.5px;color:#9ca3af;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
-.urgency-row{font-size:9.5px;font-weight:700;color:var(--orange);margin-bottom:4px;display:flex;align-items:center;gap:4px}
-.w-price-row{display:flex;align-items:baseline;gap:6px;padding-top:9px;margin-top:auto;border-top:1px solid #f3f4f6}
-.w-price{font-size:15px;font-weight:800;color:#111827}
-.w-old{font-size:10.5px;color:#9ca3af;text-decoration:line-through}
+/* Exact Home Screen Product Cards: Sharp 1:1 Square Image, Zero Rounded Corners, % OFF Only, 3-Dots Manage Button */
+.pcard{position:relative;min-width:0;background:#FFFFFF;border:1px solid #EBEBEF;border-radius:0!important;overflow:hidden;padding-bottom:9px;box-shadow:none!important;display:flex;flex-direction:column;transition:border-color .22s var(--ease),transform .28s var(--ease),opacity .28s ease}
+@media(hover:hover){.pcard:hover{box-shadow:none!important;border-color:#111113}}
+.pcard.removing{transform:scale(.9);opacity:0;pointer-events:none}
+.pcard.out-stock .pcard-media img{opacity:.76}
+.pcard-link{display:block;cursor:pointer}
+.pcard-media{position:relative;display:block;width:100%;aspect-ratio:1/1;border-radius:0!important;background:#F4F4F6;overflow:hidden}
+.pcard-media img{width:100%;height:100%;aspect-ratio:1/1;object-fit:cover;border-radius:0!important;transition:transform .5s var(--ease)}
+@media(hover:hover){.pcard:hover .pcard-media img{transform:scale(1.04)}}
+.tags{position:absolute;left:0;top:8px;max-width:62%;display:flex;flex-direction:column;align-items:flex-start;gap:4px;z-index:2;pointer-events:none}
+.tag-best{background:#DEC276;color:#111113;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3.5px 8px;border-radius:0;line-height:1.1;white-space:nowrap}
+.tag-drop{background:#15803D;color:#FFFFFF;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:3px 7px;border-radius:0;line-height:1.1;white-space:nowrap}
+.tag-stock{position:absolute;right:0;top:8px;z-index:2;pointer-events:none;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3.5px 8px;line-height:1.1;white-space:nowrap}
+.tag-stock.oos{background:rgba(185,28,28,.94);color:#FFFFFF}
+.tag-stock.low-stk{background:rgba(180,83,9,.94);color:#FFFFFF}
+.tag-off{color:#2E8B57;background:transparent;font-size:13px;font-weight:700;letter-spacing:.02em;padding:0;border-radius:0;line-height:1.1;white-space:nowrap}
 
-/* Card buttons - hamesha visible */
-.w-actions{display:flex;gap:7px;margin-top:10px;position:relative;z-index:5}
-.move-btn{flex:1;background:var(--rani);color:#fff;border:0;border-radius:10px;font-size:11px;font-weight:800;padding:10px 0;cursor:pointer}
-.move-btn:active{transform:scale(.96)}
-.move-btn:disabled{background:#e5e7eb;color:#9ca3af}
-.view-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:var(--rani-light);color:var(--rani);border:0;border-radius:10px;cursor:pointer;flex-shrink:0}
+.pcard-foot{display:flex;flex-direction:column;padding:7px 9px 0;min-width:0;flex:1}
+.pcard-text{display:block;min-width:0;cursor:pointer}
+.pcard-name{display:block;font-size:14.5px;font-weight:500;letter-spacing:.01em;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#4A4F55}
+.pcard-price{display:flex;align-items:baseline;flex-wrap:wrap;gap:5px;margin-top:3px}
+.price{font-size:16px;font-weight:700;letter-spacing:.01em;color:#111113}
+.mrp{font-size:13px;color:#7D828A;text-decoration:line-through;font-weight:500}
+.color-strip{display:inline-flex;align-items:center;padding:2.5px 10px 2.5px 8px;border-radius:999px;background:linear-gradient(90deg,#EFEAE1 0%,rgba(239,234,225,.78) 62%,rgba(239,234,225,.08) 100%);color:#3A3532;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1;white-space:nowrap;box-shadow:-2px 3px 8px -2px rgba(0,0,0,.13),inset 1.5px 0 0 rgba(212,175,55,.65);-webkit-mask-image:linear-gradient(90deg,#000 72%,rgba(0,0,0,.38) 100%);mask-image:linear-gradient(90deg,#000 72%,rgba(0,0,0,.38) 100%);flex-shrink:0}
+.pcard-row{display:flex;align-items:center;justify-content:space-between;gap:5px;margin-top:5px;min-width:0;width:100%}
+.pcard-metalink{display:flex;align-items:center;gap:5px;min-width:0;flex:1;overflow:hidden;cursor:pointer}
 
-/* FIX 1: Bottom bar ab flex footer hai - hide nahi hoga */
-.bottom-cta{flex-shrink:0;background:#fff;border-top:1px solid var(--border);padding:12px 14px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:12px;z-index:60;box-shadow:0 -6px 20px rgba(0,0,0,.06)}
-.bottom-price{flex-shrink:0;min-width:90px}
-.bottom-price b{font-size:16px;display:block;line-height:1.1}
-.bottom-price span{font-size:11px;color:var(--muted)}
-.move-all-btn{flex:1;background:var(--rani);color:#fff;border:0;border-radius:14px;padding:15px 10px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 8px 20px rgba(22,22,22,.25);white-space:nowrap}
-.move-all-btn:active{transform:scale(.97)}
+/* Three-Dots Manage Button (Replaces Arrow Button in .pcard-row) */
+.go{margin-left:auto;flex:0 0 27px;width:27px;height:27px;padding:0;border:1px solid #E5E5EA;border-radius:999px;background:#F8F8FA;color:#111113;display:inline-flex;align-items:center;justify-content:center;box-shadow:none!important;transition:transform .2s var(--ease),background .2s,color .2s,border-color .2s}
+@media(hover:hover){.go:hover{background:#111113;border-color:#111113;color:#fff}}
+.go:active{transform:scale(.9)}
+.go svg{width:14px;height:14px;stroke-width:2.2}
 
-.empty-wishlist-state{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;text-align:center;padding:20px}
-.empty-wishlist-state .icon-circle{width:84px;height:84px;background:#F5F1E8;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:18px;color:var(--rani)}
-.empty-wishlist-state h2{font:700 23px "Playfair Display",serif;margin-bottom:8px}
-.empty-wishlist-state p{font-size:12.5px;color:var(--muted);line-height:1.6;max-width:270px;margin-bottom:22px}
-.explore-btn{background:var(--rani);color:#fff;padding:14px 30px;border-radius:14px;font-size:12px;font-weight:800;text-decoration:none}
+.rating{display:inline-flex;align-items:center;gap:2.5px;font-weight:600;font-size:11.5px;color:#fff;background:#15803D;padding:2.5px 6.5px;border-radius:999px;flex-shrink:0;line-height:1}
+.rating.mid{background:#B45309}
+.rating.bad{background:#B91C1C}
+.rating.none{background:#9A9298}
+.rating svg{width:9px;height:9px;fill:currentColor;flex-shrink:0}
 
-.modal-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:100;display:none;align-items:flex-end;justify-content:center}
-.modal-overlay.open{display:flex}
-.modal{background:#fff;width:100%;border-radius:22px 22px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom));animation:slideUp .3s ease;max-height:85%;overflow-y:auto}
-@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
-.modal h3{font-size:15px;font-weight:800;margin-bottom:4px}
-.modal p{font-size:12px;color:var(--muted);margin-bottom:14px}
-.size-grid{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:16px}
-.size-opt{border:1.5px solid var(--border);border-radius:11px;padding:10px 18px;font-size:12px;font-weight:800;cursor:pointer;background:#fff}
-.size-opt.selected{border-color:var(--rani);background:var(--rani-light);color:var(--rani)}
-.modal-btn{width:100%;background:var(--rani);color:#fff;border:0;border-radius:13px;padding:14px;font-size:13px;font-weight:800;cursor:pointer}
-.modal-close{width:100%;background:#f3f4f6;color:#111;border:0;border-radius:13px;padding:12px;font-size:12px;font-weight:700;cursor:pointer;margin-top:8px}
+/* Wishlist Card Action Button (Same Pill Design as Home Screen Buttons) */
+.pcard-cta{margin-top:8px;padding-top:7px;border-top:1px solid #F2F2F6;display:flex;align-items:center;gap:6px}
+.btn-card-bag{flex:1;height:33px;border:0;border-radius:999px;background:linear-gradient(135deg,#242429,#000);color:#fff;font-size:12.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:0 10px;box-shadow:0 8px 16px -6px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.14);transition:transform .2s var(--ease),background .2s,opacity .2s}
+@media(hover:hover){.btn-card-bag:hover{background:#000}}
+.btn-card-bag:active{transform:scale(.97)}
+.btn-card-bag:disabled{background:#E5E5EA;color:#8E8E93;box-shadow:none;cursor:not-allowed}
+.btn-card-bag svg{width:13px;height:13px;stroke-width:2}
 
-.skel-card{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden}
-.skel-img{height:185px;width:100%;aspect-ratio:1/1}
-.skel-box{background:linear-gradient(90deg,#f1eeee 25%,#fff 50%,#f1eeee 75%);background-size:200% 100%;animation:shimmer 1.3s infinite}
-.skel-info{padding:11px}.skel-line{height:9px;border-radius:5px;margin-bottom:7px}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-@keyframes popIn{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
-.pro-toast{position:absolute;bottom:92px;left:50%;transform:translateX(-50%) translateY(20px);background:#111827;color:#fff;padding:11px 18px;border-radius:50px;font-size:12px;font-weight:700;z-index:200;opacity:0;pointer-events:none;transition:.3s;white-space:nowrap;display:flex;align-items:center;gap:8px;max-width:90%}
-.pro-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@media(min-width:640px){.app-container{box-shadow:0 0 40px rgba(36,32,36,.08);border-left:1px solid var(--border);border-right:1px solid var(--border)}}
+/* Standard Home Screen Pill Buttons */
+.btn-dark,.btn-pink,.btn-outline{width:100%;min-height:46px;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;font-weight:600;font-size:15px;letter-spacing:.03em;line-height:1;padding:0 20px;white-space:nowrap;transition:background .25s,color .25s,border-color .25s,box-shadow .25s,transform .2s var(--ease)}
+.btn-dark:active,.btn-pink:active,.btn-outline:active{transform:scale(.98)}
+.btn-dark{background:linear-gradient(135deg,#2c2c31,#0f0f12);color:#fff;box-shadow:0 10px 22px -8px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.12)}
+@media(hover:hover){.btn-dark:hover{background:linear-gradient(135deg,#1f1f24,#000)}}
+.btn-pink{background:linear-gradient(135deg,#242429,#000);color:#fff;box-shadow:0 12px 24px -10px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.14)}
+@media(hover:hover){.btn-pink:hover{background:#000}}
+.btn-outline{background:#fff;color:var(--rani);border:1.5px solid #D5CDC2;box-shadow:0 4px 12px -4px rgba(36,32,36,.08)}
+@media(hover:hover){.btn-outline:hover{background:var(--rani);border-color:var(--rani);color:#fff}}
+.btn-dark:disabled,.btn-pink:disabled{opacity:.65;cursor:not-allowed}
+
+/* Empty & Skeleton States */
+.empty{width:100%;text-align:center;padding:36px 18px;background:#fff;border:1px solid var(--line);border-radius:18px;color:var(--muted);font-size:14.5px;margin-top:8px}
+.empty-icon{width:68px;height:68px;border-radius:50%;background:var(--cream);border:1px solid var(--line);color:var(--gold-text);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.empty-icon svg{width:30px;height:30px;stroke-width:1.6}
+.empty h3{font-size:24px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.empty p{margin:0 auto 18px;max-width:250px;line-height:1.45;color:var(--muted)}
+
+.skel{background:linear-gradient(90deg,#F1EBE3 25%,#F8F3EC 37%,#F1EBE3 63%);background-size:400% 100%;animation:shimmer 1.4s ease infinite}
+@keyframes shimmer{to{background-position:0 0}}
+.is-loading{pointer-events:none;opacity:.72}
+.spinner{width:14px;height:14px;border:2.2px solid currentColor;border-top-color:transparent;border-radius:50%;display:inline-block;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.is-busy{position:relative;pointer-events:none;color:transparent!important}
+.is-busy>*{opacity:0}
+.is-busy::after{content:"";position:absolute;inset:0;margin:auto;width:14px;height:14px;border:2.2px solid var(--spin,var(--rani));border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;z-index:6}
+:is(.btn-pink,.btn-dark,.btn-card-bag,.qv-add,.go).is-busy{--spin:#fff}
+.btn-outline.is-busy,.btn-outline.is-busy:hover{background:#fff;border-color:var(--rani);--spin:var(--rani)}
+.btn-pink.is-busy,.btn-pink.is-busy:hover,.btn-card-bag.is-busy{background:var(--rani)}
+.btn-dark.is-busy,.btn-dark.is-busy:hover{background:var(--ink)}
+.go.is-busy,.go.is-busy:hover{background:var(--rani);transform:none}
+.go.is-busy::after{width:11px;height:11px}
+
+/* Sticky Move-All-To-Bag Action Bar Above Bottom Nav */
+.wish-bottom-bar{position:fixed;left:0;right:0;bottom:calc(45px + env(safe-area-inset-bottom,0px));margin:0 auto;width:100%;max-width:420px;z-index:8990;background:rgba(255,255,255,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid #E5E5EA;padding:9px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 -10px 26px rgba(0,0,0,.06)}
+.wish-bottom-price{min-width:0}
+.wish-bottom-price b{display:block;font-size:18px;font-weight:700;color:var(--ink);line-height:1.1}
+.wish-bottom-price span{display:block;font-size:12px;font-weight:600;color:var(--gold-text);letter-spacing:.03em}
+.wish-move-all{flex:1;max-width:230px;min-height:40px;font-size:14px;letter-spacing:.05em;text-transform:uppercase;padding:0 16px}
+.wish-move-all svg{width:15px;height:15px}
+
+/* Compact Always-Visible Professional Bottom Navigation Bar */
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;margin:0 auto;width:100%;max-width:420px;z-index:9000;background:#FFFFFF!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border-top:1px solid #E5E5EA;display:grid;grid-template-columns:repeat(5,1fr);padding:3px 4px calc(3px + env(safe-area-inset-bottom,0px));box-shadow:none!important;transform:none!important}
+.nav-item{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5px;padding:2px 0;color:#7D828A;font-size:10.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;line-height:1.1;min-width:0;background:transparent;border:0;transition:color .2s}
+.nav-item svg{width:16px;height:16px;stroke-width:1.75}
+.nav-ai-badge{width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#242429,#000);color:var(--gold);font-size:9px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(212,175,55,.5)}
+.nav-item[aria-current="page"]{color:#111113;font-weight:700}
+.nav-item[aria-current="page"]::before{content:"";position:absolute;top:-3px;width:18px;height:2px;background:#111113}
+
+/* Top Pill Toast (Exact Home Screen Design) */
+.toast{position:fixed;left:50%;top:calc(58px + env(safe-area-inset-top,0px));bottom:auto;transform:translate(-50%,-16px);opacity:0;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#16A34A,#15803D);color:#fff;padding:10px 18px 10px 12px;border-radius:999px;font-size:13.5px;font-weight:600;line-height:1.45;box-shadow:0 10px 28px rgba(0,0,0,.38);z-index:10060;pointer-events:none;white-space:normal;max-width:min(320px,86%);transition:opacity .25s,transform .25s var(--ease)}
+.toast::before{content:"\2713";width:22px;height:22px;flex:0 0 22px;border-radius:50%;background:#fff;color:#16A34A;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+.toast[data-type="error"]{background:linear-gradient(135deg,#DC2626,#B91C1C)}
+.toast[data-type="error"]::before{content:"!";color:#DC2626}
+.toast.is-on{opacity:1;transform:translate(-50%,0)}
+
+/* Scrim & Bottom Sheet Layers (Exact Home Screen Quick View & Sheet Design) */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9990;opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .3s}
+.scrim.is-open{opacity:1;visibility:visible;transition-delay:0s}
+.layer{position:fixed;z-index:10000;visibility:hidden;pointer-events:none;transition:transform .38s var(--ease),opacity .3s,visibility 0s .38s}
+.layer.is-open{visibility:visible;pointer-events:auto;transform:none;opacity:1;transition-delay:0s}
+.layer-sheet{left:0;right:0;margin:0 auto;width:100%;max-width:420px;bottom:0;background:linear-gradient(180deg,#FFFDF9,#FDFBF7);border-radius:26px 26px 0 0;padding:12px 16px calc(20px + env(safe-area-inset-bottom,0px));max-height:calc(100dvh - 32px);overflow-y:auto;box-shadow:0 -20px 50px rgba(0,0,0,.18)}
+.from-bottom{transform:translateY(100%)}
+.grab{width:44px;height:4px;border-radius:999px;background:#D9D2CB;margin:0 auto 14px}
+.sheet-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+.sheet-head h2{font-size:22px;font-weight:600;line-height:1.2}
+.sheet-head p{margin:4px 0 0;font-size:13.5px;color:var(--muted)}
+
+/* 3-Dots Item Management Sheet (#manageSheet) */
+.manage-prod-bar{display:flex;align-items:center;gap:12px;padding:10px 12px;background:#FFFFFF;border:1px solid var(--line);border-radius:16px;margin-bottom:12px;box-shadow:0 4px 14px -6px rgba(0,0,0,.06)}
+.manage-prod-img{width:54px;height:54px;flex:0 0 54px;border-radius:10px;overflow:hidden;background:var(--cream);border:1px solid var(--line)}
+.manage-prod-img img{width:100%;height:100%;object-fit:cover}
+.manage-prod-info{flex:1;min-width:0}
+.manage-prod-info h3{font-size:16px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.manage-prod-price{display:flex;align-items:baseline;gap:6px;margin-top:2px}
+.manage-list{display:flex;flex-direction:column;background:#FFFFFF;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.manage-opt{width:100%;display:flex;align-items:center;gap:12px;padding:13px 14px;background:#FFFFFF;border:0;border-bottom:1px solid #F0F0F5;font-size:15px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--ink);text-align:left;transition:background .18s}
+.manage-opt:last-child{border-bottom:0}
+@media(hover:hover){.manage-opt:hover{background:#F8F8FA}}
+.manage-opt:active{background:#F2F2F7}
+.manage-opt-ic{width:34px;height:34px;flex:0 0 34px;border-radius:50%;background:var(--cream);border:1px solid var(--line);color:var(--ink);display:inline-flex;align-items:center;justify-content:center}
+.manage-opt-ic svg{width:16px;height:16px;stroke-width:1.8}
+.manage-opt-text{flex:1;min-width:0}
+.manage-opt-text small{display:block;font-size:11.5px;font-weight:500;letter-spacing:.01em;text-transform:none;color:var(--muted);margin-top:1px}
+.manage-opt-arr{color:#A1A1AA;width:16px;height:16px}
+.manage-opt.danger{color:#DC2626}
+.manage-opt.danger .manage-opt-ic{background:rgba(220,38,38,.08);border-color:rgba(220,38,38,.22);color:#DC2626}
+.manage-opt.danger .manage-opt-text small{color:#EF4444}
+
+/* Quick View / Size Selection Sheet */
+.qv-top{display:flex;gap:14px;align-items:flex-start;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.qv-media{position:relative;width:106px;height:106px;flex:0 0 106px;border-radius:14px;overflow:hidden;background:var(--cream);border:1px solid var(--line);box-shadow:0 8px 20px -8px rgba(36,32,36,.22)}
+.qv-img{width:100%;height:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+.qv-summary{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.qv-head-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.qv-head-row h2{font-family:var(--font-main);font-size:18px;font-weight:600;color:var(--ink);line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.qv-x{width:30px;height:30px;flex:0 0 30px;border-radius:50%;border:1px solid var(--line);background:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:#333;margin-top:-2px}
+.qv-x svg{width:15px;height:15px;stroke-width:2.2}
+.qv-price-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:2px}
+.qv-price-row .price{font-size:19px;font-weight:700;color:var(--rani)}
+.qv-lowest{display:inline-block;margin-top:1px;font-size:12px;font-weight:700;letter-spacing:.02em;color:#7C3AED}
+.qv-badges{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:2px}
+.low{display:inline-flex;align-items:center;font-size:11.5px;font-weight:600;color:#B45309;background:rgba(180,83,9,.08);padding:2.5px 7px;border-radius:999px}
+.qv-colors-pick{margin:11px 0 4px}
+.qv-pick-head{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px;color:var(--muted)}
+.qv-pick-head em{font-style:normal;color:var(--ink);font-weight:700;text-transform:none;letter-spacing:0}
+.qv-color-row{display:flex;gap:8px;overflow-x:auto;padding:2px 0 4px}
+.qv-color-chip{height:32px;padding:0 12px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font-size:12.5px;font-weight:600;color:var(--ink);display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:border-color .2s,background .2s,color .2s}
+.qv-color-chip i{width:11px;height:11px;border-radius:50%;border:1px solid rgba(0,0,0,.15);display:inline-block}
+.qv-color-chip.on{border-color:#111113;background:#111113;color:#fff}
+.qv-sizes{margin:11px 0 4px}
+.qv-sizes-head{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px;color:var(--muted)}
+.qv-size-err{color:#DC2626;font-style:normal;font-size:12.5px;font-weight:700;text-transform:none;letter-spacing:0}
+.qv-size-row{display:flex;gap:7px;flex-wrap:wrap}
+.qv-sz{min-width:42px;height:38px;padding:0 12px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font-size:13.5px;font-weight:700;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s,border-color .2s,box-shadow .2s,transform .2s var(--ease)}
+@media(hover:hover){.qv-sz:hover{border-color:#B8AFA6}}
+.qv-sz:active{transform:scale(.95)}
+.qv-sz.on{background:linear-gradient(135deg,#242429,#0a0a0c);color:#fff;border-color:transparent;font-weight:700;box-shadow:0 5px 12px -3px rgba(0,0,0,.35)}
+.qv-size-row.shake{animation:qvshake .3s}
+@keyframes qvshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.qv-actions{display:grid;grid-template-columns:1fr 40px;gap:8px;margin-top:14px}
+.qv-add{grid-column:1/-1;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;background:linear-gradient(135deg,#242429,#000);color:#fff;font-weight:700;font-size:14.5px;letter-spacing:.6px;text-transform:uppercase;padding:0 18px;border-radius:999px;box-shadow:0 10px 22px -8px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.14);transition:transform .2s var(--ease),background .2s}
+.qv-add:active{transform:scale(.98)}
+.qv-add:disabled{opacity:.5;cursor:not-allowed}
+.qv-add svg{width:15px;height:15px;stroke-width:2.3}
+.qv-actions .qv-full{min-height:40px;padding:0 14px;border-radius:999px;font-size:13.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;text-align:center}
+.qv-actions .qv-share{width:40px;height:40px;min-height:40px;padding:0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center}
+
+@media(max-width:375px){
+  .site-header-row{padding:0 8px;gap:4px}
+  .icon-btn{width:31px;height:31px;flex:0 0 31px}
+  #miniHeroSection{margin-inline:12px}
+  .controls-wrap,.sec{padding-inline:12px}
+  .sec-head h2{font-size:21px}
+  .pcard-foot{padding:7px 8px 0}
+  .pcard-name{font-size:13.5px}
+  .price{font-size:15.5px}
+  .mrp{font-size:12px}
+  .rating{font-size:11px;padding:2px 5.5px}
+  .go{width:25px;height:25px;flex:0 0 25px}
+}
+@media(prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<div class="app-container">
+<div id="toast" class="toast" role="status" aria-live="polite"><span id="toast-msg"></span></div>
+<div id="scrim" class="scrim" onclick="closeTopLayer()"></div>
 
-<header class="pro-header">
-<div class="header-left">
-<button class="icon-btn" onclick="goBack()" aria-label="Back"><i data-lucide="arrow-left" style="width:20px;height:20px"></i></button>
-</div>
-<div class="header-titles"><h1>MY WISHLIST</h1><p id="headerItemCount">0 Items</p></div>
-<div class="header-right">
-<button class="icon-btn" onclick="shareWishlist()"><i data-lucide="share-2" style="width:18px;height:18px"></i></button>
-<a href="/cart" class="icon-btn cart-icon-wrapper"><i data-lucide="shopping-bag" style="width:18px;height:18px"></i><span class="cart-badge" id="topCartBadge" style="display:none">0</span></a>
-</div>
-</header>
-
-<main class="main-content">
-<div id="contentWrap" style="display:none">
-<div class="savings-card">
-<div><h3>Your Collection</h3><p id="saveSub">0 items</p></div>
-<div class="save-badge" id="saveBadge">Save ₹0</div>
-</div>
-
-<div class="search-row">
-<div class="search-box"><i data-lucide="search" style="width:16px;height:16px"></i><input id="searchInput" placeholder="Search in wishlist..." oninput="applySortFilter()"></div>
-<select id="sortSelect" class="sort-select" onchange="applySortFilter()">
-<option value="recent">Recent</option>
-<option value="low">Price: Low-High</option>
-<option value="high">Price: High-Low</option>
-<option value="discount">Discount</option>
-<option value="rating">Rating</option>
-</select>
-</div>
-
-<div class="filter-chips" id="filterChips">
-<button class="chip active" onclick="setFilter('all',this)">All</button>
-<button class="chip" onclick="setFilter('drop',this)">Price Drop</button>
-<button class="chip" onclick="setFilter('best',this)">Bestseller</button>
-<button class="chip" onclick="setFilter('lowstock',this)">Low Stock</button>
-</div>
-
-<div class="wishlist-toolbar">
-<div><div class="toolbar-title">Saved Collection</div><div class="toolbar-sub" id="toolbarSub"></div></div>
-<button class="clear-btn" onclick="askClear()">Clear</button>
-</div>
-
-<div class="grid-container" id="wishlistGrid"></div>
-<div id="noResult" style="display:none;text-align:center;padding:30px 10px;color:var(--muted);font-size:12px">No products match.</div>
-</div>
-
-<div class="grid-container" id="skeletonView">
-<div class="skel-card"><div class="skel-img skel-box"></div><div class="skel-info"><div class="skel-line skel-box" style="width:90%"></div><div class="skel-line skel-box" style="width:60%"></div></div></div>
-<div class="skel-card"><div class="skel-img skel-box"></div><div class="skel-info"><div class="skel-line skel-box" style="width:90%"></div><div class="skel-line skel-box" style="width:60%"></div></div></div>
-</div>
-
-<div id="emptyWishlistView" class="empty-wishlist-state">
-<div class="icon-circle"><i data-lucide="heart-off" style="width:34px;height:34px"></i></div>
-<h2>Nothing saved yet!</h2>
-<p>Tap the heart on any product to save here.</p>
-<a href="./" class="explore-btn">Start Exploring</a>
-</div>
-</main>
-
-<!-- FIX: ye ab hamesha dikhega, hide nahi hoga -->
-<div class="bottom-cta" id="bottomBar" style="display:none">
-<div class="bottom-price"><b id="totalPrice">₹0</b><span id="totalMrp">0 items</span></div>
-<button class="move-all-btn" onclick="moveAllToBag()">Move All to Bag</button>
-</div>
-
-<div class="modal-overlay" id="sizeModal">
-<div class="modal">
-<h3 id="modalTitle">Select Size</h3>
-<p>Choose a size to move to bag</p>
-<div class="size-grid" id="sizeGrid"></div>
-<button class="modal-btn" onclick="confirmMove()">Add to Bag • <span id="modalPrice"></span></button>
-<button class="modal-close" onclick="closeModal()">Cancel</button>
-</div>
-</div>
-
-<div class="modal-overlay" id="clearModal">
-<div class="modal" style="text-align:center">
-<div style="width:60px;height:60px;background:#FAF7F0;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:var(--rani)"><i data-lucide="trash-2" style="width:24px;height:24px"></i></div>
-<h3>Clear wishlist?</h3>
-<p>All <span id="clearCount"></span> items will be removed.</p>
-<button class="modal-btn" onclick="confirmClear()">Yes, Clear All</button>
-<button class="modal-close" onclick="document.getElementById('clearModal').classList.remove('open')">Keep My List</button>
-</div>
-</div>
-
-<div class="pro-toast" id="alertToast"><i data-lucide="check-circle-2" style="width:15px;height:15px"></i><span id="toastMsg">Done</span></div>
-</div>
-
-<script src="user_data.js"></script>
-<script>
-let wishlistIds=[], allProducts=[], filtered=[], activeFilter='all', pendingMoveId=null, selectedSize='M';
-const SIZES=['XS','S','M','L','XL','XXL','Free Size'];
-function parsePrice(v){return parseInt(String(v??'').replace(/[^0-9]/g,''))||0}
-function hashId(s){let h=0;s=String(s);for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h}
-function toast(m){const t=document.getElementById('alertToast');document.getElementById('toastMsg').innerText=m;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),2600);try{navigator.vibrate&&navigator.vibrate(30)}catch(e){}}
-function icons(){if(window.lucide)lucide.createIcons()}
-function goBack(){try{if(document.referrer&&new URL(document.referrer).origin===location.origin&&history.length>1){history.back();return;}}catch(e){}location.href='./';}
-document.addEventListener('DOMContentLoaded',()=>{updateCartBadge();initWishlist();icons()});
-function updateCartBadge(){
- let cart=[];try{cart=JSON.parse(localStorage.getItem('aavira_cart'))||[]}catch(e){}
- const b=document.getElementById('topCartBadge');
- const total=cart.reduce((s,i)=>s+(i.qty||1),0);
- b.innerText=total;b.style.display=total>0?'flex':'none';
-}
-async function initWishlist(){
- try{wishlistIds=(JSON.parse(localStorage.getItem('aavira_wishlist'))||[]).map(id=>String(id).trim())}catch(e){wishlistIds=[]}
- if(!wishlistIds.length){showEmpty();return}
- try{
-  if(typeof window.getVercelData==='function'){
-   const all=await window.getVercelData();
-   allProducts=all.filter(p=>wishlistIds.includes(String(p.id).trim()));
-  }
- }catch(e){}
- if(!allProducts.length){showEmpty()}else{
-  document.getElementById('skeletonView').style.display='none';
-  document.getElementById('contentWrap').style.display='block';
-  applySortFilter();
- }
-}
-function showEmpty(){
- document.getElementById('skeletonView').style.display='none';
- document.getElementById('contentWrap').style.display='none';
- document.getElementById('bottomBar').style.display='none';
- document.getElementById('emptyWishlistView').style.display='flex';
- document.getElementById('headerItemCount').innerText='0 Items';icons();
-}
-function meta(p){
- const c=parsePrice(p.price);let o=p.mrp?parsePrice(p.mrp):c+450;
- const d=o>c?Math.round((o-c)/o*100):0;
- const h=hashId(p.id);const rating=(3.8+(h%12)/10).toFixed(1);
- const rc=120+(h%900);const stock=2+(h%9);const best=(h%5)===0;
- const out=p.outOfStock===true||p.stock===0;
- const drop=d>=20;
- return {c,o,d,rating,rc,stock,best,out,drop};
-}
-function setFilter(f,el){
- activeFilter=f;
- document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
- el.classList.add('active');applySortFilter();
-}
-function applySortFilter(){
- const q=(document.getElementById('searchInput').value||'').toLowerCase().trim();
- const sort=document.getElementById('sortSelect').value;
- filtered=allProducts.filter(p=>{
-  if(q && !(p.name||'').toLowerCase().includes(q))return false;
-  const m=meta(p);
-  if(activeFilter==='drop'&&!m.drop)return false;
-  if(activeFilter==='best'&&!m.best)return false;
-  if(activeFilter==='lowstock'&&!(m.stock<=4&&!m.out))return false;
-  return true;
- });
- if(sort==='low')filtered.sort((a,b)=>parsePrice(a.price)-parsePrice(b.price));
- else if(sort==='high')filtered.sort((a,b)=>parsePrice(b.price)-parsePrice(a.price));
- else if(sort==='discount')filtered.sort((a,b)=>meta(b).d-meta(a).d);
- else if(sort==='rating')filtered.sort((a,b)=>meta(b).rating-meta(a).rating);
- render();
-}
-function render(){
- const grid=document.getElementById('wishlistGrid');grid.innerHTML='';
- document.getElementById('noResult').style.display=filtered.length?'none':'block';
- document.getElementById('headerItemCount').innerText=`${allProducts.length} Item${allProducts.length>1?'s':''}`;
- document.getElementById('toolbarSub').innerText=`${filtered.length} pieces showing`;
- let total=0,save=0;
- allProducts.forEach(p=>{const m=meta(p);total+=m.c;save+=Math.max(0,m.o-m.c)});
- document.getElementById('saveSub').innerText=`${allProducts.length} items • Total ₹${total.toLocaleString('en-IN')}`;
- document.getElementById('saveBadge').innerText=`Save ₹${save.toLocaleString('en-IN')}`;
- document.getElementById('totalPrice').innerText='₹'+total.toLocaleString('en-IN');
- document.getElementById('totalMrp').innerText=`${allProducts.length} items`;
- document.getElementById('bottomBar').style.display=allProducts.length?'flex':'none';
- filtered.forEach(p=>{
-  const m=meta(p);
-  const img=p.imageMain||p.image||p.imageUrl||'https://placehold.co/400x440/f5f5f5/cccccc?text=Aavira';
-  const cols=Array.isArray(p.colors)?p.colors:[];
-  const dots=cols.slice(0,3).map(c=>{
-   const v=typeof c==='object'?(c.hex||c.code||c.color||'#ddd'):c;
-   return `<span style="background:${String(v).replace(/"/g,'')}"></span>`;
-  }).join('');
-  const card=document.createElement('div');
-  card.className='w-card'+(m.out?' out-stock':'');
-  card.id='wcard_'+p.id;
-  card.innerHTML=`
-   <div class="w-img-wrapper" onclick="goProduct('${p.id}')">
-    <div class="w-img" style="background-image:url('${String(img).replace(/'/g,"%27")}')"></div>
-    ${m.d>0?`<div class="discount-tag">${m.d}% OFF</div>`:''}
-    ${m.drop&&!m.out?`<div class="price-drop-tag">PRICE DROP</div>`:''}
-    ${m.best?`<div class="bestseller">★ Bestseller</div>`:''}
-    ${m.out?`<div class="out-label">OUT OF STOCK</div>`:''}
-    <button class="btn-remove" onclick="event.stopPropagation();removeItem('${p.id}',this)"><i data-lucide="heart" style="width:16px;height:16px" fill="currentColor"></i></button>
-   </div>
-   <div class="w-info">
-    <h4 class="w-title" onclick="goProduct('${p.id}')">${p.name||'Aavira Product'}</h4>
-    <div class="rating-row"><span class="rating-badge"><i data-lucide="star" style="width:10px;height:10px" fill="currentColor"></i>${m.rating}</span><span class="rating-count">(${m.rc})</span></div>
-    <div class="colour-row"><div class="swatches">${dots}</div><span class="colour-text">${cols.length||1} Colour${(cols.length||1)>1?'s':''}</span></div>
-    ${!m.out&&m.stock<=4?`<div class="urgency-row"><i data-lucide="flame" style="width:12px;height:12px"></i>Only ${m.stock} left</div>`:''}
-    <div class="w-price-row"><span class="w-price">₹${m.c.toLocaleString('en-IN')}</span>${m.d>0?`<span class="w-old">₹${m.o.toLocaleString('en-IN')}</span>`:''}</div>
-    <div class="w-actions">
-     <button class="move-btn" ${m.out?'disabled':''} onclick="openSizeModal('${p.id}')">${m.out?'Sold Out':'Move to Bag'}</button>
-     <button class="view-btn" onclick="goProduct('${p.id}')"><i data-lucide="arrow-up-right" style="width:16px;height:16px"></i></button>
+<!-- 3-DOTS ITEM MANAGEMENT SHEET (#manageSheet) -->
+<div id="manageSheet" class="layer layer-sheet from-bottom" data-scrim="1" role="dialog" aria-modal="true" aria-labelledby="manageSheetTitle">
+  <div class="grab"></div>
+  <div class="sheet-head" style="margin-bottom:10px">
+    <div>
+      <span class="sec-eyebrow">Manage Saved Piece</span>
+      <h2 id="manageSheetTitle">Item Options</h2>
     </div>
-   </div>`;
-  grid.appendChild(card);
- });
- icons();
+    <button type="button" class="qv-x" data-no-delay="1" onclick="closeManageSheet()" aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
+
+  <div class="manage-prod-bar">
+    <div class="manage-prod-img"><img id="manageImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Selected piece"></div>
+    <div class="manage-prod-info">
+      <h3 id="manageName">Product Name</h3>
+      <div class="manage-prod-price">
+        <span class="price" id="managePrice">₹0</span>
+        <span class="mrp" id="manageMrp"></span>
+        <span class="tag-off" id="manageOff"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="manage-list">
+    <button type="button" class="manage-opt" id="btnManageMoveBag" data-no-delay="1" onclick="manageActionMoveToBag()">
+      <span class="manage-opt-ic"><i data-lucide="shopping-bag"></i></span>
+      <span class="manage-opt-text">Move to Bag<small>Select your size &amp; colour option</small></span>
+      <i data-lucide="chevron-right" class="manage-opt-arr"></i>
+    </button>
+    <button type="button" class="manage-opt" data-no-delay="1" onclick="manageActionQuickView()">
+      <span class="manage-opt-ic"><i data-lucide="sliders-horizontal"></i></span>
+      <span class="manage-opt-text">Select Size &amp; Quick View<small>Preview stock, ratings &amp; colour variants</small></span>
+      <i data-lucide="chevron-right" class="manage-opt-arr"></i>
+    </button>
+    <button type="button" class="manage-opt" data-no-delay="1" onclick="manageActionViewProduct()">
+      <span class="manage-opt-ic"><i data-lucide="external-link"></i></span>
+      <span class="manage-opt-text">View Full Product Details<small>Open complete product page</small></span>
+      <i data-lucide="chevron-right" class="manage-opt-arr"></i>
+    </button>
+    <button type="button" class="manage-opt" data-no-delay="1" onclick="manageActionShare()">
+      <span class="manage-opt-ic"><i data-lucide="share-2"></i></span>
+      <span class="manage-opt-text">Share This Piece<small>Send link to friends or copy URL</small></span>
+      <i data-lucide="chevron-right" class="manage-opt-arr"></i>
+    </button>
+    <button type="button" class="manage-opt danger" data-no-delay="1" onclick="manageActionDelete()">
+      <span class="manage-opt-ic"><i data-lucide="trash-2"></i></span>
+      <span class="manage-opt-text">Delete from Wishlist<small>Remove this piece from saved items</small></span>
+      <i data-lucide="chevron-right" class="manage-opt-arr"></i>
+    </button>
+  </div>
+</div>
+
+<!-- QUICK VIEW / SELECT SIZE SHEET (Exact Home Screen Sheet Design) -->
+<div id="sizeModal" class="layer layer-sheet from-bottom" data-scrim="1" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="grab"></div>
+  <div id="sizeModalBody">
+    <div class="qv-top">
+      <div class="qv-media"><img class="qv-img" id="modalImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Selected product"></div>
+      <div class="qv-summary">
+        <div class="qv-head-row">
+          <h2 id="modalTitle">Select Size</h2>
+          <button type="button" class="qv-x" data-no-delay="1" onclick="closeModal()" aria-label="Close"><i data-lucide="x"></i></button>
+        </div>
+        <div class="qv-price-row">
+          <span class="price" id="modalPrice">₹0</span>
+          <span class="mrp" id="modalMrp"></span>
+          <span class="tag-off" id="modalOff"></span>
+        </div>
+        <span class="qv-lowest">Lowest price in last 30 days</span>
+        <div class="qv-badges" id="modalBadges"></div>
+      </div>
+    </div>
+
+    <div class="qv-colors-pick" id="modalColorWrap">
+      <div class="qv-pick-head"><span>Colour</span><em id="modalColorName"></em></div>
+      <div class="qv-color-row no-scrollbar" id="modalColorRow"></div>
+    </div>
+
+    <div class="qv-sizes">
+      <div class="qv-sizes-head"><span>Select size</span><em class="qv-size-err" id="qvSizeErr" hidden>Please select a size</em></div>
+      <div class="qv-size-row" id="sizeGrid"></div>
+    </div>
+
+    <div class="qv-actions">
+      <button type="button" class="qv-add" id="btnConfirmMove" onclick="confirmMove()">
+        <i data-lucide="shopping-cart"></i>
+        <span>Move to Bag • <span id="modalBtnPrice">₹0</span></span>
+      </button>
+      <button type="button" class="btn-outline qv-full" id="btnModalFullDetails" onclick="openPendingProduct()">Full details</button>
+      <button type="button" class="btn-outline qv-share" id="btnModalShare" data-no-delay="1" onclick="sharePendingProduct()" aria-label="Share product"><i data-lucide="share-2"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- CLEAR WISHLIST SHEET -->
+<div id="clearModal" class="layer layer-sheet from-bottom" data-scrim="1" role="dialog" aria-modal="true" aria-labelledby="clearTitle">
+  <div class="grab"></div>
+  <div class="sheet-head">
+    <div>
+      <span class="sec-eyebrow">Saved Collection</span>
+      <h2 id="clearTitle">Clear wishlist?</h2>
+      <p>All <b id="clearCount">0</b> saved items will be removed from your wishlist.</p>
+    </div>
+    <button type="button" class="qv-x" data-no-delay="1" onclick="closeClearModal()" aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
+  <div style="display:grid;gap:10px;margin-top:8px">
+    <button type="button" class="btn-pink" onclick="confirmClear()"><i data-lucide="trash-2" style="width:16px;height:16px"></i><span>Yes, Clear All</span></button>
+    <button type="button" class="btn-outline" data-no-delay="1" onclick="closeClearModal()">Keep My List</button>
+  </div>
+</div>
+
+<div class="app">
+  <header class="site-header">
+    <div class="site-header-row">
+      <div class="header-left">
+        <button type="button" class="icon-btn" data-no-delay="1" onclick="goBack()" aria-label="Back"><i data-lucide="arrow-left"></i></button>
+        <div class="header-title-wrap">
+          <h1>My Wishlist</h1>
+          <span id="headerItemCount" class="header-count-pill">0 Items</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button type="button" class="icon-btn" data-no-delay="1" onclick="focusSearch()" aria-label="Search wishlist"><i data-lucide="search"></i></button>
+        <button type="button" class="icon-btn" data-no-delay="1" onclick="shareWishlist()" aria-label="Share wishlist"><i data-lucide="share-2"></i></button>
+        <button type="button" class="icon-btn" onclick="go('/cart', this)" aria-label="Shopping cart">
+          <i data-lucide="shopping-cart"></i>
+          <span id="topCartBadge" class="cart-badge" hidden>0</span>
+        </button>
+        <button type="button" class="site-logo-right" style="background:none;border:0;padding:0" onclick="go('./', this)" aria-label="Aavira home">
+          <img src="https://aavirafashion.shop/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" class="site-logo" onerror="logoFallback(this)">
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div id="netBar" class="net-bar" role="status" hidden>You are offline. Showing saved wishlist.</div>
+
+  <main>
+    <div id="contentWrap" hidden>
+      <!-- HOME SCREEN MINI HERO BANNER SECTION (#miniHeroSection) -->
+      <section id="miniHeroSection" aria-label="Highlights">
+        <div class="mini-track" id="miniTrack">
+          <div class="mini-slide">
+            <div class="mini-meta">
+              <span class="mini-eyebrow"><i data-lucide="sparkles" style="width:11px;height:11px"></i>Your Saved Edit</span>
+              <h2>Handcrafted Luxury Picks</h2>
+              <p id="saveSub">0 items • Total ₹0</p>
+            </div>
+            <span class="save-badge" id="saveBadge">0% Off</span>
+          </div>
+          <div class="mini-slide alt-gold">
+            <div class="mini-meta">
+              <span class="mini-eyebrow"><i data-lucide="crown" style="width:11px;height:11px"></i>Festive Privilege</span>
+              <h2>Extra 10% Off Prepaid Orders</h2>
+              <p>Instant checkout discount on all ethnic wear</p>
+            </div>
+            <button type="button" class="save-badge" data-no-delay="1" onclick="moveAllToBag()">Shop Bag</button>
+          </div>
+          <div class="mini-slide alt-plum">
+            <div class="mini-meta">
+              <span class="mini-eyebrow"><i data-lucide="shield-check" style="width:11px;height:11px"></i>Aavira Promise</span>
+              <h2>Free Shipping &amp; Easy Returns</h2>
+              <p>7-day hassle-free size exchange across India</p>
+            </div>
+            <button type="button" class="save-badge" data-no-delay="1" onclick="setFilterByName('drop')">Top Deals</button>
+          </div>
+        </div>
+        <div class="mini-dots" id="miniDots">
+          <button type="button" class="mini-dot is-active" data-slide="0" data-no-delay="1" onclick="scrollToMiniSlide(0)" aria-label="Slide 1"></button>
+          <button type="button" class="mini-dot" data-slide="1" data-no-delay="1" onclick="scrollToMiniSlide(1)" aria-label="Slide 2"></button>
+          <button type="button" class="mini-dot" data-slide="2" data-no-delay="1" onclick="scrollToMiniSlide(2)" aria-label="Slide 3"></button>
+        </div>
+      </section>
+
+      <section class="controls-wrap" aria-label="Search and filter">
+        <div class="search-row">
+          <div class="search-box">
+            <i data-lucide="search"></i>
+            <input type="search" id="searchInput" placeholder="Search in your wishlist..." autocomplete="off" oninput="applySortFilter()" aria-label="Search in wishlist">
+            <button type="button" id="btnClearSearch" class="search-clear" data-no-delay="1" onclick="clearSearchInput()" aria-label="Clear search" hidden><i data-lucide="x"></i></button>
+          </div>
+          <select id="sortSelect" class="sort-select" onchange="applySortFilter()" aria-label="Sort wishlist">
+            <option value="recent">Latest saved</option>
+            <option value="low">Price: Low to High</option>
+            <option value="high">Price: High to Low</option>
+            <option value="discount">Biggest discount</option>
+            <option value="rating">Top rated</option>
+          </select>
+        </div>
+
+        <div class="chips no-scrollbar" id="filterChips" role="group" aria-label="Filter wishlist">
+          <button type="button" class="chip" data-filter="all" aria-pressed="true" data-no-delay="1" onclick="setFilter('all', this)">All Pieces</button>
+          <button type="button" class="chip" data-filter="drop" aria-pressed="false" data-no-delay="1" onclick="setFilter('drop', this)">Price Drop</button>
+          <button type="button" class="chip" data-filter="best" aria-pressed="false" data-no-delay="1" onclick="setFilter('best', this)">Bestseller</button>
+          <button type="button" class="chip" data-filter="lowstock" aria-pressed="false" data-no-delay="1" onclick="setFilter('lowstock', this)">Low Stock</button>
+        </div>
+      </section>
+
+      <section class="sec" aria-labelledby="h-wish">
+        <div class="sec-head">
+          <div>
+            <span class="sec-eyebrow" id="toolbarSub">0 pieces showing</span>
+            <h2 id="h-wish">Saved Collection</h2>
+          </div>
+          <button type="button" class="sec-link" data-no-delay="1" onclick="askClear()">Clear all</button>
+        </div>
+
+        <div class="grid2" id="wishlistGrid"></div>
+
+        <div id="noResult" class="empty" hidden>
+          <div class="empty-icon"><i data-lucide="search-x"></i></div>
+          <h3>No matching pieces</h3>
+          <p>Try clearing your search or switching the active filter chip.</p>
+          <button type="button" class="btn-outline" style="max-width:200px;min-height:38px;font-size:13.5px" data-no-delay="1" onclick="resetFilters()">Reset filters</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- SKELETON LOADING VIEW -->
+    <section class="sec" id="skeletonView" aria-label="Loading wishlist">
+      <div class="grid2">
+        <div class="pcard"><div class="skel" style="aspect-ratio:1/1"></div><div style="padding:10px"><div class="skel" style="height:12px;width:78%;margin-bottom:8px"></div><div class="skel" style="height:12px;width:52%;margin-bottom:10px"></div><div class="skel" style="height:32px;width:100%;border-radius:999px"></div></div></div>
+        <div class="pcard"><div class="skel" style="aspect-ratio:1/1"></div><div style="padding:10px"><div class="skel" style="height:12px;width:78%;margin-bottom:8px"></div><div class="skel" style="height:12px;width:52%;margin-bottom:10px"></div><div class="skel" style="height:32px;width:100%;border-radius:999px"></div></div></div>
+        <div class="pcard"><div class="skel" style="aspect-ratio:1/1"></div><div style="padding:10px"><div class="skel" style="height:12px;width:78%;margin-bottom:8px"></div><div class="skel" style="height:12px;width:52%;margin-bottom:10px"></div><div class="skel" style="height:32px;width:100%;border-radius:999px"></div></div></div>
+        <div class="pcard"><div class="skel" style="aspect-ratio:1/1"></div><div style="padding:10px"><div class="skel" style="height:12px;width:78%;margin-bottom:8px"></div><div class="skel" style="height:12px;width:52%;margin-bottom:10px"></div><div class="skel" style="height:32px;width:100%;border-radius:999px"></div></div></div>
+      </div>
+    </section>
+
+    <!-- EMPTY WISHLIST VIEW -->
+    <section class="sec" id="emptyWishlistView" hidden>
+      <div class="empty">
+        <div class="empty-icon"><i data-lucide="heart"></i></div>
+        <h3>Nothing saved yet</h3>
+        <p>Tap the heart icon on any handcrafted style to curate your personal wishlist.</p>
+        <div style="display:grid;gap:10px;max-width:240px;margin:0 auto">
+          <button type="button" class="btn-pink" onclick="go('./', this)"><span>Start Exploring</span><i data-lucide="arrow-right" style="width:16px;height:16px"></i></button>
+          <button type="button" id="btnRestoreDemo" class="btn-outline" style="min-height:38px;font-size:13px" data-no-delay="1" onclick="restoreSampleWishlist()" hidden>Preview Sample Collection</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- STICKY MOVE ALL TO BAG BAR -->
+<div class="wish-bottom-bar" id="bottomBar" hidden>
+  <div class="wish-bottom-price">
+    <b id="totalPrice">₹0</b>
+    <span id="totalMrp">0 items</span>
+  </div>
+  <button type="button" class="btn-pink wish-move-all" onclick="moveAllToBag()">
+    <i data-lucide="shopping-bag"></i>
+    <span>Move All to Bag</span>
+  </button>
+</div>
+
+<!-- COMPACT BOTTOM NAVIGATION BAR (Matches Home Screen) -->
+<nav class="bottom-nav" aria-label="Main">
+  <button type="button" class="nav-item" onclick="go('./', this)"><i data-lucide="home"></i><span>Home</span></button>
+  <button type="button" class="nav-item" onclick="go('categories', this)"><i data-lucide="layout-grid"></i><span>Collections</span></button>
+  <button type="button" class="nav-item" onclick="go('/ai', this)"><span class="nav-ai-badge">AI</span><span>AI</span></button>
+  <button type="button" class="nav-item" onclick="go('orders', this)"><i data-lucide="package"></i><span>Orders</span></button>
+  <button type="button" class="nav-item" onclick="go('profile', this)"><i data-lucide="user"></i><span>Profile</span></button>
+</nav>
+
+<script>
+const $ = (selector, root = document) => root.querySelector(selector);
+const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+
+const PLACEHOLDER = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#F7F1E8"/><text x="200" y="210" font-family="Georgia,serif" font-size="30" fill="#B9AFA6" text-anchor="middle">Aavira</text></svg>');
+const LOGO_FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 48"><text x="90" y="33" font-family="Georgia,serif" font-weight="700" font-size="28" letter-spacing="4" fill="#111113" text-anchor="middle">AAVIRA</text></svg>');
+
+const makeFashionSvg = (bg1, bg2, accent, label, sub) => 'data:image/svg+xml;utf8,' + encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+    <defs>
+      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="${bg1}"/>
+        <stop offset="100%" stop-color="${bg2}"/>
+      </linearGradient>
+    </defs>
+    <rect width="500" height="500" fill="url(#g)"/>
+    <circle cx="250" cy="210" r="135" fill="none" stroke="${accent}" stroke-opacity="0.28" stroke-width="1.5"/>
+    <path d="M195 140 L230 120 L270 120 L305 140 L325 220 L295 230 L285 185 L285 330 L215 330 L215 185 L205 230 L175 220 Z" fill="${accent}" fill-opacity="0.22" stroke="${accent}" stroke-width="2"/>
+    <text x="250" y="395" font-family="Georgia,serif" font-size="22" font-weight="700" fill="${accent}" letter-spacing="2" text-anchor="middle">${label}</text>
+    <text x="250" y="422" font-family="sans-serif" font-size="12" fill="${accent}" fill-opacity="0.75" letter-spacing="3" text-anchor="middle">${sub}</text>
+  </svg>`
+);
+
+const DEMO_PRODUCTS = [
+  {
+    id: 'av-101',
+    name: 'Zari Woven Banarasi Silk Blouse - Rani Pink',
+    price: 1890,
+    mrp: 2990,
+    rating: 4.7,
+    reviewCount: 248,
+    stock: 3,
+    bestseller: true,
+    colors: ['Rani Pink', 'Gold', 'Maroon'],
+    sizes: ['32', '34', '36', '38', '40', '42'],
+    imageMain: makeFashionSvg('#2B1321', '#140910', '#D4AF37', 'BANARASI ZARI SILK', 'HANDCRAFTED EDIT')
+  },
+  {
+    id: 'av-102',
+    name: 'Kundan Embroidered Velvet Bridal Choli',
+    price: 2450,
+    mrp: 3690,
+    rating: 4.9,
+    reviewCount: 412,
+    stock: 7,
+    bestseller: true,
+    colors: ['Maroon', 'Emerald', 'Navy Blue'],
+    sizes: ['32', '34', '36', '38', '40'],
+    imageMain: makeFashionSvg('#241418', '#0E090B', '#E6C665', 'ROYAL VELVET CHOLI', 'BRIDAL COUTURE')
+  },
+  {
+    id: 'av-103',
+    name: 'Handwork Mirror & Pearl Organza Saree Set',
+    price: 3290,
+    mrp: 4590,
+    rating: 4.5,
+    reviewCount: 164,
+    stock: 2,
+    bestseller: false,
+    colors: ['Ivory', 'Peach', 'Gold'],
+    sizes: ['Free Size'],
+    imageMain: makeFashionSvg('#F5EFE6', '#E5DAC8', '#8A6D1D', 'IVORY ORGANZA DRAPE', 'FESTIVE EDITION')
+  },
+  {
+    id: 'av-104',
+    name: 'Chanderi Tissue Golden V-Neck Designer Blouse',
+    price: 1590,
+    mrp: 2190,
+    rating: 4.3,
+    reviewCount: 96,
+    stock: 9,
+    bestseller: false,
+    colors: ['Gold', 'Beige'],
+    sizes: ['32', '34', '36', '38', '40', '42'],
+    imageMain: makeFashionSvg('#262118', '#12100C', '#D4AF37', 'CHANDERI TISSUE', 'LUXURY BASICS')
+  }
+];
+
+const ethnicColors = [
+  ['Red', '#C8102E'], ['Maroon', '#6D1230'], ['Wine', '#5E1A2B'], ['Rani Pink', '#D81B60'],
+  ['Pink', '#F4A6C0'], ['Magenta', '#C2185B'], ['Coral', '#F08A6E'], ['Peach', '#F6C1A5'],
+  ['Orange', '#E2711D'], ['Rust', '#B7410E'], ['Mustard', '#D4A017'], ['Yellow', '#E8B923'],
+  ['Gold', '#C9A227'], ['Beige', '#D9C3A0'], ['Ivory', '#F5EFE0'], ['White', '#FFFFFF'],
+  ['Green', '#2E7D5B'], ['Emerald', '#0F7B5A'], ['Olive', '#6B7A2A'], ['Mint', '#A8D5BA'],
+  ['Teal', '#0F766E'], ['Sky Blue', '#7FB7E0'], ['Blue', '#1F4E9C'], ['Navy Blue', '#1B2A5C'],
+  ['Lavender', '#C7B8E6'], ['Purple', '#6B3FA0'], ['Brown', '#7B4B2A'], ['Black', '#1A1A1A']
+].map(([name, hex]) => ({ name, hex }));
+
+const SIZES = ['32', '34', '36', '38', '40', '42'];
+let wishlistIds = [];
+let allProducts = [];
+let filtered = [];
+let activeFilter = 'all';
+let pendingMoveId = null;
+let activeManageId = null;
+let selectedSize = '';
+let selectedColor = '';
+let isDemoMode = false;
+let miniSlideTimer = null;
+
+const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[ch]));
+const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+const parsePrice = v => parseInt(String(v ?? '').replace(/[^0-9]/g, ''), 10) || 0;
+const formatPrice = amount => '₹' + Number(amount || 0).toLocaleString('en-IN');
+const vibrate = (ms = 30) => { try { navigator.vibrate?.(ms); } catch {} };
+const refreshIcons = () => { try { window.lucide?.createIcons(); } catch {} };
+
+const safeImageUrl = value => {
+  const raw = String(value ?? '').trim();
+  if (!raw) return PLACEHOLDER;
+  if (raw.startsWith('data:image/')) return raw;
+  try {
+    const url = new URL(raw, location.origin);
+    return ['http:', 'https:'].includes(url.protocol) ? url.href : PLACEHOLDER;
+  } catch {
+    return PLACEHOLDER;
+  }
+};
+
+window.imgFallback = img => {
+  img.onerror = null;
+  img.src = PLACEHOLDER;
+};
+
+window.logoFallback = img => {
+  img.onerror = null;
+  img.src = LOGO_FALLBACK;
+};
+
+const colorHex = name => {
+  const found = ethnicColors.find(c => c.name.toLowerCase() === String(name).trim().toLowerCase());
+  return found ? found.hex : '#D4AF37';
+};
+
+const store = {
+  get(key) { try { return localStorage.getItem(key); } catch { return null; } },
+  set(key, value) { try { localStorage.setItem(key, value); } catch {} },
+  json(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; } },
+  save(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch {} }
+};
+
+function hashId(s) {
+  let h = 0;
+  s = String(s);
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return h;
 }
-function goProduct(id){window.location.href='/product?id='+id}
-function removeItem(id,btn){
- const card=btn.closest('.w-card');card.classList.add('removing');
- setTimeout(()=>{
-  wishlistIds=wishlistIds.filter(x=>String(x)!==String(id));
-  localStorage.setItem('aavira_wishlist',JSON.stringify(wishlistIds));
-  allProducts=allProducts.filter(p=>String(p.id)!==String(id));
-  if(!allProducts.length)showEmpty();else applySortFilter();
-  toast('Removed from wishlist');
- },280);
+
+/* Layer & Scrim Stack (Exact Home Screen Implementation) */
+const layers = {
+  stack: [],
+  sync() {
+    document.body.style.overflow = this.stack.length ? 'hidden' : '';
+    $('#scrim').classList.toggle('is-open', this.stack.some(id => $('#' + id)?.dataset.scrim === '1'));
+  },
+  open(id) {
+    const el = $('#' + id);
+    if (!el || el.classList.contains('is-open')) return;
+    el.classList.add('is-open');
+    this.stack.push(id);
+    this.sync();
+  },
+  close(id) {
+    const el = $('#' + id);
+    if (!el) return;
+    el.classList.remove('is-open');
+    this.stack = this.stack.filter(item => item !== id);
+    this.sync();
+  },
+  closeTop() {
+    const top = this.stack.at(-1);
+    if (top) this.close(top);
+  }
+};
+
+window.closeTopLayer = () => layers.closeTop();
+document.addEventListener('keydown', e => { if (e.key === 'Escape') layers.closeTop(); });
+
+/* Top Pill Toast */
+let toastTimer;
+window.showToast = (message, type = 'success') => {
+  vibrate(35);
+  const t = $('#toast');
+  $('#toast-msg').textContent = message;
+  t.dataset.type = type;
+  t.classList.add('is-on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('is-on'), 2300);
+};
+window.toast = window.showToast;
+
+/* Button Busy Spinner Micro-Interaction (Same as Home Screen) */
+const ACTION_DELAY = 220;
+const ACTION_SELECTOR = '.btn-pink, .btn-dark, .btn-outline, .btn-card-bag, .go, .qv-add';
+const ACTION_SKIP = '[data-no-delay]';
+const pendingActions = new WeakSet();
+const releasedActions = new WeakSet();
+
+document.addEventListener('click', event => {
+  const el = event.target.closest(ACTION_SELECTOR);
+  if (!el || el.matches(ACTION_SKIP) || el.disabled) return;
+  if (releasedActions.delete(el)) return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  if (pendingActions.has(el)) return;
+
+  pendingActions.add(el);
+  el.classList.add('is-busy');
+
+  setTimeout(() => {
+    el.classList.remove('is-busy');
+    pendingActions.delete(el);
+    releasedActions.add(el);
+    el.click();
+  }, ACTION_DELAY);
+}, true);
+
+window.go = (url, el) => {
+  vibrate(25);
+  if (!url || url === '#') return;
+  el?.classList.add('is-loading');
+  try {
+    if (location.protocol === 'blob:' || location.hostname.includes('usercontent')) {
+      el?.classList.remove('is-loading');
+      showToast(`Navigating to ${url}`);
+      return;
+    }
+    location.href = url;
+  } catch {
+    el?.classList.remove('is-loading');
+  }
+};
+
+window.goBack = () => {
+  vibrate(25);
+  try {
+    if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+      history.back();
+      return;
+    }
+  } catch {}
+  go('./');
+};
+
+/* Mini Hero Carousel Engine (Matches Home Screen #miniHeroSection) */
+window.scrollToMiniSlide = idx => {
+  const track = $('#miniTrack');
+  if (!track) return;
+  const width = track.clientWidth || 1;
+  track.scrollTo({ left: idx * width, behavior: 'smooth' });
+};
+
+function initMiniHeroSlider() {
+  const track = $('#miniTrack');
+  const dots = $$('#miniDots .mini-dot');
+  if (!track || !dots.length) return;
+
+  let paused = false;
+  track.addEventListener('scroll', () => {
+    const idx = Math.round(track.scrollLeft / (track.clientWidth || 1));
+    dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
+  }, { passive: true });
+
+  track.addEventListener('touchstart', () => { paused = true; }, { passive: true });
+  track.addEventListener('touchend', () => { setTimeout(() => { paused = false; }, 3500); }, { passive: true });
+
+  clearInterval(miniSlideTimer);
+  miniSlideTimer = setInterval(() => {
+    if (paused || document.hidden || !track.clientWidth) return;
+    const total = dots.length;
+    const current = Math.round(track.scrollLeft / (track.clientWidth || 1));
+    const next = (current + 1) % total;
+    scrollToMiniSlide(next);
+  }, 4200);
 }
-function askClear(){
- if(!allProducts.length)return;
- document.getElementById('clearCount').innerText=allProducts.length;
- document.getElementById('clearModal').classList.add('open');icons();
+
+window.setFilterByName = name => {
+  const btn = $(`#filterChips .chip[data-filter="${CSS.escape(name)}"]`);
+  if (btn) setFilter(name, btn);
+};
+
+window.focusSearch = () => {
+  const input = $('#searchInput');
+  if (!input) return;
+  input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  setTimeout(() => input.focus(), 200);
+};
+
+window.clearSearchInput = () => {
+  const input = $('#searchInput');
+  if (!input) return;
+  input.value = '';
+  $('#btnClearSearch').hidden = true;
+  applySortFilter();
+  input.focus();
+};
+
+window.resetFilters = () => {
+  $('#searchInput').value = '';
+  $('#btnClearSearch').hidden = true;
+  $('#sortSelect').value = 'recent';
+  activeFilter = 'all';
+  $$('#filterChips .chip').forEach(c => c.setAttribute('aria-pressed', String(c.dataset.filter === 'all')));
+  applySortFilter();
+};
+
+function updateCartBadge() {
+  const cart = store.json('aavira_cart', []);
+  const total = (Array.isArray(cart) ? cart : []).reduce((s, i) => s + (Number(i.qty) || 1), 0);
+  const badge = $('#topCartBadge');
+  if (!badge) return;
+  badge.textContent = total > 99 ? '99+' : total;
+  badge.hidden = total <= 0;
 }
-function confirmClear(){
- wishlistIds=[];allProducts=[];filtered=[];
- localStorage.setItem('aavira_wishlist','[]');
- document.getElementById('clearModal').classList.remove('open');
- showEmpty();toast('Wishlist cleared');
+
+function meta(p) {
+  const c = parsePrice(p.price);
+  const o = p.mrp ? parsePrice(p.mrp) : c + 450;
+  const d = o > c ? Math.round((o - c) / o * 100) : 0;
+  const savedAmt = Math.max(0, o - c);
+  const h = hashId(p.id);
+  const rawRating = Number(p.rating);
+  const rating = (rawRating > 0 ? clamp(rawRating, 0, 5) : (3.9 + (h % 10) / 10)).toFixed(1);
+  const rc = Number(p.reviewCount) || (120 + (h % 900));
+  const stock = p.stock !== undefined && p.stock !== null && p.stock !== '' ? Number(p.stock) : (2 + (h % 9));
+  const best = Boolean(p.bestseller || (h % 5) === 0);
+  const out = Boolean(p.outOfStock === true || stock <= 0);
+  const drop = d >= 20;
+  return { c, o, d, savedAmt, rating, rc, stock, best, out, drop };
 }
-function openSizeModal(id){
- pendingMoveId=id;selectedSize='M';
- const p=allProducts.find(x=>String(x.id)===String(id));if(!p)return;
- document.getElementById('modalTitle').innerText=p.name||'Select Size';
- document.getElementById('modalPrice').innerText='₹'+meta(p).c.toLocaleString('en-IN');
- const g=document.getElementById('sizeGrid');g.innerHTML='';
- let avail=SIZES;
- if(Array.isArray(p.sizes)&&p.sizes.length)avail=p.sizes;
- avail.forEach(s=>{
-  const v=typeof s==='object'?(s.size||s.name||s.label):s;
-  const b=document.createElement('button');
-  b.className='size-opt'+(v===selectedSize?' selected':'');
-  b.innerText=v;b.onclick=()=>{selectedSize=v;g.querySelectorAll('.size-opt').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')};
-  g.appendChild(b);
- });
- document.getElementById('sizeModal').classList.add('open');
+
+function getColorNames(p) {
+  if (Array.isArray(p.colors) && p.colors.length) {
+    return p.colors.map(c => (typeof c === 'object' ? (c.name || c.color || c.label || '') : String(c).trim())).filter(Boolean);
+  }
+  if (typeof p.colorsInfo === 'string' && p.colorsInfo.trim()) {
+    return p.colorsInfo.split(',').map(s => s.trim()).filter(Boolean);
+  }
+  return ['Standard'];
 }
-function closeModal(){document.getElementById('sizeModal').classList.remove('open')}
-function confirmMove(){
- if(!pendingMoveId)return;
- const p=allProducts.find(x=>String(x.id)===String(pendingMoveId));if(!p)return;
- let color='As Shown';
- if(p.colors&&p.colors.length)color=p.colors[0].name||p.colors[0];
- else if(p.color)color=String(p.color).split(',')[0].trim();
- let cart=[];try{cart=JSON.parse(localStorage.getItem('aavira_cart'))||[]}catch(e){}
- const idx=cart.findIndex(i=>String(i.productId)===String(p.id)&&i.size===selectedSize&&i.color===color);
- if(idx>-1)cart[idx].qty+=1;else cart.push({productId:String(p.id),size:selectedSize,color,qty:1});
- localStorage.setItem('aavira_cart',JSON.stringify(cart));updateCartBadge();
- closeModal();
- const card=document.getElementById('wcard_'+p.id);
- if(card){card.classList.add('removing')}
- setTimeout(()=>{
-  wishlistIds=wishlistIds.filter(x=>String(x)!==String(p.id));
-  localStorage.setItem('aavira_wishlist',JSON.stringify(wishlistIds));
-  allProducts=allProducts.filter(x=>String(x.id)!==String(p.id));
-  pendingMoveId=null;
-  if(!allProducts.length)showEmpty();else applySortFilter();
-  toast('Moved to bag • '+selectedSize);
- },280);
+
+const ratingBadgeHtml = value => {
+  const num = clamp(Number(value) || 0, 0, 5);
+  const tone = num >= 4 ? '' : num >= 3 ? 'mid' : num > 0 ? 'bad' : 'none';
+  return `<span class="rating ${tone}" role="img" aria-label="Rating ${num.toFixed(1)}"><i data-lucide="star"></i>${num.toFixed(1)}</span>`;
+};
+
+window.setFilter = (f, el) => {
+  vibrate(20);
+  activeFilter = f;
+  $$('#filterChips .chip').forEach(c => c.setAttribute('aria-pressed', String(c === el)));
+  applySortFilter();
+};
+
+window.applySortFilter = () => {
+  const rawQ = $('#searchInput')?.value || '';
+  $('#btnClearSearch').hidden = !rawQ.length;
+  const q = rawQ.toLowerCase().trim();
+  const sort = $('#sortSelect')?.value || 'recent';
+
+  filtered = allProducts.filter(p => {
+    if (q && !(p.name || '').toLowerCase().includes(q)) return false;
+    const m = meta(p);
+    if (activeFilter === 'drop' && !m.drop) return false;
+    if (activeFilter === 'best' && !m.best) return false;
+    if (activeFilter === 'lowstock' && !(m.stock <= 4 && !m.out)) return false;
+    return true;
+  });
+
+  if (sort === 'low') filtered.sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
+  else if (sort === 'high') filtered.sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
+  else if (sort === 'discount') filtered.sort((a, b) => meta(b).d - meta(a).d);
+  else if (sort === 'rating') filtered.sort((a, b) => Number(meta(b).rating) - Number(meta(a).rating));
+
+  render();
+};
+
+function render() {
+  const grid = $('#wishlistGrid');
+  grid.innerHTML = '';
+
+  $('#noResult').hidden = filtered.length > 0;
+  const countLabel = `${allProducts.length} ${allProducts.length === 1 ? 'Item' : 'Items'}`;
+  $('#headerItemCount').textContent = countLabel;
+  $('#toolbarSub').textContent = `${filtered.length} ${filtered.length === 1 ? 'piece' : 'pieces'} showing`;
+
+  let total = 0;
+  let totalMrpSum = 0;
+  allProducts.forEach(p => {
+    const m = meta(p);
+    total += m.c;
+    totalMrpSum += m.o;
+  });
+  const avgPctOff = totalMrpSum > total ? Math.round(((totalMrpSum - total) / totalMrpSum) * 100) : 0;
+
+  if ($('#saveSub')) {
+    $('#saveSub').textContent = `${allProducts.length} ${allProducts.length === 1 ? 'item' : 'items'} • Total ${formatPrice(total)}`;
+  }
+  if ($('#saveBadge')) {
+    $('#saveBadge').textContent = avgPctOff > 0 ? `Up to ${avgPctOff}% Off` : `${allProducts.length} Saved`;
+  }
+  $('#totalPrice').textContent = formatPrice(total);
+  $('#totalMrp').textContent = `${allProducts.length} ${allProducts.length === 1 ? 'item' : 'items'}${avgPctOff > 0 ? ` • ${avgPctOff}% Off` : ''}`;
+  $('#bottomBar').hidden = allProducts.length === 0;
+
+  filtered.forEach(p => {
+    const m = meta(p);
+    const id = escapeHtml(p.id);
+    const name = escapeHtml(p.name || 'Aavira Handcrafted Piece');
+    const img = safeImageUrl(p.imageMain || p.image || p.imageUrl || p.img);
+    const cols = getColorNames(p);
+    const colorStrip = `<span class="color-strip">${cols.length} ${cols.length === 1 ? 'Colour' : 'Colours'}</span>`;
+
+    const topTags = [
+      m.best ? '<span class="tag-best">BESTSELLER</span>' : '',
+      m.drop && !m.out ? '<span class="tag-drop">PRICE DROP</span>' : ''
+    ].filter(Boolean).join('');
+
+    const stockOverlay = m.out
+      ? '<span class="tag-stock oos">Out of Stock</span>'
+      : (m.stock <= 4 ? `<span class="tag-stock low-stk">Only ${m.stock} Left</span>` : '');
+
+    const card = document.createElement('article');
+    card.className = 'pcard pcard-grid' + (m.out ? ' out-stock' : '');
+    card.id = 'wcard_' + p.id;
+    card.innerHTML = `
+      <span class="pcard-link" onclick="goProduct('${id}')">
+        <span class="pcard-media">
+          <img src="${escapeHtml(img)}" alt="${name}" loading="lazy" onerror="imgFallback(this)">
+          ${topTags ? `<span class="tags">${topTags}</span>` : ''}
+          ${stockOverlay}
+        </span>
+      </span>
+      <div class="pcard-foot">
+        <div class="pcard-text" onclick="goProduct('${id}')">
+          <span class="pcard-name">${name}</span>
+          <span class="pcard-price">
+            <span class="price">${formatPrice(m.c)}</span>
+            ${m.o > m.c ? `<span class="mrp">${formatPrice(m.o)}</span>` : ''}
+            ${m.d > 0 ? `<span class="tag-off">${m.d}% OFF</span>` : ''}
+          </span>
+        </div>
+        <div class="pcard-row">
+          <div class="pcard-metalink" onclick="goProduct('${id}')">
+            ${colorStrip}
+            ${ratingBadgeHtml(m.rating)}
+          </div>
+          <button type="button" class="go" data-no-delay="1" onclick="event.stopPropagation();openManageSheet('${id}')" aria-label="Manage ${name}" title="Manage item"><i data-lucide="more-vertical"></i></button>
+        </div>
+        <div class="pcard-cta">
+          <button type="button" class="btn-card-bag" ${m.out ? 'disabled' : ''} onclick="openSizeModal('${id}')">
+            <i data-lucide="shopping-bag"></i>
+            <span>${m.out ? 'Out of Stock' : 'Move to Bag'}</span>
+          </button>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+
+  refreshIcons();
 }
-function moveAllToBag(){
- let cart=[];try{cart=JSON.parse(localStorage.getItem('aavira_cart'))||[]}catch(e){}
- let added=0;
- allProducts.forEach(p=>{
-  const m=meta(p);if(m.out)return;
-  let color='As Shown';if(p.colors&&p.colors.length)color=p.colors[0].name||p.colors[0];
-  const idx=cart.findIndex(i=>String(i.productId)===String(p.id));
-  if(idx>-1)cart[idx].qty+=1;else cart.push({productId:String(p.id),size:'M',color,qty:1});
-  added++;
- });
- localStorage.setItem('aavira_cart',JSON.stringify(cart));updateCartBadge();
- toast(added+' items moved to bag');
- window.location.href='/cart';
+
+/* 3-Dots Item Management Sheet Handlers */
+window.openManageSheet = id => {
+  vibrate(20);
+  const p = allProducts.find(x => String(x.id) === String(id));
+  if (!p) return;
+  activeManageId = id;
+  const m = meta(p);
+  const img = safeImageUrl(p.imageMain || p.image || p.imageUrl || p.img);
+
+  $('#manageImg').src = img;
+  $('#manageName').textContent = p.name || 'Aavira Handcrafted Piece';
+  $('#managePrice').textContent = formatPrice(m.c);
+  $('#manageMrp').textContent = m.o > m.c ? formatPrice(m.o) : '';
+  $('#manageOff').textContent = m.d > 0 ? `${m.d}% OFF` : '';
+  $('#btnManageMoveBag').disabled = m.out;
+
+  refreshIcons();
+  layers.open('manageSheet');
+};
+
+window.closeManageSheet = () => layers.close('manageSheet');
+
+window.manageActionMoveToBag = () => {
+  const id = activeManageId;
+  closeManageSheet();
+  if (id) setTimeout(() => openSizeModal(id), 120);
+};
+
+window.manageActionQuickView = () => {
+  const id = activeManageId;
+  closeManageSheet();
+  if (id) setTimeout(() => openSizeModal(id), 120);
+};
+
+window.manageActionViewProduct = () => {
+  const id = activeManageId;
+  closeManageSheet();
+  if (id) goProduct(id);
+};
+
+window.manageActionShare = async () => {
+  const id = activeManageId;
+  closeManageSheet();
+  if (!id) return;
+  pendingMoveId = id;
+  await sharePendingProduct();
+};
+
+window.manageActionDelete = () => {
+  const id = activeManageId;
+  closeManageSheet();
+  if (id) removeItem(id);
+};
+
+function showEmpty() {
+  $('#skeletonView').hidden = true;
+  $('#contentWrap').hidden = true;
+  $('#bottomBar').hidden = true;
+  $('#emptyWishlistView').hidden = false;
+  $('#btnRestoreDemo').hidden = !isDemoMode;
+  $('#headerItemCount').textContent = '0 Items';
+  refreshIcons();
 }
-function shareWishlist(){
- const link=window.location.origin+'/wishlist?ids='+wishlistIds.join(',');
- if(navigator.share){navigator.share({title:'My Wishlist',url:link}).catch(()=>{})}
- else{navigator.clipboard.writeText(link).then(()=>toast('Link copied')).catch(()=>{})}
+
+window.goProduct = id => {
+  go(`/product?id=${encodeURIComponent(id)}`);
+};
+
+window.openPendingProduct = () => {
+  if (!pendingMoveId) return;
+  const id = pendingMoveId;
+  closeModal();
+  goProduct(id);
+};
+
+window.sharePendingProduct = async () => {
+  if (!pendingMoveId) return;
+  const p = allProducts.find(x => String(x.id) === String(pendingMoveId));
+  const url = `${location.origin}/product?id=${encodeURIComponent(pendingMoveId)}`;
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: p?.name || 'Aavira Fashion', url });
+      return;
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+    }
+  }
+  try {
+    await navigator.clipboard.writeText(url);
+    showToast('Product link copied');
+  } catch {
+    showToast('Link copied');
+  }
+};
+
+window.removeItem = (id, btn) => {
+  vibrate(35);
+  const card = btn?.closest('.pcard') || document.getElementById('wcard_' + id);
+  if (card) card.classList.add('removing');
+  setTimeout(() => {
+    wishlistIds = wishlistIds.filter(x => String(x) !== String(id));
+    store.save('aavira_wishlist', wishlistIds);
+    allProducts = allProducts.filter(p => String(p.id) !== String(id));
+    if (!allProducts.length) showEmpty();
+    else applySortFilter();
+    showToast('Removed from wishlist');
+  }, 260);
+};
+
+window.askClear = () => {
+  if (!allProducts.length) return;
+  $('#clearCount').textContent = allProducts.length;
+  layers.open('clearModal');
+  refreshIcons();
+};
+
+window.closeClearModal = () => layers.close('clearModal');
+
+window.confirmClear = () => {
+  wishlistIds = [];
+  allProducts = [];
+  filtered = [];
+  store.save('aavira_wishlist', []);
+  closeClearModal();
+  showEmpty();
+  showToast('Wishlist cleared');
+};
+
+window.openSizeModal = id => {
+  const p = allProducts.find(x => String(x.id) === String(id));
+  if (!p) return;
+  pendingMoveId = id;
+  const m = meta(p);
+  const img = safeImageUrl(p.imageMain || p.image || p.imageUrl || p.img);
+
+  $('#modalImg').src = img;
+  $('#modalTitle').textContent = p.name || 'Select Size';
+  $('#modalPrice').textContent = formatPrice(m.c);
+  $('#modalMrp').textContent = m.o > m.c ? formatPrice(m.o) : '';
+  $('#modalOff').textContent = m.d > 0 ? `${m.d}% OFF` : '';
+  $('#modalBtnPrice').textContent = formatPrice(m.c);
+
+  const stockBadge = m.out
+    ? '<span class="low" style="color:#B91C1C;background:rgba(185,28,28,.08)">Out of stock</span>'
+    : (m.stock <= 4
+      ? `<span class="low">Only ${m.stock} left</span>`
+      : '<span class="low" style="color:#15803D;background:rgba(21,128,61,.08)">In stock</span>');
+
+  $('#modalBadges').innerHTML = `
+    ${ratingBadgeHtml(m.rating)}
+    ${m.best ? '<span class="tag-best">Bestseller</span>' : ''}
+    ${stockBadge}
+  `;
+
+  const colors = getColorNames(p);
+  selectedColor = colors[0] || 'Standard';
+  $('#modalColorName').textContent = selectedColor ? `· ${selectedColor}` : '';
+  const colorRow = $('#modalColorRow');
+  colorRow.innerHTML = colors.map((clr, idx) => `
+    <button type="button" class="qv-color-chip${idx === 0 ? ' on' : ''}" data-color="${escapeHtml(clr)}" data-no-delay="1" onclick="pickModalColor(this)">
+      <i style="background:${escapeHtml(colorHex(clr))}"></i>
+      <span>${escapeHtml(clr)}</span>
+    </button>
+  `).join('');
+
+  let avail = SIZES;
+  if (Array.isArray(p.sizes) && p.sizes.length) {
+    avail = p.sizes.map(s => (typeof s === 'object' ? (s.size || s.name || s.label) : String(s)));
+  }
+  selectedSize = avail[0] || '36';
+  $('#qvSizeErr').hidden = true;
+
+  const sizeGrid = $('#sizeGrid');
+  sizeGrid.innerHTML = avail.map(sz => `
+    <button type="button" class="qv-sz${sz === selectedSize ? ' on' : ''}" data-size="${escapeHtml(sz)}" data-no-delay="1" onclick="pickModalSize(this)" ${m.out ? 'disabled' : ''}>
+      ${escapeHtml(sz)}
+    </button>
+  `).join('');
+
+  $('#btnConfirmMove').disabled = m.out;
+  refreshIcons();
+  layers.open('sizeModal');
+};
+
+window.pickModalColor = btn => {
+  vibrate(15);
+  $$('#modalColorRow .qv-color-chip').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  selectedColor = btn.dataset.color || 'Standard';
+  $('#modalColorName').textContent = selectedColor ? `· ${selectedColor}` : '';
+};
+
+window.pickModalSize = btn => {
+  vibrate(15);
+  $$('#sizeGrid .qv-sz').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  selectedSize = btn.dataset.size || '';
+  $('#qvSizeErr').hidden = true;
+};
+
+window.closeModal = () => layers.close('sizeModal');
+
+window.confirmMove = () => {
+  if (!pendingMoveId) return;
+  const p = allProducts.find(x => String(x.id) === String(pendingMoveId));
+  if (!p) return;
+
+  if (!selectedSize) {
+    $('#qvSizeErr').hidden = false;
+    const row = $('#sizeGrid');
+    row.classList.remove('shake');
+    void row.offsetWidth;
+    row.classList.add('shake');
+    vibrate(120);
+    showToast('Please select a size', 'error');
+    return;
+  }
+
+  const m = meta(p);
+  const color = selectedColor || getColorNames(p)[0] || 'Standard';
+  const image = safeImageUrl(p.imageMain || p.image || p.imageUrl || p.img);
+  const cart = store.json('aavira_cart', []);
+  const idx = cart.findIndex(i => String(i.productId) === String(p.id) && i.size === selectedSize && (i.color || 'Standard') === color);
+
+  if (idx > -1) cart[idx].qty = (Number(cart[idx].qty) || 1) + 1;
+  else cart.push({ productId: String(p.id), name: p.name, price: m.c, size: selectedSize, color, image, qty: 1 });
+
+  store.save('aavira_cart', cart);
+  updateCartBadge();
+  closeModal();
+
+  const card = document.getElementById('wcard_' + p.id);
+  if (card) card.classList.add('removing');
+
+  const movedSize = selectedSize;
+  setTimeout(() => {
+    wishlistIds = wishlistIds.filter(x => String(x) !== String(p.id));
+    store.save('aavira_wishlist', wishlistIds);
+    allProducts = allProducts.filter(x => String(x.id) !== String(p.id));
+    pendingMoveId = null;
+    if (!allProducts.length) showEmpty();
+    else applySortFilter();
+    showToast(`Moved to bag • Size ${movedSize}`);
+  }, 260);
+};
+
+window.moveAllToBag = () => {
+  const cart = store.json('aavira_cart', []);
+  let added = 0;
+
+  allProducts.forEach(p => {
+    const m = meta(p);
+    if (m.out) return;
+    const color = getColorNames(p)[0] || 'Standard';
+    const defaultSize = (Array.isArray(p.sizes) && p.sizes.length) ? String(p.sizes[0]) : '36';
+    const image = safeImageUrl(p.imageMain || p.image || p.imageUrl || p.img);
+    const idx = cart.findIndex(i => String(i.productId) === String(p.id) && i.size === defaultSize && (i.color || 'Standard') === color);
+    if (idx > -1) cart[idx].qty = (Number(cart[idx].qty) || 1) + 1;
+    else cart.push({ productId: String(p.id), name: p.name, price: m.c, size: defaultSize, color, image, qty: 1 });
+    added++;
+  });
+
+  if (!added) {
+    showToast('All saved items are currently out of stock', 'error');
+    return;
+  }
+
+  store.save('aavira_cart', cart);
+  updateCartBadge();
+  showToast(`${added} ${added === 1 ? 'item' : 'items'} moved to bag`);
+  setTimeout(() => go('/cart'), 650);
+};
+
+window.shareWishlist = async () => {
+  const link = `${location.origin}/wishlist?ids=${encodeURIComponent(wishlistIds.join(','))}`;
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: 'My Aavira Wishlist', url: link });
+      return;
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+    }
+  }
+  try {
+    await navigator.clipboard.writeText(link);
+    showToast('Wishlist link copied');
+  } catch {
+    showToast('Wishlist link ready to share');
+  }
+};
+
+window.restoreSampleWishlist = () => {
+  allProducts = DEMO_PRODUCTS.map(p => ({ ...p }));
+  wishlistIds = allProducts.map(p => String(p.id));
+  store.save('aavira_wishlist', wishlistIds);
+  $('#emptyWishlistView').hidden = true;
+  $('#contentWrap').hidden = false;
+  applySortFilter();
+  showToast('Sample wishlist restored');
+};
+
+const loadExternalScript = src => new Promise(resolve => {
+  const s = document.createElement('script');
+  s.src = src;
+  s.onload = () => resolve(true);
+  s.onerror = () => resolve(false);
+  document.head.appendChild(s);
+});
+
+const loadExternalCss = href => {
+  const l = document.createElement('link');
+  l.rel = 'stylesheet';
+  l.href = href;
+  document.head.appendChild(l);
+};
+
+async function initWishlist() {
+  loadExternalCss('mini-hero.css');
+  await loadExternalScript('/user_data.js');
+  loadExternalScript('/cookie-consent.js');
+  loadExternalScript('mini-hero.js');
+
+  const urlIds = new URLSearchParams(location.search).get('ids');
+  if (urlIds) {
+    const parsed = urlIds.split(',').map(s => s.trim()).filter(Boolean);
+    if (parsed.length) store.save('aavira_wishlist', parsed);
+  }
+
+  wishlistIds = store.json('aavira_wishlist', []).map(id => String(id).trim()).filter(Boolean);
+
+  if (typeof window.getVercelData === 'function') {
+    if (!wishlistIds.length) {
+      showEmpty();
+      return;
+    }
+    try {
+      const all = await window.getVercelData();
+      if (Array.isArray(all)) {
+        allProducts = all.filter(p => wishlistIds.includes(String(p.id ?? p._id).trim()));
+      }
+    } catch {}
+  } else {
+    /* Standalone Preview Mode when backend user_data.js is not present */
+    isDemoMode = true;
+    if (!wishlistIds.length) {
+      wishlistIds = DEMO_PRODUCTS.map(p => p.id);
+      store.save('aavira_wishlist', wishlistIds);
+    }
+    allProducts = DEMO_PRODUCTS.filter(p => wishlistIds.includes(String(p.id)));
+  }
+
+  if (!allProducts.length) {
+    showEmpty();
+  } else {
+    $('#skeletonView').hidden = true;
+    $('#emptyWishlistView').hidden = true;
+    $('#contentWrap').hidden = false;
+    applySortFilter();
+    initMiniHeroSlider();
+  }
 }
-document.getElementById('sizeModal').addEventListener('click',e=>{if(e.target.id==='sizeModal')closeModal()});
+
+addEventListener('online', () => { $('#netBar').hidden = true; showToast('Back online'); });
+addEventListener('offline', () => { $('#netBar').hidden = false; });
+
+document.addEventListener('DOMContentLoaded', () => {
+  $('#netBar').hidden = navigator.onLine;
+  updateCartBadge();
+  refreshIcons();
+  initWishlist();
+});
 </script>
-<script src="/cookie-consent.js" defer></script>
 </body>
 </html>
