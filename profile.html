@@ -1,657 +1,1243 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Aavira - My Profile</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>My Account - Aavira Fashion</title>
+<meta name="theme-color" content="#ffffff">
+<meta name="description" content="Manage your Aavira Fashion account, orders, wishlist, and delivery addresses.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+:root{--rani:#111111;--rani-dark:#000000;--gold:#D4AF37;--gold-deep:#111113;--gold-text:#8A6D1D;--gold-soft:#F8F8FA;--ivory:#FFFFFF;--cream:#F8F8FA;--ink:#111113;--muted:#6E6E73;--line:#E5E5EA;--blush:#F2F2F7;--plum:#1C1C1E;--green:#15803D;--danger:#B91C1C;--ease:cubic-bezier(.22,1,.36,1);--ios-spring:cubic-bezier(.32,.72,0,1);--font-main:"Barlow Condensed","Roboto Condensed",system-ui,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--font-main);letter-spacing:.015em;background:var(--ivory);color:var(--ink);overflow-x:clip;overscroll-behavior-y:none;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--font-main);letter-spacing:.01em;margin:0}
+button{font-family:inherit;letter-spacing:inherit;cursor:pointer;user-select:none}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+:focus-visible{outline:2px solid var(--rani);outline-offset:2px}
+[hidden]{display:none!important}
+.hidden{display:none!important}
 
-    <!-- Tailwind CSS Setup -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'rani-pink': '#161616',
-                        'rani-deep': '#000000',
-                        'rani-light': '#F5F1E8',
-                        'gold': '#B8860B',
-                        'gold-light': '#F4E4BC',
-                        'platinum': '#5B6B79',
-                    },
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    }
-                }
-            }
-        }
-    </script>
+.app{max-width:420px;margin:0 auto;min-height:100vh;background:#FFFFFF;position:relative;padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(min-width:640px){body{background:#FFFFFF}.app{box-shadow:0 0 50px rgba(0,0,0,.06);border-inline:1px solid #F0F0F5}}
 
-    <!-- Required Fonts & Lucide Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+.is-busy{position:relative;pointer-events:none;color:transparent!important}
+.is-busy>*{opacity:0!important}
+.is-busy::after{content:"";box-sizing:border-box;position:absolute;left:50%;top:50%;width:15px;height:15px;margin:-7.5px 0 0 -7.5px;border:2.2px solid var(--spin,var(--ink));border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;z-index:6}
+:is(.btn-dark,.ios-auth-submit,.footer-news button,.name-save-btn).is-busy{--spin:#fff}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-    <style>
-        body {
-            background: #FFF4F8;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .profile-shell{background:linear-gradient(180deg,#F5F1E8 0%,#FAF7F0 28%,#FFFFFF 100%);}
-        .profile-hero{position:relative;min-height:112px;background:radial-gradient(circle at 12% 18%,rgba(255,255,255,.22) 0 2px,transparent 3px),radial-gradient(circle at 82% 20%,rgba(255,255,255,.16) 0 2px,transparent 3px),radial-gradient(circle at 55% 78%,rgba(255,255,255,.12) 0 2px,transparent 3px),linear-gradient(135deg,#161616 0%,#161616 52%,#000000 100%);border-radius:0 0 34px 34px;overflow:hidden;}
-        .profile-hero:before,.profile-hero:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.12);border-radius:50%;pointer-events:none;}
-        .profile-hero:before{width:180px;height:180px;left:-55px;top:-110px}.profile-hero:after{width:220px;height:220px;right:-75px;top:-125px}
-        .profile-logo{font-family:'Playfair Display',serif;letter-spacing:-.3px}
-        .profile-stats-card{width:calc(100% - 28px);}
-        .profile-main-card{margin:14px 14px 0;position:relative;z-index:3;background:#fff;border-radius:26px;box-shadow:0 10px 28px rgba(22,22,22,.10);border:1px solid rgba(22,22,22,.07);overflow:hidden}
-        .profile-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:100%;min-width:0}.profile-stat{min-width:0;width:100%;overflow:hidden}.profile-stat+.profile-stat{border-left:1px solid #F1E8EC}
-        .profile-avatar{width:76px;height:76px;border-radius:50%;background:#F5F1E8;border:3px solid #161616;color:#161616;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;overflow:hidden;flex-shrink:0}
-        .profile-menu-card{margin:18px 14px 28px;background:#fff;border:1px solid #F3E6EC;border-radius:26px;padding:7px 14px;box-shadow:0 8px 22px rgba(31,20,26,.05)}
-        .profile-menu-row{min-height:66px;border-bottom:1px solid #F1EDF0}
-        .profile-menu-row:last-child{border-bottom:0}
-        .profile-menu-title{font-size:14px;font-weight:700;color:#171317;line-height:1.15}
-        .profile-menu-sub{font-size:11px;color:#7B7479;margin-top:3px;line-height:1.25}
-        .profile-chevron{color:#6B6870;width:19px;height:19px;flex-shrink:0}
-        .profile-logout{background:#F5F1E8;color:#161616;border:1px solid #EDE5D3}
-        .settings-backdrop{position:fixed;inset:0;background:rgba(17,12,15,.52);z-index:90;opacity:0;pointer-events:none;transition:opacity .22s ease}
-        .settings-backdrop.show{opacity:1;pointer-events:auto}
-        .settings-sheet{position:fixed;left:50%;bottom:0;width:min(440px,100%);max-height:88vh;transform:translate(-50%,105%);background:#fff;border-radius:28px 28px 0 0;z-index:91;box-shadow:0 -18px 50px rgba(0,0,0,.18);transition:transform .28s cubic-bezier(.16,1,.3,1);overflow:hidden}
-        .settings-sheet.show{transform:translate(-50%,0)}
-        .account-sheet{position:fixed;inset:0;background:#fff;z-index:95;transform:translateX(100%);transition:transform .28s cubic-bezier(.16,1,.3,1);overflow-y:auto;overscroll-behavior:contain}
-        .account-sheet.show{transform:translateX(0)}
-        .account-scroll{min-height:100%;overflow:visible}
-        .account-field{width:100%;border:1px solid #E9E3E7;background:#FFFBFD;border-radius:14px;padding:12px 13px;font-size:13px;outline:none;transition:border-color .2s,box-shadow .2s}
-        .account-field:focus{border-color:#161616;box-shadow:0 0 0 3px rgba(22,22,22,.10)}
-        .account-action{background:#161616;color:#fff;border-radius:14px;padding:12px 16px;font-size:13px;font-weight:800}
-        .account-secondary{background:#F5F1E8;color:#161616;border:1px solid #EDE5D3;border-radius:14px;padding:11px 16px;font-size:12px;font-weight:800}
-        .account-status{font-size:11px;min-height:20px;color:#161616;margin-top:8px}
-        .account-option{display:flex;align-items:center;gap:12px;padding:15px 14px;background:#fff;border:1px solid #F0E8EC;border-radius:18px;box-shadow:0 4px 16px rgba(30,15,22,.04);transition:.18s}
-        .account-option:active{transform:scale(.985)}
-        .account-option-icon{width:42px;height:42px;border-radius:13px;background:#F5F1E8;color:#161616;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-        .account-option strong{display:block;font-size:13.5px;color:#161217}.account-option small{display:block;font-size:10.5px;color:#858086;margin-top:3px}
-        .account-section-title{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:800;margin-bottom:16px}.account-section-title svg{width:19px;height:19px;color:#161616}
-        .account-label{display:block;font-size:11px;font-weight:700;color:#615B60;margin-bottom:6px}
-        .account-info-box{display:flex;gap:10px;align-items:flex-start;background:#F5F1E8;border:1px solid #EDE5D3;border-radius:16px;padding:13px;font-size:11px;line-height:1.5;color:#625B60}.account-info-box svg{width:18px;height:18px;color:#161616;flex-shrink:0}
-        .settings-scroll{max-height:calc(88vh - 62px);overflow-y:auto}
-        .settings-row{min-height:58px;display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #F1EDF0}
-        .settings-danger{color:#C62828;background:#FFF3F3}.settings-danger-text{color:#C62828}
-        .settings-value{font-size:10px;color:#8B8589;margin-top:2px}
-        .settings-switch{width:42px;height:24px;border-radius:999px;background:#D9D5D8;position:relative;transition:.2s;flex-shrink:0}
-        .settings-switch:after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.18);transition:.2s}
-        .settings-switch.on{background:#161616}.settings-switch.on:after{transform:translateX(18px)}
-        .hide-scroll::-webkit-scrollbar { display: none; }
-        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+.hdr{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:6px;height:46px;padding:env(safe-area-inset-top,0) 10px 0;background:#FFFFFF!important;border-bottom:1px solid #E5E5EA}
+.hdr-left{display:flex;align-items:center;gap:2px;min-width:0;flex:1}
+.hdr-r{display:flex;align-items:center;gap:2px}
+.hdr-logo{flex-shrink:0;display:flex;align-items:center}
+.hdr img{height:28px;width:auto;max-width:98px;object-fit:contain}
+.ib{position:relative;width:32px;height:32px;flex:0 0 32px;padding:0;border:0;background:transparent;border-radius:50%;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s,transform .2s var(--ease)}
+@media(hover:hover){.ib:hover{background:rgba(212,175,55,.14);color:var(--rani)}}
+.ib:active{transform:scale(.92)}
+svg.lucide{width:1em;height:1em;flex-shrink:0}
+.ib svg{width:17.5px;height:17.5px;stroke-width:1.7}
+.badge{position:absolute;top:1px;right:0;min-width:15px;height:15px;padding:0 3.5px;border-radius:999px;background:var(--rani);color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
 
-        /* Subtle motif echoing Indian textile embroidery, used once on the hero card */
-        /* One orchestrated entrance for the whole page content, not per-card */
-        @media (prefers-reduced-motion: no-preference) {
-            .entrance {
-                opacity: 0;
-                transform: translateY(10px);
-                animation: riseIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            }
-        }
-        @keyframes riseIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
+.web-banner{padding:22px 16px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#FAF8F5 0%,#FFFFFF 100%)}
+.web-eyebrow{display:block;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#A8842C;margin-bottom:4px}
+.web-head-row{display:flex;align-items:center;gap:14px;min-width:0}
+.avatar-wrap{position:relative;flex-shrink:0}
+.profile-avatar{width:64px;height:64px;border-radius:50%;background:#111113;border:1.5px solid var(--gold);color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:700;overflow:hidden}
+.profile-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.photo-btn{position:absolute;right:-2px;bottom:-2px;width:24px;height:24px;border-radius:50%;background:#111113;color:#fff;border:2px solid #fff;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.22)}
+.photo-btn svg{width:11.5px;height:11.5px;stroke-width:2}
+.id-meta{flex:1;min-width:0}
+.id-name-row{display:flex;align-items:center;gap:6px;min-width:0}
+.id-name{font-size:23px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.15;text-transform:uppercase;letter-spacing:.02em}
+.verified-ic{width:16px;height:16px;color:var(--green);flex-shrink:0}
+.id-email{font-size:13.5px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.id-actions{display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap}
+.btn-pill{height:38px;padding:0 18px;border-radius:999px;font-size:13.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:transform .15s,background .2s,border-color .2s}
+.btn-pill:active{transform:scale(.97)}
+.btn-pill svg{width:14px;height:14px;stroke-width:2}
+.btn-dark{background:linear-gradient(135deg,#242429,#000);color:#fff;border:0;box-shadow:0 10px 20px -10px rgba(0,0,0,.5)}
+.btn-soft{background:#FFFFFF;color:var(--ink);border:1.5px solid #D5CDC2}
+@media(hover:hover){.btn-soft:hover{border-color:#111113}}
 
-        .toggle-track { transition: background-color .2s ease; }
-        .toggle-knob { transition: transform .2s cubic-bezier(0.16, 1, 0.3, 1); }
-        .toggle-on .toggle-track { background-color: #161616; }
-        .toggle-on .toggle-knob { transform: translateX(18px); }
+.name-editor{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);display:none;animation:iosAuthFade .22s var(--ease)}
+.name-editor.on{display:block}
+.name-editor label{display:block;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.name-edit-row{display:flex;align-items:center;gap:8px}
+.name-input{flex:1;min-width:0;height:42px;border:1px solid var(--line);background:#FFFFFF;border-radius:999px;padding:0 15px;font:inherit;font-size:15px;font-weight:600;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s}
+.name-input:focus{border-color:#111113;box-shadow:0 0 0 3px rgba(0,0,0,.06)}
+.name-save-btn{height:42px;padding:0 18px;border:0;border-radius:999px;background:linear-gradient(135deg,#242429,#000);color:#fff;font-size:13.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:6px;flex-shrink:0}
+.name-cancel-btn{height:42px;width:42px;border:1px solid var(--line);border-radius:50%;background:#F8F8FA;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
 
-        .progress-fill { transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+.web-sec{padding:22px 16px 0}
+.web-sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:12px}
+.web-sec-head h2{font-size:20px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--ink)}
+.web-sec-head span{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
 
-        /* Orders-screen style bottom toast */
-        .profile-toast {
-            position: fixed;
-            bottom: calc(30px + env(safe-area-inset-bottom, 0px));
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: #111827;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-size: 12px;
-            font-weight: 600;
-            opacity: 0;
-            pointer-events: none;
-            transition: 0.3s;
-            z-index: 1000;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            white-space: nowrap;
-        }
-.profile-toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ov-card{display:flex;flex-direction:column;justify-content:space-between;padding:14px;background:#FFFFFF;border:1px solid #EBEBEF;min-height:92px;transition:border-color .2s var(--ease),background .2s}
+@media(hover:hover){.ov-card:hover{border-color:#111113;background:#FAFAFC}}
+.ov-card:active{background:#F8F8FA}
+.ov-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ov-ic{width:34px;height:34px;border-radius:50%;background:#F8F8FA;border:1px solid var(--line);color:var(--ink);display:inline-flex;align-items:center;justify-content:center}
+.ov-ic svg{width:16px;height:16px;stroke-width:1.8}
+.ov-cnt{font-size:20px;font-weight:700;color:var(--ink);line-height:1}
+.ov-bot{margin-top:12px}
+.ov-title{display:block;font-size:15px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--ink);line-height:1.15}
+.ov-sub{display:block;font-size:12px;color:var(--muted);margin-top:2px}
 
-        details > summary { list-style: none; cursor: pointer; }
-        details > summary::-webkit-details-marker { display: none; }
-        details[open] .chev { transform: rotate(90deg); }
-        .chev { transition: transform .2s ease; }
-    </style>
+.web-list{border:1px solid #EBEBEF;background:#FFFFFF}
+.web-row{width:100%;min-height:54px;padding:12px 14px;border:0;border-bottom:1px solid #EFEFF4;background:#FFFFFF;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;color:var(--ink);transition:background .18s}
+.web-row:last-child{border-bottom:0}
+@media(hover:hover){.web-row:hover{background:#FAF8F5}}
+.web-row:active{background:#F4F4F6}
+.web-row-l{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
+.web-row-l>svg{width:18px;height:18px;color:var(--ink);stroke-width:1.8;flex-shrink:0}
+.web-row-txt{min-width:0;flex:1}
+.web-row-title{display:block;font-size:15px;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:var(--ink);line-height:1.2}
+.web-row-sub{display:block;font-size:12.5px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.web-row-r{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.web-row-r svg{width:15px;height:15px;color:var(--muted)}
+.pill-count{min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#111113;color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+
+.sw-pill{width:40px;height:22px;border-radius:999px;background:#D8D8DF;position:relative;transition:background .22s var(--ease);flex-shrink:0;border:0;padding:0;cursor:pointer}
+.sw-pill::after{content:"";position:absolute;top:2.5px;left:2.5px;width:17px;height:17px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(0,0,0,.22);transition:transform .22s var(--ios-spring)}
+.sw-pill.on,.toggle-on.sw-pill{background:#111113}
+.sw-pill.on::after,.toggle-on.sw-pill::after{transform:translateX(18px)}
+
+.wa-strip{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:14px;padding:13px 15px;font-size:14px;font-weight:500;color:#166534;line-height:1.35}
+.wa-strip b{font-weight:700;letter-spacing:.02em;text-transform:uppercase}
+.wa-strip a{flex:0 0 auto;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#25D366,#16A34A);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(22,163,74,.32)}
+.wa-strip a svg{width:19px;height:19px;stroke-width:2}
+
+.logout-btn{width:100%;height:46px;border:1.5px solid #FECACA;background:#FEF2F2;color:var(--danger);border-radius:999px;font-size:14.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s,background .2s}
+.logout-btn:active{transform:scale(.98)}
+.logout-btn svg{width:16px;height:16px;stroke-width:2}
+
+.footer{margin-top:36px;position:relative;background:#FFFFFF;color:var(--ink);padding:32px 16px 30px;border-top:1px solid var(--line)}
+.footer::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.footer-logo-link{display:inline-flex}
+.footer-logo{height:46px;width:auto;max-width:170px;object-fit:contain}
+.footer-tag{margin:6px 0 0;font-size:14px;line-height:1.5;color:var(--muted)}
+.footer-news{margin:22px 0 4px}
+.footer-news label{display:block;font-size:14.5px;font-weight:600;margin-bottom:10px;color:var(--ink)}
+.footer-news-row{display:flex;align-items:center;gap:8px}
+.footer-news input{flex:1;min-width:0;height:44px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 16px;color:var(--ink);font-size:15px;font-family:inherit;outline:none;transition:border-color .2s,box-shadow .2s}
+.footer-news input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.18)}
+.footer-news button{height:44px;flex:0 0 auto;background:linear-gradient(135deg,#D4AF37,#A8842C);color:#1a1a1a;border:0;border-radius:999px;padding:0 20px;font-weight:700;font-size:14px;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 10px 20px -10px rgba(168,132,44,.7)}
+.footer h3{font-family:var(--font-main);font-size:16px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;margin:0;color:var(--gold-text)}
+.ftr-sec{margin-top:26px}
+.ftr-sec-head{display:flex;align-items:center;gap:9px;margin-bottom:12px}
+.ftr-sec-head .ic{width:30px;height:30px;flex:0 0 auto;border-radius:10px;background:#fff;border:1px solid var(--line);color:var(--gold-text);display:flex;align-items:center;justify-content:center}
+.ftr-sec-head .ic svg{width:15px;height:15px}
+.ftr-logos{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center}
+.ftr-logo-card{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;background:transparent;padding:4px 8px}
+.ftr-logo-card img{height:26px;width:auto;max-width:110px;object-fit:contain;display:block;mix-blend-mode:multiply}
+.ftr-logo-card img.tall{height:32px}
+.ftr-logo-name{font-size:13.5px;font-weight:700;color:var(--ink)}
+.ftr-logo-card.txt{font-size:13.5px;font-weight:700;color:var(--ink)}
+.ftr-logo-card.txt svg{width:16px;height:16px;color:var(--gold-text)}
+.footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px 16px;padding:24px 0;margin-top:26px;border-top:1px solid var(--line)}
+.footer-grid h3{margin-bottom:10px}
+.footer-grid a,.footer-grid .avck-footerlink{display:block;font-size:14px;color:var(--muted);line-height:2;background:none;border:0;padding:0;text-align:left;text-decoration:none}
+.footer-grid a:hover,.footer-grid .avck-footerlink:hover{color:#161616}
+.footer-copy{padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:#9A8F96;text-align:center}
+
+.confirm-ov{position:fixed;inset:0;z-index:160;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:20px}
+.confirm-ov.on{display:flex}
+.confirm-box{width:100%;max-width:330px;background:#FFFFFF;border:1px solid var(--line);border-radius:22px;padding:22px 18px 18px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.28);animation:popIn .24s var(--ease)}
+@keyframes popIn{from{transform:scale(.92);opacity:0}to{transform:none;opacity:1}}
+.confirm-ic{width:48px;height:48px;border-radius:50%;background:#FEF2F2;color:var(--danger);border:1px solid #FECACA;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.confirm-ic svg{width:22px;height:22px;stroke-width:2}
+.confirm-box h3{font-size:20px;font-weight:700;text-transform:uppercase;color:var(--ink);margin-bottom:5px}
+.confirm-box p{font-size:13.5px;color:var(--muted);line-height:1.45;margin-bottom:16px}
+.confirm-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.confirm-btns button{height:40px;border-radius:999px;font-size:13.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--line);background:#F8F8FA;color:var(--ink)}
+.confirm-btns button.yes{background:var(--danger);border-color:var(--danger);color:#fff}
+
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9990;opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .3s}
+.scrim.is-open{opacity:1;visibility:visible;transition-delay:0s}
+.layer{position:fixed;z-index:10000;visibility:hidden;pointer-events:none;transition:transform .38s var(--ease),opacity .3s,visibility 0s .38s}
+.layer.is-open{visibility:visible;pointer-events:auto;transform:none;opacity:1;transition-delay:0s}
+.sec-eyebrow{display:block;font-size:11.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#A8842C;margin-bottom:4px}
+#authPopupModal{top:50%;left:50%;right:auto;bottom:auto;width:calc(100% - 28px);max-width:380px;max-height:92dvh;overflow-y:auto;background:#FFFFFF;border:1px solid #E5E5EA;border-radius:24px;padding:22px 18px 20px;box-shadow:0 24px 60px rgba(0,0,0,.28);transform:translate(-50%,-46%) scale(.94);opacity:0;transition:transform .42s cubic-bezier(.22,1,.36,1),opacity .32s ease,visibility 0s .42s}
+#authPopupModal.is-open{transform:translate(-50%,-50%) scale(1);opacity:1;transition:transform .42s cubic-bezier(.22,1,.36,1),opacity .32s ease,visibility 0s 0s}
+.ios-auth-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+.ios-auth-close{width:32px;height:32px;flex:0 0 32px;border-radius:50%;border:1px solid #E5E5EA;background:#F8F8FA;color:#111113;display:inline-flex;align-items:center;justify-content:center;padding:0}
+.ios-auth-close svg{width:15px;height:15px;stroke-width:2.2}
+.ios-auth-head h2{font-size:23px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:#111113;line-height:1.15}
+.ios-auth-head p{margin:3px 0 0;font-size:13.5px;color:var(--muted)}
+.ios-seg{display:grid;grid-template-columns:1fr 1fr;padding:3px;background:#F2F2F7;border-radius:12px;margin-bottom:14px}
+.ios-seg-btn{height:34px;border:0;border-radius:9.5px;background:transparent;font-size:13.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);transition:background .25s var(--ios-spring),color .25s,box-shadow .25s}
+.ios-seg-btn[aria-selected="true"]{background:#FFFFFF;color:#111113;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.ios-group{background:#F8F8FA;border:1px solid #E5E5EA;border-radius:14px;overflow:hidden;margin-bottom:12px}
+.ios-row{display:flex;align-items:center;padding:0 14px;min-height:46px;background:#FFFFFF}
+.ios-row+.ios-row{border-top:1px solid #ECECF2}
+.ios-row label{flex:0 0 78px;font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#111113}
+.ios-row input{flex:1;min-width:0;height:46px;border:0;outline:0;background:transparent;font-family:inherit;font-size:15px;font-weight:500;color:#111113}
+.ios-row input::placeholder{color:#A1A1AA}
+.ios-auth-submit{width:100%;height:44px;border:0;border-radius:12px;background:#111113;color:#FFFFFF;font-size:14.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.ios-auth-submit:disabled{opacity:.65;cursor:not-allowed}
+.ios-auth-submit svg{width:15px;height:15px}
+.ios-auth-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;font-size:12.5px;color:var(--muted)}
+.ios-auth-link{background:none;border:0;padding:0;color:#111113;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-decoration:underline;font-size:12px;cursor:pointer}
+.ios-eye-btn{width:30px;height:30px;flex:0 0 30px;border:0;background:transparent;color:#7D828A;display:inline-flex;align-items:center;justify-content:center;padding:0;cursor:pointer}
+.ios-eye-btn svg{width:15px;height:15px}
+.ios-or{display:flex;align-items:center;gap:10px;margin:10px 0;color:#8E8E93;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.ios-or::before,.ios-or::after{content:"";flex:1;height:1px;background:#E5E5EA}
+.ios-google-btn{width:100%;height:42px;border-radius:12px;border:1px solid #E5E5EA;background:#FFFFFF;color:#111113;font-size:13.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.ios-google-btn img{width:16px;height:16px;object-fit:contain}
+.view-hidden{display:none!important}
+.view-active{display:block;animation:iosAuthFade .25s var(--ease)}
+@keyframes iosAuthFade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.ios-otp-row{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:8px 0 12px}
+.otp-box{width:100%;height:44px;text-align:center;font-family:var(--font-main);font-size:19px;font-weight:700;color:#111113;background:#F8F8FA;border:1px solid #E5E5EA;border-radius:10px;outline:none}
+.otp-box:focus{border-color:#111113;background:#FFFFFF}
+.otp-box-filled{border-color:#111113!important;background:#FFFFFF!important}
+.mini-spin{width:15px;height:15px;border:2px solid rgba(17,17,17,.18);border-top-color:#111113;border-radius:50%;display:inline-block;flex:0 0 15px;animation:spin .55s linear infinite}
+.mini-spin.white{border-color:rgba(255,255,255,.35);border-top-color:#FFFFFF}
+.mini-spin.rani{border-color:rgba(17,17,17,.2);border-top-color:#111113}
+
+.profile-toast{position:fixed;left:50%;top:calc(62px + env(safe-area-inset-top,0px));transform:translate(-50%,-16px);opacity:0;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#16A34A,#15803D);color:#fff;font-size:13.5px;font-weight:600;line-height:1.4;padding:10px 18px 10px 12px;border-radius:999px;box-shadow:0 10px 28px rgba(0,0,0,.35);z-index:10060;pointer-events:none;white-space:normal;max-width:min(320px,86%);transition:opacity .25s,transform .25s var(--ease)}
+.profile-toast::before{content:"\2713";width:21px;height:21px;flex:0 0 21px;border-radius:50%;background:#fff;color:#16A34A;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+.profile-toast[data-type="error"]{background:linear-gradient(135deg,#DC2626,#B91C1C)}
+.profile-toast[data-type="error"]::before{content:"!";color:#DC2626}
+.profile-toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:375px){
+  .web-banner{padding:18px 12px 16px}
+  .web-sec{padding:18px 12px 0}
+}
+@media(prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
 </head>
-<body class="flex justify-center min-h-screen text-gray-900 font-sans">
+<body>
+<div id="scrim" class="scrim" onclick="closeAuthPopup()"></div>
 
-<div class="w-full max-w-[440px] bg-white min-h-screen flex flex-col relative shadow-2xl overflow-x-hidden">
-
-    <!-- AAVIRA PROFILE HEADER -->
-    <header class="profile-hero sticky top-0 z-50 flex items-start justify-between px-5 pt-4 pb-7 text-white">
-        <button onclick="window.location.href='./'" class="w-10 h-10 rounded-full bg-black/20 flex items-center justify-center active:scale-90 transition-transform">
-            <i data-lucide="chevron-left" class="w-6 h-6"></i>
-        </button>
-        <div class="text-center pt-0.5">
-            <div class="profile-logo text-[25px] leading-none">Aavira Fashion</div>
-            <div class="text-[8px] font-bold tracking-[3px] mt-1.5 opacity-90">PREMIUM ETHNIC WEAR</div>
-        </div>
-        <button onclick="openSettingsPanel()" class="w-10 h-10 rounded-full bg-black/20 flex items-center justify-center active:scale-90 transition-transform">
-            <i data-lucide="settings" class="w-5 h-5"></i>
-        </button>
-    </header>
-
-    <!-- SCROLLABLE CONTENT -->
-    <div class="flex-1 overflow-y-auto hide-scroll pb-8 entrance profile-shell">
-        <div id="guestProfileUI" class="hidden"></div>
-
-        <section id="vipProfileUI" class="profile-main-card">
-            <div class="px-5 pt-4 pb-4 flex items-center gap-4 min-w-0">
-                <div class="relative shrink-0">
-                    <div id="profileAvatar" class="profile-avatar"><span id="profileInitial">G</span></div>
-                    <button type="button" id="profilePhotoBtn" onclick="window.changeProfilePhoto()" aria-label="Change profile photo" class="absolute -right-1 -bottom-1 w-7 h-7 rounded-full bg-rani-pink text-white border-2 border-white flex items-center justify-center shadow-sm cursor-pointer active:scale-90 transition-transform">
-                        <i data-lucide="camera" class="w-3.5 h-3.5 pointer-events-none"></i>
-                    </button>
-                    <input type="file" id="profilePhotoInput" accept="image/*" class="hidden" onchange="window.handleProfilePhotoSelect(event)">
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="flex items-center gap-1.5">
-                        <h2 id="vipName" class="text-[20px] font-extrabold text-gray-900 truncate">Guest User</h2>
-                        <i id="verifiedTick" data-lucide="badge-check" class="hidden w-4 h-4 text-rani-pink shrink-0"></i>
-                    </div>
-                    <p id="vipEmail" class="text-[12px] text-gray-500 mt-1 truncate">Guest Account</p>
-                    <div id="identityGuestActions" class="hidden items-center gap-2 mt-2">
-                        <button onclick="window.location.href='/auth/aavirafashion.html'" class="bg-rani-pink text-white text-[11.5px] font-bold px-3.5 py-1.5 rounded-full active:scale-95 transition-transform">Login</button>
-                        <button onclick="window.location.href='/auth/aavirafashion.html'" class="bg-rani-light text-rani-pink text-[11.5px] font-bold px-3.5 py-1.5 rounded-full active:scale-95 transition-transform">Sign Up</button>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-        <!-- QUICK STATS (moved out of the identity card so each sits in its own well-fitted spot) -->
-        <section class="profile-stats-card mx-[14px] mt-3 bg-white border border-pink-100 rounded-[26px] shadow-sm overflow-hidden">
-            <div class="profile-stats">
-                <button onclick="window.location.href='orders.html'" class="profile-stat py-4 flex flex-col items-center">
-                    <i data-lucide="shopping-bag" class="w-5 h-5 text-rani-pink"></i><span id="statOrders" class="text-[18px] font-extrabold text-gray-900 mt-1">0</span><span class="text-[10px] text-gray-500">Orders</span>
-                </button>
-                <button onclick="window.location.href='wishlist.html'" class="profile-stat py-4 flex flex-col items-center">
-                    <i data-lucide="heart" class="w-5 h-5 text-rani-pink"></i><span id="statWishlist" class="text-[18px] font-extrabold text-gray-900 mt-1">0</span><span class="text-[10px] text-gray-500">Wishlist</span>
-                </button>
-                <button onclick="showToast('Total spent: ₹'+(document.getElementById('statSpent')?.innerText||'0'))" class="profile-stat py-4 flex flex-col items-center">
-                    <i data-lucide="wallet-cards" class="w-5 h-5 text-rani-pink"></i><span id="statSpent" class="text-[18px] font-extrabold text-gray-900 mt-1">0</span><span class="text-[10px] text-gray-500">Total Spent</span>
-                </button>
-                <button onclick="showToast('Reward points: '+(document.getElementById('statRewards')?.innerText||'0'))" class="profile-stat py-4 flex flex-col items-center">
-                    <i data-lucide="star" class="w-5 h-5 text-rani-pink"></i><span id="statRewards" class="text-[18px] font-extrabold text-gray-900 mt-1">0</span><span class="text-[10px] text-gray-500">Reward Points</span>
-                </button>
-            </div>
-        </section>
-
-        <section class="profile-menu-card">
-            <a href="#" onclick="event.preventDefault();showToast('Profile details')" class="profile-menu-row flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
-                <i data-lucide="user" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">My Profile</span><span class="profile-menu-sub block">Manage your personal information</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
-            </a>
-            <a href="#" onclick="event.preventDefault();showToast('Address book coming soon!')" class="profile-menu-row flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
-                <i data-lucide="map-pin" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Addresses</span><span class="profile-menu-sub block">Manage your delivery addresses</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
-            </a>
-            <a href="orders.html" class="profile-menu-row flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
-                <i data-lucide="package" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">My Orders</span><span class="profile-menu-sub block">Track and view your orders</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
-            </a>
-            <a href="wishlist.html" class="profile-menu-row flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
-                <i data-lucide="heart" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Wishlist</span><span class="profile-menu-sub block">Your saved products</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
-            </a>
-            <a href="cart.html" class="profile-menu-row flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
-                <i data-lucide="shopping-cart" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">My Cart</span><span class="profile-menu-sub block">Items waiting to checkout</span></span><span id="menuCartBadge" class="hidden text-[11px] font-bold text-white bg-rani-pink rounded-full min-w-[20px] h-5 px-1.5 flex items-center justify-center">0</span><i data-lucide="chevron-right" class="profile-chevron"></i>
-            </a>
-            <a href="#" onclick="event.preventDefault();showToast('Payment methods coming soon!')" class="profile-menu-row flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
-                <i data-lucide="credit-card" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Payment Methods</span><span class="profile-menu-sub block">Manage cards, UPI & wallets</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
-            </a>
-            <a href="offer.html" class="profile-menu-row flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
-                <i data-lucide="tag" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">My Offers</span><span class="profile-menu-sub block">View available offers & coupons</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
-            </a>
-            <a href="#" onclick="event.preventDefault();showToast('Coupons coming soon!')" class="profile-menu-row flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
-                <i data-lucide="ticket" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">My Coupons</span><span class="profile-menu-sub block">Your saved coupons</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
-            </a>
-
-            <details class="profile-menu-row">
-                <summary class="flex items-center px-2 py-3.5 min-h-[66px] text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
-                    <i data-lucide="bell" class="w-5 h-5 mr-4 shrink-0 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1 min-w-0"><span class="profile-menu-title block">Notifications</span><span class="profile-menu-sub block">Order updates, offers & more</span></span><i data-lucide="chevron-right" class="profile-chevron chev ml-auto shrink-0"></i>
-                </summary>
-                <div class="pb-4 pl-[54px] pr-1 space-y-3.5">
-                    <label class="flex items-center justify-between gap-3">
-                        <span class="text-[12.5px] font-medium text-gray-700">Order updates</span>
-                        <button type="button" class="toggle-btn relative w-10 h-5 shrink-0" data-pref="orderUpdates" onclick="toggleNotifPref(this)">
-                            <span class="toggle-track absolute inset-0 rounded-full bg-gray-300"></span>
-                            <span class="toggle-knob absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow"></span>
-                        </button>
-                    </label>
-                    <label class="flex items-center justify-between gap-3">
-                        <span class="text-[12.5px] font-medium text-gray-700">Promotions & offers</span>
-                        <button type="button" class="toggle-btn relative w-10 h-5 shrink-0" data-pref="promotions" onclick="toggleNotifPref(this)">
-                            <span class="toggle-track absolute inset-0 rounded-full bg-gray-300"></span>
-                            <span class="toggle-knob absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow"></span>
-                        </button>
-                    </label>
-                    <label class="flex items-center justify-between gap-3">
-                        <span class="text-[12.5px] font-medium text-gray-700">WhatsApp updates</span>
-                        <button type="button" class="toggle-btn relative w-10 h-5 shrink-0" data-pref="whatsapp" onclick="toggleNotifPref(this)">
-                            <span class="toggle-track absolute inset-0 rounded-full bg-gray-300"></span>
-                            <span class="toggle-knob absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow"></span>
-                        </button>
-                    </label>
-                </div>
-            </details>
-
-            <a href="terms.html" class="profile-menu-row flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
-                <i data-lucide="shield-check" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Privacy Policy</span><span class="profile-menu-sub block">Read our privacy policy</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
-            </a>
-            <a href="support.html" class="profile-menu-row flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors">
-                <i data-lucide="circle-help" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Help & Support</span><span class="profile-menu-sub block">Get help for your orders</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
-            </a>
-            <button type="button" onclick="openSettingsPanel()" class="profile-menu-row w-full flex items-center px-2 py-3.5 text-gray-800 hover:bg-gray-50 rounded-xl group transition-colors text-left">
-                <i data-lucide="settings" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Settings</span><span class="profile-menu-sub block">Account, privacy, storage and preferences</span></span><i data-lucide="chevron-right" class="profile-chevron"></i>
-            </button>
-        </section>
-        <div class="text-center text-[9px] text-gray-400 tracking-[2px] uppercase mb-4">Aavira Fashion v1.0.0</div>
+<div id="authPopupModal" class="layer" role="dialog" aria-modal="true" aria-labelledby="homeAuthTitle">
+  <div class="ios-auth-top">
+    <div class="ios-auth-head">
+      <span class="sec-eyebrow" id="homeAuthEyebrow" style="margin-bottom:2px">Aavira Account</span>
+      <h2 id="homeAuthTitle">Welcome Back</h2>
+      <p id="homeAuthSub">Login to continue your fashion journey</p>
     </div>
+    <button type="button" class="ios-auth-close" onclick="closeAuthPopup()" aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
 
-    <!-- ACCOUNT MANAGEMENT SCREEN -->
-    <section id="accountSheet" class="account-sheet" aria-hidden="true">
-        <header class="h-[64px] px-5 flex items-center gap-3 border-b border-gray-100 bg-white sticky top-0 z-10">
-            <button type="button" onclick="accountBack()" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center active:scale-90">
-                <i data-lucide="arrow-left" class="w-5 h-5"></i>
-            </button>
-            <div class="flex-1 min-w-0">
-                <h3 class="text-[17px] font-extrabold">Account</h3>
-                <p id="accountHeaderSub" class="text-[10px] text-gray-500">Manage your personal details</p>
-            </div>
-            <i data-lucide="user-cog" class="w-5 h-5 text-rani-pink shrink-0"></i>
-        </header>
+  <div class="ios-seg" id="homeAuthSeg" role="tablist" aria-label="Authentication mode">
+    <button type="button" class="ios-seg-btn" id="tabBtnLogin" role="tab" aria-selected="true" onclick="switchView('loginView')">Log In</button>
+    <button type="button" class="ios-seg-btn" id="tabBtnSignup" role="tab" aria-selected="false" onclick="switchView('signupView')">Create Account</button>
+  </div>
 
-        <div class="account-scroll px-5 pt-5 pb-10">
-            <div class="bg-[#F5F1E8] rounded-2xl p-4 mb-5 flex items-center gap-3">
-                <div class="w-12 h-12 rounded-full bg-white border-2 border-rani-pink flex items-center justify-center text-rani-pink font-extrabold text-xl shrink-0"><span id="accountInitial">G</span></div>
-                <div class="min-w-0"><div id="accountCurrentName" class="font-extrabold text-[15px] truncate">Guest User</div><div id="accountCurrentEmail" class="text-[11px] text-gray-500 truncate">Guest Account</div></div>
-            </div>
-
-            <div id="accountGuestNotice" class="hidden bg-gray-50 border border-gray-100 rounded-2xl p-4 mb-5">
-                <div class="flex gap-3"><i data-lucide="info" class="w-5 h-5 text-rani-pink shrink-0"></i><div><div class="text-[13px] font-bold">Sign in required</div><div class="text-[11px] text-gray-500 mt-1">Sign in before changing your account information or password.</div><button onclick="window.location.href='/auth/aavirafashion.html'" class="account-secondary mt-3">Sign In / Sign Up</button></div></div>
-            </div>
-
-            <div id="accountOptions" class="space-y-3">
-                <button type="button" onclick="openAccountSection('information')" class="account-option w-full text-left">
-                    <span class="account-option-icon"><i data-lucide="user-pen"></i></span><span class="flex-1"><strong>Information Update</strong><small>Update your name and email address</small></span><i data-lucide="chevron-right" class="text-gray-400"></i>
-                </button>
-                <button type="button" onclick="openAccountSection('password')" class="account-option w-full text-left">
-                    <span class="account-option-icon"><i data-lucide="key-round"></i></span><span class="flex-1"><strong>Change Password</strong><small>Verify your email before changing password</small></span><i data-lucide="chevron-right" class="text-gray-400"></i>
-                </button>
-            </div>
-
-            <form id="informationSection" onsubmit="return submitInformationUpdate(event)" class="hidden space-y-4">
-                <div class="account-section-title"><i data-lucide="user-pen"></i><span>Personal Information</span></div>
-                <div><label class="account-label">Name</label><input id="accountName" class="account-field" type="text" autocomplete="name" placeholder="Your name"></div>
-                <div><label class="account-label">Email Address</label><input id="accountEmail" class="account-field" type="email" autocomplete="email" placeholder="you@example.com"></div>
-                <div><label class="account-label">Current Password</label><input id="accountInfoPassword" class="account-field" type="password" autocomplete="current-password" placeholder="Enter current password"></div>
-                <div id="accountInfoStatus" class="account-status"></div>
-                <button id="informationSaveBtn" type="submit" class="account-action w-full flex items-center justify-center gap-2"><i data-lucide="save" class="w-4 h-4"></i><span>Update Information</span></button>
-            </form>
-
-            <section id="passwordSection" class="hidden">
-                <div class="account-section-title"><i data-lucide="shield-check"></i><span>Change Password</span></div>
-                <div id="passwordRequestState">
-                    <div class="account-info-box"><i data-lucide="mail"></i><span>A verification code will be sent to your registered email address before the new password is saved.</span></div>
-                    <label class="account-label mt-4">New Password</label>
-                    <input id="newPasswordOnly" class="account-field" type="password" autocomplete="new-password" placeholder="Enter new password">
-                    <label class="account-label mt-4">Confirm New Password</label>
-                    <input id="confirmPasswordOnly" class="account-field" type="password" autocomplete="new-password" placeholder="Repeat new password">
-                    <div id="passwordRequestStatus" class="account-status"></div>
-                    <button id="sendPasswordCodeBtn" type="button" onclick="requestPasswordChange()" class="account-action w-full mt-3 flex items-center justify-center gap-2"><i data-lucide="send" class="w-4 h-4"></i><span>Send Verification Code</span></button>
-                </div>
-                <div id="passwordVerifyState" class="hidden">
-                    <div class="account-info-box"><i data-lucide="mail-check"></i><span>Enter the 6-digit verification code sent to <strong id="verificationEmailLabel"></strong>.</span></div>
-                    <label class="account-label mt-4">Verification Code</label>
-                    <input id="passwordOtp" class="account-field text-center tracking-[7px] font-extrabold text-[18px]" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="000000">
-                    <div id="passwordVerifyStatus" class="account-status"></div>
-                    <button id="verifyPasswordBtn" type="button" onclick="verifyPasswordChange()" class="account-action w-full mt-3 flex items-center justify-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4"></i><span>Verify & Change Password</span></button>
-                    <button type="button" onclick="backToPasswordRequest()" class="account-secondary w-full mt-2">Use a different password</button>
-                </div>
-            </section>
-        </div>
-    </section>
-
-    <!-- ADVANCED SETTINGS SHEET -->
-    <div id="settingsBackdrop" class="settings-backdrop" onclick="closeSettingsPanel()"></div>
-    <section id="settingsSheet" class="settings-sheet" aria-hidden="true">
-        <div class="h-[62px] px-5 flex items-center justify-between border-b border-gray-100">
-            <div class="flex items-center gap-3"><i data-lucide="settings" class="w-5 h-5 mr-4 text-rani-pink opacity-80"></i><div><h3 class="text-[17px] font-extrabold">Settings</h3><p class="text-[10px] text-gray-500">Manage your Aavira account</p></div></div>
-            <button type="button" onclick="closeSettingsPanel()" class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center active:scale-90"><i data-lucide="x" class="w-5 h-5"></i></button>
-        </div>
-        <div class="settings-scroll pb-6">
-            <div class="px-5 pt-4 pb-2 text-[10px] font-extrabold uppercase tracking-[1.6px] text-gray-400">Preferences</div>
-            <button type="button" class="settings-row w-full text-left group hover:bg-gray-50 transition-colors rounded-xl" onclick="toggleSetting('compactMode')"><i data-lucide="panels-top-left" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Compact Layout</span><span class="settings-value">Reduce menu spacing</span></span><span id="compactModeSwitch" class="settings-switch"></span></button>
-            <button type="button" class="settings-row w-full text-left group hover:bg-gray-50 transition-colors rounded-xl" onclick="toggleSetting('sound')"><i data-lucide="volume-2" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Interaction Sound</span><span class="settings-value">Save interface preference</span></span><span id="soundSwitch" class="settings-switch"></span></button>
-            <div class="px-5 pt-5 pb-2 text-[10px] font-extrabold uppercase tracking-[1.6px] text-gray-400">Account & Privacy</div>
-            <button type="button" class="settings-row w-full text-left group hover:bg-gray-50 transition-colors rounded-xl" onclick="openAccountScreen()"><i data-lucide="user-round" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Account</span><span class="settings-value">View signed-in account</span></span><i data-lucide="chevron-right" class="profile-chevron"></i></button>
-            <a href="terms.html" class="settings-row"><i data-lucide="shield-check" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Privacy & Security</span><span class="settings-value">Privacy policy and safety</span></span><i data-lucide="chevron-right" class="profile-chevron"></i></a>
-            <button type="button" class="settings-row w-full text-left group hover:bg-gray-50 transition-colors rounded-xl" onclick="window.AaviraConsent&&window.AaviraConsent.openPrefs()"><i data-lucide="cookie" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Cookie Settings</span><span class="settings-value">Manage cookie preferences</span></span><i data-lucide="chevron-right" class="profile-chevron"></i></button>
-            <button type="button" class="settings-row w-full text-left group hover:bg-gray-50 transition-colors rounded-xl" onclick="showStorageInfo()"><i data-lucide="database" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block">Storage & Data</span><span id="storageInfo" class="settings-value">Checking local data…</span></span><i data-lucide="chevron-right" class="profile-chevron"></i></button>
-            <div class="px-5 pt-5 pb-2 text-[10px] font-extrabold uppercase tracking-[1.6px] text-gray-400">Data Controls</div>
-            <button type="button" class="settings-row w-full text-left group hover:bg-gray-50 transition-colors rounded-xl" onclick="clearWishlistData()"><i data-lucide="heart-off" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block settings-danger-text">Clear Wishlist</span><span class="settings-value">Delete all saved wishlist items</span></span><i data-lucide="trash-2" class="profile-chevron settings-danger-text"></i></button>
-            <button type="button" class="settings-row w-full text-left group hover:bg-gray-50 transition-colors rounded-xl" onclick="clearCartData()"><i data-lucide="shopping-cart" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block settings-danger-text">Clear Cart</span><span class="settings-value">Delete all cart items</span></span><i data-lucide="trash-2" class="profile-chevron settings-danger-text"></i></button>
-            <button type="button" class="settings-row w-full text-left group hover:bg-gray-50 transition-colors rounded-xl" onclick="clearLocalAppData()"><i data-lucide="database-zap" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block settings-danger-text">Clear App Data</span><span class="settings-value">Clear local cart, wishlist, preferences and drafts</span></span><i data-lucide="trash-2" class="profile-chevron settings-danger-text"></i></button>
-            <div class="px-5 pt-5 pb-2 text-[10px] font-extrabold uppercase tracking-[1.6px] text-gray-400">Session</div>
-            <button type="button" onclick="handleLogout()" class="settings-row w-full text-left group hover:bg-gray-50 transition-colors rounded-xl"><i data-lucide="log-out" class="w-5 h-5 mr-4 text-rani-pink opacity-80 group-hover:opacity-100 transition-opacity"></i><span class="flex-1"><span class="profile-menu-title block settings-danger-text">Log Out</span><span class="settings-value">Sign out of this device</span></span><i data-lucide="chevron-right" class="profile-chevron settings-danger-text"></i></button>
-        </div>
-    </section>
-
-    <!-- TOAST NOTIFICATION -->
-    <div id="toastBox" class="profile-toast">
-        <span id="toastMsg">Action Successful!</span>
+  <div id="loginView" class="view-active">
+    <div class="ios-group">
+      <div class="ios-row">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" autocomplete="username" placeholder="Email or Phone Number">
+      </div>
+      <div class="ios-row">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" autocomplete="current-password" placeholder="Enter password">
+        <button type="button" class="ios-eye-btn" id="btnLoginEye" onclick="togglePassword('loginPassword','btnLoginEye')" aria-label="Toggle password"><i data-lucide="eye-off"></i></button>
+      </div>
     </div>
+    <button type="button" id="btnLoginAction" class="ios-auth-submit" onclick="processLogin()"><span>Login</span><i data-lucide="arrow-right"></i></button>
+    <div class="ios-or">Or</div>
+    <button type="button" id="btnGoogleLogin" class="ios-google-btn" onclick="performGoogleLogin('btnGoogleLogin')">
+      <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+      <span>Continue with Google</span>
+    </button>
+  </div>
 
+  <div id="signupView" class="view-hidden">
+    <div class="ios-group">
+      <div class="ios-row">
+        <label for="signupName">Name</label>
+        <input type="text" id="signupName" autocomplete="name" placeholder="Full Name">
+      </div>
+      <div class="ios-row">
+        <label for="signupEmail">Email</label>
+        <input type="email" id="signupEmail" autocomplete="email" placeholder="Email Address">
+      </div>
+      <div class="ios-row">
+        <label for="signupPassword">Password</label>
+        <input type="password" id="signupPassword" autocomplete="new-password" placeholder="Create Password (min 6 chars)">
+        <button type="button" class="ios-eye-btn" id="btnSignupEye" onclick="togglePassword('signupPassword','btnSignupEye')" aria-label="Toggle password"><i data-lucide="eye-off"></i></button>
+      </div>
+    </div>
+    <button type="button" id="btnSignupAction" class="ios-auth-submit" onclick="processSignup()"><span>Create Account</span><i data-lucide="arrow-right"></i></button>
+    <div class="ios-or">Or</div>
+    <button type="button" id="btnGoogleSignup" class="ios-google-btn" onclick="performGoogleLogin('btnGoogleSignup')">
+      <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+      <span>Continue with Google</span>
+    </button>
+  </div>
+
+  <div id="otpView" class="view-hidden">
+    <p id="otpSubText" style="margin:0 0 6px;font-size:13px;color:var(--muted);text-align:center">Enter the 6-digit code sent to your email</p>
+    <div id="otpBoxGroup" class="ios-otp-row">
+      <input type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" class="otp-box">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
+    </div>
+    <button type="button" id="btnOtpAction" class="ios-auth-submit" onclick="verifySignupOTP()"><span>Verify &amp; Login</span><i data-lucide="check-circle"></i></button>
+    <div class="ios-auth-foot" style="justify-content:center;margin-top:10px">
+      <button type="button" class="ios-auth-link" onclick="switchView('signupView')">Change Email Address</button>
+    </div>
+  </div>
 </div>
 
-<!-- ============================== -->
-<!-- 5. JAVASCRIPT LOGIC -->
-<!-- ============================== -->
+<div class="app">
+  <header class="hdr">
+    <div class="hdr-left">
+      <button class="ib" type="button" onclick="goBack(this)" aria-label="Back"><i data-lucide="arrow-left"></i></button>
+      <div class="hdr-r">
+        <a class="ib" href="wishlist.html" aria-label="Wishlist"><i data-lucide="heart"></i><span class="badge" id="hdrWishBadge" hidden>0</span></a>
+        <a class="ib" href="cart.html" aria-label="Shopping Bag"><i data-lucide="shopping-cart"></i><span class="badge" id="hdrCartBadge" hidden>0</span></a>
+      </div>
+    </div>
+    <a href="./" class="hdr-logo" aria-label="Aavira Home"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='public/file_0000000015bc82119a5830b82bcd3a20.png'}else{this.style.display='none'}"></a>
+  </header>
+
+  <section id="vipProfileUI" class="web-banner">
+    <span class="web-eyebrow">My Aavira Account</span>
+    <div class="web-head-row">
+      <div class="avatar-wrap">
+        <div id="profileAvatar" class="profile-avatar"><span id="profileInitial">G</span></div>
+        <button type="button" id="profilePhotoBtn" onclick="window.changeProfilePhoto()" aria-label="Change profile photo" class="photo-btn">
+          <i data-lucide="camera"></i>
+        </button>
+        <input type="file" id="profilePhotoInput" accept="image/*" class="hidden" onchange="window.handleProfilePhotoSelect(event)">
+      </div>
+      <div class="id-meta">
+        <div class="id-name-row">
+          <h1 id="vipName" class="id-name">Guest User</h1>
+          <i id="verifiedTick" data-lucide="badge-check" class="verified-ic hidden"></i>
+        </div>
+        <p id="vipEmail" class="id-email">Sign in to view your orders &amp; saved styles</p>
+        <div id="identityGuestActions" class="id-actions hidden">
+          <button type="button" onclick="openAuthPopup('login')" class="btn-pill btn-dark"><i data-lucide="log-in"></i>Log In</button>
+          <button type="button" onclick="openAuthPopup('signup')" class="btn-pill btn-soft"><i data-lucide="user-plus"></i>Create Account</button>
+        </div>
+        <div id="identityMemberActions" class="id-actions hidden">
+          <button type="button" onclick="toggleNameEditor()" class="btn-pill btn-soft"><i data-lucide="user-pen"></i>Edit Name</button>
+        </div>
+      </div>
+    </div>
+
+    <form id="nameEditorBox" class="name-editor" onsubmit="return saveUserName(event)">
+      <label for="editNameInput">Update Your Full Name</label>
+      <div class="name-edit-row">
+        <input type="text" id="editNameInput" class="name-input" placeholder="Enter your full name" maxlength="60" autocomplete="name">
+        <button type="submit" id="saveNameBtn" class="name-save-btn"><i data-lucide="check"></i>Save</button>
+        <button type="button" class="name-cancel-btn" onclick="toggleNameEditor(false)" aria-label="Cancel"><i data-lucide="x"></i></button>
+      </div>
+    </form>
+  </section>
+
+  <section class="web-sec">
+    <div class="web-sec-head">
+      <h2>Account Overview</h2>
+      <span>Quick Access</span>
+    </div>
+    <div class="overview-grid">
+      <a href="orders.html" class="ov-card">
+        <div class="ov-top">
+          <span class="ov-ic"><i data-lucide="package"></i></span>
+          <span class="ov-cnt" id="statOrders">0</span>
+        </div>
+        <div class="ov-bot">
+          <span class="ov-title">My Orders</span>
+          <span class="ov-sub">Track &amp; view purchases</span>
+        </div>
+      </a>
+      <a href="wishlist.html" class="ov-card">
+        <div class="ov-top">
+          <span class="ov-ic"><i data-lucide="heart"></i></span>
+          <span class="ov-cnt" id="statWishlist">0</span>
+        </div>
+        <div class="ov-bot">
+          <span class="ov-title">My Wishlist</span>
+          <span class="ov-sub">Saved handcrafted styles</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="web-sec">
+    <div class="web-sec-head">
+      <h2>Shopping &amp; Addresses</h2>
+    </div>
+    <div class="web-list">
+      <a href="cart.html" class="web-row">
+        <span class="web-row-l">
+          <i data-lucide="shopping-bag"></i>
+          <span class="web-row-txt">
+            <span class="web-row-title">Shopping Bag</span>
+            <span class="web-row-sub">View outfits waiting for checkout</span>
+          </span>
+        </span>
+        <span class="web-row-r">
+          <span id="menuCartBadge" class="pill-count hidden">0</span>
+          <i data-lucide="chevron-right"></i>
+        </span>
+      </a>
+
+      <a href="checkout.html" class="web-row">
+        <span class="web-row-l">
+          <i data-lucide="map-pin"></i>
+          <span class="web-row-txt">
+            <span class="web-row-title">Delivery Addresses</span>
+            <span class="web-row-sub">Manage your saved shipping addresses</span>
+          </span>
+        </span>
+        <span class="web-row-r"><i data-lucide="chevron-right"></i></span>
+      </a>
+
+      <a href="offer.html" class="web-row">
+        <span class="web-row-l">
+          <i data-lucide="tag"></i>
+          <span class="web-row-txt">
+            <span class="web-row-title">Offers &amp; Promo Codes</span>
+            <span class="web-row-sub">Explore exclusive festive discounts</span>
+          </span>
+        </span>
+        <span class="web-row-r"><i data-lucide="chevron-right"></i></span>
+      </a>
+
+      <button type="button" id="editNameRowBtn" class="web-row hidden" onclick="toggleNameEditor(true)">
+        <span class="web-row-l">
+          <i data-lucide="user-pen"></i>
+          <span class="web-row-txt">
+            <span class="web-row-title">Update Full Name</span>
+            <span class="web-row-sub">Change the display name on your profile</span>
+          </span>
+        </span>
+        <span class="web-row-r"><i data-lucide="chevron-right"></i></span>
+      </button>
+    </div>
+  </section>
+
+  <section class="web-sec">
+    <div class="web-sec-head">
+      <h2>Communication Preferences</h2>
+    </div>
+    <div class="web-list">
+      <div class="web-row" onclick="toggleNotifPref(this.querySelector('.toggle-btn'))">
+        <span class="web-row-l">
+          <i data-lucide="truck"></i>
+          <span class="web-row-txt">
+            <span class="web-row-title">Order &amp; Dispatch Updates</span>
+            <span class="web-row-sub">Get alerts when your order ships</span>
+          </span>
+        </span>
+        <button type="button" class="toggle-btn sw-pill" data-pref="orderUpdates" onclick="event.stopPropagation();toggleNotifPref(this)" aria-label="Order updates"></button>
+      </div>
+
+      <div class="web-row" onclick="toggleNotifPref(this.querySelector('.toggle-btn'))">
+        <span class="web-row-l">
+          <i data-lucide="sparkles"></i>
+          <span class="web-row-txt">
+            <span class="web-row-title">New Arrivals &amp; Offers</span>
+            <span class="web-row-sub">Early access to new collections &amp; sales</span>
+          </span>
+        </span>
+        <button type="button" class="toggle-btn sw-pill" data-pref="promotions" onclick="event.stopPropagation();toggleNotifPref(this)" aria-label="Promotions and offers"></button>
+      </div>
+
+      <div class="web-row" onclick="toggleNotifPref(this.querySelector('.toggle-btn'))">
+        <span class="web-row-l">
+          <i data-lucide="message-circle"></i>
+          <span class="web-row-txt">
+            <span class="web-row-title">WhatsApp Order Support</span>
+            <span class="web-row-sub">Receive instant confirmations on WhatsApp</span>
+          </span>
+        </span>
+        <button type="button" class="toggle-btn sw-pill" data-pref="whatsapp" onclick="event.stopPropagation();toggleNotifPref(this)" aria-label="WhatsApp updates"></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="web-sec">
+    <div class="web-sec-head">
+      <h2>Customer Care &amp; Policies</h2>
+    </div>
+    <div class="web-list">
+      <a href="support.html" class="web-row">
+        <span class="web-row-l">
+          <i data-lucide="life-buoy"></i>
+          <span class="web-row-txt">
+            <span class="web-row-title">Help &amp; Support Center</span>
+            <span class="web-row-sub">Assistance with orders, sizing &amp; returns</span>
+          </span>
+        </span>
+        <span class="web-row-r"><i data-lucide="chevron-right"></i></span>
+      </a>
+
+      <a href="terms.html" class="web-row">
+        <span class="web-row-l">
+          <i data-lucide="shield-check"></i>
+          <span class="web-row-txt">
+            <span class="web-row-title">Privacy Policy &amp; Terms</span>
+            <span class="web-row-sub">Read our store policies &amp; buyer protection</span>
+          </span>
+        </span>
+        <span class="web-row-r"><i data-lucide="chevron-right"></i></span>
+      </a>
+
+      <button type="button" class="web-row" onclick="window.AaviraConsent ? window.AaviraConsent.openPrefs() : showToast('Cookie preferences saved')">
+        <span class="web-row-l">
+          <i data-lucide="cookie"></i>
+          <span class="web-row-txt">
+            <span class="web-row-title">Cookie Preferences</span>
+            <span class="web-row-sub">Manage website cookie settings</span>
+          </span>
+        </span>
+        <span class="web-row-r"><i data-lucide="chevron-right"></i></span>
+      </button>
+
+      <button type="button" class="web-row" onclick="clearWishlistData()">
+        <span class="web-row-l">
+          <i data-lucide="heart-off"></i>
+          <span class="web-row-txt">
+            <span class="web-row-title">Reset Wishlist</span>
+            <span class="web-row-sub">Remove all saved items from wishlist</span>
+          </span>
+        </span>
+        <span class="web-row-r"><i data-lucide="trash-2"></i></span>
+      </button>
+
+      <button type="button" class="web-row" onclick="clearCartData()">
+        <span class="web-row-l">
+          <i data-lucide="trash-2"></i>
+          <span class="web-row-txt">
+            <span class="web-row-title">Empty Shopping Bag</span>
+            <span class="web-row-sub">Clear all items currently in your bag</span>
+          </span>
+        </span>
+        <span class="web-row-r"><i data-lucide="trash-2"></i></span>
+      </button>
+    </div>
+  </section>
+
+  <section class="web-sec">
+    <div class="wa-strip">
+      <span>Need help with an order or custom sizing?<br><b>Chat with our stylist on WhatsApp</b></span>
+      <a href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i data-lucide="message-circle"></i></a>
+    </div>
+  </section>
+
+  <section id="logoutSection" class="web-sec hidden">
+    <button type="button" class="logout-btn" onclick="handleLogout()">
+      <i data-lucide="log-out"></i>
+      <span>Log Out of Account</span>
+    </button>
+  </section>
+
+  <footer class="footer">
+    <a href="./" aria-label="Aavira home" class="footer-logo-link"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira Fashion" class="footer-logo" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='public/file_0000000015bc82119a5830b82bcd3a20.png'}else{this.style.display='none'}"></a>
+    <p class="footer-tag">Luxury ethnic fashion, designed for modern elegance.</p>
+    <div class="footer-news">
+      <label for="newsletterEmail">Get new collections and offers by email</label>
+      <div class="footer-news-row">
+        <input type="email" id="newsletterEmail" placeholder="Your email address" autocomplete="email">
+        <button type="button" id="btnNewsletter" onclick="subscribeNewsletter()">Join</button>
+      </div>
+    </div>
+
+    <div class="ftr-sec">
+      <div class="ftr-sec-head"><span class="ic"><i data-lucide="truck"></i></span><h3>Delivery Partners</h3></div>
+      <div class="ftr-logos">
+        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Delhivery_Logo_%282019%29.png/330px-Delhivery_Logo_%282019%29.png" alt="Delhivery" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Delhivery</span></span>
+        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Blue_Dart_logo_transparent.png/330px-Blue_Dart_logo_transparent.png" alt="Blue Dart" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Blue Dart</span></span>
+        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/DTDC_logo.png/330px-DTDC_logo.png" alt="DTDC" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">DTDC</span></span>
+        <span class="ftr-logo-card"><img src="https://chinapost-track.com/cdn/images/carriers/thumbnails/0389-xpressbees.png" alt="Xpressbees" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Xpressbees</span></span>
+        <span class="ftr-logo-card"><img class="tall" src="https://qubix.in/wp-content/uploads/2024/05/Ecom-Express-Logo.png" alt="Ecom Express" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Ecom Express</span></span>
+      </div>
+    </div>
+
+    <div class="ftr-sec">
+      <div class="ftr-sec-head"><span class="ic"><i data-lucide="shield-check"></i></span><h3>We Accept</h3></div>
+      <div class="ftr-logos">
+        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/330px-UPI-Logo-vector.svg.png" alt="UPI" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">UPI</span></span>
+        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/RuPay-Logo.png/330px-RuPay-Logo.png" alt="RuPay" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">RuPay</span></span>
+        <span class="ftr-logo-card txt"><i data-lucide="banknote"></i>Cash on Delivery</span>
+      </div>
+    </div>
+
+    <div class="footer-grid">
+      <div><h3>Explore</h3><a href="/">Home</a><a href="/categories">Collections</a><a href="/offer">Offers</a><a href="/wishlist">Wishlist</a></div>
+      <div><h3>Shopping</h3><a href="/cart">Shopping bag</a><a href="/orders">My orders</a><a href="/profile">My account</a><a href="/support">Support</a></div>
+      <div><h3>Information</h3><a href="/terms">Terms &amp; conditions</a><a href="/privacy">Privacy policy</a><a href="/support">Help center</a><button type="button" class="avck-footerlink" onclick="window.AaviraConsent&&AaviraConsent.openPrefs()">Cookie Settings</button></div>
+      <div><h3>Contact</h3><a href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a></div>
+    </div>
+    <div class="footer-copy">&copy; 2026 Aavira Fashion. All rights reserved.</div>
+  </footer>
+</div>
+
+<div class="confirm-ov" id="confirmOv" onclick="if(event.target===this)closeConfirmModal()">
+  <div class="confirm-box" role="dialog" aria-modal="true">
+    <div class="confirm-ic"><i data-lucide="trash-2"></i></div>
+    <h3 id="confirmTitle">Confirm Action</h3>
+    <p id="confirmDesc">Are you sure you want to proceed?</p>
+    <div class="confirm-btns">
+      <button type="button" onclick="closeConfirmModal()">Cancel</button>
+      <button type="button" class="yes" id="confirmYesBtn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<div id="toastBox" class="profile-toast" role="status" aria-live="polite">
+  <span id="toastMsg">Action Successful!</span>
+</div>
+
 <script src="/user_data.js"></script>
 <script>
-    // Utility for safe JSON parsing
-    const safeGet = (key, fallback) => {
-        try {
-            const data = localStorage.getItem(key);
-            return data ? JSON.parse(data) : fallback;
-        } catch {
-            return fallback;
-        }
-    };
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    // Orders-style toast notification.
-    function showToast(message) {
-        const toast = document.getElementById('toastBox');
-        if (!toast) return;
-        document.getElementById('toastMsg').innerText = message;
-        toast.classList.add('show');
-        clearTimeout(window.__profileToastTimer);
-        window.__profileToastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+const safeGet = (key, fallback) => {
+  try {
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : fallback;
+  } catch {
+    return fallback;
+  }
+};
+
+function showToast(message, type = 'success') {
+  const toast = document.getElementById('toastBox');
+  if (!toast) return;
+  document.getElementById('toastMsg').innerText = message;
+  toast.dataset.type = type === 'error' ? 'error' : 'success';
+  toast.classList.add('show');
+  navigator.vibrate?.(30);
+  clearTimeout(window.__profileToastTimer);
+  window.__profileToastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+const goBack = el => {
+  if (el) el.classList.add('is-busy');
+  setTimeout(() => {
+    if (el) el.classList.remove('is-busy');
+    try {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        history.back();
+        return;
+      }
+    } catch {}
+    location.href = './';
+  }, 300);
+};
+
+function loadNotifPrefs() {
+  return safeGet('aavira_notif_prefs', { orderUpdates: true, promotions: true, whatsapp: true });
+}
+function saveNotifPrefs(prefs) {
+  try { localStorage.setItem('aavira_notif_prefs', JSON.stringify(prefs)); } catch {}
+}
+function paintNotifToggles() {
+  const prefs = loadNotifPrefs();
+  document.querySelectorAll('.toggle-btn').forEach(btn => {
+    const key = btn.getAttribute('data-pref');
+    const on = Boolean(prefs[key]);
+    btn.classList.toggle('toggle-on', on);
+    btn.classList.toggle('on', on);
+  });
+}
+window.toggleNotifPref = function (btn) {
+  if (!btn) return;
+  const key = btn.getAttribute('data-pref');
+  const prefs = loadNotifPrefs();
+  prefs[key] = !prefs[key];
+  saveNotifPrefs(prefs);
+  btn.classList.toggle('toggle-on', prefs[key]);
+  btn.classList.toggle('on', prefs[key]);
+  showToast(prefs[key] ? 'Preference enabled' : 'Preference muted');
+};
+
+window.toggleNameEditor = function (forceState) {
+  const userName = localStorage.getItem('aavira_display_name');
+  if (!userName || userName.toLowerCase() === 'guest user') {
+    openAuthPopup('login');
+    return;
+  }
+  const box = document.getElementById('nameEditorBox');
+  const input = document.getElementById('editNameInput');
+  const willOpen = typeof forceState === 'boolean' ? forceState : !box.classList.contains('on');
+  box.classList.toggle('on', willOpen);
+  if (willOpen) {
+    input.value = userName;
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => input.focus(), 120);
+  }
+};
+
+window.saveUserName = async function (event) {
+  event.preventDefault();
+  const input = document.getElementById('editNameInput');
+  const btn = document.getElementById('saveNameBtn');
+  const newName = (input?.value || '').trim();
+  if (newName.length < 2) {
+    showToast('Please enter a valid full name', 'error');
+    return false;
+  }
+  btn.classList.add('is-busy');
+  btn.disabled = true;
+  await new Promise(r => setTimeout(r, 320));
+  try {
+    localStorage.setItem('aavira_display_name', newName);
+  } catch {}
+  document.getElementById('vipName').innerText = newName;
+  document.getElementById('profileInitial').innerText = newName.charAt(0).toUpperCase();
+  btn.classList.remove('is-busy');
+  btn.disabled = false;
+  toggleNameEditor(false);
+  showToast('Your name has been updated');
+  return false;
+};
+
+let confirmActionFn = null;
+function openConfirmModal(title, desc, btnLabel, action) {
+  confirmActionFn = action;
+  document.getElementById('confirmTitle').innerText = title;
+  document.getElementById('confirmDesc').innerText = desc;
+  const yesBtn = document.getElementById('confirmYesBtn');
+  yesBtn.innerText = btnLabel || 'Confirm';
+  yesBtn.onclick = () => {
+    const fn = confirmActionFn;
+    closeConfirmModal();
+    if (typeof fn === 'function') fn();
+  };
+  document.getElementById('confirmOv').classList.add('on');
+  if (window.lucide) lucide.createIcons();
+}
+window.closeConfirmModal = function () {
+  document.getElementById('confirmOv').classList.remove('on');
+  confirmActionFn = null;
+};
+
+window.clearWishlistData = function () {
+  openConfirmModal('Reset Wishlist', 'Remove all saved outfits from your wishlist?', 'Reset', () => {
+    localStorage.removeItem('aavira_wishlist');
+    const e = document.getElementById('statWishlist');
+    if (e) e.innerText = '0';
+    const hb = document.getElementById('hdrWishBadge');
+    if (hb) hb.hidden = true;
+    showToast('Wishlist cleared');
+  });
+};
+
+window.clearCartData = function () {
+  openConfirmModal('Empty Shopping Bag', 'Remove all outfits currently saved in your shopping bag?', 'Empty Bag', () => {
+    localStorage.removeItem('aavira_cart');
+    document.getElementById('menuCartBadge')?.classList.add('hidden');
+    const cb = document.getElementById('hdrCartBadge');
+    if (cb) cb.hidden = true;
+    showToast('Shopping bag emptied');
+  });
+};
+
+window.subscribeNewsletter = async function () {
+  const input = document.getElementById('newsletterEmail');
+  const email = (input?.value || '').trim().toLowerCase();
+  if (!EMAIL_PATTERN.test(email)) {
+    showToast('Enter a valid email address', 'error');
+    return;
+  }
+  const btn = document.getElementById('btnNewsletter');
+  btn.classList.add('is-busy');
+  btn.disabled = true;
+  let result = { ok: true };
+  try {
+    if (typeof subscribeNewsletterApi === 'function') result = await subscribeNewsletterApi(email);
+  } catch {}
+  btn.classList.remove('is-busy');
+  btn.disabled = false;
+  if (result?.ok) {
+    input.value = '';
+    showToast('Thank you for subscribing!');
+  } else {
+    showToast(result?.message || 'Could not subscribe right now', 'error');
+  }
+};
+
+const AUTH_CONFIG = {
+  GOOGLE_CLIENT_ID: "247971292356-8906dpm406huv7uidlblhjum8vg3dfj3.apps.googleusercontent.com",
+  GOOGLE_PROMPT_TIMEOUT_MS: 30000,
+  OTP_LENGTH: 6,
+  MIN_PASSWORD_LENGTH: 6,
+  AUTO_SUBMIT_DELAY_MS: 150,
+  STORAGE_KEYS: {
+    NAME: 'aavira_display_name',
+    EMAIL: 'aavira_user_email'
+  }
+};
+
+const GOOGLE_BTN_ORIGINAL_HTML =
+  '<img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">' +
+  '<span>Continue with Google</span>';
+
+let pendingSignup = { name: '', email: '', pwd: '' };
+let googlePromptTimeout = null;
+let activeGoogleBtnId = null;
+let isSubmitting = false;
+
+window.openAuthPopup = function (mode = 'login') {
+  window.switchView(mode === 'signup' ? 'signupView' : 'loginView');
+  document.getElementById('authPopupModal')?.classList.add('is-open');
+  document.getElementById('scrim')?.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+  if (window.lucide) lucide.createIcons();
+};
+
+window.closeAuthPopup = function () {
+  document.getElementById('authPopupModal')?.classList.remove('is-open');
+  document.getElementById('scrim')?.classList.remove('is-open');
+  document.body.style.overflow = '';
+};
+
+window.switchView = function (viewId) {
+  const views = ['loginView', 'signupView', 'otpView'];
+  views.forEach(id => {
+    const v = document.getElementById(id);
+    if (v) v.className = id === viewId ? 'view-active' : 'view-hidden';
+  });
+  const seg = document.getElementById('homeAuthSeg');
+  if (seg) seg.hidden = !(viewId === 'loginView' || viewId === 'signupView');
+  document.getElementById('tabBtnLogin')?.setAttribute('aria-selected', String(viewId === 'loginView'));
+  document.getElementById('tabBtnSignup')?.setAttribute('aria-selected', String(viewId === 'signupView'));
+
+  const metaMap = {
+    loginView: ['Welcome Back', 'Login to continue your fashion journey'],
+    signupView: ['Create Account', 'Start your fashion journey with us'],
+    otpView: ['Verification', 'Enter the 6-digit code sent to your email']
+  };
+  const [t, s] = metaMap[viewId] || metaMap.loginView;
+  if (document.getElementById('homeAuthTitle')) document.getElementById('homeAuthTitle').textContent = t;
+  if (document.getElementById('homeAuthSub')) document.getElementById('homeAuthSub').textContent = s;
+  if (window.lucide) lucide.createIcons();
+};
+
+window.togglePassword = function (inputId, buttonId) {
+  const input = document.getElementById(inputId);
+  const btn = document.getElementById(buttonId);
+  if (!input || !btn) return;
+  const isHidden = input.type === 'password';
+  input.type = isHidden ? 'text' : 'password';
+  btn.innerHTML = isHidden ? '<i data-lucide="eye"></i>' : '<i data-lucide="eye-off"></i>';
+  if (window.lucide) lucide.createIcons();
+};
+
+function setBtnLoading(btnId, isLoading, originalHtml, opts = {}) {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  const loaderColor = opts.loaderColor || 'text-white';
+  const loadingLabel = opts.loadingLabel || 'Processing...';
+  if (isLoading) {
+    btn.disabled = true;
+    const spinnerClass = loaderColor === 'text-rani-pink' ? 'mini-spin rani' : 'mini-spin white';
+    btn.innerHTML = `<span class="${spinnerClass}" aria-hidden="true"></span><span>${loadingLabel}</span>`;
+  } else {
+    btn.disabled = false;
+    btn.innerHTML = originalHtml;
+  }
+  if (window.lucide) lucide.createIcons();
+}
+
+function setupOtpBoxGroup(groupId, onComplete) {
+  const group = document.getElementById(groupId);
+  if (!group) return;
+  const boxes = Array.from(group.querySelectorAll('.otp-box'));
+  const playPop = box => {
+    box.classList.remove('otp-box-filled');
+    void box.offsetWidth;
+    box.classList.add('otp-box-filled');
+  };
+  const checkAutoSubmit = () => {
+    if (boxes.every(b => b.value.length === 1) && typeof onComplete === 'function') {
+      setTimeout(onComplete, AUTH_CONFIG.AUTO_SUBMIT_DELAY_MS);
     }
+  };
+  boxes.forEach((box, index) => {
+    box.addEventListener('input', () => {
+      box.value = box.value.replace(/[^0-9]/g, '').slice(-1);
+      if (box.value) {
+        playPop(box);
+        if (boxes[index + 1]) boxes[index + 1].focus();
+      } else {
+        box.classList.remove('otp-box-filled');
+      }
+      checkAutoSubmit();
+    });
+    box.addEventListener('keydown', e => {
+      if (e.key === 'Backspace' && !box.value && boxes[index - 1]) boxes[index - 1].focus();
+      else if (e.key === 'ArrowLeft' && boxes[index - 1]) { e.preventDefault(); boxes[index - 1].focus(); }
+      else if (e.key === 'ArrowRight' && boxes[index + 1]) { e.preventDefault(); boxes[index + 1].focus(); }
+      else if (e.key === 'Enter') { e.preventDefault(); if (typeof onComplete === 'function') onComplete(); }
+    });
+    box.addEventListener('paste', e => {
+      e.preventDefault();
+      const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
+      if (!pasted) return;
+      pasted.split('').slice(0, boxes.length).forEach((d, i) => {
+        boxes[i].value = d;
+        playPop(boxes[i]);
+      });
+      const nextEmpty = boxes.findIndex(b => !b.value);
+      (boxes[nextEmpty] || boxes[boxes.length - 1]).focus();
+      checkAutoSubmit();
+    });
+  });
+}
 
-    // Notification preferences, default all ON, stored as one JSON object
-    function loadNotifPrefs() {
-        return safeGet('aavira_notif_prefs', { orderUpdates: true, promotions: true, whatsapp: true });
+function getOtpBoxValue(groupId) {
+  const group = document.getElementById(groupId);
+  if (!group) return '';
+  return Array.from(group.querySelectorAll('.otp-box')).map(b => b.value).join('');
+}
+
+function clearOtpBoxGroup(groupId) {
+  const group = document.getElementById(groupId);
+  if (!group) return;
+  const boxes = Array.from(group.querySelectorAll('.otp-box'));
+  boxes.forEach(b => { b.value = ''; b.classList.remove('otp-box-filled'); });
+  if (boxes[0]) boxes[0].focus();
+}
+
+async function persistSession(name, email) {
+  try {
+    localStorage.setItem(AUTH_CONFIG.STORAGE_KEYS.NAME, name);
+    localStorage.setItem(AUTH_CONFIG.STORAGE_KEYS.EMAIL, email);
+  } catch {}
+  closeAuthPopup();
+  await initProfileUI();
+}
+
+function resetGoogleButton() {
+  isSubmitting = false;
+  if (activeGoogleBtnId) {
+    setBtnLoading(activeGoogleBtnId, false, GOOGLE_BTN_ORIGINAL_HTML);
+    activeGoogleBtnId = null;
+  }
+}
+
+async function handleGoogleLoginResponse(googleAccessToken) {
+  clearTimeout(googlePromptTimeout);
+  showToast('Google verified! Signing you in...');
+  try {
+    if (!window.DeliveryBoy || !window.DeliveryBoy.googleLogin) {
+      showToast('Google login service unavailable', 'error');
+      return;
     }
-    function saveNotifPrefs(prefs) {
-        localStorage.setItem('aavira_notif_prefs', JSON.stringify(prefs));
+    const result = await window.DeliveryBoy.googleLogin(googleAccessToken);
+    if (result && result.ok && result.data && result.data.success) {
+      showToast('Signed in successfully!');
+      await persistSession(result.data.userName, result.data.email);
+    } else {
+      showToast((result?.data?.message) || 'Google login failed.', 'error');
     }
-    function paintNotifToggles() {
-        const prefs = loadNotifPrefs();
-        document.querySelectorAll('.toggle-btn').forEach(btn => {
-            const key = btn.getAttribute('data-pref');
-            btn.classList.toggle('toggle-on', Boolean(prefs[key]));
-        });
+  } catch {
+    showToast('Network error. Please try again.', 'error');
+  } finally {
+    resetGoogleButton();
+  }
+}
+
+window.performGoogleLogin = function (triggerBtnId) {
+  if (typeof google === 'undefined' || !google.accounts) {
+    showToast('Google service unable to load. Check connection.', 'error');
+    return;
+  }
+  if (isSubmitting) return;
+  isSubmitting = true;
+  activeGoogleBtnId = triggerBtnId;
+  setBtnLoading(triggerBtnId, true, GOOGLE_BTN_ORIGINAL_HTML, {
+    loaderColor: 'text-rani-pink',
+    loadingLabel: 'Connecting...'
+  });
+  try {
+    const client = google.accounts.oauth2.initTokenClient({
+      client_id: AUTH_CONFIG.GOOGLE_CLIENT_ID,
+      scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+      callback: response => {
+        if (response && response.access_token) handleGoogleLoginResponse(response.access_token);
+      },
+      error_callback: error => {
+        resetGoogleButton();
+        if (error.type !== 'popup_closed' && error.type !== 'access_denied') {
+          showToast('Google sign-in failed or cancelled.', 'error');
+        }
+      }
+    });
+    client.requestAccessToken();
+    clearTimeout(googlePromptTimeout);
+    googlePromptTimeout = setTimeout(() => {
+      if (isSubmitting) {
+        resetGoogleButton();
+        showToast('Google sign-in timed out. Please try again.', 'error');
+      }
+    }, AUTH_CONFIG.GOOGLE_PROMPT_TIMEOUT_MS);
+  } catch {
+    resetGoogleButton();
+    showToast('Unable to initialize Google Sign-In.', 'error');
+  }
+};
+
+window.processSignup = async function () {
+  if (isSubmitting) return;
+  const name = (document.getElementById('signupName')?.value || '').trim();
+  const email = (document.getElementById('signupEmail')?.value || '').trim().toLowerCase();
+  const pwd = (document.getElementById('signupPassword')?.value || '').trim();
+  if (!name || !email || !pwd) return showToast('All fields are required.', 'error');
+  if (name.length < 2) return showToast('Please enter your full name.', 'error');
+  if (!EMAIL_PATTERN.test(email)) return showToast('Enter a valid email address.', 'error');
+  if (pwd.length < 6) return showToast('Password must be at least 6 characters.', 'error');
+  if (!window.DeliveryBoy) {
+    location.href = '/auth/aavirafashion.html';
+    return;
+  }
+  const originalBtnHTML = '<span>Create Account</span><i data-lucide="arrow-right"></i>';
+  isSubmitting = true;
+  setBtnLoading('btnSignupAction', true, originalBtnHTML);
+  pendingSignup = { name, email, pwd };
+  try {
+    const result = await window.DeliveryBoy.sendOTP(email, name);
+    if (result && result.ok && result.data && result.data.success) {
+      showToast('Verification code sent!');
+      if (document.getElementById('otpSubText')) document.getElementById('otpSubText').innerText = email;
+      clearOtpBoxGroup('otpBoxGroup');
+      window.switchView('otpView');
+    } else {
+      showToast((result?.data?.message) || 'Error sending code.', 'error');
     }
-    window.toggleNotifPref = function (btn) {
-        const key = btn.getAttribute('data-pref');
-        const prefs = loadNotifPrefs();
-        prefs[key] = !prefs[key];
-        saveNotifPrefs(prefs);
-        btn.classList.toggle('toggle-on', prefs[key]);
-    };
+  } catch {
+    showToast('Network error. Please try again.', 'error');
+  } finally {
+    setBtnLoading('btnSignupAction', false, originalBtnHTML);
+    isSubmitting = false;
+  }
+};
 
-    const ACCOUNT_API_URL = 'https://server-js-psi-five.vercel.app/api/account';
-    let pendingPasswordValue = '';
-
-    window.openAccountScreen=function(){
-        const sheet=document.getElementById('accountSheet'); if(!sheet)return;
-        const email=localStorage.getItem('aavira_user_email')||'', name=localStorage.getItem('aavira_display_name')||'Guest User';
-        const logged=Boolean(email && name && name.toLowerCase()!=='guest user');
-        document.getElementById('accountCurrentName').innerText=name;
-        document.getElementById('accountCurrentEmail').innerText=email||'Guest Account';
-        document.getElementById('accountInitial').innerText=(name.trim().charAt(0)||'G').toUpperCase();
-        document.getElementById('accountGuestNotice').classList.toggle('hidden',logged);
-        document.getElementById('accountOptions').classList.toggle('hidden',!logged);
-        document.getElementById('informationSection').classList.add('hidden');
-        document.getElementById('passwordSection').classList.add('hidden');
-        sheet.classList.add('show');sheet.setAttribute('aria-hidden','false');closeSettingsPanel();
-        if(window.lucide)lucide.createIcons();
-    };
-    window.accountBack=function(){const infoHidden=document.getElementById('informationSection').classList.contains('hidden'), passHidden=document.getElementById('passwordSection').classList.contains('hidden');if(!infoHidden||!passHidden){closeAccountSection()}else{closeAccountScreen()}};
-    window.closeAccountScreen=function(){const s=document.getElementById('accountSheet');if(s){s.classList.remove('show');s.setAttribute('aria-hidden','true')}};
-    window.openAccountSection=function(section){
-        document.getElementById('accountOptions').classList.add('hidden');
-        document.getElementById('informationSection').classList.toggle('hidden',section!=='information');
-        document.getElementById('passwordSection').classList.toggle('hidden',section!=='password');
-        document.getElementById('accountHeaderSub').innerText=section==='password'?'Securely change your password':'Update your personal information';
-        if(section==='information'){
-            document.getElementById('accountName').value=localStorage.getItem('aavira_display_name')||'';
-            document.getElementById('accountEmail').value=localStorage.getItem('aavira_user_email')||'';
-            document.getElementById('accountInfoPassword').value='';
-        } else {
-            backToPasswordRequest();
-        }
-        if(window.lucide)lucide.createIcons();
-    };
-    window.closeAccountSection=function(){
-        document.getElementById('accountOptions').classList.remove('hidden');
-        document.getElementById('informationSection').classList.add('hidden');
-        document.getElementById('passwordSection').classList.add('hidden');
-        document.getElementById('accountHeaderSub').innerText='Manage your personal details';
-        if(window.lucide)lucide.createIcons();
-    };
-
-    window.submitInformationUpdate=async function(event){
-        event.preventDefault();
-        const name=document.getElementById('accountName').value.trim(), email=document.getElementById('accountEmail').value.trim().toLowerCase(), currentPassword=document.getElementById('accountInfoPassword').value, status=document.getElementById('accountInfoStatus'), btn=document.getElementById('informationSaveBtn');
-        if(!name||!email||!currentPassword){status.innerText='Name, email and current password are required.';return false}
-        btn.disabled=true;const original=btn.innerHTML;btn.innerHTML='<span class="inline-block w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin"></span><span>Updating...</span>';status.innerText='';
-        try{
-            const currentEmail=localStorage.getItem('aavira_user_email')||'';
-            const response=await fetch(ACCOUNT_API_URL+'/information',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({currentEmail,currentPassword,name,newEmail:email})});
-            const result=await response.json().catch(()=>({})); if(!response.ok||!result.success)throw new Error(result.message||'Unable to update information.');
-            localStorage.setItem('aavira_display_name',result.user.name);localStorage.setItem('aavira_user_email',result.user.email);
-            document.getElementById('accountCurrentName').innerText=result.user.name;document.getElementById('accountCurrentEmail').innerText=result.user.email;document.getElementById('accountInitial').innerText=result.user.name.trim().charAt(0).toUpperCase();
-            const n=document.getElementById('vipName'),e=document.getElementById('vipEmail'),i=document.getElementById('profileInitial');if(n)n.innerText=result.user.name;if(e)e.innerText=result.user.email;if(i)i.innerText=result.user.name.trim().charAt(0).toUpperCase();
-            document.getElementById('accountInfoPassword').value='';status.innerText='Information updated successfully.';
-        }catch(err){status.innerText=err.message||'Unable to update information.'}
-        finally{btn.disabled=false;btn.innerHTML=original;if(window.lucide)lucide.createIcons()} return false;
-    };
-
-    window.backToPasswordRequest=function(){
-        pendingPasswordValue='';document.getElementById('passwordRequestState').classList.remove('hidden');document.getElementById('passwordVerifyState').classList.add('hidden');
-        document.getElementById('newPasswordOnly').value='';document.getElementById('confirmPasswordOnly').value='';document.getElementById('passwordOtp').value='';
-        document.getElementById('passwordRequestStatus').innerText='';document.getElementById('passwordVerifyStatus').innerText='';
-    };
-    window.requestPasswordChange=async function(){
-        const password=document.getElementById('newPasswordOnly').value, confirm=document.getElementById('confirmPasswordOnly').value, status=document.getElementById('passwordRequestStatus'), btn=document.getElementById('sendPasswordCodeBtn'), email=(localStorage.getItem('aavira_user_email')||'').trim().toLowerCase();
-        if(!email){status.innerText='Please sign in first.';return} if(password.length<6){status.innerText='New password must be at least 6 characters.';return} if(password!==confirm){status.innerText='Passwords do not match.';return}
-        btn.disabled=true;const original=btn.innerHTML;btn.innerHTML='<span class="inline-block w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin"></span><span>Sending...</span>';status.innerText='';
-        try{
-            const response=await fetch(ACCOUNT_API_URL+'/password/request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
-            const result=await response.json().catch(()=>({}));if(!response.ok||!result.success)throw new Error(result.message||'Verification email could not be sent.');
-            pendingPasswordValue=password;document.getElementById('verificationEmailLabel').innerText=email;document.getElementById('passwordRequestState').classList.add('hidden');document.getElementById('passwordVerifyState').classList.remove('hidden');document.getElementById('passwordOtp').focus();
-        }catch(err){status.innerText=err.message||'Verification email could not be sent.'}
-        finally{btn.disabled=false;btn.innerHTML=original;if(window.lucide)lucide.createIcons()}
-    };
-    window.verifyPasswordChange=async function(){
-        const otp=document.getElementById('passwordOtp').value.trim(), status=document.getElementById('passwordVerifyStatus'), btn=document.getElementById('verifyPasswordBtn'), email=(localStorage.getItem('aavira_user_email')||'').trim().toLowerCase();
-        if(!/^\d{6}$/.test(otp)){status.innerText='Enter the 6-digit verification code.';return} if(!pendingPasswordValue){status.innerText='Password request expired. Start again.';return}
-        btn.disabled=true;const original=btn.innerHTML;btn.innerHTML='<span class="inline-block w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin"></span><span>Verifying...</span>';status.innerText='';
-        try{
-            const response=await fetch(ACCOUNT_API_URL+'/password/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,otp,newPassword:pendingPasswordValue})});
-            const result=await response.json().catch(()=>({}));if(!response.ok||!result.success)throw new Error(result.message||'Verification failed.');
-            pendingPasswordValue='';document.getElementById('passwordVerifyStatus').innerText='Password updated successfully.';document.getElementById('passwordOtp').value='';document.getElementById('newPasswordOnly').value='';document.getElementById('confirmPasswordOnly').value='';
-        }catch(err){status.innerText=err.message||'Verification failed.'}
-        finally{btn.disabled=false;btn.innerHTML=original;if(window.lucide)lucide.createIcons()}
-    };
-
-    function getSetting(key, fallback=false){try{const v=localStorage.getItem('aavira_setting_'+key);return v===null?fallback:JSON.parse(v)}catch{return fallback}}
-    function setSetting(key,value){localStorage.setItem('aavira_setting_'+key,JSON.stringify(Boolean(value)))}
-    function syncSettingSwitch(key){const el=document.getElementById(key+'Switch');if(el)el.classList.toggle('on',getSetting(key,false))}
-    window.toggleSetting=function(key){const next=!getSetting(key,false);setSetting(key,next);syncSettingSwitch(key);showToast(next?'Preference enabled':'Preference disabled')};
-    window.openSettingsPanel=function(){const s=document.getElementById('settingsSheet'),b=document.getElementById('settingsBackdrop');if(!s||!b)return;s.classList.add('show');b.classList.add('show');s.setAttribute('aria-hidden','false');['compactMode','sound'].forEach(syncSettingSwitch);showStorageInfo();if(window.lucide)lucide.createIcons()};
-    window.closeSettingsPanel=function(){const s=document.getElementById('settingsSheet'),b=document.getElementById('settingsBackdrop');if(!s||!b)return;s.classList.remove('show');b.classList.remove('show');s.setAttribute('aria-hidden','true')};
-    window.showStorageInfo=function(){const keys=['aavira_cart','aavira_wishlist','aavira_placed_orders','aavira_guest_order_id','aavira_notif_prefs'];const n=keys.filter(k=>localStorage.getItem(k)!==null).length;const el=document.getElementById('storageInfo');if(el)el.innerText=n+' local data groups stored'};
-    function confirmClear(label,action){if(window.confirm('Clear '+label+'? This cannot be undone.'))action()}
-    window.clearWishlistData=function(){confirmClear('wishlist',()=>{localStorage.removeItem('aavira_wishlist');const e=document.getElementById('statWishlist');if(e)e.innerText='0';showToast('Wishlist cleared');showStorageInfo()})};
-    window.clearCartData=function(){confirmClear('cart',()=>{localStorage.removeItem('aavira_cart');document.getElementById('menuCartBadge')?.classList.add('hidden');showToast('Cart cleared');showStorageInfo()})};
-    window.clearLocalAppData=function(){confirmClear('app data',()=>{const keep=['aavira_display_name','aavira_user_email','aavira_user_phone'];Object.keys(localStorage).forEach(k=>{if(k.startsWith('aavira_')&&!keep.includes(k))localStorage.removeItem(k)});['statWishlist','statOrders','statSpent','statRewards'].forEach(id=>{const e=document.getElementById(id);if(e)e.innerText='0'});document.getElementById('menuCartBadge')?.classList.add('hidden');showToast('App data cleared');showStorageInfo()})};
-
-    // Main App Initialization
-    async function initProfileUI() {
-        const userName = localStorage.getItem('aavira_display_name');
-        const userEmail = localStorage.getItem('aavira_user_email');
-        const isLoggedIn = Boolean(userName && userName.toLowerCase() !== 'guest user');
-
-        const guestUI = document.getElementById('guestProfileUI');
-        const vipUI = document.getElementById('vipProfileUI');
-        const identityGuestActions = document.getElementById('identityGuestActions');
-
-        guestUI.classList.add('hidden');
-        guestUI.classList.remove('flex');
-        vipUI.classList.remove('hidden');
-        vipUI.classList.add('flex');
-
-        // Cart / wishlist / orders are tracked locally for both guests and members
-        const cart = safeGet('aavira_cart', []);
-        const wishlist = safeGet('aavira_wishlist', []);
-        let orders = [];
-        if (typeof window.getAaviraOrdersForCurrentUser === 'function') {
-            orders = await window.getAaviraOrdersForCurrentUser();
-        } else {
-            orders = safeGet('aavira_orders', []);
-        }
-        const cartQty = Array.isArray(cart) ? cart.reduce((sum, item) => sum + (parseInt(item.qty, 10) || 1), 0) : 0;
-        const orderCount = Array.isArray(orders) ? orders.length : 0;
-        const totalSpent = Array.isArray(orders) ? orders.reduce((sum, order) => sum + (Number(order.totalAmount ?? order.total ?? order.amount ?? 0) || 0), 0) : 0;
-
-        document.getElementById('statOrders').innerText = orderCount;
-        document.getElementById('statWishlist').innerText = Array.isArray(wishlist) ? wishlist.length : 0;
-        document.getElementById('statSpent').innerText = totalSpent > 0 ? Math.round(totalSpent).toLocaleString('en-IN') : '0';
-        document.getElementById('statRewards').innerText = orderCount * 120;
-
-        const menuCartBadge = document.getElementById('menuCartBadge');
-        if (menuCartBadge) {
-            menuCartBadge.innerText = cartQty;
-            menuCartBadge.classList.toggle('hidden', cartQty === 0);
-        }
-
-        if (isLoggedIn) {
-
-            document.getElementById('vipName').innerText = userName;
-            document.getElementById('vipEmail').innerText = userEmail || 'user@example.com';
-            document.getElementById('profileInitial').innerText = userName.trim().charAt(0).toUpperCase();
-            document.getElementById('verifiedTick').classList.toggle('hidden', !userEmail);
-
-            if (identityGuestActions) {
-                identityGuestActions.classList.add('hidden');
-                identityGuestActions.classList.remove('flex');
-            }
-
-        } else {
-            document.getElementById('vipName').innerText = 'Guest User';
-            document.getElementById('vipEmail').innerText = 'Guest Account';
-            document.getElementById('profileInitial').innerText = 'G';
-            document.getElementById('verifiedTick').classList.add('hidden');
-            if (identityGuestActions) {
-                identityGuestActions.classList.remove('hidden');
-                identityGuestActions.classList.add('flex');
-            }
-
-        }
-
-        // Profile photo (secure, private Cloudinary) — restore the user's photo if they set one
-        paintStoredProfilePhoto(isLoggedIn);
-
-        // Notification toggles
-        paintNotifToggles();
-
-        // 🚨 CRITICAL: Render all Lucide Icons AFTER the HTML is modified/loaded
-        if (window.lucide) {
-            lucide.createIcons();
-        }
-        document.querySelectorAll('details > summary').forEach(summary => {
-            summary.addEventListener('click', () => {
-                requestAnimationFrame(() => {
-                    if (window.lucide) lucide.createIcons();
-                });
-            });
-        });
+window.verifySignupOTP = async function () {
+  if (isSubmitting) return;
+  const otpVal = getOtpBoxValue('otpBoxGroup');
+  if (otpVal.length !== 6) return showToast('Enter the complete 6-digit code.', 'error');
+  if (!window.DeliveryBoy) return;
+  const originalBtnHTML = '<span>Verify &amp; Login</span><i data-lucide="check-circle"></i>';
+  isSubmitting = true;
+  setBtnLoading('btnOtpAction', true, originalBtnHTML);
+  try {
+    const result = await window.DeliveryBoy.verifyOTP(pendingSignup.email, otpVal, pendingSignup.name, pendingSignup.pwd);
+    if (result && result.ok && result.data && result.data.success) {
+      showToast('Welcome to Aavira!');
+      await persistSession(pendingSignup.name, pendingSignup.email);
+    } else {
+      showToast((result?.data?.message) || 'Invalid OTP code.', 'error');
     }
+  } catch {
+    showToast('Network error. Please try again.', 'error');
+  } finally {
+    setBtnLoading('btnOtpAction', false, originalBtnHTML);
+    isSubmitting = false;
+  }
+};
 
-    // ---------- Secure profile photo (private Cloudinary via backend) ----------
-    function profilePhotoId() { try { return localStorage.getItem('aavira_profile_photo_id') || ''; } catch (e) { return ''; } }
-
-    function paintProfilePhoto(url) {
-        const avatar = document.getElementById('profileAvatar');
-        const initial = document.getElementById('profileInitial');
-        if (!avatar) return;
-        let img = document.getElementById('profilePhotoImg');
-        if (url) {
-            if (!img) { img = document.createElement('img'); img.id = 'profilePhotoImg'; img.alt = 'Profile photo'; img.className = 'w-full h-full object-cover'; avatar.appendChild(img); }
-            img.src = url;
-            if (initial) initial.classList.add('hidden');
-        } else {
-            if (img) img.remove();
-            if (initial) initial.classList.remove('hidden');
-        }
+window.processLogin = async function () {
+  if (isSubmitting) return;
+  const email = (document.getElementById('loginEmail')?.value || '').trim().toLowerCase();
+  const pwd = (document.getElementById('loginPassword')?.value || '').trim();
+  if (!email || !pwd) return showToast('Please enter email & password.', 'error');
+  if (!window.DeliveryBoy) {
+    location.href = '/auth/aavirafashion.html';
+    return;
+  }
+  const originalBtnHTML = '<span>Login</span><i data-lucide="arrow-right"></i>';
+  isSubmitting = true;
+  setBtnLoading('btnLoginAction', true, originalBtnHTML);
+  try {
+    const result = await window.DeliveryBoy.login(email, pwd);
+    if (result && result.ok && result.data && result.data.success) {
+      showToast('Signed in successfully!');
+      await persistSession(result.data.userName || email.split('@')[0], email);
+    } else {
+      showToast((result?.data?.message) || 'Invalid credentials.', 'error');
     }
+  } catch {
+    showToast('Network error. Please try again.', 'error');
+  } finally {
+    setBtnLoading('btnLoginAction', false, originalBtnHTML);
+    isSubmitting = false;
+  }
+};
 
-    async function paintStoredProfilePhoto(isLoggedIn) {
-        const pid = profilePhotoId();
-        if (!isLoggedIn || !pid) {
-            paintProfilePhoto('');
-            try { localStorage.removeItem('aavira_profile_photo_id'); } catch (e) {}
-            return;
-        }
-        if (typeof window.getSecurePhotoUrl !== 'function') return;
-        try { const url = await window.getSecurePhotoUrl(pid); if (url) paintProfilePhoto(url); } catch (e) {}
+async function initProfileUI() {
+  const userName = localStorage.getItem('aavira_display_name');
+  const userEmail = localStorage.getItem('aavira_user_email');
+  const isLoggedIn = Boolean(userName && userName.toLowerCase() !== 'guest user');
+
+  const guestActions = document.getElementById('identityGuestActions');
+  const memberActions = document.getElementById('identityMemberActions');
+  const logoutSection = document.getElementById('logoutSection');
+  const editNameRowBtn = document.getElementById('editNameRowBtn');
+
+  const cart = safeGet('aavira_cart', []);
+  const wishlist = safeGet('aavira_wishlist', []);
+  let orders = [];
+  if (typeof window.getAaviraOrdersForCurrentUser === 'function') {
+    try { orders = await window.getAaviraOrdersForCurrentUser(); } catch { orders = safeGet('aavira_orders', []); }
+  } else {
+    orders = safeGet('aavira_orders', []);
+  }
+  const cartQty = Array.isArray(cart) ? cart.reduce((sum, item) => sum + (parseInt(item.qty, 10) || 1), 0) : 0;
+  const wishCount = Array.isArray(wishlist) ? wishlist.length : 0;
+  const orderCount = Array.isArray(orders) ? orders.length : 0;
+
+  document.getElementById('statOrders').innerText = orderCount;
+  document.getElementById('statWishlist').innerText = wishCount;
+
+  const menuCartBadge = document.getElementById('menuCartBadge');
+  if (menuCartBadge) {
+    menuCartBadge.innerText = cartQty;
+    menuCartBadge.classList.toggle('hidden', cartQty === 0);
+  }
+  const hdrCartBadge = document.getElementById('hdrCartBadge');
+  if (hdrCartBadge) {
+    hdrCartBadge.innerText = cartQty > 99 ? '99+' : cartQty;
+    hdrCartBadge.hidden = cartQty <= 0;
+  }
+  const hdrWishBadge = document.getElementById('hdrWishBadge');
+  if (hdrWishBadge) {
+    hdrWishBadge.innerText = wishCount > 99 ? '99+' : wishCount;
+    hdrWishBadge.hidden = wishCount <= 0;
+  }
+
+  if (isLoggedIn) {
+    document.getElementById('vipName').innerText = userName;
+    document.getElementById('vipEmail').innerText = userEmail || 'Verified Member';
+    document.getElementById('profileInitial').innerText = userName.trim().charAt(0).toUpperCase();
+    document.getElementById('verifiedTick').classList.toggle('hidden', !userEmail);
+    guestActions?.classList.add('hidden');
+    memberActions?.classList.remove('hidden');
+    logoutSection?.classList.remove('hidden');
+    editNameRowBtn?.classList.remove('hidden');
+  } else {
+    document.getElementById('vipName').innerText = 'Guest User';
+    document.getElementById('vipEmail').innerText = 'Sign in to view your orders & saved styles';
+    document.getElementById('profileInitial').innerText = 'G';
+    document.getElementById('verifiedTick').classList.add('hidden');
+    guestActions?.classList.remove('hidden');
+    memberActions?.classList.add('hidden');
+    logoutSection?.classList.add('hidden');
+    editNameRowBtn?.classList.add('hidden');
+    document.getElementById('nameEditorBox')?.classList.remove('on');
+  }
+
+  paintStoredProfilePhoto(isLoggedIn);
+  paintNotifToggles();
+
+  if (window.lucide) lucide.createIcons();
+}
+
+function profilePhotoId() {
+  try { return localStorage.getItem('aavira_profile_photo_id') || ''; } catch { return ''; }
+}
+
+function paintProfilePhoto(url) {
+  const avatar = document.getElementById('profileAvatar');
+  const initial = document.getElementById('profileInitial');
+  if (!avatar) return;
+  let img = document.getElementById('profilePhotoImg');
+  if (url) {
+    if (!img) {
+      img = document.createElement('img');
+      img.id = 'profilePhotoImg';
+      img.alt = 'Profile photo';
+      avatar.appendChild(img);
     }
+    img.src = url;
+    if (initial) initial.classList.add('hidden');
+  } else {
+    if (img) img.remove();
+    if (initial) initial.classList.remove('hidden');
+  }
+}
 
-    window.changeProfilePhoto = function () {
-        const name = localStorage.getItem('aavira_display_name');
-        if (!name || name.toLowerCase() === 'guest user') { showToast('Please login to set a profile photo'); return; }
-        document.getElementById('profilePhotoInput').click();
-    };
+async function paintStoredProfilePhoto(isLoggedIn) {
+  const pid = profilePhotoId();
+  if (!isLoggedIn || !pid) {
+    paintProfilePhoto('');
+    try { localStorage.removeItem('aavira_profile_photo_id'); } catch {}
+    return;
+  }
+  if (typeof window.getSecurePhotoUrl !== 'function') return;
+  try {
+    const url = await window.getSecurePhotoUrl(pid);
+    if (url) paintProfilePhoto(url);
+  } catch {}
+}
 
-    window.handleProfilePhotoSelect = async function (event) {
-        const input = event.target;
-        const file = input.files && input.files[0];
-        input.value = '';
-        if (!file) return;
-        if (!file.type.startsWith('image/') || file.size > 5 * 1024 * 1024) { showToast('Choose an image under 5 MB', 'error'); return; }
-        if (typeof window.uploadExperiencePhoto !== 'function') { showToast('Photo upload is not available', 'error'); return; }
-        showToast('Uploading photo...');
-        try {
-            const up = await window.uploadExperiencePhoto(file);
-            if (!up || !up.url) throw new Error('upload failed');
-            try { localStorage.setItem('aavira_profile_photo_id', up.publicId || ''); } catch (e) {}
-            paintProfilePhoto(up.url);
-            showToast('Profile photo updated');
-        } catch (e) { showToast('Could not upload photo. Please try again.', 'error'); }
-    };
+window.changeProfilePhoto = function () {
+  const name = localStorage.getItem('aavira_display_name');
+  if (!name || name.toLowerCase() === 'guest user') {
+    showToast('Please login to set a profile photo', 'error');
+    openAuthPopup('login');
+    return;
+  }
+  document.getElementById('profilePhotoInput').click();
+};
 
-    // Logout Action
-    window.handleLogout = function() {
-        localStorage.removeItem('aavira_display_name');
-        localStorage.removeItem('aavira_user_email');
-        showToast('Signed out successfully');
+window.handleProfilePhotoSelect = async function (event) {
+  const input = event.target;
+  const file = input.files && input.files[0];
+  input.value = '';
+  if (!file) return;
+  if (!file.type.startsWith('image/') || file.size > 5 * 1024 * 1024) {
+    showToast('Choose an image under 5 MB', 'error');
+    return;
+  }
+  if (typeof window.uploadExperiencePhoto !== 'function') {
+    showToast('Photo upload is not available', 'error');
+    return;
+  }
+  showToast('Uploading photo...');
+  try {
+    const up = await window.uploadExperiencePhoto(file);
+    if (!up || !up.url) throw new Error('upload failed');
+    try { localStorage.setItem('aavira_profile_photo_id', up.publicId || ''); } catch {}
+    paintProfilePhoto(up.url);
+    showToast('Profile photo updated');
+  } catch {
+    showToast('Could not upload photo. Please try again.', 'error');
+  }
+};
 
-        // Slight delay to allow toast to show before reloading UI
-        setTimeout(initProfileUI, 800);
-    };
+window.handleLogout = function () {
+  localStorage.removeItem('aavira_display_name');
+  localStorage.removeItem('aavira_user_email');
+  showToast('Signed out successfully');
+  setTimeout(initProfileUI, 500);
+};
 
-    // Run when the page loads
-    document.addEventListener('DOMContentLoaded', initProfileUI);
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (document.getElementById('confirmOv')?.classList.contains('on')) closeConfirmModal();
+  else if (document.getElementById('authPopupModal')?.classList.contains('is-open')) closeAuthPopup();
+  else if (document.getElementById('nameEditorBox')?.classList.contains('on')) toggleNameEditor(false);
+});
 
+document.addEventListener('DOMContentLoaded', () => {
+  setupOtpBoxGroup('otpBoxGroup', window.verifySignupOTP);
+  initProfileUI();
+});
 </script>
 <script src="/cookie-consent.js" defer></script>
 </body>
