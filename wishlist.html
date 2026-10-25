@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Aavira - My Wishlist | Luxury Ethnic Elegance</title>
+<title>Aavira - My Wishlist</title>
 <meta name="description" content="View and manage your saved luxury ethnic wear pieces on Aavira.">
 <meta name="theme-color" content="#ffffff">
 <link rel="canonical" href="https://aavirafashion.shop/wishlist">
@@ -27,48 +27,40 @@ a{color:inherit;text-decoration:none}
 .no-scrollbar::-webkit-scrollbar{display:none}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 
-.app{max-width:420px;margin:0 auto;background:#FFFFFF;min-height:100vh;padding-bottom:calc(132px + env(safe-area-inset-bottom,0px))}
+.app{max-width:420px;margin:0 auto;background:#FFFFFF;min-height:100vh;padding-bottom:calc(82px + env(safe-area-inset-bottom,0px))}
 @media(min-width:640px){body{background:#FFFFFF}.app{box-shadow:0 0 50px rgba(0,0,0,.06);border-inline:1px solid #F0F0F5}}
 
-/* Header: Compact Solid Bar Matching Home Screen & Bottom Nav */
-.site-header{position:sticky;top:0;z-index:40;background:#FFFFFF!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border-bottom:1px solid #E5E5EA;box-shadow:none!important;padding-top:env(safe-area-inset-top,0px)}
-.site-header-row{height:46px;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:0 10px}
-.header-left{display:flex;align-items:center;gap:4px;min-width:0;flex:1}
-.header-title-wrap{display:flex;align-items:baseline;gap:6px;min-width:0;padding-left:2px}
-.header-title-wrap h1{font-size:18.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);white-space:nowrap}
-.header-count-pill{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-text);background:rgba(212,175,55,.14);border:1px solid rgba(212,175,55,.32);padding:1.5px 7px;border-radius:999px;line-height:1.1;white-space:nowrap}
-.header-actions{display:flex;align-items:center;gap:2px}
-.site-logo-right{flex-shrink:0;display:flex;align-items:center;margin-left:2px}
-.site-logo{height:26px;width:auto;max-width:90px;object-fit:contain}
-.icon-btn{position:relative;width:32px;height:32px;flex:0 0 32px;padding:0;border-radius:50%;border:0;background:transparent;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s,transform .2s var(--ease)}
+.site-header{position:sticky;top:0;z-index:40;background:#FFFFFF!important;border-bottom:1px solid #E5E5EA;padding-top:env(safe-area-inset-top,0px)}
+.site-header-row{height:48px;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:0 10px}
+.header-left,.header-actions{display:flex;align-items:center;gap:2px;min-width:68px}
+.header-actions{justify-content:flex-end}
+.header-center{text-align:center;min-width:0;flex:1}
+.header-center h1{font-size:18px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);line-height:1.1}
+.header-center span{display:block;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-text);margin-top:1px}
+.icon-btn{position:relative;width:34px;height:34px;flex:0 0 34px;padding:0;border-radius:50%;border:0;background:transparent;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s,transform .2s var(--ease)}
 @media(hover:hover){.icon-btn:hover{background:rgba(212,175,55,.14);color:var(--rani)}}
 .icon-btn:active{transform:scale(.92)}
-.icon-btn svg{width:17.5px;height:17.5px;stroke-width:1.7}
-.cart-badge{position:absolute;top:1px;right:0;min-width:15px;height:15px;padding:0 3.5px;border-radius:999px;background:var(--rani);color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
+.icon-btn svg{width:18px;height:18px;stroke-width:1.75}
+.cart-badge{position:absolute;top:2px;right:1px;min-width:15px;height:15px;padding:0 3.5px;border-radius:999px;background:var(--rani);color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
 
-.net-bar{position:sticky;top:46px;z-index:39;background:var(--ink);color:#fff;text-align:center;font-size:13px;font-weight:500;padding:6px 12px}
+.net-bar{position:sticky;top:48px;z-index:39;background:var(--ink);color:#fff;text-align:center;font-size:13px;font-weight:500;padding:6px 12px}
 
-/* Home Screen Mini Hero Banner Carousel (#miniHeroSection) */
-#miniHeroSection{margin:14px 16px 0;position:relative}
-.mini-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:18px;scrollbar-width:none;-webkit-overflow-scrolling:touch;box-shadow:0 14px 28px -12px rgba(0,0,0,.32)}
+#miniHeroSection{margin:12px 16px 0;position:relative}
+.mini-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:16px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .mini-track::-webkit-scrollbar{display:none}
-.mini-slide{flex:0 0 100%;min-width:100%;scroll-snap-align:start;position:relative;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#242429 0%,#0f0f12 60%,#1c1c20 100%);color:#fff;border:1px solid rgba(212,175,55,.42);padding:15px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:84px}
-.mini-slide.alt-gold{background:linear-gradient(135deg,#1E1912 0%,#0E0C08 65%,#292115 100%)}
-.mini-slide.alt-plum{background:linear-gradient(135deg,#23141D 0%,#0F090D 65%,#1F1119 100%)}
-.mini-slide::after{content:"";position:absolute;right:-28px;top:-28px;width:118px;height:118px;background:radial-gradient(circle,rgba(212,175,55,.28),transparent 70%);pointer-events:none}
-.mini-meta{min-width:0;flex:1;z-index:1}
-.mini-eyebrow{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
-.mini-meta h2{font-size:19.5px;font-weight:600;letter-spacing:.02em;line-height:1.15;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mini-meta p{margin:3px 0 0;font-size:12.5px;color:rgba(255,255,255,.78);letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.save-badge{z-index:1;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;gap:4px;height:32px;padding:0 13px;font-size:12.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#161616;background:linear-gradient(135deg,#F0D47E,#C49A2E);border-radius:999px;box-shadow:0 6px 14px -4px rgba(212,175,55,.55);white-space:nowrap;border:0}
-.mini-dots{display:flex;justify-content:center;align-items:center;gap:5px;padding:8px 0 0;min-height:13px}
-.mini-dot{height:4px;width:14px;border-radius:999px;background:#DCD3C1;border:0;padding:0;transition:width .35s var(--ease),background .35s;cursor:pointer}
-.mini-dot.is-active{width:28px;background:linear-gradient(90deg,var(--gold),#A8842C)}
+.mini-slide{flex:0 0 100%;min-width:100%;scroll-snap-align:start;position:relative;border-radius:16px;overflow:hidden;background:#FBF9F5;color:var(--ink);border:1px solid #EAE3D5;border-left:3.5px solid var(--gold);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:66px}
+.mini-meta{min-width:0;flex:1}
+.mini-eyebrow{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-text);margin-bottom:2px}
+.mini-meta h2{font-size:16.5px;font-weight:700;letter-spacing:.02em;line-height:1.15;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-meta p{margin:2px 0 0;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.save-badge{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;height:28px;padding:0 11px;font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--gold-text);background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.38);border-radius:999px;white-space:nowrap}
+.mini-dots{display:flex;justify-content:center;align-items:center;gap:5px;padding:7px 0 0;min-height:11px}
+.mini-dot{height:4px;width:12px;border-radius:999px;background:#DCD3C1;border:0;padding:0;transition:width .35s var(--ease),background .35s;cursor:pointer}
+.mini-dot.is-active{width:24px;background:linear-gradient(90deg,var(--gold),#A8842C)}
 
-/* Search & Sort Controls */
-.controls-wrap{padding:12px 16px 0}
-.search-row{display:flex;gap:8px;margin-bottom:12px}
-.search-box{flex:1;min-width:0;height:38px;background:#fff;border:1px solid var(--line);border-radius:999px;display:flex;align-items:center;gap:8px;padding:0 12px 0 14px;box-shadow:0 2px 6px rgba(36,32,36,.03);transition:border-color .2s,box-shadow .2s}
+.controls-wrap{padding:10px 16px 0}
+.search-row{display:flex;gap:8px;margin-bottom:10px}
+.search-box{flex:1;min-width:0;height:38px;background:#fff;border:1px solid var(--line);border-radius:999px;display:flex;align-items:center;gap:8px;padding:0 12px 0 14px;transition:border-color .2s,box-shadow .2s}
 .search-box:focus-within{border-color:var(--rani);box-shadow:0 0 0 3px rgba(0,0,0,.06)}
 .search-box svg{width:15px;height:15px;color:var(--muted);flex-shrink:0}
 .search-box input{border:0;outline:0;flex:1;min-width:0;font-size:14px;font-weight:500;color:var(--ink);background:transparent}
@@ -76,28 +68,25 @@ a{color:inherit;text-decoration:none}
 .search-clear{width:20px;height:20px;flex:0 0 20px;border:0;border-radius:50%;background:var(--blush);color:var(--muted);display:inline-flex;align-items:center;justify-content:center;padding:0}
 .search-clear svg{width:11px;height:11px}
 
-.sort-select{height:38px;border:1px solid #E2D9CE;border-radius:999px;background:#fff;color:var(--ink);font-size:13.5px;font-weight:600;padding:0 12px;outline:none;max-width:142px;box-shadow:0 2px 6px rgba(36,32,36,.04);cursor:pointer;transition:border-color .2s}
+.sort-select{height:38px;border:1px solid #E2D9CE;border-radius:999px;background:#fff;color:var(--ink);font-size:13.5px;font-weight:600;padding:0 12px;outline:none;max-width:142px;cursor:pointer;transition:border-color .2s}
 .sort-select:focus{border-color:var(--rani)}
 
-/* Exact Home Screen Filter Chips */
-.chips{display:flex;gap:8px;overflow-x:auto;margin:0 0 4px;padding:2px 2px 6px}
+.chips{display:flex;gap:8px;overflow-x:auto;margin:0 0 2px;padding:2px 2px 6px}
 .chip{flex:0 0 auto;height:34px;padding:0 14px;border:1px solid #E2D9CE;background:#fff;color:var(--ink);border-radius:999px;font-size:13.5px;font-weight:600;line-height:1;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:5px;box-shadow:0 2px 6px rgba(36,32,36,.04);transition:background .2s,color .2s,border-color .2s,box-shadow .2s,transform .2s var(--ease)}
 @media(hover:hover){.chip:hover{border-color:#C9B99F}}
 .chip:active{transform:scale(.96)}
 .chip[aria-pressed="true"]{background:linear-gradient(135deg,#242429,#0a0a0c);border-color:transparent;color:#fff;box-shadow:0 8px 16px -6px rgba(0,0,0,.4)}
 
-/* Section Header & Grid */
-.sec{padding:14px 16px 0}
-.sec-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
-.sec-eyebrow{display:block;font-size:11.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#A8842C;margin-bottom:2px}
-.sec-head h2{font-size:23px;font-weight:600;letter-spacing:.01em;line-height:1.15}
+.sec{padding:12px 16px 0}
+.sec-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.sec-eyebrow{display:block;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#A8842C;margin-bottom:2px}
+.sec-head h2{font-size:22px;font-weight:600;letter-spacing:.01em;line-height:1.15}
 .sec-link{display:inline-flex;align-items:center;justify-content:center;gap:4px;height:30px;padding:0 12px;border-radius:999px;background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.32);font-size:12.5px;font-weight:700;color:#8A6D1D;line-height:1;white-space:nowrap;flex-shrink:0;transition:background .2s,border-color .2s,transform .2s var(--ease)}
 @media(hover:hover){.sec-link:hover{background:rgba(212,175,55,.22);border-color:rgba(168,132,44,.5)}}
 .sec-link:active{transform:scale(.95)}
 
 .grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 6px;margin-inline:-8px}
 
-/* Exact Home Screen Product Cards: Sharp 1:1 Square Image, Zero Rounded Corners, % OFF Only, 3-Dots Manage Button */
 .pcard{position:relative;min-width:0;background:#FFFFFF;border:1px solid #EBEBEF;border-radius:0!important;overflow:hidden;padding-bottom:9px;box-shadow:none!important;display:flex;flex-direction:column;transition:border-color .22s var(--ease),transform .28s var(--ease),opacity .28s ease}
 @media(hover:hover){.pcard:hover{box-shadow:none!important;border-color:#111113}}
 .pcard.removing{transform:scale(.9);opacity:0;pointer-events:none}
@@ -124,8 +113,7 @@ a{color:inherit;text-decoration:none}
 .pcard-row{display:flex;align-items:center;justify-content:space-between;gap:5px;margin-top:5px;min-width:0;width:100%}
 .pcard-metalink{display:flex;align-items:center;gap:5px;min-width:0;flex:1;overflow:hidden;cursor:pointer}
 
-/* Three-Dots Manage Button (Replaces Arrow Button in .pcard-row) */
-.go{margin-left:auto;flex:0 0 27px;width:27px;height:27px;padding:0;border:1px solid #E5E5EA;border-radius:999px;background:#F8F8FA;color:#111113;display:inline-flex;align-items:center;justify-content:center;box-shadow:none!important;transition:transform .2s var(--ease),background .2s,color .2s,border-color .2s}
+.go{margin-left:auto;flex:0 0 28px;width:28px;height:28px;padding:0;border:1px solid #E5E5EA;border-radius:50%;background:#FAFAFC;color:#111113;display:inline-flex;align-items:center;justify-content:center;box-shadow:none!important;transition:transform .2s var(--ease),background .2s,color .2s,border-color .2s}
 @media(hover:hover){.go:hover{background:#111113;border-color:#111113;color:#fff}}
 .go:active{transform:scale(.9)}
 .go svg{width:14px;height:14px;stroke-width:2.2}
@@ -136,7 +124,6 @@ a{color:inherit;text-decoration:none}
 .rating.none{background:#9A9298}
 .rating svg{width:9px;height:9px;fill:currentColor;flex-shrink:0}
 
-/* Wishlist Card Action Button (Same Pill Design as Home Screen Buttons) */
 .pcard-cta{margin-top:8px;padding-top:7px;border-top:1px solid #F2F2F6;display:flex;align-items:center;gap:6px}
 .btn-card-bag{flex:1;height:33px;border:0;border-radius:999px;background:linear-gradient(135deg,#242429,#000);color:#fff;font-size:12.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:0 10px;box-shadow:0 8px 16px -6px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.14);transition:transform .2s var(--ease),background .2s,opacity .2s}
 @media(hover:hover){.btn-card-bag:hover{background:#000}}
@@ -144,7 +131,6 @@ a{color:inherit;text-decoration:none}
 .btn-card-bag:disabled{background:#E5E5EA;color:#8E8E93;box-shadow:none;cursor:not-allowed}
 .btn-card-bag svg{width:13px;height:13px;stroke-width:2}
 
-/* Standard Home Screen Pill Buttons */
 .btn-dark,.btn-pink,.btn-outline{width:100%;min-height:46px;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;font-weight:600;font-size:15px;letter-spacing:.03em;line-height:1;padding:0 20px;white-space:nowrap;transition:background .25s,color .25s,border-color .25s,box-shadow .25s,transform .2s var(--ease)}
 .btn-dark:active,.btn-pink:active,.btn-outline:active{transform:scale(.98)}
 .btn-dark{background:linear-gradient(135deg,#2c2c31,#0f0f12);color:#fff;box-shadow:0 10px 22px -8px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.12)}
@@ -155,7 +141,6 @@ a{color:inherit;text-decoration:none}
 @media(hover:hover){.btn-outline:hover{background:var(--rani);border-color:var(--rani);color:#fff}}
 .btn-dark:disabled,.btn-pink:disabled{opacity:.65;cursor:not-allowed}
 
-/* Empty & Skeleton States */
 .empty{width:100%;text-align:center;padding:36px 18px;background:#fff;border:1px solid var(--line);border-radius:18px;color:var(--muted);font-size:14.5px;margin-top:8px}
 .empty-icon{width:68px;height:68px;border-radius:50%;background:var(--cream);border:1px solid var(--line);color:var(--gold-text);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
 .empty-icon svg{width:30px;height:30px;stroke-width:1.6}
@@ -178,66 +163,55 @@ a{color:inherit;text-decoration:none}
 .go.is-busy,.go.is-busy:hover{background:var(--rani);transform:none}
 .go.is-busy::after{width:11px;height:11px}
 
-/* Sticky Move-All-To-Bag Action Bar Above Bottom Nav */
-.wish-bottom-bar{position:fixed;left:0;right:0;bottom:calc(45px + env(safe-area-inset-bottom,0px));margin:0 auto;width:100%;max-width:420px;z-index:8990;background:rgba(255,255,255,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid #E5E5EA;padding:9px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 -10px 26px rgba(0,0,0,.06)}
+.wish-bottom-bar{position:fixed;left:0;right:0;bottom:0;margin:0 auto;width:100%;max-width:420px;z-index:8990;background:rgba(255,255,255,.98);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid #E5E5EA;padding:10px 14px calc(12px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 -10px 26px rgba(0,0,0,.06)}
 .wish-bottom-price{min-width:0}
 .wish-bottom-price b{display:block;font-size:18px;font-weight:700;color:var(--ink);line-height:1.1}
 .wish-bottom-price span{display:block;font-size:12px;font-weight:600;color:var(--gold-text);letter-spacing:.03em}
-.wish-move-all{flex:1;max-width:230px;min-height:40px;font-size:14px;letter-spacing:.05em;text-transform:uppercase;padding:0 16px}
+.wish-move-all{flex:1;max-width:230px;min-height:42px;font-size:14px;letter-spacing:.05em;text-transform:uppercase;padding:0 16px}
 .wish-move-all svg{width:15px;height:15px}
 
-/* Compact Always-Visible Professional Bottom Navigation Bar */
-.bottom-nav{position:fixed;left:0;right:0;bottom:0;margin:0 auto;width:100%;max-width:420px;z-index:9000;background:#FFFFFF!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border-top:1px solid #E5E5EA;display:grid;grid-template-columns:repeat(5,1fr);padding:3px 4px calc(3px + env(safe-area-inset-bottom,0px));box-shadow:none!important;transform:none!important}
-.nav-item{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5px;padding:2px 0;color:#7D828A;font-size:10.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;line-height:1.1;min-width:0;background:transparent;border:0;transition:color .2s}
-.nav-item svg{width:16px;height:16px;stroke-width:1.75}
-.nav-ai-badge{width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#242429,#000);color:var(--gold);font-size:9px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(212,175,55,.5)}
-.nav-item[aria-current="page"]{color:#111113;font-weight:700}
-.nav-item[aria-current="page"]::before{content:"";position:absolute;top:-3px;width:18px;height:2px;background:#111113}
-
-/* Top Pill Toast (Exact Home Screen Design) */
 .toast{position:fixed;left:50%;top:calc(58px + env(safe-area-inset-top,0px));bottom:auto;transform:translate(-50%,-16px);opacity:0;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#16A34A,#15803D);color:#fff;padding:10px 18px 10px 12px;border-radius:999px;font-size:13.5px;font-weight:600;line-height:1.45;box-shadow:0 10px 28px rgba(0,0,0,.38);z-index:10060;pointer-events:none;white-space:normal;max-width:min(320px,86%);transition:opacity .25s,transform .25s var(--ease)}
 .toast::before{content:"\2713";width:22px;height:22px;flex:0 0 22px;border-radius:50%;background:#fff;color:#16A34A;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
 .toast[data-type="error"]{background:linear-gradient(135deg,#DC2626,#B91C1C)}
 .toast[data-type="error"]::before{content:"!";color:#DC2626}
 .toast.is-on{opacity:1;transform:translate(-50%,0)}
 
-/* Scrim & Bottom Sheet Layers (Exact Home Screen Quick View & Sheet Design) */
 .scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9990;opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .3s}
 .scrim.is-open{opacity:1;visibility:visible;transition-delay:0s}
 .layer{position:fixed;z-index:10000;visibility:hidden;pointer-events:none;transition:transform .38s var(--ease),opacity .3s,visibility 0s .38s}
 .layer.is-open{visibility:visible;pointer-events:auto;transform:none;opacity:1;transition-delay:0s}
-.layer-sheet{left:0;right:0;margin:0 auto;width:100%;max-width:420px;bottom:0;background:linear-gradient(180deg,#FFFDF9,#FDFBF7);border-radius:26px 26px 0 0;padding:12px 16px calc(20px + env(safe-area-inset-bottom,0px));max-height:calc(100dvh - 32px);overflow-y:auto;box-shadow:0 -20px 50px rgba(0,0,0,.18)}
+.layer-sheet{left:0;right:0;margin:0 auto;width:100%;max-width:420px;bottom:0;background:#FFFFFF;border-radius:26px 26px 0 0;padding:12px 18px calc(20px + env(safe-area-inset-bottom,0px));max-height:calc(100dvh - 32px);overflow-y:auto;box-shadow:0 -20px 50px rgba(0,0,0,.18)}
 .from-bottom{transform:translateY(100%)}
-.grab{width:44px;height:4px;border-radius:999px;background:#D9D2CB;margin:0 auto 14px}
+.grab{width:42px;height:4px;border-radius:999px;background:#D9D2CB;margin:0 auto 14px}
 .sheet-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
 .sheet-head h2{font-size:22px;font-weight:600;line-height:1.2}
 .sheet-head p{margin:4px 0 0;font-size:13.5px;color:var(--muted)}
 
-/* 3-Dots Item Management Sheet (#manageSheet) */
-.manage-prod-bar{display:flex;align-items:center;gap:12px;padding:10px 12px;background:#FFFFFF;border:1px solid var(--line);border-radius:16px;margin-bottom:12px;box-shadow:0 4px 14px -6px rgba(0,0,0,.06)}
-.manage-prod-img{width:54px;height:54px;flex:0 0 54px;border-radius:10px;overflow:hidden;background:var(--cream);border:1px solid var(--line)}
-.manage-prod-img img{width:100%;height:100%;object-fit:cover}
-.manage-prod-info{flex:1;min-width:0}
-.manage-prod-info h3{font-size:16px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.manage-prod-price{display:flex;align-items:baseline;gap:6px;margin-top:2px}
-.manage-list{display:flex;flex-direction:column;background:#FFFFFF;border:1px solid var(--line);border-radius:18px;overflow:hidden}
-.manage-opt{width:100%;display:flex;align-items:center;gap:12px;padding:13px 14px;background:#FFFFFF;border:0;border-bottom:1px solid #F0F0F5;font-size:15px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--ink);text-align:left;transition:background .18s}
-.manage-opt:last-child{border-bottom:0}
-@media(hover:hover){.manage-opt:hover{background:#F8F8FA}}
-.manage-opt:active{background:#F2F2F7}
-.manage-opt-ic{width:34px;height:34px;flex:0 0 34px;border-radius:50%;background:var(--cream);border:1px solid var(--line);color:var(--ink);display:inline-flex;align-items:center;justify-content:center}
-.manage-opt-ic svg{width:16px;height:16px;stroke-width:1.8}
-.manage-opt-text{flex:1;min-width:0}
-.manage-opt-text small{display:block;font-size:11.5px;font-weight:500;letter-spacing:.01em;text-transform:none;color:var(--muted);margin-top:1px}
-.manage-opt-arr{color:#A1A1AA;width:16px;height:16px}
-.manage-opt.danger{color:#DC2626}
-.manage-opt.danger .manage-opt-ic{background:rgba(220,38,38,.08);border-color:rgba(220,38,38,.22);color:#DC2626}
-.manage-opt.danger .manage-opt-text small{color:#EF4444}
+.sheet-prod{display:flex;align-items:center;gap:12px;padding:2px 0 14px;border-bottom:1px solid #EBEBEF;margin-bottom:6px}
+.sheet-prod-img{width:54px;height:54px;flex:0 0 54px;background:#F4F4F6;overflow:hidden}
+.sheet-prod-img img{width:100%;height:100%;object-fit:cover;display:block}
+.sheet-prod-info{flex:1;min-width:0}
+.sheet-prod-info h3{font-size:17px;font-weight:700;color:#111113;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sheet-prod-info p{margin:3px 0 0;font-size:13.5px;font-weight:500;color:#6E6E73;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-/* Quick View / Size Selection Sheet */
+.sheet-menu{display:flex;flex-direction:column;padding:2px 0}
+.sheet-opt{width:100%;display:flex;align-items:center;gap:14px;padding:10px 2px;background:transparent;border:0;font-size:15.5px;font-weight:600;color:#111113;text-align:left;transition:opacity .15s}
+.sheet-opt:active{opacity:.65}
+.sheet-opt:disabled{opacity:.45;cursor:not-allowed}
+.sheet-opt-ic{width:36px;height:36px;flex:0 0 36px;border-radius:50%;background:#FAFAFC;border:1px solid #E5E5EA;color:#111113;display:inline-flex;align-items:center;justify-content:center}
+.sheet-opt-ic svg{width:16px;height:16px;stroke-width:1.75}
+.sheet-opt.danger{color:#DC2626}
+.sheet-opt.danger .sheet-opt-ic{background:rgba(220,38,38,.06);border-color:rgba(220,38,38,.22);color:#DC2626}
+.sheet-cancel{width:100%;height:46px;margin-top:10px;border-radius:999px;border:1px solid #E5E5EA;background:#FAFAFC;color:#111113;font-size:14.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;transition:background .2s,transform .2s}
+.sheet-cancel:active{transform:scale(.98);background:#F0F0F5}
+
+#sizeModal.layer-sheet{background:linear-gradient(180deg,#FFFDF9,#FDFBF7);padding:12px 16px calc(18px + env(safe-area-inset-bottom,0px))}
 .qv-top{display:flex;gap:14px;align-items:flex-start;padding-bottom:12px;border-bottom:1px solid var(--line)}
-.qv-media{position:relative;width:106px;height:106px;flex:0 0 106px;border-radius:14px;overflow:hidden;background:var(--cream);border:1px solid var(--line);box-shadow:0 8px 20px -8px rgba(36,32,36,.22)}
-.qv-img{width:100%;height:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+.qv-media{position:relative;width:112px;height:112px;flex:0 0 112px;border-radius:14px;overflow:hidden;background:var(--cream);border:1px solid var(--line);box-shadow:0 8px 20px -8px rgba(36,32,36,.22)}
+.qv-media.is-switching::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(241,235,227,.95) 25%,rgba(255,253,249,1) 50%,rgba(241,235,227,.95) 75%);background-size:220% 100%;animation:qvShimmer .75s linear infinite;z-index:3}
+@keyframes qvShimmer{to{background-position:-220% 0}}
+.qv-img{width:100%;height:100%;aspect-ratio:1/1;object-fit:cover;display:block;transition:opacity .2s}
+.qv-media.is-switching .qv-img{opacity:.25}
 .qv-summary{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
 .qv-head-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
 .qv-head-row h2{font-family:var(--font-main);font-size:18px;font-weight:600;color:var(--ink);line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -251,10 +225,11 @@ a{color:inherit;text-decoration:none}
 .qv-colors-pick{margin:11px 0 4px}
 .qv-pick-head{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px;color:var(--muted)}
 .qv-pick-head em{font-style:normal;color:var(--ink);font-weight:700;text-transform:none;letter-spacing:0}
-.qv-color-row{display:flex;gap:8px;overflow-x:auto;padding:2px 0 4px}
-.qv-color-chip{height:32px;padding:0 12px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font-size:12.5px;font-weight:600;color:var(--ink);display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:border-color .2s,background .2s,color .2s}
-.qv-color-chip i{width:11px;height:11px;border-radius:50%;border:1px solid rgba(0,0,0,.15);display:inline-block}
-.qv-color-chip.on{border-color:#111113;background:#111113;color:#fff}
+.qv-color-row{display:flex;gap:9px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none}
+.qv-color-row::-webkit-scrollbar{display:none}
+.qv-sw{position:relative;flex:0 0 auto;width:46px;height:46px;border-radius:50%;border:2px solid var(--line);padding:2.5px;background:#fff;cursor:pointer;transition:transform .2s,border-color .2s}
+.qv-sw img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:50%;display:block}
+.qv-sw.on{border-color:#161616;transform:scale(1.06);box-shadow:0 3px 8px rgba(0,0,0,.15)}
 .qv-sizes{margin:11px 0 4px}
 .qv-sizes-head{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px;color:var(--muted)}
 .qv-size-err{color:#DC2626;font-style:normal;font-size:12.5px;font-weight:700;text-transform:none;letter-spacing:0}
@@ -284,7 +259,7 @@ a{color:inherit;text-decoration:none}
   .price{font-size:15.5px}
   .mrp{font-size:12px}
   .rating{font-size:11px;padding:2px 5.5px}
-  .go{width:25px;height:25px;flex:0 0 25px}
+  .go{width:26px;height:26px;flex:0 0 26px}
 }
 @media(prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
@@ -293,64 +268,47 @@ a{color:inherit;text-decoration:none}
 <div id="toast" class="toast" role="status" aria-live="polite"><span id="toast-msg"></span></div>
 <div id="scrim" class="scrim" onclick="closeTopLayer()"></div>
 
-<!-- 3-DOTS ITEM MANAGEMENT SHEET (#manageSheet) -->
-<div id="manageSheet" class="layer layer-sheet from-bottom" data-scrim="1" role="dialog" aria-modal="true" aria-labelledby="manageSheetTitle">
+<div id="manageSheet" class="layer layer-sheet from-bottom" data-scrim="1" role="dialog" aria-modal="true" aria-labelledby="manageName">
   <div class="grab"></div>
-  <div class="sheet-head" style="margin-bottom:10px">
-    <div>
-      <span class="sec-eyebrow">Manage Saved Piece</span>
-      <h2 id="manageSheetTitle">Item Options</h2>
-    </div>
-    <button type="button" class="qv-x" data-no-delay="1" onclick="closeManageSheet()" aria-label="Close"><i data-lucide="x"></i></button>
-  </div>
-
-  <div class="manage-prod-bar">
-    <div class="manage-prod-img"><img id="manageImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Selected piece"></div>
-    <div class="manage-prod-info">
+  <div class="sheet-prod">
+    <div class="sheet-prod-img"><img id="manageImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Selected piece"></div>
+    <div class="sheet-prod-info">
       <h3 id="manageName">Product Name</h3>
-      <div class="manage-prod-price">
-        <span class="price" id="managePrice">₹0</span>
-        <span class="mrp" id="manageMrp"></span>
-        <span class="tag-off" id="manageOff"></span>
-      </div>
+      <p id="manageSub">Size: 36 · Standard</p>
     </div>
   </div>
 
-  <div class="manage-list">
-    <button type="button" class="manage-opt" id="btnManageMoveBag" data-no-delay="1" onclick="manageActionMoveToBag()">
-      <span class="manage-opt-ic"><i data-lucide="shopping-bag"></i></span>
-      <span class="manage-opt-text">Move to Bag<small>Select your size &amp; colour option</small></span>
-      <i data-lucide="chevron-right" class="manage-opt-arr"></i>
+  <div class="sheet-menu">
+    <button type="button" class="sheet-opt" data-no-delay="1" onclick="manageActionViewProduct()">
+      <span class="sheet-opt-ic"><i data-lucide="eye"></i></span>
+      <span>View product details</span>
     </button>
-    <button type="button" class="manage-opt" data-no-delay="1" onclick="manageActionQuickView()">
-      <span class="manage-opt-ic"><i data-lucide="sliders-horizontal"></i></span>
-      <span class="manage-opt-text">Select Size &amp; Quick View<small>Preview stock, ratings &amp; colour variants</small></span>
-      <i data-lucide="chevron-right" class="manage-opt-arr"></i>
+    <button type="button" class="sheet-opt" id="btnManageMoveBag" data-no-delay="1" onclick="manageActionMoveToBag()">
+      <span class="sheet-opt-ic"><i data-lucide="shopping-bag"></i></span>
+      <span>Move to bag</span>
     </button>
-    <button type="button" class="manage-opt" data-no-delay="1" onclick="manageActionViewProduct()">
-      <span class="manage-opt-ic"><i data-lucide="external-link"></i></span>
-      <span class="manage-opt-text">View Full Product Details<small>Open complete product page</small></span>
-      <i data-lucide="chevron-right" class="manage-opt-arr"></i>
+    <button type="button" class="sheet-opt" data-no-delay="1" onclick="manageActionShare()">
+      <span class="sheet-opt-ic"><i data-lucide="share-2"></i></span>
+      <span>Share product</span>
     </button>
-    <button type="button" class="manage-opt" data-no-delay="1" onclick="manageActionShare()">
-      <span class="manage-opt-ic"><i data-lucide="share-2"></i></span>
-      <span class="manage-opt-text">Share This Piece<small>Send link to friends or copy URL</small></span>
-      <i data-lucide="chevron-right" class="manage-opt-arr"></i>
+    <button type="button" class="sheet-opt" data-no-delay="1" onclick="manageActionQuickView()">
+      <span class="sheet-opt-ic"><i data-lucide="palette"></i></span>
+      <span>Change colour &amp; size</span>
     </button>
-    <button type="button" class="manage-opt danger" data-no-delay="1" onclick="manageActionDelete()">
-      <span class="manage-opt-ic"><i data-lucide="trash-2"></i></span>
-      <span class="manage-opt-text">Delete from Wishlist<small>Remove this piece from saved items</small></span>
-      <i data-lucide="chevron-right" class="manage-opt-arr"></i>
+    <button type="button" class="sheet-opt danger" data-no-delay="1" onclick="manageActionDelete()">
+      <span class="sheet-opt-ic"><i data-lucide="trash-2"></i></span>
+      <span>Remove from wishlist</span>
     </button>
   </div>
+
+  <button type="button" class="sheet-cancel" data-no-delay="1" onclick="closeManageSheet()">Cancel</button>
 </div>
 
-<!-- QUICK VIEW / SELECT SIZE SHEET (Exact Home Screen Sheet Design) -->
 <div id="sizeModal" class="layer layer-sheet from-bottom" data-scrim="1" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="grab"></div>
   <div id="sizeModalBody">
     <div class="qv-top">
-      <div class="qv-media"><img class="qv-img" id="modalImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Selected product"></div>
+      <div class="qv-media" id="qvMedia"><img class="qv-img" id="modalImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Selected product" onerror="imgFallback(this)"></div>
       <div class="qv-summary">
         <div class="qv-head-row">
           <h2 id="modalTitle">Select Size</h2>
@@ -367,8 +325,8 @@ a{color:inherit;text-decoration:none}
     </div>
 
     <div class="qv-colors-pick" id="modalColorWrap">
-      <div class="qv-pick-head"><span>Colour</span><em id="modalColorName"></em></div>
-      <div class="qv-color-row no-scrollbar" id="modalColorRow"></div>
+      <div class="qv-pick-head"><span>Colours</span><em id="modalColorName"></em></div>
+      <div class="qv-color-row" id="modalColorRow"></div>
     </div>
 
     <div class="qv-sizes">
@@ -387,7 +345,6 @@ a{color:inherit;text-decoration:none}
   </div>
 </div>
 
-<!-- CLEAR WISHLIST SHEET -->
 <div id="clearModal" class="layer layer-sheet from-bottom" data-scrim="1" role="dialog" aria-modal="true" aria-labelledby="clearTitle">
   <div class="grab"></div>
   <div class="sheet-head">
@@ -409,20 +366,16 @@ a{color:inherit;text-decoration:none}
     <div class="site-header-row">
       <div class="header-left">
         <button type="button" class="icon-btn" data-no-delay="1" onclick="goBack()" aria-label="Back"><i data-lucide="arrow-left"></i></button>
-        <div class="header-title-wrap">
-          <h1>My Wishlist</h1>
-          <span id="headerItemCount" class="header-count-pill">0 Items</span>
-        </div>
+      </div>
+      <div class="header-center">
+        <h1>My Wishlist</h1>
+        <span id="headerItemCount">0 Items</span>
       </div>
       <div class="header-actions">
-        <button type="button" class="icon-btn" data-no-delay="1" onclick="focusSearch()" aria-label="Search wishlist"><i data-lucide="search"></i></button>
         <button type="button" class="icon-btn" data-no-delay="1" onclick="shareWishlist()" aria-label="Share wishlist"><i data-lucide="share-2"></i></button>
         <button type="button" class="icon-btn" onclick="go('/cart', this)" aria-label="Shopping cart">
-          <i data-lucide="shopping-cart"></i>
+          <i data-lucide="shopping-bag"></i>
           <span id="topCartBadge" class="cart-badge" hidden>0</span>
-        </button>
-        <button type="button" class="site-logo-right" style="background:none;border:0;padding:0" onclick="go('./', this)" aria-label="Aavira home">
-          <img src="https://aavirafashion.shop/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" class="site-logo" onerror="logoFallback(this)">
         </button>
       </div>
     </div>
@@ -432,30 +385,29 @@ a{color:inherit;text-decoration:none}
 
   <main>
     <div id="contentWrap" hidden>
-      <!-- HOME SCREEN MINI HERO BANNER SECTION (#miniHeroSection) -->
       <section id="miniHeroSection" aria-label="Highlights">
         <div class="mini-track" id="miniTrack">
           <div class="mini-slide">
             <div class="mini-meta">
-              <span class="mini-eyebrow"><i data-lucide="sparkles" style="width:11px;height:11px"></i>Your Saved Edit</span>
-              <h2>Handcrafted Luxury Picks</h2>
-              <p id="saveSub">0 items • Total ₹0</p>
+              <span class="mini-eyebrow"><i data-lucide="truck" style="width:11px;height:11px"></i>Free Delivery</span>
+              <h2>Free Shipping on All Orders</h2>
+              <p id="saveSub">0 items saved in your wishlist</p>
             </div>
             <span class="save-badge" id="saveBadge">0% Off</span>
           </div>
-          <div class="mini-slide alt-gold">
+          <div class="mini-slide">
             <div class="mini-meta">
-              <span class="mini-eyebrow"><i data-lucide="crown" style="width:11px;height:11px"></i>Festive Privilege</span>
+              <span class="mini-eyebrow"><i data-lucide="sparkles" style="width:11px;height:11px"></i>Festive Edit</span>
               <h2>Extra 10% Off Prepaid Orders</h2>
-              <p>Instant checkout discount on all ethnic wear</p>
+              <p>Instant checkout discount on ethnic wear</p>
             </div>
-            <button type="button" class="save-badge" data-no-delay="1" onclick="moveAllToBag()">Shop Bag</button>
+            <button type="button" class="save-badge" data-no-delay="1" onclick="moveAllToBag()">Move All</button>
           </div>
-          <div class="mini-slide alt-plum">
+          <div class="mini-slide">
             <div class="mini-meta">
-              <span class="mini-eyebrow"><i data-lucide="shield-check" style="width:11px;height:11px"></i>Aavira Promise</span>
-              <h2>Free Shipping &amp; Easy Returns</h2>
-              <p>7-day hassle-free size exchange across India</p>
+              <span class="mini-eyebrow"><i data-lucide="rotate-ccw" style="width:11px;height:11px"></i>Easy Exchange</span>
+              <h2>7-Day Hassle-Free Returns</h2>
+              <p>Quick size exchange across India</p>
             </div>
             <button type="button" class="save-badge" data-no-delay="1" onclick="setFilterByName('drop')">Top Deals</button>
           </div>
@@ -511,7 +463,6 @@ a{color:inherit;text-decoration:none}
       </section>
     </div>
 
-    <!-- SKELETON LOADING VIEW -->
     <section class="sec" id="skeletonView" aria-label="Loading wishlist">
       <div class="grid2">
         <div class="pcard"><div class="skel" style="aspect-ratio:1/1"></div><div style="padding:10px"><div class="skel" style="height:12px;width:78%;margin-bottom:8px"></div><div class="skel" style="height:12px;width:52%;margin-bottom:10px"></div><div class="skel" style="height:32px;width:100%;border-radius:999px"></div></div></div>
@@ -521,7 +472,6 @@ a{color:inherit;text-decoration:none}
       </div>
     </section>
 
-    <!-- EMPTY WISHLIST VIEW -->
     <section class="sec" id="emptyWishlistView" hidden>
       <div class="empty">
         <div class="empty-icon"><i data-lucide="heart"></i></div>
@@ -536,7 +486,6 @@ a{color:inherit;text-decoration:none}
   </main>
 </div>
 
-<!-- STICKY MOVE ALL TO BAG BAR -->
 <div class="wish-bottom-bar" id="bottomBar" hidden>
   <div class="wish-bottom-price">
     <b id="totalPrice">₹0</b>
@@ -548,21 +497,11 @@ a{color:inherit;text-decoration:none}
   </button>
 </div>
 
-<!-- COMPACT BOTTOM NAVIGATION BAR (Matches Home Screen) -->
-<nav class="bottom-nav" aria-label="Main">
-  <button type="button" class="nav-item" onclick="go('./', this)"><i data-lucide="home"></i><span>Home</span></button>
-  <button type="button" class="nav-item" onclick="go('categories', this)"><i data-lucide="layout-grid"></i><span>Collections</span></button>
-  <button type="button" class="nav-item" onclick="go('/ai', this)"><span class="nav-ai-badge">AI</span><span>AI</span></button>
-  <button type="button" class="nav-item" onclick="go('orders', this)"><i data-lucide="package"></i><span>Orders</span></button>
-  <button type="button" class="nav-item" onclick="go('profile', this)"><i data-lucide="user"></i><span>Profile</span></button>
-</nav>
-
 <script>
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
 const PLACEHOLDER = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#F7F1E8"/><text x="200" y="210" font-family="Georgia,serif" font-size="30" fill="#B9AFA6" text-anchor="middle">Aavira</text></svg>');
-const LOGO_FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 48"><text x="90" y="33" font-family="Georgia,serif" font-weight="700" font-size="28" letter-spacing="4" fill="#111113" text-anchor="middle">AAVIRA</text></svg>');
 
 const makeFashionSvg = (bg1, bg2, accent, label, sub) => 'data:image/svg+xml;utf8,' + encodeURIComponent(
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
@@ -590,9 +529,14 @@ const DEMO_PRODUCTS = [
     reviewCount: 248,
     stock: 3,
     bestseller: true,
-    colors: ['Rani Pink', 'Gold', 'Maroon'],
+    colors: ['Rani Pink', 'Royal Gold', 'Wine Maroon'],
+    colorImages: [
+      makeFashionSvg('#3B1226', '#170710', '#D4AF37', 'RANI PINK SILK', 'BANARASI ZARI'),
+      makeFashionSvg('#332811', '#141006', '#F0D47E', 'ROYAL GOLD SILK', 'BANARASI ZARI'),
+      makeFashionSvg('#2D1016', '#120609', '#E2B857', 'WINE MAROON SILK', 'BANARASI ZARI')
+    ],
     sizes: ['32', '34', '36', '38', '40', '42'],
-    imageMain: makeFashionSvg('#2B1321', '#140910', '#D4AF37', 'BANARASI ZARI SILK', 'HANDCRAFTED EDIT')
+    imageMain: makeFashionSvg('#3B1226', '#170710', '#D4AF37', 'RANI PINK SILK', 'BANARASI ZARI')
   },
   {
     id: 'av-102',
@@ -603,9 +547,14 @@ const DEMO_PRODUCTS = [
     reviewCount: 412,
     stock: 7,
     bestseller: true,
-    colors: ['Maroon', 'Emerald', 'Navy Blue'],
+    colors: ['Emerald Green', 'Deep Maroon', 'Midnight Navy'],
+    colorImages: [
+      makeFashionSvg('#0D2B22', '#06130F', '#D4AF37', 'EMERALD GREEN', 'BRIDAL VELVET'),
+      makeFashionSvg('#2B1117', '#110609', '#E6C665', 'DEEP MAROON', 'BRIDAL VELVET'),
+      makeFashionSvg('#101B33', '#070C17', '#D4AF37', 'MIDNIGHT NAVY', 'BRIDAL VELVET')
+    ],
     sizes: ['32', '34', '36', '38', '40'],
-    imageMain: makeFashionSvg('#241418', '#0E090B', '#E6C665', 'ROYAL VELVET CHOLI', 'BRIDAL COUTURE')
+    imageMain: makeFashionSvg('#0D2B22', '#06130F', '#D4AF37', 'EMERALD GREEN', 'BRIDAL VELVET')
   },
   {
     id: 'av-103',
@@ -616,9 +565,14 @@ const DEMO_PRODUCTS = [
     reviewCount: 164,
     stock: 2,
     bestseller: false,
-    colors: ['Ivory', 'Peach', 'Gold'],
+    colors: ['Ivory Pearl', 'Blush Peach', 'Champagne Gold'],
+    colorImages: [
+      makeFashionSvg('#F5EFE6', '#E5DAC8', '#8A6D1D', 'IVORY PEARL', 'FESTIVE ORGANZA'),
+      makeFashionSvg('#F4DFD5', '#E2C4B5', '#8A5A36', 'BLUSH PEACH', 'FESTIVE ORGANZA'),
+      makeFashionSvg('#EFE6D5', '#DDD0B8', '#8A6D1D', 'CHAMPAGNE GOLD', 'FESTIVE ORGANZA')
+    ],
     sizes: ['Free Size'],
-    imageMain: makeFashionSvg('#F5EFE6', '#E5DAC8', '#8A6D1D', 'IVORY ORGANZA DRAPE', 'FESTIVE EDITION')
+    imageMain: makeFashionSvg('#F5EFE6', '#E5DAC8', '#8A6D1D', 'IVORY PEARL', 'FESTIVE ORGANZA')
   },
   {
     id: 'av-104',
@@ -629,21 +583,15 @@ const DEMO_PRODUCTS = [
     reviewCount: 96,
     stock: 9,
     bestseller: false,
-    colors: ['Gold', 'Beige'],
+    colors: ['Antique Gold', 'Copper Rust'],
+    colorImages: [
+      makeFashionSvg('#262118', '#12100C', '#D4AF37', 'ANTIQUE GOLD', 'CHANDERI TISSUE'),
+      makeFashionSvg('#2E1A14', '#140B08', '#E09F67', 'COPPER RUST', 'CHANDERI TISSUE')
+    ],
     sizes: ['32', '34', '36', '38', '40', '42'],
-    imageMain: makeFashionSvg('#262118', '#12100C', '#D4AF37', 'CHANDERI TISSUE', 'LUXURY BASICS')
+    imageMain: makeFashionSvg('#262118', '#12100C', '#D4AF37', 'ANTIQUE GOLD', 'CHANDERI TISSUE')
   }
 ];
-
-const ethnicColors = [
-  ['Red', '#C8102E'], ['Maroon', '#6D1230'], ['Wine', '#5E1A2B'], ['Rani Pink', '#D81B60'],
-  ['Pink', '#F4A6C0'], ['Magenta', '#C2185B'], ['Coral', '#F08A6E'], ['Peach', '#F6C1A5'],
-  ['Orange', '#E2711D'], ['Rust', '#B7410E'], ['Mustard', '#D4A017'], ['Yellow', '#E8B923'],
-  ['Gold', '#C9A227'], ['Beige', '#D9C3A0'], ['Ivory', '#F5EFE0'], ['White', '#FFFFFF'],
-  ['Green', '#2E7D5B'], ['Emerald', '#0F7B5A'], ['Olive', '#6B7A2A'], ['Mint', '#A8D5BA'],
-  ['Teal', '#0F766E'], ['Sky Blue', '#7FB7E0'], ['Blue', '#1F4E9C'], ['Navy Blue', '#1B2A5C'],
-  ['Lavender', '#C7B8E6'], ['Purple', '#6B3FA0'], ['Brown', '#7B4B2A'], ['Black', '#1A1A1A']
-].map(([name, hex]) => ({ name, hex }));
 
 const SIZES = ['32', '34', '36', '38', '40', '42'];
 let wishlistIds = [];
@@ -654,8 +602,10 @@ let pendingMoveId = null;
 let activeManageId = null;
 let selectedSize = '';
 let selectedColor = '';
+let selectedImage = '';
 let isDemoMode = false;
 let miniSlideTimer = null;
+let qvSwitchToken = 0;
 
 const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[ch]));
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
@@ -681,16 +631,6 @@ window.imgFallback = img => {
   img.src = PLACEHOLDER;
 };
 
-window.logoFallback = img => {
-  img.onerror = null;
-  img.src = LOGO_FALLBACK;
-};
-
-const colorHex = name => {
-  const found = ethnicColors.find(c => c.name.toLowerCase() === String(name).trim().toLowerCase());
-  return found ? found.hex : '#D4AF37';
-};
-
 const store = {
   get(key) { try { return localStorage.getItem(key); } catch { return null; } },
   set(key, value) { try { localStorage.setItem(key, value); } catch {} },
@@ -705,7 +645,131 @@ function hashId(s) {
   return h;
 }
 
-/* Layer & Scrim Stack (Exact Home Screen Implementation) */
+const splitColorNames = val => {
+  if (!val) return [];
+  if (Array.isArray(val)) {
+    return val.flatMap(item => {
+      if (item && typeof item === 'object') {
+        const n = item.name ?? item.color ?? item.colour ?? item.colorName ?? item.colourName ?? item.label ?? item.title ?? '';
+        return String(n).trim() ? [String(n).trim()] : [];
+      }
+      return String(item ?? '').split(/[,|\n]+/).map(s => s.trim()).filter(Boolean);
+    });
+  }
+  if (typeof val === 'string') {
+    const trimmed = val.trim();
+    if (!trimmed) return [];
+    if (trimmed.startsWith('[')) {
+      try { return splitColorNames(JSON.parse(trimmed)); } catch {}
+    }
+    return trimmed.split(/[,|\n]+/).map(s => s.trim()).filter(Boolean);
+  }
+  return [];
+};
+
+const extractAdminColorPairs = raw => {
+  const pairs = [];
+  const pushPair = (name, image) => {
+    const cleanName = String(name ?? '').trim();
+    const cleanImg = String(image ?? '').trim();
+    if (!cleanName && !cleanImg) return;
+    pairs.push({ name: cleanName, image: cleanImg });
+  };
+
+  const variantSources = [raw.colorVariants, raw.colourVariants, raw.variants, raw.colorOptions, raw.colourOptions, raw.colorList];
+  for (const src of variantSources) {
+    if (Array.isArray(src) && src.length && src.some(it => it && typeof it === 'object')) {
+      src.forEach(it => {
+        if (it && typeof it === 'object') {
+          pushPair(
+            it.name ?? it.color ?? it.colour ?? it.colorName ?? it.colourName ?? it.label ?? it.title ?? '',
+            it.image ?? it.img ?? it.imageUrl ?? it.url ?? it.photo ?? it.src ?? ''
+          );
+        }
+      });
+      if (pairs.length) return pairs;
+    }
+  }
+
+  if (Array.isArray(raw.colorImages) && raw.colorImages.some(it => it && typeof it === 'object')) {
+    const fallbackNames = splitColorNames(raw.colors ?? raw.colours ?? raw.colorNames ?? raw.colourNames ?? raw.colorsInfo ?? raw.colorInfo);
+    raw.colorImages.forEach((it, idx) => {
+      if (it && typeof it === 'object') {
+        pushPair(
+          it.name ?? it.color ?? it.colour ?? it.colorName ?? it.colourName ?? it.label ?? fallbackNames[idx] ?? '',
+          it.image ?? it.img ?? it.imageUrl ?? it.url ?? it.photo ?? it.src ?? ''
+        );
+      } else if (typeof it === 'string' && it.trim()) {
+        pushPair(fallbackNames[idx] ?? '', it.trim());
+      }
+    });
+    if (pairs.length) return pairs;
+  }
+
+  if (Array.isArray(raw.colors) && raw.colors.some(it => it && typeof it === 'object')) {
+    const fallbackImgs = Array.isArray(raw.colorImages) ? raw.colorImages.filter(u => typeof u === 'string') : [];
+    raw.colors.forEach((it, idx) => {
+      if (it && typeof it === 'object') {
+        pushPair(
+          it.name ?? it.color ?? it.colour ?? it.colorName ?? it.colourName ?? it.label ?? '',
+          it.image ?? it.img ?? it.imageUrl ?? it.url ?? it.photo ?? fallbackImgs[idx] ?? ''
+        );
+      }
+    });
+    if (pairs.length) return pairs;
+  }
+
+  if (raw.colorImages && typeof raw.colorImages === 'object' && !Array.isArray(raw.colorImages)) {
+    Object.entries(raw.colorImages).forEach(([k, v]) => {
+      if (typeof v === 'string' && v.trim()) pushPair(k, v.trim());
+    });
+    if (pairs.length) return pairs;
+  }
+
+  return pairs;
+};
+
+const getProductColorList = product => {
+  const mainImg = String(product.imageMain || product.image || product.imageUrl || product.img || '').trim();
+  const adminPairs = Array.isArray(product.colorPairs) && product.colorPairs.length
+    ? product.colorPairs
+    : extractAdminColorPairs(product);
+
+  if (adminPairs.length) {
+    return adminPairs.map(p => ({
+      name: String(p.name || '').trim(),
+      image: String(p.image || mainImg).trim()
+    }));
+  }
+
+  const names = splitColorNames(product.colors ?? product.colours ?? product.colorNames ?? product.colorsInfo);
+  const rawImgs = Array.isArray(product.colorImages)
+    ? product.colorImages
+    : (Array.isArray(product.colourImages) ? product.colourImages : []);
+  const imgs = rawImgs
+    .map(it => (it && typeof it === 'object') ? (it.image ?? it.img ?? it.imageUrl ?? it.url ?? '') : String(it ?? '').trim())
+    .filter(Boolean);
+
+  if (imgs.length > 0) {
+    if (names.length === imgs.length + 1 && mainImg && !imgs.includes(mainImg)) {
+      return [
+        { name: names[0] || '', image: mainImg },
+        ...imgs.map((url, i) => ({ name: names[i + 1] || '', image: url }))
+      ];
+    }
+    return imgs.map((url, i) => ({
+      name: names[i] || '',
+      image: url
+    }));
+  }
+
+  if (names.length > 0) {
+    return names.map(n => ({ name: n, image: mainImg }));
+  }
+
+  return mainImg ? [{ name: 'Standard', image: mainImg }] : [];
+};
+
 const layers = {
   stack: [],
   sync() {
@@ -735,7 +799,6 @@ const layers = {
 window.closeTopLayer = () => layers.closeTop();
 document.addEventListener('keydown', e => { if (e.key === 'Escape') layers.closeTop(); });
 
-/* Top Pill Toast */
 let toastTimer;
 window.showToast = (message, type = 'success') => {
   vibrate(35);
@@ -748,7 +811,6 @@ window.showToast = (message, type = 'success') => {
 };
 window.toast = window.showToast;
 
-/* Button Busy Spinner Micro-Interaction (Same as Home Screen) */
 const ACTION_DELAY = 220;
 const ACTION_SELECTOR = '.btn-pink, .btn-dark, .btn-outline, .btn-card-bag, .go, .qv-add';
 const ACTION_SKIP = '[data-no-delay]';
@@ -801,7 +863,6 @@ window.goBack = () => {
   go('./');
 };
 
-/* Mini Hero Carousel Engine (Matches Home Screen #miniHeroSection) */
 window.scrollToMiniSlide = idx => {
   const track = $('#miniTrack');
   if (!track) return;
@@ -836,13 +897,6 @@ function initMiniHeroSlider() {
 window.setFilterByName = name => {
   const btn = $(`#filterChips .chip[data-filter="${CSS.escape(name)}"]`);
   if (btn) setFilter(name, btn);
-};
-
-window.focusSearch = () => {
-  const input = $('#searchInput');
-  if (!input) return;
-  input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  setTimeout(() => input.focus(), 200);
 };
 
 window.clearSearchInput = () => {
@@ -888,16 +942,6 @@ function meta(p) {
   return { c, o, d, savedAmt, rating, rc, stock, best, out, drop };
 }
 
-function getColorNames(p) {
-  if (Array.isArray(p.colors) && p.colors.length) {
-    return p.colors.map(c => (typeof c === 'object' ? (c.name || c.color || c.label || '') : String(c).trim())).filter(Boolean);
-  }
-  if (typeof p.colorsInfo === 'string' && p.colorsInfo.trim()) {
-    return p.colorsInfo.split(',').map(s => s.trim()).filter(Boolean);
-  }
-  return ['Standard'];
-}
-
 const ratingBadgeHtml = value => {
   const num = clamp(Number(value) || 0, 0, 5);
   const tone = num >= 4 ? '' : num >= 3 ? 'mid' : num > 0 ? 'bad' : 'none';
@@ -939,7 +983,7 @@ function render() {
   grid.innerHTML = '';
 
   $('#noResult').hidden = filtered.length > 0;
-  const countLabel = `${allProducts.length} ${allProducts.length === 1 ? 'Item' : 'Items'}`;
+  const countLabel = `${allProducts.length} ${allProducts.length === 1 ? 'Item Saved' : 'Items Saved'}`;
   $('#headerItemCount').textContent = countLabel;
   $('#toolbarSub').textContent = `${filtered.length} ${filtered.length === 1 ? 'piece' : 'pieces'} showing`;
 
@@ -956,7 +1000,7 @@ function render() {
     $('#saveSub').textContent = `${allProducts.length} ${allProducts.length === 1 ? 'item' : 'items'} • Total ${formatPrice(total)}`;
   }
   if ($('#saveBadge')) {
-    $('#saveBadge').textContent = avgPctOff > 0 ? `Up to ${avgPctOff}% Off` : `${allProducts.length} Saved`;
+    $('#saveBadge').textContent = avgPctOff > 0 ? `${avgPctOff}% Off` : `${allProducts.length} Saved`;
   }
   $('#totalPrice').textContent = formatPrice(total);
   $('#totalMrp').textContent = `${allProducts.length} ${allProducts.length === 1 ? 'item' : 'items'}${avgPctOff > 0 ? ` • ${avgPctOff}% Off` : ''}`;
@@ -967,8 +1011,8 @@ function render() {
     const id = escapeHtml(p.id);
     const name = escapeHtml(p.name || 'Aavira Handcrafted Piece');
     const img = safeImageUrl(p.imageMain || p.image || p.imageUrl || p.img);
-    const cols = getColorNames(p);
-    const colorStrip = `<span class="color-strip">${cols.length} ${cols.length === 1 ? 'Colour' : 'Colours'}</span>`;
+    const colorList = getProductColorList(p);
+    const colorStrip = colorList.length ? `<span class="color-strip">${colorList.length} ${colorList.length === 1 ? 'Colour' : 'Colours'}</span>` : '';
 
     const topTags = [
       m.best ? '<span class="tag-best">BESTSELLER</span>' : '',
@@ -1004,7 +1048,7 @@ function render() {
             ${colorStrip}
             ${ratingBadgeHtml(m.rating)}
           </div>
-          <button type="button" class="go" data-no-delay="1" onclick="event.stopPropagation();openManageSheet('${id}')" aria-label="Manage ${name}" title="Manage item"><i data-lucide="more-vertical"></i></button>
+          <button type="button" class="go" data-no-delay="1" onclick="event.stopPropagation();openManageSheet('${id}')" aria-label="Manage ${name}"><i data-lucide="more-vertical"></i></button>
         </div>
         <div class="pcard-cta">
           <button type="button" class="btn-card-bag" ${m.out ? 'disabled' : ''} onclick="openSizeModal('${id}')">
@@ -1019,20 +1063,20 @@ function render() {
   refreshIcons();
 }
 
-/* 3-Dots Item Management Sheet Handlers */
 window.openManageSheet = id => {
   vibrate(20);
   const p = allProducts.find(x => String(x.id) === String(id));
   if (!p) return;
   activeManageId = id;
   const m = meta(p);
-  const img = safeImageUrl(p.imageMain || p.image || p.imageUrl || p.img);
+  const colorList = getProductColorList(p);
+  const firstColor = colorList[0]?.name || 'Standard';
+  const defaultSize = (Array.isArray(p.sizes) && p.sizes.length) ? String(p.sizes[0]) : '36';
+  const img = safeImageUrl(colorList[0]?.image || p.imageMain || p.image || p.imageUrl || p.img);
 
   $('#manageImg').src = img;
   $('#manageName').textContent = p.name || 'Aavira Handcrafted Piece';
-  $('#managePrice').textContent = formatPrice(m.c);
-  $('#manageMrp').textContent = m.o > m.c ? formatPrice(m.o) : '';
-  $('#manageOff').textContent = m.d > 0 ? `${m.d}% OFF` : '';
+  $('#manageSub').textContent = `Size: ${defaultSize} · ${firstColor} · ${formatPrice(m.c)}${m.d > 0 ? ` (${m.d}% OFF)` : ''}`;
   $('#btnManageMoveBag').disabled = m.out;
 
   refreshIcons();
@@ -1152,9 +1196,21 @@ window.openSizeModal = id => {
   if (!p) return;
   pendingMoveId = id;
   const m = meta(p);
-  const img = safeImageUrl(p.imageMain || p.image || p.imageUrl || p.img);
+  const qvMain = p.imageMain || p.image || p.imageUrl || p.img || '';
+  const qvColors = getProductColorList(p);
 
-  $('#modalImg').src = img;
+  let initIdx = qvColors.findIndex(c => c.image && c.image === qvMain);
+  if (initIdx < 0 && p.name) {
+    const lowerTitle = String(p.name).toLowerCase();
+    initIdx = qvColors.findIndex(c => c.name && lowerTitle.includes(c.name.toLowerCase()));
+  }
+  if (initIdx < 0) initIdx = 0;
+
+  const initColor = qvColors[initIdx] || { name: 'Standard', image: qvMain };
+  selectedColor = initColor.name || 'Standard';
+  selectedImage = safeImageUrl(initColor.image || qvMain);
+
+  $('#modalImg').src = selectedImage;
   $('#modalTitle').textContent = p.name || 'Select Size';
   $('#modalPrice').textContent = formatPrice(m.c);
   $('#modalMrp').textContent = m.o > m.c ? formatPrice(m.o) : '';
@@ -1173,14 +1229,11 @@ window.openSizeModal = id => {
     ${stockBadge}
   `;
 
-  const colors = getColorNames(p);
-  selectedColor = colors[0] || 'Standard';
   $('#modalColorName').textContent = selectedColor ? `· ${selectedColor}` : '';
   const colorRow = $('#modalColorRow');
-  colorRow.innerHTML = colors.map((clr, idx) => `
-    <button type="button" class="qv-color-chip${idx === 0 ? ' on' : ''}" data-color="${escapeHtml(clr)}" data-no-delay="1" onclick="pickModalColor(this)">
-      <i style="background:${escapeHtml(colorHex(clr))}"></i>
-      <span>${escapeHtml(clr)}</span>
+  colorRow.innerHTML = qvColors.map((c, idx) => `
+    <button type="button" class="qv-sw${idx === initIdx ? ' on' : ''}" data-color="${escapeHtml(c.name || 'Standard')}" data-img="${escapeHtml(safeImageUrl(c.image || qvMain))}" title="${escapeHtml(c.name || 'Colour option')}" aria-label="${escapeHtml(c.name || 'Colour option')}" data-no-delay="1" onclick="pickModalColor(this)">
+      <img src="${escapeHtml(safeImageUrl(c.image || qvMain))}" alt="${escapeHtml(c.name || '')}" loading="lazy" onerror="imgFallback(this)">
     </button>
   `).join('');
 
@@ -1204,11 +1257,36 @@ window.openSizeModal = id => {
 };
 
 window.pickModalColor = btn => {
-  vibrate(15);
-  $$('#modalColorRow .qv-color-chip').forEach(b => b.classList.remove('on'));
+  const wasActive = btn.classList.contains('on');
+  $$('#modalColorRow .qv-sw').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   selectedColor = btn.dataset.color || 'Standard';
   $('#modalColorName').textContent = selectedColor ? `· ${selectedColor}` : '';
+
+  const img = $('#modalImg');
+  const media = $('#qvMedia');
+  const src = btn.dataset.img || '';
+  if (!img || !src) { vibrate(20); return; }
+  selectedImage = src;
+  if (wasActive) { vibrate(20); return; }
+
+  const my = ++qvSwitchToken;
+  const t0 = Date.now(), MIN_SHOW = 380;
+  if (media) media.classList.add('is-switching');
+  vibrate(20);
+  const finish = ok => {
+    if (my !== qvSwitchToken) return;
+    const wait = Math.max(0, MIN_SHOW - (Date.now() - t0));
+    setTimeout(() => {
+      if (my !== qvSwitchToken) return;
+      if (ok) img.src = src;
+      if (media) media.classList.remove('is-switching');
+    }, wait);
+  };
+  const pre = new Image();
+  pre.onload = () => finish(true);
+  pre.onerror = () => finish(false);
+  pre.src = src;
 };
 
 window.pickModalSize = btn => {
@@ -1238,8 +1316,9 @@ window.confirmMove = () => {
   }
 
   const m = meta(p);
-  const color = selectedColor || getColorNames(p)[0] || 'Standard';
-  const image = safeImageUrl(p.imageMain || p.image || p.imageUrl || p.img);
+  const qvColors = getProductColorList(p);
+  const color = selectedColor || qvColors[0]?.name || 'Standard';
+  const image = selectedImage || safeImageUrl(qvColors[0]?.image || p.imageMain || p.image || p.imageUrl || p.img);
   const cart = store.json('aavira_cart', []);
   const idx = cart.findIndex(i => String(i.productId) === String(p.id) && i.size === selectedSize && (i.color || 'Standard') === color);
 
@@ -1272,9 +1351,10 @@ window.moveAllToBag = () => {
   allProducts.forEach(p => {
     const m = meta(p);
     if (m.out) return;
-    const color = getColorNames(p)[0] || 'Standard';
+    const qvColors = getProductColorList(p);
+    const color = qvColors[0]?.name || 'Standard';
     const defaultSize = (Array.isArray(p.sizes) && p.sizes.length) ? String(p.sizes[0]) : '36';
-    const image = safeImageUrl(p.imageMain || p.image || p.imageUrl || p.img);
+    const image = safeImageUrl(qvColors[0]?.image || p.imageMain || p.image || p.imageUrl || p.img);
     const idx = cart.findIndex(i => String(i.productId) === String(p.id) && i.size === defaultSize && (i.color || 'Standard') === color);
     if (idx > -1) cart[idx].qty = (Number(cart[idx].qty) || 1) + 1;
     else cart.push({ productId: String(p.id), name: p.name, price: m.c, size: defaultSize, color, image, qty: 1 });
@@ -1361,7 +1441,6 @@ async function initWishlist() {
       }
     } catch {}
   } else {
-    /* Standalone Preview Mode when backend user_data.js is not present */
     isDemoMode = true;
     if (!wishlistIds.length) {
       wishlistIds = DEMO_PRODUCTS.map(p => p.id);
