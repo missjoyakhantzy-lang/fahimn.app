@@ -16,6 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 :root{--rani:#111111;--rani-dark:#000000;--gold:#D4AF37;--gold-text:#8A6D1D;--ivory:#FFFFFF;--cream:#F8F8FA;--ink:#111113;--muted:#6E6E73;--line:#E5E5EA;--blush:#F2F2F7;--plum:#1C1C1E;--ease:cubic-bezier(.22,1,.36,1);--ios-spring:cubic-bezier(.32,.72,0,1);--font-main:"Barlow Condensed","Roboto Condensed",system-ui,sans-serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -369,10 +370,31 @@ body.has-cart .fab-col{bottom:calc(104px + env(safe-area-inset-bottom,0px))}
 .ios-row input::placeholder{color:#A1A1AA}
 .ios-otp-btn{height:28px;padding:0 10px;border-radius:8px;border:1px solid #111113;background:#111113;color:#FFFFFF;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
 .ios-otp-btn:disabled{opacity:.5}
-.ios-auth-submit{width:100%;height:46px;border:0;border-radius:13px;background:#111113;color:#FFFFFF;font-size:15px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .2s var(--ios-spring),opacity .2s}
+.ios-auth-submit{width:100%;height:44px;border:0;border-radius:12px;background:#111113;color:#FFFFFF;font-size:14.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .2s var(--ios-spring),opacity .2s}
 .ios-auth-submit:active{transform:scale(.98)}
-.ios-auth-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;font-size:12.5px;color:var(--muted)}
-.ios-auth-link{background:none;border:0;padding:0;color:#111113;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-decoration:underline;font-size:12px}
+.ios-auth-submit:disabled{opacity:.65;cursor:not-allowed}
+.ios-auth-submit svg{width:15px;height:15px}
+.ios-auth-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;font-size:12.5px;color:var(--muted)}
+.ios-auth-link{background:none;border:0;padding:0;color:#111113;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-decoration:underline;font-size:12px;cursor:pointer}
+.ios-auth-link:disabled{opacity:.5;text-decoration:none;cursor:not-allowed}
+.ios-eye-btn{width:30px;height:30px;flex:0 0 30px;border:0;background:transparent;color:#7D828A;display:inline-flex;align-items:center;justify-content:center;padding:0;cursor:pointer}
+.ios-eye-btn svg{width:15px;height:15px}
+.ios-or{display:flex;align-items:center;gap:10px;margin:10px 0;color:#8E8E93;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.ios-or::before,.ios-or::after{content:"";flex:1;height:1px;background:#E5E5EA}
+.ios-google-btn{width:100%;height:42px;border-radius:12px;border:1px solid #E5E5EA;background:#FFFFFF;color:#111113;font-size:13.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:background .2s,transform .2s}
+.ios-google-btn:active{transform:scale(.98)}
+.ios-google-btn:disabled{opacity:.65;cursor:not-allowed}
+.ios-google-btn img{width:16px;height:16px;object-fit:contain}
+.view-hidden{display:none!important}
+.view-active{display:block;animation:iosAuthFade .25s var(--ease)}
+@keyframes iosAuthFade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.ios-otp-row{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:8px 0 12px}
+.otp-box{width:100%;height:44px;text-align:center;font-family:var(--font-main);font-size:19px;font-weight:700;color:#111113;background:#F8F8FA;border:1px solid #E5E5EA;border-radius:10px;outline:none;transition:transform .15s,border-color .15s,background .15s}
+.otp-box:focus{border-color:#111113;background:#FFFFFF;transform:translateY(-1px)}
+.otp-box-filled{border-color:#111113!important;background:#FFFFFF!important}
+.mini-spin{width:15px;height:15px;border:2px solid rgba(17,17,17,.18);border-top-color:#111113;border-radius:50%;display:inline-block;flex:0 0 15px;animation:spin .55s linear infinite}
+.mini-spin.white{border-color:rgba(255,255,255,.35);border-top-color:#FFFFFF}
+.mini-spin.rani{border-color:rgba(17,17,17,.2);border-top-color:#111113}
 .ios-vip-bar{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .ios-vip-left{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
 .ios-vip-av{width:46px;height:46px;flex:0 0 46px;border-radius:50%;background:#111113;color:#FFFFFF;border:1.5px solid var(--gold);font-size:20px;font-weight:700;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
@@ -556,37 +578,127 @@ body.has-cart .fab-col{bottom:calc(104px + env(safe-area-inset-bottom,0px))}
 <div id="authPopupModal" class="layer" data-scrim="1" role="dialog" aria-modal="true" aria-labelledby="homeAuthTitle">
   <div class="ios-auth-top">
     <div class="ios-auth-head">
-      <span class="sec-eyebrow" style="margin-bottom:2px">Aavira ID · Flat 20% Off First Order</span>
-      <h2 id="homeAuthTitle">Sign in or Create Account</h2>
+      <span class="sec-eyebrow" id="homeAuthEyebrow" style="margin-bottom:2px">Aavira Account</span>
+      <h2 id="homeAuthTitle">Welcome Back</h2>
+      <p id="homeAuthSub">Login to continue your fashion journey</p>
     </div>
     <button type="button" class="ios-auth-close" data-no-delay="1" onclick="closeAuthPopup()" aria-label="Close"><i data-lucide="x"></i></button>
   </div>
-  <div class="ios-seg" role="tablist" aria-label="Authentication mode">
-    <button type="button" class="ios-seg-btn" id="tabBtnLogin" role="tab" aria-selected="true" data-no-delay="1" onclick="switchHomeAuthMode('login')">Log In</button>
-    <button type="button" class="ios-seg-btn" id="tabBtnSignup" role="tab" aria-selected="false" data-no-delay="1" onclick="switchHomeAuthMode('signup')">Sign Up</button>
+
+  <div class="ios-seg" id="homeAuthSeg" role="tablist" aria-label="Authentication mode">
+    <button type="button" class="ios-seg-btn" id="tabBtnLogin" role="tab" aria-selected="true" data-no-delay="1" onclick="switchView('loginView')">Log In</button>
+    <button type="button" class="ios-seg-btn" id="tabBtnSignup" role="tab" aria-selected="false" data-no-delay="1" onclick="switchView('signupView')">Create Account</button>
   </div>
-  <form id="homeAuthForm" onsubmit="handleHomeAuthSubmit(event)" novalidate>
+
+  <!-- LOGIN VIEW -->
+  <div id="loginView" class="view-active">
     <div class="ios-group">
-      <div class="ios-row" id="homeAuthNameRow" hidden>
-        <label for="homeAuthName">Name</label>
-        <input type="text" id="homeAuthName" placeholder="Your full name" autocomplete="name">
+      <div class="ios-row">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" autocomplete="username" placeholder="Email or Phone Number">
       </div>
       <div class="ios-row">
-        <label for="homeAuthEmail">Email</label>
-        <input type="email" id="homeAuthEmail" placeholder="name@example.com" autocomplete="email" required>
-      </div>
-      <div class="ios-row" id="homeAuthPhoneRow" hidden>
-        <label for="homeAuthPhone">Phone</label>
-        <input type="tel" id="homeAuthPhone" placeholder="10-digit mobile number" autocomplete="tel" maxlength="15">
-      </div>
-      <div class="ios-row" id="homeAuthPassRow">
-        <label for="homeAuthPass" id="homeAuthPassLabel">Pass / OTP</label>
-        <input type="password" id="homeAuthPass" placeholder="Password or 6-digit OTP" autocomplete="current-password" required>
-        <button type="button" class="ios-otp-btn" id="btnSendHomeOtp" data-no-delay="1" onclick="sendHomeAuthOtp()">Get OTP</button>
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" autocomplete="current-password" placeholder="Enter password">
+        <button type="button" class="ios-eye-btn" id="btnLoginEye" data-no-delay="1" onclick="togglePassword('loginPassword', 'btnLoginEye')" aria-label="Toggle password"><i data-lucide="eye-off"></i></button>
       </div>
     </div>
-    <button type="submit" class="ios-auth-submit" id="btnHomeAuthSubmit" data-no-delay="1">Continue with Aavira ID</button>
-  </form>
+    <div class="ios-auth-foot" style="margin:0 0 10px;justify-content:flex-end">
+      <button type="button" class="ios-auth-link" data-no-delay="1" onclick="switchView('forgotView')">Forgot Password?</button>
+    </div>
+    <button type="button" id="btnLoginAction" class="ios-auth-submit" data-no-delay="1" onclick="processLogin()"><span>Login</span><i data-lucide="arrow-right"></i></button>
+    <div class="ios-or">Or</div>
+    <button type="button" id="btnGoogleLogin" class="ios-google-btn" data-no-delay="1" onclick="performGoogleLogin('btnGoogleLogin')">
+      <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+      <span>Continue with Google</span>
+    </button>
+  </div>
+
+  <!-- SIGNUP VIEW -->
+  <div id="signupView" class="view-hidden">
+    <div class="ios-group">
+      <div class="ios-row">
+        <label for="signupName">Name</label>
+        <input type="text" id="signupName" autocomplete="name" placeholder="Full Name">
+      </div>
+      <div class="ios-row">
+        <label for="signupEmail">Email</label>
+        <input type="email" id="signupEmail" autocomplete="email" placeholder="Email Address">
+      </div>
+      <div class="ios-row">
+        <label for="signupPassword">Password</label>
+        <input type="password" id="signupPassword" autocomplete="new-password" placeholder="Create Password (min 6 chars)">
+        <button type="button" class="ios-eye-btn" id="btnSignupEye" data-no-delay="1" onclick="togglePassword('signupPassword', 'btnSignupEye')" aria-label="Toggle password"><i data-lucide="eye-off"></i></button>
+      </div>
+    </div>
+    <button type="button" id="btnSignupAction" class="ios-auth-submit" data-no-delay="1" onclick="processSignup()"><span>Create Account</span><i data-lucide="arrow-right"></i></button>
+    <div class="ios-or">Or</div>
+    <button type="button" id="btnGoogleSignup" class="ios-google-btn" data-no-delay="1" onclick="performGoogleLogin('btnGoogleSignup')">
+      <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+      <span>Continue with Google</span>
+    </button>
+  </div>
+
+  <!-- SIGNUP OTP VERIFICATION VIEW -->
+  <div id="otpView" class="view-hidden">
+    <p id="otpSubText" style="margin:0 0 6px;font-size:13px;color:var(--muted);text-align:center">Enter the 6-digit code sent to your email</p>
+    <div id="otpBoxGroup" class="ios-otp-row">
+      <input type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" class="otp-box">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
+    </div>
+    <button type="button" id="btnOtpAction" class="ios-auth-submit" data-no-delay="1" onclick="verifySignupOTP()"><span>Verify &amp; Login</span><i data-lucide="check-circle"></i></button>
+    <div class="ios-auth-foot" style="justify-content:center;margin-top:10px">
+      <button type="button" class="ios-auth-link" data-no-delay="1" onclick="switchView('signupView')">Change Email Address</button>
+    </div>
+  </div>
+
+  <!-- FORGOT PASSWORD VIEW -->
+  <div id="forgotView" class="view-hidden">
+    <div class="ios-group">
+      <div class="ios-row">
+        <label for="forgotEmail">Email</label>
+        <input type="email" id="forgotEmail" autocomplete="email" placeholder="Registered Email Address">
+      </div>
+    </div>
+    <button type="button" id="btnForgotAction" class="ios-auth-submit" data-no-delay="1" onclick="processForgotPassword()"><span>Send Reset Code</span><i data-lucide="arrow-right"></i></button>
+    <div class="ios-auth-foot" style="justify-content:center;margin-top:10px">
+      <button type="button" class="ios-auth-link" data-no-delay="1" onclick="switchView('loginView')">Back to Login</button>
+    </div>
+  </div>
+
+  <!-- RESET PASSWORD OTP VIEW -->
+  <div id="resetOtpView" class="view-hidden">
+    <p id="resetOtpSubText" style="margin:0 0 6px;font-size:13px;color:var(--muted);text-align:center">Enter the code sent to your email</p>
+    <div id="resetOtpBoxGroup" class="ios-otp-row">
+      <input type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" class="otp-box">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
+    </div>
+    <div class="ios-group">
+      <div class="ios-row">
+        <label for="newPassword">New</label>
+        <input type="password" id="newPassword" autocomplete="new-password" placeholder="New Password">
+        <button type="button" class="ios-eye-btn" id="btnNewPasswordEye" data-no-delay="1" onclick="togglePassword('newPassword', 'btnNewPasswordEye')" aria-label="Toggle password"><i data-lucide="eye-off"></i></button>
+      </div>
+      <div class="ios-row">
+        <label for="confirmPassword">Confirm</label>
+        <input type="password" id="confirmPassword" autocomplete="new-password" placeholder="Confirm New Password">
+        <button type="button" class="ios-eye-btn" id="btnConfirmPasswordEye" data-no-delay="1" onclick="togglePassword('confirmPassword', 'btnConfirmPasswordEye')" aria-label="Toggle password"><i data-lucide="eye-off"></i></button>
+      </div>
+    </div>
+    <button type="button" id="btnResetAction" class="ios-auth-submit" data-no-delay="1" onclick="processResetPassword()"><span>Reset Password</span><i data-lucide="check-circle"></i></button>
+    <div class="ios-auth-foot" style="margin-top:10px">
+      <button type="button" id="btnResendReset" class="ios-auth-link" data-no-delay="1" onclick="resendResetOtp()">Resend Code</button>
+      <button type="button" class="ios-auth-link" data-no-delay="1" onclick="switchView('forgotView')">Change Email</button>
+    </div>
+  </div>
 </div>
 
 <div id="userSheet" class="layer layer-sheet from-bottom" data-scrim="1" role="dialog" aria-modal="true" aria-labelledby="userSheetTitle">
@@ -1109,134 +1221,554 @@ window.checkDynamicBanner = () => {
   else addEventListener('load', schedulePopup, { once: true });
 };
 
-state.authMode = 'login';
+/* ==========================================================================
+   MERGED AAVIRA AUTH ENGINE (DeliveryBoy + Google OAuth2 + 6-Digit OTP + Reset)
+   ========================================================================== */
+const AUTH_CONFIG = {
+  GOOGLE_CLIENT_ID: "247971292356-8906dpm406huv7uidlblhjum8vg3dfj3.apps.googleusercontent.com",
+  GOOGLE_PROMPT_TIMEOUT_MS: 30000,
+  OTP_LENGTH: 6,
+  MIN_PASSWORD_LENGTH: 6,
+  RESEND_COOLDOWN_SECONDS: 30,
+  AUTO_SUBMIT_DELAY_MS: 150,
+  STORAGE_KEYS: {
+    NAME: 'aavira_display_name',
+    EMAIL: 'aavira_user_email'
+  }
+};
+
+const GOOGLE_BTN_ORIGINAL_HTML =
+  '<img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">' +
+  '<span>Continue with Google</span>';
+
+let pendingSignup = { name: '', email: '', pwd: '' };
+let pendingReset = { email: '' };
+let resendCooldownInterval = null;
+let googlePromptTimeout = null;
+let activeGoogleBtnId = null;
+let isSubmitting = false;
+
+window.switchView = viewId => {
+  const views = ['loginView', 'signupView', 'otpView', 'forgotView', 'resetOtpView'];
+  if (viewId !== 'resetOtpView') {
+    clearInterval(resendCooldownInterval);
+    const resendBtn = $('#btnResendReset');
+    if (resendBtn) {
+      resendBtn.disabled = false;
+      resendBtn.innerText = 'Resend Code';
+    }
+  }
+  const target = $('#' + viewId);
+  if (!target) return;
+  views.forEach(id => {
+    const v = $('#' + id);
+    if (v) v.className = id === viewId ? 'view-active' : 'view-hidden';
+  });
+
+  const seg = $('#homeAuthSeg');
+  if (seg) seg.hidden = !(viewId === 'loginView' || viewId === 'signupView');
+  $('#tabBtnLogin')?.setAttribute('aria-selected', String(viewId === 'loginView'));
+  $('#tabBtnSignup')?.setAttribute('aria-selected', String(viewId === 'signupView'));
+
+  const metaMap = {
+    loginView: ['Welcome Back', 'Login to continue your fashion journey'],
+    signupView: ['Create Account', 'Start your fashion journey with us'],
+    otpView: ['Verification', 'Enter the 6-digit code sent to your email'],
+    forgotView: ['Forgot Password', 'Enter your registered email for a reset code'],
+    resetOtpView: ['Reset Password', 'Enter the code and set your new password']
+  };
+  const [titleText, subText] = metaMap[viewId] || metaMap.loginView;
+  if ($('#homeAuthTitle')) $('#homeAuthTitle').textContent = titleText;
+  if ($('#homeAuthSub')) $('#homeAuthSub').textContent = subText;
+  refreshIcons();
+};
 
 window.switchHomeAuthMode = mode => {
-  state.authMode = mode === 'signup' ? 'signup' : 'login';
-  const isSignup = state.authMode === 'signup';
-  $('#tabBtnLogin')?.setAttribute('aria-selected', String(!isSignup));
-  $('#tabBtnSignup')?.setAttribute('aria-selected', String(isSignup));
-  if ($('#homeAuthNameRow')) $('#homeAuthNameRow').hidden = !isSignup;
-  if ($('#homeAuthPhoneRow')) $('#homeAuthPhoneRow').hidden = !isSignup;
-  if ($('#homeAuthTitle')) $('#homeAuthTitle').textContent = isSignup ? 'Create Your Aavira ID' : 'Sign In or Create Account';
-  if ($('#btnHomeAuthSubmit')) $('#btnHomeAuthSubmit').textContent = isSignup ? 'Create Account & Claim 20% Off' : 'Continue with Aavira ID';
-  vibrate(20);
+  window.switchView(mode === 'signup' ? 'signupView' : 'loginView');
 };
 
 window.focusHomeAuth = (mode = 'login') => {
   closeSidebar();
   closeUserSheet();
-  switchHomeAuthMode(mode);
+  const isSignup = mode === 'signup' || mode === '/auth/verify';
+  window.switchView(isSignup ? 'signupView' : 'loginView');
+  layers.open('authPopupModal', isSignup ? '#signupName' : '#loginEmail');
+};
+
+window.togglePassword = (inputId, buttonId) => {
+  const input = document.getElementById(inputId);
+  const btn = document.getElementById(buttonId);
+  if (!input || !btn) return;
+  const isHidden = input.type === 'password';
+  input.type = isHidden ? 'text' : 'password';
+  btn.innerHTML = isHidden ? '<i data-lucide="eye"></i>' : '<i data-lucide="eye-off"></i>';
   refreshIcons();
-  layers.open('authPopupModal', mode === 'signup' ? '#homeAuthName' : '#homeAuthEmail');
 };
 
-window.sendHomeAuthOtp = async () => {
-  const email = ($('#homeAuthEmail')?.value || '').trim().toLowerCase();
-  if (!EMAIL_PATTERN.test(email)) {
-    showToast('Enter your email address first', 'error');
-    $('#homeAuthEmail')?.focus();
-    return;
-  }
-  const btn = $('#btnSendHomeOtp');
+const setBtnLoading = (btnId, isLoading, originalHtml, opts = {}) => {
+  const btn = document.getElementById(btnId);
   if (!btn) return;
-  btn.disabled = true;
-  btn.textContent = 'Sending...';
-  try {
-    const otpFn = window.sendOtpToEmail || window.sendAaviraOtp || window.requestLoginOtp || window.sendVerificationOtp;
-    if (typeof otpFn === 'function') {
-      await otpFn(email);
-      showToast('OTP sent to ' + email);
-    } else {
-      showToast('OTP sent! Or enter your password to continue');
-    }
-    $('#homeAuthPass')?.focus();
-  } catch (err) {
-    showToast(err?.message || 'Could not send OTP', 'error');
-  } finally {
+  const loaderColor = opts.loaderColor || 'text-white';
+  const loadingLabel = opts.loadingLabel || 'Processing...';
+  if (isLoading) {
+    btn.disabled = true;
+    const spinnerClass = loaderColor === 'text-rani-pink' ? 'mini-spin rani' : 'mini-spin white';
+    btn.innerHTML = `<span class="${spinnerClass}" aria-hidden="true"></span><span>${loadingLabel}</span>`;
+  } else {
     btn.disabled = false;
-    btn.textContent = 'Get OTP';
+    btn.innerHTML = originalHtml;
+  }
+  refreshIcons();
+};
+
+const setupOtpBoxGroup = (groupId, onComplete) => {
+  const group = document.getElementById(groupId);
+  if (!group) return;
+  const boxes = Array.from(group.querySelectorAll('.otp-box'));
+  const playPop = box => {
+    box.classList.remove('otp-box-filled');
+    void box.offsetWidth;
+    box.classList.add('otp-box-filled');
+  };
+  const checkAutoSubmit = () => {
+    const allFilled = boxes.every(b => b.value.length === 1);
+    if (allFilled && typeof onComplete === 'function') {
+      setTimeout(onComplete, AUTH_CONFIG.AUTO_SUBMIT_DELAY_MS);
+    }
+  };
+  boxes.forEach((box, index) => {
+    box.addEventListener('input', () => {
+      box.value = box.value.replace(/[^0-9]/g, '').slice(-1);
+      if (box.value) {
+        playPop(box);
+        if (boxes[index + 1]) boxes[index + 1].focus();
+      } else {
+        box.classList.remove('otp-box-filled');
+      }
+      checkAutoSubmit();
+    });
+    box.addEventListener('keydown', e => {
+      if (e.key === 'Backspace' && !box.value && boxes[index - 1]) {
+        boxes[index - 1].focus();
+      } else if (e.key === 'ArrowLeft' && boxes[index - 1]) {
+        e.preventDefault();
+        boxes[index - 1].focus();
+      } else if (e.key === 'ArrowRight' && boxes[index + 1]) {
+        e.preventDefault();
+        boxes[index + 1].focus();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (typeof onComplete === 'function') onComplete();
+      }
+    });
+    box.addEventListener('paste', e => {
+      e.preventDefault();
+      const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
+      if (!pasted) return;
+      pasted.split('').slice(0, boxes.length).forEach((digit, i) => {
+        boxes[i].value = digit;
+        playPop(boxes[i]);
+      });
+      const nextEmpty = boxes.findIndex(b => !b.value);
+      (boxes[nextEmpty] || boxes[boxes.length - 1]).focus();
+      checkAutoSubmit();
+    });
+  });
+};
+
+const getOtpBoxValue = groupId => {
+  const group = document.getElementById(groupId);
+  if (!group) return '';
+  return Array.from(group.querySelectorAll('.otp-box')).map(b => b.value).join('');
+};
+
+const clearOtpBoxGroup = groupId => {
+  const group = document.getElementById(groupId);
+  if (!group) return;
+  const boxes = Array.from(group.querySelectorAll('.otp-box'));
+  boxes.forEach(b => { b.value = ''; b.classList.remove('otp-box-filled'); });
+  if (boxes[0]) boxes[0].focus();
+};
+
+const validateSignupInputs = (name, email, pwd) => {
+  if (!name || !email || !pwd) return 'All fields are required.';
+  if (name.length < 2) return 'Please enter your full name.';
+  if (!EMAIL_PATTERN.test(email)) return 'Please enter a valid email address.';
+  if (pwd.length < AUTH_CONFIG.MIN_PASSWORD_LENGTH) return `Password must be at least ${AUTH_CONFIG.MIN_PASSWORD_LENGTH} characters.`;
+  return null;
+};
+
+const validateLoginInputs = (email, pwd) => {
+  if (!email || !pwd) return 'Please enter email & password.';
+  return null;
+};
+
+const extractErrorMessage = (result, fallback) => (result && result.data && result.data.message) || fallback;
+
+const persistSession = async (name, email) => {
+  try {
+    localStorage.setItem(AUTH_CONFIG.STORAGE_KEYS.NAME, name);
+    localStorage.setItem(AUTH_CONFIG.STORAGE_KEYS.EMAIL, email);
+  } catch (e) {
+    console.warn('Unable to persist session locally:', e);
+  }
+  layers.close('authPopupModal');
+  updateProfileUI();
+  if (typeof window.paintUserAvatars === 'function') {
+    try { await window.paintUserAvatars(); } catch {}
+  }
+  await loadWishlistFromAccount();
+  updateWishCount();
+  updateCartCount();
+  paintCartBar();
+};
+
+const resetGoogleButton = () => {
+  isSubmitting = false;
+  if (activeGoogleBtnId) {
+    setBtnLoading(activeGoogleBtnId, false, GOOGLE_BTN_ORIGINAL_HTML);
+    activeGoogleBtnId = null;
   }
 };
 
-window.handleHomeAuthSubmit = async event => {
-  event.preventDefault();
-  const isSignup = state.authMode === 'signup';
-  const email = ($('#homeAuthEmail')?.value || '').trim().toLowerCase();
-  const secret = ($('#homeAuthPass')?.value || '').trim();
-  const rawName = ($('#homeAuthName')?.value || '').trim();
-  const phone = ($('#homeAuthPhone')?.value || '').trim();
-
-  if (isSignup && rawName.length < 2) {
-    showToast('Please enter your full name', 'error');
-    $('#homeAuthName')?.focus();
-    return;
-  }
-  if (!EMAIL_PATTERN.test(email)) {
-    showToast('Enter a valid email address', 'error');
-    $('#homeAuthEmail')?.focus();
-    return;
-  }
-  if (secret.length < 4) {
-    showToast('Enter your password or 6-digit OTP', 'error');
-    $('#homeAuthPass')?.focus();
-    return;
-  }
-
-  const submitBtn = $('#btnHomeAuthSubmit');
-  const prevText = submitBtn ? submitBtn.textContent : 'Continue';
-  if (submitBtn) {
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="spinner"></span> Authenticating via user_data.js';
-  }
-
+const handleGoogleLoginResponse = async googleAccessToken => {
+  clearTimeout(googlePromptTimeout);
+  showToast('Google verified! Signing you in...', 'success');
   try {
-    let authResult = null;
-    const payload = { name: rawName || email.split('@')[0], email, password: secret, otp: secret, phone, mode: state.authMode };
-
-    /* 1. Try user_data.js authentication functions first */
-    const userDataAuthFn = isSignup
-      ? (window.registerAaviraUser || window.signupUser || window.aaviraSignup || window.loginOrRegisterUser || window.authenticateUser)
-      : (window.loginAaviraUser || window.loginUser || window.aaviraLogin || window.verifyAaviraOtp || window.loginOrRegisterUser || window.authenticateUser);
-
-    if (typeof userDataAuthFn === 'function') {
-      authResult = await userDataAuthFn(payload, email, secret);
-      if (authResult && authResult.ok === false) {
-        throw new Error(authResult.message || 'Authentication failed');
-      }
+    if (!window.DeliveryBoy || !window.DeliveryBoy.googleLogin) {
+      showToast('Google login succeeded, but backend linking is pending.', 'success');
+      return;
     }
-
-    const resolvedName = (authResult?.name || authResult?.displayName || authResult?.user?.name || rawName || store.get('aavira_display_name') || email.split('@')[0])
-      .replace(/[._-]+/g, ' ')
-      .replace(/\w/g, ch => ch.toUpperCase());
-    const resolvedToken = authResult?.token || authResult?.authToken || ('av_' + btoa(email).replace(/=/g, ''));
-
-    if (typeof window.saveAaviraSession === 'function') {
-      try { await window.saveAaviraSession({ name: resolvedName, email, phone, token: resolvedToken }); } catch {}
-    } else if (typeof window.setUserSession === 'function') {
-      try { await window.setUserSession({ name: resolvedName, email, phone, token: resolvedToken }); } catch {}
+    const result = await window.DeliveryBoy.googleLogin(googleAccessToken);
+    if (result && result.ok && result.data && result.data.success) {
+      await persistSession(result.data.userName, result.data.email);
+      showToast('Signed in successfully!', 'success');
+    } else {
+      showToast(extractErrorMessage(result, 'Google login failed.'), 'error');
     }
-
-    store.set('aavira_user_email', email);
-    store.set('aavira_display_name', resolvedName);
-    if (phone) store.set('aavira_user_phone', phone);
-    store.set('aavira_token', resolvedToken);
-    store.set('authToken', resolvedToken);
-
-    layers.close('authPopupModal');
-    updateProfileUI();
-    if (typeof window.paintUserAvatars === 'function') await window.paintUserAvatars();
-    await loadWishlistFromAccount();
-    updateWishCount();
-    showToast(isSignup ? `Welcome to Aavira, ${resolvedName}!` : `Welcome back, ${resolvedName}!`);
   } catch (err) {
-    showToast(err?.message || 'Could not sign in. Please check your details.', 'error');
+    showToast('Network error. Please try again.', 'error');
   } finally {
-    if (submitBtn) {
-      submitBtn.disabled = false;
-      submitBtn.textContent = prevText;
-    }
+    resetGoogleButton();
   }
+};
+
+window.performGoogleLogin = triggerBtnId => {
+  if (typeof google === 'undefined' || !google.accounts) {
+    showToast('Google service unable to load. Check connection.', 'error');
+    return;
+  }
+  if (isSubmitting) return;
+  isSubmitting = true;
+  activeGoogleBtnId = triggerBtnId;
+  setBtnLoading(triggerBtnId, true, GOOGLE_BTN_ORIGINAL_HTML, {
+    loaderColor: 'text-rani-pink',
+    loadingLabel: 'Connecting...'
+  });
+  try {
+    const client = google.accounts.oauth2.initTokenClient({
+      client_id: AUTH_CONFIG.GOOGLE_CLIENT_ID,
+      scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+      callback: response => {
+        if (response && response.access_token) {
+          handleGoogleLoginResponse(response.access_token);
+        }
+      },
+      error_callback: error => {
+        resetGoogleButton();
+        if (error.type !== 'popup_closed' && error.type !== 'access_denied') {
+          showToast('Google sign-in failed or cancelled.', 'error');
+        }
+      }
+    });
+    client.requestAccessToken();
+    clearTimeout(googlePromptTimeout);
+    googlePromptTimeout = setTimeout(() => {
+      if (isSubmitting) {
+        resetGoogleButton();
+        showToast('Google sign-in timed out. Please try again.', 'error');
+      }
+    }, AUTH_CONFIG.GOOGLE_PROMPT_TIMEOUT_MS);
+  } catch (err) {
+    resetGoogleButton();
+    showToast('Unable to initialize Google Sign-In.', 'error');
+  }
+};
+
+const resolveSendResetOtp = () => {
+  if (!window.DeliveryBoy) return null;
+  return window.DeliveryBoy.sendPasswordResetOTP
+    || window.DeliveryBoy.sendResetOTP
+    || window.DeliveryBoy.forgotPassword
+    || null;
+};
+
+const resolveConfirmReset = () => {
+  if (!window.DeliveryBoy) return null;
+  return window.DeliveryBoy.resetPassword
+    || window.DeliveryBoy.confirmPasswordReset
+    || window.DeliveryBoy.verifyPasswordReset
+    || null;
+};
+
+const validateForgotEmail = email => {
+  if (!email) return 'Please enter your registered email.';
+  if (!EMAIL_PATTERN.test(email)) return 'Please enter a valid email address.';
+  return null;
+};
+
+const validateResetPasswordInputs = (otp, newPwd, confirmPwd) => {
+  if (otp.length !== AUTH_CONFIG.OTP_LENGTH) return `Enter the complete ${AUTH_CONFIG.OTP_LENGTH}-digit code.`;
+  if (newPwd.length < AUTH_CONFIG.MIN_PASSWORD_LENGTH) return `Password must be at least ${AUTH_CONFIG.MIN_PASSWORD_LENGTH} characters.`;
+  if (newPwd !== confirmPwd) return 'New password and confirm password do not match.';
+  return null;
+};
+
+const startResendCooldown = () => {
+  const btn = document.getElementById('btnResendReset');
+  if (!btn) return;
+  let remaining = AUTH_CONFIG.RESEND_COOLDOWN_SECONDS;
+  btn.disabled = true;
+  btn.innerText = `Resend Code (${remaining}s)`;
+  clearInterval(resendCooldownInterval);
+  resendCooldownInterval = setInterval(() => {
+    remaining -= 1;
+    if (remaining <= 0) {
+      clearInterval(resendCooldownInterval);
+      btn.disabled = false;
+      btn.innerText = 'Resend Code';
+    } else {
+      btn.innerText = `Resend Code (${remaining}s)`;
+    }
+  }, 1000);
+};
+
+window.processForgotPassword = async () => {
+  if (isSubmitting) return;
+  const email = ($('#forgotEmail')?.value || '').trim().toLowerCase();
+  const validationError = validateForgotEmail(email);
+  if (validationError) {
+    showToast(validationError, 'error');
+    return;
+  }
+  const sendResetOtp = resolveSendResetOtp();
+  if (!sendResetOtp) {
+    showToast('Password reset service is not available right now.', 'error');
+    return;
+  }
+  const originalBtnHTML = '<span>Send Reset Code</span><i data-lucide="arrow-right"></i>';
+  isSubmitting = true;
+  setBtnLoading('btnForgotAction', true, originalBtnHTML);
+  pendingReset = { email };
+  try {
+    const result = await sendResetOtp(email);
+    if (result && result.ok && result.data && result.data.success) {
+      showToast('Reset code sent to your email!', 'success');
+      if ($('#resetOtpSubText')) $('#resetOtpSubText').innerText = email;
+      clearOtpBoxGroup('resetOtpBoxGroup');
+      if ($('#newPassword')) $('#newPassword').value = '';
+      if ($('#confirmPassword')) $('#confirmPassword').value = '';
+      window.switchView('resetOtpView');
+      startResendCooldown();
+    } else {
+      showToast(extractErrorMessage(result, 'Unable to send reset code. Please check the email and try again.'), 'error');
+    }
+  } catch (err) {
+    showToast('Network error. Please try again.', 'error');
+  } finally {
+    setBtnLoading('btnForgotAction', false, originalBtnHTML);
+    isSubmitting = false;
+  }
+};
+
+window.resendResetOtp = async () => {
+  if (isSubmitting || !pendingReset.email) return;
+  const btn = document.getElementById('btnResendReset');
+  const originalBtnHTML = btn ? btn.innerHTML : '<span>Resend Code</span>';
+  const sendResetOtp = resolveSendResetOtp();
+  if (!sendResetOtp) {
+    showToast('Password reset service is not available right now.', 'error');
+    return;
+  }
+  isSubmitting = true;
+  setBtnLoading('btnResendReset', true, originalBtnHTML, { loadingLabel: 'Sending...' });
+  try {
+    const result = await sendResetOtp(pendingReset.email);
+    if (result && result.ok && result.data && result.data.success) {
+      showToast('A new code has been sent.', 'success');
+      startResendCooldown();
+    } else {
+      showToast(extractErrorMessage(result, 'Unable to resend code.'), 'error');
+    }
+  } catch (err) {
+    showToast('Network error. Please try again.', 'error');
+  } finally {
+    setBtnLoading('btnResendReset', false, originalBtnHTML);
+    isSubmitting = false;
+  }
+};
+
+window.processResetPassword = async () => {
+  if (isSubmitting) return;
+  const otp = getOtpBoxValue('resetOtpBoxGroup');
+  const newPwd = ($('#newPassword')?.value || '').trim();
+  const confirmPwd = ($('#confirmPassword')?.value || '').trim();
+  const validationError = validateResetPasswordInputs(otp, newPwd, confirmPwd);
+  if (validationError) {
+    showToast(validationError, 'error');
+    return;
+  }
+  const confirmReset = resolveConfirmReset();
+  if (!confirmReset) {
+    showToast('Password reset service is not available right now.', 'error');
+    return;
+  }
+  const originalBtnHTML = '<span>Reset Password</span><i data-lucide="check-circle"></i>';
+  isSubmitting = true;
+  setBtnLoading('btnResetAction', true, originalBtnHTML);
+  try {
+    const result = await confirmReset(pendingReset.email, otp, newPwd);
+    if (result && result.ok && result.data && result.data.success) {
+      showToast('Password reset successfully! Please login.', 'success');
+      clearInterval(resendCooldownInterval);
+      if ($('#loginEmail')) $('#loginEmail').value = pendingReset.email;
+      if ($('#loginPassword')) $('#loginPassword').value = '';
+      pendingReset = { email: '' };
+      setTimeout(() => window.switchView('loginView'), 1200);
+    } else {
+      showToast(extractErrorMessage(result, 'Invalid or expired code.'), 'error');
+    }
+  } catch (err) {
+    showToast('Network error. Please try again.', 'error');
+  } finally {
+    setBtnLoading('btnResetAction', false, originalBtnHTML);
+    isSubmitting = false;
+  }
+};
+
+window.processSignup = async () => {
+  if (isSubmitting) return;
+  const name = ($('#signupName')?.value || '').trim();
+  const email = ($('#signupEmail')?.value || '').trim().toLowerCase();
+  const pwd = ($('#signupPassword')?.value || '').trim();
+  const validationError = validateSignupInputs(name, email, pwd);
+  if (validationError) {
+    showToast(validationError, 'error');
+    return;
+  }
+  if (!window.DeliveryBoy) {
+    showToast('System error: Unable to connect to server.', 'error');
+    return;
+  }
+  const originalBtnHTML = '<span>Create Account</span><i data-lucide="arrow-right"></i>';
+  isSubmitting = true;
+  setBtnLoading('btnSignupAction', true, originalBtnHTML);
+  pendingSignup = { name, email, pwd };
+  try {
+    const result = await window.DeliveryBoy.sendOTP(email, name);
+    if (result && result.ok && result.data && result.data.success) {
+      showToast('Verification code sent!', 'success');
+      if ($('#otpSubText')) $('#otpSubText').innerText = email;
+      clearOtpBoxGroup('otpBoxGroup');
+      window.switchView('otpView');
+    } else {
+      showToast(extractErrorMessage(result, 'Error sending code.'), 'error');
+    }
+  } catch (err) {
+    showToast('Network error. Please try again.', 'error');
+  } finally {
+    setBtnLoading('btnSignupAction', false, originalBtnHTML);
+    isSubmitting = false;
+  }
+};
+
+window.verifySignupOTP = async () => {
+  if (isSubmitting) return;
+  const otpVal = getOtpBoxValue('otpBoxGroup');
+  if (otpVal.length !== AUTH_CONFIG.OTP_LENGTH) {
+    showToast(`Enter the complete ${AUTH_CONFIG.OTP_LENGTH}-digit code.`, 'error');
+    return;
+  }
+  if (!window.DeliveryBoy) {
+    showToast('System error: Unable to connect to server.', 'error');
+    return;
+  }
+  const originalBtnHTML = '<span>Verify &amp; Login</span><i data-lucide="check-circle"></i>';
+  isSubmitting = true;
+  setBtnLoading('btnOtpAction', true, originalBtnHTML);
+  try {
+    const result = await window.DeliveryBoy.verifyOTP(
+      pendingSignup.email, otpVal, pendingSignup.name, pendingSignup.pwd
+    );
+    if (result && result.ok && result.data && result.data.success) {
+      await persistSession(pendingSignup.name, pendingSignup.email);
+      showToast('Welcome to Aavira!', 'success');
+    } else {
+      showToast(extractErrorMessage(result, 'Invalid OTP code.'), 'error');
+    }
+  } catch (err) {
+    showToast('Network error. Please try again.', 'error');
+  } finally {
+    setBtnLoading('btnOtpAction', false, originalBtnHTML);
+    isSubmitting = false;
+  }
+};
+
+window.processLogin = async () => {
+  if (isSubmitting) return;
+  const email = ($('#loginEmail')?.value || '').trim().toLowerCase();
+  const pwd = ($('#loginPassword')?.value || '').trim();
+  const validationError = validateLoginInputs(email, pwd);
+  if (validationError) {
+    showToast(validationError, 'error');
+    return;
+  }
+  if (!window.DeliveryBoy) {
+    showToast('System error: Unable to connect to server.', 'error');
+    return;
+  }
+  const originalBtnHTML = '<span>Login</span><i data-lucide="arrow-right"></i>';
+  isSubmitting = true;
+  setBtnLoading('btnLoginAction', true, originalBtnHTML);
+  try {
+    const result = await window.DeliveryBoy.login(email, pwd);
+    if (result && result.ok && result.data && result.data.success) {
+      await persistSession(result.data.userName || email.split('@')[0], email);
+      showToast('Signed in successfully!', 'success');
+    } else {
+      showToast(extractErrorMessage(result, 'Invalid credentials.'), 'error');
+    }
+  } catch (err) {
+    showToast('Network error. Please try again.', 'error');
+  } finally {
+    setBtnLoading('btnLoginAction', false, originalBtnHTML);
+    isSubmitting = false;
+  }
+};
+
+const setupAuthEnterKeysAndOtp = () => {
+  const fieldToAction = {
+    signupName: window.processSignup,
+    signupEmail: window.processSignup,
+    signupPassword: window.processSignup,
+    loginEmail: window.processLogin,
+    loginPassword: window.processLogin,
+    forgotEmail: window.processForgotPassword,
+    newPassword: window.processResetPassword,
+    confirmPassword: window.processResetPassword
+  };
+  Object.entries(fieldToAction).forEach(([id, fn]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        fn();
+      }
+    });
+  });
+  setupOtpBoxGroup('otpBoxGroup', window.verifySignupOTP);
+  setupOtpBoxGroup('resetOtpBoxGroup', window.processResetPassword);
 };
 
 window.updateProfileUI = () => {
@@ -2504,6 +3036,7 @@ window.initializeAppEngine = () => {
   bindSwipe($('#sidebar'), closeSidebar, null, 60);
   bindBackToTop();
   bindEnterKey();
+  setupAuthEnterKeysAndOtp();
 
   setTimeout(async () => {
     await loadWishlistFromAccount();
