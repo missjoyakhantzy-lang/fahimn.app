@@ -1184,6 +1184,8 @@ const rememberRecent = id => {
 };
 
 window.closeAuthPopup = () => {
+  clearTimeout(window.bannerShowTimer);
+  window.bannerShowTimer = null;
   layers.close('authPopupModal');
   try { sessionStorage.setItem('loginBannerDismissed', 'true'); } catch {}
 };
@@ -1195,10 +1197,8 @@ window.showLoginOfferPopup = () => {
   try { dismissed = !!sessionStorage.getItem('loginBannerDismissed'); } catch {}
   const info = (typeof window.getProfileInfo === 'function') ? window.getProfileInfo() : null;
   const isSigned = Boolean((info && info.signedIn) || store.get('aavira_user_email') || (store.get('aavira_display_name') && store.get('aavira_display_name').toLowerCase() !== 'guest user'));
-  if (isSigned || dismissed) {
-    layers.close('authPopupModal');
-    return;
-  }
+  if (isSigned || dismissed) return;
+  if ($('#authPopupModal')?.classList.contains('is-open')) return;
   switchHomeAuthMode('login');
   refreshIcons();
   layers.open('authPopupModal');
@@ -1208,17 +1208,15 @@ window.showLoginOfferPopup = () => {
 window.checkDynamicBanner = () => {
   const info = (typeof window.getProfileInfo === 'function') ? window.getProfileInfo() : null;
   const isSigned = Boolean((info && info.signedIn) || store.get('aavira_user_email') || (store.get('aavira_display_name') && store.get('aavira_display_name').toLowerCase() !== 'guest user'));
-  if (isSigned) {
-    layers.close('authPopupModal');
+  let dismissed = false;
+  try { dismissed = !!sessionStorage.getItem('loginBannerDismissed'); } catch {}
+  if (isSigned || dismissed) {
+    clearTimeout(window.bannerShowTimer);
+    window.bannerShowTimer = null;
     return;
   }
-  clearTimeout(window.bannerShowTimer);
-  const schedulePopup = () => {
-    clearTimeout(window.bannerShowTimer);
-    window.bannerShowTimer = setTimeout(showLoginOfferPopup, 5000);
-  };
-  if (document.readyState === 'complete') schedulePopup();
-  else addEventListener('load', schedulePopup, { once: true });
+  if (window.bannerShowTimer) return;
+  window.bannerShowTimer = setTimeout(() => { window.bannerShowTimer = null; showLoginOfferPopup(); }, 5000);
 };
 
 /* ==========================================================================
@@ -1288,6 +1286,8 @@ window.switchHomeAuthMode = mode => {
 };
 
 window.focusHomeAuth = (mode = 'login') => {
+  clearTimeout(window.bannerShowTimer);
+  window.bannerShowTimer = null;
   closeSidebar();
   closeUserSheet();
   const isSignup = mode === 'signup' || mode === '/auth/verify';
