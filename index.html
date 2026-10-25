@@ -32,23 +32,23 @@ a{color:inherit;text-decoration:none}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 .aavira-premium-text,.aavira-premium-line{display:none!important}
 
-.app{max-width:420px;margin:0 auto;background:#FFFFFF;min-height:100vh;padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+.app{max-width:420px;margin:0 auto;background:#FFFFFF;min-height:100vh;padding-bottom:calc(68px + env(safe-area-inset-bottom,0px))}
 @media(min-width:640px){body{background:#FFFFFF}.app{box-shadow:0 0 50px rgba(0,0,0,.06);border-inline:1px solid #F0F0F5}}
 
-/* Header: responsive and collision-free on small phones (320px+) */
-.site-header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:blur(20px) saturate(1.8);-webkit-backdrop-filter:blur(20px) saturate(1.8);border-bottom:1px solid rgba(229,229,234,.8);padding-top:env(safe-area-inset-top,0px)}
-.site-header-row{height:58px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 12px}
+/* Header: Compact Solid Bar Matching Bottom Nav (No Liquid Glass) */
+.site-header{position:sticky;top:0;z-index:40;background:#FFFFFF!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border-bottom:1px solid #E5E5EA;box-shadow:none!important;padding-top:env(safe-area-inset-top,0px)}
+.site-header-row{height:46px;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:0 10px}
 .header-left{display:flex;align-items:center;gap:2px;min-width:0;flex:1}
-.header-actions{display:flex;align-items:center;gap:2px}
+.header-actions{display:flex;align-items:center;gap:1px}
 .site-logo-right{flex-shrink:0;display:flex;align-items:center}
-.site-logo{height:34px;width:auto;max-width:110px;object-fit:contain}
-.icon-btn{position:relative;width:36px;height:36px;flex:0 0 36px;padding:0;border-radius:50%;border:0;background:transparent;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s,transform .2s var(--ease)}
+.site-logo{height:28px;width:auto;max-width:98px;object-fit:contain}
+.icon-btn{position:relative;width:32px;height:32px;flex:0 0 32px;padding:0;border-radius:50%;border:0;background:transparent;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s,transform .2s var(--ease)}
 @media(hover:hover){.icon-btn:hover{background:rgba(212,175,55,.14);color:var(--rani)}}
 .icon-btn:active{transform:scale(.92)}
-.icon-btn svg{width:19px;height:19px;stroke-width:1.7}
-.cart-badge{position:absolute;top:2px;right:1px;min-width:16px;height:16px;padding:0 4px;border-radius:999px;background:var(--rani);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
+.icon-btn svg{width:17.5px;height:17.5px;stroke-width:1.7}
+.cart-badge{position:absolute;top:1px;right:0;min-width:15px;height:15px;padding:0 3.5px;border-radius:999px;background:var(--rani);color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
 
-.net-bar{position:sticky;top:58px;z-index:39;background:var(--ink);color:#fff;text-align:center;font-size:13px;font-weight:500;padding:7px 12px}
+.net-bar{position:sticky;top:46px;z-index:39;background:var(--ink);color:#fff;text-align:center;font-size:13px;font-weight:500;padding:6px 12px}
 
 .hero{padding:14px 16px 0}
 .hero-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:24px;aspect-ratio:1/1;max-height:540px;background:linear-gradient(100deg,#EDE5D3 35%,#FBF7EC 50%,#EDE5D3 65%);background-size:220% 100%;animation:heroShimmer 1.8s linear infinite;box-shadow:0 24px 48px -20px rgba(36,32,36,.35),0 2px 6px rgba(36,32,36,.08)}
@@ -96,7 +96,7 @@ a{color:inherit;text-decoration:none}
 .grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 6px;margin-inline:-8px}
 
 /* Product Cards: Sharp 1:1 Square Image, Zero Rounded Corners, Colour Strip Badge with Soft Faded Shadow, Side Top Stock Overlay */
-.pcard{position:relative;min-width:0;background:#FFFFFF;border:1px solid #EBEBEF;border-radius:0!important;overflow:hidden;padding-bottom:10px;box-shadow:none!important;display:flex;flex-direction:column;transition:border-color .22s var(--ease)}
+.pcard{position:relative;min-width:0;background:#FFFFFF;border:1px solid #EBEBEF;border-radius:0!important;overflow:hidden;padding-bottom:7px;box-shadow:none!important;display:flex;flex-direction:column;transition:border-color .22s var(--ease)}
 @media(hover:hover){.pcard:hover{box-shadow:none!important;border-color:#111113}}
 .pcard-rail{flex:0 0 172px;scroll-snap-align:start}
 .pcard-link{display:block;cursor:pointer}
@@ -109,19 +109,19 @@ a{color:inherit;text-decoration:none}
 .tag-stock.oos{background:rgba(185,28,28,.94);color:#FFFFFF}
 .tag-stock.low-stk{background:rgba(180,83,9,.94);color:#FFFFFF}
 .tag-off{color:#2E8B57;background:transparent;font-size:13.5px;font-weight:700;letter-spacing:.02em;padding:0;border-radius:0;line-height:1.1;white-space:nowrap;box-shadow:none!important}
-.pcard-foot{display:flex;flex-direction:column;flex:1;padding:9px 10px 0;min-width:0}
+.pcard-foot{display:flex;flex-direction:column;padding:7px 9px 0;min-width:0}
 .pcard-text{display:block;min-width:0}
-.pcard-name{display:block;font-size:15px;font-weight:500;letter-spacing:.01em;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#4A4F55}
-.pcard-price{display:flex;align-items:baseline;flex-wrap:wrap;gap:5px;margin-top:4px}
-.price{font-size:16.5px;font-weight:700;letter-spacing:.01em;color:#111113}
-.mrp{font-size:13.5px;color:#7D828A;text-decoration:line-through;font-weight:500}
-.pcard-price .tag-off{font-size:13.5px;font-weight:700;color:#2E8B57;background:transparent;border:0;padding:0;box-shadow:none!important}
-.color-strip{display:inline-flex;align-items:center;gap:5px;margin-top:6px;padding:3px 9px;background:linear-gradient(90deg,#F3EFEA 0%,rgba(243,239,234,.55) 100%);color:#3F3A36;font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-left:2.5px solid #D4AF37;box-shadow:0 4px 10px -3px rgba(0,0,0,.1);width:fit-content;max-width:100%}
-.pcard-row{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:8px;padding-top:7px;border-top:1px solid #F2F2F6;min-width:0;width:100%}
+.pcard-name{display:block;font-size:14.5px;font-weight:500;letter-spacing:.01em;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#4A4F55}
+.pcard-price{display:flex;align-items:baseline;flex-wrap:wrap;gap:5px;margin-top:3px}
+.price{font-size:16px;font-weight:700;letter-spacing:.01em;color:#111113}
+.mrp{font-size:13px;color:#7D828A;text-decoration:line-through;font-weight:500}
+.pcard-price .tag-off{font-size:13px;font-weight:700;color:#2E8B57;background:transparent;border:0;padding:0;box-shadow:none!important}
+.color-strip{display:inline-flex;align-items:center;padding:2.5px 10px 2.5px 8px;border-radius:999px;background:linear-gradient(90deg,#EFEAE1 0%,rgba(239,234,225,.78) 62%,rgba(239,234,225,.08) 100%);color:#3A3532;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1;white-space:nowrap;box-shadow:-2px 3px 8px -2px rgba(0,0,0,.13),inset 1.5px 0 0 rgba(212,175,55,.65);-webkit-mask-image:linear-gradient(90deg,#000 72%,rgba(0,0,0,.38) 100%);mask-image:linear-gradient(90deg,#000 72%,rgba(0,0,0,.38) 100%);flex-shrink:0}
+.pcard-row{display:flex;align-items:center;justify-content:space-between;gap:5px;margin-top:5px;min-width:0;width:100%}
 .qv-lowest{display:inline-block;margin-top:2px;font-size:12.5px;font-weight:700;letter-spacing:.02em;color:#7C3AED}
 .pcard-metalink{display:flex;align-items:center;gap:5px;min-width:0;flex:1;overflow:hidden}
-.go{margin-left:auto;flex:0 0 28px;width:28px;height:28px;padding:0;border:1px solid #111113;border-radius:8px;background:#111113;color:#fff;display:inline-flex;align-items:center;justify-content:center;box-shadow:none!important;transition:transform .2s var(--ease),background .2s,color .2s}
-@media(hover:hover){.go:hover{background:#fff;color:#111113;box-shadow:none!important}}
+.go{margin-left:auto;flex:0 0 26px;width:26px;height:26px;padding:0;border:1px solid #ECECF0;border-radius:999px;background:#F8F8FA;color:#111113;display:inline-flex;align-items:center;justify-content:center;box-shadow:none!important;transition:transform .2s var(--ease),background .2s,color .2s,border-color .2s}
+@media(hover:hover){.go:hover{background:#111113;border-color:#111113;color:#fff;box-shadow:none!important}}
 .go:active{transform:scale(.92)}
 .go svg{width:13px;height:13px}
 .rating{display:inline-flex;align-items:center;gap:2.5px;font-weight:600;font-size:11.5px;color:#fff;background:#15803D;padding:2.5px 6.5px;border-radius:999px;flex-shrink:0;line-height:1}
@@ -236,13 +236,13 @@ a{color:inherit;text-decoration:none}
 .footer-grid a:hover,.footer-grid .avck-footerlink:hover{color:#161616}
 .footer-copy{padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:#9A8F96;text-align:center}
 
-/* Compact Always-Visible Professional Bottom Navigation Bar (Never Hides, Low Height) */
-.bottom-nav{position:fixed;left:0;right:0;bottom:0;margin:0 auto;width:100%;max-width:420px;z-index:9000;background:rgba(255,255,255,.98);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid #E5E5EA;display:grid;grid-template-columns:repeat(5,1fr);padding:4px 6px calc(4px + env(safe-area-inset-bottom,0px));box-shadow:0 -2px 10px rgba(0,0,0,.03);transform:none!important}
-.nav-item{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:3px 0;color:#7D828A;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;min-width:0;transition:color .2s}
-.nav-item svg{width:17px;height:17px;stroke-width:1.75}
-.nav-ai-img{width:18px;height:18px;border-radius:50%;object-fit:cover}
+/* Compact Always-Visible Professional Bottom Navigation Bar (Solid Matching Background, No Liquid Glass, Minimal Height) */
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;margin:0 auto;width:100%;max-width:420px;z-index:9000;background:#FFFFFF!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border-top:1px solid #E5E5EA;display:grid;grid-template-columns:repeat(5,1fr);padding:3px 4px calc(3px + env(safe-area-inset-bottom,0px));box-shadow:none!important;transform:none!important}
+.nav-item{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5px;padding:2px 0;color:#7D828A;font-size:10.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;line-height:1.1;min-width:0;transition:color .2s}
+.nav-item svg{width:16px;height:16px;stroke-width:1.75}
+.nav-ai-img{width:16px;height:16px;border-radius:50%;object-fit:cover}
 .nav-item[aria-current="page"]{color:#111113;font-weight:700}
-.nav-item[aria-current="page"]::before{content:"";position:absolute;top:-5px;width:20px;height:2px;background:#111113}
+.nav-item[aria-current="page"]::before{content:"";position:absolute;top:-3px;width:18px;height:2px;background:#111113}
 
 .nav-restore{display:none!important}
 
@@ -800,22 +800,19 @@ body.has-cart .fab-col{bottom:calc(104px + env(safe-area-inset-bottom,0px))}
     </div>
 
     <div class="ftr-sec">
-      <div class="ftr-sec-head"><span class="ic"><i data-lucide="truck"></i></span><h3>Delivery Partners</h3></div>
+      <div class="ftr-sec-head"><h3>Delivery Partners</h3></div>
       <div class="ftr-logos">
         <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Delhivery_Logo_%282019%29.png/330px-Delhivery_Logo_%282019%29.png" alt="Delhivery" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Delhivery</span></span>
-        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Blue_Dart_logo_transparent.png/330px-Blue_Dart_logo_transparent.png" alt="Blue Dart" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Blue Dart</span></span>
         <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/DTDC_logo.png/330px-DTDC_logo.png" alt="DTDC" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">DTDC</span></span>
-        <span class="ftr-logo-card"><img src="https://chinapost-track.com/cdn/images/carriers/thumbnails/0389-xpressbees.png" alt="Xpressbees" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Xpressbees</span></span>
-        <span class="ftr-logo-card"><img class="tall" src="https://qubix.in/wp-content/uploads/2024/05/Ecom-Express-Logo.png" alt="Ecom Express" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Ecom Express</span></span>
       </div>
     </div>
 
     <div class="ftr-sec">
-      <div class="ftr-sec-head"><span class="ic"><i data-lucide="shield-check"></i></span><h3>We Accept</h3></div>
+      <div class="ftr-sec-head"><h3>We Accept</h3></div>
       <div class="ftr-logos">
         <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/330px-UPI-Logo-vector.svg.png" alt="UPI" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">UPI</span></span>
         <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/RuPay-Logo.png/330px-RuPay-Logo.png" alt="RuPay" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">RuPay</span></span>
-        <span class="ftr-logo-card txt"><i data-lucide="banknote"></i>Cash on Delivery</span>
+        <span class="ftr-logo-card txt">Cash on Delivery</span>
       </div>
     </div>
 
@@ -1505,12 +1502,51 @@ const priceInfo = product => {
 
 const isWished = id => store.json('aavira_wishlist', []).map(String).includes(String(id));
 
-const colorCountStrip = product => {
+const getProductColorList = product => {
+  const mainImg = String(product.img || '').trim();
+  if (Array.isArray(product.colorPairs) && product.colorPairs.length) {
+    return product.colorPairs.map(p => ({
+      name: String(p.name || '').trim(),
+      image: String(p.image || mainImg).trim()
+    }));
+  }
+
   const names = Array.isArray(product.colors) && product.colors.length
-    ? product.colors
-    : (product.colorsInfo ? String(product.colorsInfo).split(',').map(s => s.trim()).filter(Boolean) : []);
+    ? product.colors.map(s => String(s).trim()).filter(Boolean)
+    : splitColorNames(product.colorsInfo);
+  const imgs = Array.isArray(product.colorImages)
+    ? product.colorImages.map(s => String(s).trim()).filter(Boolean)
+    : [];
+
+  /* When admin panel has colorImages uploaded:
+     - Standard case: each colorImages[i] corresponds directly to names[i] (0->0, 1->1, 2->2).
+     - Only if names has exactly 1 more item than colorImages AND mainImg is not in colorImages,
+       then names[0] is for mainImg and names[i+1] is for colorImages[i]. */
+  if (imgs.length > 0) {
+    if (names.length === imgs.length + 1 && mainImg && !imgs.includes(mainImg)) {
+      return [
+        { name: names[0] || '', image: mainImg },
+        ...imgs.map((url, i) => ({ name: names[i + 1] || '', image: url }))
+      ];
+    }
+    return imgs.map((url, i) => ({
+      name: names[i] || '',
+      image: url
+    }));
+  }
+
+  if (names.length > 0) {
+    return names.map(n => ({ name: n, image: mainImg }));
+  }
+
+  return mainImg ? [{ name: '', image: mainImg }] : [];
+};
+
+const colorCountStrip = product => {
+  const list = getProductColorList(product);
+  const names = Array.isArray(product.colors) ? product.colors.filter(Boolean) : [];
   const imgs = Array.isArray(product.colorImages) ? product.colorImages.filter(Boolean) : [];
-  const count = Math.max(names.length, imgs.length ? imgs.length + 1 : 0);
+  const count = (imgs.length || names.length) ? list.length : 0;
   if (!count) return '';
   return `<span class="color-strip">${count} ${count === 1 ? 'Colour' : 'Colours'}</span>`;
 };
@@ -1552,10 +1588,9 @@ const cardHtml = (product, variant) => {
       <a class="pcard-text" href="${href}" data-product="${id}">
         <span class="pcard-name">${name}</span>
         <span class="pcard-price"><span class="price">${formatPrice(price)}</span>${mrp > price ? `<span class="mrp">${formatPrice(mrp)}</span>` : ''}${savedAmt > 0 ? `<span class="tag-off">${formatPrice(savedAmt)} OFF</span>` : (off > 0 ? `<span class="tag-off">${off}% OFF</span>` : '')}</span>
-        ${colorCountStrip(product)}
       </a>
       <div class="pcard-row">
-        <a class="pcard-metalink" href="${href}" data-product="${id}">${ratingBadge(rating)}</a>
+        <a class="pcard-metalink" href="${href}" data-product="${id}">${colorCountStrip(product)}${ratingBadge(rating)}</a>
         <button type="button" class="go" data-qv="${id}" aria-label="Quick view ${name}"><i data-lucide="eye"></i></button>
       </div>
     </div>
@@ -1840,21 +1875,138 @@ window.clearRecent = () => {
   renderRecent();
 };
 
-const normalizeProduct = raw => ({
-  id: raw.id ?? raw._id,
-  name: raw.name || raw.title || '',
-  price: raw.price,
-  mrp: raw.mrp ?? raw.originalPrice,
-  colors: Array.isArray(raw.colors) ? raw.colors : [],
-  colorsInfo: raw.colorsInfo || '',
-  colorImages: Array.isArray(raw.colorImages) ? raw.colorImages : [],
-  sizes: Array.isArray(raw.sizes) && raw.sizes.length ? raw.sizes : ['32', '34', '36', '38', '40', '42'],
-  img: raw.imageMain || raw.image || raw.imageUrl || raw.img || '',
-  rating: clamp(Number(raw.rating ?? raw.averageRating ?? raw.avgRating ?? raw.ratingAvg ?? raw.average_rating ?? raw.avg_rating ?? raw.stars) || 0, 0, 5),
-  reviewCount: Number(raw.reviewCount ?? raw.reviews ?? raw.numReviews) || 0,
-  stock: raw.stock,
-  bestseller: !!raw.bestseller
-});
+const splitColorNames = val => {
+  if (!val) return [];
+  if (Array.isArray(val)) {
+    return val.flatMap(item => {
+      if (item && typeof item === 'object') {
+        const n = item.name ?? item.color ?? item.colour ?? item.colorName ?? item.colourName ?? item.label ?? item.title ?? '';
+        return String(n).trim() ? [String(n).trim()] : [];
+      }
+      return String(item ?? '').split(/[,|\n]+/).map(s => s.trim()).filter(Boolean);
+    });
+  }
+  if (typeof val === 'string') {
+    const trimmed = val.trim();
+    if (!trimmed) return [];
+    if (trimmed.startsWith('[')) {
+      try { return splitColorNames(JSON.parse(trimmed)); } catch {}
+    }
+    return trimmed.split(/[,|\n]+/).map(s => s.trim()).filter(Boolean);
+  }
+  return [];
+};
+
+const extractAdminColorPairs = raw => {
+  const pairs = [];
+  const pushPair = (name, image) => {
+    const cleanName = String(name ?? '').trim();
+    const cleanImg = String(image ?? '').trim();
+    if (!cleanName && !cleanImg) return;
+    pairs.push({ name: cleanName, image: cleanImg });
+  };
+
+  const variantSources = [raw.colorVariants, raw.colourVariants, raw.variants, raw.colorOptions, raw.colourOptions, raw.colorList];
+  for (const src of variantSources) {
+    if (Array.isArray(src) && src.length && src.some(it => it && typeof it === 'object')) {
+      src.forEach(it => {
+        if (it && typeof it === 'object') {
+          pushPair(
+            it.name ?? it.color ?? it.colour ?? it.colorName ?? it.colourName ?? it.label ?? it.title ?? '',
+            it.image ?? it.img ?? it.imageUrl ?? it.url ?? it.photo ?? it.src ?? ''
+          );
+        }
+      });
+      if (pairs.length) return pairs;
+    }
+  }
+
+  if (Array.isArray(raw.colorImages) && raw.colorImages.some(it => it && typeof it === 'object')) {
+    const fallbackNames = splitColorNames(raw.colors ?? raw.colours ?? raw.colorNames ?? raw.colourNames ?? raw.colorsInfo ?? raw.colorInfo);
+    raw.colorImages.forEach((it, idx) => {
+      if (it && typeof it === 'object') {
+        pushPair(
+          it.name ?? it.color ?? it.colour ?? it.colorName ?? it.colourName ?? it.label ?? fallbackNames[idx] ?? '',
+          it.image ?? it.img ?? it.imageUrl ?? it.url ?? it.photo ?? it.src ?? ''
+        );
+      } else if (typeof it === 'string' && it.trim()) {
+        pushPair(fallbackNames[idx] ?? '', it.trim());
+      }
+    });
+    if (pairs.length) return pairs;
+  }
+
+  if (Array.isArray(raw.colors) && raw.colors.some(it => it && typeof it === 'object')) {
+    const fallbackImgs = Array.isArray(raw.colorImages) ? raw.colorImages.filter(u => typeof u === 'string') : [];
+    raw.colors.forEach((it, idx) => {
+      if (it && typeof it === 'object') {
+        pushPair(
+          it.name ?? it.color ?? it.colour ?? it.colorName ?? it.colourName ?? it.label ?? '',
+          it.image ?? it.img ?? it.imageUrl ?? it.url ?? it.photo ?? fallbackImgs[idx] ?? ''
+        );
+      }
+    });
+    if (pairs.length) return pairs;
+  }
+
+  if (raw.colorImages && typeof raw.colorImages === 'object' && !Array.isArray(raw.colorImages)) {
+    Object.entries(raw.colorImages).forEach(([k, v]) => {
+      if (typeof v === 'string' && v.trim()) pushPair(k, v.trim());
+    });
+    if (pairs.length) return pairs;
+  }
+
+  return pairs;
+};
+
+const normalizeProduct = raw => {
+  const nameSources = [
+    raw.colors,
+    raw.colours,
+    raw.colorNames,
+    raw.colourNames,
+    raw.colorsName,
+    raw.coloursName,
+    raw.colorsInfo,
+    raw.coloursInfo,
+    raw.colorInfo,
+    raw.colourInfo,
+    raw.colorLabels,
+    raw.colourLabels,
+    raw.color,
+    raw.colour
+  ];
+  let orderedNames = [];
+  for (const src of nameSources) {
+    const list = splitColorNames(src);
+    if (list.length > orderedNames.length) orderedNames = list;
+  }
+  const uniqueNames = orderedNames;
+
+  const rawImgs = Array.isArray(raw.colorImages)
+    ? raw.colorImages
+    : (Array.isArray(raw.colourImages) ? raw.colourImages : []);
+  const cleanImgs = rawImgs
+    .map(it => (it && typeof it === 'object') ? (it.image ?? it.img ?? it.imageUrl ?? it.url ?? '') : String(it ?? '').trim())
+    .filter(Boolean);
+
+  return {
+    id: raw.id ?? raw._id,
+    name: raw.name || raw.title || '',
+    price: raw.price,
+    mrp: raw.mrp ?? raw.originalPrice,
+    colors: uniqueNames,
+    colorsInfo: raw.colorsInfo || raw.colorNames || '',
+    colorImages: cleanImgs,
+    colorPairs: extractAdminColorPairs(raw),
+    sizes: Array.isArray(raw.sizes) && raw.sizes.length ? raw.sizes : ['32', '34', '36', '38', '40', '42'],
+    img: raw.imageMain || raw.image || raw.imageUrl || raw.img || '',
+    rating: clamp(Number(raw.rating ?? raw.averageRating ?? raw.avgRating ?? raw.ratingAvg ?? raw.average_rating ?? raw.avg_rating ?? raw.stars) || 0, 0, 5),
+    reviewCount: Number(raw.reviewCount ?? raw.reviews ?? raw.numReviews) || 0,
+    stock: raw.stock,
+    bestseller: !!raw.bestseller
+  };
+};
 
 window.fetchProducts = async () => {
   try {
@@ -2123,19 +2275,28 @@ window.updateLbUI = () => {
 window.lbNext = event => { event?.stopPropagation(); state.lightboxIndex++; updateLbUI(); };
 window.lbPrev = event => { event?.stopPropagation(); state.lightboxIndex--; updateLbUI(); };
 
-/* Quick View: Main photo is ALWAYS shown in both the main preview (#qvImg) AND as the first colour image swatch (#qvColorRow), plus any admin-uploaded colorImages (never fake colour dots) */
+/* Quick View: Exact 1-to-1 Admin Panel Colour Mapping (colorImages[i] <-> colors[i], no index shift, no fake Colour 1/2/3/4) */
 window.openQuickView = id => {
   const product = state.products.find(p => String(p.id) === String(id));
   if (!product) return;
   const { price, mrp, off } = priceInfo(product);
   const name = escapeHtml(product.name);
   const qvMain = product.img || '';
-  const qvNames = Array.isArray(product.colors) && product.colors.length ? product.colors : (product.colorsInfo ? String(product.colorsInfo).split(',') : []);
-  const qvColors = [{ name: String(qvNames[0] || 'Main').trim(), image: qvMain }];
-  (Array.isArray(product.colorImages) ? product.colorImages : []).forEach((url, i) => {
-    if (url && url !== qvMain) qvColors.push({ name: String(qvNames[i + 1] || `Colour ${i + 2}`).trim(), image: url });
-  });
-  const qvPhotoSwatches = qvColors.length >= 1;
+  const qvColors = getProductColorList(product);
+  const qvPhotoSwatches = qvColors.length >= 1 && (
+    (Array.isArray(product.colorImages) && product.colorImages.length > 0) ||
+    (Array.isArray(product.colors) && product.colors.length > 0) ||
+    (Array.isArray(product.colorPairs) && product.colorPairs.length > 0)
+  );
+  /* Pick initial active swatch: match main image URL or colour name in product title, otherwise index 0 */
+  let initIdx = qvColors.findIndex(c => c.image && c.image === qvMain);
+  if (initIdx < 0 && product.name) {
+    const lowerTitle = String(product.name).toLowerCase();
+    initIdx = qvColors.findIndex(c => c.name && lowerTitle.includes(c.name.toLowerCase()));
+  }
+  if (initIdx < 0) initIdx = 0;
+  const initColor = qvColors[initIdx] || { name: '', image: qvMain };
+  const initImg = initColor.image || qvMain;
   const sizes = Array.isArray(product.sizes) && product.sizes.length ? product.sizes : ['32', '34', '36', '38', '40', '42'];
   const stockNum = Number(product.stock);
   const isOutOfStock = Number.isFinite(stockNum) && stockNum <= 0 && product.stock !== '' && product.stock != null;
@@ -2149,7 +2310,7 @@ window.openQuickView = id => {
 
   $('#quickViewBody').innerHTML = `
     <div class="qv-top">
-      <div class="qv-media" id="qvMedia"><img class="qv-img" id="qvImg" src="${escapeHtml(safeImageUrl(qvMain))}" alt="${name}" onerror="imgFallback(this)"></div>
+      <div class="qv-media" id="qvMedia"><img class="qv-img" id="qvImg" src="${escapeHtml(safeImageUrl(initImg))}" alt="${name}" onerror="imgFallback(this)"></div>
       <div class="qv-summary">
         <div class="qv-head-row">
           <h2>${name}</h2>
@@ -2171,8 +2332,8 @@ window.openQuickView = id => {
       </div>
     </div>
     ${qvPhotoSwatches ? `<div class="qv-colors-pick">
-      <div class="qv-pick-head"><span>Colours</span><em id="qvColorName">· ${escapeHtml(qvColors[0].name)}</em></div>
-      <div class="qv-color-row" id="qvColorRow">${qvColors.map((c, i) => `<button type="button" class="qv-sw${i ? '' : ' on'}" data-color="${escapeHtml(c.name)}" data-img="${escapeHtml(safeImageUrl(c.image))}" title="${escapeHtml(c.name)}" aria-label="${escapeHtml(c.name)}" onclick="qvPickColor(this)"><img src="${escapeHtml(safeImageUrl(c.image))}" alt="" loading="lazy" onerror="imgFallback(this)"></button>`).join('')}</div>
+      <div class="qv-pick-head"><span>Colours</span><em id="qvColorName">${initColor.name ? '· ' + escapeHtml(initColor.name) : ''}</em></div>
+      <div class="qv-color-row" id="qvColorRow">${qvColors.map((c, i) => `<button type="button" class="qv-sw${i === initIdx ? ' on' : ''}" data-color="${escapeHtml(c.name)}" data-img="${escapeHtml(safeImageUrl(c.image))}" title="${escapeHtml(c.name)}" aria-label="${escapeHtml(c.name || 'Colour option')}" onclick="qvPickColor(this)"><img src="${escapeHtml(safeImageUrl(c.image))}" alt="" loading="lazy" onerror="imgFallback(this)"></button>`).join('')}</div>
     </div>` : ''}
     <div class="qv-sizes">
       <div class="qv-sizes-head"><span>Select size</span><em class="qv-size-err" id="qvSizeErr" hidden>Please select a size</em></div>
@@ -2204,7 +2365,7 @@ window.qvPickColor = btn => {
   $$('#qvColorRow .qv-sw').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   const em = $('#qvColorName');
-  if (em) em.textContent = '· ' + (btn.dataset.color || '');
+  if (em) em.textContent = btn.dataset.color ? ('· ' + btn.dataset.color) : '';
   const img = $('#qvImg');
   const media = $('#qvMedia');
   const src = btn.dataset.img || '';
