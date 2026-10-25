@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="mini-hero.css">
 <style>
 :root{--rani:#111111;--rani-dark:#000000;--gold:#D4AF37;--gold-deep:#111113;--gold-text:#8A6D1D;--gold-soft:#F8F8FA;--ivory:#FFFFFF;--cream:#F8F8FA;--ink:#111113;--muted:#6E6E73;--line:#E5E5EA;--blush:#F2F2F7;--plum:#1C1C1E;--green:#15803D;--danger:#B91C1C;--ease:cubic-bezier(.22,1,.36,1);--ios-spring:cubic-bezier(.32,.72,0,1);--font-main:"Barlow Condensed","Roboto Condensed",system-ui,sans-serif}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -30,7 +31,7 @@ img{display:block;max-width:100%}
 .is-busy{position:relative;pointer-events:none;color:transparent!important}
 .is-busy>*{opacity:0!important}
 .is-busy::after{content:"";box-sizing:border-box;position:absolute;left:50%;top:50%;width:15px;height:15px;margin:-7.5px 0 0 -7.5px;border:2.2px solid var(--spin,var(--ink));border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;z-index:6}
-:is(.btn-place,.btn-fill,.apply,.btn-save,.sheet .done,.btn-danger,.btn-wa).is-busy{--spin:#fff}
+:is(.btn-place,.btn-fill,.apply,.btn-save,.sheet .done,.btn-danger,.btn-wa,.ipop-btn.dark,.ipop-btn.del).is-busy{--spin:#fff}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* Header: Compact Solid Bar Matching Home Page (No Liquid Glass) */
@@ -88,7 +89,7 @@ main{padding:14px 12px}
 .loginline{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:var(--muted);margin:-6px 0 12px;padding:7px 10px;background:var(--cream);border-radius:10px;border:1px solid var(--line)}
 .loginline svg{width:14px;height:14px;color:var(--green)}
 
-/* Professional "Your Order" Item Cards with Sharp Square Aesthetic */
+/* Professional "Your Order" Item Cards with Sharp Square Aesthetic & Rotating Badge */
 .list{display:flex;flex-direction:column;gap:10px}
 .item{position:relative;display:flex;flex-direction:column;gap:10px;padding:12px;border:1px solid #EBEBEF;border-radius:0!important;background:#FFFFFF;transition:border-color .22s var(--ease)}
 @media(hover:hover){.item:hover{border-color:#111113}}
@@ -100,21 +101,55 @@ main{padding:14px 12px}
 @keyframes itemShimmer{to{background-position:-220% 0}}
 .item .pic .zoom{position:absolute;right:5px;bottom:5px;width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.94);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18)}
 .item .pic .zoom svg{width:12px;height:12px}
-.item-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
-.item-top-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.item-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.item-top-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;position:relative}
 .item-info h3{font-size:16px;font-weight:600;color:var(--ink);line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .item-info-btn{width:28px;height:28px;flex:0 0 28px;border:1px solid #ECECF0;border-radius:999px;background:#F8F8FA;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:transform .15s,background .2s,color .2s,border-color .2s}
-@media(hover:hover){.item-info-btn:hover{background:#111113;border-color:#111113;color:#fff}}
+@media(hover:hover){.item-info-btn:hover,.item-info-btn.is-active{background:#111113;border-color:#111113;color:#fff}}
 .item-info-btn:active{transform:scale(.9)}
 .item-info-btn svg{width:14px;height:14px;stroke-width:2}
 .item-variants{display:flex;flex-wrap:wrap;align-items:center;gap:5px}
 .v-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;background:var(--cream);border:1px solid var(--line);font-size:12px;font-weight:600;color:var(--ink)}
 .v-chip svg{width:11px;height:11px;color:var(--muted)}
+
+/* Rotating Ready to Ship / Perfect Outfit Badge Below Colour/Size/Qty (Like Home QuickView) */
+.item-rot-row{display:flex;align-items:center;gap:6px;margin-top:1px}
+.qv-rot{display:inline-flex;height:21px;overflow:hidden;border-radius:999px;background:rgba(21,128,61,.09);border:1px solid rgba(21,128,61,.2)}
+.qv-rot-track{display:flex;flex-direction:column;animation:qvRot 5s ease-in-out infinite;will-change:transform}
+.qv-rot-track>span{height:21px;line-height:21px;padding:0 10px;font-size:11.5px;font-weight:700;letter-spacing:.03em;color:#15803D;white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
+.qv-rot-track>span::before{content:"";width:5px;height:5px;border-radius:50%;background:#16A34A;flex-shrink:0}
+@keyframes qvRot{0%,38%{transform:translateY(0)}50%,88%{transform:translateY(-21px)}100%{transform:translateY(-42px)}}
+
 .item-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:2px}
 .item-price-box{display:flex;flex-direction:column;line-height:1.2}
 .item-price{font-size:17.5px;font-weight:700;color:var(--ink);display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
 .item-price s{font-size:13px;font-weight:500;color:#7D828A}
 .item-unit{font-size:12px;font-weight:500;color:var(--muted);margin-top:2px}
+
+/* Compact Side Slide-In Popover Menu when clicking Info Icon */
+.item-pop-scrim{position:fixed;inset:0;z-index:95;background:rgba(17,17,19,.22);backdrop-filter:blur(1.5px);-webkit-backdrop-filter:blur(1.5px);opacity:0;visibility:hidden;transition:opacity .22s ease,visibility 0s .22s}
+.item-pop-scrim.on{opacity:1;visibility:visible;transition-delay:0s}
+.item-side-pop{position:fixed;right:max(12px,calc(50% - 198px));top:50%;z-index:96;width:236px;background:#FFFFFF;border:1px solid #E2E2E8;border-radius:18px;padding:12px;box-shadow:0 18px 42px -8px rgba(17,17,19,.26),0 4px 12px rgba(17,17,19,.08);transform:translateX(120%) translateY(-50%) scale(.92);transform-origin:right center;opacity:0;visibility:hidden;pointer-events:none;transition:transform .32s cubic-bezier(.22,1,.36,1),opacity .22s ease,visibility 0s .32s}
+.item-side-pop.on{transform:translateX(0) translateY(-50%) scale(1);opacity:1;visibility:visible;pointer-events:auto;transition-delay:0s}
+.ipop-head{display:flex;align-items:center;gap:9px;padding-bottom:9px;margin-bottom:8px;border-bottom:1px solid var(--line)}
+.ipop-thumb{width:38px;height:38px;flex:0 0 38px;border-radius:8px;object-fit:cover;background:#F4F4F6;border:1px solid var(--line)}
+.ipop-meta{flex:1;min-width:0}
+.ipop-meta b{display:block;font-size:13.5px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2}
+.ipop-meta small{display:block;font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.ipop-close{width:24px;height:24px;flex:0 0 24px;border-radius:50%;border:1px solid var(--line);background:#F8F8FA;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;padding:0}
+.ipop-close svg{width:12px;height:12px;stroke-width:2.2}
+.ipop-actions{display:flex;flex-direction:column;gap:6px}
+.ipop-btn{width:100%;height:36px;padding:0 11px;border-radius:11px;border:1px solid var(--line);background:#F8F8FA;color:var(--ink);font-size:13px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;display:flex;align-items:center;gap:8px;text-align:left;transition:background .18s,border-color .18s,transform .15s}
+.ipop-btn:active{transform:scale(.97)}
+.ipop-btn svg{width:14px;height:14px;stroke-width:2;flex-shrink:0}
+.ipop-btn.dark{background:#111113;border-color:#111113;color:#fff}
+.ipop-btn.del{background:#FEF2F2;border-color:#FECACA;color:var(--danger)}
+.ipop-confirm{display:none;flex-direction:column;gap:7px;padding-top:2px;animation:iosAuthFade .2s var(--ease)}
+.ipop-confirm.on{display:flex}
+.ipop-confirm p{font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.35;text-align:center}
+.ipop-confirm-row{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ipop-confirm-row button{height:34px;border-radius:10px;font-size:12.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--line);background:#fff;color:var(--ink)}
+.ipop-confirm-row button.yes{background:var(--danger);border-color:var(--danger);color:#fff}
 
 /* Delivery & Payment Options */
 .opts{display:flex;flex-direction:column;gap:10px}
@@ -136,14 +171,16 @@ main{padding:14px 12px}
 .tag{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:var(--cream)}
 .tag.free{background:#ECFDF5;color:var(--green)}
 
-/* Coupons & Order Summary */
-.coupon h2{margin-bottom:14px}
-.promo{display:flex;gap:8px;margin:0;animation:rise .25s ease}
-.promo .fld{flex:1;height:46px;border:1px solid var(--line);border-radius:999px;padding:0 16px;font:inherit;font-size:14.5px;text-transform:uppercase;letter-spacing:.1em;font-weight:600;color:var(--ink);background:#fff;outline:none;transition:border-color .2s,box-shadow .2s}
-.promo .fld:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.18)}
-.fld.bad{border-color:var(--danger)!important;box-shadow:0 0 0 3px rgba(185,28,28,.08)}
-.apply{border:0;border-radius:999px;background:linear-gradient(135deg,#242429,#000);color:#fff;padding:0 22px;font-size:13.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 10px 20px -8px rgba(0,0,0,.45)}
-.cp-err{margin-top:10px;font-size:13px;font-weight:600;color:var(--danger);display:flex;align-items:center;gap:6px}
+/* Coupons & Order Summary (Apply Button Inside Input Pill) */
+.coupon h2{margin-bottom:12px}
+.promo{position:relative;display:flex;align-items:center;height:48px;background:#F8F8FA;border:1.5px solid var(--line);border-radius:999px;padding:4px 4px 4px 16px;margin:0;transition:border-color .2s,background .2s,box-shadow .2s}
+.promo:focus-within{border-color:#111113;background:#FFFFFF;box-shadow:0 0 0 3px rgba(17,17,19,.06)}
+.promo.bad{border-color:var(--danger)!important;background:#FEF2F2;box-shadow:0 0 0 3px rgba(185,28,28,.08)}
+.promo .fld{flex:1;min-width:0;height:100%;border:0;background:transparent;padding:0 8px 0 0;font:inherit;font-size:14.5px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:var(--ink);outline:none}
+.promo .fld::placeholder{text-transform:none;letter-spacing:.02em;font-weight:500;color:#8E8E93}
+.apply{height:38px;flex:0 0 auto;border:0;border-radius:999px;background:linear-gradient(135deg,#242429,#000);color:#fff;padding:0 18px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 6px 14px -4px rgba(0,0,0,.4)}
+.apply:active{transform:scale(.96)}
+.cp-err{margin-top:8px;font-size:12.5px;font-weight:600;color:var(--danger);display:flex;align-items:center;gap:6px}
 .applied{display:none;align-items:center;justify-content:space-between;gap:10px;background:#ECFDF5;border:1px dashed #6EE7B7;border-radius:14px;padding:12px 14px;font-size:14px;font-weight:600;color:var(--green)}
 .applied .ap-l{display:flex;align-items:center;gap:10px}
 .applied .ap-l svg{width:20px;height:20px;flex-shrink:0}
@@ -158,6 +195,16 @@ main{padding:14px 12px}
 .savings-banner{margin-top:12px;padding:9px 12px;border-radius:999px;background:#ECFDF5;border:1px solid #A7F3D0;color:var(--green);font-size:13px;font-weight:700;letter-spacing:.02em;display:flex;align-items:center;justify-content:center;gap:6px}
 .savings-banner svg{width:15px;height:15px}
 
+/* Mini Hero Banner Section (Matches Home Page Admin Panel Highlights) */
+#miniHeroSection{margin:6px 0 14px}
+.mini-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:18px;background:linear-gradient(100deg,#EDE5D3 35%,#FBF7EC 50%,#EDE5D3 65%);background-size:220% 100%;scrollbar-width:none;border:1px solid var(--line);box-shadow:0 10px 24px -14px rgba(36,32,36,.18)}
+.mini-track::-webkit-scrollbar{display:none}
+.mini-slide{flex:0 0 100%;scroll-snap-align:start;display:block;position:relative;border-radius:18px;overflow:hidden;aspect-ratio:16/7;max-height:170px;background:#F4F4F6}
+.mini-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.mini-dots{display:flex;justify-content:center;gap:5px;padding:8px 0 2px;min-height:12px}
+.mini-dot{height:4px;width:14px;border-radius:999px;background:#DCD3C1;transition:width .35s var(--ease),background .35s;cursor:pointer;border:0;padding:0}
+.mini-dot.is-active,.mini-dot.on{width:28px;background:linear-gradient(90deg,var(--gold),#A8842C)}
+
 /* Bottom Sticky Place Order Bar (Solid White, Matching Home Page) */
 .bar{position:fixed;left:0;right:0;bottom:0;margin:0 auto;width:100%;max-width:420px;z-index:50;display:flex;flex-direction:column;gap:10px;padding:10px 14px calc(12px + env(safe-area-inset-bottom,0px));background:#FFFFFF!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border-top:1px solid #E5E5EA;box-shadow:0 -8px 24px rgba(0,0,0,.06)}
 .bar-main{display:flex;align-items:center;justify-content:space-between;gap:12px}
@@ -167,41 +214,47 @@ main{padding:14px 12px}
 .btn-place:active{transform:scale(.98)}
 .btn-place svg{width:15px;height:15px}
 
-/* Full-Screen Address Form Modal (With Address Line 1 & Address Line 2) */
-.screen{position:fixed;inset:0;z-index:120;background:#FFFFFF;display:none;flex-direction:column;max-width:420px;margin:0 auto}
+/* Clean User-Friendly Full-Screen Address Form Modal (Grouped Card Layout, Zero Clipping) */
+.screen{position:fixed;inset:0;z-index:120;background:#F8F8FA;display:none;flex-direction:column;max-width:420px;margin:0 auto}
 .screen.on{display:flex;animation:slide .28s var(--ease)}
 @keyframes slide{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
-.screen-body{flex:1;overflow-y:auto;padding:16px 14px 28px}
-.screen-foot{padding:12px 16px calc(14px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--line)}
+.screen-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px 12px 36px}
+.screen-foot{flex:0 0 auto;padding:10px 14px calc(12px + env(safe-area-inset-bottom,0px));background:#FFFFFF;border-top:1px solid var(--line);box-shadow:0 -6px 20px rgba(0,0,0,.05)}
 .btn-save{width:100%;min-height:46px;padding:0 20px;border:0;border-radius:999px;background:linear-gradient(135deg,#242429,#000);color:#fff;font-size:15px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;box-shadow:0 12px 24px -10px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.14)}
-.sec-t{font-size:11.5px;font-weight:700;color:#A8842C;text-transform:uppercase;letter-spacing:.2em;margin:6px 2px 10px}
-.form{display:flex;flex-direction:column;gap:14px}
-.grp.fx>label{display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);margin:0 0 6px 2px}
-.grp.fx>label small{font-weight:600;color:var(--muted);font-size:11.5px;text-transform:none;letter-spacing:0}
-.fx-box{display:flex;align-items:center;gap:10px;height:48px;padding:0 10px 0 14px;background:#F8F8FA;border:1px solid var(--line);border-radius:14px;transition:background .2s,border-color .2s,box-shadow .2s}
-.fx-box>svg{width:16px;height:16px;color:var(--muted);flex-shrink:0}
+.addr-form-card{background:#FFFFFF;border:1px solid var(--line);border-radius:16px;padding:13px 12px;margin-bottom:10px;box-shadow:0 4px 14px -8px rgba(0,0,0,.06)}
+.sec-t{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:#A8842C;text-transform:uppercase;letter-spacing:.18em;margin:0 0 10px}
+.sec-t svg{width:13.5px;height:13.5px;color:#A8842C}
+.form{display:flex;flex-direction:column;gap:0}
+.form-stack{display:flex;flex-direction:column;gap:11px}
+.form-row2{display:grid;grid-template-columns:118px 1fr;gap:9px;align-items:start}
+.grp.fx>label{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);margin:0 0 4px 2px}
+.grp.fx>label span{color:var(--danger);margin-left:2px}
+.grp.fx>label small{font-weight:600;color:var(--muted);font-size:11px;text-transform:none;letter-spacing:0}
+.fx-box{display:flex;align-items:center;gap:8px;height:44px;padding:0 10px 0 12px;background:#F8F8FA;border:1px solid var(--line);border-radius:12px;transition:background .2s,border-color .2s,box-shadow .2s}
+.fx-box>svg{width:15px;height:15px;color:var(--muted);flex-shrink:0}
 .fx-box:focus-within{border-color:#111113;background:#FFFFFF;box-shadow:0 0 0 3px rgba(0,0,0,.06)}
 .fx-box:focus-within>svg{color:var(--ink)}
-.grp.fx .fld{flex:1;min-width:0;height:100%;border:0;background:transparent;box-shadow:none;padding:0;border-radius:0;font:inherit;font-size:15px;font-weight:500;color:var(--ink);outline:none}
-.grp.fx .fld::placeholder{color:#A1A1AA;font-weight:400}
+.grp.fx .fld{flex:1;min-width:0;height:100%;border:0;background:transparent;box-shadow:none;padding:0;border-radius:0;font:inherit;font-size:14.5px;font-weight:500;color:var(--ink);outline:none}
+.grp.fx .fld::placeholder{color:#9CA3AF;font-weight:400}
 .fx-box[role=button],.fx-box[role=button] .fld{cursor:pointer}
-.grp.fx .err{display:none;margin:5px 0 0 4px;font-size:12px;font-weight:600;color:var(--danger)}
+.grp.fx .err{display:none;margin:4px 0 0 3px;font-size:11.5px;font-weight:600;color:var(--danger);line-height:1.2}
 .grp.fx.bad .err{display:block}
 .grp.fx.bad .fx-box{border-color:var(--danger);background:#FEF2F2}
 .grp.fx.flash .fx-box{animation:flash 1.1s ease}
-@keyframes flash{0%,60%{border-color:var(--green);box-shadow:0 0 0 4px rgba(21,128,61,.18)}100%{box-shadow:none}}
-.fld.locked{background:#F3F4F6;color:var(--muted);cursor:not-allowed}
-.fx-box.locked{background:#F3F4F6;border-color:#E5E7EB}
+@keyframes flash{0%,60%{border-color:var(--green);box-shadow:0 0 0 3px rgba(21,128,61,.16)}100%{box-shadow:none}}
+.fld.locked{background:transparent;color:var(--muted);cursor:not-allowed}
+.fx-box.locked{background:#F2F2F7;border-color:#E5E5EA}
 .fx-box.locked .fld{color:var(--muted);cursor:not-allowed}
-.pin-status{font-size:12.5px;font-weight:600;color:var(--muted);margin-top:-6px;display:flex;align-items:center;gap:7px}
+.lock-pill{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--green);background:#ECFDF5;border:1px solid #BBF7D0;padding:2px 7px;border-radius:999px;flex-shrink:0}
+.pin-status{font-size:12px;font-weight:600;color:var(--muted);margin-top:6px;display:flex;align-items:center;gap:6px}
 .pin-status.ok{color:var(--green)}
 .pin-status.err{color:var(--danger)}
 .pin-status .mini{width:12px;height:12px;border:2px solid var(--rani);border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite}
 
-.chips{display:flex;gap:8px;flex-wrap:wrap}
-.chip{border:1px solid #E2D9CE;background:#fff;border-radius:999px;height:36px;padding:0 15px;font-size:13.5px;font-weight:600;color:var(--ink);display:inline-flex;align-items:center;gap:6px;transition:all .18s var(--ease)}
+.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.chip{border:1px solid var(--line);background:#F8F8FA;border-radius:11px;height:38px;padding:0 10px;font-size:13.5px;font-weight:600;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:all .18s var(--ease)}
 .chip svg{width:14px;height:14px}
-.chip.on{border-color:transparent;background:linear-gradient(135deg,#242429,#0a0a0c);color:#fff;box-shadow:0 6px 14px -4px rgba(0,0,0,.38)}
+.chip.on{border-color:#111113;background:#111113;color:#fff;box-shadow:0 4px 10px -3px rgba(0,0,0,.3)}
 
 /* Interactive Order Item Edit Sheet (Matching Home Page QuickView Sheet) */
 .sheet-wrap{position:fixed;inset:0;z-index:110;background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center}
@@ -227,6 +280,8 @@ main{padding:14px 12px}
 .sh-sw{width:46px;height:46px;flex:0 0 46px;border-radius:50%;border:2px solid var(--line);padding:2.5px;background:#fff;transition:transform .2s,border-color .2s}
 .sh-sw img{width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:top}
 .sh-sw.on{border-color:#161616;transform:scale(1.06);box-shadow:0 3px 8px rgba(0,0,0,.15)}
+.sheet .chips{display:flex;flex-wrap:wrap;gap:7px}
+.sheet .chip{height:38px;min-width:40px;padding:0 12px;border-radius:999px;flex:0 0 auto}
 .qty-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .qty{display:inline-flex;align-items:center;background:#F8F8FA;border:1px solid var(--line);border-radius:999px;padding:3px}
 .qty button{width:34px;height:34px;border:0;border-radius:50%;background:#fff;font-size:17px;color:var(--ink);font-weight:700;display:inline-flex;align-items:center;justify-content:center}
@@ -298,7 +353,7 @@ main{padding:14px 12px}
 .fs-cap small{display:block;font-size:13px;font-weight:400;opacity:.82;margin-top:2px}
 
 /* Footer & Skeletons */
-.foot{text-align:center;padding:16px 0 8px;border-top:1px solid var(--line);margin-top:18px;position:relative}
+.foot{text-align:center;padding:16px 0 8px;border-top:1px solid var(--line);margin-top:10px;position:relative}
 .foot::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
 .foot img{height:40px;width:auto;max-width:150px;object-fit:contain;display:block;margin:8px auto 10px}
 .foot-secure{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--green);display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:4px}
@@ -332,6 +387,7 @@ main{padding:14px 12px}
   .item-info h3{font-size:15px}
   .item-price{font-size:16px}
   .btn-place{min-width:166px;padding:0 18px;font-size:14px}
+  .form-row2{grid-template-columns:106px 1fr;gap:8px}
 }
 @media(prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
@@ -396,11 +452,11 @@ main{padding:14px 12px}
       </div>
     </section>
 
-    <!-- 6. OFFERS & COUPONS -->
+    <!-- 6. OFFERS & COUPONS (Apply Button Inside Input Pill) -->
     <section class="card coupon">
       <h2>Offers &amp; coupons</h2>
       <div class="promo" id="promoForm" style="display:flex">
-        <input class="fld" id="promoInput" placeholder="Enter coupon code" autocomplete="off" autocapitalize="characters" aria-label="Coupon code">
+        <input class="fld" id="promoInput" placeholder="Enter promo code" autocomplete="off" autocapitalize="characters" aria-label="Coupon code">
         <button class="apply" id="promoBtn" type="button" onclick="applyPromo()">Apply</button>
       </div>
       <p class="cp-err" id="promoErr" role="alert" hidden></p>
@@ -426,6 +482,12 @@ main{padding:14px 12px}
       </div>
     </section>
 
+    <!-- 8. MINI HERO BANNER (Admin Panel Highlights - Same as Home Screen) -->
+    <section id="miniHeroSection" aria-label="Highlights">
+      <div class="mini-track" id="miniTrack"></div>
+      <div class="mini-dots" id="miniDots"></div>
+    </section>
+
     <footer class="foot">
       <img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira Fashion" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='public/file_0000000015bc82119a5830b82bcd3a20.png'}else{this.style.display='none'}">
       <p class="foot-secure"><i data-lucide="shield-check"></i>100% Secure &amp; Verified Checkout</p>
@@ -441,49 +503,90 @@ main{padding:14px 12px}
   </div>
 </div>
 
-<!-- ADD / EDIT ADDRESS FULL SCREEN (With Address Line 1 & Address Line 2) -->
+<!-- COMPACT SIDE SLIDE-IN POPOVER FOR ORDER ITEM INFO -->
+<div class="item-pop-scrim" id="itemPopScrim" onclick="closeItemInfo()"></div>
+<aside class="item-side-pop" id="itemSidePop" role="dialog" aria-modal="true" aria-label="Product options">
+  <div class="ipop-head">
+    <img class="ipop-thumb" id="ipopImg" src="" alt="">
+    <div class="ipop-meta">
+      <b id="ipopName">Aavira Outfit</b>
+      <small id="ipopSub">Colour · Size · Qty</small>
+    </div>
+    <button type="button" class="ipop-close" onclick="closeItemInfo()" aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
+  <div class="ipop-actions" id="ipopMainActs">
+    <button type="button" class="ipop-btn dark" id="ipopEditBtn"><i data-lucide="sliders-horizontal"></i><span>Change colour / size / qty</span></button>
+    <a class="ipop-btn" href="./"><i data-lucide="plus-circle"></i><span>Add more outfits</span></a>
+    <button type="button" class="ipop-btn del" id="ipopDelBtn"><i data-lucide="trash-2"></i><span>Remove item</span></button>
+  </div>
+  <div class="ipop-confirm" id="ipopConfirm">
+    <p>Remove this outfit from your order?</p>
+    <div class="ipop-confirm-row">
+      <button type="button" onclick="cancelPopRemove()">Keep it</button>
+      <button type="button" class="yes" id="ipopConfirmYes">Yes, remove</button>
+    </div>
+  </div>
+</aside>
+
+<!-- CLEAN USER-FRIENDLY ADD / EDIT ADDRESS FULL SCREEN -->
 <div class="screen" id="addrScreen" role="dialog" aria-modal="true" aria-label="Add address">
   <header class="hdr">
     <div><button class="ib" type="button" onclick="closeAddrScreen()" aria-label="Close"><i data-lucide="arrow-left"></i></button></div>
-    <h1 id="addrTitle">Add address</h1>
+    <h1 id="addrTitle">Add delivery address</h1>
     <span></span>
   </header>
   <div class="screen-body">
     <form class="form" id="addressForm" autocomplete="off" novalidate onsubmit="return false">
-      <p class="sec-t">Contact details</p>
-      <div class="grp fx"><label for="ad_name">Full name <span>*</span></label>
-        <div class="fx-box"><i data-lucide="user"></i><input class="fld" id="ad_name" placeholder="Enter receiver's full name" autocomplete="name"></div><span class="err">Please enter your full name</span></div>
+      <!-- Card 1: Contact Details -->
+      <div class="addr-form-card">
+        <p class="sec-t"><i data-lucide="user-check"></i>Receiver contact</p>
+        <div class="form-stack">
+          <div class="grp fx"><label for="ad_name">Full name <span>*</span></label>
+            <div class="fx-box"><i data-lucide="user"></i><input class="fld" id="ad_name" placeholder="Receiver's full name" autocomplete="name"></div><span class="err">Please enter receiver's full name</span></div>
 
-      <div class="grp fx"><label for="ad_phone">Mobile number <span>*</span></label>
-        <div class="fx-box"><i data-lucide="phone"></i><input class="fld" id="ad_phone" placeholder="10-digit mobile number" type="tel" inputmode="numeric" maxlength="10"></div><span class="err">Valid 10-digit mobile number required</span></div>
+          <div class="grp fx"><label for="ad_phone">Mobile number <span>*</span></label>
+            <div class="fx-box"><i data-lucide="phone"></i><input class="fld" id="ad_phone" placeholder="10-digit mobile number" type="tel" inputmode="numeric" maxlength="10"></div><span class="err">Valid 10-digit mobile number required</span></div>
 
-      <div class="grp fx" id="emailGrp"><label for="ad_email">Email address <span>*</span></label>
-        <div class="fx-box" id="emailBox"><i data-lucide="mail"></i><input class="fld" id="ad_email" placeholder="yourname@gmail.com" type="email"></div><span class="err">Enter a valid email address</span></div>
+          <div class="grp fx" id="emailGrp"><label for="ad_email">Email address <span>*</span></label>
+            <div class="fx-box" id="emailBox"><i data-lucide="mail"></i><input class="fld" id="ad_email" placeholder="yourname@gmail.com" type="email"><span class="lock-pill" id="emailVerifiedPill" hidden>Verified</span></div><span class="err">Enter a valid email address</span></div>
+        </div>
+      </div>
 
-      <p class="sec-t" style="margin-top:6px">Address details</p>
-      <div class="grp fx"><label for="ad_pin">Pincode <span>*</span></label>
-        <div class="fx-box"><i data-lucide="map-pin"></i><input class="fld" id="ad_pin" placeholder="6-digit area pincode" inputmode="numeric" maxlength="6"></div><span class="err">6-digit pincode required</span></div>
-      <p class="pin-status" id="pinStatus" hidden></p>
+      <!-- Card 2: Delivery Location -->
+      <div class="addr-form-card">
+        <p class="sec-t"><i data-lucide="map-pinned"></i>Delivery location</p>
+        <div class="form-stack">
+          <div class="form-row2">
+            <div class="grp fx"><label for="ad_pin">Pincode <span>*</span></label>
+              <div class="fx-box"><i data-lucide="map-pin"></i><input class="fld" id="ad_pin" placeholder="6-digit" inputmode="numeric" maxlength="6"></div><span class="err">6-digit pincode</span></div>
 
-      <div class="grp fx"><label for="ad_city">District / City, State <span>*</span></label>
-        <div class="fx-box" role="button" tabindex="0" onclick="openDistrict()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDistrict()}"><i data-lucide="building-2"></i><input class="fld pick" id="ad_city" placeholder="Tap to select or auto-detect via pincode" readonly><i data-lucide="chevron-down"></i></div><span class="err">Please select your district / city</span></div>
+            <div class="grp fx"><label for="ad_city">District / City, State <span>*</span></label>
+              <div class="fx-box" role="button" tabindex="0" onclick="openDistrict()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDistrict()}"><i data-lucide="building-2"></i><input class="fld pick" id="ad_city" placeholder="Select city / state" readonly><i data-lucide="chevron-down"></i></div><span class="err">Select district / city</span></div>
+          </div>
+          <p class="pin-status" id="pinStatus" hidden></p>
 
-      <!-- ADDRESS LINE 1 -->
-      <div class="grp fx"><label for="ad_line1">Address line 1 <small>House / Flat / Building *</small></label>
-        <div class="fx-box"><i data-lucide="house"></i><input class="fld" id="ad_line1" placeholder="House no., flat, floor, building name"></div><span class="err">Enter house / flat / building details</span></div>
+          <!-- ADDRESS LINE 1 -->
+          <div class="grp fx"><label for="ad_line1"><span>Address line 1 <span>*</span></span><small>House / Flat / Building</small></label>
+            <div class="fx-box"><i data-lucide="house"></i><input class="fld" id="ad_line1" placeholder="House no., flat, floor, building name"></div><span class="err">Enter house / flat / building details</span></div>
 
-      <!-- ADDRESS LINE 2 -->
-      <div class="grp fx"><label for="ad_line2">Address line 2 <small>Street / Area / Landmark (optional)</small></label>
-        <div class="fx-box"><i data-lucide="compass"></i><input class="fld" id="ad_line2" placeholder="Street, colony, sector, nearby landmark"></div><span class="err">Enter street, area or nearby landmark</span></div>
+          <!-- ADDRESS LINE 2 -->
+          <div class="grp fx"><label for="ad_line2"><span>Address line 2</span><small>Area / Landmark (Optional)</small></label>
+            <div class="fx-box"><i data-lucide="compass"></i><input class="fld" id="ad_line2" placeholder="Street, colony, sector, nearby landmark"></div></div>
 
-      <div class="grp fx"><label for="ad_map_link">Google Maps link <small>(Optional)</small></label>
-        <div class="fx-box"><i data-lucide="navigation"></i><input class="fld" id="ad_map_link" placeholder="Paste Google Maps location link (optional)" type="url"></div></div>
+          <!-- GOOGLE MAPS LINK -->
+          <div class="grp fx"><label for="ad_map_link"><span>Google Maps link</span><small>Optional</small></label>
+            <div class="fx-box"><i data-lucide="navigation"></i><input class="fld" id="ad_map_link" placeholder="Paste Google Maps location link" type="url"></div></div>
+        </div>
+      </div>
 
-      <p class="sec-t" style="margin-top:6px">Save address as</p>
-      <div class="chips" id="typeChips">
-        <button type="button" class="chip on" data-t="Home"><i data-lucide="house"></i>Home</button>
-        <button type="button" class="chip" data-t="Work"><i data-lucide="briefcase"></i>Work</button>
-        <button type="button" class="chip" data-t="Other"><i data-lucide="map-pin"></i>Other</button>
+      <!-- Card 3: Address Type -->
+      <div class="addr-form-card" style="margin-bottom:0">
+        <p class="sec-t"><i data-lucide="bookmark"></i>Save address as</p>
+        <div class="chips" id="typeChips">
+          <button type="button" class="chip on" data-t="Home"><i data-lucide="house"></i>Home</button>
+          <button type="button" class="chip" data-t="Work"><i data-lucide="briefcase"></i>Work</button>
+          <button type="button" class="chip" data-t="Other"><i data-lucide="map-pin"></i>Other</button>
+        </div>
       </div>
     </form>
   </div>
@@ -699,7 +802,8 @@ const state = {
   selectedId: '',
   editId: '',
   addrType: 'Home',
-  sheetIndex: -1
+  sheetIndex: -1,
+  popIndex: -1
 };
 
 const icons = () => { if (window.lucide) lucide.createIcons(); };
@@ -932,15 +1036,18 @@ const setType = t => {
 const applyEmailLock = () => {
   const emailInput = $('#ad_email');
   const emailBox = $('#emailBox');
+  const pill = $('#emailVerifiedPill');
   if (isLoggedIn()) {
     emailInput.value = loginEmail();
     emailInput.readOnly = true;
     emailInput.classList.add('locked');
     emailBox.classList.add('locked');
+    if (pill) pill.hidden = false;
   } else {
     emailInput.readOnly = false;
     emailInput.classList.remove('locked');
     emailBox.classList.remove('locked');
+    if (pill) pill.hidden = true;
   }
 };
 
@@ -1142,6 +1249,7 @@ const closeFull = () => {
 
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
+  if ($('#itemSidePop')?.classList.contains('on')) return closeItemInfo();
   if ($('#fsView').classList.contains('on')) return closeFull();
   if ($('#distWrap').classList.contains('on')) return closeDistrict();
   if ($('#sheetWrap').classList.contains('on')) return closeSheet();
@@ -1356,8 +1464,8 @@ const loadCart = () => {
     state.cart = state.cart.filter(item => !!state.db[item.productId]);
   } else if (!state.cart.length && isCanvasPreview()) {
     state.cart = [
-      { productId: 'xwrIGjub70rSRttRZ8pE', size: '36', color: 'Royal Maroon', image: DEMO_SVG_1, qty: 1 },
-      { productId: 'xwrIGjub70rSRttRZ8pE', size: '38', color: 'Emerald Green', image: DEMO_SVG_2, qty: 2 }
+      { productId: 'xwrIGjub70rSRttRZ8pE', size: '36', color: 'Red', image: DEMO_SVG_1, qty: 1 },
+      { productId: 'xwrIGjub70rSRttRZ8pE', size: '42', color: 'Emerald Green', image: DEMO_SVG_2, qty: 2 }
     ];
   }
 };
@@ -1428,12 +1536,21 @@ const render = () => {
         <div class="item-info">
           <div class="item-top-row">
             <h3>${esc(product.name)}</h3>
-            <button class="item-info-btn" type="button" onclick="openItemInfo(${index})" aria-label="Item options"><i data-lucide="info"></i></button>
+            <button class="item-info-btn" id="infoBtn-${index}" type="button" onclick="openItemInfo(${index}, this)" aria-label="Item options"><i data-lucide="info"></i></button>
           </div>
           <div class="item-variants">
             ${item.color ? `<span class="v-chip"><span>Colour: ${esc(item.color)}</span></span>` : ''}
             <span class="v-chip"><span>Size: ${esc(item.size || 'Free Size')}</span></span>
             <span class="v-chip"><span>Qty: ${item.qty}</span></span>
+          </div>
+          <div class="item-rot-row">
+            <span class="qv-rot" aria-hidden="true">
+              <span class="qv-rot-track">
+                <span>Ready to Ship</span>
+                <span>Perfect Outfit</span>
+                <span>Ready to Ship</span>
+              </span>
+            </span>
           </div>
           <div class="item-bottom">
             <div class="item-price-box">
@@ -1468,6 +1585,70 @@ const render = () => {
   }
 
   icons();
+};
+
+/* Compact Side Slide-In Popover Logic for Info Icon */
+window.openItemInfo = (index, btnEl) => {
+  const item = state.cart[index];
+  if (!item) return;
+  state.popIndex = index;
+  const product = getProductMeta(item);
+  const pop = $('#itemSidePop');
+  const scrim = $('#itemPopScrim');
+
+  $$('.item-info-btn.is-active').forEach(b => b.classList.remove('is-active'));
+  btnEl?.classList.add('is-active');
+
+  $('#ipopImg').src = safeUrl(item.image || product.imageMain || product.imageUrl || product.image) || FALLBACK_IMG;
+  $('#ipopImg').onerror = function () { this.onerror = null; this.src = FALLBACK_IMG; };
+  $('#ipopName').textContent = product.name || 'Aavira Outfit';
+  $('#ipopSub').textContent = `${item.color ? 'Colour: ' + item.color + ' · ' : ''}Size: ${item.size || 'Free'} · Qty: ${item.qty}`;
+
+  $('#ipopMainActs').style.display = 'flex';
+  $('#ipopConfirm').classList.remove('on');
+
+  $('#ipopEditBtn').onclick = () => {
+    const idx = state.popIndex;
+    closeItemInfo();
+    openSheet(idx);
+  };
+  $('#ipopDelBtn').onclick = () => {
+    $('#ipopMainActs').style.display = 'none';
+    $('#ipopConfirm').classList.add('on');
+  };
+  $('#ipopConfirmYes').onclick = () => {
+    const idx = state.popIndex;
+    closeItemInfo();
+    removeItem(idx);
+  };
+
+  /* Position near the clicked info button on screen while keeping inside viewport */
+  if (btnEl) {
+    const rect = btnEl.getBoundingClientRect();
+    const popHeight = 196;
+    const minTop = 58 + popHeight / 2;
+    const maxTop = window.innerHeight - 90 - popHeight / 2;
+    const targetCenterY = clamp(rect.bottom + 78, minTop, Math.max(minTop, maxTop));
+    pop.style.top = targetCenterY + 'px';
+  } else {
+    pop.style.top = '50%';
+  }
+
+  scrim.classList.add('on');
+  pop.classList.add('on');
+  navigator.vibrate?.(18);
+  icons();
+};
+
+window.cancelPopRemove = () => {
+  $('#ipopConfirm').classList.remove('on');
+  $('#ipopMainActs').style.display = 'flex';
+};
+
+window.closeItemInfo = () => {
+  $('#itemSidePop')?.classList.remove('on');
+  $('#itemPopScrim')?.classList.remove('on');
+  $$('.item-info-btn.is-active').forEach(b => b.classList.remove('is-active'));
 };
 
 /* Interactive Edit Sheet: Change Size, Change Colour with Shimmer, Adjust Qty, or Duplicate for Another Colour */
@@ -1625,32 +1806,6 @@ const wishItem = () => {
 };
 
 window.closeInfoDialog = () => { $('#overlay').classList.remove('on'); syncBodyLock(); };
-window.openItemInfo = index => {
-  const item = state.cart[index];
-  if (!item) return;
-  const product = getProductMeta(item);
-  openDialog(`<div class="badge-ico" style="background:var(--rani)"><i data-lucide="info"></i></div>
-    <h2>${esc(product.name)}</h2>
-    <p>${item.color ? `Colour: ${esc(item.color)} · ` : ''}Size: ${esc(item.size || 'Free Size')} · Qty: ${item.qty}</p>
-    <div class="acts">
-      <button class="btn-danger" type="button" onclick="confirmRemoveItem(${index})"><i data-lucide="trash-2"></i>Delete item</button>
-      <a class="btn-line" href="./"><i data-lucide="plus"></i>Add more</a>
-      <button class="btn-fill" type="button" onclick="closeInfoDialog()">Close</button>
-    </div>`);
-};
-window.confirmRemoveItem = index => {
-  const item = state.cart[index];
-  if (!item) return closeInfoDialog();
-  const product = getProductMeta(item);
-  openDialog(`<div class="badge-ico" style="background:var(--danger)"><i data-lucide="trash-2"></i></div>
-    <h2>Remove this item?</h2>
-    <p>${esc(product.name)} (${item.color ? `Colour: ${esc(item.color)}, ` : ''}Size: ${esc(item.size || 'Free Size')}) will be removed from your order.</p>
-    <div class="acts">
-      <button class="btn-danger" type="button" onclick="removeItemConfirmed(${index})">Yes, remove</button>
-      <button class="btn-line" type="button" onclick="closeInfoDialog()">No, keep it</button>
-    </div>`);
-};
-window.removeItemConfirmed = index => { closeInfoDialog(); removeItem(index); };
 
 const removeItem = index => {
   if (!state.cart[index]) return;
@@ -1671,7 +1826,7 @@ const setPromoErr = m => {
   const e = $('#promoErr');
   e.textContent = m || '';
   e.hidden = !m;
-  $('#promoInput').classList.toggle('bad', !!m);
+  $('#promoForm').classList.toggle('bad', !!m);
 };
 
 const fetchPromo = async code => {
@@ -1734,6 +1889,50 @@ const removePromo = () => {
   setPromoView('');
   render();
   toast('Coupon removed');
+};
+
+/* Mini Hero Fallback / Admin Panel Loader (Works alongside mini-hero.js or standalone) */
+const initMiniHeroFallback = async () => {
+  const track = $('#miniTrack');
+  const dots = $('#miniDots');
+  if (!track || track.children.length > 0) return;
+  let list = [];
+  for (const fn of ['getMiniHeroData', 'getMiniBannersData', 'getBannersData']) {
+    if (typeof window[fn] === 'function') {
+      try {
+        const res = await window[fn]();
+        if (Array.isArray(res) && res.length) { list = res; break; }
+      } catch {}
+    }
+  }
+  if (!list.length) {
+    const cached = readJson('aavira_cache_banners', null);
+    if (cached && Array.isArray(cached.data) && cached.data.length) list = cached.data;
+  }
+  if (!list.length) {
+    $('#miniHeroSection').hidden = true;
+    return;
+  }
+  $('#miniHeroSection').hidden = false;
+  track.innerHTML = list.map(b => {
+    const imgUrl = safeUrl(b.imageUrl || b.image || b.url) || FALLBACK_IMG;
+    const link = b.link ? safeUrl(b.link) : '';
+    const imgTag = `<img src="${esc(imgUrl)}" alt="Aavira Highlights" loading="lazy" ${IMG_ERROR}>`;
+    return link
+      ? `<a class="mini-slide" href="${esc(link)}">${imgTag}</a>`
+      : `<div class="mini-slide">${imgTag}</div>`;
+  }).join('');
+  dots.innerHTML = list.length > 1
+    ? list.map((_, i) => `<button type="button" class="mini-dot ${i === 0 ? 'is-active' : ''}" data-i="${i}" aria-label="Slide ${i + 1}"></button>`).join('')
+    : '';
+  track.addEventListener('scroll', () => {
+    const idx = Math.round(track.scrollLeft / (track.clientWidth || 1));
+    $$('.mini-dot', dots).forEach((d, i) => d.classList.toggle('is-active', i === idx));
+  }, { passive: true });
+  dots.addEventListener('click', e => {
+    const dot = e.target.closest('.mini-dot');
+    if (dot) track.scrollTo({ left: Number(dot.dataset.i) * (track.clientWidth || 1), behavior: 'smooth' });
+  });
 };
 
 /* Order Placement & Confirmation Dialogs */
@@ -1990,11 +2189,13 @@ const init = async () => {
   await restorePromo();
   await new Promise(r => setTimeout(r, Math.max(0, 480 - (Date.now() - t0))));
   render();
+  setTimeout(initMiniHeroFallback, 350);
 };
 
 addEventListener('pageshow', () => $$('.is-busy').forEach(el => el.classList.remove('is-busy')));
 document.addEventListener('DOMContentLoaded', init);
 </script>
+<script src="mini-hero.js" defer></script>
 <script src="/cookie-consent.js" defer></script>
 </body>
 </html>
