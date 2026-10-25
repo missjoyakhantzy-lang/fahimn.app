@@ -95,16 +95,19 @@ a{color:inherit;text-decoration:none}
 .feat-list{display:flex;flex-direction:column;gap:20px}
 .grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 6px;margin-inline:-8px}
 
-/* Product Cards: Exact Reference Photo Style (Tall 3:4 Portrait Image, Sharp Clean Border, Top-Left Gold Bestseller Ribbon, Bold Price + Strikethrough MRP + Green OFF + Purple Lowest Price Line, Existing Rating/Dots/Eye Row Untouched) */
-.pcard{position:relative;min-width:0;background:#FFFFFF;border:1px solid #EBEBEF;border-radius:0;overflow:hidden;padding-bottom:10px;box-shadow:none!important;display:flex;flex-direction:column;transition:border-color .22s var(--ease)}
+/* Product Cards: Sharp 1:1 Square Image, Zero Rounded Corners, Colour Strip Badge with Soft Faded Shadow, Side Top Stock Overlay */
+.pcard{position:relative;min-width:0;background:#FFFFFF;border:1px solid #EBEBEF;border-radius:0!important;overflow:hidden;padding-bottom:10px;box-shadow:none!important;display:flex;flex-direction:column;transition:border-color .22s var(--ease)}
 @media(hover:hover){.pcard:hover{box-shadow:none!important;border-color:#111113}}
-.pcard-rail{flex:0 0 176px;scroll-snap-align:start}
+.pcard-rail{flex:0 0 172px;scroll-snap-align:start}
 .pcard-link{display:block;cursor:pointer}
-.pcard-media{position:relative;display:block;width:100%;aspect-ratio:3/3.85;border-radius:0;background:#ECECEE;overflow:hidden}
-.pcard-media img{width:100%;height:100%;aspect-ratio:3/3.85;object-fit:cover;border-radius:0;transition:transform .5s var(--ease)}
+.pcard-media{position:relative;display:block;width:100%;aspect-ratio:1/1;border-radius:0!important;background:#F4F4F6;overflow:hidden}
+.pcard-media img{width:100%;height:100%;aspect-ratio:1/1;object-fit:cover;border-radius:0!important;transition:transform .5s var(--ease)}
 @media(hover:hover){.pcard:hover .pcard-media img{transform:scale(1.04)}}
-.tags{position:absolute;left:0;top:8px;max-width:calc(100% - 12px);display:flex;flex-direction:column;align-items:flex-start;gap:4px;z-index:2;pointer-events:none}
-.tag-best{background:#DEC276;color:#111113;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:0 2px 2px 0;line-height:1.1;white-space:nowrap;box-shadow:none!important}
+.tags{position:absolute;left:0;top:8px;max-width:62%;display:flex;flex-direction:column;align-items:flex-start;gap:4px;z-index:2;pointer-events:none}
+.tag-best{background:#DEC276;color:#111113;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3.5px 8px;border-radius:0;line-height:1.1;white-space:nowrap;box-shadow:none!important}
+.tag-stock{position:absolute;right:0;top:8px;z-index:2;pointer-events:none;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3.5px 8px;line-height:1.1;white-space:nowrap}
+.tag-stock.oos{background:rgba(185,28,28,.94);color:#FFFFFF}
+.tag-stock.low-stk{background:rgba(180,83,9,.94);color:#FFFFFF}
 .tag-off{color:#2E8B57;background:transparent;font-size:13.5px;font-weight:700;letter-spacing:.02em;padding:0;border-radius:0;line-height:1.1;white-space:nowrap;box-shadow:none!important}
 .pcard-foot{display:flex;flex-direction:column;flex:1;padding:9px 10px 0;min-width:0}
 .pcard-text{display:block;min-width:0}
@@ -113,8 +116,9 @@ a{color:inherit;text-decoration:none}
 .price{font-size:16.5px;font-weight:700;letter-spacing:.01em;color:#111113}
 .mrp{font-size:13.5px;color:#7D828A;text-decoration:line-through;font-weight:500}
 .pcard-price .tag-off{font-size:13.5px;font-weight:700;color:#2E8B57;background:transparent;border:0;padding:0;box-shadow:none!important}
-.pcard-lowest{display:block;margin-top:3px;font-size:12.5px;font-weight:600;letter-spacing:.01em;color:#7C3AED;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.color-strip{display:inline-flex;align-items:center;gap:5px;margin-top:6px;padding:3px 9px;background:linear-gradient(90deg,#F3EFEA 0%,rgba(243,239,234,.55) 100%);color:#3F3A36;font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-left:2.5px solid #D4AF37;box-shadow:0 4px 10px -3px rgba(0,0,0,.1);width:fit-content;max-width:100%}
 .pcard-row{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:8px;padding-top:7px;border-top:1px solid #F2F2F6;min-width:0;width:100%}
+.qv-lowest{display:inline-block;margin-top:2px;font-size:12.5px;font-weight:700;letter-spacing:.02em;color:#7C3AED}
 .pcard-metalink{display:flex;align-items:center;gap:5px;min-width:0;flex:1;overflow:hidden}
 .go{margin-left:auto;flex:0 0 28px;width:28px;height:28px;padding:0;border:1px solid #111113;border-radius:8px;background:#111113;color:#fff;display:inline-flex;align-items:center;justify-content:center;box-shadow:none!important;transition:transform .2s var(--ease),background .2s,color .2s}
 @media(hover:hover){.go:hover{background:#fff;color:#111113;box-shadow:none!important}}
@@ -232,24 +236,18 @@ a{color:inherit;text-decoration:none}
 .footer-grid a:hover,.footer-grid .avck-footerlink:hover{color:#161616}
 .footer-copy{padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:#9A8F96;text-align:center}
 
-/* Floating Navigation, Cart Bar, Offer Banner & FABs - Coordinated Stack (Zero Overlap) */
-.bottom-nav{position:fixed;left:0;right:0;bottom:calc(10px + env(safe-area-inset-bottom,0px));margin:0 auto;width:calc(100% - 24px);max-width:396px;z-index:9000;background:rgba(255,255,255,.95);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:24px;box-shadow:0 18px 36px -14px rgba(36,32,36,.32);display:grid;grid-template-columns:repeat(5,1fr);padding:6px 4px;transition:transform .38s cubic-bezier(.4,0,.2,1)}
-body.nav-hidden .bottom-nav{transform:translateY(175%)}
-.nav-item{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;color:var(--muted);font-size:11.5px;font-weight:500;border-radius:16px;min-width:0}
-.nav-item svg{width:19px;height:19px;stroke-width:1.6}
-.nav-ai-img{width:22px;height:22px;border-radius:50%;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,.3)}
-.nav-item[aria-current="page"]{color:var(--rani);font-weight:600}
-.nav-item[aria-current="page"]::before{content:"";position:absolute;top:-7px;width:22px;height:3px;border-radius:0 0 3px 3px;background:linear-gradient(90deg,var(--gold),#A8842C)}
+/* Compact Always-Visible Professional Bottom Navigation Bar (Never Hides, Low Height) */
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;margin:0 auto;width:100%;max-width:420px;z-index:9000;background:rgba(255,255,255,.98);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid #E5E5EA;display:grid;grid-template-columns:repeat(5,1fr);padding:4px 6px calc(4px + env(safe-area-inset-bottom,0px));box-shadow:0 -2px 10px rgba(0,0,0,.03);transform:none!important}
+.nav-item{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:3px 0;color:#7D828A;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;min-width:0;transition:color .2s}
+.nav-item svg{width:17px;height:17px;stroke-width:1.75}
+.nav-ai-img{width:18px;height:18px;border-radius:50%;object-fit:cover}
+.nav-item[aria-current="page"]{color:#111113;font-weight:700}
+.nav-item[aria-current="page"]::before{content:"";position:absolute;top:-5px;width:20px;height:2px;background:#111113}
 
-.nav-restore{position:fixed;z-index:9050;right:max(12px,calc(50% - 198px));bottom:calc(14px + env(safe-area-inset-bottom,0px));width:40px;height:40px;padding:0;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.96);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 26px rgba(36,32,36,.22);opacity:0;pointer-events:none;transform:translateY(10px) scale(.92);transition:opacity .3s,transform .32s cubic-bezier(.4,0,.2,1),bottom .38s cubic-bezier(.4,0,.2,1)}
-body.nav-hidden .nav-restore{opacity:1;pointer-events:auto;transform:none}
-.nav-restore svg{width:18px;height:18px}
+.nav-restore{display:none!important}
 
-.cart-bar{position:fixed;z-index:9040;left:max(12px,calc(50% - 198px));right:auto;margin:0;width:auto;max-width:min(330px,calc(100% - 76px));bottom:calc(78px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#1c1c20,#000);color:#fff;border:1px solid rgba(212,175,55,.45);border-radius:999px;padding:5px 6px 5px 8px;box-shadow:0 18px 36px -12px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08);transition:bottom .38s cubic-bezier(.4,0,.2,1)}
+.cart-bar{position:fixed;z-index:9040;left:max(12px,calc(50% - 198px));right:auto;margin:0;width:auto;max-width:min(330px,calc(100% - 76px));bottom:calc(58px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#1c1c20,#000);color:#fff;border:1px solid rgba(212,175,55,.45);border-radius:999px;padding:5px 6px 5px 8px;box-shadow:0 14px 28px -10px rgba(0,0,0,.45)}
 .cart-bar[hidden]{display:none}
-body.has-offer .cart-bar{bottom:calc(142px + env(safe-area-inset-bottom,0px))}
-body.nav-hidden .cart-bar{bottom:calc(14px + env(safe-area-inset-bottom,0px))}
-body.nav-hidden.has-offer .cart-bar{bottom:calc(78px + env(safe-area-inset-bottom,0px))}
 .cb-imgs{display:flex;align-items:center;flex:none}
 .cb-imgs img{width:28px;height:28px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(255,255,255,.9);background:#fff}
 .cb-imgs img+img{margin-left:-10px}
@@ -273,11 +271,8 @@ body.nav-hidden .offer.is-on{width:calc(100% - 76px);left:max(12px,calc(50% - 19
 .offer .x:active{transform:scale(.9)}
 .offer .x svg{width:14px;height:14px;stroke-width:2.2}
 
-.fab-col{position:fixed;z-index:60;right:max(12px,calc(50% - 198px));bottom:calc(82px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:10px;transition:bottom .38s cubic-bezier(.4,0,.2,1)}
-body.has-offer .fab-col{bottom:calc(144px + env(safe-area-inset-bottom,0px))}
-body.has-cart.has-offer .fab-col{bottom:calc(194px + env(safe-area-inset-bottom,0px))}
-body.nav-hidden .fab-col{bottom:calc(64px + env(safe-area-inset-bottom,0px))}
-body.nav-hidden.has-offer .fab-col{bottom:calc(132px + env(safe-area-inset-bottom,0px))}
+.fab-col{position:fixed;z-index:60;right:max(12px,calc(50% - 198px));bottom:calc(60px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:8px;transition:bottom .3s ease}
+body.has-cart .fab-col{bottom:calc(104px + env(safe-area-inset-bottom,0px))}
 .fab{width:40px;height:40px;padding:0;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(36,32,36,.18);border:1px solid rgba(231,224,217,.7);background:#fff;color:var(--rani);transition:transform .2s var(--ease),opacity .25s,box-shadow .2s}
 @media(hover:hover){.fab:hover{transform:scale(1.08);box-shadow:0 12px 24px rgba(36,32,36,.24)}}
 .fab:active{transform:scale(.94)}
@@ -1063,23 +1058,8 @@ addEventListener('storage', event => {
   if (!event.key || event.key.startsWith('aavira_')) syncAllBadgesAndUI();
 });
 
-let lastScrollY = window.scrollY, navTicking = false;
-const handleNavScroll = () => {
-  const y = window.scrollY;
-  if (y > 160 && y > lastScrollY + 4) document.body.classList.add('nav-hidden');
-  else if (y < 60 || y < lastScrollY - 18) document.body.classList.remove('nav-hidden');
-  lastScrollY = y;
-  navTicking = false;
-};
-addEventListener('scroll', () => {
-  if (!navTicking) {
-    navTicking = true;
-    requestAnimationFrame(handleNavScroll);
-  }
-}, { passive: true });
 window.restoreNav = () => {
   document.body.classList.remove('nav-hidden');
-  lastScrollY = window.scrollY;
 };
 
 const updateNetworkBar = () => {
@@ -1525,12 +1505,14 @@ const priceInfo = product => {
 
 const isWished = id => store.json('aavira_wishlist', []).map(String).includes(String(id));
 
-const colorDots = product => {
-  const colors = Array.isArray(product.colors) ? product.colors : [];
-  if (!colors.length) return '';
-  const swatches = colors.slice(0, 3).map(c => `<i style="background:${colorHex(c)}"></i>`).join('');
-  const extra = colors.length > 3 ? `<b>+${colors.length - 3}</b>` : '';
-  return `<span class="dots" role="img" aria-label="${colors.length} ${colors.length > 1 ? 'colours' : 'colour'} available">${swatches}${extra}</span>`;
+const colorCountStrip = product => {
+  const names = Array.isArray(product.colors) && product.colors.length
+    ? product.colors
+    : (product.colorsInfo ? String(product.colorsInfo).split(',').map(s => s.trim()).filter(Boolean) : []);
+  const imgs = Array.isArray(product.colorImages) ? product.colorImages.filter(Boolean) : [];
+  const count = Math.max(names.length, imgs.length ? imgs.length + 1 : 0);
+  if (!count) return '';
+  return `<span class="color-strip">${count} ${count === 1 ? 'Colour' : 'Colours'}</span>`;
 };
 
 const ratingBadge = value => {
@@ -1540,12 +1522,14 @@ const ratingBadge = value => {
   return `<span class="rating ${tone}" role="img" aria-label="Rating ${clamped > 0 ? clamped.toFixed(1) : 'not rated yet'}"><i data-lucide="star"></i>${clamped > 0 ? clamped.toFixed(1) : '0.0'}</span>`;
 };
 
-const lowStockBadge = product => {
+const topSideStockTag = product => {
   const stock = Number(product.stock);
   if (Number.isFinite(stock) && stock <= 0 && product.stock !== '' && product.stock != null) {
-    return '<span class="low" style="color:#B91C1C;background:rgba(185,28,28,.08)">Out of stock</span>';
+    return '<span class="tag-stock oos">Out of Stock</span>';
   }
-  return Number.isFinite(stock) && stock > 0 && stock <= 4 ? `<span class="low">Only ${stock} left</span>` : '';
+  return Number.isFinite(stock) && stock > 0 && stock <= 4
+    ? `<span class="tag-stock low-stk">Only ${stock} Left</span>`
+    : '';
 };
 
 const cardHtml = (product, variant) => {
@@ -1558,22 +1542,22 @@ const cardHtml = (product, variant) => {
   const tags = product.bestseller
     ? '<span class="tags"><span class="tag-best">BESTSELLER</span></span>'
     : '';
+  const stockOverlay = topSideStockTag(product);
 
   return `<article class="pcard ${variant}">
     <span class="pcard-link" data-product="${id}">
-      <span class="pcard-media"><img src="${escapeHtml(safeImageUrl(product.img))}" alt="" loading="lazy" onerror="imgFallback(this)">${tags}</span>
+      <span class="pcard-media"><img src="${escapeHtml(safeImageUrl(product.img))}" alt="" loading="lazy" onerror="imgFallback(this)">${tags}${stockOverlay}</span>
     </span>
     <div class="pcard-foot">
       <a class="pcard-text" href="${href}" data-product="${id}">
         <span class="pcard-name">${name}</span>
         <span class="pcard-price"><span class="price">${formatPrice(price)}</span>${mrp > price ? `<span class="mrp">${formatPrice(mrp)}</span>` : ''}${savedAmt > 0 ? `<span class="tag-off">${formatPrice(savedAmt)} OFF</span>` : (off > 0 ? `<span class="tag-off">${off}% OFF</span>` : '')}</span>
-        <span class="pcard-lowest">Lowest price in last 30 days</span>
+        ${colorCountStrip(product)}
       </a>
       <div class="pcard-row">
-        <a class="pcard-metalink" href="${href}" data-product="${id}">${ratingBadge(rating)}${colorDots(product)}</a>
+        <a class="pcard-metalink" href="${href}" data-product="${id}">${ratingBadge(rating)}</a>
         <button type="button" class="go" data-qv="${id}" aria-label="Quick view ${name}"><i data-lucide="eye"></i></button>
       </div>
-      ${lowStockBadge(product)}
     </div>
   </article>`;
 };
@@ -1657,7 +1641,7 @@ window.renderProducts = () => {
 };
 
 window.loadSkeletons = () => {
-  const card = variant => `<div class="pcard ${variant}"><div class="skel" style="aspect-ratio:3/3.85"></div><div style="padding:10px 10px 0"><div class="skel" style="height:12px;width:75%;border-radius:4px;margin-bottom:8px"></div><div class="skel" style="height:12px;width:50%;border-radius:4px"></div></div></div>`;
+  const card = variant => `<div class="pcard ${variant}"><div class="skel" style="aspect-ratio:1/1"></div><div style="padding:10px 10px 0"><div class="skel" style="height:12px;width:75%;border-radius:4px;margin-bottom:8px"></div><div class="skel" style="height:12px;width:50%;border-radius:4px"></div></div></div>`;
   const repeat = (html, times) => Array(times).fill(html).join('');
   $('#category-container').innerHTML = repeat('<div class="cat"><div class="cat-ring skel"></div><div class="skel" style="height:10px;width:64px;border-radius:3px;margin:2px auto 0"></div></div>', 6);
   $('#trending-container').innerHTML = repeat(card('pcard-rail'), 3);
@@ -2176,6 +2160,7 @@ window.openQuickView = id => {
           ${mrp > price ? `<span class="mrp">${formatPrice(mrp)}</span>` : ''}
           ${off > 0 ? `<span class="tag-off">${off}% off</span>` : ''}
         </div>
+        <span class="qv-lowest">Lowest price in last 30 days</span>
         <div class="qv-badges">
           ${ratingBadge(clamp(Number(product.rating) || 0, 0, 5))}
           ${product.bestseller ? '<span class="tag-best">Bestseller</span>' : ''}
