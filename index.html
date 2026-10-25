@@ -76,13 +76,14 @@ a{color:inherit;text-decoration:none}
 .sec-link:active{transform:scale(.95)}
 .sec-head>a.sec-link::after{content:"\203A";font-size:14px;line-height:1;margin-left:1px}
 
-/* Collections: Vertical Grid (Up/Down Scroll, No Left/Right Slide) — Single Uniform Professional Curved Arch Style */
-.cats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 12px;overflow:visible;padding:6px 0 8px}
-.cat{width:100%;display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center}
-.cat-ring{position:relative;width:100%;max-width:108px;aspect-ratio:1/1.12;padding:3px;border-radius:50% 50% 40% 40% / 68% 68% 32% 32%;background:linear-gradient(145deg,#D4AF37,#F5E6B8 50%,#A8842C);box-shadow:none;transition:transform .3s var(--ease)}
-@media(hover:hover){.cat:hover .cat-ring{transform:translateY(-3px) scale(1.03)}}
-.cat-ring img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50% 50% 40% 40% / 68% 68% 32% 32%;background:#FFFFFF}
-.cat-name{font-size:14px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;text-align:center;line-height:1.2;color:var(--ink)}
+/* Collections: Professional Fashion Lookbook Portrait Tile Grid (Up/Down Scroll, No Left/Right Slide) */
+.cats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 10px;overflow:visible;padding:4px 0 8px}
+.cat{position:relative;width:100%;display:flex;flex-direction:column;align-items:stretch;gap:7px;background:#FFFFFF;border:1px solid #EAEAEF;border-radius:6px;overflow:hidden;padding-bottom:8px;transition:border-color .25s var(--ease),transform .25s var(--ease)}
+@media(hover:hover){.cat:hover{border-color:#111113;transform:translateY(-2px)}}
+.cat-ring{position:relative;width:100%;aspect-ratio:3/3.6;padding:0;border-radius:0;background:#F4F4F6;box-shadow:none;overflow:hidden}
+.cat-ring img{width:100%;height:100%;object-fit:cover;display:block;border-radius:0;background:#F4F4F6;transition:transform .45s var(--ease)}
+@media(hover:hover){.cat:hover .cat-ring img{transform:scale(1.05)}}
+.cat-name{font-size:13.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;text-align:center;line-height:1.2;color:#111113;padding:0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 .chips{display:flex;gap:8px;overflow-x:auto;margin:-4px 0 16px;padding:4px 2px}
 .chip{flex:0 0 auto;height:34px;padding:0 14px;border:1px solid #E2D9CE;background:#fff;color:var(--ink);border-radius:999px;font-size:13.5px;font-weight:600;line-height:1;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(36,32,36,.04);transition:background .2s,color .2s,border-color .2s,box-shadow .2s,transform .2s var(--ease)}
@@ -90,30 +91,30 @@ a{color:inherit;text-decoration:none}
 .chip:active{transform:scale(.96)}
 .chip[aria-pressed="true"]{background:linear-gradient(135deg,#242429,#0a0a0c);border-color:transparent;color:#fff;box-shadow:0 8px 16px -6px rgba(0,0,0,.4)}
 
-.rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 16px 12px 2px;margin-right:-16px}
+.rail{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 16px 12px 0;margin-right:-16px}
 .feat-list{display:flex;flex-direction:column;gap:20px}
-.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px 10px}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 6px;margin-inline:-8px}
 
-/* Product Cards: Pure Flat iOS Luxury Editorial Card — Zero Shadow, Crisp Hairline Border */
-.pcard{position:relative;min-width:0;background:#FFFFFF;border:1px solid #EAEAEF;border-radius:14px;overflow:hidden;padding-bottom:11px;box-shadow:none!important;display:flex;flex-direction:column;transition:border-color .25s var(--ease),transform .25s var(--ease)}
-@media(hover:hover){.pcard:hover{box-shadow:none!important;border-color:#111113;transform:translateY(-2px)}}
-.pcard-rail{flex:0 0 168px;scroll-snap-align:start}
+/* Product Cards: Exact Reference Photo Style (Tall 3:4 Portrait Image, Sharp Clean Border, Top-Left Gold Bestseller Ribbon, Bold Price + Strikethrough MRP + Green OFF + Purple Lowest Price Line, Existing Rating/Dots/Eye Row Untouched) */
+.pcard{position:relative;min-width:0;background:#FFFFFF;border:1px solid #EBEBEF;border-radius:0;overflow:hidden;padding-bottom:10px;box-shadow:none!important;display:flex;flex-direction:column;transition:border-color .22s var(--ease)}
+@media(hover:hover){.pcard:hover{box-shadow:none!important;border-color:#111113}}
+.pcard-rail{flex:0 0 176px;scroll-snap-align:start}
 .pcard-link{display:block;cursor:pointer}
-.pcard-media{position:relative;display:block;width:100%;aspect-ratio:1/1;border-radius:0;background:#F7F7FA;border-bottom:1px solid #F0F0F5;overflow:hidden}
-.pcard-media img{width:100%;height:100%;aspect-ratio:1/1;object-fit:cover;border-radius:0;transition:transform .5s var(--ease)}
-@media(hover:hover){.pcard:hover .pcard-media img{transform:scale(1.05)}}
-.tags{position:absolute;left:8px;top:8px;max-width:calc(100% - 16px);display:flex;flex-direction:column;align-items:flex-start;gap:4px;z-index:2;pointer-events:none}
-.tag-off,.tag-best{color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3.5px 8px;border-radius:6px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;box-shadow:none!important}
-.tag-off{background:#111113}
-.tag-best{background:#111113}
-.pcard-foot{display:flex;flex-direction:column;flex:1;padding:10px 10px 0;min-width:0}
+.pcard-media{position:relative;display:block;width:100%;aspect-ratio:3/3.85;border-radius:0;background:#ECECEE;overflow:hidden}
+.pcard-media img{width:100%;height:100%;aspect-ratio:3/3.85;object-fit:cover;border-radius:0;transition:transform .5s var(--ease)}
+@media(hover:hover){.pcard:hover .pcard-media img{transform:scale(1.04)}}
+.tags{position:absolute;left:0;top:8px;max-width:calc(100% - 12px);display:flex;flex-direction:column;align-items:flex-start;gap:4px;z-index:2;pointer-events:none}
+.tag-best{background:#DEC276;color:#111113;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:0 2px 2px 0;line-height:1.1;white-space:nowrap;box-shadow:none!important}
+.tag-off{color:#2E8B57;background:transparent;font-size:13.5px;font-weight:700;letter-spacing:.02em;padding:0;border-radius:0;line-height:1.1;white-space:nowrap;box-shadow:none!important}
+.pcard-foot{display:flex;flex-direction:column;flex:1;padding:9px 10px 0;min-width:0}
 .pcard-text{display:block;min-width:0}
-.pcard-name{display:block;font-size:15px;font-weight:600;letter-spacing:.02em;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#111113}
-.pcard-price{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:4px}
-.price{font-size:17px;font-weight:700;letter-spacing:.01em;color:#111113}
-.pcard-price .tag-off{font-size:10px;padding:2.5px 6px;border-radius:5px;background:#F2F2F7;color:#111113;border:1px solid #E5E5EA;box-shadow:none!important}
-.mrp{font-size:12.5px;color:var(--muted);text-decoration:line-through}
-.pcard-row{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:9px;padding-top:8px;border-top:1px solid #F4F4F8;min-width:0;width:100%}
+.pcard-name{display:block;font-size:15px;font-weight:500;letter-spacing:.01em;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#4A4F55}
+.pcard-price{display:flex;align-items:baseline;flex-wrap:wrap;gap:5px;margin-top:4px}
+.price{font-size:16.5px;font-weight:700;letter-spacing:.01em;color:#111113}
+.mrp{font-size:13.5px;color:#7D828A;text-decoration:line-through;font-weight:500}
+.pcard-price .tag-off{font-size:13.5px;font-weight:700;color:#2E8B57;background:transparent;border:0;padding:0;box-shadow:none!important}
+.pcard-lowest{display:block;margin-top:3px;font-size:12.5px;font-weight:600;letter-spacing:.01em;color:#7C3AED;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pcard-row{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:8px;padding-top:7px;border-top:1px solid #F2F2F6;min-width:0;width:100%}
 .pcard-metalink{display:flex;align-items:center;gap:5px;min-width:0;flex:1;overflow:hidden}
 .go{margin-left:auto;flex:0 0 28px;width:28px;height:28px;padding:0;border:1px solid #111113;border-radius:8px;background:#111113;color:#fff;display:inline-flex;align-items:center;justify-content:center;box-shadow:none!important;transition:transform .2s var(--ease),background .2s,color .2s}
 @media(hover:hover){.go:hover{background:#fff;color:#111113;box-shadow:none!important}}
@@ -1548,13 +1549,14 @@ const lowStockBadge = product => {
 };
 
 const cardHtml = (product, variant) => {
-  const { price, off } = priceInfo(product);
+  const { price, mrp, off } = priceInfo(product);
+  const savedAmt = mrp > price ? Math.round(mrp - price) : 0;
   const id = escapeHtml(product.id);
   const name = escapeHtml(product.name);
   const href = `product?id=${encodeURIComponent(product.id)}`;
   const rating = clamp(Number(product.rating) || 0, 0, 5);
   const tags = product.bestseller
-    ? '<span class="tags"><span class="tag-best">Bestseller</span></span>'
+    ? '<span class="tags"><span class="tag-best">BESTSELLER</span></span>'
     : '';
 
   return `<article class="pcard ${variant}">
@@ -1564,7 +1566,8 @@ const cardHtml = (product, variant) => {
     <div class="pcard-foot">
       <a class="pcard-text" href="${href}" data-product="${id}">
         <span class="pcard-name">${name}</span>
-        <span class="pcard-price"><span class="price">${formatPrice(price)}</span>${off > 0 ? `<span class="tag-off">${off}% off</span>` : ''}</span>
+        <span class="pcard-price"><span class="price">${formatPrice(price)}</span>${mrp > price ? `<span class="mrp">${formatPrice(mrp)}</span>` : ''}${savedAmt > 0 ? `<span class="tag-off">${formatPrice(savedAmt)} OFF</span>` : (off > 0 ? `<span class="tag-off">${off}% OFF</span>` : '')}</span>
+        <span class="pcard-lowest">Lowest price in last 30 days</span>
       </a>
       <div class="pcard-row">
         <a class="pcard-metalink" href="${href}" data-product="${id}">${ratingBadge(rating)}${colorDots(product)}</a>
@@ -1654,9 +1657,9 @@ window.renderProducts = () => {
 };
 
 window.loadSkeletons = () => {
-  const card = variant => `<div class="pcard ${variant}"><div class="skel" style="aspect-ratio:1/1"></div><div style="padding:10px 10px 0"><div class="skel" style="height:12px;width:75%;border-radius:6px;margin-bottom:8px"></div><div class="skel" style="height:12px;width:40%;border-radius:6px"></div></div></div>`;
+  const card = variant => `<div class="pcard ${variant}"><div class="skel" style="aspect-ratio:3/3.85"></div><div style="padding:10px 10px 0"><div class="skel" style="height:12px;width:75%;border-radius:4px;margin-bottom:8px"></div><div class="skel" style="height:12px;width:50%;border-radius:4px"></div></div></div>`;
   const repeat = (html, times) => Array(times).fill(html).join('');
-  $('#category-container').innerHTML = repeat('<div class="cat"><div class="cat-ring skel"></div><div class="skel" style="height:10px;width:58px;border-radius:5px"></div></div>', 6);
+  $('#category-container').innerHTML = repeat('<div class="cat"><div class="cat-ring skel"></div><div class="skel" style="height:10px;width:64px;border-radius:3px;margin:2px auto 0"></div></div>', 6);
   $('#trending-container').innerHTML = repeat(card('pcard-rail'), 3);
   $('#new-arrivals-container').innerHTML = repeat(card('pcard-grid'), 4);
 };
