@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Aavira Fashion - Unstitched</title>
+<meta name="theme-color" content="#000000">
+<meta name="description" content="Explore Unstitched from Aavira Fashion.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter,system-ui,sans-serif;background:#FDFBF7;color:#161616}
+.app{max-width:420px;margin:0 auto;background:#fff;min-height:100vh}
+header{display:flex;align-items:center;gap:10px;padding:14px 12px;border-bottom:1px solid #E5E0D8;position:sticky;top:0;background:#fff;z-index:10}
+header a.back{width:38px;height:38px;border:1px solid #E5E0D8;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:18px;background:#F6F6F6}
+header h1{font-family:"Playfair Display",serif;font-size:20px;color:#161616}
+header h1 span{color:#D4AF37}
+.hero{padding:22px 16px 8px}
+.hero h2{font-family:"Playfair Display",serif;font-size:28px;line-height:1.15}
+.hero p{color:#6B6369;font-size:13px;margin-top:8px;line-height:1.5}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px}
+.card{border:1px solid #E5E0D8;border-radius:16px;overflow:hidden;background:#fff}
+.card img{width:100%;aspect-ratio:3/4;object-fit:cover;background:#F4F1EA}
+.card .b{padding:10px}
+.card .n{font-size:13px;font-weight:600;line-height:1.35;min-height:36px}
+.card .p{margin-top:6px;font-weight:800}
+.card .m{color:#6B6369;text-decoration:line-through;font-weight:400;font-size:12px;margin-left:6px}
+.card .o{color:#15803D;font-size:12px;font-weight:700}
+.empty{grid-column:1/-1;text-align:center;padding:36px 12px;color:#6B6369;line-height:1.6}
+.empty a{display:inline-block;margin-top:14px;background:#161616;color:#fff;padding:11px 18px;border-radius:999px;font-weight:700}
+footer{text-align:center;padding:22px 12px 30px;color:#6B6369;font-size:12px;border-top:1px solid #E5E0D8}
+footer b{font-family:"Playfair Display",serif;color:#D4AF37;font-size:16px}
+</style>
+</head>
+<body>
+<div class="app">
+<header><a class="back" href="../index.html" aria-label="Back">&#8592;</a><h1>Aavira <span>Fashion</span></h1></header>
+<div class="hero"><h2>Unstitched</h2><p>Category: Unstitched &middot; Products below are loaded live from the Aavira catalog. If this category has no products yet, it will show as empty &mdash; no products are invented here.</p></div>
+<div class="grid" id="grid"><div class="empty">Loading products&hellip;</div></div>
+<footer><b>Aavira Fashion</b><br>Premium ethnic wear &middot; <a href="../index.html">Home</a> &middot; <a href="women.blouse.html">All Collections</a></footer>
+</div>
+<script>
+const CATEGORY = "unstitched";
+const grid = document.getElementById('grid');
+const money = n => '&#8377;' + Number(n||0).toLocaleString('en-IN');
+fetch('https://server-js-psi-five.vercel.app/api/products')
+  .then(r => r.json())
+  .then(j => {
+    const list = (j.data || []).filter(p => {
+      const c = String(p.category || '').toLowerCase();
+      const name = String(p.name || '').toLowerCase();
+      return c === CATEGORY || c.includes(CATEGORY) || name.includes(CATEGORY);
+    });
+    if (!list.length) {
+      grid.innerHTML = '<div class="empty"><b>No products yet in Unstitched.</b><br>New products added to this category will appear here automatically.<br><a href="women.blouse.html">Browse All Collections</a></div>';
+      return;
+    }
+    grid.innerHTML = list.map(p => {
+      const off = p.mrp > p.price ? Math.round((1 - p.price/p.mrp) * 100) : 0;
+      const img = p.imageMain || p.img || '';
+      return '<a class="card" href="../product?id=' + encodeURIComponent(p.id) + '">'
+        + (img ? '<img src="' + img + '" alt="" loading="lazy">' : '')
+        + '<div class="b"><div class="n">' + String(p.name||'').replace(/</g,'&lt;') + '</div>'
+        + '<div class="p">' + money(p.price) + (p.mrp > p.price ? '<span class="m">' + money(p.mrp) + '</span>' : '') + '</div>'
+        + (off ? '<div class="o">' + off + '% off</div>' : '') + '</div></a>';
+    }).join('');
+  })
+  .catch(() => {
+    grid.innerHTML = '<div class="empty"><b>Products could not be loaded right now.</b><br>Please check your connection and try again.<br><a href="women.blouse.html">Browse All Collections</a></div>';
+  });
+</script>
+</body>
+</html>
