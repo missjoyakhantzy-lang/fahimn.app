@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>My Account - Aavira Fashion</title>
 <meta name="theme-color" content="#ffffff">
-<meta name="description" content="Manage your Aavira Fashion account, orders, wishlist, and delivery addresses.">
+<meta name="description" content="Manage your Aavira Fashion account, orders, wishlist, cart activity, and delivery addresses.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
-:root{--rani:#111111;--rani-dark:#000000;--gold:#D4AF37;--gold-deep:#111113;--gold-text:#8A6D1D;--gold-soft:#F8F8FA;--ivory:#FFFFFF;--cream:#F8F8FA;--ink:#111113;--muted:#6E6E73;--line:#E5E5EA;--blush:#F2F2F7;--plum:#1C1C1E;--green:#15803D;--danger:#B91C1C;--ease:cubic-bezier(.22,1,.36,1);--ios-spring:cubic-bezier(.32,.72,0,1);--font-main:"Barlow Condensed","Roboto Condensed",system-ui,sans-serif}
+:root{--rani:#111111;--rani-dark:#000000;--gold:#D4AF37;--gold-deep:#111113;--gold-text:#8A6D1D;--gold-soft:#F8F8FA;--ivory:#FFFFFF;--cream:#F8F8FA;--ink:#111113;--muted:#6E6E73;--line:#E5E5EA;--blush:#F2F2F7;--plum:#1C1C1E;--green:#15803D;--danger:#DC2626;--danger-dark:#B91C1C;--ease:cubic-bezier(.22,1,.36,1);--ios-spring:cubic-bezier(.32,.72,0,1);--font-main:"Barlow Condensed","Roboto Condensed",system-ui,sans-serif}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{margin:0;font-family:var(--font-main);letter-spacing:.015em;background:var(--ivory);color:var(--ink);overflow-x:clip;overscroll-behavior-y:none;-webkit-font-smoothing:antialiased}
@@ -24,32 +24,39 @@ img{display:block;max-width:100%}
 [hidden]{display:none!important}
 .hidden{display:none!important}
 
-.app{max-width:420px;margin:0 auto;min-height:100vh;background:#FFFFFF;position:relative;padding-bottom:env(safe-area-inset-bottom,0px)}
-@media(min-width:640px){body{background:#FFFFFF}.app{box-shadow:0 0 50px rgba(0,0,0,.06);border-inline:1px solid #F0F0F5}}
+.app{max-width:420px;margin:0 auto;min-height:100vh;background:#FFFFFF;position:relative;padding-bottom:calc(34px + env(safe-area-inset-bottom,0px))}
+@media(min-width:640px){body{background:#F4F4F6}.app{box-shadow:0 0 50px rgba(0,0,0,.06);border-inline:1px solid #EBEBEF}}
 
 .is-busy{position:relative;pointer-events:none;color:transparent!important}
 .is-busy>*{opacity:0!important}
 .is-busy::after{content:"";box-sizing:border-box;position:absolute;left:50%;top:50%;width:15px;height:15px;margin:-7.5px 0 0 -7.5px;border:2.2px solid var(--spin,var(--ink));border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;z-index:6}
-:is(.btn-dark,.ios-auth-submit,.footer-news button,.name-save-btn).is-busy{--spin:#fff}
+:is(.btn-dark,.ios-auth-submit,.name-save-btn).is-busy{--spin:#fff}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-.hdr{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:6px;height:46px;padding:env(safe-area-inset-top,0) 10px 0;background:#FFFFFF!important;border-bottom:1px solid #E5E5EA}
+/* Header */
+.hdr{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:6px;height:48px;padding:env(safe-area-inset-top,0) 10px 0;background:rgba(255,255,255,.96)!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #E5E5EA}
 .hdr-left{display:flex;align-items:center;gap:2px;min-width:0;flex:1}
 .hdr-r{display:flex;align-items:center;gap:2px}
 .hdr-logo{flex-shrink:0;display:flex;align-items:center}
 .hdr img{height:28px;width:auto;max-width:98px;object-fit:contain}
-.ib{position:relative;width:32px;height:32px;flex:0 0 32px;padding:0;border:0;background:transparent;border-radius:50%;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s,transform .2s var(--ease)}
+.ib{position:relative;width:34px;height:34px;flex:0 0 34px;padding:0;border:0;background:transparent;border-radius:50%;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s,transform .2s var(--ease)}
 @media(hover:hover){.ib:hover{background:rgba(212,175,55,.14);color:var(--rani)}}
 .ib:active{transform:scale(.92)}
 svg.lucide{width:1em;height:1em;flex-shrink:0}
-.ib svg{width:17.5px;height:17.5px;stroke-width:1.7}
+.ib svg{width:18px;height:18px;stroke-width:1.8}
 .badge{position:absolute;top:1px;right:0;min-width:15px;height:15px;padding:0 3.5px;border-radius:999px;background:var(--rani);color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
 
-.web-banner{padding:22px 16px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#FAF8F5 0%,#FFFFFF 100%)}
-.web-eyebrow{display:block;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#A8842C;margin-bottom:4px}
-.web-head-row{display:flex;align-items:center;gap:14px;min-width:0}
+/* Profile Banner */
+.web-banner{position:relative;overflow:hidden;padding:20px 16px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#FAF8F5 0%,#FFFFFF 100%)}
+.banner-top-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.web-eyebrow{display:block;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#A8842C}
+.sync-pill{display:none;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;background:linear-gradient(135deg,#1C1C1E,#000000);border:1px solid rgba(212,175,55,.55);color:#FFFFFF;font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;box-shadow:0 4px 12px rgba(0,0,0,.16)}
+.sync-pill svg{width:11.5px;height:11.5px;color:var(--gold);animation:spin .8s linear infinite}
+.is-syncing .sync-pill{display:inline-flex}
+
+.web-head-row{position:relative;display:flex;align-items:center;gap:14px;min-width:0}
 .avatar-wrap{position:relative;flex-shrink:0}
-.profile-avatar{width:64px;height:64px;border-radius:50%;background:#111113;border:1.5px solid var(--gold);color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:700;overflow:hidden}
+.profile-avatar{position:relative;width:64px;height:64px;border-radius:50%;background:#111113;border:2px solid var(--gold);color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:700;overflow:hidden;transition:transform .25s var(--ease)}
 .profile-avatar img{width:100%;height:100%;object-fit:cover;display:block}
 .photo-btn{position:absolute;right:-2px;bottom:-2px;width:24px;height:24px;border-radius:50%;background:#111113;color:#fff;border:2px solid #fff;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.22)}
 .photo-btn svg{width:11.5px;height:11.5px;stroke-width:2}
@@ -58,13 +65,72 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .id-name{font-size:23px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.15;text-transform:uppercase;letter-spacing:.02em}
 .verified-ic{width:16px;height:16px;color:var(--green);flex-shrink:0}
 .id-email{font-size:13.5px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.id-actions{display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap}
-.btn-pill{height:38px;padding:0 18px;border-radius:999px;font-size:13.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:transform .15s,background .2s,border-color .2s}
-.btn-pill:active{transform:scale(.97)}
-.btn-pill svg{width:14px;height:14px;stroke-width:2}
+.id-actions{display:flex;align-items:center;gap:7px;margin-top:12px;flex-wrap:wrap}
+.btn-pill{height:35px;padding:0 14px;border-radius:999px;font-size:12.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:5px;transition:transform .15s,background .2s,border-color .2s}
+.btn-pill:active{transform:scale(.96)}
+.btn-pill svg{width:13px;height:13px;stroke-width:2}
 .btn-dark{background:linear-gradient(135deg,#242429,#000);color:#fff;border:0;box-shadow:0 10px 20px -10px rgba(0,0,0,.5)}
 .btn-soft{background:#FFFFFF;color:var(--ink);border:1.5px solid #D5CDC2}
-@media(hover:hover){.btn-soft:hover{border-color:#111113}}
+.btn-gold{background:linear-gradient(135deg,#FFFDF7,#F7EFE0);color:#8A6D1D;border:1.5px solid rgba(212,175,55,.55)}
+@media(hover:hover){.btn-soft:hover{border-color:#111113}.btn-gold:hover{border-color:#8A6D1D}}
+
+/* NEW Luxury Gold & Pearl Shimmer ("Simar") Animation When Sign-In Data Syncs */
+@keyframes luxuryShimmerBeam{
+  0%{transform:translateX(-110%) skewX(-18deg)}
+  100%{transform:translateX(210%) skewX(-18deg)}
+}
+@keyframes skelPulseBar{
+  0%{background-position:200% 0}
+  100%{background-position:-200% 0}
+}
+@keyframes avatarGoldPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(212,175,55,.65),0 0 0 4px rgba(17,17,19,.08)}
+  50%{box-shadow:0 0 0 4px rgba(212,175,55,.28),0 0 18px 2px rgba(212,175,55,.45)}
+}
+.web-banner.is-syncing::before,
+.ov-card.is-syncing::before,
+.cart-act-bar.is-syncing::before{
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  width:65%;
+  pointer-events:none;
+  z-index:9;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,250,235,.55) 35%,rgba(212,175,55,.28) 50%,rgba(255,255,255,.88) 65%,transparent 100%);
+  animation:luxuryShimmerBeam .85s cubic-bezier(.4,0,.2,1) infinite;
+}
+.web-banner.is-syncing .profile-avatar{
+  animation:avatarGoldPulse 1s ease-in-out infinite;
+  border-color:var(--gold);
+}
+.sync-skel-lines{display:none;flex-direction:column;gap:7px;padding:2px 0}
+.web-banner.is-syncing .sync-skel-lines{display:flex}
+.web-banner.is-syncing .id-live-content{display:none}
+.skel-bar{
+  height:14px;
+  border-radius:999px;
+  background:linear-gradient(90deg,#EFECE6 20%,#FAF6ED 45%,#E4DAC8 55%,#EFECE6 80%);
+  background-size:220% 100%;
+  animation:skelPulseBar 1s linear infinite;
+}
+.skel-bar.lg{width:68%;height:21px}
+.skel-bar.md{width:84%;height:13px}
+.skel-bar.pills{width:54%;height:30px;margin-top:4px}
+.ov-card.is-syncing .ov-cnt{
+  min-width:34px;
+  height:20px;
+  border-radius:999px;
+  color:transparent!important;
+  background:linear-gradient(90deg,#EFECE6 20%,#FAF6ED 45%,#E4DAC8 55%,#EFECE6 80%);
+  background-size:220% 100%;
+  animation:skelPulseBar 1s linear infinite;
+}
+.ov-card.is-syncing .ov-ic{
+  border-color: rgba(212,175,55,.65);
+  background: #FFFDF7;
+}
 
 .name-editor{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);display:none;animation:iosAuthFade .22s var(--ease)}
 .name-editor.on{display:block}
@@ -75,131 +141,171 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .name-save-btn{height:42px;padding:0 18px;border:0;border-radius:999px;background:linear-gradient(135deg,#242429,#000);color:#fff;font-size:13.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:6px;flex-shrink:0}
 .name-cancel-btn{height:42px;width:42px;border:1px solid var(--line);border-radius:50%;background:#F8F8FA;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
 
-.web-sec{padding:22px 16px 0}
-.web-sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:12px}
-.web-sec-head h2{font-size:20px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--ink)}
-.web-sec-head span{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+/* Sections */
+.web-sec{padding:18px 16px 0}
+.web-sec-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.web-sec-head h2{font-size:18px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink)}
 
-.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.ov-card{display:flex;flex-direction:column;justify-content:space-between;padding:14px;background:#FFFFFF;border:1px solid #EBEBEF;min-height:92px;transition:border-color .2s var(--ease),background .2s}
+/* 3-Card Activity Overview (My Orders, My Wishlist, My Cart — Single Clean Name Only) */
+.overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ov-card{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:12px;background:#FFFFFF;border:1px solid #EBEBEF;border-radius:14px;min-height:82px;transition:border-color .2s var(--ease),background .2s,transform .15s}
 @media(hover:hover){.ov-card:hover{border-color:#111113;background:#FAFAFC}}
-.ov-card:active{background:#F8F8FA}
-.ov-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.ov-ic{width:34px;height:34px;border-radius:50%;background:#F8F8FA;border:1px solid var(--line);color:var(--ink);display:inline-flex;align-items:center;justify-content:center}
-.ov-ic svg{width:16px;height:16px;stroke-width:1.8}
-.ov-cnt{font-size:20px;font-weight:700;color:var(--ink);line-height:1}
-.ov-bot{margin-top:12px}
-.ov-title{display:block;font-size:15px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--ink);line-height:1.15}
-.ov-sub{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.ov-card:active{background:#F8F8FA;transform:scale(.98)}
+.ov-top{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.ov-ic{width:32px;height:32px;border-radius:50%;background:#F8F8FA;border:1px solid var(--line);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:border-color .25s,background .25s}
+.ov-ic svg{width:15px;height:15px;stroke-width:1.9}
+.ov-cnt{min-width:18px;font-size:20px;font-weight:700;color:var(--ink);line-height:1;text-align:right}
+.ov-bot{margin-top:10px}
+.ov-title{display:block;font-size:14px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--ink);line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-.web-list{border:1px solid #EBEBEF;background:#FFFFFF}
-.web-row{width:100%;min-height:54px;padding:12px 14px;border:0;border-bottom:1px solid #EFEFF4;background:#FFFFFF;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;color:var(--ink);transition:background .18s}
+/* Live Cart Activity Strip Inside Activity Section (Uses shopping-cart Icon) */
+.cart-act-bar{position:relative;overflow:hidden;margin-top:8px;padding:10px 12px;border-radius:14px;border:1px solid #E5E5EA;background:linear-gradient(135deg,#FAF8F5,#FFFFFF);display:flex;align-items:center;justify-content:space-between;gap:10px;transition:border-color .2s}
+@media(hover:hover){.cart-act-bar:hover{border-color:#111113}}
+.ca-left{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.ca-thumbs{display:flex;align-items:center;flex-shrink:0}
+.ca-thumbs img{width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid #FFFFFF;background:#F2F2F7;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.ca-thumbs img+img{margin-left:-10px}
+.ca-ic{width:30px;height:30px;border-radius:50%;background:#111113;color:#FFFFFF;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.ca-ic svg{width:14px;height:14px;stroke-width:2}
+.ca-title{font-size:14.5px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ca-go{height:30px;padding:0 12px;border-radius:999px;background:#111113;color:#FFFFFF;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;gap:4px;flex-shrink:0}
+.ca-go svg{width:13px;height:13px;stroke-width:2.2}
+
+/* Quick Action Pill Buttons Grid (More Buttons, Single Clean Name Only) */
+.quick-btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.q-act-btn{height:44px;padding:0 12px;border-radius:12px;border:1px solid #EBEBEF;background:#FFFFFF;color:var(--ink);font-size:14px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between;gap:8px;transition:border-color .2s,background .2s,transform .15s}
+@media(hover:hover){.q-act-btn:hover{border-color:#111113;background:#FAF8F5}}
+.q-act-btn:active{transform:scale(.98);background:#F4F4F6}
+.q-act-l{display:flex;align-items:center;gap:8px;min-width:0}
+.q-act-l svg{width:16px;height:16px;color:var(--ink);stroke-width:1.9;flex-shrink:0}
+.q-act-l span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.q-act-r{width:14px;height:14px;color:var(--muted);flex-shrink:0}
+
+/* Clean Single-Line List Rows (Only ONE Name Per Item — Zero Subtitle Clutter) */
+.web-list{border:1px solid #EBEBEF;border-radius:14px;overflow:hidden;background:#FFFFFF}
+.web-row{width:100%;min-height:48px;padding:10px 14px;border:0;border-bottom:1px solid #EFEFF4;background:#FFFFFF;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;color:var(--ink);transition:background .18s}
 .web-row:last-child{border-bottom:0}
 @media(hover:hover){.web-row:hover{background:#FAF8F5}}
 .web-row:active{background:#F4F4F6}
 .web-row-l{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
 .web-row-l>svg{width:18px;height:18px;color:var(--ink);stroke-width:1.8;flex-shrink:0}
-.web-row-txt{min-width:0;flex:1}
-.web-row-title{display:block;font-size:15px;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:var(--ink);line-height:1.2}
-.web-row-sub{display:block;font-size:12.5px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.web-row-title{display:block;font-size:15px;font-weight:600;letter-spacing:.025em;text-transform:uppercase;color:var(--ink);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .web-row-r{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .web-row-r svg{width:15px;height:15px;color:var(--muted)}
-.pill-count{min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#111113;color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+.tag-pill{padding:2px 8px;border-radius:999px;background:#FFF8E6;border:1px solid rgba(212,175,55,.45);color:#8A6D1D;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
 
+/* Toggle Switch */
 .sw-pill{width:40px;height:22px;border-radius:999px;background:#D8D8DF;position:relative;transition:background .22s var(--ease);flex-shrink:0;border:0;padding:0;cursor:pointer}
 .sw-pill::after{content:"";position:absolute;top:2.5px;left:2.5px;width:17px;height:17px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(0,0,0,.22);transition:transform .22s var(--ios-spring)}
 .sw-pill.on,.toggle-on.sw-pill{background:#111113}
 .sw-pill.on::after,.toggle-on.sw-pill::after{transform:translateX(18px)}
 
-.wa-strip{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:14px;padding:13px 15px;font-size:14px;font-weight:500;color:#166534;line-height:1.35}
-.wa-strip b{font-weight:700;letter-spacing:.02em;text-transform:uppercase}
-.wa-strip a{flex:0 0 auto;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#25D366,#16A34A);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(22,163,74,.32)}
-.wa-strip a svg{width:19px;height:19px;stroke-width:2}
+/* WhatsApp Stylist Strip (Clean Single-Line) */
+.wa-strip{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:14px;padding:12px 14px;font-size:14.5px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:#166534}
+.wa-strip a{flex:0 0 auto;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#25D366,#16A34A);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(22,163,74,.32)}
+.wa-strip a svg{width:18px;height:18px;stroke-width:2}
 
-.logout-btn{width:100%;height:46px;border:1.5px solid #FECACA;background:#FEF2F2;color:var(--danger);border-radius:999px;font-size:14.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s,background .2s}
+.logout-btn{width:100%;height:46px;border:1.5px solid #FECACA;background:#FEF2F2;color:var(--danger-dark);border-radius:999px;font-size:14.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s,background .2s}
 .logout-btn:active{transform:scale(.98)}
 .logout-btn svg{width:16px;height:16px;stroke-width:2}
 
-.footer{margin-top:36px;position:relative;background:#FFFFFF;color:var(--ink);padding:32px 16px 30px;border-top:1px solid var(--line)}
-.footer::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
-.footer-logo-link{display:inline-flex}
-.footer-logo{height:46px;width:auto;max-width:170px;object-fit:contain}
-.footer-tag{margin:6px 0 0;font-size:14px;line-height:1.5;color:var(--muted)}
-.footer-news{margin:22px 0 4px}
-.footer-news label{display:block;font-size:14.5px;font-weight:600;margin-bottom:10px;color:var(--ink)}
-.footer-news-row{display:flex;align-items:center;gap:8px}
-.footer-news input{flex:1;min-width:0;height:44px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 16px;color:var(--ink);font-size:15px;font-family:inherit;outline:none;transition:border-color .2s,box-shadow .2s}
-.footer-news input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.18)}
-.footer-news button{height:44px;flex:0 0 auto;background:linear-gradient(135deg,#D4AF37,#A8842C);color:#1a1a1a;border:0;border-radius:999px;padding:0 20px;font-weight:700;font-size:14px;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 10px 20px -10px rgba(168,132,44,.7)}
-.footer h3{font-family:var(--font-main);font-size:16px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;margin:0;color:var(--gold-text)}
-.ftr-sec{margin-top:26px}
-.ftr-sec-head{display:flex;align-items:center;gap:9px;margin-bottom:12px}
-.ftr-sec-head .ic{width:30px;height:30px;flex:0 0 auto;border-radius:10px;background:#fff;border:1px solid var(--line);color:var(--gold-text);display:flex;align-items:center;justify-content:center}
-.ftr-sec-head .ic svg{width:15px;height:15px}
-.ftr-logos{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center}
-.ftr-logo-card{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;background:transparent;padding:4px 8px}
-.ftr-logo-card img{height:26px;width:auto;max-width:110px;object-fit:contain;display:block;mix-blend-mode:multiply}
-.ftr-logo-card img.tall{height:32px}
-.ftr-logo-name{font-size:13.5px;font-weight:700;color:var(--ink)}
-.ftr-logo-card.txt{font-size:13.5px;font-weight:700;color:var(--ink)}
-.ftr-logo-card.txt svg{width:16px;height:16px;color:var(--gold-text)}
-.footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px 16px;padding:24px 0;margin-top:26px;border-top:1px solid var(--line)}
-.footer-grid h3{margin-bottom:10px}
-.footer-grid a,.footer-grid .avck-footerlink{display:block;font-size:14px;color:var(--muted);line-height:2;background:none;border:0;padding:0;text-align:left;text-decoration:none}
-.footer-grid a:hover,.footer-grid .avck-footerlink:hover{color:#161616}
-.footer-copy{padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:#9A8F96;text-align:center}
-
+/* Confirm & Promo/Refer Modals */
 .confirm-ov{position:fixed;inset:0;z-index:160;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:20px}
 .confirm-ov.on{display:flex}
-.confirm-box{width:100%;max-width:330px;background:#FFFFFF;border:1px solid var(--line);border-radius:22px;padding:22px 18px 18px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.28);animation:popIn .24s var(--ease)}
+.confirm-box{width:100%;max-width:340px;background:#FFFFFF;border:1px solid var(--line);border-radius:22px;padding:22px 18px 18px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.28);animation:popIn .24s var(--ease)}
 @keyframes popIn{from{transform:scale(.92);opacity:0}to{transform:none;opacity:1}}
 .confirm-ic{width:48px;height:48px;border-radius:50%;background:#FEF2F2;color:var(--danger);border:1px solid #FECACA;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.confirm-ic.gold{background:#FFF8E6;color:#8A6D1D;border-color:rgba(212,175,55,.45)}
 .confirm-ic svg{width:22px;height:22px;stroke-width:2}
 .confirm-box h3{font-size:20px;font-weight:700;text-transform:uppercase;color:var(--ink);margin-bottom:5px}
-.confirm-box p{font-size:13.5px;color:var(--muted);line-height:1.45;margin-bottom:16px}
+.confirm-box p{font-size:13.5px;color:var(--muted);line-height:1.45;margin-bottom:14px}
 .confirm-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .confirm-btns button{height:40px;border-radius:999px;font-size:13.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--line);background:#F8F8FA;color:var(--ink)}
 .confirm-btns button.yes{background:var(--danger);border-color:var(--danger);color:#fff}
+.confirm-btns button.dark{background:#111113;border-color:#111113;color:#fff}
+.modal-fld{width:100%;height:44px;border:1.5px solid var(--line);border-radius:12px;padding:0 14px;font:inherit;font-size:15px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-align:center;color:var(--ink);margin-bottom:12px;outline:none}
+.modal-fld:focus{border-color:#111113}
 
+/* Auth Modal + RED IN-POPUP ERROR ALERT (For "Too Many Requests", Invalid Credentials, OTP Errors, etc.) */
 .scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9990;opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .3s}
 .scrim.is-open{opacity:1;visibility:visible;transition-delay:0s}
 .layer{position:fixed;z-index:10000;visibility:hidden;pointer-events:none;transition:transform .38s var(--ease),opacity .3s,visibility 0s .38s}
 .layer.is-open{visibility:visible;pointer-events:auto;transform:none;opacity:1;transition-delay:0s}
 .sec-eyebrow{display:block;font-size:11.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#A8842C;margin-bottom:4px}
-#authPopupModal{top:50%;left:50%;right:auto;bottom:auto;width:calc(100% - 28px);max-width:380px;max-height:92dvh;overflow-y:auto;background:#FFFFFF;border:1px solid #E5E5EA;border-radius:24px;padding:22px 18px 20px;box-shadow:0 24px 60px rgba(0,0,0,.28);transform:translate(-50%,-46%) scale(.94);opacity:0;transition:transform .42s cubic-bezier(.22,1,.36,1),opacity .32s ease,visibility 0s .42s}
+#authPopupModal{top:50%;left:50%;right:auto;bottom:auto;width:calc(100% - 28px);max-width:380px;max-height:92dvh;overflow-y:auto;background:#FFFFFF;border:1px solid #E5E5EA;border-radius:24px;padding:22px 18px 18px;box-shadow:0 24px 60px rgba(0,0,0,.28);transform:translate(-50%,-46%) scale(.94);opacity:0;transition:transform .42s cubic-bezier(.22,1,.36,1),opacity .32s ease,visibility 0s .42s}
 #authPopupModal.is-open{transform:translate(-50%,-50%) scale(1);opacity:1;transition:transform .42s cubic-bezier(.22,1,.36,1),opacity .32s ease,visibility 0s 0s}
-.ios-auth-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+.ios-auth-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
 .ios-auth-close{width:32px;height:32px;flex:0 0 32px;border-radius:50%;border:1px solid #E5E5EA;background:#F8F8FA;color:#111113;display:inline-flex;align-items:center;justify-content:center;padding:0}
 .ios-auth-close svg{width:15px;height:15px;stroke-width:2.2}
 .ios-auth-head h2{font-size:23px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:#111113;line-height:1.15}
 .ios-auth-head p{margin:3px 0 0;font-size:13.5px;color:var(--muted)}
-.ios-seg{display:grid;grid-template-columns:1fr 1fr;padding:3px;background:#F2F2F7;border-radius:12px;margin-bottom:14px}
+
+/* RED ERROR BOX INSIDE LOGIN POPUP (Too Many Requests & Validation Errors) */
+.auth-err-alert{
+  display:none;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:11px 13px;
+  margin-bottom:12px;
+  border-radius:13px;
+  background:linear-gradient(135deg,#FEF2F2,#FEE2E2);
+  border:1.5px solid #EF4444;
+  color:#B91C1C;
+  box-shadow:0 6px 16px -6px rgba(220,38,38,.25);
+}
+.auth-err-alert.on{
+  display:flex;
+  animation:errShake .38s cubic-bezier(.36,.07,.19,.97);
+}
+.auth-err-l{display:flex;align-items:center;gap:9px;min-width:0;flex:1}
+.auth-err-l svg{width:18px;height:18px;color:#DC2626;flex-shrink:0;stroke-width:2.2}
+.auth-err-txt{font-size:13.5px;font-weight:700;line-height:1.3;color:#B91C1C;letter-spacing:.02em}
+.auth-err-timer{padding:3px 8px;border-radius:999px;background:#DC2626;color:#FFFFFF;font-size:11.5px;font-weight:700;letter-spacing:.04em;flex-shrink:0}
+@keyframes errShake{
+  0%,100%{transform:translateX(0)}
+  20%,60%{transform:translateX(-5px)}
+  40%,80%{transform:translateX(5px)}
+}
+
+.ios-seg{display:grid;grid-template-columns:1fr 1fr;padding:3px;background:#F2F2F7;border-radius:12px;margin-bottom:12px}
 .ios-seg-btn{height:34px;border:0;border-radius:9.5px;background:transparent;font-size:13.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);transition:background .25s var(--ios-spring),color .25s,box-shadow .25s}
 .ios-seg-btn[aria-selected="true"]{background:#FFFFFF;color:#111113;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.ios-group{background:#F8F8FA;border:1px solid #E5E5EA;border-radius:14px;overflow:hidden;margin-bottom:12px}
+.ios-group{background:#F8F8FA;border:1.5px solid #E5E5EA;border-radius:14px;overflow:hidden;margin-bottom:10px;transition:border-color .2s,box-shadow .2s}
+.ios-group.is-err{border-color:#EF4444!important;box-shadow:0 0 0 3px rgba(239,68,68,.14)}
+.ios-group.is-err .ios-row{background:#FFF8F8}
+.ios-group.is-err .ios-row label{color:#B91C1C}
 .ios-row{display:flex;align-items:center;padding:0 14px;min-height:46px;background:#FFFFFF}
 .ios-row+.ios-row{border-top:1px solid #ECECF2}
 .ios-row label{flex:0 0 78px;font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#111113}
 .ios-row input{flex:1;min-width:0;height:46px;border:0;outline:0;background:transparent;font-family:inherit;font-size:15px;font-weight:500;color:#111113}
 .ios-row input::placeholder{color:#A1A1AA}
-.ios-auth-submit{width:100%;height:44px;border:0;border-radius:12px;background:#111113;color:#FFFFFF;font-size:14.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.ios-sub-links{display:flex;align-items:center;justify-content:space-between;margin:-2px 2px 10px}
+.ios-auth-submit{width:100%;height:44px;border:0;border-radius:12px;background:#111113;color:#FFFFFF;font-size:14.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:background .2s,transform .15s}
+.ios-auth-submit:active{transform:scale(.98)}
 .ios-auth-submit:disabled{opacity:.65;cursor:not-allowed}
+.ios-auth-submit.is-rate-locked{background:#DC2626!important;color:#FFFFFF!important}
 .ios-auth-submit svg{width:15px;height:15px}
-.ios-auth-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;font-size:12.5px;color:var(--muted)}
+.ios-auth-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;font-size:12.5px;color:var(--muted)}
 .ios-auth-link{background:none;border:0;padding:0;color:#111113;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-decoration:underline;font-size:12px;cursor:pointer}
 .ios-eye-btn{width:30px;height:30px;flex:0 0 30px;border:0;background:transparent;color:#7D828A;display:inline-flex;align-items:center;justify-content:center;padding:0;cursor:pointer}
 .ios-eye-btn svg{width:15px;height:15px}
 .ios-or{display:flex;align-items:center;gap:10px;margin:10px 0;color:#8E8E93;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
 .ios-or::before,.ios-or::after{content:"";flex:1;height:1px;background:#E5E5EA}
-.ios-google-btn{width:100%;height:42px;border-radius:12px;border:1px solid #E5E5EA;background:#FFFFFF;color:#111113;font-size:13.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.ios-btn-stack{display:flex;flex-direction:column;gap:8px}
+.ios-google-btn,.ios-guest-btn{width:100%;height:41px;border-radius:12px;border:1px solid #E5E5EA;background:#FFFFFF;color:#111113;font-size:13.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:background .2s,border-color .2s}
+.ios-guest-btn{background:#F8F8FA;color:var(--muted)}
+@media(hover:hover){.ios-google-btn:hover,.ios-guest-btn:hover{border-color:#111113;color:#111113}}
 .ios-google-btn img{width:16px;height:16px;object-fit:contain}
+.ios-guest-btn svg{width:15px;height:15px}
 .view-hidden{display:none!important}
 .view-active{display:block;animation:iosAuthFade .25s var(--ease)}
 @keyframes iosAuthFade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 .ios-otp-row{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:8px 0 12px}
-.otp-box{width:100%;height:44px;text-align:center;font-family:var(--font-main);font-size:19px;font-weight:700;color:#111113;background:#F8F8FA;border:1px solid #E5E5EA;border-radius:10px;outline:none}
+.otp-box{width:100%;height:44px;text-align:center;font-family:var(--font-main);font-size:19px;font-weight:700;color:#111113;background:#F8F8FA;border:1.5px solid #E5E5EA;border-radius:10px;outline:none}
 .otp-box:focus{border-color:#111113;background:#FFFFFF}
 .otp-box-filled{border-color:#111113!important;background:#FFFFFF!important}
+.ios-otp-row.is-err .otp-box{border-color:#EF4444!important;background:#FFF5F5!important;color:#B91C1C!important}
 .mini-spin{width:15px;height:15px;border:2px solid rgba(17,17,17,.18);border-top-color:#111113;border-radius:50%;display:inline-block;flex:0 0 15px;animation:spin .55s linear infinite}
 .mini-spin.white{border-color:rgba(255,255,255,.35);border-top-color:#FFFFFF}
 .mini-spin.rani{border-color:rgba(17,17,17,.2);border-top-color:#111113}
@@ -211,8 +317,11 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .profile-toast.show{opacity:1;transform:translate(-50%,0)}
 
 @media(max-width:375px){
-  .web-banner{padding:18px 12px 16px}
-  .web-sec{padding:18px 12px 0}
+  .web-banner{padding:16px 12px}
+  .web-sec{padding:16px 12px 0}
+  .overview-grid{gap:6px}
+  .ov-card{padding:10px;min-height:76px}
+  .ov-title{font-size:13px}
 }
 @media(prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
@@ -220,6 +329,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 <body>
 <div id="scrim" class="scrim" onclick="closeAuthPopup()"></div>
 
+<!-- LOGIN / SIGNUP / OTP / RESET POPUP (With Red In-Popup Error Alert for Too Many Requests & Auth Errors) -->
 <div id="authPopupModal" class="layer" role="dialog" aria-modal="true" aria-labelledby="homeAuthTitle">
   <div class="ios-auth-top">
     <div class="ios-auth-head">
@@ -230,68 +340,111 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
     <button type="button" class="ios-auth-close" onclick="closeAuthPopup()" aria-label="Close"><i data-lucide="x"></i></button>
   </div>
 
+  <!-- RED ERROR BANNER INSIDE LOGIN POPUP -->
+  <div id="authPopupErrorBox" class="auth-err-alert" role="alert" aria-live="assertive">
+    <div class="auth-err-l">
+      <i data-lucide="alert-octagon"></i>
+      <span class="auth-err-txt" id="authPopupErrorText">Too many requests! Please wait before trying again.</span>
+    </div>
+    <span class="auth-err-timer" id="authPopupErrorTimer" hidden>30s</span>
+  </div>
+
   <div class="ios-seg" id="homeAuthSeg" role="tablist" aria-label="Authentication mode">
     <button type="button" class="ios-seg-btn" id="tabBtnLogin" role="tab" aria-selected="true" onclick="switchView('loginView')">Log In</button>
     <button type="button" class="ios-seg-btn" id="tabBtnSignup" role="tab" aria-selected="false" onclick="switchView('signupView')">Create Account</button>
   </div>
 
+  <!-- LOGIN VIEW -->
   <div id="loginView" class="view-active">
-    <div class="ios-group">
+    <div class="ios-group" id="loginInputGroup">
       <div class="ios-row">
         <label for="loginEmail">Email</label>
-        <input type="email" id="loginEmail" autocomplete="username" placeholder="Email or Phone Number">
+        <input type="email" id="loginEmail" autocomplete="username" placeholder="Email or Phone Number" oninput="clearAuthPopupError()">
       </div>
       <div class="ios-row">
         <label for="loginPassword">Password</label>
-        <input type="password" id="loginPassword" autocomplete="current-password" placeholder="Enter password">
+        <input type="password" id="loginPassword" autocomplete="current-password" placeholder="Enter password" oninput="clearAuthPopupError()">
         <button type="button" class="ios-eye-btn" id="btnLoginEye" onclick="togglePassword('loginPassword','btnLoginEye')" aria-label="Toggle password"><i data-lucide="eye-off"></i></button>
       </div>
     </div>
+    <div class="ios-sub-links">
+      <button type="button" class="ios-auth-link" onclick="switchView('forgotView')">Forgot Password?</button>
+      <button type="button" class="ios-auth-link" onclick="triggerTooManyRequestsDemo()" style="color:#DC2626">Test Rate Limit</button>
+    </div>
     <button type="button" id="btnLoginAction" class="ios-auth-submit" onclick="processLogin()"><span>Login</span><i data-lucide="arrow-right"></i></button>
     <div class="ios-or">Or</div>
-    <button type="button" id="btnGoogleLogin" class="ios-google-btn" onclick="performGoogleLogin('btnGoogleLogin')">
-      <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
-      <span>Continue with Google</span>
-    </button>
+    <div class="ios-btn-stack">
+      <button type="button" id="btnGoogleLogin" class="ios-google-btn" onclick="performGoogleLogin('btnGoogleLogin')">
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+        <span>Continue with Google</span>
+      </button>
+      <button type="button" class="ios-guest-btn" onclick="closeAuthPopup()">
+        <i data-lucide="user"></i>
+        <span>Continue as Guest</span>
+      </button>
+    </div>
   </div>
 
+  <!-- SIGNUP VIEW -->
   <div id="signupView" class="view-hidden">
-    <div class="ios-group">
+    <div class="ios-group" id="signupInputGroup">
       <div class="ios-row">
         <label for="signupName">Name</label>
-        <input type="text" id="signupName" autocomplete="name" placeholder="Full Name">
+        <input type="text" id="signupName" autocomplete="name" placeholder="Full Name" oninput="clearAuthPopupError()">
       </div>
       <div class="ios-row">
         <label for="signupEmail">Email</label>
-        <input type="email" id="signupEmail" autocomplete="email" placeholder="Email Address">
+        <input type="email" id="signupEmail" autocomplete="email" placeholder="Email Address" oninput="clearAuthPopupError()">
       </div>
       <div class="ios-row">
         <label for="signupPassword">Password</label>
-        <input type="password" id="signupPassword" autocomplete="new-password" placeholder="Create Password (min 6 chars)">
+        <input type="password" id="signupPassword" autocomplete="new-password" placeholder="Create Password (min 6 chars)" oninput="clearAuthPopupError()">
         <button type="button" class="ios-eye-btn" id="btnSignupEye" onclick="togglePassword('signupPassword','btnSignupEye')" aria-label="Toggle password"><i data-lucide="eye-off"></i></button>
       </div>
     </div>
     <button type="button" id="btnSignupAction" class="ios-auth-submit" onclick="processSignup()"><span>Create Account</span><i data-lucide="arrow-right"></i></button>
     <div class="ios-or">Or</div>
-    <button type="button" id="btnGoogleSignup" class="ios-google-btn" onclick="performGoogleLogin('btnGoogleSignup')">
-      <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
-      <span>Continue with Google</span>
-    </button>
+    <div class="ios-btn-stack">
+      <button type="button" id="btnGoogleSignup" class="ios-google-btn" onclick="performGoogleLogin('btnGoogleSignup')">
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+        <span>Continue with Google</span>
+      </button>
+      <button type="button" class="ios-guest-btn" onclick="closeAuthPopup()">
+        <i data-lucide="user"></i>
+        <span>Continue as Guest</span>
+      </button>
+    </div>
   </div>
 
+  <!-- OTP VIEW -->
   <div id="otpView" class="view-hidden">
     <p id="otpSubText" style="margin:0 0 6px;font-size:13px;color:var(--muted);text-align:center">Enter the 6-digit code sent to your email</p>
     <div id="otpBoxGroup" class="ios-otp-row">
-      <input type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" class="otp-box">
-      <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
-      <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
-      <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
-      <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
-      <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
+      <input type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" class="otp-box" aria-label="Digit 1">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box" aria-label="Digit 2">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box" aria-label="Digit 3">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box" aria-label="Digit 4">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box" aria-label="Digit 5">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box" aria-label="Digit 6">
     </div>
     <button type="button" id="btnOtpAction" class="ios-auth-submit" onclick="verifySignupOTP()"><span>Verify &amp; Login</span><i data-lucide="check-circle"></i></button>
-    <div class="ios-auth-foot" style="justify-content:center;margin-top:10px">
-      <button type="button" class="ios-auth-link" onclick="switchView('signupView')">Change Email Address</button>
+    <div class="ios-auth-foot">
+      <button type="button" class="ios-auth-link" onclick="resendSignupOTP()">Resend OTP</button>
+      <button type="button" class="ios-auth-link" onclick="switchView('signupView')">Change Email</button>
+    </div>
+  </div>
+
+  <!-- FORGOT PASSWORD VIEW -->
+  <div id="forgotView" class="view-hidden">
+    <div class="ios-group" id="forgotInputGroup">
+      <div class="ios-row">
+        <label for="forgotEmail">Email</label>
+        <input type="email" id="forgotEmail" autocomplete="email" placeholder="Registered Email Address" oninput="clearAuthPopupError()">
+      </div>
+    </div>
+    <button type="button" id="btnForgotAction" class="ios-auth-submit" onclick="processForgotPassword()"><span>Send Reset Code</span><i data-lucide="mail"></i></button>
+    <div class="ios-auth-foot" style="justify-content:center">
+      <button type="button" class="ios-auth-link" onclick="switchView('loginView')">Back to Login</button>
     </div>
   </div>
 </div>
@@ -302,14 +455,18 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
       <button class="ib" type="button" onclick="goBack(this)" aria-label="Back"><i data-lucide="arrow-left"></i></button>
       <div class="hdr-r">
         <a class="ib" href="wishlist.html" aria-label="Wishlist"><i data-lucide="heart"></i><span class="badge" id="hdrWishBadge" hidden>0</span></a>
-        <a class="ib" href="cart.html" aria-label="Shopping Bag"><i data-lucide="shopping-cart"></i><span class="badge" id="hdrCartBadge" hidden>0</span></a>
+        <a class="ib" href="cart.html" aria-label="Cart"><i data-lucide="shopping-cart"></i><span class="badge" id="hdrCartBadge" hidden>0</span></a>
       </div>
     </div>
     <a href="./" class="hdr-logo" aria-label="Aavira Home"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='public/file_0000000015bc82119a5830b82bcd3a20.png'}else{this.style.display='none'}"></a>
   </header>
 
+  <!-- PROFILE HEADER (Redesigned Luxury Gold & Pearl Shimmer Animation When Sign-In Data Syncs) -->
   <section id="vipProfileUI" class="web-banner">
-    <span class="web-eyebrow">My Aavira Account</span>
+    <div class="banner-top-row">
+      <span class="web-eyebrow">My Aavira Account</span>
+      <span class="sync-pill" id="syncBadge"><i data-lucide="refresh-cw"></i>Syncing Data…</span>
+    </div>
     <div class="web-head-row">
       <div class="avatar-wrap">
         <div id="profileAvatar" class="profile-avatar"><span id="profileInitial">G</span></div>
@@ -319,23 +476,36 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
         <input type="file" id="profilePhotoInput" accept="image/*" class="hidden" onchange="window.handleProfilePhotoSelect(event)">
       </div>
       <div class="id-meta">
-        <div class="id-name-row">
-          <h1 id="vipName" class="id-name">Guest User</h1>
-          <i id="verifiedTick" data-lucide="badge-check" class="verified-ic hidden"></i>
+        <!-- Shimmer Skeleton Bars Shown While Sign-In Data Syncs -->
+        <div class="sync-skel-lines" aria-hidden="true">
+          <div class="skel-bar lg"></div>
+          <div class="skel-bar md"></div>
+          <div class="skel-bar pills"></div>
         </div>
-        <p id="vipEmail" class="id-email">Sign in to view your orders &amp; saved styles</p>
-        <div id="identityGuestActions" class="id-actions hidden">
-          <button type="button" onclick="openAuthPopup('login')" class="btn-pill btn-dark"><i data-lucide="log-in"></i>Log In</button>
-          <button type="button" onclick="openAuthPopup('signup')" class="btn-pill btn-soft"><i data-lucide="user-plus"></i>Create Account</button>
-        </div>
-        <div id="identityMemberActions" class="id-actions hidden">
-          <button type="button" onclick="toggleNameEditor()" class="btn-pill btn-soft"><i data-lucide="user-pen"></i>Edit Name</button>
+
+        <!-- Live Synced User Info -->
+        <div class="id-live-content">
+          <div class="id-name-row">
+            <h1 id="vipName" class="id-name">Guest User</h1>
+            <i id="verifiedTick" data-lucide="badge-check" class="verified-ic hidden"></i>
+          </div>
+          <p id="vipEmail" class="id-email">Sign in to sync your account</p>
+          <div id="identityGuestActions" class="id-actions hidden">
+            <button type="button" onclick="openAuthPopup('login')" class="btn-pill btn-dark"><i data-lucide="log-in"></i>Log In</button>
+            <button type="button" onclick="openAuthPopup('signup')" class="btn-pill btn-soft"><i data-lucide="user-plus"></i>Create Account</button>
+            <button type="button" onclick="triggerSyncButton()" class="btn-pill btn-gold"><i data-lucide="refresh-cw"></i>Sync</button>
+          </div>
+          <div id="identityMemberActions" class="id-actions hidden">
+            <button type="button" onclick="toggleNameEditor()" class="btn-pill btn-soft"><i data-lucide="user-pen"></i>Edit Name</button>
+            <button type="button" onclick="triggerSyncButton()" class="btn-pill btn-gold"><i data-lucide="refresh-cw"></i>Sync Data</button>
+            <button type="button" onclick="openReferModal()" class="btn-pill btn-soft"><i data-lucide="gift"></i>Refer</button>
+          </div>
         </div>
       </div>
     </div>
 
     <form id="nameEditorBox" class="name-editor" onsubmit="return saveUserName(event)">
-      <label for="editNameInput">Update Your Full Name</label>
+      <label for="editNameInput">Full Name</label>
       <div class="name-edit-row">
         <input type="text" id="editNameInput" class="name-input" placeholder="Enter your full name" maxlength="60" autocomplete="name">
         <button type="submit" id="saveNameBtn" class="name-save-btn"><i data-lucide="check"></i>Save</button>
@@ -344,61 +514,85 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
     </form>
   </section>
 
-  <section class="web-sec">
+  <!-- 1. ACTIVITY SECTION (Orders, Wishlist & Cart with Cart Icon — Single Clean Name Per Item) -->
+  <section class="web-sec" id="activitySection">
     <div class="web-sec-head">
-      <h2>Account Overview</h2>
-      <span>Quick Access</span>
+      <h2>Your Activity</h2>
     </div>
     <div class="overview-grid">
-      <a href="orders.html" class="ov-card">
+      <a href="orders.html" class="ov-card" id="ovCardOrders">
         <div class="ov-top">
           <span class="ov-ic"><i data-lucide="package"></i></span>
           <span class="ov-cnt" id="statOrders">0</span>
         </div>
         <div class="ov-bot">
           <span class="ov-title">My Orders</span>
-          <span class="ov-sub">Track &amp; view purchases</span>
         </div>
       </a>
-      <a href="wishlist.html" class="ov-card">
+
+      <a href="wishlist.html" class="ov-card" id="ovCardWishlist">
         <div class="ov-top">
           <span class="ov-ic"><i data-lucide="heart"></i></span>
           <span class="ov-cnt" id="statWishlist">0</span>
         </div>
         <div class="ov-bot">
           <span class="ov-title">My Wishlist</span>
-          <span class="ov-sub">Saved handcrafted styles</span>
+        </div>
+      </a>
+
+      <a href="cart.html" class="ov-card" id="ovCardCart">
+        <div class="ov-top">
+          <span class="ov-ic"><i data-lucide="shopping-cart"></i></span>
+          <span class="ov-cnt" id="statCart">0</span>
+        </div>
+        <div class="ov-bot">
+          <span class="ov-title">My Cart</span>
         </div>
       </a>
     </div>
+
+    <!-- Live Cart Activity Bar (With Cart Icon) -->
+    <a href="cart.html" id="cartActivityBar" class="cart-act-bar">
+      <div class="ca-left">
+        <div class="ca-thumbs" id="cartActivityThumbs">
+          <span class="ca-ic"><i data-lucide="shopping-cart"></i></span>
+        </div>
+        <span class="ca-title" id="cartActivityText">Cart Activity · 0 Items</span>
+      </div>
+      <span class="ca-go" id="cartActivityBtn">Open Cart <i data-lucide="arrow-right"></i></span>
+    </a>
+
+    <!-- Quick Action Buttons Grid (More Buttons, Single Clean Name Only) -->
+    <div class="quick-btn-grid">
+      <a href="orders.html" class="q-act-btn">
+        <span class="q-act-l"><i data-lucide="truck"></i><span>Track Order</span></span>
+        <i data-lucide="chevron-right" class="q-act-r"></i>
+      </a>
+      <a href="categories.html" class="q-act-btn">
+        <span class="q-act-l"><i data-lucide="layout-grid"></i><span>Collections</span></span>
+        <i data-lucide="chevron-right" class="q-act-r"></i>
+      </a>
+      <button type="button" class="q-act-btn" onclick="openPromoPopup()">
+        <span class="q-act-l"><i data-lucide="ticket"></i><span>Apply Coupon</span></span>
+        <i data-lucide="chevron-right" class="q-act-r"></i>
+      </button>
+      <button type="button" class="q-act-btn" onclick="openReferModal()">
+        <span class="q-act-l"><i data-lucide="gift"></i><span>Refer &amp; Earn</span></span>
+        <i data-lucide="chevron-right" class="q-act-r"></i>
+      </button>
+    </div>
   </section>
 
+  <!-- 2. SHOPPING & ADDRESSES (Single Clean Label Per Item) -->
   <section class="web-sec">
     <div class="web-sec-head">
-      <h2>Shopping &amp; Addresses</h2>
+      <h2>Shopping &amp; Rewards</h2>
     </div>
     <div class="web-list">
-      <a href="cart.html" class="web-row">
-        <span class="web-row-l">
-          <i data-lucide="shopping-bag"></i>
-          <span class="web-row-txt">
-            <span class="web-row-title">Shopping Bag</span>
-            <span class="web-row-sub">View outfits waiting for checkout</span>
-          </span>
-        </span>
-        <span class="web-row-r">
-          <span id="menuCartBadge" class="pill-count hidden">0</span>
-          <i data-lucide="chevron-right"></i>
-        </span>
-      </a>
-
       <a href="checkout.html" class="web-row">
         <span class="web-row-l">
           <i data-lucide="map-pin"></i>
-          <span class="web-row-txt">
-            <span class="web-row-title">Delivery Addresses</span>
-            <span class="web-row-sub">Manage your saved shipping addresses</span>
-          </span>
+          <span class="web-row-title">Delivery Addresses</span>
         </span>
         <span class="web-row-r"><i data-lucide="chevron-right"></i></span>
       </a>
@@ -406,39 +600,39 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
       <a href="offer.html" class="web-row">
         <span class="web-row-l">
           <i data-lucide="tag"></i>
-          <span class="web-row-txt">
-            <span class="web-row-title">Offers &amp; Promo Codes</span>
-            <span class="web-row-sub">Explore exclusive festive discounts</span>
-          </span>
+          <span class="web-row-title">Offers &amp; Promo Codes</span>
         </span>
-        <span class="web-row-r"><i data-lucide="chevron-right"></i></span>
+        <span class="web-row-r"><span class="tag-pill" id="activePromoPill" hidden>Active</span><i data-lucide="chevron-right"></i></span>
       </a>
 
-      <button type="button" id="editNameRowBtn" class="web-row hidden" onclick="toggleNameEditor(true)">
+      <button type="button" class="web-row" onclick="openReferModal()">
         <span class="web-row-l">
-          <i data-lucide="user-pen"></i>
-          <span class="web-row-txt">
-            <span class="web-row-title">Update Full Name</span>
-            <span class="web-row-sub">Change the display name on your profile</span>
-          </span>
+          <i data-lucide="share-2"></i>
+          <span class="web-row-title">Invite Friends &amp; Earn ₹500</span>
         </span>
         <span class="web-row-r"><i data-lucide="chevron-right"></i></span>
       </button>
+
+      <a href="checkout.html" class="web-row">
+        <span class="web-row-l">
+          <i data-lucide="zap"></i>
+          <span class="web-row-title">Express Checkout</span>
+        </span>
+        <span class="web-row-r"><i data-lucide="chevron-right"></i></span>
+      </a>
     </div>
   </section>
 
+  <!-- 3. COMMUNICATION PREFERENCES (Single Clean Label Per Item) -->
   <section class="web-sec">
     <div class="web-sec-head">
-      <h2>Communication Preferences</h2>
+      <h2>Preferences</h2>
     </div>
     <div class="web-list">
       <div class="web-row" onclick="toggleNotifPref(this.querySelector('.toggle-btn'))">
         <span class="web-row-l">
           <i data-lucide="truck"></i>
-          <span class="web-row-txt">
-            <span class="web-row-title">Order &amp; Dispatch Updates</span>
-            <span class="web-row-sub">Get alerts when your order ships</span>
-          </span>
+          <span class="web-row-title">Order &amp; Dispatch Updates</span>
         </span>
         <button type="button" class="toggle-btn sw-pill" data-pref="orderUpdates" onclick="event.stopPropagation();toggleNotifPref(this)" aria-label="Order updates"></button>
       </div>
@@ -446,10 +640,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
       <div class="web-row" onclick="toggleNotifPref(this.querySelector('.toggle-btn'))">
         <span class="web-row-l">
           <i data-lucide="sparkles"></i>
-          <span class="web-row-txt">
-            <span class="web-row-title">New Arrivals &amp; Offers</span>
-            <span class="web-row-sub">Early access to new collections &amp; sales</span>
-          </span>
+          <span class="web-row-title">New Arrivals &amp; Offers</span>
         </span>
         <button type="button" class="toggle-btn sw-pill" data-pref="promotions" onclick="event.stopPropagation();toggleNotifPref(this)" aria-label="Promotions and offers"></button>
       </div>
@@ -457,28 +648,23 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
       <div class="web-row" onclick="toggleNotifPref(this.querySelector('.toggle-btn'))">
         <span class="web-row-l">
           <i data-lucide="message-circle"></i>
-          <span class="web-row-txt">
-            <span class="web-row-title">WhatsApp Order Support</span>
-            <span class="web-row-sub">Receive instant confirmations on WhatsApp</span>
-          </span>
+          <span class="web-row-title">WhatsApp Order Support</span>
         </span>
         <button type="button" class="toggle-btn sw-pill" data-pref="whatsapp" onclick="event.stopPropagation();toggleNotifPref(this)" aria-label="WhatsApp updates"></button>
       </div>
     </div>
   </section>
 
+  <!-- 4. SUPPORT & SETTINGS (Single Clean Label Per Item) -->
   <section class="web-sec">
     <div class="web-sec-head">
-      <h2>Customer Care &amp; Policies</h2>
+      <h2>Support &amp; Settings</h2>
     </div>
     <div class="web-list">
       <a href="support.html" class="web-row">
         <span class="web-row-l">
           <i data-lucide="life-buoy"></i>
-          <span class="web-row-txt">
-            <span class="web-row-title">Help &amp; Support Center</span>
-            <span class="web-row-sub">Assistance with orders, sizing &amp; returns</span>
-          </span>
+          <span class="web-row-title">Help &amp; Support Center</span>
         </span>
         <span class="web-row-r"><i data-lucide="chevron-right"></i></span>
       </a>
@@ -486,10 +672,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
       <a href="terms.html" class="web-row">
         <span class="web-row-l">
           <i data-lucide="shield-check"></i>
-          <span class="web-row-txt">
-            <span class="web-row-title">Privacy Policy &amp; Terms</span>
-            <span class="web-row-sub">Read our store policies &amp; buyer protection</span>
-          </span>
+          <span class="web-row-title">Privacy Policy &amp; Terms</span>
         </span>
         <span class="web-row-r"><i data-lucide="chevron-right"></i></span>
       </a>
@@ -497,98 +680,61 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
       <button type="button" class="web-row" onclick="window.AaviraConsent ? window.AaviraConsent.openPrefs() : showToast('Cookie preferences saved')">
         <span class="web-row-l">
           <i data-lucide="cookie"></i>
-          <span class="web-row-txt">
-            <span class="web-row-title">Cookie Preferences</span>
-            <span class="web-row-sub">Manage website cookie settings</span>
-          </span>
+          <span class="web-row-title">Cookie Preferences</span>
         </span>
         <span class="web-row-r"><i data-lucide="chevron-right"></i></span>
+      </button>
+
+      <button type="button" class="web-row" onclick="clearRecentViewedData()">
+        <span class="web-row-l">
+          <i data-lucide="history"></i>
+          <span class="web-row-title">Clear Recently Viewed</span>
+        </span>
+        <span class="web-row-r"><i data-lucide="trash-2"></i></span>
       </button>
 
       <button type="button" class="web-row" onclick="clearWishlistData()">
         <span class="web-row-l">
           <i data-lucide="heart-off"></i>
-          <span class="web-row-txt">
-            <span class="web-row-title">Reset Wishlist</span>
-            <span class="web-row-sub">Remove all saved items from wishlist</span>
-          </span>
+          <span class="web-row-title">Reset Wishlist</span>
         </span>
         <span class="web-row-r"><i data-lucide="trash-2"></i></span>
       </button>
 
       <button type="button" class="web-row" onclick="clearCartData()">
         <span class="web-row-l">
-          <i data-lucide="trash-2"></i>
-          <span class="web-row-txt">
-            <span class="web-row-title">Empty Shopping Bag</span>
-            <span class="web-row-sub">Clear all items currently in your bag</span>
-          </span>
+          <i data-lucide="shopping-cart"></i>
+          <span class="web-row-title">Empty Cart</span>
         </span>
         <span class="web-row-r"><i data-lucide="trash-2"></i></span>
       </button>
     </div>
   </section>
 
+  <!-- 5. WHATSAPP STYLIST HELP -->
   <section class="web-sec">
     <div class="wa-strip">
-      <span>Need help with an order or custom sizing?<br><b>Chat with our stylist on WhatsApp</b></span>
+      <span>Chat with our stylist on WhatsApp</span>
       <a href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i data-lucide="message-circle"></i></a>
     </div>
   </section>
 
+  <!-- 6. LOG OUT BUTTON -->
   <section id="logoutSection" class="web-sec hidden">
     <button type="button" class="logout-btn" onclick="handleLogout()">
       <i data-lucide="log-out"></i>
       <span>Log Out of Account</span>
     </button>
   </section>
-
-  <footer class="footer">
-    <a href="./" aria-label="Aavira home" class="footer-logo-link"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira Fashion" class="footer-logo" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='public/file_0000000015bc82119a5830b82bcd3a20.png'}else{this.style.display='none'}"></a>
-    <p class="footer-tag">Luxury ethnic fashion, designed for modern elegance.</p>
-    <div class="footer-news">
-      <label for="newsletterEmail">Get new collections and offers by email</label>
-      <div class="footer-news-row">
-        <input type="email" id="newsletterEmail" placeholder="Your email address" autocomplete="email">
-        <button type="button" id="btnNewsletter" onclick="subscribeNewsletter()">Join</button>
-      </div>
-    </div>
-
-    <div class="ftr-sec">
-      <div class="ftr-sec-head"><span class="ic"><i data-lucide="truck"></i></span><h3>Delivery Partners</h3></div>
-      <div class="ftr-logos">
-        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Delhivery_Logo_%282019%29.png/330px-Delhivery_Logo_%282019%29.png" alt="Delhivery" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Delhivery</span></span>
-        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Blue_Dart_logo_transparent.png/330px-Blue_Dart_logo_transparent.png" alt="Blue Dart" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Blue Dart</span></span>
-        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/DTDC_logo.png/330px-DTDC_logo.png" alt="DTDC" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">DTDC</span></span>
-        <span class="ftr-logo-card"><img src="https://chinapost-track.com/cdn/images/carriers/thumbnails/0389-xpressbees.png" alt="Xpressbees" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Xpressbees</span></span>
-        <span class="ftr-logo-card"><img class="tall" src="https://qubix.in/wp-content/uploads/2024/05/Ecom-Express-Logo.png" alt="Ecom Express" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">Ecom Express</span></span>
-      </div>
-    </div>
-
-    <div class="ftr-sec">
-      <div class="ftr-sec-head"><span class="ic"><i data-lucide="shield-check"></i></span><h3>We Accept</h3></div>
-      <div class="ftr-logos">
-        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/330px-UPI-Logo-vector.svg.png" alt="UPI" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">UPI</span></span>
-        <span class="ftr-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/RuPay-Logo.png/330px-RuPay-Logo.png" alt="RuPay" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ftr-logo-name" style="display:none">RuPay</span></span>
-        <span class="ftr-logo-card txt"><i data-lucide="banknote"></i>Cash on Delivery</span>
-      </div>
-    </div>
-
-    <div class="footer-grid">
-      <div><h3>Explore</h3><a href="/">Home</a><a href="/categories">Collections</a><a href="/offer">Offers</a><a href="/wishlist">Wishlist</a></div>
-      <div><h3>Shopping</h3><a href="/cart">Shopping bag</a><a href="/orders">My orders</a><a href="/profile">My account</a><a href="/support">Support</a></div>
-      <div><h3>Information</h3><a href="/terms">Terms &amp; conditions</a><a href="/privacy">Privacy policy</a><a href="/support">Help center</a><button type="button" class="avck-footerlink" onclick="window.AaviraConsent&&AaviraConsent.openPrefs()">Cookie Settings</button></div>
-      <div><h3>Contact</h3><a href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a></div>
-    </div>
-    <div class="footer-copy">&copy; 2026 Aavira Fashion. All rights reserved.</div>
-  </footer>
 </div>
 
+<!-- CONFIRMATION MODAL -->
 <div class="confirm-ov" id="confirmOv" onclick="if(event.target===this)closeConfirmModal()">
   <div class="confirm-box" role="dialog" aria-modal="true">
-    <div class="confirm-ic"><i data-lucide="trash-2"></i></div>
+    <div class="confirm-ic" id="confirmIconBox"><i data-lucide="trash-2"></i></div>
     <h3 id="confirmTitle">Confirm Action</h3>
     <p id="confirmDesc">Are you sure you want to proceed?</p>
+    <div id="confirmExtraBody"></div>
     <div class="confirm-btns">
       <button type="button" onclick="closeConfirmModal()">Cancel</button>
       <button type="button" class="yes" id="confirmYesBtn">Confirm</button>
@@ -603,6 +749,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 <script src="/user_data.js"></script>
 <script>
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const FALLBACK_IMG = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="#F2F2F7"/><text x="100" y="108" font-family="Georgia,serif" font-size="22" fill="#8E8E93" text-anchor="middle">Aavira</text></svg>');
 
 const safeGet = (key, fallback) => {
   try {
@@ -612,6 +759,9 @@ const safeGet = (key, fallback) => {
     return fallback;
   }
 };
+
+const esc = val => String(val ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+const formatINR = n => '₹' + Number(n || 0).toLocaleString('en-IN');
 
 function showToast(message, type = 'success') {
   const toast = document.getElementById('toastBox');
@@ -623,6 +773,38 @@ function showToast(message, type = 'success') {
   clearTimeout(window.__profileToastTimer);
   window.__profileToastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
 }
+
+/* Redesigned Luxury Shimmer ("Simar") Animation Controller When Sign-In Data Syncs */
+let syncShimmerTimer = null;
+function setProfileSyncing(active) {
+  const banner = document.getElementById('vipProfileUI');
+  const cards = document.querySelectorAll('.ov-card, #cartActivityBar');
+  banner?.classList.toggle('is-syncing', active);
+  cards.forEach(c => c.classList.toggle('is-syncing', active));
+}
+
+async function runWithSyncShimmer(taskFn, minMs = 760) {
+  clearTimeout(syncShimmerTimer);
+  const t0 = Date.now();
+  setProfileSyncing(true);
+  try {
+    await taskFn();
+  } finally {
+    const elapsed = Date.now() - t0;
+    const wait = Math.max(0, minMs - elapsed);
+    await new Promise(resolve => {
+      syncShimmerTimer = setTimeout(() => {
+        setProfileSyncing(false);
+        resolve();
+      }, wait);
+    });
+  }
+}
+
+window.triggerSyncButton = async function () {
+  await initProfileUI(true);
+  showToast('Account data synced');
+};
 
 const goBack = el => {
   if (el) el.classList.add('is-busy');
@@ -692,29 +874,37 @@ window.saveUserName = async function (event) {
   }
   btn.classList.add('is-busy');
   btn.disabled = true;
-  await new Promise(r => setTimeout(r, 320));
-  try {
-    localStorage.setItem('aavira_display_name', newName);
-  } catch {}
-  document.getElementById('vipName').innerText = newName;
-  document.getElementById('profileInitial').innerText = newName.charAt(0).toUpperCase();
+  toggleNameEditor(false);
+  await runWithSyncShimmer(async () => {
+    try {
+      localStorage.setItem('aavira_display_name', newName);
+    } catch {}
+    document.getElementById('vipName').innerText = newName;
+    document.getElementById('profileInitial').innerText = newName.charAt(0).toUpperCase();
+  }, 680);
   btn.classList.remove('is-busy');
   btn.disabled = false;
-  toggleNameEditor(false);
   showToast('Your name has been updated');
   return false;
 };
 
 let confirmActionFn = null;
-function openConfirmModal(title, desc, btnLabel, action) {
+function openConfirmModal(title, desc, btnLabel, action, opts = {}) {
   confirmActionFn = action;
   document.getElementById('confirmTitle').innerText = title;
   document.getElementById('confirmDesc').innerText = desc;
+  const extra = document.getElementById('confirmExtraBody');
+  if (extra) extra.innerHTML = opts.extraHtml || '';
+  const icBox = document.getElementById('confirmIconBox');
+  if (icBox) {
+    icBox.className = 'confirm-ic' + (opts.gold ? ' gold' : '');
+    icBox.innerHTML = `<i data-lucide="${opts.icon || 'trash-2'}"></i>`;
+  }
   const yesBtn = document.getElementById('confirmYesBtn');
+  yesBtn.className = opts.darkBtn ? 'dark' : 'yes';
   yesBtn.innerText = btnLabel || 'Confirm';
   yesBtn.onclick = () => {
     const fn = confirmActionFn;
-    closeConfirmModal();
     if (typeof fn === 'function') fn();
   };
   document.getElementById('confirmOv').classList.add('on');
@@ -722,60 +912,100 @@ function openConfirmModal(title, desc, btnLabel, action) {
 }
 window.closeConfirmModal = function () {
   document.getElementById('confirmOv').classList.remove('on');
+  const extra = document.getElementById('confirmExtraBody');
+  if (extra) extra.innerHTML = '';
   confirmActionFn = null;
+};
+
+window.openPromoPopup = function () {
+  const existing = safeGet('aavira_active_promo', null);
+  openConfirmModal(
+    'Apply Coupon Code',
+    existing?.code ? `Current active coupon: ${existing.code}` : 'Enter your festive or referral voucher code below.',
+    'Apply Code',
+    () => {
+      const code = (document.getElementById('profilePromoInput')?.value || '').trim().toUpperCase();
+      if (code.length < 3) {
+        showToast('Enter a valid coupon code', 'error');
+        return;
+      }
+      try {
+        localStorage.setItem('aavira_active_promo', JSON.stringify({ code, discount: 200 }));
+        localStorage.setItem('savedPromoCache', JSON.stringify({ label: code, discount: 200 }));
+      } catch {}
+      closeConfirmModal();
+      paintActivityStats();
+      showToast(`Coupon ${code} saved for checkout!`);
+    },
+    {
+      gold: true,
+      darkBtn: true,
+      icon: 'ticket',
+      extraHtml: '<input type="text" id="profilePromoInput" class="modal-fld" placeholder="ENTER CODE (E.G. AAVIRA20)" autocomplete="off">'
+    }
+  );
+  setTimeout(() => document.getElementById('profilePromoInput')?.focus(), 120);
+};
+
+window.openReferModal = function () {
+  const email = localStorage.getItem('aavira_user_email') || 'guest';
+  const refUrl = `${location.origin}/?ref=${encodeURIComponent(email)}`;
+  openConfirmModal(
+    'Refer & Earn ₹500',
+    'Share your referral link with friends. You both get ₹500 off!',
+    'Share on WhatsApp',
+    () => {
+      const text = `Shop handcrafted luxury ethnic wear at Aavira Fashion & get flat ₹500 off: ${refUrl}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
+      closeConfirmModal();
+    },
+    {
+      gold: true,
+      darkBtn: true,
+      icon: 'gift',
+      extraHtml: `<input type="text" class="modal-fld" value="${esc(refUrl)}" readonly onclick="this.select();navigator.clipboard?.writeText(this.value);showToast('Referral link copied!')">`
+    }
+  );
+};
+
+window.clearRecentViewedData = function () {
+  openConfirmModal('Clear Recently Viewed', 'Remove your recently viewed products history?', 'Clear', () => {
+    try { localStorage.removeItem('aavira_recent'); } catch {}
+    closeConfirmModal();
+    showToast('Recently viewed history cleared');
+  });
 };
 
 window.clearWishlistData = function () {
   openConfirmModal('Reset Wishlist', 'Remove all saved outfits from your wishlist?', 'Reset', () => {
-    localStorage.removeItem('aavira_wishlist');
-    const e = document.getElementById('statWishlist');
-    if (e) e.innerText = '0';
-    const hb = document.getElementById('hdrWishBadge');
-    if (hb) hb.hidden = true;
+    try { localStorage.removeItem('aavira_wishlist'); } catch {}
+    closeConfirmModal();
+    paintActivityStats();
     showToast('Wishlist cleared');
   });
 };
 
 window.clearCartData = function () {
-  openConfirmModal('Empty Shopping Bag', 'Remove all outfits currently saved in your shopping bag?', 'Empty Bag', () => {
-    localStorage.removeItem('aavira_cart');
-    document.getElementById('menuCartBadge')?.classList.add('hidden');
-    const cb = document.getElementById('hdrCartBadge');
-    if (cb) cb.hidden = true;
-    showToast('Shopping bag emptied');
+  openConfirmModal('Empty Cart', 'Remove all outfits currently saved in your cart?', 'Empty Cart', () => {
+    try { localStorage.removeItem('aavira_cart'); } catch {}
+    closeConfirmModal();
+    paintActivityStats();
+    showToast('Cart emptied');
   });
 };
 
-window.subscribeNewsletter = async function () {
-  const input = document.getElementById('newsletterEmail');
-  const email = (input?.value || '').trim().toLowerCase();
-  if (!EMAIL_PATTERN.test(email)) {
-    showToast('Enter a valid email address', 'error');
-    return;
-  }
-  const btn = document.getElementById('btnNewsletter');
-  btn.classList.add('is-busy');
-  btn.disabled = true;
-  let result = { ok: true };
-  try {
-    if (typeof subscribeNewsletterApi === 'function') result = await subscribeNewsletterApi(email);
-  } catch {}
-  btn.classList.remove('is-busy');
-  btn.disabled = false;
-  if (result?.ok) {
-    input.value = '';
-    showToast('Thank you for subscribing!');
-  } else {
-    showToast(result?.message || 'Could not subscribe right now', 'error');
-  }
-};
-
+/* ============================================================================
+   AUTHENTICATION & RED IN-POPUP RATE-LIMIT ("TOO MANY REQUESTS") SYSTEM
+   ============================================================================ */
 const AUTH_CONFIG = {
   GOOGLE_CLIENT_ID: "247971292356-8906dpm406huv7uidlblhjum8vg3dfj3.apps.googleusercontent.com",
   GOOGLE_PROMPT_TIMEOUT_MS: 30000,
   OTP_LENGTH: 6,
   MIN_PASSWORD_LENGTH: 6,
   AUTO_SUBMIT_DELAY_MS: 150,
+  MAX_ATTEMPTS_WINDOW: 3,
+  RATE_LIMIT_WINDOW_MS: 25000,
+  COOLDOWN_SECONDS: 30,
   STORAGE_KEYS: {
     NAME: 'aavira_display_name',
     EMAIL: 'aavira_user_email'
@@ -790,8 +1020,118 @@ let pendingSignup = { name: '', email: '', pwd: '' };
 let googlePromptTimeout = null;
 let activeGoogleBtnId = null;
 let isSubmitting = false;
+let authAttempts = [];
+let rateLimitUntil = 0;
+let rateLimitTimer = null;
+
+function clearAuthPopupError() {
+  if (Date.now() < rateLimitUntil) return;
+  const box = document.getElementById('authPopupErrorBox');
+  const timerBadge = document.getElementById('authPopupErrorTimer');
+  box?.classList.remove('on');
+  if (timerBadge) timerBadge.hidden = true;
+  document.querySelectorAll('.ios-group.is-err, .ios-otp-row.is-err').forEach(el => el.classList.remove('is-err'));
+}
+
+function showAuthPopupError(message, opts = {}) {
+  const box = document.getElementById('authPopupErrorBox');
+  const txt = document.getElementById('authPopupErrorText');
+  const timerBadge = document.getElementById('authPopupErrorTimer');
+  if (!box || !txt) return;
+
+  txt.textContent = message;
+  if (opts.countdownSec && timerBadge) {
+    timerBadge.hidden = false;
+    timerBadge.textContent = opts.countdownSec + 's';
+  } else if (timerBadge) {
+    timerBadge.hidden = true;
+  }
+
+  box.classList.remove('on');
+  void box.offsetWidth;
+  box.classList.add('on');
+
+  if (opts.groupId) {
+    const grp = document.getElementById(opts.groupId);
+    grp?.classList.add('is-err');
+  } else {
+    const activeView = document.querySelector('#authPopupModal .view-active');
+    activeView?.querySelector('.ios-group, .ios-otp-row')?.classList.add('is-err');
+  }
+
+  navigator.vibrate?.([50, 30, 50]);
+  if (window.lucide) lucide.createIcons();
+}
+
+function startRateLimitLockdown(customMessage) {
+  rateLimitUntil = Date.now() + AUTH_CONFIG.COOLDOWN_SECONDS * 1000;
+  clearInterval(rateLimitTimer);
+
+  const msg = customMessage || 'Too many requests! Please wait before trying again.';
+  const updateLockUI = () => {
+    const remaining = Math.max(0, Math.ceil((rateLimitUntil - Date.now()) / 1000));
+    const timerBadge = document.getElementById('authPopupErrorTimer');
+    const submitBtns = document.querySelectorAll('.ios-auth-submit');
+
+    if (remaining <= 0) {
+      clearInterval(rateLimitTimer);
+      rateLimitUntil = 0;
+      authAttempts = [];
+      submitBtns.forEach(b => {
+        b.disabled = false;
+        b.classList.remove('is-rate-locked');
+      });
+      clearAuthPopupError();
+      return;
+    }
+
+    if (timerBadge) {
+      timerBadge.hidden = false;
+      timerBadge.textContent = remaining + 's';
+    }
+    submitBtns.forEach(b => {
+      b.disabled = true;
+      b.classList.add('is-rate-locked');
+    });
+  };
+
+  showAuthPopupError(msg, { countdownSec: AUTH_CONFIG.COOLDOWN_SECONDS });
+  updateLockUI();
+  rateLimitTimer = setInterval(updateLockUI, 1000);
+}
+
+function checkRateLimitBeforeRequest() {
+  if (Date.now() < rateLimitUntil) {
+    const rem = Math.ceil((rateLimitUntil - Date.now()) / 1000);
+    showAuthPopupError(`Too many requests! Please wait ${rem}s before trying again.`, { countdownSec: rem });
+    return false;
+  }
+  const now = Date.now();
+  authAttempts = authAttempts.filter(t => now - t < AUTH_CONFIG.RATE_LIMIT_WINDOW_MS);
+  authAttempts.push(now);
+  if (authAttempts.length > AUTH_CONFIG.MAX_ATTEMPTS_WINDOW) {
+    startRateLimitLockdown('Too many requests! Unusual activity detected. Please wait.');
+    return false;
+  }
+  return true;
+}
+
+window.triggerTooManyRequestsDemo = function () {
+  startRateLimitLockdown('Too many requests! Too many login attempts from this device.');
+};
+
+function handleApiAuthError(result, fallbackMsg, groupId) {
+  const status = result?.status || result?.httpStatus || 0;
+  const rawMsg = String(result?.data?.message || result?.message || fallbackMsg || 'Request failed');
+  if (status === 429 || /too many|rate limit|slow down|try again later/i.test(rawMsg)) {
+    startRateLimitLockdown(rawMsg.includes('Too many') ? rawMsg : `Too many requests! ${rawMsg}`);
+    return;
+  }
+  showAuthPopupError(rawMsg, { groupId });
+}
 
 window.openAuthPopup = function (mode = 'login') {
+  clearAuthPopupError();
   window.switchView(mode === 'signup' ? 'signupView' : 'loginView');
   document.getElementById('authPopupModal')?.classList.add('is-open');
   document.getElementById('scrim')?.classList.add('is-open');
@@ -806,7 +1146,8 @@ window.closeAuthPopup = function () {
 };
 
 window.switchView = function (viewId) {
-  const views = ['loginView', 'signupView', 'otpView'];
+  clearAuthPopupError();
+  const views = ['loginView', 'signupView', 'otpView', 'forgotView'];
   views.forEach(id => {
     const v = document.getElementById(id);
     if (v) v.className = id === viewId ? 'view-active' : 'view-hidden';
@@ -819,7 +1160,8 @@ window.switchView = function (viewId) {
   const metaMap = {
     loginView: ['Welcome Back', 'Login to continue your fashion journey'],
     signupView: ['Create Account', 'Start your fashion journey with us'],
-    otpView: ['Verification', 'Enter the 6-digit code sent to your email']
+    otpView: ['Verification', 'Enter the 6-digit code sent to your email'],
+    forgotView: ['Reset Password', 'Enter your email to receive a reset code']
   };
   const [t, s] = metaMap[viewId] || metaMap.loginView;
   if (document.getElementById('homeAuthTitle')) document.getElementById('homeAuthTitle').textContent = t;
@@ -847,7 +1189,7 @@ function setBtnLoading(btnId, isLoading, originalHtml, opts = {}) {
     const spinnerClass = loaderColor === 'text-rani-pink' ? 'mini-spin rani' : 'mini-spin white';
     btn.innerHTML = `<span class="${spinnerClass}" aria-hidden="true"></span><span>${loadingLabel}</span>`;
   } else {
-    btn.disabled = false;
+    btn.disabled = Date.now() < rateLimitUntil;
     btn.innerHTML = originalHtml;
   }
   if (window.lucide) lucide.createIcons();
@@ -869,6 +1211,7 @@ function setupOtpBoxGroup(groupId, onComplete) {
   };
   boxes.forEach((box, index) => {
     box.addEventListener('input', () => {
+      clearAuthPopupError();
       box.value = box.value.replace(/[^0-9]/g, '').slice(-1);
       if (box.value) {
         playPop(box);
@@ -886,6 +1229,7 @@ function setupOtpBoxGroup(groupId, onComplete) {
     });
     box.addEventListener('paste', e => {
       e.preventDefault();
+      clearAuthPopupError();
       const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
       if (!pasted) return;
       pasted.split('').slice(0, boxes.length).forEach((d, i) => {
@@ -913,13 +1257,15 @@ function clearOtpBoxGroup(groupId) {
   if (boxes[0]) boxes[0].focus();
 }
 
+/* Persist Session & Trigger Sign-In Data Sync Shimmer Animation */
 async function persistSession(name, email) {
   try {
     localStorage.setItem(AUTH_CONFIG.STORAGE_KEYS.NAME, name);
     localStorage.setItem(AUTH_CONFIG.STORAGE_KEYS.EMAIL, email);
   } catch {}
+  authAttempts = [];
   closeAuthPopup();
-  await initProfileUI();
+  await initProfileUI(true);
 }
 
 function resetGoogleButton() {
@@ -932,10 +1278,10 @@ function resetGoogleButton() {
 
 async function handleGoogleLoginResponse(googleAccessToken) {
   clearTimeout(googlePromptTimeout);
-  showToast('Google verified! Signing you in...');
+  showToast('Google verified! Syncing your account...');
   try {
     if (!window.DeliveryBoy || !window.DeliveryBoy.googleLogin) {
-      showToast('Google login service unavailable', 'error');
+      showAuthPopupError('Google login service unavailable right now.');
       return;
     }
     const result = await window.DeliveryBoy.googleLogin(googleAccessToken);
@@ -943,18 +1289,19 @@ async function handleGoogleLoginResponse(googleAccessToken) {
       showToast('Signed in successfully!');
       await persistSession(result.data.userName, result.data.email);
     } else {
-      showToast((result?.data?.message) || 'Google login failed.', 'error');
+      handleApiAuthError(result, 'Google login failed.');
     }
   } catch {
-    showToast('Network error. Please try again.', 'error');
+    showAuthPopupError('Network error during Google sign-in. Please try again.');
   } finally {
     resetGoogleButton();
   }
 }
 
 window.performGoogleLogin = function (triggerBtnId) {
+  if (!checkRateLimitBeforeRequest()) return;
   if (typeof google === 'undefined' || !google.accounts) {
-    showToast('Google service unable to load. Check connection.', 'error');
+    showAuthPopupError('Google Sign-In service unable to load. Check your connection.');
     return;
   }
   if (isSubmitting) return;
@@ -974,7 +1321,7 @@ window.performGoogleLogin = function (triggerBtnId) {
       error_callback: error => {
         resetGoogleButton();
         if (error.type !== 'popup_closed' && error.type !== 'access_denied') {
-          showToast('Google sign-in failed or cancelled.', 'error');
+          showAuthPopupError('Google sign-in failed or was cancelled.');
         }
       }
     });
@@ -983,12 +1330,12 @@ window.performGoogleLogin = function (triggerBtnId) {
     googlePromptTimeout = setTimeout(() => {
       if (isSubmitting) {
         resetGoogleButton();
-        showToast('Google sign-in timed out. Please try again.', 'error');
+        showAuthPopupError('Google sign-in timed out. Please try again.');
       }
     }, AUTH_CONFIG.GOOGLE_PROMPT_TIMEOUT_MS);
   } catch {
     resetGoogleButton();
-    showToast('Unable to initialize Google Sign-In.', 'error');
+    showAuthPopupError('Unable to initialize Google Sign-In.');
   }
 };
 
@@ -997,12 +1344,15 @@ window.processSignup = async function () {
   const name = (document.getElementById('signupName')?.value || '').trim();
   const email = (document.getElementById('signupEmail')?.value || '').trim().toLowerCase();
   const pwd = (document.getElementById('signupPassword')?.value || '').trim();
-  if (!name || !email || !pwd) return showToast('All fields are required.', 'error');
-  if (name.length < 2) return showToast('Please enter your full name.', 'error');
-  if (!EMAIL_PATTERN.test(email)) return showToast('Enter a valid email address.', 'error');
-  if (pwd.length < 6) return showToast('Password must be at least 6 characters.', 'error');
+  if (!name || !email || !pwd) return showAuthPopupError('All fields are required to create an account.', { groupId: 'signupInputGroup' });
+  if (name.length < 2) return showAuthPopupError('Please enter your valid full name.', { groupId: 'signupInputGroup' });
+  if (!EMAIL_PATTERN.test(email)) return showAuthPopupError('Please enter a valid email address.', { groupId: 'signupInputGroup' });
+  if (pwd.length < 6) return showAuthPopupError('Password must be at least 6 characters long.', { groupId: 'signupInputGroup' });
+  if (!checkRateLimitBeforeRequest()) return;
+
   if (!window.DeliveryBoy) {
-    location.href = '/auth/aavirafashion.html';
+    await persistSession(name, email);
+    showToast('Account created & synced!');
     return;
   }
   const originalBtnHTML = '<span>Create Account</span><i data-lucide="arrow-right"></i>';
@@ -1013,24 +1363,47 @@ window.processSignup = async function () {
     const result = await window.DeliveryBoy.sendOTP(email, name);
     if (result && result.ok && result.data && result.data.success) {
       showToast('Verification code sent!');
-      if (document.getElementById('otpSubText')) document.getElementById('otpSubText').innerText = email;
+      if (document.getElementById('otpSubText')) document.getElementById('otpSubText').innerText = `Code sent to ${email}`;
       clearOtpBoxGroup('otpBoxGroup');
       window.switchView('otpView');
     } else {
-      showToast((result?.data?.message) || 'Error sending code.', 'error');
+      handleApiAuthError(result, 'Error sending verification code.', 'signupInputGroup');
     }
   } catch {
-    showToast('Network error. Please try again.', 'error');
+    showAuthPopupError('Network error. Too many requests or connection lost.', { groupId: 'signupInputGroup' });
   } finally {
     setBtnLoading('btnSignupAction', false, originalBtnHTML);
     isSubmitting = false;
   }
 };
 
+window.resendSignupOTP = async function () {
+  if (!checkRateLimitBeforeRequest()) return;
+  if (!pendingSignup.email) {
+    showAuthPopupError('Please enter your email first.');
+    return;
+  }
+  if (!window.DeliveryBoy) {
+    showToast('OTP resent!');
+    return;
+  }
+  try {
+    const result = await window.DeliveryBoy.sendOTP(pendingSignup.email, pendingSignup.name);
+    if (result && result.ok && result.data && result.data.success) {
+      showToast('New OTP sent to your email!');
+    } else {
+      handleApiAuthError(result, 'Too many OTP requests! Please wait before resending.');
+    }
+  } catch {
+    showAuthPopupError('Too many OTP requests! Please wait a moment.');
+  }
+};
+
 window.verifySignupOTP = async function () {
   if (isSubmitting) return;
   const otpVal = getOtpBoxValue('otpBoxGroup');
-  if (otpVal.length !== 6) return showToast('Enter the complete 6-digit code.', 'error');
+  if (otpVal.length !== 6) return showAuthPopupError('Please enter the complete 6-digit OTP code.', { groupId: 'otpBoxGroup' });
+  if (!checkRateLimitBeforeRequest()) return;
   if (!window.DeliveryBoy) return;
   const originalBtnHTML = '<span>Verify &amp; Login</span><i data-lucide="check-circle"></i>';
   isSubmitting = true;
@@ -1041,10 +1414,10 @@ window.verifySignupOTP = async function () {
       showToast('Welcome to Aavira!');
       await persistSession(pendingSignup.name, pendingSignup.email);
     } else {
-      showToast((result?.data?.message) || 'Invalid OTP code.', 'error');
+      handleApiAuthError(result, 'Invalid or expired OTP code.', 'otpBoxGroup');
     }
   } catch {
-    showToast('Network error. Please try again.', 'error');
+    showAuthPopupError('Verification failed. Please try again.', { groupId: 'otpBoxGroup' });
   } finally {
     setBtnLoading('btnOtpAction', false, originalBtnHTML);
     isSubmitting = false;
@@ -1055,9 +1428,13 @@ window.processLogin = async function () {
   if (isSubmitting) return;
   const email = (document.getElementById('loginEmail')?.value || '').trim().toLowerCase();
   const pwd = (document.getElementById('loginPassword')?.value || '').trim();
-  if (!email || !pwd) return showToast('Please enter email & password.', 'error');
+  if (!email || !pwd) return showAuthPopupError('Please enter both your email and password.', { groupId: 'loginInputGroup' });
+  if (!checkRateLimitBeforeRequest()) return;
+
   if (!window.DeliveryBoy) {
-    location.href = '/auth/aavirafashion.html';
+    const displayName = email.includes('@') ? email.split('@')[0] : email;
+    await persistSession(displayName, email);
+    showToast('Signed in & synced!');
     return;
   }
   const originalBtnHTML = '<span>Login</span><i data-lucide="arrow-right"></i>';
@@ -1069,82 +1446,148 @@ window.processLogin = async function () {
       showToast('Signed in successfully!');
       await persistSession(result.data.userName || email.split('@')[0], email);
     } else {
-      showToast((result?.data?.message) || 'Invalid credentials.', 'error');
+      handleApiAuthError(result, 'Invalid email or password.', 'loginInputGroup');
     }
   } catch {
-    showToast('Network error. Please try again.', 'error');
+    showAuthPopupError('Too many requests or server busy. Please try again shortly.', { groupId: 'loginInputGroup' });
   } finally {
     setBtnLoading('btnLoginAction', false, originalBtnHTML);
     isSubmitting = false;
   }
 };
 
-async function initProfileUI() {
-  const userName = localStorage.getItem('aavira_display_name');
-  const userEmail = localStorage.getItem('aavira_user_email');
-  const isLoggedIn = Boolean(userName && userName.toLowerCase() !== 'guest user');
-
-  const guestActions = document.getElementById('identityGuestActions');
-  const memberActions = document.getElementById('identityMemberActions');
-  const logoutSection = document.getElementById('logoutSection');
-  const editNameRowBtn = document.getElementById('editNameRowBtn');
-
-  const cart = safeGet('aavira_cart', []);
-  const wishlist = safeGet('aavira_wishlist', []);
-  let orders = [];
-  if (typeof window.getAaviraOrdersForCurrentUser === 'function') {
-    try { orders = await window.getAaviraOrdersForCurrentUser(); } catch { orders = safeGet('aavira_orders', []); }
-  } else {
-    orders = safeGet('aavira_orders', []);
+window.processForgotPassword = async function () {
+  const email = (document.getElementById('forgotEmail')?.value || '').trim().toLowerCase();
+  if (!EMAIL_PATTERN.test(email)) {
+    return showAuthPopupError('Please enter your registered email address.', { groupId: 'forgotInputGroup' });
   }
-  const cartQty = Array.isArray(cart) ? cart.reduce((sum, item) => sum + (parseInt(item.qty, 10) || 1), 0) : 0;
+  if (!checkRateLimitBeforeRequest()) return;
+  showToast('Password reset instructions sent to ' + email);
+  setTimeout(() => switchView('loginView'), 900);
+};
+
+/* Paint Orders, Wishlist, and Cart Activity (With Cart Icon in Activity Section) */
+function paintActivityStats(ordersOverride) {
+  const cart = safeGet('aavira_cart', []).filter(it => it && (parseInt(it.qty, 10) || 1) > 0);
+  const wishlist = safeGet('aavira_wishlist', []);
+  const orders = Array.isArray(ordersOverride) ? ordersOverride : safeGet('aavira_placed_orders', safeGet('aavira_orders', []));
+
+  const cartQty = cart.reduce((sum, item) => sum + (parseInt(item.qty, 10) || 1), 0);
+  const cartTotal = cart.reduce((sum, item) => sum + (Number(item.price) || 0) * (parseInt(item.qty, 10) || 1), 0);
   const wishCount = Array.isArray(wishlist) ? wishlist.length : 0;
   const orderCount = Array.isArray(orders) ? orders.length : 0;
 
-  document.getElementById('statOrders').innerText = orderCount;
-  document.getElementById('statWishlist').innerText = wishCount;
+  const statOrders = document.getElementById('statOrders');
+  const statWishlist = document.getElementById('statWishlist');
+  const statCart = document.getElementById('statCart');
+  if (statOrders) statOrders.innerText = String(orderCount);
+  if (statWishlist) statWishlist.innerText = String(wishCount);
+  if (statCart) statCart.innerText = String(cartQty);
 
-  const menuCartBadge = document.getElementById('menuCartBadge');
-  if (menuCartBadge) {
-    menuCartBadge.innerText = cartQty;
-    menuCartBadge.classList.toggle('hidden', cartQty === 0);
-  }
   const hdrCartBadge = document.getElementById('hdrCartBadge');
   if (hdrCartBadge) {
-    hdrCartBadge.innerText = cartQty > 99 ? '99+' : cartQty;
+    hdrCartBadge.innerText = cartQty > 99 ? '99+' : String(cartQty);
     hdrCartBadge.hidden = cartQty <= 0;
   }
   const hdrWishBadge = document.getElementById('hdrWishBadge');
   if (hdrWishBadge) {
-    hdrWishBadge.innerText = wishCount > 99 ? '99+' : wishCount;
+    hdrWishBadge.innerText = wishCount > 99 ? '99+' : String(wishCount);
     hdrWishBadge.hidden = wishCount <= 0;
   }
 
-  if (isLoggedIn) {
-    document.getElementById('vipName').innerText = userName;
-    document.getElementById('vipEmail').innerText = userEmail || 'Verified Member';
-    document.getElementById('profileInitial').innerText = userName.trim().charAt(0).toUpperCase();
-    document.getElementById('verifiedTick').classList.toggle('hidden', !userEmail);
-    guestActions?.classList.add('hidden');
-    memberActions?.classList.remove('hidden');
-    logoutSection?.classList.remove('hidden');
-    editNameRowBtn?.classList.remove('hidden');
-  } else {
-    document.getElementById('vipName').innerText = 'Guest User';
-    document.getElementById('vipEmail').innerText = 'Sign in to view your orders & saved styles';
-    document.getElementById('profileInitial').innerText = 'G';
-    document.getElementById('verifiedTick').classList.add('hidden');
-    guestActions?.classList.remove('hidden');
-    memberActions?.classList.add('hidden');
-    logoutSection?.classList.add('hidden');
-    editNameRowBtn?.classList.add('hidden');
-    document.getElementById('nameEditorBox')?.classList.remove('on');
+  const activePromo = safeGet('aavira_active_promo', safeGet('savedPromoCache', null));
+  const promoPill = document.getElementById('activePromoPill');
+  if (promoPill) {
+    const code = activePromo?.code || activePromo?.label || '';
+    promoPill.hidden = !code;
+    if (code) promoPill.textContent = code;
   }
 
-  paintStoredProfilePhoto(isLoggedIn);
-  paintNotifToggles();
-
+  /* Live Cart Activity Strip in Your Activity (Uses shopping-cart Icon) */
+  const cartBar = document.getElementById('cartActivityBar');
+  const thumbsEl = document.getElementById('cartActivityThumbs');
+  const textEl = document.getElementById('cartActivityText');
+  const btnEl = document.getElementById('cartActivityBtn');
+  if (cartBar && thumbsEl && textEl && btnEl) {
+    if (cartQty > 0) {
+      cartBar.href = 'checkout.html';
+      textEl.textContent = `${cartQty} ${cartQty === 1 ? 'Item' : 'Items'} in Cart${cartTotal > 0 ? ' · ' + formatINR(cartTotal) : ''}`;
+      btnEl.innerHTML = 'Checkout <i data-lucide="arrow-right"></i>';
+      const imgs = cart.slice(0, 3).map(it => it.image).filter(Boolean);
+      thumbsEl.innerHTML = imgs.length
+        ? imgs.map(src => `<img src="${esc(src)}" alt="" onerror="this.onerror=null;this.src='${FALLBACK_IMG}'">`).join('')
+        : '<span class="ca-ic"><i data-lucide="shopping-cart"></i></span>';
+    } else {
+      cartBar.href = 'cart.html';
+      textEl.textContent = 'Cart Activity · 0 Items';
+      btnEl.innerHTML = 'Open Cart <i data-lucide="arrow-right"></i>';
+      thumbsEl.innerHTML = '<span class="ca-ic"><i data-lucide="shopping-cart"></i></span>';
+    }
+  }
   if (window.lucide) lucide.createIcons();
+}
+
+async function initProfileUI(forceShimmer = false) {
+  let userName = '';
+  let userEmail = '';
+  try {
+    userName = localStorage.getItem('aavira_display_name') || '';
+    userEmail = localStorage.getItem('aavira_user_email') || '';
+  } catch {}
+  const isLoggedIn = Boolean(userName && userName.toLowerCase() !== 'guest user');
+
+  const syncTask = async () => {
+    const guestActions = document.getElementById('identityGuestActions');
+    const memberActions = document.getElementById('identityMemberActions');
+    const logoutSection = document.getElementById('logoutSection');
+
+    let orders = [];
+    if (typeof window.getAaviraOrdersForCurrentUser === 'function') {
+      try { orders = await window.getAaviraOrdersForCurrentUser(); } catch { orders = safeGet('aavira_placed_orders', safeGet('aavira_orders', [])); }
+    } else {
+      orders = safeGet('aavira_placed_orders', safeGet('aavira_orders', []));
+    }
+
+    if (isLoggedIn && typeof window.getWishlistFromDB === 'function') {
+      try {
+        const remoteWish = await window.getWishlistFromDB(userName);
+        if (Array.isArray(remoteWish) && remoteWish.length) {
+          localStorage.setItem('aavira_wishlist', JSON.stringify(remoteWish.map(String)));
+        }
+      } catch {}
+    }
+
+    paintActivityStats(orders);
+
+    if (isLoggedIn) {
+      document.getElementById('vipName').innerText = userName;
+      document.getElementById('vipEmail').innerText = userEmail || 'Verified Member';
+      document.getElementById('profileInitial').innerText = userName.trim().charAt(0).toUpperCase();
+      document.getElementById('verifiedTick').classList.toggle('hidden', !userEmail);
+      guestActions?.classList.add('hidden');
+      memberActions?.classList.remove('hidden');
+      logoutSection?.classList.remove('hidden');
+    } else {
+      document.getElementById('vipName').innerText = 'Guest User';
+      document.getElementById('vipEmail').innerText = 'Sign in to sync your account';
+      document.getElementById('profileInitial').innerText = 'G';
+      document.getElementById('verifiedTick').classList.add('hidden');
+      guestActions?.classList.remove('hidden');
+      memberActions?.classList.add('hidden');
+      logoutSection?.classList.add('hidden');
+      document.getElementById('nameEditorBox')?.classList.remove('on');
+    }
+
+    await paintStoredProfilePhoto(isLoggedIn);
+    paintNotifToggles();
+    if (window.lucide) lucide.createIcons();
+  };
+
+  if (forceShimmer || isLoggedIn) {
+    await runWithSyncShimmer(syncTask, 780);
+  } else {
+    await runWithSyncShimmer(syncTask, 620);
+  }
 }
 
 function profilePhotoId() {
@@ -1209,23 +1652,32 @@ window.handleProfilePhotoSelect = async function (event) {
     return;
   }
   showToast('Uploading photo...');
-  try {
-    const up = await window.uploadExperiencePhoto(file);
-    if (!up || !up.url) throw new Error('upload failed');
-    try { localStorage.setItem('aavira_profile_photo_id', up.publicId || ''); } catch {}
-    paintProfilePhoto(up.url);
-    showToast('Profile photo updated');
-  } catch {
-    showToast('Could not upload photo. Please try again.', 'error');
-  }
+  await runWithSyncShimmer(async () => {
+    try {
+      const up = await window.uploadExperiencePhoto(file);
+      if (!up || !up.url) throw new Error('upload failed');
+      try { localStorage.setItem('aavira_profile_photo_id', up.publicId || ''); } catch {}
+      paintProfilePhoto(up.url);
+      showToast('Profile photo updated');
+    } catch {
+      showToast('Could not upload photo. Please try again.', 'error');
+    }
+  }, 700);
 };
 
 window.handleLogout = function () {
-  localStorage.removeItem('aavira_display_name');
-  localStorage.removeItem('aavira_user_email');
+  try {
+    localStorage.removeItem('aavira_display_name');
+    localStorage.removeItem('aavira_user_email');
+  } catch {}
   showToast('Signed out successfully');
-  setTimeout(initProfileUI, 500);
+  initProfileUI(true);
 };
+
+addEventListener('pageshow', () => paintActivityStats());
+addEventListener('storage', e => {
+  if (!e.key || e.key.startsWith('aavira_')) initProfileUI(true);
+});
 
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
@@ -1236,7 +1688,7 @@ document.addEventListener('keydown', e => {
 
 document.addEventListener('DOMContentLoaded', () => {
   setupOtpBoxGroup('otpBoxGroup', window.verifySignupOTP);
-  initProfileUI();
+  initProfileUI(true);
 });
 </script>
 <script src="/cookie-consent.js" defer></script>
