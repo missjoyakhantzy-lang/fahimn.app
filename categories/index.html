@@ -1,1 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Aavira - Coming Soon</title>
+<meta name="theme-color" content="#ffffff">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<style>
+:root{--rani:#111111;--gold:#D4AF37;--gold-text:#8A6D1D;--ivory:#FFFFFF;--cream:#F8F8FA;--ink:#111113;--muted:#6E6E73;--line:#E5E5EA;--ease:cubic-bezier(.22,1,.36,1);--font-main:"Barlow Condensed","Roboto Condensed",system-ui,sans-serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;height:100%;font-family:var(--font-main);letter-spacing:.015em;background:var(--ivory);color:var(--ink);-webkit-font-smoothing:antialiased}
+button{font-family:inherit;letter-spacing:inherit;cursor:pointer;user-select:none}
+a{color:inherit;text-decoration:none}
+[hidden]{display:none!important}
 
+.app{max-width:420px;margin:0 auto;background:#FFFFFF;min-height:100dvh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(min-width:640px){body{background:#FFFFFF}.app{box-shadow:0 0 50px rgba(0,0,0,.06);border-inline:1px solid #F0F0F5}}
+
+.site-header{position:sticky;top:0;z-index:40;background:#FFFFFF;border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.site-header-row{height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 10px}
+.icon-btn{position:relative;width:34px;height:34px;border-radius:50%;border:0;background:transparent;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;padding:0;transition:background .2s,transform .2s var(--ease)}
+@media(hover:hover){.icon-btn:hover{background:rgba(212,175,55,.14);color:var(--rani)}}
+.icon-btn:active{transform:scale(.92)}
+.icon-btn svg{width:18px;height:18px;stroke-width:1.75}
+.cart-badge{position:absolute;top:2px;right:1px;min-width:15px;height:15px;padding:0 3.5px;border-radius:999px;background:var(--rani);color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
+.site-logo-btn{background:none;border:0;padding:0;display:inline-flex;align-items:center}
+.site-logo{height:27px;width:auto;max-width:96px;object-fit:contain}
+
+.coming-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:24px 20px}
+.coming-card{width:100%;text-align:center;padding:42px 24px;background:#FFFFFF;border:1px solid var(--line);border-radius:20px;box-shadow:0 12px 32px -16px rgba(0,0,0,.08)}
+.coming-ic{width:64px;height:64px;border-radius:50%;background:var(--cream);border:1px solid rgba(212,175,55,.4);color:var(--gold-text);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.coming-ic svg{width:28px;height:28px;stroke-width:1.6}
+.coming-eyebrow{display:block;font-size:11.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-text);margin-bottom:6px}
+.coming-card h1{font-size:26px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--ink);margin:0 0 8px;line-height:1.15}
+.coming-card p{margin:0 auto 22px;max-width:260px;font-size:15px;font-weight:500;line-height:1.5;color:var(--muted)}
+.btn-home{min-height:44px;padding:0 26px;border:0;border-radius:999px;background:linear-gradient(135deg,#242429,#000);color:#FFFFFF;font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 10px 22px -8px rgba(0,0,0,.45);transition:transform .2s var(--ease)}
+.btn-home:active{transform:scale(.97)}
+.btn-home svg{width:15px;height:15px}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="site-header">
+    <div class="site-header-row">
+      <button type="button" class="icon-btn" onclick="goBack()" aria-label="Back"><i data-lucide="arrow-left"></i></button>
+      <button type="button" class="site-logo-btn" onclick="go('/')" aria-label="Aavira home">
+        <img src="https://aavirafashion.shop/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" class="site-logo" onerror="logoFallback(this)">
+      </button>
+      <button type="button" class="icon-btn" onclick="go('/cart')" aria-label="Shopping cart">
+        <i data-lucide="shopping-cart"></i>
+        <span id="cart-badge" class="cart-badge" hidden>0</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="coming-wrap">
+    <div class="coming-card">
+      <div class="coming-ic"><i data-lucide="sparkles"></i></div>
+      <span class="coming-eyebrow">Aavira Collection</span>
+      <h1>Launching Very Soon</h1>
+      <p>Products in this collection will be listed very soon. Stay tuned for our latest handcrafted styles.</p>
+      <button type="button" class="btn-home" onclick="go('/')">
+        <i data-lucide="arrow-left"></i>
+        <span>Back to Home</span>
+      </button>
+    </div>
+  </main>
+</div>
+
+<script>
+const LOGO_FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 48"><text x="90" y="33" font-family="Georgia,serif" font-weight="700" font-size="28" letter-spacing="4" fill="#111113" text-anchor="middle">AAVIRA</text></svg>');
+
+window.logoFallback = img => {
+  img.onerror = null;
+  img.src = LOGO_FALLBACK;
+};
+
+window.go = url => {
+  try {
+    if (location.protocol === 'blob:' || location.hostname.includes('usercontent')) return;
+    location.href = url;
+  } catch {}
+};
+
+window.goBack = () => {
+  try {
+    if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+      history.back();
+      return;
+    }
+  } catch {}
+  go('/');
+};
+
+function updateCartBadge() {
+  try {
+    const cart = JSON.parse(localStorage.getItem('aavira_cart')) || [];
+    const total = (Array.isArray(cart) ? cart : []).reduce((s, i) => s + (Number(i.qty) || 1), 0);
+    const badge = document.getElementById('cart-badge');
+    if (!badge) return;
+    badge.textContent = total > 99 ? '99+' : total;
+    badge.hidden = total <= 0;
+  } catch {}
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  updateCartBadge();
+  try { window.lucide?.createIcons(); } catch {}
+});
+</script>
+</body>
+</html>
