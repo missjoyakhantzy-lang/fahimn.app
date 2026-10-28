@@ -8,84 +8,278 @@
 <meta name="description" content="Manage your Aavira Fashion account, orders, wishlist, cart activity, and delivery addresses.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
-:root{--rani:#111111;--rani-dark:#000000;--gold:#D4AF37;--gold-deep:#111113;--gold-text:#8A6D1D;--gold-soft:#F8F8FA;--ivory:#FFFFFF;--cream:#F8F8FA;--ink:#111113;--muted:#6E6E73;--line:#E5E5EA;--blush:#F2F2F7;--plum:#1C1C1E;--green:#15803D;--danger:#DC2626;--danger-dark:#B91C1C;--ease:cubic-bezier(.22,1,.36,1);--ios-spring:cubic-bezier(.32,.72,0,1);--font-main:"Barlow Condensed","Roboto Condensed",system-ui,sans-serif}
+:root{
+  --rani:#111113;
+  --rani-dark:#000000;
+  --gold:#9A7B2C;
+  --gold-bright:#D4AF37;
+  --ivory:#FFFFFF;
+  --cream:#F8F8FA;
+  --ink:#111113;
+  --muted:#6E6E73;
+  --line:#ECECEF;
+  --border-btn:#D4D4D8;
+  --green:#15803D;
+  --danger:#DC2626;
+  --danger-dark:#B91C1C;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --ios-spring:cubic-bezier(.32,.72,0,1);
+  --font-main:"Barlow Condensed","Roboto Condensed",system-ui,sans-serif;
+  --font-sub:Inter,system-ui,-apple-system,sans-serif;
+}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{margin:0;font-family:var(--font-main);letter-spacing:.015em;background:var(--ivory);color:var(--ink);overflow-x:clip;overscroll-behavior-y:none;-webkit-font-smoothing:antialiased}
-h1,h2,h3{font-family:var(--font-main);letter-spacing:.01em;margin:0}
+body{
+  margin:0;
+  font-family:var(--font-main);
+  letter-spacing:.02em;
+  background:#FFFFFF;
+  color:var(--ink);
+  overflow-x:clip;
+  overscroll-behavior-y:none;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:var(--font-main);letter-spacing:.02em;margin:0}
 button{font-family:inherit;letter-spacing:inherit;cursor:pointer;user-select:none}
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%}
-:focus-visible{outline:2px solid var(--rani);outline-offset:2px}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 [hidden]{display:none!important}
 .hidden{display:none!important}
 
-.app{max-width:420px;margin:0 auto;min-height:100vh;background:#FFFFFF;position:relative;padding-bottom:calc(34px + env(safe-area-inset-bottom,0px))}
-@media(min-width:640px){body{background:#F4F4F6}.app{box-shadow:0 0 50px rgba(0,0,0,.06);border-inline:1px solid #EBEBEF}}
+.app{
+  max-width:430px;
+  margin:0 auto;
+  min-height:100vh;
+  background:#FFFFFF;
+  position:relative;
+  padding-bottom:calc(32px + env(safe-area-inset-bottom,0px));
+}
+@media(min-width:640px){
+  body{background:#F5F5F7}
+  .app{box-shadow:0 0 50px rgba(0,0,0,.06);border-inline:1px solid #E5E5EA}
+}
 
 .is-busy{position:relative;pointer-events:none;color:transparent!important}
 .is-busy>*{opacity:0!important}
-.is-busy::after{content:"";box-sizing:border-box;position:absolute;left:50%;top:50%;width:15px;height:15px;margin:-7.5px 0 0 -7.5px;border:2.2px solid var(--spin,var(--ink));border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;z-index:6}
-:is(.btn-dark,.ios-auth-submit,.name-save-btn).is-busy{--spin:#fff}
+.is-busy::after{
+  content:"";
+  box-sizing:border-box;
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:15px;
+  height:15px;
+  margin:-7.5px 0 0 -7.5px;
+  border:2.2px solid var(--spin,var(--ink));
+  border-top-color:transparent;
+  border-radius:50%;
+  animation:spin .6s linear infinite;
+  z-index:6;
+}
+:is(.btn-login-solid,.ios-auth-submit,.name-save-btn).is-busy{--spin:#fff}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Header */
-.hdr{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:6px;height:48px;padding:env(safe-area-inset-top,0) 10px 0;background:rgba(255,255,255,.96)!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #E5E5EA}
-.hdr-left{display:flex;align-items:center;gap:2px;min-width:0;flex:1}
-.hdr-r{display:flex;align-items:center;gap:2px}
+/* Top Header (Restored: Back + Wishlist + Cart on Left, Aavira Logo on Right) */
+.hdr{
+  position:sticky;
+  top:0;
+  z-index:40;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:6px;
+  height:52px;
+  padding:env(safe-area-inset-top,0) 12px 0;
+  background:rgba(255,255,255,.96)!important;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid #E5E5EA;
+}
+.hdr-left{display:flex;align-items:center;gap:4px;min-width:0;flex:1}
+.hdr-r{display:flex;align-items:center;gap:3px}
 .hdr-logo{flex-shrink:0;display:flex;align-items:center}
-.hdr img{height:28px;width:auto;max-width:98px;object-fit:contain}
-.ib{position:relative;width:34px;height:34px;flex:0 0 34px;padding:0;border:0;background:transparent;border-radius:50%;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:background .2s,color .2s,transform .2s var(--ease)}
-@media(hover:hover){.ib:hover{background:rgba(212,175,55,.14);color:var(--rani)}}
+.hdr img{height:30px;width:auto;max-width:104px;object-fit:contain}
+.hdr-logo-fallback{
+  font-family:Georgia,serif;
+  font-size:20px;
+  font-style:italic;
+  font-weight:700;
+  color:var(--ink);
+}
+.ib{
+  position:relative;
+  width:36px;
+  height:36px;
+  flex:0 0 36px;
+  padding:0;
+  border:1px solid #EBEBEF;
+  background:#F8F8FA;
+  border-radius:50%;
+  color:var(--ink);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  transition:background .2s,border-color .2s,transform .18s var(--ease);
+}
+@media(hover:hover){.ib:hover{background:#EFEFF4;border-color:#D4D4D8}}
 .ib:active{transform:scale(.92)}
 svg.lucide{width:1em;height:1em;flex-shrink:0}
-.ib svg{width:18px;height:18px;stroke-width:1.8}
-.badge{position:absolute;top:1px;right:0;min-width:15px;height:15px;padding:0 3.5px;border-radius:999px;background:var(--rani);color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid #fff}
+.ib svg{width:17px;height:17px;stroke-width:1.85}
+.badge{
+  position:absolute;
+  top:-2px;
+  right:-2px;
+  min-width:16px;
+  height:16px;
+  padding:0 4px;
+  border-radius:999px;
+  background:#000000;
+  color:#fff;
+  font-size:9.5px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1.5px solid #fff;
+}
 
-/* Profile Banner */
-.web-banner{position:relative;overflow:hidden;padding:20px 16px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#FAF8F5 0%,#FFFFFF 100%)}
-.banner-top-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
-.web-eyebrow{display:block;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#A8842C}
-.sync-pill{display:none;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;background:linear-gradient(135deg,#1C1C1E,#000000);border:1px solid rgba(212,175,55,.55);color:#FFFFFF;font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;box-shadow:0 4px 12px rgba(0,0,0,.16)}
-.sync-pill svg{width:11.5px;height:11.5px;color:var(--gold);animation:spin .8s linear infinite}
-.is-syncing .sync-pill{display:inline-flex}
-
-.web-head-row{position:relative;display:flex;align-items:center;gap:14px;min-width:0}
+/* Profile / Welcome Section */
+.web-banner{
+  position:relative;
+  overflow:hidden;
+  padding:20px 16px 18px;
+  background:linear-gradient(180deg,#FAF8F5 0%,#FFFFFF 100%);
+  border-bottom:1px solid var(--line);
+}
+.web-head-row{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  min-width:0;
+}
 .avatar-wrap{position:relative;flex-shrink:0}
-.profile-avatar{position:relative;width:64px;height:64px;border-radius:50%;background:#111113;border:2px solid var(--gold);color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:700;overflow:hidden;transition:transform .25s var(--ease)}
+.profile-avatar{
+  position:relative;
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background:#FFFFFF;
+  border:1.8px solid var(--ink);
+  color:var(--ink);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--font-main);
+  font-size:23px;
+  font-weight:700;
+  overflow:hidden;
+  transition:transform .25s var(--ease),border-color .25s;
+}
 .profile-avatar img{width:100%;height:100%;object-fit:cover;display:block}
-.photo-btn{position:absolute;right:-2px;bottom:-2px;width:24px;height:24px;border-radius:50%;background:#111113;color:#fff;border:2px solid #fff;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.22)}
-.photo-btn svg{width:11.5px;height:11.5px;stroke-width:2}
+.photo-btn{
+  position:absolute;
+  right:-2px;
+  bottom:-2px;
+  width:23px;
+  height:23px;
+  border-radius:50%;
+  background:#111113;
+  color:#fff;
+  border:2px solid #fff;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 2px 6px rgba(0,0,0,.22);
+}
+.photo-btn svg{width:11px;height:11px;stroke-width:2}
 .id-meta{flex:1;min-width:0}
 .id-name-row{display:flex;align-items:center;gap:6px;min-width:0}
-.id-name{font-size:23px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.15;text-transform:uppercase;letter-spacing:.02em}
+.id-name{
+  font-size:22px;
+  font-weight:700;
+  color:var(--ink);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  line-height:1.15;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+}
 .verified-ic{width:16px;height:16px;color:var(--green);flex-shrink:0}
-.id-email{font-size:13.5px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.id-actions{display:flex;align-items:center;gap:7px;margin-top:12px;flex-wrap:wrap}
-.btn-pill{height:35px;padding:0 14px;border-radius:999px;font-size:12.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:5px;transition:transform .15s,background .2s,border-color .2s}
-.btn-pill:active{transform:scale(.96)}
-.btn-pill svg{width:13px;height:13px;stroke-width:2}
-.btn-dark{background:linear-gradient(135deg,#242429,#000);color:#fff;border:0;box-shadow:0 10px 20px -10px rgba(0,0,0,.5)}
-.btn-soft{background:#FFFFFF;color:var(--ink);border:1.5px solid #D5CDC2}
-.btn-gold{background:linear-gradient(135deg,#FFFDF7,#F7EFE0);color:#8A6D1D;border:1.5px solid rgba(212,175,55,.55)}
-@media(hover:hover){.btn-soft:hover{border-color:#111113}.btn-gold:hover{border-color:#8A6D1D}}
+.id-email{
+  font-family:var(--font-sub);
+  font-size:12.5px;
+  font-weight:400;
+  letter-spacing:0;
+  color:var(--muted);
+  margin-top:2px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
 
-/* NEW Luxury Gold & Pearl Shimmer ("Simar") Animation When Sign-In Data Syncs */
+/* Two Full-Width Side-by-Side Pill Buttons (LOG IN / SIGN UP) */
+.id-actions-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:16px;
+}
+.btn-auth-pill{
+  height:42px;
+  padding:0 14px;
+  border-radius:999px;
+  font-family:var(--font-main);
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  transition:transform .15s,background .2s,border-color .2s;
+}
+.btn-auth-pill:active{transform:scale(.97)}
+.btn-auth-pill svg{width:14px;height:14px;stroke-width:2}
+.btn-login-solid{
+  background:#000000;
+  color:#FFFFFF;
+  border:1.5px solid #000000;
+}
+.btn-signup-outline{
+  background:#FFFFFF;
+  color:var(--ink);
+  border:1.2px solid var(--border-btn);
+}
+.btn-logout-outline{
+  background:#FFF5F5;
+  color:var(--danger-dark);
+  border:1.2px solid #FECACA;
+}
+@media(hover:hover){
+  .btn-signup-outline:hover{border-color:var(--ink)}
+  .btn-logout-outline:hover{border-color:var(--danger)}
+}
+
+/* Automatic Luxury Shimmer ("Simar") Animation When Sign-In Data Syncs */
 @keyframes luxuryShimmerBeam{
-  0%{transform:translateX(-110%) skewX(-18deg)}
-  100%{transform:translateX(210%) skewX(-18deg)}
+  0%{transform:translateX(-115%) skewX(-18deg)}
+  100%{transform:translateX(215%) skewX(-18deg)}
 }
 @keyframes skelPulseBar{
   0%{background-position:200% 0}
   100%{background-position:-200% 0}
 }
 @keyframes avatarGoldPulse{
-  0%,100%{box-shadow:0 0 0 0 rgba(212,175,55,.65),0 0 0 4px rgba(17,17,19,.08)}
-  50%{box-shadow:0 0 0 4px rgba(212,175,55,.28),0 0 18px 2px rgba(212,175,55,.45)}
+  0%,100%{box-shadow:0 0 0 0 rgba(212,175,55,.55)}
+  50%{box-shadow:0 0 0 4px rgba(212,175,55,.24),0 0 14px 2px rgba(212,175,55,.32)}
 }
 .web-banner.is-syncing::before,
 .ov-card.is-syncing::before,
@@ -98,118 +292,277 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
   width:65%;
   pointer-events:none;
   z-index:9;
-  background:linear-gradient(90deg,transparent 0%,rgba(255,250,235,.55) 35%,rgba(212,175,55,.28) 50%,rgba(255,255,255,.88) 65%,transparent 100%);
+  background:linear-gradient(90deg,transparent 0%,rgba(255,250,235,.6) 35%,rgba(212,175,55,.25) 50%,rgba(255,255,255,.9) 65%,transparent 100%);
   animation:luxuryShimmerBeam .85s cubic-bezier(.4,0,.2,1) infinite;
 }
 .web-banner.is-syncing .profile-avatar{
   animation:avatarGoldPulse 1s ease-in-out infinite;
-  border-color:var(--gold);
+  border-color:var(--gold-bright);
 }
 .sync-skel-lines{display:none;flex-direction:column;gap:7px;padding:2px 0}
 .web-banner.is-syncing .sync-skel-lines{display:flex}
-.web-banner.is-syncing .id-live-content{display:none}
+.web-banner.is-syncing .id-live-text{display:none}
 .skel-bar{
-  height:14px;
+  height:13px;
   border-radius:999px;
   background:linear-gradient(90deg,#EFECE6 20%,#FAF6ED 45%,#E4DAC8 55%,#EFECE6 80%);
   background-size:220% 100%;
   animation:skelPulseBar 1s linear infinite;
 }
-.skel-bar.lg{width:68%;height:21px}
-.skel-bar.md{width:84%;height:13px}
-.skel-bar.pills{width:54%;height:30px;margin-top:4px}
+.skel-bar.lg{width:58%;height:19px}
+.skel-bar.md{width:82%;height:12px}
 .ov-card.is-syncing .ov-cnt{
-  min-width:34px;
-  height:20px;
+  min-width:28px;
+  height:18px;
   border-radius:999px;
   color:transparent!important;
   background:linear-gradient(90deg,#EFECE6 20%,#FAF6ED 45%,#E4DAC8 55%,#EFECE6 80%);
   background-size:220% 100%;
   animation:skelPulseBar 1s linear infinite;
 }
-.ov-card.is-syncing .ov-ic{
-  border-color: rgba(212,175,55,.65);
-  background: #FFFDF7;
-}
 
+/* Inline Name Editor */
 .name-editor{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);display:none;animation:iosAuthFade .22s var(--ease)}
 .name-editor.on{display:block}
 .name-editor label{display:block;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
 .name-edit-row{display:flex;align-items:center;gap:8px}
-.name-input{flex:1;min-width:0;height:42px;border:1px solid var(--line);background:#FFFFFF;border-radius:999px;padding:0 15px;font:inherit;font-size:15px;font-weight:600;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s}
-.name-input:focus{border-color:#111113;box-shadow:0 0 0 3px rgba(0,0,0,.06)}
-.name-save-btn{height:42px;padding:0 18px;border:0;border-radius:999px;background:linear-gradient(135deg,#242429,#000);color:#fff;font-size:13.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:6px;flex-shrink:0}
-.name-cancel-btn{height:42px;width:42px;border:1px solid var(--line);border-radius:50%;background:#F8F8FA;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.name-input{flex:1;min-width:0;height:42px;border:1px solid var(--border-btn);background:#FFFFFF;border-radius:999px;padding:0 15px;font:inherit;font-size:15px;font-weight:600;color:var(--ink);outline:none}
+.name-input:focus{border-color:#000000}
+.name-save-btn{height:42px;padding:0 18px;border:0;border-radius:999px;background:#000000;color:#fff;font-size:13.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:6px;flex-shrink:0}
+.name-cancel-btn{height:42px;width:42px;border:1px solid var(--border-btn);border-radius:50%;background:#F8F8FA;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
 
 /* Sections */
 .web-sec{padding:18px 16px 0}
 .web-sec-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
-.web-sec-head h2{font-size:18px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink)}
+.web-sec-head h2{
+  font-size:17px;
+  font-weight:700;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  color:var(--ink);
+}
 
-/* 3-Card Activity Overview (My Orders, My Wishlist, My Cart — Single Clean Name Only) */
+/* 1. Your Activity (My Orders, My Wishlist, My Cart + Cart Activity Strip) */
 .overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.ov-card{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:12px;background:#FFFFFF;border:1px solid #EBEBEF;border-radius:14px;min-height:82px;transition:border-color .2s var(--ease),background .2s,transform .15s}
-@media(hover:hover){.ov-card:hover{border-color:#111113;background:#FAFAFC}}
-.ov-card:active{background:#F8F8FA;transform:scale(.98)}
+.ov-card{
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:12px;
+  background:#FFFFFF;
+  border:1px solid #EBEBEF;
+  border-radius:14px;
+  min-height:82px;
+  transition:border-color .2s var(--ease),transform .15s;
+}
+@media(hover:hover){.ov-card:hover{border-color:#000000}}
+.ov-card:active{transform:scale(.98);background:#FAFAFC}
 .ov-top{display:flex;align-items:center;justify-content:space-between;gap:6px}
-.ov-ic{width:32px;height:32px;border-radius:50%;background:#F8F8FA;border:1px solid var(--line);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;transition:border-color .25s,background .25s}
-.ov-ic svg{width:15px;height:15px;stroke-width:1.9}
+.ov-ic{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:#F7F7FA;
+  border:1px solid #E5E5EA;
+  color:var(--ink);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+.ov-ic svg{width:15.5px;height:15.5px;stroke-width:1.9}
 .ov-cnt{min-width:18px;font-size:20px;font-weight:700;color:var(--ink);line-height:1;text-align:right}
-.ov-bot{margin-top:10px}
-.ov-title{display:block;font-size:14px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--ink);line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ov-bot{margin-top:9px}
+.ov-title{
+  display:block;
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  color:var(--ink);
+  line-height:1.15;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
 
-/* Live Cart Activity Strip Inside Activity Section (Uses shopping-cart Icon) */
-.cart-act-bar{position:relative;overflow:hidden;margin-top:8px;padding:10px 12px;border-radius:14px;border:1px solid #E5E5EA;background:linear-gradient(135deg,#FAF8F5,#FFFFFF);display:flex;align-items:center;justify-content:space-between;gap:10px;transition:border-color .2s}
-@media(hover:hover){.cart-act-bar:hover{border-color:#111113}}
+.cart-act-bar{
+  position:relative;
+  overflow:hidden;
+  margin-top:8px;
+  padding:10px 12px;
+  border-radius:14px;
+  border:1px solid #E5E5EA;
+  background:linear-gradient(135deg,#FAF8F5,#FFFFFF);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  transition:border-color .2s;
+}
+@media(hover:hover){.cart-act-bar:hover{border-color:#000000}}
 .ca-left{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
 .ca-thumbs{display:flex;align-items:center;flex-shrink:0}
 .ca-thumbs img{width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid #FFFFFF;background:#F2F2F7;box-shadow:0 2px 6px rgba(0,0,0,.12)}
-.ca-thumbs img+img{margin-left:-10px}
-.ca-ic{width:30px;height:30px;border-radius:50%;background:#111113;color:#FFFFFF;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
-.ca-ic svg{width:14px;height:14px;stroke-width:2}
-.ca-title{font-size:14.5px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ca-go{height:30px;padding:0 12px;border-radius:999px;background:#111113;color:#FFFFFF;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;gap:4px;flex-shrink:0}
-.ca-go svg{width:13px;height:13px;stroke-width:2.2}
+.ca-thumbs img+img{margin-left:-9px}
+.ca-ic{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:#F7F7FA;
+  border:1px solid #E5E5EA;
+  color:var(--ink);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.ca-ic svg{width:15.5px;height:15.5px;stroke-width:1.9}
+.ca-title{font-size:14.5px;font-weight:700;letter-spacing:.025em;text-transform:uppercase;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ca-go{height:30px;padding:0 12px;border-radius:999px;background:#000000;color:#FFFFFF;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;gap:4px;flex-shrink:0}
+.ca-go svg{width:12.5px;height:12.5px;stroke-width:2.2}
 
-/* Quick Action Pill Buttons Grid (More Buttons, Single Clean Name Only) */
-.quick-btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
-.q-act-btn{height:44px;padding:0 12px;border-radius:12px;border:1px solid #EBEBEF;background:#FFFFFF;color:var(--ink);font-size:14px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between;gap:8px;transition:border-color .2s,background .2s,transform .15s}
-@media(hover:hover){.q-act-btn:hover{border-color:#111113;background:#FAF8F5}}
-.q-act-btn:active{transform:scale(.98);background:#F4F4F6}
-.q-act-l{display:flex;align-items:center;gap:8px;min-width:0}
-.q-act-l svg{width:16px;height:16px;color:var(--ink);stroke-width:1.9;flex-shrink:0}
-.q-act-l span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.q-act-r{width:14px;height:14px;color:var(--muted);flex-shrink:0}
+/* 4-Icon Promise Strip (Matches the 4-Box Icon Row in 9320.jpg) */
+.promise-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin-top:8px;
+}
+.promise-box{
+  height:44px;
+  border-radius:12px;
+  border:1px solid #E5E5EA;
+  background:#FFFFFF;
+  color:var(--gold);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:border-color .2s,background .2s,transform .15s;
+}
+@media(hover:hover){.promise-box:hover{border-color:var(--gold);background:#FFFDF8}}
+.promise-box:active{transform:scale(.96)}
+.promise-box svg{width:19px;height:19px;stroke-width:1.85}
 
-/* Clean Single-Line List Rows (Only ONE Name Per Item — Zero Subtitle Clutter) */
-.web-list{border:1px solid #EBEBEF;border-radius:14px;overflow:hidden;background:#FFFFFF}
-.web-row{width:100%;min-height:48px;padding:10px 14px;border:0;border-bottom:1px solid #EFEFF4;background:#FFFFFF;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;color:var(--ink);transition:background .18s}
-.web-row:last-child{border-bottom:0}
-@media(hover:hover){.web-row:hover{background:#FAF8F5}}
-.web-row:active{background:#F4F4F6}
-.web-row-l{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
-.web-row-l>svg{width:18px;height:18px;color:var(--ink);stroke-width:1.8;flex-shrink:0}
-.web-row-title{display:block;font-size:15px;font-weight:600;letter-spacing:.025em;text-transform:uppercase;color:var(--ink);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.web-row-r{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.web-row-r svg{width:15px;height:15px;color:var(--muted)}
-.tag-pill{padding:2px 8px;border-radius:999px;background:#FFF8E6;border:1px solid rgba(212,175,55,.45);color:#8A6D1D;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+/* Action List Rows with Circular Icon Badges (Exact Match to Screenshot 9320.jpg!) */
+.action-list{
+  border:1px solid #EBEBEF;
+  border-radius:16px;
+  overflow:hidden;
+  background:#FFFFFF;
+}
+.action-row{
+  width:100%;
+  min-height:56px;
+  padding:9px 14px;
+  border:0;
+  border-bottom:1px solid #F2F2F6;
+  background:#FFFFFF;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  text-align:left;
+  color:var(--ink);
+  transition:background .18s;
+}
+.action-row:last-child{border-bottom:0}
+@media(hover:hover){.action-row:hover{background:#FAFAFC}}
+.action-row:active{background:#F4F4F8}
+.action-row-l{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  min-width:0;
+  flex:1;
+}
+/* Circular Icon Badge (Same as 9320.jpg) */
+.row-ic-circle{
+  width:38px;
+  height:38px;
+  flex:0 0 38px;
+  border-radius:50%;
+  background:#F7F7FA;
+  border:1px solid #E5E5EA;
+  color:var(--ink);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  transition:transform .18s,border-color .18s,background .18s;
+}
+.row-ic-circle svg{
+  width:17px;
+  height:17px;
+  stroke-width:1.85;
+}
+.action-row-title{
+  display:block;
+  font-family:var(--font-main);
+  font-size:16px;
+  font-weight:700;
+  letter-spacing:.025em;
+  text-transform:uppercase;
+  color:var(--ink);
+  line-height:1.2;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+/* Red Destructive Row Variant (Same as "Remove from bag" in 9320.jpg) */
+.action-row.is-danger .row-ic-circle{
+  background:#FEF2F2;
+  border-color:#FECACA;
+  color:#DC2626;
+}
+.action-row.is-danger .action-row-title{
+  color:#DC2626;
+}
+@media(hover:hover){
+  .action-row.is-danger:hover{background:#FFF8F8}
+}
+
+.action-row-r{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  flex-shrink:0;
+  color:#8E8E93;
+}
+.action-row-r svg{width:15.5px;height:15.5px;stroke-width:1.9}
+.action-row.is-danger .action-row-r svg{color:#EF4444}
+.row-cnt-pill{
+  min-width:20px;
+  height:20px;
+  padding:0 6px;
+  border-radius:999px;
+  background:#111113;
+  color:#FFFFFF;
+  font-size:11px;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+.tag-pill{
+  padding:2px 8px;
+  border-radius:999px;
+  background:#FFF8E6;
+  border:1px solid rgba(212,175,55,.45);
+  color:#8A6D1D;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
 
 /* Toggle Switch */
 .sw-pill{width:40px;height:22px;border-radius:999px;background:#D8D8DF;position:relative;transition:background .22s var(--ease);flex-shrink:0;border:0;padding:0;cursor:pointer}
 .sw-pill::after{content:"";position:absolute;top:2.5px;left:2.5px;width:17px;height:17px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(0,0,0,.22);transition:transform .22s var(--ios-spring)}
-.sw-pill.on,.toggle-on.sw-pill{background:#111113}
+.sw-pill.on,.toggle-on.sw-pill{background:#000000}
 .sw-pill.on::after,.toggle-on.sw-pill::after{transform:translateX(18px)}
 
-/* WhatsApp Stylist Strip (Clean Single-Line) */
-.wa-strip{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:14px;padding:12px 14px;font-size:14.5px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:#166534}
-.wa-strip a{flex:0 0 auto;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#25D366,#16A34A);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(22,163,74,.32)}
-.wa-strip a svg{width:18px;height:18px;stroke-width:2}
-
-.logout-btn{width:100%;height:46px;border:1.5px solid #FECACA;background:#FEF2F2;color:var(--danger-dark);border-radius:999px;font-size:14.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s,background .2s}
-.logout-btn:active{transform:scale(.98)}
-.logout-btn svg{width:16px;height:16px;stroke-width:2}
-
-/* Confirm & Promo/Refer Modals */
+/* Confirm, Promo, Refer & Quick View Modals */
 .confirm-ov{position:fixed;inset:0;z-index:160;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:20px}
 .confirm-ov.on{display:flex}
 .confirm-box{width:100%;max-width:340px;background:#FFFFFF;border:1px solid var(--line);border-radius:22px;padding:22px 18px 18px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.28);animation:popIn .24s var(--ease)}
@@ -218,29 +571,50 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .confirm-ic.gold{background:#FFF8E6;color:#8A6D1D;border-color:rgba(212,175,55,.45)}
 .confirm-ic svg{width:22px;height:22px;stroke-width:2}
 .confirm-box h3{font-size:20px;font-weight:700;text-transform:uppercase;color:var(--ink);margin-bottom:5px}
-.confirm-box p{font-size:13.5px;color:var(--muted);line-height:1.45;margin-bottom:14px}
+.confirm-box p{font-family:var(--font-sub);font-size:13px;color:var(--muted);line-height:1.45;margin-bottom:14px}
 .confirm-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.confirm-btns button{height:40px;border-radius:999px;font-size:13.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--line);background:#F8F8FA;color:var(--ink)}
+.confirm-btns button{height:40px;border-radius:999px;font-size:13.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--border-btn);background:#F8F8FA;color:var(--ink)}
 .confirm-btns button.yes{background:var(--danger);border-color:var(--danger);color:#fff}
-.confirm-btns button.dark{background:#111113;border-color:#111113;color:#fff}
-.modal-fld{width:100%;height:44px;border:1.5px solid var(--line);border-radius:12px;padding:0 14px;font:inherit;font-size:15px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-align:center;color:var(--ink);margin-bottom:12px;outline:none}
-.modal-fld:focus{border-color:#111113}
+.confirm-btns button.dark{background:#000000;border-color:#000000;color:#fff}
+.modal-fld{width:100%;height:44px;border:1.5px solid var(--border-btn);border-radius:12px;padding:0 14px;font:inherit;font-size:15px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-align:center;color:var(--ink);margin-bottom:12px;outline:none}
+.modal-fld:focus{border-color:#000000}
 
-/* Auth Modal + RED IN-POPUP ERROR ALERT (For "Too Many Requests", Invalid Credentials, OTP Errors, etc.) */
+/* Auth Modal + Automatic Red In-Popup Error Box (30s Cooldown When User Sends >3 Requests) */
 .scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9990;opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .3s}
 .scrim.is-open{opacity:1;visibility:visible;transition-delay:0s}
 .layer{position:fixed;z-index:10000;visibility:hidden;pointer-events:none;transition:transform .38s var(--ease),opacity .3s,visibility 0s .38s}
 .layer.is-open{visibility:visible;pointer-events:auto;transform:none;opacity:1;transition-delay:0s}
-.sec-eyebrow{display:block;font-size:11.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#A8842C;margin-bottom:4px}
-#authPopupModal{top:50%;left:50%;right:auto;bottom:auto;width:calc(100% - 28px);max-width:380px;max-height:92dvh;overflow-y:auto;background:#FFFFFF;border:1px solid #E5E5EA;border-radius:24px;padding:22px 18px 18px;box-shadow:0 24px 60px rgba(0,0,0,.28);transform:translate(-50%,-46%) scale(.94);opacity:0;transition:transform .42s cubic-bezier(.22,1,.36,1),opacity .32s ease,visibility 0s .42s}
-#authPopupModal.is-open{transform:translate(-50%,-50%) scale(1);opacity:1;transition:transform .42s cubic-bezier(.22,1,.36,1),opacity .32s ease,visibility 0s 0s}
+.sec-eyebrow{display:block;font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+#authPopupModal{
+  top:50%;
+  left:50%;
+  right:auto;
+  bottom:auto;
+  width:calc(100% - 28px);
+  max-width:380px;
+  max-height:92dvh;
+  overflow-y:auto;
+  background:#FFFFFF;
+  border:1px solid #E5E5EA;
+  border-radius:24px;
+  padding:22px 18px 18px;
+  box-shadow:0 24px 60px rgba(0,0,0,.28);
+  transform:translate(-50%,-46%) scale(.94);
+  opacity:0;
+  transition:transform .42s cubic-bezier(.22,1,.36,1),opacity .32s ease,visibility 0s .42s;
+}
+#authPopupModal.is-open{
+  transform:translate(-50%,-50%) scale(1);
+  opacity:1;
+  transition:transform .42s cubic-bezier(.22,1,.36,1),opacity .32s ease,visibility 0s 0s;
+}
 .ios-auth-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
 .ios-auth-close{width:32px;height:32px;flex:0 0 32px;border-radius:50%;border:1px solid #E5E5EA;background:#F8F8FA;color:#111113;display:inline-flex;align-items:center;justify-content:center;padding:0}
 .ios-auth-close svg{width:15px;height:15px;stroke-width:2.2}
 .ios-auth-head h2{font-size:23px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:#111113;line-height:1.15}
-.ios-auth-head p{margin:3px 0 0;font-size:13.5px;color:var(--muted)}
+.ios-auth-head p{font-family:var(--font-sub);margin:3px 0 0;font-size:12.5px;color:var(--muted)}
 
-/* RED ERROR BOX INSIDE LOGIN POPUP (Too Many Requests & Validation Errors) */
+/* RED ERROR ALERT INSIDE LOGIN POPUP (Automatic 30s Cooldown on >3 Requests or Auth Error) */
 .auth-err-alert{
   display:none;
   align-items:center;
@@ -260,7 +634,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 }
 .auth-err-l{display:flex;align-items:center;gap:9px;min-width:0;flex:1}
 .auth-err-l svg{width:18px;height:18px;color:#DC2626;flex-shrink:0;stroke-width:2.2}
-.auth-err-txt{font-size:13.5px;font-weight:700;line-height:1.3;color:#B91C1C;letter-spacing:.02em}
+.auth-err-txt{font-family:var(--font-sub);font-size:12.5px;font-weight:600;line-height:1.35;color:#B91C1C}
 .auth-err-timer{padding:3px 8px;border-radius:999px;background:#DC2626;color:#FFFFFF;font-size:11.5px;font-weight:700;letter-spacing:.04em;flex-shrink:0}
 @keyframes errShake{
   0%,100%{transform:translateX(0)}
@@ -278,10 +652,10 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .ios-row{display:flex;align-items:center;padding:0 14px;min-height:46px;background:#FFFFFF}
 .ios-row+.ios-row{border-top:1px solid #ECECF2}
 .ios-row label{flex:0 0 78px;font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#111113}
-.ios-row input{flex:1;min-width:0;height:46px;border:0;outline:0;background:transparent;font-family:inherit;font-size:15px;font-weight:500;color:#111113}
+.ios-row input{flex:1;min-width:0;height:46px;border:0;outline:0;background:transparent;font-family:var(--font-sub);font-size:14px;font-weight:500;color:#111113}
 .ios-row input::placeholder{color:#A1A1AA}
-.ios-sub-links{display:flex;align-items:center;justify-content:space-between;margin:-2px 2px 10px}
-.ios-auth-submit{width:100%;height:44px;border:0;border-radius:12px;background:#111113;color:#FFFFFF;font-size:14.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:background .2s,transform .15s}
+.ios-sub-links{display:flex;align-items:center;justify-content:flex-end;margin:-2px 2px 10px}
+.ios-auth-submit{width:100%;height:44px;border:0;border-radius:12px;background:#000000;color:#FFFFFF;font-size:14.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:background .2s,transform .15s}
 .ios-auth-submit:active{transform:scale(.98)}
 .ios-auth-submit:disabled{opacity:.65;cursor:not-allowed}
 .ios-auth-submit.is-rate-locked{background:#DC2626!important;color:#FFFFFF!important}
@@ -293,11 +667,9 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .ios-or{display:flex;align-items:center;gap:10px;margin:10px 0;color:#8E8E93;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
 .ios-or::before,.ios-or::after{content:"";flex:1;height:1px;background:#E5E5EA}
 .ios-btn-stack{display:flex;flex-direction:column;gap:8px}
-.ios-google-btn,.ios-guest-btn{width:100%;height:41px;border-radius:12px;border:1px solid #E5E5EA;background:#FFFFFF;color:#111113;font-size:13.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:background .2s,border-color .2s}
-.ios-guest-btn{background:#F8F8FA;color:var(--muted)}
-@media(hover:hover){.ios-google-btn:hover,.ios-guest-btn:hover{border-color:#111113;color:#111113}}
+.ios-google-btn{width:100%;height:42px;border-radius:12px;border:1px solid #E5E5EA;background:#FFFFFF;color:#111113;font-size:13.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:background .2s,border-color .2s}
+@media(hover:hover){.ios-google-btn:hover{border-color:#111113}}
 .ios-google-btn img{width:16px;height:16px;object-fit:contain}
-.ios-guest-btn svg{width:15px;height:15px}
 .view-hidden{display:none!important}
 .view-active{display:block;animation:iosAuthFade .25s var(--ease)}
 @keyframes iosAuthFade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
@@ -310,7 +682,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .mini-spin.white{border-color:rgba(255,255,255,.35);border-top-color:#FFFFFF}
 .mini-spin.rani{border-color:rgba(17,17,17,.2);border-top-color:#111113}
 
-.profile-toast{position:fixed;left:50%;top:calc(62px + env(safe-area-inset-top,0px));transform:translate(-50%,-16px);opacity:0;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#16A34A,#15803D);color:#fff;font-size:13.5px;font-weight:600;line-height:1.4;padding:10px 18px 10px 12px;border-radius:999px;box-shadow:0 10px 28px rgba(0,0,0,.35);z-index:10060;pointer-events:none;white-space:normal;max-width:min(320px,86%);transition:opacity .25s,transform .25s var(--ease)}
+.profile-toast{position:fixed;left:50%;top:calc(62px + env(safe-area-inset-top,0px));transform:translate(-50%,-16px);opacity:0;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#16A34A,#15803D);color:#fff;font-family:var(--font-sub);font-size:13px;font-weight:600;line-height:1.4;padding:10px 18px 10px 12px;border-radius:999px;box-shadow:0 10px 28px rgba(0,0,0,.35);z-index:10060;pointer-events:none;white-space:normal;max-width:min(320px,86%);transition:opacity .25s,transform .25s var(--ease)}
 .profile-toast::before{content:"\2713";width:21px;height:21px;flex:0 0 21px;border-radius:50%;background:#fff;color:#16A34A;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
 .profile-toast[data-type="error"]{background:linear-gradient(135deg,#DC2626,#B91C1C)}
 .profile-toast[data-type="error"]::before{content:"!";color:#DC2626}
@@ -329,7 +701,8 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 <body>
 <div id="scrim" class="scrim" onclick="closeAuthPopup()"></div>
 
-<!-- LOGIN / SIGNUP / OTP / RESET POPUP (With Red In-Popup Error Alert for Too Many Requests & Auth Errors) -->
+<!-- LOGIN / SIGNUP / OTP / RESET POPUP
+     (Red Error Box Shows Automatically With 30s Cooldown When User Sends >3 Requests or Server Returns Error) -->
 <div id="authPopupModal" class="layer" role="dialog" aria-modal="true" aria-labelledby="homeAuthTitle">
   <div class="ios-auth-top">
     <div class="ios-auth-head">
@@ -340,18 +713,18 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
     <button type="button" class="ios-auth-close" onclick="closeAuthPopup()" aria-label="Close"><i data-lucide="x"></i></button>
   </div>
 
-  <!-- RED ERROR BANNER INSIDE LOGIN POPUP -->
+  <!-- RED ERROR BANNER INSIDE LOGIN POPUP (Automatic 30s Countdown on >3 Requests or Auth Errors) -->
   <div id="authPopupErrorBox" class="auth-err-alert" role="alert" aria-live="assertive">
     <div class="auth-err-l">
       <i data-lucide="alert-octagon"></i>
-      <span class="auth-err-txt" id="authPopupErrorText">Too many requests! Please wait before trying again.</span>
+      <span class="auth-err-txt" id="authPopupErrorText">Too many requests! Please wait 30s before trying again.</span>
     </div>
     <span class="auth-err-timer" id="authPopupErrorTimer" hidden>30s</span>
   </div>
 
   <div class="ios-seg" id="homeAuthSeg" role="tablist" aria-label="Authentication mode">
     <button type="button" class="ios-seg-btn" id="tabBtnLogin" role="tab" aria-selected="true" onclick="switchView('loginView')">Log In</button>
-    <button type="button" class="ios-seg-btn" id="tabBtnSignup" role="tab" aria-selected="false" onclick="switchView('signupView')">Create Account</button>
+    <button type="button" class="ios-seg-btn" id="tabBtnSignup" role="tab" aria-selected="false" onclick="switchView('signupView')">Sign Up</button>
   </div>
 
   <!-- LOGIN VIEW -->
@@ -369,18 +742,13 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
     </div>
     <div class="ios-sub-links">
       <button type="button" class="ios-auth-link" onclick="switchView('forgotView')">Forgot Password?</button>
-      <button type="button" class="ios-auth-link" onclick="triggerTooManyRequestsDemo()" style="color:#DC2626">Test Rate Limit</button>
     </div>
-    <button type="button" id="btnLoginAction" class="ios-auth-submit" onclick="processLogin()"><span>Login</span><i data-lucide="arrow-right"></i></button>
+    <button type="button" id="btnLoginAction" class="ios-auth-submit" onclick="processLogin()"><span>Log In</span><i data-lucide="arrow-right"></i></button>
     <div class="ios-or">Or</div>
     <div class="ios-btn-stack">
       <button type="button" id="btnGoogleLogin" class="ios-google-btn" onclick="performGoogleLogin('btnGoogleLogin')">
         <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
         <span>Continue with Google</span>
-      </button>
-      <button type="button" class="ios-guest-btn" onclick="closeAuthPopup()">
-        <i data-lucide="user"></i>
-        <span>Continue as Guest</span>
       </button>
     </div>
   </div>
@@ -409,16 +777,12 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
         <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
         <span>Continue with Google</span>
       </button>
-      <button type="button" class="ios-guest-btn" onclick="closeAuthPopup()">
-        <i data-lucide="user"></i>
-        <span>Continue as Guest</span>
-      </button>
     </div>
   </div>
 
   <!-- OTP VIEW -->
   <div id="otpView" class="view-hidden">
-    <p id="otpSubText" style="margin:0 0 6px;font-size:13px;color:var(--muted);text-align:center">Enter the 6-digit code sent to your email</p>
+    <p id="otpSubText" style="margin:0 0 6px;font-family:var(--font-sub);font-size:12.5px;color:var(--muted);text-align:center">Enter the 6-digit code sent to your email</p>
     <div id="otpBoxGroup" class="ios-otp-row">
       <input type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" class="otp-box" aria-label="Digit 1">
       <input type="text" inputmode="numeric" maxlength="1" class="otp-box" aria-label="Digit 2">
@@ -450,6 +814,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 </div>
 
 <div class="app">
+  <!-- TOP HEADER: Back Button + Wishlist + Cart on Left, Aavira Logo on Right -->
   <header class="hdr">
     <div class="hdr-left">
       <button class="ib" type="button" onclick="goBack(this)" aria-label="Back"><i data-lucide="arrow-left"></i></button>
@@ -458,50 +823,51 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
         <a class="ib" href="cart.html" aria-label="Cart"><i data-lucide="shopping-cart"></i><span class="badge" id="hdrCartBadge" hidden>0</span></a>
       </div>
     </div>
-    <a href="./" class="hdr-logo" aria-label="Aavira Home"><img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='public/file_0000000015bc82119a5830b82bcd3a20.png'}else{this.style.display='none'}"></a>
+    <a href="./" class="hdr-logo" aria-label="Aavira Home">
+      <img src="/public/file_0000000015bc82119a5830b82bcd3a20.png" alt="Aavira" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='public/file_0000000015bc82119a5830b82bcd3a20.png'}else{this.style.display='none';this.nextElementSibling.hidden=false}">
+      <span class="hdr-logo-fallback" hidden>Aavira</span>
+    </a>
   </header>
 
-  <!-- PROFILE HEADER (Redesigned Luxury Gold & Pearl Shimmer Animation When Sign-In Data Syncs) -->
+  <!-- PROFILE / WELCOME BANNER (Automatic Shimmer on Sign-In Sync, Zero Manual Sync Button) -->
   <section id="vipProfileUI" class="web-banner">
-    <div class="banner-top-row">
-      <span class="web-eyebrow">My Aavira Account</span>
-      <span class="sync-pill" id="syncBadge"><i data-lucide="refresh-cw"></i>Syncing Data…</span>
-    </div>
     <div class="web-head-row">
       <div class="avatar-wrap">
         <div id="profileAvatar" class="profile-avatar"><span id="profileInitial">G</span></div>
-        <button type="button" id="profilePhotoBtn" onclick="window.changeProfilePhoto()" aria-label="Change profile photo" class="photo-btn">
+        <button type="button" id="profilePhotoBtn" onclick="window.changeProfilePhoto()" aria-label="Change profile photo" class="photo-btn hidden">
           <i data-lucide="camera"></i>
         </button>
         <input type="file" id="profilePhotoInput" accept="image/*" class="hidden" onchange="window.handleProfilePhotoSelect(event)">
       </div>
+
       <div class="id-meta">
-        <!-- Shimmer Skeleton Bars Shown While Sign-In Data Syncs -->
+        <!-- Shimmer Skeleton Bars Shown Automatically While Sign-In Data Syncs -->
         <div class="sync-skel-lines" aria-hidden="true">
           <div class="skel-bar lg"></div>
           <div class="skel-bar md"></div>
-          <div class="skel-bar pills"></div>
         </div>
 
-        <!-- Live Synced User Info -->
-        <div class="id-live-content">
+        <!-- Live User Info -->
+        <div class="id-live-text">
           <div class="id-name-row">
-            <h1 id="vipName" class="id-name">Guest User</h1>
+            <h1 id="vipName" class="id-name">Welcome</h1>
             <i id="verifiedTick" data-lucide="badge-check" class="verified-ic hidden"></i>
           </div>
-          <p id="vipEmail" class="id-email">Sign in to sync your account</p>
-          <div id="identityGuestActions" class="id-actions hidden">
-            <button type="button" onclick="openAuthPopup('login')" class="btn-pill btn-dark"><i data-lucide="log-in"></i>Log In</button>
-            <button type="button" onclick="openAuthPopup('signup')" class="btn-pill btn-soft"><i data-lucide="user-plus"></i>Create Account</button>
-            <button type="button" onclick="triggerSyncButton()" class="btn-pill btn-gold"><i data-lucide="refresh-cw"></i>Sync</button>
-          </div>
-          <div id="identityMemberActions" class="id-actions hidden">
-            <button type="button" onclick="toggleNameEditor()" class="btn-pill btn-soft"><i data-lucide="user-pen"></i>Edit Name</button>
-            <button type="button" onclick="triggerSyncButton()" class="btn-pill btn-gold"><i data-lucide="refresh-cw"></i>Sync Data</button>
-            <button type="button" onclick="openReferModal()" class="btn-pill btn-soft"><i data-lucide="gift"></i>Refer</button>
-          </div>
+          <p id="vipEmail" class="id-email">Sign in for orders, wishlist and offers</p>
         </div>
       </div>
+    </div>
+
+    <!-- Guest Buttons: LOG IN (Black Solid) & SIGN UP (White Outline) -->
+    <div id="identityGuestActions" class="id-actions-grid">
+      <button type="button" onclick="openAuthPopup('login')" class="btn-auth-pill btn-login-solid">Log In</button>
+      <button type="button" onclick="openAuthPopup('signup')" class="btn-auth-pill btn-signup-outline">Sign Up</button>
+    </div>
+
+    <!-- Member Buttons (Shown When Logged In) -->
+    <div id="identityMemberActions" class="id-actions-grid hidden">
+      <button type="button" onclick="toggleNameEditor()" class="btn-auth-pill btn-signup-outline"><i data-lucide="user-pen"></i>Edit Name</button>
+      <button type="button" onclick="handleLogout()" class="btn-auth-pill btn-logout-outline"><i data-lucide="log-out"></i>Log Out</button>
     </div>
 
     <form id="nameEditorBox" class="name-editor" onsubmit="return saveUserName(event)">
@@ -514,7 +880,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
     </form>
   </section>
 
-  <!-- 1. ACTIVITY SECTION (Orders, Wishlist & Cart with Cart Icon — Single Clean Name Per Item) -->
+  <!-- 1. YOUR ACTIVITY (My Orders, My Wishlist, My Cart + Cart Activity Strip + 4-Icon Strip) -->
   <section class="web-sec" id="activitySection">
     <div class="web-sec-head">
       <h2>Your Activity</h2>
@@ -562,173 +928,194 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
       <span class="ca-go" id="cartActivityBtn">Open Cart <i data-lucide="arrow-right"></i></span>
     </a>
 
-    <!-- Quick Action Buttons Grid (More Buttons, Single Clean Name Only) -->
-    <div class="quick-btn-grid">
-      <a href="orders.html" class="q-act-btn">
-        <span class="q-act-l"><i data-lucide="truck"></i><span>Track Order</span></span>
-        <i data-lucide="chevron-right" class="q-act-r"></i>
-      </a>
-      <a href="categories.html" class="q-act-btn">
-        <span class="q-act-l"><i data-lucide="layout-grid"></i><span>Collections</span></span>
-        <i data-lucide="chevron-right" class="q-act-r"></i>
-      </a>
-      <button type="button" class="q-act-btn" onclick="openPromoPopup()">
-        <span class="q-act-l"><i data-lucide="ticket"></i><span>Apply Coupon</span></span>
-        <i data-lucide="chevron-right" class="q-act-r"></i>
-      </button>
-      <button type="button" class="q-act-btn" onclick="openReferModal()">
-        <span class="q-act-l"><i data-lucide="gift"></i><span>Refer &amp; Earn</span></span>
-        <i data-lucide="chevron-right" class="q-act-r"></i>
-      </button>
+    <!-- 4-Icon Row Matching 9320.jpg -->
+    <div class="promise-grid" aria-label="Aavira guarantees">
+      <a href="terms.html" class="promise-box" title="100% Secure & Authentic" aria-label="100% Secure"><i data-lucide="shield-check"></i></a>
+      <a href="orders.html" class="promise-box" title="Easy Exchange & Orders" aria-label="Orders & Returns"><i data-lucide="rotate-ccw"></i></a>
+      <a href="offer.html" class="promise-box" title="Handcrafted Luxury & Offers" aria-label="Offers"><i data-lucide="sparkles"></i></a>
+      <a href="support.html" class="promise-box" title="24/7 Stylist Support" aria-label="Customer Support"><i data-lucide="headphones"></i></a>
     </div>
   </section>
 
-  <!-- 2. SHOPPING & ADDRESSES (Single Clean Label Per Item) -->
+  <!-- 2. SHOPPING & ACCOUNT (Circular Icon Badges Same as 9320.jpg + Single Clean Name) -->
   <section class="web-sec">
     <div class="web-sec-head">
       <h2>Shopping &amp; Rewards</h2>
     </div>
-    <div class="web-list">
-      <a href="checkout.html" class="web-row">
-        <span class="web-row-l">
-          <i data-lucide="map-pin"></i>
-          <span class="web-row-title">Delivery Addresses</span>
+    <div class="action-list">
+      <a href="orders.html" class="action-row">
+        <span class="action-row-l">
+          <span class="row-ic-circle"><i data-lucide="package"></i></span>
+          <span class="action-row-title">Track &amp; Manage Orders</span>
         </span>
-        <span class="web-row-r"><i data-lucide="chevron-right"></i></span>
+        <span class="action-row-r"><span class="row-cnt-pill" id="navOrderBadge" hidden>0</span><i data-lucide="chevron-right"></i></span>
       </a>
 
-      <a href="offer.html" class="web-row">
-        <span class="web-row-l">
-          <i data-lucide="tag"></i>
-          <span class="web-row-title">Offers &amp; Promo Codes</span>
+      <a href="wishlist.html" class="action-row">
+        <span class="action-row-l">
+          <span class="row-ic-circle"><i data-lucide="heart"></i></span>
+          <span class="action-row-title">Saved Wishlist Items</span>
         </span>
-        <span class="web-row-r"><span class="tag-pill" id="activePromoPill" hidden>Active</span><i data-lucide="chevron-right"></i></span>
+        <span class="action-row-r"><span class="row-cnt-pill" id="navWishBadge" hidden>0</span><i data-lucide="chevron-right"></i></span>
       </a>
 
-      <button type="button" class="web-row" onclick="openReferModal()">
-        <span class="web-row-l">
-          <i data-lucide="share-2"></i>
-          <span class="web-row-title">Invite Friends &amp; Earn ₹500</span>
+      <a href="cart.html" class="action-row">
+        <span class="action-row-l">
+          <span class="row-ic-circle"><i data-lucide="shopping-cart"></i></span>
+          <span class="action-row-title">View Shopping Cart</span>
         </span>
-        <span class="web-row-r"><i data-lucide="chevron-right"></i></span>
+        <span class="action-row-r"><span class="row-cnt-pill" id="navCartBadge" hidden>0</span><i data-lucide="chevron-right"></i></span>
+      </a>
+
+      <a href="checkout.html" class="action-row">
+        <span class="action-row-l">
+          <span class="row-ic-circle"><i data-lucide="map-pin"></i></span>
+          <span class="action-row-title">Delivery Addresses</span>
+        </span>
+        <span class="action-row-r"><i data-lucide="chevron-right"></i></span>
+      </a>
+
+      <button type="button" class="action-row" onclick="openPromoPopup()">
+        <span class="action-row-l">
+          <span class="row-ic-circle"><i data-lucide="ticket"></i></span>
+          <span class="action-row-title">Apply Promo Code</span>
+        </span>
+        <span class="action-row-r"><span class="tag-pill" id="activePromoPill" hidden>Active</span><i data-lucide="chevron-right"></i></span>
       </button>
 
-      <a href="checkout.html" class="web-row">
-        <span class="web-row-l">
-          <i data-lucide="zap"></i>
-          <span class="web-row-title">Express Checkout</span>
+      <a href="offer.html" class="action-row">
+        <span class="action-row-l">
+          <span class="row-ic-circle"><i data-lucide="tag"></i></span>
+          <span class="action-row-title">Offers &amp; Vouchers</span>
         </span>
-        <span class="web-row-r"><i data-lucide="chevron-right"></i></span>
+        <span class="action-row-r"><i data-lucide="chevron-right"></i></span>
+      </a>
+
+      <button type="button" class="action-row" onclick="openReferModal()">
+        <span class="action-row-l">
+          <span class="row-ic-circle"><i data-lucide="share-2"></i></span>
+          <span class="action-row-title">Share &amp; Refer Friends</span>
+        </span>
+        <span class="action-row-r"><i data-lucide="chevron-right"></i></span>
+      </button>
+
+      <a href="/match/colours" class="action-row">
+        <span class="action-row-l">
+          <span class="row-ic-circle"><i data-lucide="palette"></i></span>
+          <span class="action-row-title">Shop by Colour</span>
+        </span>
+        <span class="action-row-r"><i data-lucide="chevron-right"></i></span>
       </a>
     </div>
   </section>
 
-  <!-- 3. COMMUNICATION PREFERENCES (Single Clean Label Per Item) -->
+  <!-- 3. PREFERENCES (Circular Icon Badges Same as 9320.jpg + Single Clean Name) -->
   <section class="web-sec">
     <div class="web-sec-head">
       <h2>Preferences</h2>
     </div>
-    <div class="web-list">
-      <div class="web-row" onclick="toggleNotifPref(this.querySelector('.toggle-btn'))">
-        <span class="web-row-l">
-          <i data-lucide="truck"></i>
-          <span class="web-row-title">Order &amp; Dispatch Updates</span>
+    <div class="action-list">
+      <div class="action-row" onclick="toggleNotifPref(this.querySelector('.toggle-btn'))">
+        <span class="action-row-l">
+          <span class="row-ic-circle"><i data-lucide="truck"></i></span>
+          <span class="action-row-title">Order &amp; Dispatch Updates</span>
         </span>
         <button type="button" class="toggle-btn sw-pill" data-pref="orderUpdates" onclick="event.stopPropagation();toggleNotifPref(this)" aria-label="Order updates"></button>
       </div>
 
-      <div class="web-row" onclick="toggleNotifPref(this.querySelector('.toggle-btn'))">
-        <span class="web-row-l">
-          <i data-lucide="sparkles"></i>
-          <span class="web-row-title">New Arrivals &amp; Offers</span>
+      <div class="action-row" onclick="toggleNotifPref(this.querySelector('.toggle-btn'))">
+        <span class="action-row-l">
+          <span class="row-ic-circle"><i data-lucide="sparkles"></i></span>
+          <span class="action-row-title">New Arrivals &amp; Offers</span>
         </span>
-        <button type="button" class="toggle-btn sw-pill" data-pref="promotions" onclick="event.stopPropagation();toggleNotifPref(this)" aria-label="Promotions and offers"></button>
+        <button type="button" class="toggle-btn sw-pill" data-pref="promotions" onclick="event.stopPropagation();toggleNotifPref(this)" aria-label="New arrivals and offers"></button>
       </div>
 
-      <div class="web-row" onclick="toggleNotifPref(this.querySelector('.toggle-btn'))">
-        <span class="web-row-l">
-          <i data-lucide="message-circle"></i>
-          <span class="web-row-title">WhatsApp Order Support</span>
+      <div class="action-row" onclick="toggleNotifPref(this.querySelector('.toggle-btn'))">
+        <span class="action-row-l">
+          <span class="row-ic-circle"><i data-lucide="message-circle"></i></span>
+          <span class="action-row-title">WhatsApp Order Support</span>
         </span>
         <button type="button" class="toggle-btn sw-pill" data-pref="whatsapp" onclick="event.stopPropagation();toggleNotifPref(this)" aria-label="WhatsApp updates"></button>
       </div>
     </div>
   </section>
 
-  <!-- 4. SUPPORT & SETTINGS (Single Clean Label Per Item) -->
+  <!-- 4. SUPPORT & ACCOUNT CONTROLS (Circular Icon Badges + Red Destructive Rows Same as 9320.jpg) -->
   <section class="web-sec">
     <div class="web-sec-head">
       <h2>Support &amp; Settings</h2>
     </div>
-    <div class="web-list">
-      <a href="support.html" class="web-row">
-        <span class="web-row-l">
-          <i data-lucide="life-buoy"></i>
-          <span class="web-row-title">Help &amp; Support Center</span>
+    <div class="action-list">
+      <a href="support.html" class="action-row">
+        <span class="action-row-l">
+          <span class="row-ic-circle"><i data-lucide="headphones"></i></span>
+          <span class="action-row-title">Help &amp; Support Center</span>
         </span>
-        <span class="web-row-r"><i data-lucide="chevron-right"></i></span>
+        <span class="action-row-r"><i data-lucide="chevron-right"></i></span>
       </a>
 
-      <a href="terms.html" class="web-row">
-        <span class="web-row-l">
-          <i data-lucide="shield-check"></i>
-          <span class="web-row-title">Privacy Policy &amp; Terms</span>
+      <a href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer" class="action-row">
+        <span class="action-row-l">
+          <span class="row-ic-circle"><i data-lucide="message-circle"></i></span>
+          <span class="action-row-title">Chat with Stylist on WhatsApp</span>
         </span>
-        <span class="web-row-r"><i data-lucide="chevron-right"></i></span>
+        <span class="action-row-r"><i data-lucide="chevron-right"></i></span>
       </a>
 
-      <button type="button" class="web-row" onclick="window.AaviraConsent ? window.AaviraConsent.openPrefs() : showToast('Cookie preferences saved')">
-        <span class="web-row-l">
-          <i data-lucide="cookie"></i>
-          <span class="web-row-title">Cookie Preferences</span>
+      <a href="terms.html" class="action-row">
+        <span class="action-row-l">
+          <span class="row-ic-circle"><i data-lucide="shield-check"></i></span>
+          <span class="action-row-title">Privacy Policy &amp; Terms</span>
         </span>
-        <span class="web-row-r"><i data-lucide="chevron-right"></i></span>
+        <span class="action-row-r"><i data-lucide="chevron-right"></i></span>
+      </a>
+
+      <button type="button" class="action-row" onclick="window.AaviraConsent ? window.AaviraConsent.openPrefs() : showToast('Cookie preferences saved')">
+        <span class="action-row-l">
+          <span class="row-ic-circle"><i data-lucide="cookie"></i></span>
+          <span class="action-row-title">Cookie Preferences</span>
+        </span>
+        <span class="action-row-r"><i data-lucide="chevron-right"></i></span>
       </button>
 
-      <button type="button" class="web-row" onclick="clearRecentViewedData()">
-        <span class="web-row-l">
-          <i data-lucide="history"></i>
-          <span class="web-row-title">Clear Recently Viewed</span>
+      <!-- Red Destructive Rows Matching "Remove from bag" Style in 9320.jpg -->
+      <button type="button" class="action-row is-danger" onclick="clearRecentViewedData()">
+        <span class="action-row-l">
+          <span class="row-ic-circle"><i data-lucide="history"></i></span>
+          <span class="action-row-title">Clear Recently Viewed</span>
         </span>
-        <span class="web-row-r"><i data-lucide="trash-2"></i></span>
+        <span class="action-row-r"><i data-lucide="chevron-right"></i></span>
       </button>
 
-      <button type="button" class="web-row" onclick="clearWishlistData()">
-        <span class="web-row-l">
-          <i data-lucide="heart-off"></i>
-          <span class="web-row-title">Reset Wishlist</span>
+      <button type="button" class="action-row is-danger" onclick="clearWishlistData()">
+        <span class="action-row-l">
+          <span class="row-ic-circle"><i data-lucide="heart-off"></i></span>
+          <span class="action-row-title">Reset Wishlist</span>
         </span>
-        <span class="web-row-r"><i data-lucide="trash-2"></i></span>
+        <span class="action-row-r"><i data-lucide="chevron-right"></i></span>
       </button>
 
-      <button type="button" class="web-row" onclick="clearCartData()">
-        <span class="web-row-l">
-          <i data-lucide="shopping-cart"></i>
-          <span class="web-row-title">Empty Cart</span>
+      <button type="button" class="action-row is-danger" onclick="clearCartData()">
+        <span class="action-row-l">
+          <span class="row-ic-circle"><i data-lucide="trash-2"></i></span>
+          <span class="action-row-title">Empty Cart</span>
         </span>
-        <span class="web-row-r"><i data-lucide="trash-2"></i></span>
+        <span class="action-row-r"><i data-lucide="chevron-right"></i></span>
+      </button>
+
+      <button type="button" id="logoutRowBtn" class="action-row is-danger hidden" onclick="handleLogout()">
+        <span class="action-row-l">
+          <span class="row-ic-circle"><i data-lucide="log-out"></i></span>
+          <span class="action-row-title">Log Out of Account</span>
+        </span>
+        <span class="action-row-r"><i data-lucide="chevron-right"></i></span>
       </button>
     </div>
-  </section>
-
-  <!-- 5. WHATSAPP STYLIST HELP -->
-  <section class="web-sec">
-    <div class="wa-strip">
-      <span>Chat with our stylist on WhatsApp</span>
-      <a href="https://wa.me/919608720622" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i data-lucide="message-circle"></i></a>
-    </div>
-  </section>
-
-  <!-- 6. LOG OUT BUTTON -->
-  <section id="logoutSection" class="web-sec hidden">
-    <button type="button" class="logout-btn" onclick="handleLogout()">
-      <i data-lucide="log-out"></i>
-      <span>Log Out of Account</span>
-    </button>
   </section>
 </div>
 
-<!-- CONFIRMATION MODAL -->
+<!-- CONFIRMATION / PROMO / REFER MODAL -->
 <div class="confirm-ov" id="confirmOv" onclick="if(event.target===this)closeConfirmModal()">
   <div class="confirm-box" role="dialog" aria-modal="true">
     <div class="confirm-ic" id="confirmIconBox"><i data-lucide="trash-2"></i></div>
@@ -774,7 +1161,7 @@ function showToast(message, type = 'success') {
   window.__profileToastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
 }
 
-/* Redesigned Luxury Shimmer ("Simar") Animation Controller When Sign-In Data Syncs */
+/* Automatic Luxury Shimmer ("Simar") Animation Controller When Sign-In Data Syncs */
 let syncShimmerTimer = null;
 function setProfileSyncing(active) {
   const banner = document.getElementById('vipProfileUI');
@@ -783,7 +1170,7 @@ function setProfileSyncing(active) {
   cards.forEach(c => c.classList.toggle('is-syncing', active));
 }
 
-async function runWithSyncShimmer(taskFn, minMs = 760) {
+async function runWithSyncShimmer(taskFn, minMs = 740) {
   clearTimeout(syncShimmerTimer);
   const t0 = Date.now();
   setProfileSyncing(true);
@@ -801,11 +1188,6 @@ async function runWithSyncShimmer(taskFn, minMs = 760) {
   }
 }
 
-window.triggerSyncButton = async function () {
-  await initProfileUI(true);
-  showToast('Account data synced');
-};
-
 const goBack = el => {
   if (el) el.classList.add('is-busy');
   setTimeout(() => {
@@ -817,7 +1199,7 @@ const goBack = el => {
       }
     } catch {}
     location.href = './';
-  }, 300);
+  }, 260);
 };
 
 function loadNotifPrefs() {
@@ -920,13 +1302,13 @@ window.closeConfirmModal = function () {
 window.openPromoPopup = function () {
   const existing = safeGet('aavira_active_promo', null);
   openConfirmModal(
-    'Apply Coupon Code',
+    'Apply Promo Code',
     existing?.code ? `Current active coupon: ${existing.code}` : 'Enter your festive or referral voucher code below.',
     'Apply Code',
     () => {
       const code = (document.getElementById('profilePromoInput')?.value || '').trim().toUpperCase();
       if (code.length < 3) {
-        showToast('Enter a valid coupon code', 'error');
+        showToast('Enter a valid promo code', 'error');
         return;
       }
       try {
@@ -935,7 +1317,7 @@ window.openPromoPopup = function () {
       } catch {}
       closeConfirmModal();
       paintActivityStats();
-      showToast(`Coupon ${code} saved for checkout!`);
+      showToast(`Promo code ${code} applied!`);
     },
     {
       gold: true,
@@ -995,7 +1377,7 @@ window.clearCartData = function () {
 };
 
 /* ============================================================================
-   AUTHENTICATION & RED IN-POPUP RATE-LIMIT ("TOO MANY REQUESTS") SYSTEM
+   AUTHENTICATION & AUTOMATIC >3 REQUESTS ("TOO MANY REQUESTS" 30-SEC COOLDOWN)
    ============================================================================ */
 const AUTH_CONFIG = {
   GOOGLE_CLIENT_ID: "247971292356-8906dpm406huv7uidlblhjum8vg3dfj3.apps.googleusercontent.com",
@@ -1003,12 +1385,14 @@ const AUTH_CONFIG = {
   OTP_LENGTH: 6,
   MIN_PASSWORD_LENGTH: 6,
   AUTO_SUBMIT_DELAY_MS: 150,
-  MAX_ATTEMPTS_WINDOW: 3,
-  RATE_LIMIT_WINDOW_MS: 25000,
+  MAX_ATTEMPTS_ALLOWED: 3,
+  RATE_LIMIT_WINDOW_MS: 30000,
   COOLDOWN_SECONDS: 30,
   STORAGE_KEYS: {
     NAME: 'aavira_display_name',
-    EMAIL: 'aavira_user_email'
+    EMAIL: 'aavira_user_email',
+    ATTEMPTS: 'aavira_auth_attempts',
+    LOCK_UNTIL: 'aavira_auth_lock_until'
   }
 };
 
@@ -1020,12 +1404,32 @@ let pendingSignup = { name: '', email: '', pwd: '' };
 let googlePromptTimeout = null;
 let activeGoogleBtnId = null;
 let isSubmitting = false;
-let authAttempts = [];
-let rateLimitUntil = 0;
 let rateLimitTimer = null;
 
+function getLockUntil() {
+  try { return Number(sessionStorage.getItem(AUTH_CONFIG.STORAGE_KEYS.LOCK_UNTIL)) || 0; } catch { return 0; }
+}
+function setLockUntil(ts) {
+  try {
+    if (ts > 0) sessionStorage.setItem(AUTH_CONFIG.STORAGE_KEYS.LOCK_UNTIL, String(ts));
+    else sessionStorage.removeItem(AUTH_CONFIG.STORAGE_KEYS.LOCK_UNTIL);
+  } catch {}
+}
+function getRecentAttempts() {
+  try {
+    const raw = JSON.parse(sessionStorage.getItem(AUTH_CONFIG.STORAGE_KEYS.ATTEMPTS) || '[]');
+    const now = Date.now();
+    return (Array.isArray(raw) ? raw : []).filter(t => now - t < AUTH_CONFIG.RATE_LIMIT_WINDOW_MS);
+  } catch {
+    return [];
+  }
+}
+function saveRecentAttempts(list) {
+  try { sessionStorage.setItem(AUTH_CONFIG.STORAGE_KEYS.ATTEMPTS, JSON.stringify(list)); } catch {}
+}
+
 function clearAuthPopupError() {
-  if (Date.now() < rateLimitUntil) return;
+  if (Date.now() < getLockUntil()) return;
   const box = document.getElementById('authPopupErrorBox');
   const timerBadge = document.getElementById('authPopupErrorTimer');
   box?.classList.remove('on');
@@ -1052,8 +1456,7 @@ function showAuthPopupError(message, opts = {}) {
   box.classList.add('on');
 
   if (opts.groupId) {
-    const grp = document.getElementById(opts.groupId);
-    grp?.classList.add('is-err');
+    document.getElementById(opts.groupId)?.classList.add('is-err');
   } else {
     const activeView = document.querySelector('#authPopupModal .view-active');
     activeView?.querySelector('.ios-group, .ios-otp-row')?.classList.add('is-err');
@@ -1063,20 +1466,22 @@ function showAuthPopupError(message, opts = {}) {
   if (window.lucide) lucide.createIcons();
 }
 
-function startRateLimitLockdown(customMessage) {
-  rateLimitUntil = Date.now() + AUTH_CONFIG.COOLDOWN_SECONDS * 1000;
+function startRateLimitLockdown(customMessage, durationSec = AUTH_CONFIG.COOLDOWN_SECONDS) {
+  const until = Date.now() + durationSec * 1000;
+  setLockUntil(until);
   clearInterval(rateLimitTimer);
 
-  const msg = customMessage || 'Too many requests! Please wait before trying again.';
+  const msg = customMessage || `Too many requests! Please wait ${durationSec}s before trying again.`;
   const updateLockUI = () => {
-    const remaining = Math.max(0, Math.ceil((rateLimitUntil - Date.now()) / 1000));
+    const lockUntil = getLockUntil();
+    const remaining = Math.max(0, Math.ceil((lockUntil - Date.now()) / 1000));
     const timerBadge = document.getElementById('authPopupErrorTimer');
     const submitBtns = document.querySelectorAll('.ios-auth-submit');
 
     if (remaining <= 0) {
       clearInterval(rateLimitTimer);
-      rateLimitUntil = 0;
-      authAttempts = [];
+      setLockUntil(0);
+      saveRecentAttempts([]);
       submitBtns.forEach(b => {
         b.disabled = false;
         b.classList.remove('is-rate-locked');
@@ -1095,44 +1500,48 @@ function startRateLimitLockdown(customMessage) {
     });
   };
 
-  showAuthPopupError(msg, { countdownSec: AUTH_CONFIG.COOLDOWN_SECONDS });
+  showAuthPopupError(msg, { countdownSec: durationSec });
   updateLockUI();
   rateLimitTimer = setInterval(updateLockUI, 1000);
 }
 
-function checkRateLimitBeforeRequest() {
-  if (Date.now() < rateLimitUntil) {
-    const rem = Math.ceil((rateLimitUntil - Date.now()) / 1000);
-    showAuthPopupError(`Too many requests! Please wait ${rem}s before trying again.`, { countdownSec: rem });
+/* Automatically triggers ONLY when user sends > 3 requests to the server */
+function recordServerRequestAndCheckLimit() {
+  const lockUntil = getLockUntil();
+  if (Date.now() < lockUntil) {
+    const rem = Math.ceil((lockUntil - Date.now()) / 1000);
+    startRateLimitLockdown(`Too many requests! Please wait ${rem}s before trying again.`, rem);
     return false;
   }
-  const now = Date.now();
-  authAttempts = authAttempts.filter(t => now - t < AUTH_CONFIG.RATE_LIMIT_WINDOW_MS);
-  authAttempts.push(now);
-  if (authAttempts.length > AUTH_CONFIG.MAX_ATTEMPTS_WINDOW) {
-    startRateLimitLockdown('Too many requests! Unusual activity detected. Please wait.');
+  const attempts = getRecentAttempts();
+  attempts.push(Date.now());
+  saveRecentAttempts(attempts);
+  if (attempts.length > AUTH_CONFIG.MAX_ATTEMPTS_ALLOWED) {
+    startRateLimitLockdown('Too many requests! Please wait 30s before trying again.', AUTH_CONFIG.COOLDOWN_SECONDS);
     return false;
   }
   return true;
 }
 
-window.triggerTooManyRequestsDemo = function () {
-  startRateLimitLockdown('Too many requests! Too many login attempts from this device.');
-};
-
 function handleApiAuthError(result, fallbackMsg, groupId) {
   const status = result?.status || result?.httpStatus || 0;
   const rawMsg = String(result?.data?.message || result?.message || fallbackMsg || 'Request failed');
   if (status === 429 || /too many|rate limit|slow down|try again later/i.test(rawMsg)) {
-    startRateLimitLockdown(rawMsg.includes('Too many') ? rawMsg : `Too many requests! ${rawMsg}`);
+    startRateLimitLockdown(rawMsg.includes('Too many') ? rawMsg : `Too many requests! ${rawMsg}`, AUTH_CONFIG.COOLDOWN_SECONDS);
     return;
   }
   showAuthPopupError(rawMsg, { groupId });
 }
 
 window.openAuthPopup = function (mode = 'login') {
-  clearAuthPopupError();
   window.switchView(mode === 'signup' ? 'signupView' : 'loginView');
+  const lockUntil = getLockUntil();
+  if (Date.now() < lockUntil) {
+    const rem = Math.ceil((lockUntil - Date.now()) / 1000);
+    startRateLimitLockdown(`Too many requests! Please wait ${rem}s before trying again.`, rem);
+  } else {
+    clearAuthPopupError();
+  }
   document.getElementById('authPopupModal')?.classList.add('is-open');
   document.getElementById('scrim')?.classList.add('is-open');
   document.body.style.overflow = 'hidden';
@@ -1146,7 +1555,7 @@ window.closeAuthPopup = function () {
 };
 
 window.switchView = function (viewId) {
-  clearAuthPopupError();
+  if (Date.now() >= getLockUntil()) clearAuthPopupError();
   const views = ['loginView', 'signupView', 'otpView', 'forgotView'];
   views.forEach(id => {
     const v = document.getElementById(id);
@@ -1189,7 +1598,7 @@ function setBtnLoading(btnId, isLoading, originalHtml, opts = {}) {
     const spinnerClass = loaderColor === 'text-rani-pink' ? 'mini-spin rani' : 'mini-spin white';
     btn.innerHTML = `<span class="${spinnerClass}" aria-hidden="true"></span><span>${loadingLabel}</span>`;
   } else {
-    btn.disabled = Date.now() < rateLimitUntil;
+    btn.disabled = Date.now() < getLockUntil();
     btn.innerHTML = originalHtml;
   }
   if (window.lucide) lucide.createIcons();
@@ -1257,13 +1666,14 @@ function clearOtpBoxGroup(groupId) {
   if (boxes[0]) boxes[0].focus();
 }
 
-/* Persist Session & Trigger Sign-In Data Sync Shimmer Animation */
+/* Persist Session & Automatically Trigger Sign-In Data Sync Shimmer Animation */
 async function persistSession(name, email) {
   try {
     localStorage.setItem(AUTH_CONFIG.STORAGE_KEYS.NAME, name);
     localStorage.setItem(AUTH_CONFIG.STORAGE_KEYS.EMAIL, email);
   } catch {}
-  authAttempts = [];
+  saveRecentAttempts([]);
+  setLockUntil(0);
   closeAuthPopup();
   await initProfileUI(true);
 }
@@ -1299,7 +1709,7 @@ async function handleGoogleLoginResponse(googleAccessToken) {
 }
 
 window.performGoogleLogin = function (triggerBtnId) {
-  if (!checkRateLimitBeforeRequest()) return;
+  if (!recordServerRequestAndCheckLimit()) return;
   if (typeof google === 'undefined' || !google.accounts) {
     showAuthPopupError('Google Sign-In service unable to load. Check your connection.');
     return;
@@ -1348,11 +1758,10 @@ window.processSignup = async function () {
   if (name.length < 2) return showAuthPopupError('Please enter your valid full name.', { groupId: 'signupInputGroup' });
   if (!EMAIL_PATTERN.test(email)) return showAuthPopupError('Please enter a valid email address.', { groupId: 'signupInputGroup' });
   if (pwd.length < 6) return showAuthPopupError('Password must be at least 6 characters long.', { groupId: 'signupInputGroup' });
-  if (!checkRateLimitBeforeRequest()) return;
+  if (!recordServerRequestAndCheckLimit()) return;
 
   if (!window.DeliveryBoy) {
-    await persistSession(name, email);
-    showToast('Account created & synced!');
+    showAuthPopupError('Unable to reach authentication server. Please try again.', { groupId: 'signupInputGroup' });
     return;
   }
   const originalBtnHTML = '<span>Create Account</span><i data-lucide="arrow-right"></i>';
@@ -1370,7 +1779,7 @@ window.processSignup = async function () {
       handleApiAuthError(result, 'Error sending verification code.', 'signupInputGroup');
     }
   } catch {
-    showAuthPopupError('Network error. Too many requests or connection lost.', { groupId: 'signupInputGroup' });
+    showAuthPopupError('Network error while contacting server.', { groupId: 'signupInputGroup' });
   } finally {
     setBtnLoading('btnSignupAction', false, originalBtnHTML);
     isSubmitting = false;
@@ -1378,13 +1787,13 @@ window.processSignup = async function () {
 };
 
 window.resendSignupOTP = async function () {
-  if (!checkRateLimitBeforeRequest()) return;
   if (!pendingSignup.email) {
     showAuthPopupError('Please enter your email first.');
     return;
   }
+  if (!recordServerRequestAndCheckLimit()) return;
   if (!window.DeliveryBoy) {
-    showToast('OTP resent!');
+    showAuthPopupError('OTP service unavailable right now.');
     return;
   }
   try {
@@ -1392,10 +1801,10 @@ window.resendSignupOTP = async function () {
     if (result && result.ok && result.data && result.data.success) {
       showToast('New OTP sent to your email!');
     } else {
-      handleApiAuthError(result, 'Too many OTP requests! Please wait before resending.');
+      handleApiAuthError(result, 'Could not resend OTP. Please wait before trying again.');
     }
   } catch {
-    showAuthPopupError('Too many OTP requests! Please wait a moment.');
+    showAuthPopupError('Server busy. Please wait before resending OTP.');
   }
 };
 
@@ -1403,7 +1812,7 @@ window.verifySignupOTP = async function () {
   if (isSubmitting) return;
   const otpVal = getOtpBoxValue('otpBoxGroup');
   if (otpVal.length !== 6) return showAuthPopupError('Please enter the complete 6-digit OTP code.', { groupId: 'otpBoxGroup' });
-  if (!checkRateLimitBeforeRequest()) return;
+  if (!recordServerRequestAndCheckLimit()) return;
   if (!window.DeliveryBoy) return;
   const originalBtnHTML = '<span>Verify &amp; Login</span><i data-lucide="check-circle"></i>';
   isSubmitting = true;
@@ -1429,15 +1838,13 @@ window.processLogin = async function () {
   const email = (document.getElementById('loginEmail')?.value || '').trim().toLowerCase();
   const pwd = (document.getElementById('loginPassword')?.value || '').trim();
   if (!email || !pwd) return showAuthPopupError('Please enter both your email and password.', { groupId: 'loginInputGroup' });
-  if (!checkRateLimitBeforeRequest()) return;
+  if (!recordServerRequestAndCheckLimit()) return;
 
   if (!window.DeliveryBoy) {
-    const displayName = email.includes('@') ? email.split('@')[0] : email;
-    await persistSession(displayName, email);
-    showToast('Signed in & synced!');
+    showAuthPopupError('Invalid email or password, or server unreachable.', { groupId: 'loginInputGroup' });
     return;
   }
-  const originalBtnHTML = '<span>Login</span><i data-lucide="arrow-right"></i>';
+  const originalBtnHTML = '<span>Log In</span><i data-lucide="arrow-right"></i>';
   isSubmitting = true;
   setBtnLoading('btnLoginAction', true, originalBtnHTML);
   try {
@@ -1449,7 +1856,7 @@ window.processLogin = async function () {
       handleApiAuthError(result, 'Invalid email or password.', 'loginInputGroup');
     }
   } catch {
-    showAuthPopupError('Too many requests or server busy. Please try again shortly.', { groupId: 'loginInputGroup' });
+    showAuthPopupError('Unable to reach server. Please try again shortly.', { groupId: 'loginInputGroup' });
   } finally {
     setBtnLoading('btnLoginAction', false, originalBtnHTML);
     isSubmitting = false;
@@ -1461,7 +1868,7 @@ window.processForgotPassword = async function () {
   if (!EMAIL_PATTERN.test(email)) {
     return showAuthPopupError('Please enter your registered email address.', { groupId: 'forgotInputGroup' });
   }
-  if (!checkRateLimitBeforeRequest()) return;
+  if (!recordServerRequestAndCheckLimit()) return;
   showToast('Password reset instructions sent to ' + email);
   setTimeout(() => switchView('loginView'), 900);
 };
@@ -1493,6 +1900,22 @@ function paintActivityStats(ordersOverride) {
   if (hdrWishBadge) {
     hdrWishBadge.innerText = wishCount > 99 ? '99+' : String(wishCount);
     hdrWishBadge.hidden = wishCount <= 0;
+  }
+
+  const navOrderBadge = document.getElementById('navOrderBadge');
+  if (navOrderBadge) {
+    navOrderBadge.innerText = orderCount > 99 ? '99+' : String(orderCount);
+    navOrderBadge.hidden = orderCount <= 0;
+  }
+  const navCartBadge = document.getElementById('navCartBadge');
+  if (navCartBadge) {
+    navCartBadge.innerText = cartQty > 99 ? '99+' : String(cartQty);
+    navCartBadge.hidden = cartQty <= 0;
+  }
+  const navWishBadge = document.getElementById('navWishBadge');
+  if (navWishBadge) {
+    navWishBadge.innerText = wishCount > 99 ? '99+' : String(wishCount);
+    navWishBadge.hidden = wishCount <= 0;
   }
 
   const activePromo = safeGet('aavira_active_promo', safeGet('savedPromoCache', null));
@@ -1527,7 +1950,7 @@ function paintActivityStats(ordersOverride) {
   if (window.lucide) lucide.createIcons();
 }
 
-async function initProfileUI(forceShimmer = false) {
+async function initProfileUI(withShimmer = false) {
   let userName = '';
   let userEmail = '';
   try {
@@ -1539,7 +1962,8 @@ async function initProfileUI(forceShimmer = false) {
   const syncTask = async () => {
     const guestActions = document.getElementById('identityGuestActions');
     const memberActions = document.getElementById('identityMemberActions');
-    const logoutSection = document.getElementById('logoutSection');
+    const photoBtn = document.getElementById('profilePhotoBtn');
+    const logoutRowBtn = document.getElementById('logoutRowBtn');
 
     let orders = [];
     if (typeof window.getAaviraOrdersForCurrentUser === 'function') {
@@ -1561,20 +1985,22 @@ async function initProfileUI(forceShimmer = false) {
 
     if (isLoggedIn) {
       document.getElementById('vipName').innerText = userName;
-      document.getElementById('vipEmail').innerText = userEmail || 'Verified Member';
+      document.getElementById('vipEmail').innerText = userEmail || 'Verified Aavira Member';
       document.getElementById('profileInitial').innerText = userName.trim().charAt(0).toUpperCase();
       document.getElementById('verifiedTick').classList.toggle('hidden', !userEmail);
       guestActions?.classList.add('hidden');
       memberActions?.classList.remove('hidden');
-      logoutSection?.classList.remove('hidden');
+      photoBtn?.classList.remove('hidden');
+      logoutRowBtn?.classList.remove('hidden');
     } else {
-      document.getElementById('vipName').innerText = 'Guest User';
-      document.getElementById('vipEmail').innerText = 'Sign in to sync your account';
+      document.getElementById('vipName').innerText = 'Welcome';
+      document.getElementById('vipEmail').innerText = 'Sign in for orders, wishlist and offers';
       document.getElementById('profileInitial').innerText = 'G';
       document.getElementById('verifiedTick').classList.add('hidden');
       guestActions?.classList.remove('hidden');
       memberActions?.classList.add('hidden');
-      logoutSection?.classList.add('hidden');
+      photoBtn?.classList.add('hidden');
+      logoutRowBtn?.classList.add('hidden');
       document.getElementById('nameEditorBox')?.classList.remove('on');
     }
 
@@ -1583,10 +2009,10 @@ async function initProfileUI(forceShimmer = false) {
     if (window.lucide) lucide.createIcons();
   };
 
-  if (forceShimmer || isLoggedIn) {
-    await runWithSyncShimmer(syncTask, 780);
+  if (withShimmer || isLoggedIn) {
+    await runWithSyncShimmer(syncTask, 740);
   } else {
-    await runWithSyncShimmer(syncTask, 620);
+    await syncTask();
   }
 }
 
