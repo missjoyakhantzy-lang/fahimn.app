@@ -9,8 +9,9 @@
 <meta name="format-detection" content="telephone=no">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 :root{
   color-scheme:light;
@@ -29,10 +30,15 @@
   --plum:#111113;
   --plum2:#1C1C1E;
   --green:#15803D;
+  --green-soft:#ECFDF5;
+  --green-border:#BBF7D0;
   --danger:#DC2626;
+  --danger-dark:#B91C1C;
   --amber:#B45309;
   --ease:cubic-bezier(.22,1,.36,1);
+  --ios-spring:cubic-bezier(.32,.72,0,1);
   --font-main:"Barlow Condensed","Roboto Condensed",system-ui,sans-serif;
+  --font-sub:Inter,system-ui,-apple-system,sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:#FFFFFF!important}
@@ -56,9 +62,10 @@ button,input,select,textarea{
 input{cursor:text}
 a{color:inherit;text-decoration:none}
 [hidden]{display:none!important}
+.hidden{display:none!important}
 :focus-visible{outline:2px solid var(--rani);outline-offset:2px}
 
-/* App Shell: Matches index.html & cart.html (420px Pure White Container) */
+/* App Shell: 420px Pure White Container (Bottom Navigation Bar Removed) */
 .app{
   max-width:420px;
   margin:0 auto;
@@ -71,22 +78,19 @@ a{color:inherit;text-decoration:none}
   overflow:hidden;
 }
 @media(min-width:640px){
-  body{background:#FFFFFF!important}
-  .app{box-shadow:0 0 50px rgba(0,0,0,.06);border-inline:1px solid #F0F0F5}
+  body{background:#F5F5F7!important}
+  .app{box-shadow:0 0 50px rgba(0,0,0,.06);border-inline:1px solid #EBEBEF}
 }
 
-/* Compact Solid White Header — No Rounded Circle on Back Button, No Liquid Glass */
+/* Compact Solid White Header */
 .hdr{
   display:grid;
   grid-template-columns:40px 1fr 40px;
   align-items:center;
-  height:calc(48px + env(safe-area-inset-top,0px));
+  height:calc(50px + env(safe-area-inset-top,0px));
   padding:env(safe-area-inset-top,0px) 10px 0;
   background:#FFFFFF!important;
-  backdrop-filter:none!important;
-  -webkit-backdrop-filter:none!important;
   border-bottom:1px solid var(--line);
-  box-shadow:none!important;
   flex:0 0 auto;
   position:relative;
   z-index:10;
@@ -102,21 +106,22 @@ a{color:inherit;text-decoration:none}
 }
 .ib,
 .ib.back{
-  width:34px;
-  height:34px;
-  border:0;
-  background:transparent!important;
-  border-radius:0!important;
+  width:36px;
+  height:36px;
+  border:1px solid #EBEBEF;
+  background:#F8F8FA!important;
+  border-radius:50%!important;
   box-shadow:none!important;
   color:var(--ink)!important;
-  font-size:18px;
+  font-size:17px;
   display:flex;
   align-items:center;
   justify-content:center;
-  transition:transform .15s,opacity .15s;
+  transition:transform .15s,background .18s,border-color .18s;
 }
 .ib:hover,.ib:active,.ib.back:hover,.ib.back:active{
-  background:transparent!important;
+  background:#EFEFF4!important;
+  border-color:#D4D4D8!important;
   color:var(--ink)!important;
   transform:scale(.92);
 }
@@ -128,7 +133,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .brand .wm{font-family:var(--font-main);font-size:20px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
 .brand .wm em{font-style:normal;color:var(--gold-text)}
 
-/* Search Bar on Top (Fixed Lucide SVG Icon Positioning) */
+/* Search Bar on Top */
 .searchbar{padding:10px 14px 8px;background:#FFFFFF;border-bottom:1px solid var(--line);flex:0 0 auto}
 .search{position:relative}
 .search>i,
@@ -181,7 +186,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 /* Section Heading & Sort Pill */
 .head{padding:12px 14px 0;display:flex;align-items:flex-end;justify-content:space-between;gap:10px;flex:0 0 auto}
 .head h2{font-family:var(--font-main);font-size:24px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;line-height:1.05;color:var(--ink)}
-.head p{font-size:12.5px;color:var(--muted);font-weight:500;margin-top:2px}
+.head p{font-family:var(--font-sub);font-size:12px;color:var(--muted);font-weight:500;margin-top:2px}
 .sort{
   display:inline-flex;
   align-items:center;
@@ -231,23 +236,23 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .tab.on{background:var(--rani);border-color:var(--rani);color:#FFFFFF}
 .tab.on small{background:rgba(255,255,255,.2);color:#FFFFFF}
 
-/* Scroll Area: Clears Compact Bottom Navigation Bar */
+/* Scroll Area (Full Height Without Bottom Navigation Bar) */
 .scroll{
   flex:1;
   overflow-y:auto;
   scrollbar-width:none;
   background:#FFFFFF!important;
-  padding:2px 14px calc(72px + env(safe-area-inset-bottom,0px));
+  padding:2px 14px calc(28px + env(safe-area-inset-bottom,0px));
   -webkit-overflow-scrolling:touch;
 }
 .scroll::-webkit-scrollbar{display:none}
 .rc{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin:0 2px 10px}
 
-/* Order Cards: Crisp Editorial Borders, Zero Heavy Shadows, 1:1 Sharp Product Photos */
+/* Order Cards: Crisp Editorial Borders, 1:1 Sharp Product Photos */
 .card{
   background:#FFFFFF;
   border:1px solid #EBEBEF;
-  border-radius:0;
+  border-radius:14px;
   padding:14px;
   margin-bottom:12px;
   box-shadow:none!important;
@@ -304,10 +309,10 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
   -webkit-box-orient:vertical;
   overflow:hidden;
 }
-.meta{font-size:12.5px;color:var(--muted);font-weight:500}
+.meta{font-family:var(--font-sub);font-size:12px;color:var(--muted);font-weight:500}
 .price{margin-top:auto;font-size:18px;font-weight:700;color:var(--ink);line-height:1}
 
-/* Status Badges */
+/* Status Badges — Out for Delivery & Delivered Both in Professional GREEN (Never Red) */
 .badge{
   font-size:11.5px;
   font-weight:700;
@@ -321,21 +326,24 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
   gap:5px;
 }
 .badge::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor}
-.b-Processing{background:#EFF6FF;color:#1D4ED8}
-.b-Confirmed{background:#F4F4F6;color:#111113}
-.b-Shipped{background:#FEF3C7;color:var(--amber)}
-.b-OutforDelivery{background:#FFF1F2;color:#E11D48}
-.b-Delivered{background:#ECFDF5;color:var(--green)}
-.b-Cancelled{background:#F3F4F6;color:#6B7280}
+.b-Processing{background:#EFF6FF;color:#1D4ED8;border:1px solid #DBEAFE}
+.b-Confirmed{background:#F4F4F6;color:#111113;border:1px solid #E5E5EA}
+.b-Shipped{background:#FEF3C7;color:var(--amber);border:1px solid #FDE68A}
+.b-OutforDelivery{background:var(--green-soft);color:var(--green);border:1px solid var(--green-border)}
+.b-Delivered{background:var(--green-soft);color:var(--green);border:1px solid var(--green-border)}
+.b-Cancelled{background:#F3F4F6;color:#6B7280;border:1px solid #E5E7EB}
 
 /* Mini Progress Bar inside Order Card */
 .mt{margin:14px 4px 0}
 .mt-line{position:relative;height:3px;border-radius:3px;background:var(--line)}
 .mt-line>i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:linear-gradient(90deg,var(--gold),var(--rani))}
+.mt-line>i.is-green{background:linear-gradient(90deg,#22C55E,var(--green))}
 .mt-line>b{position:absolute;top:50%;width:9px;height:9px;border-radius:50%;background:#FFFFFF;border:2px solid var(--line);transform:translate(-50%,-50%)}
 .mt-line>b.on{border-color:var(--rani);background:var(--rani)}
+.mt-line>b.on.is-green{border-color:var(--green);background:var(--green)}
 .mt-lbl{display:flex;justify-content:space-between;margin-top:8px;font-size:11.5px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.04em}
 .mt-lbl strong{font-size:12px;color:var(--ink);font-weight:700}
+.mt-lbl strong.is-green{color:var(--green)}
 .mt.bad .mt-line>i{background:#D1D5DB}
 .mt.bad span{font-size:12px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.04em}
 
@@ -355,32 +363,50 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .go{color:var(--ink);font-weight:700;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;gap:5px}
 .go svg,.go i{font-size:12px}
 
-/* Empty & Login Required State */
-.empty{text-align:center;padding:44px 18px;color:var(--muted)}
+/* Empty & In-Page Login Prompt State */
+.empty{
+  text-align:center;
+  padding:36px 18px;
+  color:var(--muted);
+  border:1px solid #EBEBEF;
+  border-radius:18px;
+  background:linear-gradient(180deg,#FAF8F5 0%,#FFFFFF 100%);
+  margin:6px 0 14px;
+}
 .empty .ico{
-  width:72px;
-  height:72px;
+  width:68px;
+  height:68px;
   border-radius:50%;
-  background:var(--cream);
-  border:1px solid var(--line);
+  background:#FFFFFF;
+  border:1.5px solid var(--ink);
   color:var(--ink);
   display:flex;
   align-items:center;
   justify-content:center;
-  margin:0 auto 16px;
-  font-size:26px;
+  margin:0 auto 14px;
+  font-size:24px;
 }
 .empty h3{font-family:var(--font-main);font-size:22px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--ink);margin-bottom:6px}
-.empty p{font-size:14px;line-height:1.5;max-width:260px;margin:0 auto}
-.empty a{
+.empty p{font-family:var(--font-sub);font-size:13px;line-height:1.55;max-width:270px;margin:0 auto;color:var(--muted)}
+.empty-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  max-width:290px;
+  margin:18px auto 0;
+}
+.empty a,
+.empty button.emp-btn{
   display:inline-flex;
   align-items:center;
   justify-content:center;
+  gap:6px;
   margin-top:18px;
   height:42px;
-  padding:0 28px;
+  padding:0 24px;
   border-radius:999px;
-  background:var(--rani);
+  background:#000000;
+  border:1.5px solid #000000;
   color:#FFFFFF;
   font-size:14px;
   font-weight:700;
@@ -388,10 +414,21 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
   text-transform:uppercase;
   text-decoration:none;
 }
+.empty-actions a,
+.empty-actions button.emp-btn{
+  margin-top:0;
+  width:100%;
+  padding:0 14px;
+}
+.empty button.emp-btn.outline{
+  background:#FFFFFF;
+  color:var(--ink);
+  border:1.2px solid #D4D4D8;
+}
 
 .skel{
   height:210px;
-  border-radius:0;
+  border-radius:14px;
   border:1px solid #EBEBEF;
   background:linear-gradient(90deg,#F1EBE3 25%,#FAF6F0 37%,#F1EBE3 63%);
   background-size:400% 100%;
@@ -406,7 +443,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .foot .brand .wm{font-size:22px;color:#000}
 .foot .ty{font-family:var(--font-main);font-size:19px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;margin-top:12px;color:var(--ink)}
 .foot .ty::after{content:"";display:block;width:32px;height:2px;background:var(--gold);margin:8px auto 0}
-.foot p{font-size:13px;color:var(--muted);line-height:1.5;margin-top:8px}
+.foot p{font-family:var(--font-sub);font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:8px}
 .foot .links{display:flex;justify-content:center;gap:18px;margin-top:12px}
 .foot .links a,.foot .links button{
   background:none;
@@ -416,8 +453,8 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
   letter-spacing:.04em;
   text-transform:uppercase;
   color:var(--ink);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration:underline;
+  text-underline-offset:3px;
 }
 .foot .copy{font-size:11.5px;margin-top:12px;color:#9A9298}
 
@@ -442,7 +479,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
   overflow-y:auto;
   scrollbar-width:none;
   background:#FFFFFF!important;
-  padding:14px 14px calc(36px + env(safe-area-inset-bottom,0px));
+  padding:14px 14px calc(32px + env(safe-area-inset-bottom,0px));
   -webkit-overflow-scrolling:touch;
 }
 .dv-body::-webkit-scrollbar{display:none}
@@ -467,7 +504,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
   background:linear-gradient(135deg,#111113 0%,#1F1F24 50%,#111113 100%);
   border:1px solid rgba(212,175,55,.32);
 }
-.hero.ok{background:linear-gradient(135deg,#0F2A1B,#14532D,#166534);border-color:rgba(34,197,94,.35)}
+.hero.ok{background:linear-gradient(135deg,#0F2A1B,#14532D,#166534);border-color:rgba(34,197,94,.4)}
 .hero.no{background:linear-gradient(135deg,#27272A,#3F3F46,#27272A);border-color:rgba(255,255,255,.15)}
 .hero-top{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .hero .lbl{color:rgba(255,255,255,.65)}
@@ -494,8 +531,9 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
   font-weight:700;
   letter-spacing:.05em;
   text-transform:uppercase;
-  background:rgba(255,255,255,.12);
-  border:1px solid rgba(255,255,255,.2);
+  background:rgba(22,163,74,.25);
+  border:1px solid rgba(74,222,128,.45);
+  color:#FFFFFF;
   border-radius:999px;
   padding:4px 10px;
 }
@@ -511,8 +549,8 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
   margin:14px 0 4px;
   line-height:1.1;
 }
-.hero .sub{position:relative;font-size:13.5px;color:rgba(255,255,255,.82);line-height:1.45}
-.hero .placed{position:relative;font-size:12px;color:rgba(255,255,255,.6);margin-top:14px;letter-spacing:.03em;text-transform:uppercase}
+.hero .sub{position:relative;font-family:var(--font-sub);font-size:13px;color:rgba(255,255,255,.85);line-height:1.45}
+.hero .placed{position:relative;font-size:12px;color:rgba(255,255,255,.65);margin-top:14px;letter-spacing:.03em;text-transform:uppercase}
 .hero .eta-pill{
   position:relative;
   display:inline-flex;
@@ -525,12 +563,12 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
   padding:8px 12px;
   font-size:13px;
 }
-.hero .eta-pill i,.hero .eta-pill svg{color:var(--gold-soft)}
+.hero .eta-pill i,.hero .eta-pill svg{color:#4ADE80}
 
 /* 5-Step Progress Stepper inside Hero */
 .sp{position:relative;display:grid;grid-template-columns:repeat(5,1fr);margin-top:20px}
 .sp-track{position:absolute;left:10%;right:10%;top:15px;height:2.5px;border-radius:3px;background:rgba(255,255,255,.2)}
-.sp-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:3px;background:linear-gradient(90deg,var(--gold),#FFFFFF);transition:width 1s var(--ease) .12s}
+.sp-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:3px;background:linear-gradient(90deg,var(--gold),#4ADE80);transition:width 1s var(--ease) .12s}
 .sp-s{position:relative;display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center}
 .sp-c{
   width:30px;
@@ -545,8 +583,8 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
   justify-content:center;
 }
 .sp-s.done .sp-c{background:var(--gold);border-color:var(--gold);color:#111113}
-.sp-s.cur .sp-c{background:#FFFFFF;border-color:#FFFFFF;color:#111113;animation:glow 2s infinite}
-@keyframes glow{0%{box-shadow:0 0 0 0 rgba(255,255,255,.45)}70%{box-shadow:0 0 0 8px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+.sp-s.cur .sp-c{background:#22C55E;border-color:#22C55E;color:#FFFFFF;animation:glow 2s infinite}
+@keyframes glow{0%{box-shadow:0 0 0 0 rgba(34,197,94,.55)}70%{box-shadow:0 0 0 8px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
 .hero.ok .sp-s.done .sp-c,.hero.ok .sp-s.cur .sp-c{background:#22C55E;border-color:#22C55E;color:#FFFFFF;animation:none}
 .sp-l{font-size:10.5px;line-height:1.2;color:rgba(255,255,255,.6);max-width:62px;text-transform:uppercase;letter-spacing:.03em}
 .sp-s.done .sp-l,.sp-s.cur .sp-l{color:#FFFFFF;font-weight:700}
@@ -556,7 +594,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .cour-ic{
   width:42px;
   height:42px;
-  border-radius:10px;
+  border-radius:50%;
   background:var(--cream);
   border:1px solid var(--line);
   color:var(--ink);
@@ -567,7 +605,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
   flex:0 0 auto;
 }
 .cour b{font-size:15px;font-weight:700;display:block;color:var(--ink)}
-.cour small{font-size:12.5px;color:var(--muted)}
+.cour small{font-family:var(--font-sub);font-size:12px;color:var(--muted)}
 .cour .cp{
   margin-left:auto;
   background:var(--cream);
@@ -581,7 +619,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
   color:var(--ink);
 }
 
-/* Order Items in Detail View: 1:1 Sharp Square Product Photos (No Rounded Corners) */
+/* Order Items in Detail View: 1:1 Sharp Square Product Photos */
 .it{display:flex;gap:12px;padding:12px 0;border-bottom:1px dashed var(--line)}
 .it:first-of-type{padding-top:0}
 .it:last-child{border:0;padding-bottom:0}
@@ -673,7 +711,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
   color:var(--ink);
 }
 .addr b{font-size:15px;font-weight:700;color:var(--ink)}
-.addr p{font-size:13.5px;color:var(--muted);line-height:1.45;margin-top:3px}
+.addr p{font-family:var(--font-sub);font-size:13px;color:var(--muted);line-height:1.45;margin-top:3px}
 .addr .cpy{
   margin-top:10px;
   background:var(--cream);
@@ -712,14 +750,14 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .btn.p{background:var(--rani);color:#FFFFFF}
 .btn.k{background:var(--ink);color:#FFFFFF}
 .btn.l{background:#FFFFFF;border:1px solid var(--line);color:var(--ink)}
-.btn.d{background:#FFFFFF;border:1px solid #FECACA;color:var(--danger)}
+.btn.d{background:#FEF2F2;border:1px solid #FECACA;color:var(--danger)}
 
-/* Quick Actions Row */
+/* Quick Actions Row with Circular Icon Badges */
 .qa{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
 .qa button{
   background:#FFFFFF;
   border:1px solid #EBEBEF;
-  border-radius:10px;
+  border-radius:12px;
   padding:11px 4px;
   font-size:12px;
   font-weight:700;
@@ -751,48 +789,112 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .inv{border:1px dashed var(--line);border-radius:12px;padding:14px;margin:12px 0;font-size:13.5px}
 .inv .brand img{height:38px}
 
-/* Compact Permanently Visible Solid White Bottom Navigation Bar (Matches index.html) */
-.bottom-nav{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  margin:0 auto;
-  width:100%;
-  max-width:420px;
-  z-index:20;
-  background:#FFFFFF!important;
-  backdrop-filter:none!important;
-  -webkit-backdrop-filter:none!important;
-  border-top:1px solid var(--line);
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  padding:3px 4px calc(3px + env(safe-area-inset-bottom,0px));
-  box-shadow:none!important;
+/* ============================================================================
+   IN-PAGE LOGIN / SIGN UP / OTP / GOOGLE AUTH ENGINE (#authPopupModal)
+   ============================================================================ */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9990;opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .3s}
+.scrim.is-open{opacity:1;visibility:visible;transition-delay:0s}
+.layer{position:fixed;z-index:10000;visibility:hidden;pointer-events:none;transition:transform .38s var(--ease),opacity .3s,visibility 0s .38s}
+.layer.is-open{visibility:visible;pointer-events:auto;transform:none;opacity:1;transition-delay:0s}
+.sec-eyebrow{display:block;font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-text);margin-bottom:4px}
+#authPopupModal{
+  top:50%;
+  left:50%;
+  right:auto;
+  bottom:auto;
+  width:calc(100% - 28px);
+  max-width:380px;
+  max-height:92dvh;
+  overflow-y:auto;
+  background:#FFFFFF;
+  border:1px solid #E5E5EA;
+  border-radius:24px;
+  padding:22px 18px 18px;
+  box-shadow:0 24px 60px rgba(0,0,0,.28);
+  transform:translate(-50%,-46%) scale(.94);
+  opacity:0;
+  transition:transform .42s cubic-bezier(.22,1,.36,1),opacity .32s ease,visibility 0s .42s;
 }
-.nav-item{
-  position:relative;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:1.5px;
-  padding:2px 0;
-  color:#7D828A;
-  font-size:10.5px;
-  font-weight:600;
-  letter-spacing:.04em;
-  text-transform:uppercase;
-  line-height:1.1;
-  min-width:0;
-  transition:color .2s;
+#authPopupModal.is-open{
+  transform:translate(-50%,-50%) scale(1);
+  opacity:1;
+  transition:transform .42s cubic-bezier(.22,1,.36,1),opacity .32s ease,visibility 0s 0s;
 }
-.nav-item svg{width:16px;height:16px;stroke-width:1.75}
-.nav-ai-img{width:16px;height:16px;border-radius:50%;object-fit:cover}
-.nav-item[aria-current="page"]{color:#111113;font-weight:700}
-.nav-item[aria-current="page"]::before{content:"";position:absolute;top:-3px;width:18px;height:2px;background:#111113}
+.ios-auth-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.ios-auth-close{width:32px;height:32px;flex:0 0 32px;border-radius:50%;border:1px solid #E5E5EA;background:#F8F8FA;color:#111113;display:inline-flex;align-items:center;justify-content:center;padding:0}
+.ios-auth-close svg{width:15px;height:15px;stroke-width:2.2}
+.ios-auth-head h2{font-size:23px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:#111113;line-height:1.15}
+.ios-auth-head p{font-family:var(--font-sub);margin:3px 0 0;font-size:12.5px;color:var(--muted)}
 
-/* Unified Top Pill Toast (Matches index.html & cart.html) */
+/* RED ERROR ALERT INSIDE LOGIN POPUP (Automatic 30s Cooldown on >3 Requests or Auth Error) */
+.auth-err-alert{
+  display:none;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:11px 13px;
+  margin-bottom:12px;
+  border-radius:13px;
+  background:linear-gradient(135deg,#FEF2F2,#FEE2E2);
+  border:1.5px solid #EF4444;
+  color:#B91C1C;
+  box-shadow:0 6px 16px -6px rgba(220,38,38,.25);
+}
+.auth-err-alert.on{
+  display:flex;
+  animation:errShake .38s cubic-bezier(.36,.07,.19,.97);
+}
+.auth-err-l{display:flex;align-items:center;gap:9px;min-width:0;flex:1}
+.auth-err-l svg{width:18px;height:18px;color:#DC2626;flex-shrink:0;stroke-width:2.2}
+.auth-err-txt{font-family:var(--font-sub);font-size:12.5px;font-weight:600;line-height:1.35;color:#B91C1C}
+.auth-err-timer{padding:3px 8px;border-radius:999px;background:#DC2626;color:#FFFFFF;font-size:11.5px;font-weight:700;letter-spacing:.04em;flex-shrink:0}
+@keyframes errShake{
+  0%,100%{transform:translateX(0)}
+  20%,60%{transform:translateX(-5px)}
+  40%,80%{transform:translateX(5px)}
+}
+
+.ios-seg{display:grid;grid-template-columns:1fr 1fr;padding:3px;background:#F2F2F7;border-radius:12px;margin-bottom:12px}
+.ios-seg-btn{height:34px;border:0;border-radius:9.5px;background:transparent;font-size:13.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);transition:background .25s var(--ios-spring),color .25s,box-shadow .25s}
+.ios-seg-btn[aria-selected="true"]{background:#FFFFFF;color:#111113;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.ios-group{background:#F8F8FA;border:1.5px solid #E5E5EA;border-radius:14px;overflow:hidden;margin-bottom:10px;transition:border-color .2s,box-shadow .2s}
+.ios-group.is-err{border-color:#EF4444!important;box-shadow:0 0 0 3px rgba(239,68,68,.14)}
+.ios-group.is-err .ios-row{background:#FFF8F8}
+.ios-group.is-err .ios-row label{color:#B91C1C}
+.ios-row{display:flex;align-items:center;padding:0 14px;min-height:46px;background:#FFFFFF}
+.ios-row+.ios-row{border-top:1px solid #ECECF2}
+.ios-row label{flex:0 0 78px;font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#111113}
+.ios-row input{flex:1;min-width:0;height:46px;border:0;outline:0;background:transparent;font-family:var(--font-sub);font-size:14px;font-weight:500;color:#111113}
+.ios-row input::placeholder{color:#A1A1AA}
+.ios-sub-links{display:flex;align-items:center;justify-content:flex-end;margin:-2px 2px 10px}
+.ios-auth-submit{width:100%;height:44px;border:0;border-radius:12px;background:#000000;color:#FFFFFF;font-size:14.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:background .2s,transform .15s}
+.ios-auth-submit:active{transform:scale(.98)}
+.ios-auth-submit:disabled{opacity:.65;cursor:not-allowed}
+.ios-auth-submit.is-rate-locked{background:#DC2626!important;color:#FFFFFF!important}
+.ios-auth-submit svg{width:15px;height:15px}
+.ios-auth-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;font-size:12.5px;color:var(--muted)}
+.ios-auth-link{background:none;border:0;padding:0;color:#111113;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-decoration:underline;font-size:12px;cursor:pointer}
+.ios-eye-btn{width:30px;height:30px;flex:0 0 30px;border:0;background:transparent;color:#7D828A;display:inline-flex;align-items:center;justify-content:center;padding:0;cursor:pointer}
+.ios-eye-btn svg{width:15px;height:15px}
+.ios-or{display:flex;align-items:center;gap:10px;margin:10px 0;color:#8E8E93;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.ios-or::before,.ios-or::after{content:"";flex:1;height:1px;background:#E5E5EA}
+.ios-btn-stack{display:flex;flex-direction:column;gap:8px}
+.ios-google-btn{width:100%;height:42px;border-radius:12px;border:1px solid #E5E5EA;background:#FFFFFF;color:#111113;font-size:13.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:background .2s,border-color .2s}
+@media(hover:hover){.ios-google-btn:hover{border-color:#111113}}
+.ios-google-btn img{width:16px;height:16px;object-fit:contain}
+.view-hidden{display:none!important}
+.view-active{display:block;animation:iosAuthFade .25s var(--ease)}
+@keyframes iosAuthFade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.ios-otp-row{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:8px 0 12px}
+.otp-box{width:100%;height:44px;text-align:center;font-family:var(--font-main);font-size:19px;font-weight:700;color:#111113;background:#F8F8FA;border:1.5px solid #E5E5EA;border-radius:10px;outline:none}
+.otp-box:focus{border-color:#111113;background:#FFFFFF}
+.otp-box-filled{border-color:#111113!important;background:#FFFFFF!important}
+.ios-otp-row.is-err .otp-box{border-color:#EF4444!important;background:#FFF5F5!important;color:#B91C1C!important}
+.mini-spin{width:15px;height:15px;border:2px solid rgba(17,17,17,.18);border-top-color:#111113;border-radius:50%;display:inline-block;flex:0 0 15px;animation:spin .55s linear infinite}
+.mini-spin.white{border-color:rgba(255,255,255,.35);border-top-color:#FFFFFF}
+.mini-spin.rani{border-color:rgba(17,17,17,.2);border-top-color:#111113}
+
+/* Unified Top Pill Toast */
 .toast{
   position:fixed;
   left:50%;
@@ -805,7 +907,8 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
   gap:10px;
   background:linear-gradient(135deg,#16A34A,#15803D);
   color:#FFFFFF;
-  font-size:13.5px;
+  font-family:var(--font-sub);
+  font-size:13px;
   font-weight:600;
   line-height:1.4;
   text-align:left;
@@ -819,9 +922,9 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 }
 .toast::before{
   content:"\2713";
-  width:22px;
-  height:22px;
-  flex:0 0 22px;
+  width:21px;
+  height:21px;
+  flex:0 0 21px;
   border-radius:50%;
   background:#FFFFFF;
   color:#16A34A;
@@ -853,8 +956,8 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
   animation:spin .65s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-.btn.p,.btn.k,.idcp,.empty a{--spin:#fff}
-.ib.back,.ib{--spin:#111113}
+.btn.p,.btn.k,.idcp,.empty a,.emp-btn:not(.outline){--spin:#fff}
+.ib.back,.ib,.emp-btn.outline{--spin:#111113}
 .btn.d{--spin:var(--danger)}
 .idcp.is-busy::after{width:12px;height:12px;margin:-6px 0 0 -6px}
 .foot .links a{display:inline-block}
@@ -878,7 +981,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 .sk-sort{height:30px;width:84px;border-radius:999px}
 .sk-tabs{display:flex;gap:6px;margin-bottom:14px;overflow:hidden}
 .sk-tab{height:32px;width:78px;border-radius:999px;flex:0 0 auto}
-.sk-card{background:#FFFFFF;border:1px solid #EBEBEF;border-radius:0;padding:14px;margin-bottom:12px}
+.sk-card{background:#FFFFFF;border:1px solid #EBEBEF;border-radius:14px;padding:14px;margin-bottom:12px}
 .sk-chead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .sk-pill{height:24px;width:80px;border-radius:999px}
 .sk-cbody{display:flex;gap:12px}
@@ -895,6 +998,119 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 </style>
 </head>
 <body>
+<div id="scrim" class="scrim" onclick="closeAuthPopup()"></div>
+
+<!-- IN-PAGE LOGIN / SIGNUP / OTP / RESET POPUP ENGINE -->
+<div id="authPopupModal" class="layer" role="dialog" aria-modal="true" aria-labelledby="homeAuthTitle">
+  <div class="ios-auth-top">
+    <div class="ios-auth-head">
+      <span class="sec-eyebrow" id="homeAuthEyebrow" style="margin-bottom:2px">Aavira Account</span>
+      <h2 id="homeAuthTitle">Welcome Back</h2>
+      <p id="homeAuthSub">Login to view &amp; track your orders</p>
+    </div>
+    <button type="button" class="ios-auth-close" onclick="closeAuthPopup()" aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
+
+  <!-- RED ERROR BANNER INSIDE LOGIN POPUP (Automatic 30s Cooldown on >3 Requests or Auth Error) -->
+  <div id="authPopupErrorBox" class="auth-err-alert" role="alert" aria-live="assertive">
+    <div class="auth-err-l">
+      <i data-lucide="alert-octagon"></i>
+      <span class="auth-err-txt" id="authPopupErrorText">Too many requests! Please wait 30s before trying again.</span>
+    </div>
+    <span class="auth-err-timer" id="authPopupErrorTimer" hidden>30s</span>
+  </div>
+
+  <div class="ios-seg" id="homeAuthSeg" role="tablist" aria-label="Authentication mode">
+    <button type="button" class="ios-seg-btn" id="tabBtnLogin" role="tab" aria-selected="true" onclick="switchView('loginView')">Log In</button>
+    <button type="button" class="ios-seg-btn" id="tabBtnSignup" role="tab" aria-selected="false" onclick="switchView('signupView')">Sign Up</button>
+  </div>
+
+  <!-- LOGIN VIEW -->
+  <div id="loginView" class="view-active">
+    <div class="ios-group" id="loginInputGroup">
+      <div class="ios-row">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" autocomplete="username" placeholder="Email or Phone Number" oninput="clearAuthPopupError()">
+      </div>
+      <div class="ios-row">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" autocomplete="current-password" placeholder="Enter password" oninput="clearAuthPopupError()">
+        <button type="button" class="ios-eye-btn" id="btnLoginEye" onclick="togglePassword('loginPassword','btnLoginEye')" aria-label="Toggle password"><i data-lucide="eye-off"></i></button>
+      </div>
+    </div>
+    <div class="ios-sub-links">
+      <button type="button" class="ios-auth-link" onclick="switchView('forgotView')">Forgot Password?</button>
+    </div>
+    <button type="button" id="btnLoginAction" class="ios-auth-submit" onclick="processLogin()"><span>Log In</span><i data-lucide="arrow-right"></i></button>
+    <div class="ios-or">Or</div>
+    <div class="ios-btn-stack">
+      <button type="button" id="btnGoogleLogin" class="ios-google-btn" onclick="performGoogleLogin('btnGoogleLogin')">
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+        <span>Continue with Google</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- SIGNUP VIEW -->
+  <div id="signupView" class="view-hidden">
+    <div class="ios-group" id="signupInputGroup">
+      <div class="ios-row">
+        <label for="signupName">Name</label>
+        <input type="text" id="signupName" autocomplete="name" placeholder="Full Name" oninput="clearAuthPopupError()">
+      </div>
+      <div class="ios-row">
+        <label for="signupEmail">Email</label>
+        <input type="email" id="signupEmail" autocomplete="email" placeholder="Email Address" oninput="clearAuthPopupError()">
+      </div>
+      <div class="ios-row">
+        <label for="signupPassword">Password</label>
+        <input type="password" id="signupPassword" autocomplete="new-password" placeholder="Create Password (min 6 chars)" oninput="clearAuthPopupError()">
+        <button type="button" class="ios-eye-btn" id="btnSignupEye" onclick="togglePassword('signupPassword','btnSignupEye')" aria-label="Toggle password"><i data-lucide="eye-off"></i></button>
+      </div>
+    </div>
+    <button type="button" id="btnSignupAction" class="ios-auth-submit" onclick="processSignup()"><span>Create Account</span><i data-lucide="arrow-right"></i></button>
+    <div class="ios-or">Or</div>
+    <div class="ios-btn-stack">
+      <button type="button" id="btnGoogleSignup" class="ios-google-btn" onclick="performGoogleLogin('btnGoogleSignup')">
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+        <span>Continue with Google</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- OTP VIEW -->
+  <div id="otpView" class="view-hidden">
+    <p id="otpSubText" style="margin:0 0 6px;font-family:var(--font-sub);font-size:12.5px;color:var(--muted);text-align:center">Enter the 6-digit code sent to your email</p>
+    <div id="otpBoxGroup" class="ios-otp-row">
+      <input type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" class="otp-box" aria-label="Digit 1">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box" aria-label="Digit 2">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box" aria-label="Digit 3">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box" aria-label="Digit 4">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box" aria-label="Digit 5">
+      <input type="text" inputmode="numeric" maxlength="1" class="otp-box" aria-label="Digit 6">
+    </div>
+    <button type="button" id="btnOtpAction" class="ios-auth-submit" onclick="verifySignupOTP()"><span>Verify &amp; Login</span><i data-lucide="check-circle"></i></button>
+    <div class="ios-auth-foot">
+      <button type="button" class="ios-auth-link" onclick="resendSignupOTP()">Resend OTP</button>
+      <button type="button" class="ios-auth-link" onclick="switchView('signupView')">Change Email</button>
+    </div>
+  </div>
+
+  <!-- FORGOT PASSWORD VIEW -->
+  <div id="forgotView" class="view-hidden">
+    <div class="ios-group" id="forgotInputGroup">
+      <div class="ios-row">
+        <label for="forgotEmail">Email</label>
+        <input type="email" id="forgotEmail" autocomplete="email" placeholder="Registered Email Address" oninput="clearAuthPopupError()">
+      </div>
+    </div>
+    <button type="button" id="btnForgotAction" class="ios-auth-submit" onclick="processForgotPassword()"><span>Send Reset Code</span><i data-lucide="mail"></i></button>
+    <div class="ios-auth-foot" style="justify-content:center">
+      <button type="button" class="ios-auth-link" onclick="switchView('loginView')">Back to Login</button>
+    </div>
+  </div>
+</div>
+
 <div class="app is-loading">
   <header class="hdr">
     <button type="button" class="ib back" onclick="goBack()" aria-label="Back"><i data-lucide="arrow-left"></i></button>
@@ -907,10 +1123,10 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
     <div class="sk-head"><div><div class="sk sk-h1"></div><div class="sk sk-h2"></div></div><div class="sk sk-sort"></div></div>
     <div class="sk-tabs"><div class="sk sk-tab"></div><div class="sk sk-tab"></div><div class="sk sk-tab"></div><div class="sk sk-tab"></div></div>
     <div class="sk-card"><div class="sk-chead"><div><div class="sk sk-l sk-w30"></div><div class="sk sk-l sk-w50"></div></div><div class="sk sk-pill"></div></div>
-      <div class="sk-cbody"><div class="sk sk-thumb"></div><div class="sk-col"><div class="sk sk-l sk-w90"></div><div class="sk sk-l sk-w60"></div><div class="sk sk-l sk-w40"></div><div class="sk sk-price"></div></div></div>
+      <div class="sk-cbody"><div class="sk sk-thumb"></div><div class="sk-col"><div class="sk sk-l sk-w90"></div><div class="sk sk-l sk-w60"></div><div class="sk sk-l sk-w40"></div><div class="sk-price sk"></div></div></div>
       <div class="sk sk-track"></div><div class="sk sk-l sk-w50" style="margin-top:12px"></div></div>
     <div class="sk-card"><div class="sk-chead"><div><div class="sk sk-l sk-w30"></div><div class="sk sk-l sk-w50"></div></div><div class="sk sk-pill"></div></div>
-      <div class="sk-cbody"><div class="sk sk-thumb"></div><div class="sk-col"><div class="sk sk-l sk-w90"></div><div class="sk sk-l sk-w60"></div><div class="sk sk-l sk-w40"></div><div class="sk sk-price"></div></div></div>
+      <div class="sk-cbody"><div class="sk sk-thumb"></div><div class="sk-col"><div class="sk sk-l sk-w90"></div><div class="sk sk-l sk-w60"></div><div class="sk sk-l sk-w40"></div><div class="sk-price sk"></div></div></div>
       <div class="sk sk-track"></div><div class="sk sk-l sk-w50" style="margin-top:12px"></div></div>
   </div>
 
@@ -930,14 +1146,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
   <div class="tabs" id="tabs" role="tablist"></div>
   <div class="scroll" id="list"></div>
 
-  <nav class="bottom-nav" aria-label="Main">
-    <a href="./" class="nav-item"><i data-lucide="home"></i><span>Home</span></a>
-    <a href="categories" class="nav-item"><i data-lucide="layout-grid"></i><span>Collections</span></a>
-    <a href="/ai" class="nav-item"><img src="/public/ai-913.png" alt="Aavira AI" class="nav-ai-img" onerror="this.style.display='none'"><span>AI</span></a>
-    <a href="orders" class="nav-item" aria-current="page"><i data-lucide="package"></i><span>Orders</span></a>
-    <a href="profile" class="nav-item"><i data-lucide="user"></i><span>Profile</span></a>
-  </nav>
-
+  <!-- ORDER DETAILS DRAWER (#dv) — Navigation Bar Removed -->
   <section class="dv" id="dv" aria-label="Order details">
     <header class="hdr">
       <button type="button" class="ib back" onclick="closeDetailView()" aria-label="Back to orders"><i data-lucide="arrow-left"></i></button>
@@ -947,6 +1156,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
     <div class="dv-body" id="dvBody"></div>
   </section>
 
+  <!-- INVOICE SHEET (#inv) -->
   <div class="mo" id="inv" onclick="if(event.target===this)closeInv()">
     <div class="sheet">
       <div class="row">
@@ -964,6 +1174,7 @@ svg.lucide{width:1em;height:1em;flex-shrink:0}
 <script src="/user_data.js"></script>
 <script>
 const $ = s => document.querySelector(s);
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const icons = () => { if (window.lucide) lucide.createIcons(); };
 
 /* Safe navigation: if detail drawer (#dv) is open, close it first instead of leaving the page */
@@ -993,10 +1204,9 @@ const goBack = () => {
   location.href = './';
 };
 
-/* Navigate to home screen and trigger centered login modal */
-window.goToHomeLogin = () => {
-  try { sessionStorage.removeItem('loginBannerDismissed'); } catch (e) {}
-  location.href = './';
+/* Open in-page Login Popup directly on orders.html */
+window.goToHomeLogin = (mode = 'login') => {
+  openAuthPopup(mode);
 };
 
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -1163,6 +1373,7 @@ const toast = (m, type = 'ok') => {
   else t.textContent = m;
   t.dataset.type = (type === 'err' || type === 'error') ? 'error' : 'success';
   t.classList.add('on');
+  navigator.vibrate?.(25);
   clearTimeout(toastT);
   toastT = setTimeout(() => t.classList.remove('on'), 2200);
 };
@@ -1186,7 +1397,7 @@ const etaCountdown = o => {
   if (n === 0) return 'Arriving today';
   if (n === 1) return 'Arriving tomorrow';
   if (n > 1) return `Arriving in ${n} days`;
-  return 'Slightly delayed';
+  return 'Arriving soon';
 };
 const stepTime = (o, step) => {
   const h = o.statusHistory || o.trackingHistory || o.timeline;
@@ -1200,7 +1411,7 @@ const courier = o => ({
   url: (u => { try { const x = new URL(String(u || ''), location.origin); return /^https?:$/.test(x.protocol) && u ? x.href : ''; } catch { return ''; } })(o.trackingUrl || o.trackingLink)
 });
 
-/* Robust Session Resolution (Works with both localStorage & user_data.js getProfileInfo) */
+/* Robust Session Resolution */
 const session = () => {
   const info = (typeof window.getProfileInfo === 'function') ? window.getProfileInfo() : null;
   const email = String((info && info.email) || localStorage.getItem('aavira_user_email') || '').trim().toLowerCase();
@@ -1210,15 +1421,506 @@ const session = () => {
   return email;
 };
 
+/* ============================================================================
+   IN-PAGE AUTHENTICATION ENGINE & 30-SEC AUTOMATIC RATE LIMIT (>3 REQUESTS)
+   ============================================================================ */
+const AUTH_CONFIG = {
+  GOOGLE_CLIENT_ID: "247971292356-8906dpm406huv7uidlblhjum8vg3dfj3.apps.googleusercontent.com",
+  GOOGLE_PROMPT_TIMEOUT_MS: 30000,
+  OTP_LENGTH: 6,
+  MIN_PASSWORD_LENGTH: 6,
+  AUTO_SUBMIT_DELAY_MS: 150,
+  MAX_ATTEMPTS_ALLOWED: 3,
+  RATE_LIMIT_WINDOW_MS: 30000,
+  COOLDOWN_SECONDS: 30,
+  STORAGE_KEYS: {
+    NAME: 'aavira_display_name',
+    EMAIL: 'aavira_user_email',
+    ATTEMPTS: 'aavira_auth_attempts',
+    LOCK_UNTIL: 'aavira_auth_lock_until'
+  }
+};
+
+const GOOGLE_BTN_ORIGINAL_HTML =
+  '<img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">' +
+  '<span>Continue with Google</span>';
+
+let pendingSignup = { name: '', email: '', pwd: '' };
+let googlePromptTimeout = null;
+let activeGoogleBtnId = null;
+let isSubmitting = false;
+let rateLimitTimer = null;
+
+function getLockUntil() {
+  try { return Number(sessionStorage.getItem(AUTH_CONFIG.STORAGE_KEYS.LOCK_UNTIL)) || 0; } catch { return 0; }
+}
+function setLockUntil(ts) {
+  try {
+    if (ts > 0) sessionStorage.setItem(AUTH_CONFIG.STORAGE_KEYS.LOCK_UNTIL, String(ts));
+    else sessionStorage.removeItem(AUTH_CONFIG.STORAGE_KEYS.LOCK_UNTIL);
+  } catch {}
+}
+function getRecentAttempts() {
+  try {
+    const raw = JSON.parse(sessionStorage.getItem(AUTH_CONFIG.STORAGE_KEYS.ATTEMPTS) || '[]');
+    const now = Date.now();
+    return (Array.isArray(raw) ? raw : []).filter(t => now - t < AUTH_CONFIG.RATE_LIMIT_WINDOW_MS);
+  } catch {
+    return [];
+  }
+}
+function saveRecentAttempts(list) {
+  try { sessionStorage.setItem(AUTH_CONFIG.STORAGE_KEYS.ATTEMPTS, JSON.stringify(list)); } catch {}
+}
+
+function clearAuthPopupError() {
+  if (Date.now() < getLockUntil()) return;
+  const box = document.getElementById('authPopupErrorBox');
+  const timerBadge = document.getElementById('authPopupErrorTimer');
+  box?.classList.remove('on');
+  if (timerBadge) timerBadge.hidden = true;
+  document.querySelectorAll('.ios-group.is-err, .ios-otp-row.is-err').forEach(el => el.classList.remove('is-err'));
+}
+
+function showAuthPopupError(message, opts = {}) {
+  const box = document.getElementById('authPopupErrorBox');
+  const txt = document.getElementById('authPopupErrorText');
+  const timerBadge = document.getElementById('authPopupErrorTimer');
+  if (!box || !txt) return;
+
+  txt.textContent = message;
+  if (opts.countdownSec && timerBadge) {
+    timerBadge.hidden = false;
+    timerBadge.textContent = opts.countdownSec + 's';
+  } else if (timerBadge) {
+    timerBadge.hidden = true;
+  }
+
+  box.classList.remove('on');
+  void box.offsetWidth;
+  box.classList.add('on');
+
+  if (opts.groupId) {
+    document.getElementById(opts.groupId)?.classList.add('is-err');
+  } else {
+    const activeView = document.querySelector('#authPopupModal .view-active');
+    activeView?.querySelector('.ios-group, .ios-otp-row')?.classList.add('is-err');
+  }
+
+  navigator.vibrate?.([50, 30, 50]);
+  icons();
+}
+
+function startRateLimitLockdown(customMessage, durationSec = AUTH_CONFIG.COOLDOWN_SECONDS) {
+  const until = Date.now() + durationSec * 1000;
+  setLockUntil(until);
+  clearInterval(rateLimitTimer);
+
+  const msg = customMessage || `Too many requests! Please wait ${durationSec}s before trying again.`;
+  const updateLockUI = () => {
+    const lockUntil = getLockUntil();
+    const remaining = Math.max(0, Math.ceil((lockUntil - Date.now()) / 1000));
+    const timerBadge = document.getElementById('authPopupErrorTimer');
+    const submitBtns = document.querySelectorAll('.ios-auth-submit');
+
+    if (remaining <= 0) {
+      clearInterval(rateLimitTimer);
+      setLockUntil(0);
+      saveRecentAttempts([]);
+      submitBtns.forEach(b => {
+        b.disabled = false;
+        b.classList.remove('is-rate-locked');
+      });
+      clearAuthPopupError();
+      return;
+    }
+
+    if (timerBadge) {
+      timerBadge.hidden = false;
+      timerBadge.textContent = remaining + 's';
+    }
+    submitBtns.forEach(b => {
+      b.disabled = true;
+      b.classList.add('is-rate-locked');
+    });
+  };
+
+  showAuthPopupError(msg, { countdownSec: durationSec });
+  updateLockUI();
+  rateLimitTimer = setInterval(updateLockUI, 1000);
+}
+
+function recordServerRequestAndCheckLimit() {
+  const lockUntil = getLockUntil();
+  if (Date.now() < lockUntil) {
+    const rem = Math.ceil((lockUntil - Date.now()) / 1000);
+    startRateLimitLockdown(`Too many requests! Please wait ${rem}s before trying again.`, rem);
+    return false;
+  }
+  const attempts = getRecentAttempts();
+  attempts.push(Date.now());
+  saveRecentAttempts(attempts);
+  if (attempts.length > AUTH_CONFIG.MAX_ATTEMPTS_ALLOWED) {
+    startRateLimitLockdown('Too many requests! Please wait 30s before trying again.', AUTH_CONFIG.COOLDOWN_SECONDS);
+    return false;
+  }
+  return true;
+}
+
+function handleApiAuthError(result, fallbackMsg, groupId) {
+  const status = result?.status || result?.httpStatus || 0;
+  const rawMsg = String(result?.data?.message || result?.message || fallbackMsg || 'Request failed');
+  if (status === 429 || /too many|rate limit|slow down|try again later/i.test(rawMsg)) {
+    startRateLimitLockdown(rawMsg.includes('Too many') ? rawMsg : `Too many requests! ${rawMsg}`, AUTH_CONFIG.COOLDOWN_SECONDS);
+    return;
+  }
+  showAuthPopupError(rawMsg, { groupId });
+}
+
+window.openAuthPopup = function (mode = 'login') {
+  window.switchView(mode === 'signup' ? 'signupView' : 'loginView');
+  const lockUntil = getLockUntil();
+  if (Date.now() < lockUntil) {
+    const rem = Math.ceil((lockUntil - Date.now()) / 1000);
+    startRateLimitLockdown(`Too many requests! Please wait ${rem}s before trying again.`, rem);
+  } else {
+    clearAuthPopupError();
+  }
+  document.getElementById('authPopupModal')?.classList.add('is-open');
+  document.getElementById('scrim')?.classList.add('is-open');
+  icons();
+};
+
+window.closeAuthPopup = function () {
+  document.getElementById('authPopupModal')?.classList.remove('is-open');
+  document.getElementById('scrim')?.classList.remove('is-open');
+};
+
+window.switchView = function (viewId) {
+  if (Date.now() >= getLockUntil()) clearAuthPopupError();
+  const views = ['loginView', 'signupView', 'otpView', 'forgotView'];
+  views.forEach(id => {
+    const v = document.getElementById(id);
+    if (v) v.className = id === viewId ? 'view-active' : 'view-hidden';
+  });
+  const seg = document.getElementById('homeAuthSeg');
+  if (seg) seg.hidden = !(viewId === 'loginView' || viewId === 'signupView');
+  document.getElementById('tabBtnLogin')?.setAttribute('aria-selected', String(viewId === 'loginView'));
+  document.getElementById('tabBtnSignup')?.setAttribute('aria-selected', String(viewId === 'signupView'));
+
+  const metaMap = {
+    loginView: ['Welcome Back', 'Login to view & track your orders'],
+    signupView: ['Create Account', 'Start your fashion journey with us'],
+    otpView: ['Verification', 'Enter the 6-digit code sent to your email'],
+    forgotView: ['Reset Password', 'Enter your email to receive a reset code']
+  };
+  const [t, s] = metaMap[viewId] || metaMap.loginView;
+  if (document.getElementById('homeAuthTitle')) document.getElementById('homeAuthTitle').textContent = t;
+  if (document.getElementById('homeAuthSub')) document.getElementById('homeAuthSub').textContent = s;
+  icons();
+};
+
+window.togglePassword = function (inputId, buttonId) {
+  const input = document.getElementById(inputId);
+  const btn = document.getElementById(buttonId);
+  if (!input || !btn) return;
+  const isHidden = input.type === 'password';
+  input.type = isHidden ? 'text' : 'password';
+  btn.innerHTML = isHidden ? '<i data-lucide="eye"></i>' : '<i data-lucide="eye-off"></i>';
+  icons();
+};
+
+function setBtnLoading(btnId, isLoading, originalHtml, opts = {}) {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  const loaderColor = opts.loaderColor || 'text-white';
+  const loadingLabel = opts.loadingLabel || 'Processing...';
+  if (isLoading) {
+    btn.disabled = true;
+    const spinnerClass = loaderColor === 'text-rani-pink' ? 'mini-spin rani' : 'mini-spin white';
+    btn.innerHTML = `<span class="${spinnerClass}" aria-hidden="true"></span><span>${loadingLabel}</span>`;
+  } else {
+    btn.disabled = Date.now() < getLockUntil();
+    btn.innerHTML = originalHtml;
+  }
+  icons();
+}
+
+function setupOtpBoxGroup(groupId, onComplete) {
+  const group = document.getElementById(groupId);
+  if (!group) return;
+  const boxes = Array.from(group.querySelectorAll('.otp-box'));
+  const playPop = box => {
+    box.classList.remove('otp-box-filled');
+    void box.offsetWidth;
+    box.classList.add('otp-box-filled');
+  };
+  const checkAutoSubmit = () => {
+    if (boxes.every(b => b.value.length === 1) && typeof onComplete === 'function') {
+      setTimeout(onComplete, AUTH_CONFIG.AUTO_SUBMIT_DELAY_MS);
+    }
+  };
+  boxes.forEach((box, index) => {
+    box.addEventListener('input', () => {
+      clearAuthPopupError();
+      box.value = box.value.replace(/[^0-9]/g, '').slice(-1);
+      if (box.value) {
+        playPop(box);
+        if (boxes[index + 1]) boxes[index + 1].focus();
+      } else {
+        box.classList.remove('otp-box-filled');
+      }
+      checkAutoSubmit();
+    });
+    box.addEventListener('keydown', e => {
+      if (e.key === 'Backspace' && !box.value && boxes[index - 1]) boxes[index - 1].focus();
+      else if (e.key === 'ArrowLeft' && boxes[index - 1]) { e.preventDefault(); boxes[index - 1].focus(); }
+      else if (e.key === 'ArrowRight' && boxes[index + 1]) { e.preventDefault(); boxes[index + 1].focus(); }
+      else if (e.key === 'Enter') { e.preventDefault(); if (typeof onComplete === 'function') onComplete(); }
+    });
+    box.addEventListener('paste', e => {
+      e.preventDefault();
+      clearAuthPopupError();
+      const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
+      if (!pasted) return;
+      pasted.split('').slice(0, boxes.length).forEach((d, i) => {
+        boxes[i].value = d;
+        playPop(boxes[i]);
+      });
+      const nextEmpty = boxes.findIndex(b => !b.value);
+      (boxes[nextEmpty] || boxes[boxes.length - 1]).focus();
+      checkAutoSubmit();
+    });
+  });
+}
+
+function getOtpBoxValue(groupId) {
+  const group = document.getElementById(groupId);
+  if (!group) return '';
+  return Array.from(group.querySelectorAll('.otp-box')).map(b => b.value).join('');
+}
+
+function clearOtpBoxGroup(groupId) {
+  const group = document.getElementById(groupId);
+  if (!group) return;
+  const boxes = Array.from(group.querySelectorAll('.otp-box'));
+  boxes.forEach(b => { b.value = ''; b.classList.remove('otp-box-filled'); });
+  if (boxes[0]) boxes[0].focus();
+}
+
+async function persistSession(name, email) {
+  try {
+    localStorage.setItem(AUTH_CONFIG.STORAGE_KEYS.NAME, name);
+    localStorage.setItem(AUTH_CONFIG.STORAGE_KEYS.EMAIL, email);
+  } catch {}
+  saveRecentAttempts([]);
+  setLockUntil(0);
+  closeAuthPopup();
+  await fetchOrders(false);
+}
+
+function resetGoogleButton() {
+  isSubmitting = false;
+  if (activeGoogleBtnId) {
+    setBtnLoading(activeGoogleBtnId, false, GOOGLE_BTN_ORIGINAL_HTML);
+    activeGoogleBtnId = null;
+  }
+}
+
+async function handleGoogleLoginResponse(googleAccessToken) {
+  clearTimeout(googlePromptTimeout);
+  toast('Google verified! Loading your orders...');
+  try {
+    if (!window.DeliveryBoy || !window.DeliveryBoy.googleLogin) {
+      showAuthPopupError('Google login service unavailable right now.');
+      return;
+    }
+    const result = await window.DeliveryBoy.googleLogin(googleAccessToken);
+    if (result && result.ok && result.data && result.data.success) {
+      toast('Signed in successfully!');
+      await persistSession(result.data.userName, result.data.email);
+    } else {
+      handleApiAuthError(result, 'Google login failed.');
+    }
+  } catch {
+    showAuthPopupError('Network error during Google sign-in. Please try again.');
+  } finally {
+    resetGoogleButton();
+  }
+}
+
+window.performGoogleLogin = function (triggerBtnId) {
+  if (!recordServerRequestAndCheckLimit()) return;
+  if (typeof google === 'undefined' || !google.accounts) {
+    showAuthPopupError('Google Sign-In service unable to load. Check your connection.');
+    return;
+  }
+  if (isSubmitting) return;
+  isSubmitting = true;
+  activeGoogleBtnId = triggerBtnId;
+  setBtnLoading(triggerBtnId, true, GOOGLE_BTN_ORIGINAL_HTML, {
+    loaderColor: 'text-rani-pink',
+    loadingLabel: 'Connecting...'
+  });
+  try {
+    const client = google.accounts.oauth2.initTokenClient({
+      client_id: AUTH_CONFIG.GOOGLE_CLIENT_ID,
+      scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+      callback: response => {
+        if (response && response.access_token) handleGoogleLoginResponse(response.access_token);
+      },
+      error_callback: error => {
+        resetGoogleButton();
+        if (error.type !== 'popup_closed' && error.type !== 'access_denied') {
+          showAuthPopupError('Google sign-in failed or was cancelled.');
+        }
+      }
+    });
+    client.requestAccessToken();
+    clearTimeout(googlePromptTimeout);
+    googlePromptTimeout = setTimeout(() => {
+      if (isSubmitting) {
+        resetGoogleButton();
+        showAuthPopupError('Google sign-in timed out. Please try again.');
+      }
+    }, AUTH_CONFIG.GOOGLE_PROMPT_TIMEOUT_MS);
+  } catch {
+    resetGoogleButton();
+    showAuthPopupError('Unable to initialize Google Sign-In.');
+  }
+};
+
+window.processSignup = async function () {
+  if (isSubmitting) return;
+  const name = (document.getElementById('signupName')?.value || '').trim();
+  const email = (document.getElementById('signupEmail')?.value || '').trim().toLowerCase();
+  const pwd = (document.getElementById('signupPassword')?.value || '').trim();
+  if (!name || !email || !pwd) return showAuthPopupError('All fields are required to create an account.', { groupId: 'signupInputGroup' });
+  if (name.length < 2) return showAuthPopupError('Please enter your valid full name.', { groupId: 'signupInputGroup' });
+  if (!EMAIL_PATTERN.test(email)) return showAuthPopupError('Please enter a valid email address.', { groupId: 'signupInputGroup' });
+  if (pwd.length < 6) return showAuthPopupError('Password must be at least 6 characters long.', { groupId: 'signupInputGroup' });
+  if (!recordServerRequestAndCheckLimit()) return;
+
+  if (!window.DeliveryBoy) {
+    showAuthPopupError('Unable to reach authentication server. Please try again.', { groupId: 'signupInputGroup' });
+    return;
+  }
+  const originalBtnHTML = '<span>Create Account</span><i data-lucide="arrow-right"></i>';
+  isSubmitting = true;
+  setBtnLoading('btnSignupAction', true, originalBtnHTML);
+  pendingSignup = { name, email, pwd };
+  try {
+    const result = await window.DeliveryBoy.sendOTP(email, name);
+    if (result && result.ok && result.data && result.data.success) {
+      toast('Verification code sent!');
+      if (document.getElementById('otpSubText')) document.getElementById('otpSubText').innerText = `Code sent to ${email}`;
+      clearOtpBoxGroup('otpBoxGroup');
+      window.switchView('otpView');
+    } else {
+      handleApiAuthError(result, 'Error sending verification code.', 'signupInputGroup');
+    }
+  } catch {
+    showAuthPopupError('Network error while contacting server.', { groupId: 'signupInputGroup' });
+  } finally {
+    setBtnLoading('btnSignupAction', false, originalBtnHTML);
+    isSubmitting = false;
+  }
+};
+
+window.resendSignupOTP = async function () {
+  if (!pendingSignup.email) {
+    showAuthPopupError('Please enter your email first.');
+    return;
+  }
+  if (!recordServerRequestAndCheckLimit()) return;
+  if (!window.DeliveryBoy) {
+    showAuthPopupError('OTP service unavailable right now.');
+    return;
+  }
+  try {
+    const result = await window.DeliveryBoy.sendOTP(pendingSignup.email, pendingSignup.name);
+    if (result && result.ok && result.data && result.data.success) {
+      toast('New OTP sent to your email!');
+    } else {
+      handleApiAuthError(result, 'Could not resend OTP. Please wait before trying again.');
+    }
+  } catch {
+    showAuthPopupError('Server busy. Please wait before resending OTP.');
+  }
+};
+
+window.verifySignupOTP = async function () {
+  if (isSubmitting) return;
+  const otpVal = getOtpBoxValue('otpBoxGroup');
+  if (otpVal.length !== 6) return showAuthPopupError('Please enter the complete 6-digit OTP code.', { groupId: 'otpBoxGroup' });
+  if (!recordServerRequestAndCheckLimit()) return;
+  if (!window.DeliveryBoy) return;
+  const originalBtnHTML = '<span>Verify &amp; Login</span><i data-lucide="check-circle"></i>';
+  isSubmitting = true;
+  setBtnLoading('btnOtpAction', true, originalBtnHTML);
+  try {
+    const result = await window.DeliveryBoy.verifyOTP(pendingSignup.email, otpVal, pendingSignup.name, pendingSignup.pwd);
+    if (result && result.ok && result.data && result.data.success) {
+      toast('Welcome to Aavira!');
+      await persistSession(pendingSignup.name, pendingSignup.email);
+    } else {
+      handleApiAuthError(result, 'Invalid or expired OTP code.', 'otpBoxGroup');
+    }
+  } catch {
+    showAuthPopupError('Verification failed. Please try again.', { groupId: 'otpBoxGroup' });
+  } finally {
+    setBtnLoading('btnOtpAction', false, originalBtnHTML);
+    isSubmitting = false;
+  }
+};
+
+window.processLogin = async function () {
+  if (isSubmitting) return;
+  const email = (document.getElementById('loginEmail')?.value || '').trim().toLowerCase();
+  const pwd = (document.getElementById('loginPassword')?.value || '').trim();
+  if (!email || !pwd) return showAuthPopupError('Please enter both your email and password.', { groupId: 'loginInputGroup' });
+  if (!recordServerRequestAndCheckLimit()) return;
+
+  if (!window.DeliveryBoy) {
+    showAuthPopupError('Invalid email or password, or server unreachable.', { groupId: 'loginInputGroup' });
+    return;
+  }
+  const originalBtnHTML = '<span>Log In</span><i data-lucide="arrow-right"></i>';
+  isSubmitting = true;
+  setBtnLoading('btnLoginAction', true, originalBtnHTML);
+  try {
+    const result = await window.DeliveryBoy.login(email, pwd);
+    if (result && result.ok && result.data && result.data.success) {
+      toast('Signed in successfully!');
+      await persistSession(result.data.userName || email.split('@')[0], email);
+    } else {
+      handleApiAuthError(result, 'Invalid email or password.', 'loginInputGroup');
+    }
+  } catch {
+    showAuthPopupError('Unable to reach server. Please try again shortly.', { groupId: 'loginInputGroup' });
+  } finally {
+    setBtnLoading('btnLoginAction', false, originalBtnHTML);
+    isSubmitting = false;
+  }
+};
+
+window.processForgotPassword = async function () {
+  const email = (document.getElementById('forgotEmail')?.value || '').trim().toLowerCase();
+  if (!EMAIL_PATTERN.test(email)) {
+    return showAuthPopupError('Please enter your registered email address.', { groupId: 'forgotInputGroup' });
+  }
+  if (!recordServerRequestAndCheckLimit()) return;
+  toast('Password reset instructions sent to ' + email);
+  setTimeout(() => switchView('loginView'), 900);
+};
+
 window.aaviraSessionExpired = () => {
-  $('#list').innerHTML = `<div class="empty"><div class="ico"><i data-lucide="lock"></i></div><h3>Session Expired</h3><p>Please log in again to view your orders.</p><a href="./" onclick="goToHomeLogin();return false">Go to Login</a></div>`;
+  try { if (typeof window.clearAaviraSession === 'function') window.clearAaviraSession(); } catch (e) {}
+  ['authToken', 'aavira_token', 'aavira_user_email', 'aavira_display_name'].forEach(k => localStorage.removeItem(k));
+  $('#list').innerHTML = `<div class="empty"><div class="ico"><i data-lucide="lock"></i></div><h3>Session Expired</h3><p>Please log in again to view and manage your orders.</p><div class="empty-actions"><button type="button" class="emp-btn" onclick="openAuthPopup('login')">Log In</button><button type="button" class="emp-btn outline" onclick="openAuthPopup('signup')">Sign Up</button></div></div>` + footer();
   icons();
   toast('Session expired. Please log in again.', 'err');
-  try { if (typeof window.clearAaviraSession === 'function') window.clearAaviraSession(); } catch (e) {}
-  setTimeout(() => {
-    ['authToken', 'aavira_token', 'aavira_user_email', 'aavira_display_name'].forEach(k => localStorage.removeItem(k));
-    window.goToHomeLogin();
-  }, 2500);
+  openAuthPopup('login');
 };
 
 let loading = false;
@@ -1226,13 +1928,13 @@ const fetchOrders = async (silent = false) => {
   if (loading) return;
   loading = true;
   const email = session();
-  const guestId = ''; // guest orders are tracked on /track/order, never here
+  const guestId = '';
   if (!silent) $('#list').innerHTML = '<div class="skel"></div><div class="skel"></div>';
   if (!email) {
     S.orders = [];
-    $('#sub').textContent = 'Login to see all your orders';
+    $('#sub').textContent = 'Sign in to view & track your orders';
     drawTabs();
-    $('#list').innerHTML = `<div class="empty"><div class="ico"><i data-lucide="lock"></i></div><h3>Login to see your orders</h3><p>Orders placed while logged in appear here.<br>Placed an order without login? Use the tracking link you received.</p><a href="./" onclick="goToHomeLogin();return false">Login</a></div>` + footer();
+    $('#list').innerHTML = `<div class="empty"><div class="ico"><i data-lucide="lock"></i></div><h3>Sign in to view your orders</h3><p>Log in or create an account right here to track your live deliveries, download invoices, and manage your orders.</p><div class="empty-actions"><button type="button" class="emp-btn" onclick="openAuthPopup('login')">Log In</button><button type="button" class="emp-btn outline" onclick="openAuthPopup('signup')">Sign Up</button></div></div>` + footer();
     icons();
     loading = false;
     return;
@@ -1245,7 +1947,6 @@ const fetchOrders = async (silent = false) => {
     if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
     if (guestId && orderToken) headers['X-Order-Token'] = orderToken;
     const res = await fetch(url, { headers });
-    // log out ONLY when the server says the login token is invalid (401); server/config errors must not log anyone out
     if (res.status === 401) { loading = false; window.aaviraSessionExpired(); return; }
     if (!res.ok) throw new Error('server error ' + res.status);
     const json = await res.json();
@@ -1330,8 +2031,10 @@ const miniTrack = st => {
   if (st === 'Cancelled') return `<div class="mt bad"><div class="mt-line"><i style="width:100%"></i></div><div class="mt-lbl"><span>Order cancelled</span></div></div>`;
   const idx = Math.max(0, STEPS.indexOf(st));
   const pct = idx / (STEPS.length - 1) * 100;
-  return `<div class="mt"><div class="mt-line"><i style="width:${pct}%"></i>${STEPS.map((s, i) => `<b class="${i <= idx ? 'on' : ''}" style="left:${i / (STEPS.length - 1) * 100}%"></b>`).join('')}</div>
-    <div class="mt-lbl"><span>Placed</span><strong>${STEP_LABEL[idx]}</strong><span>Delivered</span></div></div>`;
+  const isGreenState = st === 'Out for Delivery' || st === 'Delivered';
+  const grCls = isGreenState ? ' is-green' : '';
+  return `<div class="mt"><div class="mt-line"><i class="${grCls.trim()}" style="width:${pct}%"></i>${STEPS.map((s, i) => `<b class="${i <= idx ? 'on' + grCls : ''}" style="left:${i / (STEPS.length - 1) * 100}%"></b>`).join('')}</div>
+    <div class="mt-lbl"><span>Placed</span><strong class="${grCls.trim()}">${STEP_LABEL[idx]}</strong><span>Delivered</span></div></div>`;
 };
 
 const draw = () => {
@@ -1353,7 +2056,8 @@ const draw = () => {
     let bot = eta ? `<span><i data-lucide="truck"></i>${cd || eta}</span>` : `<span><i data-lucide="clock"></i>Delivery update soon</span>`;
     if (st === 'Delivered') bot = '<span style="color:var(--green)"><i data-lucide="circle-check"></i>Delivered</span>';
     if (st === 'Cancelled') bot = '<span><i data-lucide="circle-x"></i>Cancelled</span>';
-    if (st === 'Out for Delivery') bot = `<span style="color:#E11D48"><i data-lucide="truck"></i>${cd || eta || 'Out for delivery'}</span>`;
+    /* Out for Delivery is GREEN (never red!) */
+    if (st === 'Out for Delivery') bot = `<span style="color:var(--green);font-weight:700"><i data-lucide="truck"></i>${cd || eta || 'Out for delivery'}</span>`;
     return `<article class="card oc" style="animation-delay:${Math.min(i * .05, .25)}s" data-id="${esc(rawId(o))}" tabindex="0" role="button" aria-label="Track order ${esc(oid(o))}">
       <div class="oc-head"><div><div class="lbl">Order</div><div class="oid">${esc(oid(o))}</div></div><span class="badge b-${st.replace(/ /g, '')}">${st}</span></div>
       <div class="oc-body">
@@ -1376,7 +2080,7 @@ const HERO = {
   'Processing': ['Order received', "We've received your order and are getting it ready."],
   'Confirmed': ['Order confirmed', 'Your order is confirmed and being prepared.'],
   'Shipped': ['On its way', 'Your order has been shipped.'],
-  'Out for Delivery': ['Out for delivery', 'Your order is with the delivery partner.'],
+  'Out for Delivery': ['Out for delivery', 'Your order is out for delivery with our courier partner.'],
   'Delivered': ['Delivered', 'Your order has been delivered. We hope you love it.'],
   'Cancelled': ['Order cancelled', 'This order has been cancelled.']
 };
@@ -1405,12 +2109,14 @@ const renderDv = (o, keepScroll) => {
   const total = toSafeNumber(o.totalAmount || o.total || 0);
   const live = st === 'Shipped' || st === 'Out for Delivery';
   const hero = HERO[st] || HERO['Processing'];
-  const heroCls = st === 'Delivered' ? 'ok' : st === 'Cancelled' ? 'no' : '';
+  /* Both Delivered and Out for Delivery use green hero styling */
+  const heroCls = (st === 'Delivered' || st === 'Out for Delivery') ? 'ok' : st === 'Cancelled' ? 'no' : '';
   let etaPill = '';
-  if (st !== 'Delivered' && st !== 'Cancelled') etaPill = `<div class="eta-pill"><i data-lucide="calendar-check"></i><span>${eta ? `Expected <b>${eta}</b>${cd ? ` · ${cd}` : ''}` : 'Delivery date will be updated soon'}</span></div>`;
+  if (st !== 'Delivered' && st !== 'Cancelled') etaPill = `<div class="eta-pill"><i data-lucide="calendar-check"></i><span>${eta ? `Expected <b>${eta}</b>${cd ? ` · ${cd}` : ''}` : (st === 'Out for Delivery' ? 'Arriving today · Out for delivery' : 'Delivery date will be updated soon')}</span></div>`;
   if (st === 'Delivered') { const t = stepTime(o, 'Delivered'); if (t) etaPill = `<div class="eta-pill"><i data-lucide="circle-check"></i><span>Delivered on <b>${t}</b></span></div>`; }
+  const liveLabel = st === 'Out for Delivery' ? 'Out for delivery' : 'On the way';
   const heroHtml = `<div class="hero ${heroCls}">
-    <div class="hero-top"><div><div class="lbl">Order</div><div class="oid idrow">${esc(oid(o))}<button type="button" class="idcp" onclick="copyTxt(rawId(S.cur),'Order ID copied')" aria-label="Copy order ID"><i data-lucide="copy"></i></button></div></div>${live ? '<span class="pill-live"><i></i>On the way</span>' : `<span class="badge b-${st.replace(/ /g, '')}" style="background:rgba(255,255,255,.14);color:#fff">${st}</span>`}</div>
+    <div class="hero-top"><div><div class="lbl">Order</div><div class="oid idrow">${esc(oid(o))}<button type="button" class="idcp" onclick="copyTxt(rawId(S.cur),'Order ID copied')" aria-label="Copy order ID"><i data-lucide="copy"></i></button></div></div>${live ? `<span class="pill-live"><i></i>${liveLabel}</span>` : `<span class="badge b-${st.replace(/ /g, '')}" style="background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.22)">${st}</span>`}</div>
     <h3>${hero[0]}</h3><p class="sub">${hero[1]}</p>${etaPill}${stepper(st)}<p class="placed">Placed on ${d ? fdt(d) : '-'}</p></div>`;
 
   const c = courier(o);
@@ -1529,14 +2235,14 @@ const closeInv = () => $('#inv').classList.remove('on');
 
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
-    if ($('#inv').classList.contains('on')) closeInv();
+    if ($('#authPopupModal')?.classList.contains('is-open')) closeAuthPopup();
+    else if ($('#inv').classList.contains('on')) closeInv();
     else if ($('#dv').classList.contains('on')) closeDetailView();
   }
 });
 
-/* Loading spinner on action buttons (280ms).
-   Buttons that open WhatsApp / share / copy / print run immediately so mobile browsers allow the user gesture. */
-const SPIN_SEL = '.ib.back,.btn,.qa button,.cpy,.cp,.idcp,.foot .links button,.foot .links a,.empty a';
+/* Loading spinner on action buttons (280ms). */
+const SPIN_SEL = '.ib.back,.btn,.qa button,.cpy,.cp,.idcp,.foot .links button,.foot .links a,.empty a,.emp-btn';
 const SPIN_MS = 280;
 document.addEventListener('click', e => {
   const el = e.target.closest(SPIN_SEL);
@@ -1544,7 +2250,7 @@ document.addEventListener('click', e => {
   if (el.__go) { el.__go = false; return; }
   if (el.classList.contains('is-busy')) { e.preventDefault(); e.stopImmediatePropagation(); return; }
   const oc = el.getAttribute('onclick') || '';
-  const now = /supportWA|cancelWA|payWA|wa\(|window\.open|window\.print|shareOrder|copyTxt/.test(oc);
+  const now = /supportWA|cancelWA|payWA|wa\(|window\.open|window\.print|shareOrder|copyTxt|openAuthPopup/.test(oc);
   el.classList.add('is-busy');
   setTimeout(() => el.classList.remove('is-busy'), SPIN_MS);
   if (now) return;
@@ -1554,10 +2260,10 @@ document.addEventListener('click', e => {
 }, true);
 window.addEventListener('pageshow', () => document.querySelectorAll('.is-busy').forEach(el => el.classList.remove('is-busy')));
 
+setupOtpBoxGroup('otpBoxGroup', window.verifySignupOTP);
 icons();
 document.querySelectorAll('[data-brand]').forEach(el => { el.innerHTML = brandHtml(); });
 const ready = () => $('.app').classList.remove('is-loading');
-// keep the skeleton on screen for at least 0.6s so it never flashes
 Promise.all([fetchOrders(), new Promise(r => setTimeout(r, 600))]).then(ready, ready);
 drawTabs();
 </script>
