@@ -10,36 +10,38 @@
 <meta name="color-scheme" content="light">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
 <style>
 :root{
   color-scheme:light;
-  --rani:#111113;
-  --rani-dark:#000000;
-  --rani-tint:#F2F2F7;
-  --gold:#D4AF37;
-  --gold-deep:#111113;
-  --gold-text:#8A6D1D;
-  --gold-soft:#F8F8FA;
-  --ivory:#FFFFFF;
-  --cream:#F8F8FA;
-  --ink:#111113;
+  --rani:#1F3A34;
+  --rani-dark:#13241F;
+  --rani-tint:#EAF1ED;
+  --gold:#AD8A3D;
+  --gold-deep:#1F3A34;
+  --gold-text:#7A5E22;
+  --gold-soft:#F8F6F0;
+  --ivory:#FBFAF6;
+  --cream:#F6F4EE;
+  --ink:#1C1C1E;
   --mid:#4A4F55;
   --muted:#6E6E73;
-  --line:#E5E5EA;
-  --blush:#F2F2F7;
-  --plum:#111113;
-  --plum2:#1C1C1E;
+  --line:#E7E4DB;
+  --blush:#EAF1ED;
+  --plum:#1F3A34;
+  --plum2:#16281F;
   --green:#15803D;
   --danger:#DC2626;
   --amber:#B45309;
+  --ink-grad:linear-gradient(135deg,#24342D,#0D1712);
+  --gold-grad:linear-gradient(135deg,#C9A857,#9E7B30);
   --ease:cubic-bezier(.22,1,.36,1);
   --ios-spring:cubic-bezier(.32,.72,0,1);
   --font-main:"Barlow Condensed","Roboto Condensed",system-ui,sans-serif;
 }
 *{-webkit-tap-highlight-color:transparent;box-sizing:border-box;margin:0;padding:0}
-html,body{overflow-x:clip;-webkit-text-size-adjust:100%;text-size-adjust:100%;background:#FFFFFF!important}
+html,body{overflow-x:clip;-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--ivory)!important}
 body{
   margin:0;
   font-family:var(--font-main);
@@ -61,7 +63,7 @@ img{display:block;max-width:100%}
 .app{
   max-width:420px;
   margin:0 auto;
-  background:#FFFFFF;
+  background:var(--ivory);
   display:flex;
   flex-direction:column;
   min-height:100dvh;
@@ -69,8 +71,8 @@ img{display:block;max-width:100%}
   overflow-x:clip;
 }
 @media(min-width:640px){
-  body{background:#F5F5F7!important}
-  .app{box-shadow:0 0 50px rgba(0,0,0,.06);border-inline:1px solid #EBEBEF}
+  body{background:#EFECE3!important}
+  .app{box-shadow:0 0 50px rgba(31,58,52,.08);border-inline:1px solid var(--line)}
 }
 
 /* Compact & Bold Loading Spinner State */
@@ -99,14 +101,14 @@ img{display:block;max-width:100%}
   position:sticky;
   top:0;
   z-index:40;
-  background:rgba(255,255,255,.96);
+  background:rgba(251,250,246,.96);
   backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px);
   border-bottom:1px solid var(--line);
   padding-top:env(safe-area-inset-top,0px);
   transition:box-shadow .2s;
 }
-.top.scrolled{box-shadow:0 6px 20px rgba(0,0,0,.05)}
+.top.scrolled{box-shadow:0 6px 20px rgba(31,58,52,.06)}
 .top-row{min-height:54px;display:flex;align-items:center;gap:8px;padding:7px 10px}
 .icon-btn,
 .back-btn{
@@ -114,8 +116,8 @@ img{display:block;max-width:100%}
   height:36px;
   flex:0 0 36px;
   border-radius:50%;
-  border:1px solid #EBEBEF;
-  background:#F8F8FA;
+  border:1px solid var(--line);
+  background:var(--cream);
   color:var(--ink);
   display:inline-flex;
   align-items:center;
@@ -125,7 +127,7 @@ img{display:block;max-width:100%}
   cursor:pointer;
 }
 @media(hover:hover){
-  .icon-btn:hover,.back-btn:hover{background:#EFEFF4;border-color:#D4D4D8}
+  .icon-btn:hover,.back-btn:hover{background:var(--blush);border-color:var(--rani)}
 }
 .icon-btn:active,.back-btn:active{transform:scale(.92)}
 .icon-btn svg,.back-btn svg{width:17.5px;height:17.5px;stroke-width:1.85}
@@ -148,7 +150,7 @@ img{display:block;max-width:100%}
   height:16px;
   padding:0 4px;
   border-radius:999px;
-  background:#000000;
+  background:var(--rani);
   color:#fff;
   font-size:10px;
   font-weight:700;
@@ -170,7 +172,7 @@ img{display:block;max-width:100%}
   height:20px;
   flex:0 0 20px;
   border-radius:6px;
-  border:1px solid rgba(17,17,19,.18);
+  border:1px solid rgba(31,58,52,.22);
 }
 .head-titles{min-width:0;flex:1}
 .head-title{
@@ -190,8 +192,8 @@ img{display:block;max-width:100%}
   height:32px;
   padding:0 12px;
   border-radius:999px;
-  border:1px solid #E5E5EA;
-  background:#F8F8FA;
+  border:1px solid var(--line);
+  background:var(--cream);
   color:var(--ink);
   font-size:12.5px;
   font-weight:700;
@@ -220,7 +222,7 @@ img{display:block;max-width:100%}
   width:34px;
   height:34px;
   border-radius:9px;
-  border:1.5px solid rgba(17,17,19,.15);
+  border:1.5px solid rgba(31,58,52,.14);
   padding:0;
   cursor:pointer;
   transition:transform .15s var(--ease),box-shadow .15s,border-color .15s;
@@ -229,9 +231,9 @@ img{display:block;max-width:100%}
 .s-pill.is-light{border-color:#D0D0D8}
 .s-pill:active{transform:scale(.92)}
 .s-pill.is-on{
-  border:2.5px solid #111113;
+  border:2.5px solid var(--rani);
   transform:scale(1.08);
-  box-shadow:0 4px 10px rgba(0,0,0,.22);
+  box-shadow:0 4px 10px rgba(31,58,52,.22);
 }
 .s-pill.is-on::after{
   content:"";
@@ -245,7 +247,7 @@ img{display:block;max-width:100%}
   box-shadow:0 1px 4px rgba(0,0,0,.45);
 }
 .s-pill.is-light.is-on::after{
-  background:#111113;
+  background:var(--rani);
   box-shadow:none;
 }
 
@@ -264,7 +266,7 @@ img{display:block;max-width:100%}
   height:32px;
   border:1px solid var(--line);
   border-radius:999px;
-  background:#FFFFFF;
+  background:var(--ivory);
   padding:0 11px;
   font-size:13px;
   font-weight:600;
@@ -284,7 +286,7 @@ img{display:block;max-width:100%}
   height:32px;
   border:1px solid var(--line);
   border-radius:999px;
-  background:#FFFFFF;
+  background:var(--ivory);
   padding:0 12px;
   font-size:13px;
   font-weight:600;
@@ -297,11 +299,11 @@ img{display:block;max-width:100%}
   gap:5px;
 }
 .chip.is-on{
-  background:linear-gradient(135deg,#242429,#0a0a0c);
+  background:var(--ink-grad);
   border-color:transparent;
   color:#FFFFFF;
   font-weight:700;
-  box-shadow:0 6px 14px -4px rgba(0,0,0,.35);
+  box-shadow:0 6px 14px -4px rgba(31,58,52,.4);
 }
 .chip:active{transform:scale(.96)}
 .chip svg{width:12.5px;height:12.5px}
@@ -319,13 +321,13 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
   position:relative;
   width:100%;
   aspect-ratio:1.12/1;
-  border-radius:12px;
-  border:1px solid rgba(17,17,19,.12);
+  border-radius:10px;
+  border:1px solid rgba(31,58,52,.12);
   padding:0;
   cursor:pointer;
   overflow:hidden;
   display:block;
-  box-shadow:0 2px 6px rgba(0,0,0,.06);
+  box-shadow:0 2px 6px rgba(31,58,52,.07);
   transition:transform .16s var(--ease),box-shadow .18s,border-color .18s;
   opacity:0;
   transform:translateY(6px);
@@ -338,8 +340,8 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
 @media(hover:hover){
   .swatch-card:hover{
     transform:scale(1.02);
-    box-shadow:0 8px 18px -6px rgba(0,0,0,.22);
-    border-color:#111113;
+    box-shadow:0 8px 18px -6px rgba(31,58,52,.25);
+    border-color:var(--rani);
   }
 }
 .swatch-card:active{
@@ -359,10 +361,10 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
 }
 .res-count b{color:var(--ink);font-weight:700}
 .clear-link{
-  background:rgba(212,175,55,.12);
-  border:1px solid rgba(212,175,55,.32);
+  background:var(--gold-soft);
+  border:1px solid rgba(173,138,61,.4);
   border-radius:999px;
-  color:#8A6D1D;
+  color:var(--gold-text);
   font-family:var(--font-main);
   font-size:12px;
   font-weight:700;
@@ -383,24 +385,24 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
 .pcard{
   position:relative;
   min-width:0;
-  background:#FFFFFF;
-  border:1px solid #EBEBEF;
-  border-radius:0!important;
+  background:var(--ivory);
+  border:1px solid var(--line);
+  border-radius:4px!important;
   overflow:hidden;
   padding-bottom:9px;
-  box-shadow:none!important;
+  box-shadow:0 1px 3px rgba(31,58,52,.04)!important;
   display:flex;
   flex-direction:column;
   opacity:0;
   transform:translateY(8px);
   animation:resultIn .28s var(--ease) forwards;
   animation-delay:calc(var(--i,0) * 35ms);
-  transition:border-color .22s var(--ease),transform .28s var(--ease),opacity .28s ease;
+  transition:border-color .22s var(--ease),box-shadow .22s var(--ease),transform .28s var(--ease),opacity .28s ease;
 }
 @media(hover:hover){
   .pcard:hover{
-    box-shadow:none!important;
-    border-color:#111113;
+    box-shadow:0 10px 22px -10px rgba(31,58,52,.28)!important;
+    border-color:var(--rani);
   }
 }
 .pcard.out-stock .pcard-media img{opacity:.76}
@@ -411,7 +413,7 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
   width:100%;
   aspect-ratio:1/1;
   border-radius:0!important;
-  background:#F4F4F6;
+  background:var(--cream);
   overflow:hidden;
 }
 .pcard-media img{
@@ -437,8 +439,8 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
   pointer-events:none;
 }
 .tag-best{
-  background:#DEC276;
-  color:#111113;
+  background:var(--gold-grad);
+  color:#FFFFFF;
   font-size:10.5px;
   font-weight:700;
   letter-spacing:.08em;
@@ -449,7 +451,7 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
   white-space:nowrap;
 }
 .tag-drop{
-  background:#15803D;
+  background:var(--rani);
   color:#FFFFFF;
   font-size:10px;
   font-weight:700;
@@ -507,7 +509,6 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
 .color-strip{
   display:inline-flex;
   align-items:center;
-  gap:4px;
   padding:2.5px 10px 2.5px 8px;
   border-radius:999px;
   background:linear-gradient(90deg,#EFEAE1 0%,rgba(239,234,225,.78) 62%,rgba(239,234,225,.08) 100%);
@@ -518,17 +519,10 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
   text-transform:uppercase;
   line-height:1;
   white-space:nowrap;
-  box-shadow:-2px 3px 8px -2px rgba(0,0,0,.13),inset 1.5px 0 0 rgba(212,175,55,.65);
+  box-shadow:-2px 3px 8px -2px rgba(31,58,52,.13),inset 1.5px 0 0 rgba(173,138,61,.65);
   -webkit-mask-image:linear-gradient(90deg,#000 72%,rgba(0,0,0,.38) 100%);
   mask-image:linear-gradient(90deg,#000 72%,rgba(0,0,0,.38) 100%);
   flex-shrink:0;
-}
-.color-strip .cs-dot{
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  border:1px solid rgba(0,0,0,.2);
-  flex:0 0 8px;
 }
 .pcard-row{display:flex;align-items:center;justify-content:space-between;gap:5px;margin-top:5px;min-width:0;width:100%}
 .pcard-metalink{display:flex;align-items:center;gap:5px;min-width:0;flex:1;overflow:hidden;cursor:pointer}
@@ -539,10 +533,10 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
   width:28px;
   height:28px;
   padding:0;
-  border:1px solid #E5E5EA;
+  border:1px solid var(--line);
   border-radius:50%;
-  background:#FAFAFC;
-  color:#111113;
+  background:var(--cream);
+  color:var(--rani);
   display:inline-flex;
   align-items:center;
   justify-content:center;
@@ -550,7 +544,7 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
   cursor:pointer;
   transition:transform .2s var(--ease),background .2s,color .2s,border-color .2s;
 }
-@media(hover:hover){.go:hover{background:#111113;border-color:#111113;color:#fff}}
+@media(hover:hover){.go:hover{background:var(--rani);border-color:var(--rani);color:#fff}}
 .go:active{transform:scale(.9)}
 .go svg{width:14px;height:14px;stroke-width:2.2}
 
@@ -592,9 +586,9 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
 @keyframes shimmer{0%{background-position:100% 0}100%{background-position:0 0}}
 .skel-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 6px;margin-inline:-2px}
 .skel-card{
-  background:#FFFFFF;
-  border:1px solid #EBEBEF;
-  border-radius:0;
+  background:var(--ivory);
+  border:1px solid var(--line);
+  border-radius:4px;
   overflow:hidden;
   opacity:0;
   animation:resultIn .28s var(--ease) forwards;
@@ -616,18 +610,18 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
 }
 
 /* Empty State */
-.empty{text-align:center;padding:38px 18px;color:var(--muted);background:#FFFFFF;border:1px solid #EBEBEF;border-radius:16px}
+.empty{text-align:center;padding:38px 18px;color:var(--muted);background:var(--ivory);border:1px solid var(--line);border-radius:14px}
 .empty .e-ic{
   width:56px;
   height:56px;
   border-radius:14px;
-  border:1.5px solid rgba(17,17,19,.15);
+  border:1.5px solid rgba(31,58,52,.16);
   display:inline-flex;
   align-items:center;
   justify-content:center;
   margin-bottom:10px;
 }
-.empty b{display:block;color:var(--ink);font-size:20px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;margin-bottom:4px}
+.empty b{display:block;color:var(--ink);font-family:var(--font-main);font-size:20px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;margin-bottom:4px}
 .empty p{font-size:14px;line-height:1.45;margin:0 auto 14px;max-width:250px}
 .empty-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
 
@@ -644,12 +638,12 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
   display:flex;
   align-items:center;
   gap:9px;
-  background:linear-gradient(135deg,#1C1C1E,#0B0B0D);
+  background:var(--ink-grad);
   color:#FFFFFF;
-  border:1.5px solid rgba(212,175,55,.65);
+  border:1.5px solid rgba(173,138,61,.65);
   border-radius:999px;
   padding:6px 7px 6px 9px;
-  box-shadow:0 16px 34px -10px rgba(0,0,0,.38);
+  box-shadow:0 16px 34px -10px rgba(13,23,18,.5);
   cursor:pointer;
 }
 .cart-bar[hidden]{display:none!important}
@@ -687,8 +681,8 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
   font-weight:700;
   letter-spacing:.04em;
   text-transform:uppercase;
-  color:#111113;
-  background:linear-gradient(135deg,#E5C158,#C9A227);
+  color:#1C1C1E;
+  background:linear-gradient(135deg,#D9BC74,#AD8A3D);
   border-radius:999px;
 }
 .cb-go svg{width:13px;height:13px;stroke-width:2.3}
@@ -710,14 +704,14 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
 .scrim.show{opacity:1;pointer-events:auto}
 .scrim[hidden]{display:none!important}
 .sheet{
-  background:#FFFFFF;
-  border-top:1px solid #E5E5EA;
-  border-radius:24px 24px 0 0;
+  background:var(--ivory);
+  border-top:1px solid var(--line);
+  border-radius:20px 20px 0 0;
   padding:10px 18px calc(22px + env(safe-area-inset-bottom,0px));
   width:100%;
   max-width:420px;
   margin:0 auto;
-  box-shadow:0 -20px 50px rgba(0,0,0,.18);
+  box-shadow:0 -20px 50px rgba(31,58,52,.16);
   transform:translateY(102%);
   transition:transform .3s var(--ease);
   max-height:78dvh;
@@ -771,15 +765,15 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
 .sqa-sheet{
   width:100%;
   max-width:420px;
-  background:#FFFFFF;
-  border-top:1px solid #E5E5EA;
-  border-radius:26px 26px 0 0;
+  background:var(--ivory);
+  border-top:1px solid var(--line);
+  border-radius:22px 22px 0 0;
   padding:12px 16px calc(18px + env(safe-area-inset-bottom,0px));
   position:relative;
   max-height:92dvh;
   overflow-y:auto;
   animation:sqaUp .28s var(--ease);
-  box-shadow:0 -20px 50px rgba(0,0,0,.18);
+  box-shadow:0 -20px 50px rgba(31,58,52,.16);
 }
 @keyframes sqaUp{from{transform:translateY(40px);opacity:0}}
 .sqa-grab{width:42px;height:4px;border-radius:999px;background:#D9D9DE;margin:0 auto 12px}
@@ -789,16 +783,16 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
   width:110px;
   height:110px;
   flex:0 0 110px;
-  border-radius:12px;
+  border-radius:10px;
   overflow:hidden;
-  background:#F4F4F6;
+  background:var(--cream);
   border:1px solid var(--line);
 }
 .sqa-media.is-switching::after{
   content:"";
   position:absolute;
   inset:0;
-  background:linear-gradient(108deg,rgba(244,244,246,.85) 20%,rgba(255,255,255,.98) 42%,rgba(17,17,19,.14) 50%,rgba(255,255,255,.98) 58%,rgba(244,244,246,.85) 80%);
+  background:linear-gradient(108deg,rgba(244,244,246,.85) 20%,rgba(255,255,255,.98) 42%,rgba(31,58,52,.14) 50%,rgba(255,255,255,.98) 58%,rgba(244,244,246,.85) 80%);
   background-size:220% 100%;
   animation:sqaShimmer .68s linear infinite;
   z-index:3;
@@ -825,7 +819,7 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
   flex:0 0 30px;
   border-radius:50%;
   border:1px solid var(--line);
-  background:#F8F8FA;
+  background:var(--cream);
   display:inline-flex;
   align-items:center;
   justify-content:center;
@@ -837,7 +831,7 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
 .sqa-price-row{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px;margin-top:2px}
 .sqa-price{font-size:19px;font-weight:700;color:var(--rani)}
 .sqa-mrp{font-size:13px;color:#7D828A;text-decoration:line-through;font-weight:500}
-.sqa-lowest{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.02em;color:#7C3AED}
+.sqa-lowest{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.02em;color:var(--gold-text)}
 .sqa-badges{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:2px}
 .sqa-sku{font-size:12px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--muted)}
 .sqa-shead{
@@ -868,7 +862,7 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
   transition:transform .2s,border-color .2s;
 }
 .sqa-sw img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:50%;display:block}
-.sqa-sw.on{border-color:#111113;transform:scale(1.06);box-shadow:0 3px 8px rgba(0,0,0,.15)}
+.sqa-sw.on{border-color:var(--rani);transform:scale(1.06);box-shadow:0 3px 8px rgba(31,58,52,.2)}
 .sqa-sizes{display:flex;gap:7px;flex-wrap:wrap}
 .sqa-sz{
   min-width:42px;
@@ -888,11 +882,11 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
 }
 .sqa-sz:active{transform:scale(.95)}
 .sqa-sz.on{
-  background:linear-gradient(135deg,#242429,#0a0a0c);
+  background:var(--ink-grad);
   color:#fff;
   border-color:transparent;
   font-weight:700;
-  box-shadow:0 5px 12px -3px rgba(0,0,0,.35);
+  box-shadow:0 5px 12px -3px rgba(13,23,18,.4);
 }
 @keyframes shake{0%,100%{transform:translateX(0)}25%,75%{transform:translateX(-4px)}50%{transform:translateX(4px)}}
 .sqa-sizes.shake{animation:shake .35s}
@@ -902,7 +896,7 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
   display:inline-flex;
   align-items:center;
   gap:4px;
-  background:#F8F8FA;
+  background:var(--cream);
   border:1.5px solid var(--line);
   border-radius:999px;
   padding:3px 4px;
@@ -923,7 +917,7 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
   justify-content:center;
 }
 .qty-btn:active{transform:scale(.9)}
-.qty-btn.plus{background:linear-gradient(135deg,#242429,#000000);color:#fff;border-color:#000}
+.qty-btn.plus{background:var(--ink-grad);color:#fff;border-color:var(--rani-dark)}
 .qty-btn.plus::before{
   content:"";
   position:absolute;
@@ -939,7 +933,7 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
   grid-column:1/-1;
   width:100%;
   min-height:44px;
-  background:linear-gradient(135deg,#242429,#000);
+  background:var(--ink-grad);
   color:#fff;
   border:0;
   border-radius:999px;
@@ -953,7 +947,7 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
   justify-content:center;
   gap:8px;
   cursor:pointer;
-  box-shadow:0 10px 22px -8px rgba(0,0,0,.45);
+  box-shadow:0 10px 22px -8px rgba(13,23,18,.5);
 }
 .sqa-add:active{transform:scale(.98)}
 .sqa-add:disabled{opacity:.5;cursor:not-allowed}
@@ -1006,25 +1000,25 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
   max-width:420px;
   max-height:88dvh;
   overflow-y:auto;
-  background:#FFFFFF;
-  border-radius:26px 26px 0 0;
+  background:var(--ivory);
+  border-radius:22px 22px 0 0;
   padding:16px 16px calc(22px + env(safe-area-inset-bottom,0px));
-  border-top:1px solid #E5E5EA;
-  box-shadow:0 -20px 50px rgba(0,0,0,.18);
+  border-top:1px solid var(--line);
+  box-shadow:0 -20px 50px rgba(31,58,52,.16);
   animation:sqaUp .28s var(--ease);
 }
-.cd-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:12px;border-bottom:1px solid #EBEBEF;margin-bottom:12px}
+.cd-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:12px;border-bottom:1px solid var(--line);margin-bottom:12px}
 .cd-title-wrap{display:flex;align-items:center;gap:10px}
 .cd-bag-ic{
   width:38px;
   height:38px;
   border-radius:50%;
-  background:#F8F8FA;
-  color:var(--ink);
+  background:var(--cream);
+  color:var(--rani);
   display:flex;
   align-items:center;
   justify-content:center;
-  border:1px solid #E5E5EA;
+  border:1px solid var(--line);
 }
 .cd-bag-ic svg{width:18px;height:18px;stroke-width:2}
 .cd-title-wrap h3{font-family:var(--font-main);font-size:19px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;margin:0}
@@ -1034,43 +1028,43 @@ main{flex:1;padding:10px 10px calc(86px + env(safe-area-inset-bottom,0px))}
   display:flex;
   align-items:center;
   gap:11px;
-  background:#FFFFFF;
-  border:1px solid #EBEBEF;
-  border-radius:14px;
+  background:var(--ivory);
+  border:1px solid var(--line);
+  border-radius:12px;
   padding:10px;
 }
-.cd-img{width:60px;height:60px;flex:0 0 60px;border-radius:0;object-fit:cover;background:#F4F4F6;border:1px solid #EBEBEF}
+.cd-img{width:60px;height:60px;flex:0 0 60px;border-radius:4px;object-fit:cover;background:var(--cream);border:1px solid var(--line)}
 .cd-info{flex:1;min-width:0}
 .cd-name{font-size:15px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
 .cd-meta{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:5px}
-.cd-chip{font-size:11.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:#F8F8FA;color:var(--ink);border:1px solid #E5E5EA}
+.cd-chip{font-size:11.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--cream);color:var(--ink);border:1px solid var(--line)}
 .cd-price{font-size:15px;font-weight:700;color:var(--ink)}
 .cd-ctrl{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 .cd-del{width:26px;height:26px;border:0;border-radius:50%;background:#FEF2F2;color:var(--danger);display:inline-flex;align-items:center;justify-content:center}
 .cd-del svg{width:13px;height:13px;stroke-width:2.2}
-.cd-qty{display:inline-flex;align-items:center;background:#F8F8FA;border:1px solid #E5E5EA;border-radius:999px;padding:2px}
+.cd-qty{display:inline-flex;align-items:center;background:var(--cream);border:1px solid var(--line);border-radius:999px;padding:2px}
 .cd-qbtn{width:25px;height:25px;border:0;border-radius:50%;background:#fff;color:var(--ink);font-weight:700;font-size:14px;display:inline-flex;align-items:center;justify-content:center}
 .cd-qbtn.plus{background:var(--rani);color:#fff}
 .cd-qval{min-width:22px;text-align:center;font-size:13px;font-weight:700;color:var(--ink)}
 .cd-sum{
   margin-top:14px;
   padding:12px 14px;
-  border-radius:14px;
-  background:#F8F8FA;
-  border:1px dashed #D4D4D8;
+  border-radius:12px;
+  background:var(--blush);
+  border:1px dashed rgba(31,58,52,.3);
   display:flex;
   justify-content:space-between;
   align-items:center;
 }
 .cd-sum span{font-size:13.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--muted)}
-.cd-sum b{font-size:18px;font-weight:700;color:var(--ink)}
+.cd-sum b{font-size:18px;font-weight:700;color:var(--rani)}
 .cd-actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:12px}
 .cd-checkout{
   width:100%;
   min-height:44px;
   border:0;
   border-radius:999px;
-  background:linear-gradient(135deg,#242429,#000);
+  background:var(--ink-grad);
   color:#fff;
   font-size:14.5px;
   font-weight:700;
@@ -1316,10 +1310,10 @@ const showToast = (msg, type = 'success') => {
 window.showToast = showToast;
 
 /* ==========================================================================
-   28 ULTRA-DISTINCT POPULAR INDIAN ETHNIC COLOURS
+   27 ULTRA-DISTINCT POPULAR INDIAN ETHNIC COLOURS
    - Zero duplicate/similar shades
-   - 100% pure full-bleed colour blocks
-   - Syncs strictly with product Colour Options (colorImages + colors), NOT main card cover image
+   - 100% pure full-bleed colour blocks (no text/numbers cluttering the tiles)
+   - Never overwritten by raw product colour strings
    ========================================================================== */
 const FIXED_COLOURS = Object.freeze([
   { id: 'red',          name: 'Red',          bg: '#E11D2A', aliases: ['red', 'sindoor', 'crimson', 'scarlet', 'cherry', 'bridal red', 'blood red', 'vermilion', 'tomato red', 'lal'] },
@@ -1437,15 +1431,9 @@ const paintCartBar = () => {
   icons();
 };
 
-/* ==========================================================================
-   COLOUR OPTION SYNC ENGINE
-   - Extracts each product's Colour Options (colors[i] <-> colorImages[i])
-   - Never uses the default product card cover image (imageMain) when a colour option image exists
-   - Matches strictly against the product's Colour Options so the exact matched colour option & photo appear
-   ========================================================================== */
+/* ---------- Admin Panel Colour Extraction & Product Normalization ---------- */
 let allProducts = [];
 const prodMap = {};
-/* colourBuckets[colourId] holds array of { product, option: { name, image, index } } */
 const colourBuckets = Object.fromEntries(FIXED_COLOURS.map(c => [c.id, []]));
 
 const splitColorNames = val => {
@@ -1492,19 +1480,8 @@ const extractAdminColorPairs = raw => {
       if (pairs.length) return pairs;
     }
   }
-  const nameSources = [
-    raw.colors, raw.colours, raw.colorNames, raw.colourNames,
-    raw.colorsName, raw.coloursName, raw.colorsInfo, raw.coloursInfo,
-    raw.colorInfo, raw.colourInfo, raw.colorLabels, raw.colourLabels,
-    raw.color, raw.colour
-  ];
-  let fallbackNames = [];
-  for (const src of nameSources) {
-    const list = splitColorNames(src);
-    if (list.length > fallbackNames.length) fallbackNames = list;
-  }
-
   if (Array.isArray(raw.colorImages) && raw.colorImages.some(it => it && typeof it === 'object')) {
+    const fallbackNames = splitColorNames(raw.colors ?? raw.colours ?? raw.colorNames ?? raw.colourNames ?? raw.colorsInfo ?? raw.colorInfo);
     raw.colorImages.forEach((it, idx) => {
       if (it && typeof it === 'object') {
         pushPair(
@@ -1517,62 +1494,22 @@ const extractAdminColorPairs = raw => {
     });
     if (pairs.length) return pairs;
   }
-
-  if (Array.isArray(raw.colors) && raw.colors.some(it => it && typeof it === 'object')) {
-    const fallbackImgs = Array.isArray(raw.colorImages) ? raw.colorImages.filter(u => typeof u === 'string') : [];
-    raw.colors.forEach((it, idx) => {
-      if (it && typeof it === 'object') {
-        pushPair(
-          it.name ?? it.color ?? it.colour ?? it.colorName ?? it.colourName ?? it.label ?? '',
-          it.image ?? it.img ?? it.imageUrl ?? it.url ?? it.photo ?? fallbackImgs[idx] ?? ''
-        );
-      }
-    });
-    if (pairs.length) return pairs;
-  }
-
-  if (raw.colorImages && typeof raw.colorImages === 'object' && !Array.isArray(raw.colorImages)) {
-    Object.entries(raw.colorImages).forEach(([k, v]) => {
-      if (typeof v === 'string' && v.trim()) pushPair(k, v.trim());
-    });
-    if (pairs.length) return pairs;
-  }
-
   return pairs;
 };
 
-/* Returns the exact Colour Options list for a product:
-   Each colour option i pairs colors[i] directly with colorImages[i] (NOT the default product card image) */
 const getProductColorList = product => {
-  if (!product) return [];
-  const mainImg = String(product.img || product.imageMain || product.image || product.imageUrl || '').trim();
+  const mainImg = String(product.img || product.imageMain || product.image || '').trim();
   const adminPairs = Array.isArray(product.colorPairs) && product.colorPairs.length
     ? product.colorPairs
     : extractAdminColorPairs(product);
-
   if (adminPairs.length) {
-    return adminPairs.map((p, idx) => ({
-      name: String(p.name || '').trim(),
-      image: String(p.image || '').trim(),
-      index: idx
-    })).filter(opt => opt.name || opt.image);
+    return adminPairs.map(p => ({
+      name: String(p.name || 'Standard').trim(),
+      image: String(p.image || mainImg).trim()
+    }));
   }
-
-  const nameSources = [
-    product.colors, product.colours, product.colorNames, product.colourNames,
-    product.colorsName, product.coloursName, product.colorsInfo, product.coloursInfo,
-    product.colorInfo, product.colourInfo, product.colorLabels, product.colourLabels,
-    product.color, product.colour
-  ];
-  let names = [];
-  for (const src of nameSources) {
-    const list = splitColorNames(src);
-    if (list.length > names.length) names = list;
-  }
-
-  const rawImgs = Array.isArray(product.colorImages)
-    ? product.colorImages
-    : (Array.isArray(product.colourImages) ? product.colourImages : []);
+  const names = splitColorNames(product.colors ?? product.colorsInfo);
+  const rawImgs = Array.isArray(product.colorImages) ? product.colorImages : [];
   const imgs = rawImgs
     .map(it => (it && typeof it === 'object') ? (it.image ?? it.img ?? it.imageUrl ?? it.url ?? '') : String(it ?? '').trim())
     .filter(Boolean);
@@ -1580,85 +1517,78 @@ const getProductColorList = product => {
   if (imgs.length > 0) {
     if (names.length === imgs.length + 1 && mainImg && !imgs.includes(mainImg)) {
       return [
-        { name: String(names[0] || '').trim(), image: mainImg, index: 0 },
-        ...imgs.map((url, i) => ({ name: String(names[i + 1] || '').trim(), image: url, index: i + 1 }))
+        { name: names[0] || 'Main', image: mainImg },
+        ...imgs.map((url, i) => ({ name: names[i + 1] || `Colour ${i + 2}`, image: url }))
       ];
     }
-    return imgs.map((url, i) => ({
-      name: String(names[i] || '').trim(),
-      image: url,
-      index: i
-    }));
+    const list = [{ name: names[0] || 'Main', image: mainImg }];
+    imgs.forEach((url, i) => {
+      if (url && url !== mainImg) {
+        list.push({ name: names[i + 1] || names[i] || `Colour ${i + 2}`, image: url });
+      }
+    });
+    return list;
   }
-
   if (names.length > 0) {
-    return names.map((n, i) => ({ name: String(n).trim(), image: mainImg, index: i }));
+    return names.map(n => ({ name: n, image: mainImg }));
   }
-
-  return [];
+  return mainImg ? [{ name: 'Standard', image: mainImg }] : [];
 };
 
-/* Sync product strictly by its Colour Options (never by product title or default card cover image) */
+const indexProductColours = p => {
+  const matched = new Set();
+  const variantImgByColourId = {};
+  const variantNameByColourId = {};
+
+  const variants = getProductColorList(p);
+  variants.forEach(v => {
+    const ids = classifyColourPhrase(v.name);
+    ids.forEach(cid => {
+      matched.add(cid);
+      if (v.image && !variantImgByColourId[cid]) {
+        variantImgByColourId[cid] = v.image;
+        variantNameByColourId[cid] = v.name;
+      }
+    });
+  });
+
+  (Array.isArray(p.colors) ? p.colors : []).forEach(cName => {
+    classifyColourPhrase(cName).forEach(cid => matched.add(cid));
+  });
+
+  if (p.colorsInfo) {
+    classifyColourPhrase(p.colorsInfo).forEach(cid => matched.add(cid));
+  }
+
+  if (p.name) {
+    classifyColourPhrase(p.name).forEach(cid => matched.add(cid));
+  }
+
+  p._matchedColourIds = [...matched];
+  p._variantImgByColourId = variantImgByColourId;
+  p._variantNameByColourId = variantNameByColourId;
+};
+
 const rebuildColourBuckets = () => {
   FIXED_COLOURS.forEach(c => { colourBuckets[c.id] = []; });
-
   allProducts.forEach(p => {
-    const options = getProductColorList(p);
-    p._colorOptions = options;
-    p._matchedOptionByColourId = {};
-
-    /* Match ONLY from the product's actual colour options */
-    options.forEach((opt, idx) => {
-      const optName = String(opt.name || '').trim();
-      const optImg = String(opt.image || '').trim();
-      if (!optName || /^colour\s+\d+$/i.test(optName) || optName.toLowerCase() === 'standard' || optName.toLowerCase() === 'main') return;
-
-      const matchedCids = classifyColourPhrase(optName);
-      matchedCids.forEach(cid => {
-        const targetCol = COLOUR_BY_ID[cid];
-        if (!targetCol) return;
-        const existing = p._matchedOptionByColourId[cid];
-        const isExactName = normToken(optName) === normToken(targetCol.name);
-        if (!existing || (isExactName && !existing.isExact)) {
-          p._matchedOptionByColourId[cid] = {
-            name: optName,
-            image: optImg || p.img,
-            index: idx,
-            isExact: isExactName
-          };
-        }
-      });
-    });
-
-    Object.entries(p._matchedOptionByColourId).forEach(([cid, matchedOption]) => {
-      if (colourBuckets[cid]) {
-        colourBuckets[cid].push({ product: p, option: matchedOption });
-      }
+    indexProductColours(p);
+    p._matchedColourIds.forEach(cid => {
+      if (colourBuckets[cid]) colourBuckets[cid].push(p);
     });
   });
 };
 
 const normalize = x => {
   const pid = x.id ?? x._id;
-  const nameSources = [
-    x.colors, x.colours, x.colorNames, x.colourNames,
-    x.colorsName, x.coloursName, x.colorsInfo, x.coloursInfo,
-    x.colorInfo, x.colourInfo, x.colorLabels, x.colourLabels,
-    x.color, x.colour
-  ];
-  let parsedColors = [];
-  for (const src of nameSources) {
-    const list = splitColorNames(src);
-    if (list.length > parsedColors.length) parsedColors = list;
-  }
   const item = {
     id: pid,
     name: x.name || x.title || '',
     price: x.price,
     mrp: x.mrp ?? x.originalPrice,
-    colors: parsedColors,
-    colorsInfo: x.colorsInfo || x.coloursInfo || '',
-    colorImages: Array.isArray(x.colorImages) ? x.colorImages : (Array.isArray(x.colourImages) ? x.colourImages : []),
+    colors: splitColorNames(x.colors ?? x.colours ?? x.colorNames ?? x.colorsInfo),
+    colorsInfo: x.colorsInfo || '',
+    colorImages: Array.isArray(x.colorImages) ? x.colorImages : [],
     colorPairs: extractAdminColorPairs(x),
     sizes: Array.isArray(x.sizes) && x.sizes.length ? x.sizes : ['32', '34', '36', '38', '40', '42'],
     img: x.imageMain || x.image || x.imageUrl || x.img || '',
@@ -1701,13 +1631,9 @@ const resolveColourParam = rawParam => {
   return classified[0] || null;
 };
 
-/* ---------- Product Card Template (Synced Directly to the Matched Colour Option) ---------- */
-const colorStripHtml = (p, matchedOption, selectedCol) => {
-  if (matchedOption && matchedOption.name) {
-    const dotBg = selectedCol ? selectedCol.bg : '#111113';
-    return `<span class="color-strip"><span class="cs-dot" style="background:${dotBg}"></span>${escapeHtml(matchedOption.name)}</span>`;
-  }
-  const list = p._colorOptions || getProductColorList(p);
+/* ---------- Product Card Template (Identical to search.html & wishlist.html) ---------- */
+const colorStripHtml = p => {
+  const list = getProductColorList(p);
   const count = Math.max(1, list.length);
   return `<span class="color-strip">${count} ${count === 1 ? 'Colour' : 'Colours'}</span>`;
 };
@@ -1718,16 +1644,25 @@ const ratingPill = p => {
   return `<span class="rating ${tone}" role="img" aria-label="Rating ${r > 0 ? r.toFixed(1) : '0.0'}"><i data-lucide="star" fill="currentColor"></i>${r > 0 ? r.toFixed(1) : '0.0'}</span>`;
 };
 
-const resultCard = (entry, i = 0, selectedCol = null) => {
-  const p = entry.product || entry;
-  const matchedOption = entry.option || (selectedCol && p._matchedOptionByColourId?.[selectedCol.id]) || null;
+/* Single source of truth: the image/name for a product in a given colour.
+   Used by the grid card, the quick-view default, and (via the quick-view's
+   active swatch) the add-to-cart payload — so the cart image always matches
+   the colour actually selected, never a generic fallback. */
+const matchedVariantForColour = (p, cid) => {
+  if (!cid) return null;
+  const image = p._variantImgByColourId?.[cid];
+  const name = p._variantNameByColourId?.[cid];
+  return image ? { image, name } : null;
+};
+
+const resultCard = (p, i = 0, selectedCid = null) => {
   const { pr, m, saved, off } = priceInfo(p);
   const id = escapeHtml(p.id), name = escapeHtml(p.name);
-
-  /* Strictly use the matched Colour Option's image (NOT the default product card cover image) */
-  const displayImg = safeImageUrl(matchedOption?.image || p.img);
-  const optNameParam = matchedOption?.name ? `&color=${encodeURIComponent(matchedOption.name)}` : '';
-  const href = `/product?id=${encodeURIComponent(p.id)}${optNameParam}`;
+  const matched = matchedVariantForColour(p, selectedCid);
+  const matchedVariantImg = matched?.image;
+  const matchedVariantName = matched?.name;
+  const displayImg = safeImageUrl(matchedVariantImg || p.img);
+  const href = `/product?id=${encodeURIComponent(p.id)}${matchedVariantName ? '&color=' + encodeURIComponent(matchedVariantName) : ''}`;
   const stock = Number(p.stock);
   const isOut = Number.isFinite(stock) && stock <= 0 && p.stock !== '' && p.stock != null;
   const isLow = !isOut && Number.isFinite(stock) && stock > 0 && stock <= 4;
@@ -1742,15 +1677,15 @@ const resultCard = (entry, i = 0, selectedCol = null) => {
     : (isLow ? `<span class="tag-stock low-stk">Only ${stock} Left</span>` : '');
 
   return `<article class="pcard${isOut ? ' out-stock' : ''}" style="--i:${i}">
-    <span class="pcard-link" data-product="${id}" data-matched-color="${escapeHtml(matchedOption?.name || '')}">
+    <span class="pcard-link" data-product="${id}">
       <span class="pcard-media">
-        <img src="${escapeHtml(displayImg)}" alt="${escapeHtml(matchedOption?.name ? `${ p.name } - ${ matchedOption.name }` : p.name)}" loading="lazy" onerror="imgFallback(this)">
+        <img src="${escapeHtml(displayImg)}" alt="${name}" loading="lazy" onerror="imgFallback(this)">
         ${topTags ? `<span class="tags">${topTags}</span>` : ''}
         ${stockOverlay}
       </span>
     </span>
     <div class="pcard-foot">
-      <a class="pcard-text" href="${href}" data-product="${id}" data-matched-color="${escapeHtml(matchedOption?.name || '')}">
+      <a class="pcard-text" href="${href}" data-product="${id}">
         <span class="pcard-name">${name}</span>
         <span class="pcard-price">
           <span class="price">${fmt(pr)}</span>
@@ -1759,8 +1694,8 @@ const resultCard = (entry, i = 0, selectedCol = null) => {
         </span>
       </a>
       <div class="pcard-row">
-        <a class="pcard-metalink" href="${href}" data-product="${id}" data-matched-color="${escapeHtml(matchedOption?.name || '')}">${colorStripHtml(p, matchedOption, selectedCol)}${ratingPill(p)}</a>
-        <button type="button" class="go" data-qv="${id}" data-qv-color="${escapeHtml(matchedOption?.name || '')}" aria-label="Quick view ${name}"><i data-lucide="eye"></i></button>
+        <a class="pcard-metalink" href="${href}" data-product="${id}">${colorStripHtml(p)}${ratingPill(p)}</a>
+        <button type="button" class="go" data-qv="${id}" data-qv-cid="${selectedCid ? escapeHtml(selectedCid) : ''}" aria-label="Quick view ${name}"><i data-lucide="eye"></i></button>
       </div>
     </div>
   </article>`;
@@ -1817,21 +1752,21 @@ const renderSelectedColourView = col => {
 
   const baseList = colourBuckets[col.id] || [];
   let f = [...baseList];
-  if (sale) f = f.filter(entry => priceInfo(entry.product).off > 0);
-  if (rate) f = f.filter(entry => Number(entry.product.rating) >= 4);
+  if (sale) f = f.filter(p => priceInfo(p).off > 0);
+  if (rate) f = f.filter(p => Number(p.rating) >= 4);
   if (priceRange !== 'any') {
     const [lo, hi] = priceRange.split('-');
-    f = f.filter(entry => {
-      const pr = priceInfo(entry.product).pr;
+    f = f.filter(p => {
+      const pr = priceInfo(p).pr;
       return pr >= Number(lo) && (hi === '' || hi === undefined || pr <= Number(hi));
     });
   }
 
   const by = {
-    plh: (a, b) => priceInfo(a.product).pr - priceInfo(b.product).pr,
-    phl: (a, b) => priceInfo(b.product).pr - priceInfo(a.product).pr,
-    disc: (a, b) => priceInfo(b.product).off - priceInfo(a.product).off,
-    rate: (a, b) => (Number(b.product.rating) || 0) - (Number(a.product.rating) || 0)
+    plh: (a, b) => priceInfo(a).pr - priceInfo(b).pr,
+    phl: (a, b) => priceInfo(b).pr - priceInfo(a).pr,
+    disc: (a, b) => priceInfo(b).off - priceInfo(a).off,
+    rate: (a, b) => (Number(b.rating) || 0) - (Number(a.rating) || 0)
   }[sort];
   if (by) f.sort(by);
 
@@ -1855,7 +1790,7 @@ const renderSelectedColourView = col => {
       <span>Showing <b>${f.length}</b> ${escapeHtml(col.name)} blouse${f.length === 1 ? '' : 's'}</span>
       ${activeFilterCount ? '<button type="button" class="clear-link" onclick="clearAllFilters()">Reset filters</button>' : ''}
     </p>
-    <div class="results-grid">${f.map((entry, i) => resultCard(entry, i, col)).join('')}</div>
+    <div class="results-grid">${f.map((p, i) => resultCard(p, i, col.id)).join('')}</div>
   `;
 };
 
@@ -1952,7 +1887,7 @@ window.clearAllFilters = () => {
   render();
 };
 
-/* ---------- Quick View Logic (#sqaOv) Synced with Matched Colour Option ---------- */
+/* ---------- Quick View Logic (#sqaOv) ---------- */
 let sqaPid = null;
 let sqaQty = 1;
 let sqaSwitchToken = 0;
@@ -1964,7 +1899,7 @@ window.stepSqaQty = delta => {
   navigator.vibrate?.(15);
 };
 
-window.openSugQA = (id, preferredColorName = '') => {
+window.openSugQA = (id, forceCid = '') => {
   const p = prodMap[String(id)];
   if (!p) return;
   sqaPid = String(id);
@@ -1976,25 +1911,21 @@ window.openSugQA = (id, preferredColorName = '') => {
   const isOut = Number.isFinite(stockNum) && stockNum <= 0 && p.stock !== '' && p.stock != null;
   const wished = wishIds().has(String(p.id));
 
-  const qvColors = (p._colorOptions && p._colorOptions.length ? p._colorOptions : getProductColorList(p)).map((c, idx) => ({
-    name: String(c.name || `Colour ${idx + 1}`).trim(),
+  const qvColors = getProductColorList(p).map(c => ({
+    name: String(c.name || 'Standard').trim(),
     image: safeImageUrl(c.image || p.img)
   }));
 
-  /* Pre-select the exact matched Colour Option so Quick View opens with that exact colour option photo & name */
+  // Opening quick view should always land on the same colour the person was
+  // just looking at — the card's own matched colour id if it carried one,
+  // else the colour currently selected on the page.
+  const effectiveCid = forceCid || activeColourId;
   let defaultIdx = 0;
-  const matchedOpt = activeColourId && p._matchedOptionByColourId?.[activeColourId];
-  const targetColorName = String(preferredColorName || matchedOpt?.name || '').trim().toLowerCase();
-
-  if (targetColorName && qvColors.length) {
-    const byName = qvColors.findIndex(c => c.name.toLowerCase() === targetColorName);
-    if (byName >= 0) defaultIdx = byName;
-  } else if (activeColourId && qvColors.length > 1) {
-    const byBucket = qvColors.findIndex(c => classifyColourPhrase(c.name).includes(activeColourId));
-    if (byBucket >= 0) defaultIdx = byBucket;
+  if (effectiveCid && qvColors.length > 1) {
+    const matchIdx = qvColors.findIndex(c => classifyColourPhrase(c.name).includes(effectiveCid));
+    if (matchIdx >= 0) defaultIdx = matchIdx;
   }
-
-  const initialColor = qvColors[defaultIdx] || { name: matchedOpt?.name || 'Standard', image: safeImageUrl(matchedOpt?.image || p.img) };
+  const initialColor = qvColors[defaultIdx] || { name: 'Standard', image: safeImageUrl(p.img) };
 
   $('#sqaMedia')?.classList.remove('is-switching');
   $('#sqaImg').src = initialColor.image;
@@ -2035,7 +1966,7 @@ window.openSugQA = (id, preferredColorName = '') => {
   const addBtn = $('#sqaAdd');
   addBtn.disabled = isOut;
   $('#sqaAddText').textContent = isOut ? 'Out of stock' : 'Add to bag';
-  $('#sqaFullLink').href = `/product?id=${encodeURIComponent(p.id)}&color=${encodeURIComponent(initialColor.name)}`;
+  $('#sqaFullLink').href = '/product?id=' + encodeURIComponent(p.id);
 
   const wishBtn = $('#sqaWishBtn');
   wishBtn.dataset.heart = String(p.id);
@@ -2043,7 +1974,7 @@ window.openSugQA = (id, preferredColorName = '') => {
   wishBtn.setAttribute('aria-pressed', wished);
 
   $('#sqaShareBtn').onclick = async () => {
-    const shareUrl = new URL(`/product?id=${encodeURIComponent(p.id)}&color=${encodeURIComponent(initialColor.name)}`, location.origin).href;
+    const shareUrl = new URL(`/product?id=${encodeURIComponent(p.id)}`, location.origin).href;
     if (navigator.share) {
       try { await navigator.share({ title: p.name || 'Aavira Fashion', url: shareUrl }); return; } catch {}
     }
@@ -2067,12 +1998,8 @@ const pickSqaColor = btn => {
   btn.classList.add('on');
   sqaQty = 1;
   if ($('#sqaQtyVal')) $('#sqaQtyVal').textContent = '1';
-  const pickedColor = btn.dataset.color || 'Standard';
   const em = $('#sqaColorName');
-  if (em) em.textContent = '· ' + pickedColor;
-  if (sqaPid && $('#sqaFullLink')) {
-    $('#sqaFullLink').href = `/product?id=${encodeURIComponent(sqaPid)}&color=${encodeURIComponent(pickedColor)}`;
-  }
+  if (em) em.textContent = '· ' + (btn.dataset.color || 'Standard');
   const img = $('#sqaImg');
   const media = $('#sqaMedia');
   const src = btn.dataset.img || '';
@@ -2113,10 +2040,13 @@ $('#sqaAdd').addEventListener('click', () => {
     return;
   }
   const size = sel.dataset.size;
+  // The active swatch is the single source of truth for what goes into the
+  // bag: same colour name AND same colour image, never the product's
+  // default/main image — so the cart, cart bar and checkout all show the
+  // exact variant the person picked.
   const clrBtn = $('#sqaColors .sqa-sw.on');
-  const matchedOpt = activeColourId && p._matchedOptionByColourId?.[activeColourId];
-  const color = clrBtn?.dataset.color || matchedOpt?.name || (p.colors && p.colors[0]) || 'Standard';
-  const img = clrBtn?.dataset.img || safeImageUrl(matchedOpt?.image || p.img);
+  const color = clrBtn?.dataset.color || (p.colors && p.colors[0]) || 'Standard';
+  const img = clrBtn?.dataset.img || safeImageUrl(p.img);
   const addQty = Math.max(1, Number(sqaQty) || 1);
 
   const btn = $('#sqaAdd');
@@ -2125,12 +2055,8 @@ $('#sqaAdd').addEventListener('click', () => {
     btn.classList.remove('is-busy');
     const cart = readCart();
     const ex = cart.find(it => String(it.productId ?? it.id) === String(p.id) && it.size === size && (it.color || 'Standard') === color);
-    if (ex) {
-      ex.qty = clamp((Number(ex.qty) || 1) + addQty, 1, 20);
-      ex.image = img;
-    } else {
-      cart.push({ productId: String(p.id), name: p.name, price: Number(p.price) || 0, mrp: Number(p.mrp) || 0, size, color, image: img, qty: addQty });
-    }
+    if (ex) ex.qty = clamp((Number(ex.qty) || 1) + addQty, 1, 20);
+    else cart.push({ productId: String(p.id), name: p.name, price: Number(p.price) || 0, mrp: Number(p.mrp) || 0, size, color, image: img, qty: addQty });
     writeCart(cart);
     updateCartBadge();
     closeSugQA();
@@ -2303,11 +2229,11 @@ document.addEventListener('click', e => {
     e.preventDefault();
     e.stopPropagation();
     const id = qvBtn.dataset.qv;
-    const qvColor = qvBtn.dataset.qvColor || '';
+    const cardCid = qvBtn.dataset.qvCid || '';
     qvBtn.classList.add('is-busy');
     setTimeout(() => {
       qvBtn.classList.remove('is-busy');
-      openSugQA(id, qvColor);
+      openSugQA(id, cardCid);
     }, 200);
     return;
   }
