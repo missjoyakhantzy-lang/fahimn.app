@@ -2178,11 +2178,36 @@ window.loadSkeletons = () => {
   $('#new-arrivals-container').innerHTML = repeat(card('pcard-grid'), 4);
 };
 
+const isMiniBannerItem = b => {
+  if (!b) return false;
+  if (/mini/i.test(String(b.type || b.position || b.slot || b.bannerType || b.section || ''))) return true;
+  return /^mini(\b|[_\-:\s|/])/i.test(String(b.link || '').trim());
+};
+const normalizeMiniBannerItem = b => {
+  const out = { ...b };
+  const link = String(b.link || '').trim();
+  const m = link.match(/^mini\s*[:|]\s*(.*)$/i);
+  if (m) {
+    const parts = m[1].split('|').map(s => s.trim());
+    out.link = parts[0] || '';
+    if (parts[1] && !out.title) out.title = parts[1];
+    if (parts[2] && !out.sub) out.sub = parts[2];
+  } else if (/^mini\b/i.test(link)) {
+    out.link = link.replace(/^mini(\s*[\s|/:\-_]\s*|\s*$)/i, '');
+  }
+  return out;
+};
+window.getMiniBannersData = async () => {
+  const all = typeof window.getBannersData === 'function' ? await withCache('banners', window.getBannersData) : [];
+  return (Array.isArray(all) ? all : []).filter(isMiniBannerItem).map(normalizeMiniBannerItem);
+};
+
 window.fetchBanners = async () => {
   const track = $('#bannerCarousel');
   const dots = $('#banner-dots');
   try {
-    const banners = typeof window.getBannersData === 'function' ? await withCache('banners', window.getBannersData) : [];
+    const allBanners = typeof window.getBannersData === 'function' ? await withCache('banners', window.getBannersData) : [];
+    const banners = (Array.isArray(allBanners) ? allBanners : []).filter(b => !isMiniBannerItem(b));
     if (!Array.isArray(banners) || !banners.length) throw new Error('No banners');
 
     const count = banners.length;

@@ -1,14 +1,40 @@
 /* Aavira mini hero banner: auto-sliding secondary banner under the main hero.
    Data sources, in order: window.getMiniBannersData() -> window.MINI_BANNERS ->
    main banners (window.getBannersData) filtered to items marked mini -> luxury defaults.
-   To update from the admin side, expose mini banners through any of those sources. */
+   A banner counts as mini when its type/position/slot/bannerType/section matches
+   /mini/i, or its link starts with the mini prefix (mini:categories | Title | Sub).
+   Admin-managed mini banners come from the Admin Panel banner type dropdown. */
 (function () {
   var DEFAULTS = [
     { title: 'The Festive Edit', sub: 'Handcrafted blouses for every celebration', link: 'categories', bg: 'linear-gradient(120deg,#161616,#3A2A1C)' },
     { title: 'New Arrivals', sub: 'Fresh designs, added weekly', link: 'categories', bg: 'linear-gradient(120deg,#22182B,#161616)' },
     { title: 'Aavira Signature', sub: 'Premium ethnic elegance', link: 'categories', bg: 'linear-gradient(120deg,#101010,#2A2118)' }
   ];
-  function okUrl(u) { u = String(u || ''); return /^(https?:\/\/|\/|\.)/.test(u) ? u : ''; }
+  function okUrl(u) {
+    u = String(u || '').trim();
+    if (/^(https?:\/\/|\/|\.)/.test(u)) return u;
+    if (u) return '/' + u.replace(/^\/+/, '');
+    return '';
+  }
+  function isMini(b) {
+    if (!b) return false;
+    if (/mini/i.test(String(b.type || b.position || b.slot || b.bannerType || b.section || ''))) return true;
+    return /^mini(\b|[_\-:\s|/])/i.test(String(b.link || '').trim());
+  }
+  function normalizeMini(b) {
+    var out = { imageUrl: b.imageUrl || b.image || b.url, link: b.link || '', title: b.title || '', sub: b.sub || '', bg: b.bg };
+    var link = String(b.link || '').trim();
+    var m = link.match(/^mini\s*[:|]\s*(.*)$/i);
+    if (m) {
+      var parts = m[1].split('|').map(function (s) { return s.trim(); });
+      out.link = parts[0] || '';
+      if (parts[1] && !out.title) out.title = parts[1];
+      if (parts[2] && !out.sub) out.sub = parts[2];
+    } else if (/^mini\b/i.test(link)) {
+      out.link = link.replace(/^mini(\s*[\s|/:\-_]\s*|\s*$)/i, '');
+    }
+    return out;
+  }
   function waitFor(fn, ms) {
     return new Promise(function (res) {
       var t = 0;
@@ -27,7 +53,7 @@
       var gb = await waitFor(function () { return window.getBannersData; }, 1200);
       if (typeof gb === 'function') {
         var all = await gb().catch(function () { return []; });
-        var mini = (Array.isArray(all) ? all : []).filter(function (b) { return b && /mini/i.test(String(b.type || b.position || b.slot || '')); });
+        var mini = (Array.isArray(all) ? all : []).filter(isMini).map(normalizeMini);
         if (mini.length) return mini;
       }
     } catch (e) { /* fall through to defaults */ }

@@ -868,6 +868,23 @@
                 <i class="fa-solid fa-cloud-arrow-up"></i><p>Upload High-Res Banner</p>
             </div>
             <div class="form-group">
+                <span class="form-label">Banner Placement / Type</span>
+                <select class="form-input" id="b_type" onchange="toggleMiniBannerFields()">
+                    <option value="main">Main Hero Banner (Top Slider)</option>
+                    <option value="mini">Mini Banner (#miniHeroSection Highlights Slider)</option>
+                </select>
+            </div>
+            <div id="b_mini_fields" style="display:none;">
+                <div class="form-group">
+                    <span class="form-label">Mini Banner Title (Optional)</span>
+                    <input type="text" class="form-input" id="b_title" placeholder="e.g. The Festive Edit">
+                </div>
+                <div class="form-group">
+                    <span class="form-label">Mini Banner Subtitle (Optional)</span>
+                    <input type="text" class="form-input" id="b_sub" placeholder="e.g. Handcrafted blouses for every celebration">
+                </div>
+            </div>
+            <div class="form-group">
                 <span class="form-label">Action Link (Optional)</span>
                 <input type="text" class="form-input" id="b_link" placeholder="e.g. categories.html">
             </div>
@@ -1418,7 +1435,7 @@
         };
 
         window.openFabActionStore = function(type) {
-            if(type === 'banner') { document.getElementById('b_id').value = ''; document.getElementById('b_link').value = ''; clearUpload('b'); document.getElementById('bannerSheetTitle').innerText = 'Add App Banner'; openSheet('bannerSheet'); } 
+            if(type === 'banner') { document.getElementById('b_id').value = ''; document.getElementById('b_link').value = ''; document.getElementById('b_type').value = 'main'; document.getElementById('b_title').value = ''; document.getElementById('b_sub').value = ''; toggleMiniBannerFields(); clearUpload('b'); document.getElementById('bannerSheetTitle').innerText = 'Add App Banner'; openSheet('bannerSheet'); } 
             else if(type === 'category') { document.getElementById('c_id').value = ''; document.getElementById('c_name').value = ''; document.getElementById('c_link').value = ''; clearUpload('c'); document.getElementById('categorySheetTitle').innerText = 'Add Category'; openSheet('categorySheet'); } 
             else if(type === 'promo') { document.getElementById('p_code').value = ''; document.getElementById('p_code').disabled = false; document.getElementById('p_discount').value = ''; document.getElementById('promoSheetTitle').innerText = 'Generate Promo Code'; openSheet('promoSheet'); }
         };
@@ -2034,10 +2051,12 @@
                 snap.forEach(docSnap => {
                     let d = docSnap.data(); let img = d.imageUrl || d.url || 'https://placehold.co/400x200/f8f8f8/d81b60?text=Banner';
                     window.bannersDataCache[docSnap.id] = { id: docSnap.id, ...d, img: img };
+                    const bannerIsMini = /mini/i.test(String(d.type || d.position || d.slot || d.bannerType || d.section || '')) || /^mini(\b|[_\-:\s|/])/i.test(String(d.link || '').trim());
+                    const bannerBadge = bannerIsMini ? '<span style="display:inline-block; background:#111; color:#d4af37; border:1px solid #d4af37; border-radius:20px; padding:2px 8px; font-size:10px; margin-right:6px;">MINI BANNER</span>' : '<span style="display:inline-block; background:#f0f0f0; color:#333; border:1px solid #ccc; border-radius:20px; padding:2px 8px; font-size:10px; margin-right:6px;">MAIN BANNER</span>';
                     html += `
                         <div class="ui-list-item">
                             <img src="${img}" onerror="this.src='https://placehold.co/400x200/f8f8f8/d81b60?text=Error'">
-                            <div style="flex:1; margin-left:14px; font-size:11px; font-weight:600; color:var(--gray-text);">Link: ${d.link||'None'}</div>
+                            <div style="flex:1; margin-left:14px; font-size:11px; font-weight:600; color:var(--gray-text);">${bannerBadge}Link: ${d.link||'None'}</div>
                             <div style="display:flex; gap:12px; align-items:center;">
                                 <button onclick="editBanner('${docSnap.id}')" style="background:none; border:none; color:var(--blue); font-size:15px; cursor:pointer;"><i class="fa-solid fa-pen"></i></button>
                                 <button onclick="deleteDocItem('banners', '${docSnap.id}')" style="background:none; border:none; color:var(--danger); font-size:15px; cursor:pointer;"><i class="fa-solid fa-trash-can"></i></button>
@@ -2047,8 +2066,15 @@
             } catch (error) { console.error("Error fetching banners:", error); }
         }
 
+        window.toggleMiniBannerFields = function() {
+            const isMini = document.getElementById('b_type').value === 'mini';
+            document.getElementById('b_mini_fields').style.display = isMini ? 'block' : 'none';
+        };
+
         window.editBanner = function(id) {
             let b = window.bannersDataCache[id]; document.getElementById('b_id').value = b.id; document.getElementById('b_link').value = b.link || ''; document.getElementById('b_final_url').value = b.img;
+            const editType = b.type || (/^mini(\b|[_\-:\s|/])/i.test(String(b.link || '').trim()) ? 'mini' : 'main');
+            document.getElementById('b_type').value = editType; document.getElementById('b_title').value = b.title || ''; document.getElementById('b_sub').value = b.sub || ''; toggleMiniBannerFields();
             let box = document.getElementById('b_upload_box');
             if(b.img) box.innerHTML = `<button class="remove-img-btn" onclick="clearUpload('b', event)"><i class="fa-solid fa-xmark"></i></button><img src="${b.img}" class="preview-media" onerror="this.src='https://placehold.co/400x200/f8f8f8/d81b60?text=Error'">`;
             else clearUpload('b'); 
@@ -2057,10 +2083,11 @@
 
         window.saveBanner = async function() {
             const id = document.getElementById('b_id').value; const img = document.getElementById('b_final_url').value; const link = document.getElementById('b_link').value.trim();
+            const type = document.getElementById('b_type')?.value || 'main'; const title = document.getElementById('b_title')?.value.trim() || ''; const sub = document.getElementById('b_sub')?.value.trim() || '';
             if(!img) { showToast("Please upload banner image", "error"); return; }
             try {
-                if(id) await updateDoc(doc(db, "banners", id), { imageUrl: img, link: link }); else await setDoc(doc(collection(db, "banners")), { imageUrl: img, link: link, createdAt: serverTimestamp() });
-                closeSheets(); clearUpload('b'); fetchBanners(); showToast("Banner Saved Successfully");
+                if(id) await updateDoc(doc(db, "banners", id), { imageUrl: img, link: link, type: type, title: title, sub: sub }); else await setDoc(doc(collection(db, "banners")), { imageUrl: img, link: link, type: type, title: title, sub: sub, createdAt: serverTimestamp() });
+                closeSheets(); clearUpload('b'); document.getElementById('b_type').value = 'main'; document.getElementById('b_title').value = ''; document.getElementById('b_sub').value = ''; toggleMiniBannerFields(); fetchBanners(); showToast("Banner Saved Successfully");
             } catch(error) { showToast("Failed to save banner", "error"); }
         };
 
